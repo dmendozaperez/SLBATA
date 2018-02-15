@@ -75,7 +75,7 @@ namespace CapaPresentacion.Controllers
 
 
             //List<Technology> technologies = StaticData.Technologies;
-            string[] columns = { "cod_tienda", "des_tienda", "semana", "fecha", "dni", "bolfac", "pares", "soles", "estado" };
+            string[] columns = { "cod_tienda", "des_tienda", "semana", "fecha", "dni", "bolfac", "pares", "soles", "estado", "fecha_ing", "promocion" };
             byte[] filecontent = ExcelExportHelper.ExportExcel(listbataclub, "BATACLUB", true, columns);
             return File(filecontent, ExcelExportHelper.ExcelContentType, "bataclub.xlsx");
         }
@@ -134,7 +134,9 @@ namespace CapaPresentacion.Controllers
                              a.bolfac,   
                              a.pares, 
                              a.soles,                      
-                             a.estado
+                             a.estado,
+                             a.fecha_ing,
+                             a.promocion
                          };
             //Se devuelven los resultados por json
             return Json(new
