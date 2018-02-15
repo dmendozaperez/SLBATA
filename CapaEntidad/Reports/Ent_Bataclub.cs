@@ -18,5 +18,8 @@ namespace CapaEntidad.Reports
         public Int32 pares { get; set; }
 
         public string estado { get; set; }
+
+        public string fecha_ing { get; set; }
+        public string promocion { get; set; }
     }
 }

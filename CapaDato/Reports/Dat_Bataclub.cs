@@ -42,7 +42,9 @@ namespace CapaDato.Reports
                                           bolfac= dr["BOLFAC"].ToString(),
                                           soles =Convert.ToDecimal(dr["SOLES"]),
                                           pares  =Convert.ToInt32(dr["PARES"]),
-                                          estado  = dr["ESTADO"].ToString(),                                        
+                                          estado  = dr["ESTADO"].ToString(),
+                                          fecha_ing= dr["FECHA_ING"].ToString(),
+                                          promocion= dr["PROMOCION"].ToString(),
                                       }).ToList();
 
                         }
