@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Control\Ent_Aplicacion.cs" />
+    <Compile Include="ValeCompra\Ent_Cliente.cs" />
     <Compile Include="Control\Ent_Funcion.cs" />
     <Compile Include="Control\Ent_Roles.cs" />
     <Compile Include="Control\Ent_Usuario.cs" />
@@ -53,6 +54,9 @@
     <Compile Include="Util\Ent_Conexion.cs" />
     <Compile Include="Util\Ent_Constantes.cs" />
     <Compile Include="Util\Ent_Global.cs" />
+    <Compile Include="ValeCompra\Ent_ValeCompra.cs" />
+    <Compile Include="ValeCompra\Ent_ValeCompraDetalle.cs" />
+    <Compile Include="ValeCompra\JsonResponse.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

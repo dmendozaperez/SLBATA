@@ -10,7 +10,31 @@ namespace CapaEntidad.Util
     {
         public static string conexion
         {
-            get { return "Server=10.10.10.208;Database=BdTiendaReplica;User ID=junior;Password=Bata2018**@;Trusted_Connection=False;"; }
+            get {
+                //  return "Server=des.bgr.pe;Database=BdTiendaReplica;User ID=junior;Password=Bata2018**@;Trusted_Connection=False;";
+                return "Server=10.10.10.208;Database=BdTiendaReplica;User ID=junior;Password=Bata2018**@;Trusted_Connection=False;";
+
+            }
+        }
+
+        public static string strDirectorio
+        {
+            get
+            {
+
+                return "~/Cupones/Bata_"; ;
+
+            }
+        }
+
+        public static string plantilla
+        {
+            get
+            {
+            
+                return "~/FormatoCupon/htmlcupon20.html";
+
+            }
         }
     }
 }

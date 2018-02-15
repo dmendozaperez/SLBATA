@@ -19,6 +19,7 @@ namespace CapaPresentacion.Controllers
         private Dat_Roles roles = new Dat_Roles();
         public ActionResult Index()
         {
+            
             Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
 
             string actionName = this.ControllerContext.RouteData.GetRequiredString("action");

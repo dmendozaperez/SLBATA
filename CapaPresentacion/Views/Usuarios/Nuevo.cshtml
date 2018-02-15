@@ -75,8 +75,13 @@
 <script>
 $(document).ready(function() {
     $("#dwtipo").select({
-    dropdownParent: $("#myModal")
-  });
+        dropdownParent: $("#myModal")
+
+     
+    });
+
+    var ip = java.net.InetAddress.getLocalHost().getHostAddress();
+    console.log('Tu IP es: "' + ip + '"')
 });
 </script>
 <script type="text/javascript">

@@ -16,5 +16,6 @@ namespace CapaEntidad.Control
         public string usu_tip_id { get; set; }
 
         public string usu_tip_nom { get; set; }
+        public string usu_ip { get; set; }
     }
 }

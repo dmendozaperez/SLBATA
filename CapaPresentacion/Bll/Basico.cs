@@ -110,7 +110,7 @@ namespace CapaPresentacion.Bll
         {
             Boolean _valida = false;
             try
-            {               
+            {
                 var htmlToPdf = new NReco.PdfGenerator.HtmlToPdfConverter();
                 htmlToPdf.PageHeight = 242;
                 htmlToPdf.PageWidth = 170;
