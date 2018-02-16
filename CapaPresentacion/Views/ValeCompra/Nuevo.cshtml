@@ -273,14 +273,14 @@ function EliminarVale(Id) {
         var mydateIni = new Date(partsini[2], partsini[1] - 1, partsini[0]);
         var mydateFin = new Date(partsfin[2], partsfin[1] - 1, partsfin[0]);
         var mydatehoy = new Date();
-        var partshoy = valCompra_fecVigenFin.split('-');
-
+        
         var AnyoHoy = mydatehoy.getFullYear();
         var MesHoy = mydatehoy.getMonth();
         var DiaHoy = mydatehoy.getDate();
-
-        var fechaHoy = new Date(partsfin[2], partsfin[1] - 1, partsfin[0]);
-
+     
+        var fechaHoy = new Date(AnyoHoy, MesHoy, DiaHoy);
+       
+   
         if (mydateIni > mydateFin)
             strMensaje += '* fecha fin de vigencia debe ser mayor o igual a la fecha inicio.  <br/>'
 
