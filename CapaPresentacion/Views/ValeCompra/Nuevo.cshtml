@@ -15,7 +15,15 @@
             <tr>
                 <td colspan="2" valign="middle"><label for="dwcliente">Empresa Cliente</label></td>
                 <td colspan="2">
-                    @Html.DropDownList("dwcliente", new SelectList(ViewBag.cliente, "cli_Ruc", "cli_razonSocial", "0"), new { @class = "selectCountry form-control", @data_live_search = "true", @id = "dwcliente" })
+                    @Html.DropDownList("dwcliente", new SelectList(ViewBag.cliente, "cli_Ruc", "cli_razonSocial", "0"), new { @class = "selectCountry form-control", @data_live_search = "true", @id = "dwcliente",@onchange="MostrarRuc()" })
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" vertical-align="middle">
+                    <label for="segape">RUC</label>
+                </td>
+                <td colspan="2" >
+                    <input id="txtRuc" type="text" value="--" disabled autofocus class="form-control" />
                 </td>
             </tr>
             <tr>
@@ -52,15 +60,10 @@
             <tr>
                 <td width="45%" colspan="2" vertical-align="middle">
                     <label for="segape">&nbsp;&nbsp;Monto Total (S/.)</label>
-
-               
-                  
                 </td>
                 <td colspan="2" width="35%">
                     <input  id="montoTotal" type="text" value="0.00" disabled  autofocus class="form-control" />
-                   
                 </td>
-              
             </tr>
         </table>
         <div class="modal-header modal-header-danger">
@@ -118,36 +121,47 @@
     $("#dwcliente").select({
     dropdownParent: $("#myModal")
     });
-
+    
     AgregarVales();
 
 });
+    function dibujarCombo(strId) {
+        var strCbo = '';
+        strCbo += '<select class="form-control" id="cboMonto_' + strId + '" name="monto" onchange="calcularTotal()">';
+        strCbo += '<option value="50">50</option>';
+        strCbo += '<option value="100">100</option> ';
+        strCbo += '<option value="200">200</option> ';
+        strCbo += '</select>'
 
+        return strCbo
+    }
 function AgregarVales() {
 
     var nId = $("#tblvales tbody > tr:last-child").data("id");
 
     var strDelete = '<button title="Borrar" onclicK="javaScript:EliminarVale(this)" class="btnborrar btn btn-danger" data-modal="" data-toggle="modal"><span class="glyphicon glyphicon-remove"></span></button>';
-
+   
     if (nId == null)
         strDelete = '<button title="Disable" class="btnborrar btn btn-default" data-modal="" data-toggle="modal"><span class="glyphicon glyphicon-remove"></span></button>';
 
     nId++
 
+    var strCombo = dibujarCombo(nId);
+
     var row = '';
-    row = row + '<tr  height="50px" data-id="' + nId + '" class="FilaDatos">'
-    row = row + '<td vertical-align="middle" style="text-align:center;vertical-align:middle;"  align="center"  >'
-    row = row + '<input type="number" onBlur="javaScript:calcularTotal()" id="txtCantidad_' + nId + '" value="" placeholder="Ingrese  Cantidad" autofocus class="form-control" />'
-    row = row + '</td>'
-    row = row + '<td  vertical-align="middle" style="text-align:center;vertical-align:middle;"  align="center" >'
-    row = row + '<input type="number"  onBlur="javaScript:calcularTotal()" name="denominacion" id="txtDenominacion_' + nId + '" value="" placeholder="Ingrese Valor" autofocus class="form-control" />'
-    row = row + '</td>'
+    row += '<tr  height="50px" data-id="' + nId + '" class="FilaDatos">'
+    row += '<td vertical-align="middle" style="text-align:center;vertical-align:middle;"  align="center"  >'
+    row += '<input name ="cantidad" type="number" onBlur="javaScript:calcularTotal()" id="txtCantidad_' + nId + '" value="" placeholder="Ingrese  Cantidad" autofocus class="form-control" />'
+    row += '</td>'
+    row += '<td  vertical-align="middle" style="text-align:center;vertical-align:middle;"  align="center" >'
+    row += strCombo
+    row += '</td>'
  
-    row = row + '<td  vertical-align="middle" style="text-align:center;vertical-align:middle;"  align="center"  >'
-    row = row + '<div id="Detalle_' + nId + '">'
-    row = row +  strDelete
-    row = row + '</td>'
-    row = row + ' </tr>'
+    row += '<td  vertical-align="middle" style="text-align:center;vertical-align:middle;"  align="center"  >'
+    row += '<div id="Detalle_' + nId + '">'
+    row += strDelete
+    row += '</td>'
+    row += ' </tr>'
 
     $("#tblvales tbody").append(row)
 
@@ -187,11 +201,18 @@ function EliminarVale(Id) {
     });
 </script>
 <script type="text/javascript">
+
     function DescargarArchivoNuevo() {
         var IdLte = $('#lblIdLote').val();
         DescargarArchivos(IdLte)
     }
 
+    function MostrarRuc() {
+
+        var valCliente_ruc = $('select[name=dwcliente]').selectpicker('val');
+        $("#txtRuc").val(valCliente_ruc);
+     
+    }
     function validarVale() {
 
         var validacion = true;
@@ -231,10 +252,10 @@ function EliminarVale(Id) {
        
         var strMensajeDetalle = '';
 
-            $('input[name="denominacion"]').each(function () {
+        $('input[name="cantidad"]').each(function () {
 
-            var Id = $(this).attr("id").substr(16);
-            var denominacion = $("#txtDenominacion_" + Id).val();
+            var Id = $(this).attr("id").substr(12);
+            var denominacion = $("#cboMonto_" + Id).val();
             var cantidad = $("#txtCantidad_" + Id).val();
            
             if(denominacion =='' ||denominacion ==0)
@@ -264,13 +285,14 @@ function EliminarVale(Id) {
     function calcularTotal() {
 
         var total = 0.00;
+      
+        $('input[name="cantidad"]').each(function () {
 
-        $('input[name="denominacion"]').each(function () {
-
+            
             var validarDetalle = true;
             var totalDetalle = 0.00;
-            var Id = $(this).attr("id").substr(16);
-            var denominacion = $("#txtDenominacion_" + Id).val();
+            var Id = $(this).attr("id").substr(12);
+            var denominacion = $("#cboMonto_" + Id).val();
             var cantidad = $("#txtCantidad_" + Id).val();
 
             if (denominacion == '' || denominacion == 0)
@@ -285,7 +307,6 @@ function EliminarVale(Id) {
             total += totalDetalle;
 
         });
-
         var strtotal = parseFloat(Math.round(total * 100) / 100).toFixed(2);
         $("#montoTotal").val(strtotal);
  
@@ -306,10 +327,10 @@ function EliminarVale(Id) {
      var valCompra_total = $("#montoTotal").val();
      var valCompra_strList = '';
 
-     $('input[name="denominacion"]').each(function () {
+     $('input[name="cantidad"]').each(function () {
 
-         var Id = $(this).attr("id").substr(16);
-         var denominacion = $("#txtDenominacion_" + Id).val();
+         var Id = $(this).attr("id").substr(12);
+         var denominacion = $("#cboMonto_" + Id).val();
          var cantidad = $("#txtCantidad_" + Id).val();
          valCompra_strList += 'row1 monto="' + denominacion + '" cantidad="' + cantidad + '" row2'
 
