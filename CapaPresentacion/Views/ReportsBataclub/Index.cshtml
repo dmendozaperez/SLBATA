@@ -83,8 +83,9 @@
 
 
     function GenerarExcel() {
+        waitingDialog.show('Espere un momento por favor');
         $('.xlsExportButton').click();
-     
+        waitingDialog.hide()
     }
 
 </script>
