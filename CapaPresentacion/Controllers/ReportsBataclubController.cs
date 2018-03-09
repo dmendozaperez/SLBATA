@@ -48,7 +48,7 @@ namespace CapaPresentacion.Controllers
                 #endregion
                 if (valida_rol)
                 {
-                    return View();
+                    return View(lista(DateTime.Today, DateTime.Today));
                 }
                 else
                 {
