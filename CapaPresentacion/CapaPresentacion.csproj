@@ -180,6 +180,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\ReportsBataclubController.cs" />
+    <Compile Include="Controllers\ReportsValeCompraController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\UsuariosController.cs" />
     <Compile Include="Controllers\ValeCompraController.cs" />
@@ -1037,6 +1038,8 @@
     <Content Include="Views\ValeCompra\ListaValeCompra.cshtml" />
     <Content Include="Views\ValeCompra\Nuevo.cshtml" />
     <Content Include="Views\ValeCompra\Consulta.cshtml" />
+    <Content Include="Views\ReportsValeCompra\Index.cshtml" />
+    <None Include="Views\ReportsValeCompra\ListaValeCompra.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

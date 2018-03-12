@@ -1,0 +1,114 @@
+﻿<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.min.css" />
+
+<style type="text/css">
+    .dt-buttons {
+        display: none;
+    }
+</style>
+<table id="example" class="table table-hover dataTable  table-striped table-responsive">
+    <thead>
+        <tr style="background-color:#3d566e; color:#ecf0f1">
+            <th style="width:10%">Código</th>
+            <th style="width:10%">Número</th>
+            <th style="width:5%">Monto</th>
+            <th style="width:8%">Estado</th>
+
+            <th style="width:10%">Cod-Tienda</th>
+            <th style="width:15%">Des-Tienda</th>
+            @*<th style="width:auto">Direc-Tienda</th>*@
+
+            @*<th style="width:auto">Tipo doc.</th>*@
+            <th style="width:12%">Documento</th>
+            @*<th style="width:auto">Nro doc.</th>*@
+            <th style="width:5%">Fec. doc.</th>
+
+            <th style="width:10%">Dni</th>
+            <th style="width:20%">Cliente </th>
+            @*<th style="width:auto">Ap. paterno</th>
+            <th style="width:auto">Ap. materno</th>*@
+            @*<th style="width:auto">Email</th>*@
+        </tr>
+    </thead>
+    <tbody data-bind="foreach:">
+        @using CapaEntidad.ReportsValeCompra
+        @model IEnumerable<Reporte_Resultado>
+
+        @foreach (Reporte_Resultado item in Model)
+        {
+            <tr>
+                <td>@item.rep_CupBarra.ToString()</td>
+                <td>@item.rep_CupNumero.ToString()</td>
+                <td>@item.rep_CupMonto.ToString()</td>
+                <td>@item.rep_CupEstado.ToString()</td>
+
+                <td>@item.rep_tdaCodigo.ToString()</td>
+                <td>@item.rep_tdaDesc.ToString()</td>
+      
+                <td>@item.rep_docSerie.ToString()-@item.rep_docNro.ToString()</td>
+     
+                <td>@item.rep_docfecha.ToString()</td>
+
+                <td>@item.rep_dni.ToString()</td>
+                <td>@item.rep_nombre.ToString() @item.rep_apellidoPater.ToString() @item.rep_apellidoMater.ToString()</td>
+             
+         </tr>
+
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <th style="width:auto">Código</th>
+            <th style="width:auto">Número</th>
+            <th style="width:auto">Monto</th>
+            <th style="width:auto">Estado</th>
+
+            <th style="width:auto">Cod-Tienda</th>
+            <th style="width:auto">Des-Tienda</th>
+            <th style="width:auto">Documento</th>
+            <th style="width:auto">Fec. doc.</th>
+
+            <th style="width:auto">Dni</th>
+            <th style="width:auto">Cliente</th>
+  
+        </tr>
+    </tfoot>
+</table>
+<script src='https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js'></script>
+<script src='//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js'></script>
+<script src='//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js'></script>
+<script src='//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js'></script>
+<script src='//cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js'></script>
+
+
+<script>
+    $(document).ready(function () {
+        $('.table').dataTable({
+            "language": {
+                "url": "../Scripts/DataTables/Spanish.json"
+            }
+        });
+
+        //$('.table').dataTable({
+        //    "language": {
+        //        "url": "../Scripts/DataTables/Spanish.json"
+        //    },
+        //        dom: 'Bfrtip',
+        //        buttons: [
+        //       {
+        //           extend: 'excelHtml5',
+        //           text: '<i class="fa fa-file-excel-o"></i> Exportar a Excel',
+        //           className: 'xlsExportButton hideButton',
+        //           title: 'Bataclub_xls',
+        //           css:'display:none'
+
+        //       }
+
+        //       ]
+        //});
+
+
+    });
+
+
+
+</script>
