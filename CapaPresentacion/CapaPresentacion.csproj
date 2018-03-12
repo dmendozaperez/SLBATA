@@ -1044,7 +1044,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Cupones\" />
-    <Folder Include="Views\Menu\" />
+    <Folder Include="Views\Shared\Menu\" />
     <Folder Include="Views\Usuario\" />
   </ItemGroup>
   <ItemGroup>
