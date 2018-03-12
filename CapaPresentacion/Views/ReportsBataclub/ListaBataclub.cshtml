@@ -1,11 +1,5 @@
 ﻿<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.min.css" />
-
-<style type="text/css">
-    .dt-buttons {
-        display: none;
-    }
-</style>
-<table id="example" class="table table-hover dataTable  table-striped table-responsive">
+<table class="table table-hover dataTable  table-striped table-responsive">
     <thead>
         <tr style="background-color:#3d566e; color:#ecf0f1">
             <th style="width:auto">Cod-Tienda</th>
@@ -21,29 +15,7 @@
             <th style="width:auto">Promocion</th>
         </tr>
     </thead>
-    <tbody data-bind="foreach:">
-        @using CapaEntidad.Reports
-        @model IEnumerable<Ent_Bataclub>
-
-        @foreach (Ent_Bataclub item in Model)
-        {
-            <tr>
-                <td>@item.cod_tienda.ToString()</td>
-                <td>@item.des_tienda.ToString()</td>
-                <td>@item.semana.ToString()</td>
-                <td>@item.fecha.ToString()</td>
-                <td>@item.dni</td>
-                <td>@item.bolfac</td>
-                <td>@item.pares</td>
-                <td>@item.soles</td>
-                <td>@item.estado</td>
-                <td>@item.fecha_ing</td>
-                <td>@item.promocion</td>
-
-            </tr>
-
-        }
-    </tbody>
+    <tbody></tbody>
     <tfoot>
         <tr>
             <th>Cod-Tienda</th>
@@ -69,27 +41,55 @@
 
 <script>
     $(document).ready(function () {
-
         $('.table').dataTable({
             "language": {
                 "url": "../Scripts/DataTables/Spanish.json"
             },
-                dom: 'Bfrtip',
-                buttons: [
-               {
-                   extend: 'excelHtml5',
-                   text: '<i class="fa fa-file-excel-o"></i> Exportar a Excel',
-                   className: 'xlsExportButton hideButton',
-                   title: 'Bataclub_xls',
-                   css:'display:none'
+            "bServerSide": true,
+            "bAutoWidth": false,
+            "sAjaxSource": '@Url.Action("getBataclub", "ReportsBataclub")',
+            "bdestroy": true,
+            "start": 0,
+            "order": [0, "asc"],
+            "bDeferRender": true,
+            "aoColumns": [
+                   { "sName": "cod_tienda", "mData": "cod_tienda" },
+                   { "sName": "des_tienda", "mData": "des_tienda" },
+                   { "sName": "semana", "mData": "semana" },
+                   { "sName": "fecha", "mData": "fecha" },
+                   { "sName": "dni", "mData": "dni" },
+                   { "sName": "bolfac", "mData": "bolfac" },
+                   { "sName": "pares", "mData": "pares", "sClass": "center" },
 
-               }
+                   { "sName": "soles", "mData": "soles", "sClass": "right" },
+                   { "sName": "estado", "mData": "estado" },
 
-               ]
+                   { "sName": "fecha_ing", "mData": "fecha_ing" },
+                   { "sName": "promocion", "mData": "promocion" },
+
+            ],
+           // dom: 'Bfrtip',
+           // buttons: [
+           //{
+           //    extend: 'excelHtml5',
+           //    title: 'Bataclub_xls'
+           //},
+           //{
+           //    extend: 'csvHtml5',
+           //    title: 'BataClub_csv'
+           //},
+           //{
+           //    extend: 'pdfHtml5',
+           //    title: 'BataClub_pdf'
+           //},
+           //'copyHtml5',
+           // ]
         });
 
 
+
     });
+
 
 
 

@@ -7,6 +7,7 @@ using CapaEntidad.Menu;
 using CapaEntidad.Util;
 using CapaPresentacion.Bll;
 using System;
+using CapaEntidad.General;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -90,6 +91,86 @@ namespace CapaPresentacion.Controllers
             List<Reporte_Resultado> list = datReportvalecompra.listarReporte(filtro);
             Session[_session_listValeCompraDetalle_private] = list;
             return list;
+        }
+
+        [HttpGet]
+        public FileContentResult ExportToExcel()
+        {
+            List<Reporte_Resultado> listValeCompra = (List<Reporte_Resultado>)Session[_session_listValeCompraDetalle_private];
+
+
+            //List<Technology> technologies = StaticData.Technologies;
+            string[] columns = { "Codigo", "Numero", "soles", "Estado", "Codigo_tda", "Desc_tda", "Documento", "Fecha_doc", "DNI", "Cliente" };
+            byte[] filecontent = ExcelExportHelper.ExportExcel(listValeCompra, "Vales de Compra", true, columns);
+            return File(filecontent, ExcelExportHelper.ExcelContentType, "ValeCompra.xlsx");
+        }
+
+        public ActionResult getValeCompra(Ent_jQueryDataTableParams param)
+        {
+
+            /*verificar si esta null*/
+            if (Session[_session_listValeCompraDetalle_private] == null)
+            {
+                List<Reporte_Resultado> listValeCompra = new List<Reporte_Resultado>();
+                Session[_session_listValeCompraDetalle_private] = listValeCompra;
+            }
+
+            //Traer registros
+            IQueryable<Reporte_Resultado> membercol = ((List<Reporte_Resultado>)(Session[_session_listValeCompraDetalle_private])).AsQueryable();  //lista().AsQueryable();
+
+            //Manejador de filtros
+            int totalCount = membercol.Count();
+            IEnumerable<Reporte_Resultado> filteredMembers = membercol;
+
+            if (!string.IsNullOrEmpty(param.sSearch))
+            {
+                filteredMembers = membercol
+                    .Where(m => m.Codigo_tda.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                     m.Desc_tda.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                     m.Codigo.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                     m.Numero.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                     m.Estado.ToUpper().Contains(param.sSearch.ToUpper()));
+            }
+            //Manejador de orden
+            var sortIdx = Convert.ToInt32(Request["iSortCol_0"]);
+            Func<Reporte_Resultado, string> orderingFunction =
+            (
+            m => sortIdx == 0 ? m.Codigo_tda :
+            sortIdx == 1 ? m.Desc_tda :
+            sortIdx == 2 ? m.Codigo :
+            sortIdx == 3 ? m.Numero :
+            m.Estado
+            );
+            var sortDirection = Request["sSortDir_0"];
+            if (sortDirection == "asc")
+                filteredMembers = filteredMembers.OrderBy(orderingFunction);
+            else
+                filteredMembers = filteredMembers.OrderByDescending(orderingFunction);
+            var displayMembers = filteredMembers
+                .Skip(param.iDisplayStart)
+                .Take(param.iDisplayLength);
+            var result = from a in displayMembers
+                         select new
+                         {
+                             a.Codigo,
+                             a.Numero,
+                             a.soles,
+                             a.Estado,
+                             a.Codigo_tda,
+                             a.Desc_tda,
+                             a.Documento,
+                             a.Fecha_doc,
+                             a.DNI,
+                             a.Cliente
+                         };
+            //Se devuelven los resultados por json
+            return Json(new
+            {
+                sEcho = param.sEcho,
+                iTotalRecords = totalCount,
+                iTotalDisplayRecords = filteredMembers.Count(),
+                aaData = result
+            }, JsonRequestBehavior.AllowGet);
         }
     }
 }

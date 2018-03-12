@@ -10,50 +10,23 @@
         <tr style="background-color:#3d566e; color:#ecf0f1">
             <th style="width:10%">Código</th>
             <th style="width:10%">Número</th>
-            <th style="width:5%">Monto</th>
+            <th style="width:5%">Soles</th>
             <th style="width:8%">Estado</th>
 
             <th style="width:10%">Cod-Tienda</th>
             <th style="width:15%">Des-Tienda</th>
-            @*<th style="width:auto">Direc-Tienda</th>*@
+       
+            <th style="width:10%">Documento</th>
 
-            @*<th style="width:auto">Tipo doc.</th>*@
-            <th style="width:12%">Documento</th>
-            @*<th style="width:auto">Nro doc.</th>*@
-            <th style="width:5%">Fec. doc.</th>
+            <th style="width:7%">Fec. doc.</th>
 
             <th style="width:10%">Dni</th>
             <th style="width:20%">Cliente </th>
-            @*<th style="width:auto">Ap. paterno</th>
-            <th style="width:auto">Ap. materno</th>*@
-            @*<th style="width:auto">Email</th>*@
+   
         </tr>
     </thead>
     <tbody data-bind="foreach:">
-        @using CapaEntidad.ReportsValeCompra
-        @model IEnumerable<Reporte_Resultado>
-
-        @foreach (Reporte_Resultado item in Model)
-        {
-            <tr>
-                <td>@item.rep_CupBarra.ToString()</td>
-                <td>@item.rep_CupNumero.ToString()</td>
-                <td>@item.rep_CupMonto.ToString()</td>
-                <td>@item.rep_CupEstado.ToString()</td>
-
-                <td>@item.rep_tdaCodigo.ToString()</td>
-                <td>@item.rep_tdaDesc.ToString()</td>
-      
-                <td>@item.rep_docSerie.ToString()-@item.rep_docNro.ToString()</td>
-     
-                <td>@item.rep_docfecha.ToString()</td>
-
-                <td>@item.rep_dni.ToString()</td>
-                <td>@item.rep_nombre.ToString() @item.rep_apellidoPater.ToString() @item.rep_apellidoMater.ToString()</td>
-             
-         </tr>
-
-        }
+       
     </tbody>
     <tfoot>
         <tr>
@@ -85,26 +58,46 @@
         $('.table').dataTable({
             "language": {
                 "url": "../Scripts/DataTables/Spanish.json"
-            }
+            },
+            "bServerSide": true,
+            "bAutoWidth": false,
+            "sAjaxSource": '@Url.Action("getValeCompra", "ReportsValeCompra")',
+            "bdestroy": true,
+            "start": 0,
+            "order": [0, "asc"],
+            "bDeferRender": true,
+            "aoColumns": [
+                   { "sName": "Codigo", "mData": "Codigo" },
+                   { "sName": "Numero", "mData": "Numero" },
+                   { "sName": "soles", "mData": "soles" },
+                   { "sName": "Estado", "mData": "Estado" },
+                   { "sName": "Codigo_tda", "mData": "Codigo_tda" },
+                   { "sName": "Desc_tda", "mData": "Desc_tda" },
+                   { "sName": "Documento", "mData": "Documento", "sClass": "center" },
+
+                   { "sName": "Fecha_doc", "mData": "Fecha_doc", "sClass": "right" },
+                   { "sName": "DNI", "mData": "DNI" },
+
+                   { "sName": "Cliente", "mData": "Cliente" }
+
+            ],
+             dom: 'Bfrtip',
+             buttons: [
+            {
+                extend: 'excelHtml5',
+                title: 'Bataclub_xls'
+            },
+            {
+                extend: 'csvHtml5',
+                title: 'BataClub_csv'
+            },
+            {
+                extend: 'pdfHtml5',
+                title: 'BataClub_pdf'
+            },
+            'copyHtml5',
+             ]
         });
-
-        //$('.table').dataTable({
-        //    "language": {
-        //        "url": "../Scripts/DataTables/Spanish.json"
-        //    },
-        //        dom: 'Bfrtip',
-        //        buttons: [
-        //       {
-        //           extend: 'excelHtml5',
-        //           text: '<i class="fa fa-file-excel-o"></i> Exportar a Excel',
-        //           className: 'xlsExportButton hideButton',
-        //           title: 'Bataclub_xls',
-        //           css:'display:none'
-
-        //       }
-
-        //       ]
-        //});
 
 
     });

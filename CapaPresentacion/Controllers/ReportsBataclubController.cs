@@ -21,7 +21,7 @@ namespace CapaPresentacion.Controllers
 
         public ActionResult tabladata()
         {
-            string fecini= "01-12-2017"; string fecfinc = "31-12-2017";
+            string fecini = "01-12-2017"; string fecfinc = "31-12-2017";
             //return View();
             return View(lista(Convert.ToDateTime(fecini), Convert.ToDateTime(fecfinc)));
         }
@@ -48,7 +48,7 @@ namespace CapaPresentacion.Controllers
                 #endregion
                 if (valida_rol)
                 {
-                    return View(lista(DateTime.Today, DateTime.Today));
+                    return View();
                 }
                 else
                 {
@@ -56,15 +56,15 @@ namespace CapaPresentacion.Controllers
                 }
             }
 
-            
+
         }
         public PartialViewResult ListaBataclub(string fecini, string fecfinc)
         {
-            return PartialView(lista(Convert.ToDateTime(fecini),Convert.ToDateTime(fecfinc)));
+            return PartialView(lista(Convert.ToDateTime(fecini), Convert.ToDateTime(fecfinc)));
         }
-        public List<Ent_Bataclub> lista(DateTime fechaini,DateTime fechafin)
+        public List<Ent_Bataclub> lista(DateTime fechaini, DateTime fechafin)
         {
-            List<Ent_Bataclub> listbataclub = bataclub.get_lista(fechaini,fechafin);
+            List<Ent_Bataclub> listbataclub = bataclub.get_lista(fechaini, fechafin);
             Session[_session_listbataclub_private] = listbataclub;
             return listbataclub;
         }
@@ -83,7 +83,7 @@ namespace CapaPresentacion.Controllers
         {
 
             /*verificar si esta null*/
-            if (Session[_session_listbataclub_private]==null)
+            if (Session[_session_listbataclub_private] == null)
             {
                 List<Ent_Bataclub> listbataclub = new List<Ent_Bataclub>();
                 Session[_session_listbataclub_private] = listbataclub;
@@ -102,7 +102,7 @@ namespace CapaPresentacion.Controllers
                     .Where(m => m.cod_tienda.ToUpper().Contains(param.sSearch.ToUpper()) ||
                      m.des_tienda.ToUpper().Contains(param.sSearch.ToUpper()) ||
                      m.semana.ToUpper().Contains(param.sSearch.ToUpper()) ||
-                     m.dni.ToUpper().Contains(param.sSearch.ToUpper()) ||                                          
+                     m.dni.ToUpper().Contains(param.sSearch.ToUpper()) ||
                      m.estado.ToUpper().Contains(param.sSearch.ToUpper()));
             }
             //Manejador de orden
@@ -112,7 +112,7 @@ namespace CapaPresentacion.Controllers
             m => sortIdx == 0 ? m.cod_tienda :
             sortIdx == 1 ? m.des_tienda :
             sortIdx == 2 ? m.semana :
-            sortIdx == 3 ? m.dni :           
+            sortIdx == 3 ? m.dni :
             m.estado
             );
             var sortDirection = Request["sSortDir_0"];
@@ -130,10 +130,10 @@ namespace CapaPresentacion.Controllers
                              a.des_tienda,
                              a.semana,
                              a.fecha,
-                             a.dni,   
-                             a.bolfac,   
-                             a.pares, 
-                             a.soles,                      
+                             a.dni,
+                             a.bolfac,
+                             a.pares,
+                             a.soles,
                              a.estado,
                              a.fecha_ing,
                              a.promocion

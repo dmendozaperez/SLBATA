@@ -19,7 +19,11 @@
 <script src="~/Scripts/bootstrap-select.min.js"></script>
 @*@Scripts.Render("~/bundles/bootstrap-select")
 @Styles.Render("~/Content/Bootstrap-Select/css")*@
-
+<style>
+#dwcliente{
+ width:200px;   
+}
+</style>
 <p class="text-danger"></p>
 <div class="box box-body box-primary">
     @using (Ajax.BeginForm("ListaValeCompra", options))
@@ -27,13 +31,14 @@
         <div class="row">
             <form id="form1">
                 
-                <div class="col-sm-8">
+                <div class="col-sm-5" >
                     <label for="segape">Cliente</label>
                     <div class="form-group">
-                        <div class="input-group">
-                            
-                                @Html.DropDownList("dwcliente", new SelectList(ViewBag.cliente, "cli_Ruc", "cli_razonSocial", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwcliente",@name= "dwcliente", @style = "width:10%" })
-                     
+                        <div class="input-group" >
+                         
+                                @Html.DropDownList("dwcliente", new SelectList(ViewBag.cliente, "cli_Ruc", "cli_razonSocial", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwcliente", @name = "dwcliente", style = "width:270px;max-width:270px;" })
+                         
+
                         </div>
                     </div>
 
@@ -43,7 +48,7 @@
                     <div class="form-group">
                         <div class="input-group">
                             <select class="selectpicker" id="estado" name="estado">
-                                <option value="">--todos--</option>
+                                <option value="">--TODOS--</option>
                                 <option value="CO" >Consumido</option>
                                 <option value="DS" >Disponible</option>
                             </select>
@@ -55,9 +60,8 @@
                     <button type="submit" title="Consultar" class="btn btn-primary">
                         <span class="glyphicon glyphicon-search"></span>
                     </button>
-                   <button type="button" class="btn btn-primary" onclick="javascript: GenerarExcel()">
-                        <span class="glyphicon glyphicon-export"></span>&nbsp;Exportar
-                    </button>
+                    <a href="@Url.Action("ExportToExcel")" title="Exportar a excel" class="btn btn-primary">Exportar</a>
+                
                 </div>
             </form>
 
@@ -70,12 +74,7 @@
 
 
 </div>
-<div class="box box-body box-primary">
 
-
-        
-</div>
-<script src="~/Scripts/BI.js"></script>
 <script>
     $(document).ready(function () {
        
@@ -105,6 +104,12 @@
             }
         });
 
+    }
+
+    function GenerarExcel() {
+        waitingDialog.show('Espere un momento por favor');
+        $('.xlsExportButton').click();
+        waitingDialog.hide()
     }
 
 

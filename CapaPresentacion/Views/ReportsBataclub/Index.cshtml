@@ -12,62 +12,54 @@
         OnFailure = "waitingDialog.hide();"
     };
 }
+
 <p class="text-danger">Reporte de Venta Bataclub con cupon y sin cupon, Filtro por rango de fecha de registro del cliente</p>
-<div class="box box-body box-primary">   
-@using (Ajax.BeginForm("ListaBataclub", options))
-{ 
-    <div class="row">
-        <form id="form1">
-            <div class="col-sm-2">
-                <label for="segape">Fecha Inicio</label>
-                <div class="form-group">                
+<div class="box box-body box-primary">
+    @using (Ajax.BeginForm("ListaBataclub", options))
+    {
+        <div class="row">
+            <form id="form1">
+                <div class="col-sm-2">
+                    <label for="segape">Fecha Inicio</label>
+                    <div class="form-group">
                         <div class="input-group">
                             <div id="datepickerini" class="input-group date" data-date-format="dd-mm-yyyy">
                                 <input id="fecini" name="fecini" value="" class="form-control custom-input" placeholder="dd-mm-yyyy" type="text" />
                                 <span class="input-group-addon  bg-white"><img src="~/Content/images/wall-calendar-with-lines.svg" height="20" width="20"></span>
                             </div>
-                        </div>                    
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="col-sm-2">
-                <label for="fecnac">Fecha Final</label>
-                <div class="form-group">                    
+                <div class="col-sm-2">
+                    <label for="fecnac">Fecha Final</label>
+                    <div class="form-group">
                         <div class="input-group">
                             <div id="datepickerfin" class="input-group date" data-date-format="dd-mm-yyyy">
                                 <input id="fecfinc" name="fecfinc" value="" class="form-control custom-input" placeholder="dd-mm-yyyy" type="text" />
                                 <span class="input-group-addon  bg-white"><img src="~/Content/images/wall-calendar-with-lines.svg" height="20" width="20"></span>
                             </div>
-                        </div>                    
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="col-sm-2">
-                <label></label><br />
-                <button type="submit" title="Consultar" class="btn btn-primary">
-                    <span class="glyphicon glyphicon-search"></span>
-                </button>      
-                @*<a href="@Url.Action("ExportToExcel")" title="Exportar a excel" class="btn btn-primary">Exportar</a>*@ 
-                <button type="button" class="btn btn-primary" onclick="javascript: GenerarExcel()">
-                    <span class="glyphicon glyphicon-export"></span>&nbsp;Exportar
-                </button>       
-            </div>
-        </form>
+                <div class="col-sm-2">
+                    <label></label><br />
+                    <button type="submit" title="Consultar" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </button>
+                    <a href="@Url.Action("ExportToExcel")" title="Exportar a excel" class="btn btn-primary">Exportar</a>
+                </div>
+            </form>
 
-    </div>
-}
+        </div>
+    }
     <div class="box-body" id="lista">
-        @{Html.RenderPartial("ListaBataClub", Model);}        
+        @{Html.RenderPartial("ListaBataClub", Model);}
     </div>
     <br />
-   
 
-    </div>
+
+</div>
 <script>
-
-    $(document).ready(function () {
-
-    
-    });
-
     $(function () {
         $("#datepickerini").datepicker({
             autoclose: true,
@@ -80,12 +72,5 @@
             todayHighlight: true
         }).datepicker("setDate", "0");;
     });
-
-
-    function GenerarExcel() {
-        waitingDialog.show('Espere un momento por favor');
-        $('.xlsExportButton').click();
-        waitingDialog.hide()
-    }
 
 </script>
