@@ -72,21 +72,9 @@ namespace CapaPresentacion.Controllers
 
         public ActionResult Nuevo()
         {
-
-            //Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
-            //string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
-            //string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
-            //string return_view = actionName + "|" + controllerName;
-
-            //if (_usuario == null)
-            //{
-            //    return RedirectToAction("Login", "Control", new { returnUrl = return_view });
-            //}
-            //else
-            //{
                 ViewBag.cliente = datCliente.get_lista();
                 return View();
-            //}
+  
         }
 
         public ActionResult ProcesarPdf(string IdValeCompra)
@@ -283,82 +271,6 @@ namespace CapaPresentacion.Controllers
                 _valida = false;
             }
             return _valida;
-        }
-
-        public static string GetIPAddress(string HttpVia, string HttpXForwardedFor, string RemoteAddr)
-        {
-            // Use a default address if all else fails.
-            string result = "127.0.0.1";
-
-            // Web user - if using proxy
-            string tempIP = string.Empty;
-            if (HttpVia != null)
-                tempIP = HttpXForwardedFor;
-            else // Web user - not using proxy or can't get the Client IP
-                tempIP = RemoteAddr;
-
-            // If we can't get a V4 IP from the above, try host address list for internal users.
-            if (!IsIPV4(tempIP) || tempIP == "127.0.0.1 ")
-            {
-                try
-                {
-                    string hostName = System.Net.Dns.GetHostName();
-                    foreach (System.Net.IPAddress ip in System.Net.Dns.GetHostAddresses(hostName))
-                    {
-                        if (IsIPV4(ip))
-                        {
-                            result = ip.ToString();
-                            break;
-                        }
-                    }
-                }
-                catch { }
-            }
-            else
-            {
-                result = tempIP;
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Determines weather an IP Address is V4
-        /// </summary>
-        /// <param name="input">input string</param>
-        /// <returns>Is IPV4 True or False</returns>
-        private static bool IsIPV4(string input)
-        {
-            bool result = false;
-            System.Net.IPAddress address = null;
-
-            if (System.Net.IPAddress.TryParse(input, out address))
-                result = IsIPV4(address);
-
-            return result;
-        }
-
-        /// <summary>
-        /// Determines weather an IP Address is V4
-        /// </summary>
-        /// <param name="address">input IP address</param>
-        /// <returns>Is IPV4 True or False</returns>
-        private static bool IsIPV4(System.Net.IPAddress address)
-        {
-            bool result = false;
-
-            switch (address.AddressFamily)
-            {
-                case System.Net.Sockets.AddressFamily.InterNetwork:   // we have IPv4
-                    result = true;
-                    break;
-                case System.Net.Sockets.AddressFamily.InterNetworkV6: // we have IPv6
-                    break;
-                default:
-                    break;
-            }
-
-            return result;
         }
 
 

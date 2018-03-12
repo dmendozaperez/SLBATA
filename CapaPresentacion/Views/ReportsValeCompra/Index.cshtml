@@ -1,0 +1,112 @@
+﻿@using CapaEntidad.ReportsValeCompra
+@model IEnumerable<Reporte_Resultado>
+@{
+    ViewBag.Title = "Reporte Vales de compra";
+    AjaxOptions options = new AjaxOptions
+    {
+        HttpMethod = "GET",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "lista",
+        OnComplete = "waitingDialog.hide();",
+        OnBegin = "waitingDialog.show('Espere un momento por favor');",
+        OnFailure = "waitingDialog.hide();"
+    };
+
+}
+@Scripts.Render("~/bundles/bootstrap-select")
+@Styles.Render("~/Content/Bootstrap-Select/css")
+<link href="~/Content/bootstrap-select.min.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap-select.min.js"></script>
+@*@Scripts.Render("~/bundles/bootstrap-select")
+@Styles.Render("~/Content/Bootstrap-Select/css")*@
+
+<p class="text-danger"></p>
+<div class="box box-body box-primary">
+    @using (Ajax.BeginForm("ListaValeCompra", options))
+    {
+        <div class="row">
+            <form id="form1">
+                
+                <div class="col-sm-8">
+                    <label for="segape">Cliente</label>
+                    <div class="form-group">
+                        <div class="input-group">
+                            
+                                @Html.DropDownList("dwcliente", new SelectList(ViewBag.cliente, "cli_Ruc", "cli_razonSocial", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwcliente",@name= "dwcliente", @style = "width:10%" })
+                     
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-sm-2">
+                    <label for="fecnac">Estado</label>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <select class="selectpicker" id="estado" name="estado">
+                                <option value="">--todos--</option>
+                                <option value="CO" >Consumido</option>
+                                <option value="DS" >Disponible</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <label></label><br />
+                    <button type="submit" title="Consultar" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </button>
+                   <button type="button" class="btn btn-primary" onclick="javascript: GenerarExcel()">
+                        <span class="glyphicon glyphicon-export"></span>&nbsp;Exportar
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    }
+    <div class="box-body" id="lista">
+        @{Html.RenderPartial("ListaValeCompra", Model);}
+    </div>
+    <br />
+
+
+</div>
+<div class="box box-body box-primary">
+
+
+        
+</div>
+<script src="~/Scripts/BI.js"></script>
+<script>
+    $(document).ready(function () {
+       
+        //MostrarListado()
+    });
+
+    function MostrarListado() {
+        var estado = $('#estado').val();
+        var strRuc = '';
+
+        var TeamDetailPostBackURL ="@Url.Action("ListaValeCompra", "ReportsValeCompra")";
+
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: TeamDetailPostBackURL,
+            contentType: "application/json; charset=utf-8",
+            data: {},
+            datatype: "json",
+            cache: true,
+            success: function (data) {
+                document.getElementById("lista").innerHTML = data;
+
+            },
+            error: function () {
+
+            }
+        });
+
+    }
+
+
+</script>
+

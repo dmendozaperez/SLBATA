@@ -3,15 +3,16 @@
 @{
     ViewBag.Title = "Control de Generacion de Vales";
 }
-
+@Scripts.Render("~/bundles/bootstrap-select")
+@Styles.Render("~/Content/Bootstrap-Select/css")
 <p class="text-danger">Muestra la lista de Vales Generados. Permite crear nuevos vales dentro del sistema y visualizar las existentes.</p>
 <div class="box box-body box-primary">
 
     <button type="submit" id="btngenerar" name="btngenerar" title="Generar" class="nuevo btn btn-small btn-primary" data-modal="" data-toggle="modal">Generar Vales</button>
-
-    <div class="box-body" id="lista">
-        @{Html.RenderPartial("ListaValeCompra", Model); }
-    </div>
+     
+        <div class="box-body" id="lista">
+            @{Html.RenderPartial("ListaValeCompra", Model); }
+        </div>
 </div>
 <script src="~/Scripts/BI.js"></script>
 <script>
