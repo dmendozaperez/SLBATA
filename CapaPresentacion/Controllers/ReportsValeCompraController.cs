@@ -90,11 +90,17 @@ namespace CapaPresentacion.Controllers
             filtro.report_Estado = estado;
             List<Reporte_Resultado> list = datReportvalecompra.listarReporte(filtro);
 
-            ViewBag.TotalDisponible = list[0].total_disponible;
-            ViewBag.TotalConsumido = list[0].total_consumido;
+            if (list != null && list.Count() > 0)
+            {
+                ViewBag.TotalDisponible = list[0].total_disponible;
+                ViewBag.TotalConsumido = list[0].total_consumido;
+            }
+            else {
+                ViewBag.TotalDisponible = "0.00";
+                ViewBag.TotalConsumido = "0.00";
+            }
 
-
-           Session[_session_listValeCompraDetalle_private] = list;
+            Session[_session_listValeCompraDetalle_private] = list;
             return list;
         }
 
