@@ -8,6 +8,8 @@ namespace CapaEntidad.ReportsValeCompra
 {
     public class Reporte_Resultado
     {
+        
+        public string Institucion { get; set; }
         public string rep_CupBarra { get; set; }
         public string Codigo { get; set; }
         public string rep_CupNumero { get; set; }
@@ -41,6 +43,8 @@ namespace CapaEntidad.ReportsValeCompra
         public string rep_apellidoPater { get; set; }
         public string rep_apellidoMater { get; set; }
         public string rep_email { get; set; }
+        public string total_disponible { get; set; }
+        public string total_consumido { get; set; }
 
 
 

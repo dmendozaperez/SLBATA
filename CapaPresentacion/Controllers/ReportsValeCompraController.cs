@@ -89,7 +89,12 @@ namespace CapaPresentacion.Controllers
             filtro.report_listRuc = rucCliente;
             filtro.report_Estado = estado;
             List<Reporte_Resultado> list = datReportvalecompra.listarReporte(filtro);
-            Session[_session_listValeCompraDetalle_private] = list;
+
+            ViewBag.TotalDisponible = list[0].total_disponible;
+            ViewBag.TotalConsumido = list[0].total_consumido;
+
+
+           Session[_session_listValeCompraDetalle_private] = list;
             return list;
         }
 
@@ -100,7 +105,7 @@ namespace CapaPresentacion.Controllers
 
 
             //List<Technology> technologies = StaticData.Technologies;
-            string[] columns = { "Codigo", "Numero", "soles", "Estado", "Codigo_tda", "Desc_tda", "Documento", "Fecha_doc", "DNI", "Cliente" };
+            string[] columns = { "Institucion","Codigo", "Numero", "soles", "Estado", "Codigo_tda", "Desc_tda", "Documento", "Fecha_doc", "DNI", "Cliente" };
             byte[] filecontent = ExcelExportHelper.ExportExcel(listValeCompra, "Vales de Compra", true, columns);
             return File(filecontent, ExcelExportHelper.ExcelContentType, "ValeCompra.xlsx");
         }
@@ -152,6 +157,7 @@ namespace CapaPresentacion.Controllers
             var result = from a in displayMembers
                          select new
                          {
+                             a.Institucion,
                              a.Codigo,
                              a.Numero,
                              a.soles,

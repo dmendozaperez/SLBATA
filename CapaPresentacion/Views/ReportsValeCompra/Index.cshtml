@@ -28,44 +28,69 @@
 <div class="box box-body box-primary">
     @using (Ajax.BeginForm("ListaValeCompra", options))
     {
-        <div class="row">
+   
             <form id="form1">
-                
-                <div class="col-sm-5" >
-                    <label for="segape">Cliente</label>
-                    <div class="form-group">
-                        <div class="input-group" >
-                         
+                <div class="row">
+                    <div class="col-sm-5">
+                        <label for="segape">Cl. Institucional</label>
+                        <div class="form-group">
+                            <div class="input-group">
+
                                 @Html.DropDownList("dwcliente", new SelectList(ViewBag.cliente, "cli_Ruc", "cli_razonSocial", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwcliente", @name = "dwcliente", style = "width:270px;max-width:270px;" })
-                         
+                            </div>
+                        </div>
 
+                    </div>
+                    <div class="col-sm-2">
+                        <label for="estado">Estado</label>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <select class="selectpicker" id="estado" name="estado">
+                                    <option value="">---Todos---</option>
+                                    <option value="CO">Consumido</option>
+                                    <option value="DS">Disponible</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
+                    <div class="col-sm-2">
+                        <label></label><br />
+                        <button type="submit" title="Consultar" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                        <a href="@Url.Action("ExportToExcel")" title="Exportar a excel" class="btn btn-primary">Exportar</a>
 
-                </div>
-                <div class="col-sm-2">
-                    <label for="fecnac">Estado</label>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <select class="selectpicker" id="estado" name="estado">
-                                <option value="">--TODOS--</option>
-                                <option value="CO" >Consumido</option>
-                                <option value="DS" >Disponible</option>
-                            </select>
-                        </div>
                     </div>
                 </div>
-                <div class="col-sm-2">
-                    <label></label><br />
-                    <button type="submit" title="Consultar" class="btn btn-primary">
-                        <span class="glyphicon glyphicon-search"></span>
-                    </button>
-                    <a href="@Url.Action("ExportToExcel")" title="Exportar a excel" class="btn btn-primary">Exportar</a>
-                
-                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <table>
+                        <tr><td><label for="disponible">Total Disponible (S/.) &nbsp;&nbsp;&nbsp;&nbsp;</label></td>
+                            <td><div class="input-group">
+                                    <input id="txtDisponible" type="text" value="" disabled autofocus class="form-control" />
+                                </div>
+                            </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-sm-4">
+                        <table>
+                            <tr>
+                                <td><label for="consumido">Total Consumido (S/.) &nbsp;&nbsp;&nbsp;&nbsp;</label></td>
+                                <td>
+                                    <div class="input-group">
+                                        <input id="txtconsumido" type="text" value="" disabled autofocus class="form-control" />
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                   
+               </div>
+               
             </form>
 
-        </div>
+  
     }
     <div class="box-body" id="lista">
         @{Html.RenderPartial("ListaValeCompra", Model);}

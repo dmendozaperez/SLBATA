@@ -43,7 +43,8 @@ namespace CapaDato.ReportsValeCompra
                             lista = (from DataRow dr in dt.Rows
                                      select new Reporte_Resultado()
                                      {
-                                       
+
+                                         Institucion = dr["Institucion"].ToString(),
                                          DNI = dr["rep_dni"].ToString(),
                                          Cliente = dr["Cliente"].ToString(),
                                        
@@ -59,7 +60,10 @@ namespace CapaDato.ReportsValeCompra
 
                                          Codigo_tda = dr["rep_tdaCodigo"].ToString(),
                                          Desc_tda = dr["rep_tdaDesc"].ToString(),
-                                        
+                                         total_disponible = dr["totalDisponible"].ToString(),
+                                         total_consumido = dr["totalConsumido"].ToString(),
+
+
 
 
                                      }).ToList();

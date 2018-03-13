@@ -8,8 +8,9 @@
 <table id="example" class="table table-hover dataTable  table-striped table-responsive">
     <thead>
         <tr style="background-color:#3d566e; color:#ecf0f1">
+            <th style="width:12%">Cl. Institucional</th>
             <th style="width:10%">Código</th>
-            <th style="width:10%">Número</th>
+            <th style="width:8%">Número</th>
             <th style="width:5%">Soles</th>
             <th style="width:8%">Estado</th>
 
@@ -20,8 +21,8 @@
 
             <th style="width:7%">Fec. doc.</th>
 
-            <th style="width:10%">Dni</th>
-            <th style="width:20%">Cliente </th>
+            <th style="width:8%">Dni</th>
+            <th style="width:22%">Cliente </th>
    
         </tr>
     </thead>
@@ -30,6 +31,7 @@
     </tbody>
     <tfoot>
         <tr>
+            <th style="width:10%">Cl. Institucional</th>
             <th style="width:auto">Código</th>
             <th style="width:auto">Número</th>
             <th style="width:auto">Monto</th>
@@ -67,6 +69,7 @@
             "order": [0, "asc"],
             "bDeferRender": true,
             "aoColumns": [
+                 { "sName": "Institucion", "mData": "Institucion" },
                    { "sName": "Codigo", "mData": "Codigo" },
                    { "sName": "Numero", "mData": "Numero" },
                    { "sName": "soles", "mData": "soles" },
@@ -98,6 +101,9 @@
             'copyHtml5',
              ]
         });
+
+        $('#txtDisponible').val(@ViewBag.TotalDisponible);
+        $('#txtconsumido').val(@ViewBag.TotalConsumido);
 
 
     });
