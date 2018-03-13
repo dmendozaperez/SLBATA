@@ -1039,7 +1039,7 @@
     <Content Include="Views\ValeCompra\Nuevo.cshtml" />
     <Content Include="Views\ValeCompra\Consulta.cshtml" />
     <Content Include="Views\ReportsValeCompra\Index.cshtml" />
-    <None Include="Views\ReportsValeCompra\ListaValeCompra.cshtml" />
+    <Content Include="Views\ReportsValeCompra\ListaValeCompra.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
