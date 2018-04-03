@@ -49,7 +49,7 @@ namespace CapaDato.Control
 
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 usuario = null;                
             }

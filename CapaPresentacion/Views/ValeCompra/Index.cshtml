@@ -2,9 +2,11 @@
 @model IEnumerable<Ent_ValeCompra>
 @{
     ViewBag.Title = "Control de Generacion de Vales";
+
 }
-@Scripts.Render("~/bundles/bootstrap-select")
-@Styles.Render("~/Content/Bootstrap-Select/css")
+@Scripts.Render("~/bundles/bootstrap-select_Select")
+@Styles.Render("~/Content/Bootstrap-Select_Select/css")
+
 <p class="text-danger">Muestra la lista de Vales Generados. Permite crear nuevos vales dentro del sistema y visualizar las existentes.</p>
 <div class="box box-body box-primary">
 
@@ -14,7 +16,7 @@
             @{Html.RenderPartial("ListaValeCompra", Model); }
         </div>
 </div>
-<script src="~/Scripts/BI.js"></script>
+
 <script>
     $(function () {
         $(".nuevo").click(function () {
@@ -34,9 +36,11 @@
 
                    
                     waitingDialog.hide();
-
+             
+                    $('#myModalContent').empty();
                     $('#myModalContent').html(data);
                     $('#myModal').modal(options);
+                                       
 
 
              },

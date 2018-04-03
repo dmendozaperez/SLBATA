@@ -27,15 +27,34 @@ namespace CapaPresentacion
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/bootstrap2").Include(
+                     "~/Scripts2/bootstrap.js",
+                     "~/Scripts2/respond.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/bootstrap-select").Include(
                                 "~/Scripts/bootstrap-select.js",
                                 "~/Scripts/bootstrap-select.min.js",
                                 "~/Scripts/script-bootstrap-select.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/bootstrap-select_Select").Include(
+                               "~/ScriptsSelect/bootstrap-select.js",
+                               "~/ScriptsSelect/bootstrap-select.min.js",
+                               "~/Scripts/script-bootstrap-select.js"));
+
+            bundles.Add(new StyleBundle("~/Content/Bootstrap-Select_Select/css").Include(
+                             "~/ContentSelect/style/bootstrap-select.css",
+                             "~/ContentSelect/style/bootstrap-select.min.css",
+                               "~/ContentSelect/site.css")); 
+
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                      "~/Content/bootstrap.css",
                      "~/Content/toastr.css",
                      "~/Content/site.css"));
+
+            bundles.Add(new StyleBundle("~/Content2/css").Include(
+                   "~/Content2/bootstrap.css",
+                   "~/Content2/site.css"));
 
             bundles.Add(new StyleBundle("~/Content/Bootstrap-Select/css").Include(
                               "~/Content/style/bootstrap-select.css",

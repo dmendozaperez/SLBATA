@@ -23,12 +23,12 @@ namespace CapaPresentacion.Controllers
         private Dat_ValeCompra datvalecompra = new Dat_ValeCompra();
         private Dat_Cliente datCliente = new Dat_Cliente();
         private string _session_listvalcompra_private = "session_listvalcompra_private";
-        
 
+      
         [Authorize]
         public ActionResult Index()
         {
-                 
+
             Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
             string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
             string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
@@ -48,6 +48,8 @@ namespace CapaPresentacion.Controllers
                 #endregion
                 if (valida_rol)
                 {
+                    ViewBag.cliente = datCliente.get_lista();
+
                     return View(lista());
                 }
                 else
@@ -72,10 +74,12 @@ namespace CapaPresentacion.Controllers
 
         public ActionResult Nuevo()
         {
-                ViewBag.cliente = datCliente.get_lista();
-                return View();
-  
+
+            ViewBag.cliente = datCliente.get_lista();
+            return View();
+
         }
+        
 
         public ActionResult ProcesarPdf(string IdValeCompra)
         {
@@ -95,23 +99,14 @@ namespace CapaPresentacion.Controllers
         public ActionResult Consulta(string Id)
         {
             Dat_ValeCompra datCompra = new Dat_ValeCompra();
+
             Ent_ValeCompra _valeCompra = new Ent_ValeCompra();
 
-            //Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
-            //string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
-            //string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
-            //string return_view = actionName + "|" + controllerName;
-
-            //if (_usuario == null)
-            //{
-            //    return RedirectToAction("Login", "Control", new { returnUrl = return_view });
-            //}
-            //else
-            //{
+            
                 _valeCompra = datCompra.ConsultarVales(Id);
                 return View(_valeCompra);
 
-            //}
+         
 
         }
 
@@ -133,10 +128,6 @@ namespace CapaPresentacion.Controllers
 
             ejecuta_pdf(_compra);
 
-            //string startPath = @"D:\PDF";
-            //string zipPath = @"D:\PDF.zip";
-
-            //ZipFile.CreateFromDirectory(startPath, zipPath);
             oJRespuesta.Message = _compra.valCompra_id.ToString();
 
             return Json(oJRespuesta, JsonRequestBehavior.AllowGet);

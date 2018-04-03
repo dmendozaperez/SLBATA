@@ -1,9 +1,10 @@
-﻿@{
+﻿
+@{
     Layout = null;
 }
-@Scripts.Render("~/bundles/bootstrap-select")
-@Styles.Render("~/Content/Bootstrap-Select/css")
-<link rel="stylesheet" type="text/css" href="~/Content/bootstrap-select.css" />
+
+
+
 <div class="modal-content">
     <div class="modal-header modal-header-danger">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -114,16 +115,19 @@
     </div>
 </div>
 @Html.Hidden("lblIdLote", "")
-<script src="~/Scripts/BI.js"></script>
+
 <script>
     $(document).ready(function () {
         $(".tableClass tr:not(:last) > td").css('border-bottom', ' 1px solid #f4f4f4');
-    $("#dwcliente").select({
-    dropdownParent: $("#myModal")
-    });
+        $("#dwcliente").select({
+        dropdownParent: $("#myModal")
+
+        });
+
+   
     
     AgregarVales();
-
+    MostrarRuc()
     });
 
     function validarfecha() {
@@ -166,7 +170,14 @@
 
         return strCbo
     }
-function AgregarVales() {
+    function MostrarRuc() {
+
+        var valCliente_ruc = $('select[name=dwcliente]').selectpicker('val');
+        $("#txtRuc").val(valCliente_ruc);
+
+    }
+
+    function AgregarVales() {
 
     var nId = $("#tblvales tbody > tr:last-child").data("id");
 
@@ -237,13 +248,7 @@ function EliminarVale(Id) {
         var IdLte = $('#lblIdLote').val();
         DescargarArchivos(IdLte)
     }
-
-    function MostrarRuc() {
-
-        var valCliente_ruc = $('select[name=dwcliente]').selectpicker('val');
-        $("#txtRuc").val(valCliente_ruc);
      
-    }
     function validarVale() {
 
         var validacion = true;
