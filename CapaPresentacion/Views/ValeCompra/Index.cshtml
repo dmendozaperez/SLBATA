@@ -4,9 +4,8 @@
     ViewBag.Title = "Control de Generacion de Vales";
 
 }
-@Scripts.Render("~/bundles/bootstrap-select_Select")
-@Styles.Render("~/Content/Bootstrap-Select_Select/css")
-
+@*@Scripts.Render("~/bundles/bootstrap-select_Select")*@
+<link href="~/ContentSelect/bootstrap-select.css" rel="stylesheet" />
 <p class="text-danger">Muestra la lista de Vales Generados. Permite crear nuevos vales dentro del sistema y visualizar las existentes.</p>
 <div class="box box-body box-primary">
 
@@ -16,7 +15,8 @@
             @{Html.RenderPartial("ListaValeCompra", Model); }
         </div>
 </div>
-
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/ScriptsSelect/bootstrap-select.js"></script>
 <script>
     $(function () {
         $(".nuevo").click(function () {

@@ -13,9 +13,9 @@
     };
 
 }
-@Scripts.Render("~/bundles/bootstrap-select_Select")
-@Styles.Render("~/Content/Bootstrap-Select_Select/css")
 
+@*@Scripts.Render("~/bundles/bootstrap-select_Select")*@
+<link href="~/ContentSelect/bootstrap-select.css" rel="stylesheet" />
 <style>
 #dwcliente{
  width:200px;   
@@ -29,52 +29,65 @@
             <form id="form1">
                 <div class="row">
                     <div class="col-sm-5">
-                        <label for="segape">Cl. Institucional</label>
-                        <div class="form-group">
-                            <div class="input-group">
+                        <table style="width:100%">
+                            <tr>
+                                <td width="40%"><label for="disponible">Cl. Institucional &nbsp;&nbsp;&nbsp;&nbsp;</label></td>
+                                <td  width="60%">
+                                    <div class="input-group">
+                                        @Html.DropDownList("dwcliente", new SelectList(ViewBag.cliente, "cli_Ruc", "cli_razonSocial", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwcliente", @name = "dwcliente", style = "width:270px;max-width:270px;" })
+                                    </div>
+                                </td>
+                            </tr>
 
-                                @Html.DropDownList("dwcliente", new SelectList(ViewBag.cliente, "cli_Ruc", "cli_razonSocial", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwcliente", @name = "dwcliente", style = "width:270px;max-width:270px;" })
-                            </div>
-                        </div>
-
+                        </table>
+                    </div>
+                    <div class="col-sm-5">
+                        <table style="width:100%">
+                            <tr>
+                                <td  width="40%"><label for="disponible">Estado&nbsp;&nbsp;&nbsp;&nbsp;</label></td>
+                                <td  width="60%">
+                                    <div class="input-group">
+                                        <select class="selectpicker" id="estado" name="estado">
+                                            <option value="">---Todos---</option>
+                                            <option value="CO">Consumido</option>
+                                            <option value="DS">Disponible</option>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                     <div class="col-sm-2">
-                        <label for="estado">Estado</label>
-                        <div class="form-group">
-                            <div class="input-group">
-                                <select class="selectpicker" id="estado" name="estado">
-                                    <option value="">---Todos---</option>
-                                    <option value="CO">Consumido</option>
-                                    <option value="DS">Disponible</option>
-                                </select>
-                            </div>
-                        </div>
+                        <table style="width:100%">
+                            <tr>
+                                <td width="40%">
+                                    <label></label>
+                                    <button type="submit" title="Consultar" class="btn btn-primary">
+                                        <span class="glyphicon glyphicon-search"></span>
+                                    </button>
+                                    <a href="@Url.Action("ExportToExcel")" title="Exportar a excel" class="btn btn-primary">Exportar</a>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
-                    <div class="col-sm-2">
-                        <label></label><br />
-                        <button type="submit" title="Consultar" class="btn btn-primary">
-                            <span class="glyphicon glyphicon-search"></span>
-                        </button>
-                        <a href="@Url.Action("ExportToExcel")" title="Exportar a excel" class="btn btn-primary">Exportar</a>
-
-                    </div>
+                    
                 </div>
                 <div class="row">
-                    <div class="col-sm-4">
-                        <table>
-                        <tr><td><label for="disponible">Total Disponible (S/.) &nbsp;&nbsp;&nbsp;&nbsp;</label></td>
-                            <td><div class="input-group">
+                    <div class="col-sm-5">
+                        <table style="width:100%">
+                        <tr><td  width="40%"><label for="disponible">Total Disponible (S/.) &nbsp;&nbsp;&nbsp;&nbsp;</label></td>
+                            <td width="60%"><div class="input-group">
                                     <input id="txtDisponible" type="text" value="" disabled autofocus class="form-control" />
                                 </div>
                             </td>
                             </tr>
                         </table>
                     </div>
-                    <div class="col-sm-4">
-                        <table>
+                    <div class="col-sm-5">
+                        <table  style="width:100%">
                             <tr>
-                                <td><label for="consumido">Total Consumido (S/.) &nbsp;&nbsp;&nbsp;&nbsp;</label></td>
-                                <td>
+                                <td  width="40%"><label for="consumido">Total Consumido (S/.) &nbsp;&nbsp;&nbsp;&nbsp;</label></td>
+                                <td  width="60%">
                                     <div class="input-group">
                                         <input id="txtconsumido" type="text" value="" disabled autofocus class="form-control" />
                                     </div>
@@ -82,7 +95,7 @@
                             </tr>
                         </table>
                     </div>
-                   
+                                      
                </div>
                
             </form>
@@ -96,7 +109,8 @@
 
 
 </div>
-
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/ScriptsSelect/bootstrap-select.js"></script>
 <script>
     $(document).ready(function () {
        

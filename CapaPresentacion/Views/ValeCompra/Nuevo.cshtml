@@ -16,7 +16,7 @@
             <tr>
                 <td colspan="2" valign="middle"><label for="dwcliente">Empresa Cliente</label></td>
                 <td colspan="2">
-                    @Html.DropDownList("dwcliente", new SelectList(ViewBag.cliente, "cli_Ruc", "cli_razonSocial", "0"), new { @class = "selectCountry form-control", @data_live_search = "true", @id = "dwcliente",@onchange="MostrarRuc()" })
+                    @Html.DropDownList("dwcliente", new SelectList(ViewBag.cliente, "cli_Ruc", "cli_razonSocial", "0"), new { @class = "selectCountry form-control", @data_live_search = "true", @id = "dwcliente", @onchange = "MostrarRuc()" })
                 </td>
             </tr>
             <tr>

@@ -266,6 +266,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Models\data\saveAsExcel.js" />
+    <Content Include="ScriptsSelect\bootstrap-select.js" />
     <Content Include="Scripts\AdminLTE\app.js" />
     <Content Include="Scripts\AdminLTE\app.min.js" />
     <Content Include="Scripts\AdminLTE\demo.js" />
@@ -1045,7 +1046,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Cupones\" />
-    <Folder Include="ScriptsSelect\" />
     <Folder Include="Views\Shared\Menu\" />
     <Folder Include="Views\Usuario\" />
   </ItemGroup>
