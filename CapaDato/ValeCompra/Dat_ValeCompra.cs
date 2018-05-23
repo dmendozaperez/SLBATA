@@ -30,35 +30,33 @@ namespace CapaDato.ValeCompra
                     {
                         cmd.CommandTimeout = 0;
                         cmd.CommandType = CommandType.StoredProcedure;
-                        SqlDataReader dr = cmd.ExecuteReader();
-                        list = new List<Ent_ValeCompra>();
-
-                        if (dr.HasRows)
+                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                         {
-                            
+                            DataTable dt = new DataTable();
+                            da.Fill(dt);
+                            list = new List<Ent_ValeCompra>();
+                            list = (from DataRow dr in dt.Rows
+                                     select new Ent_ValeCompra()
+                                     {
 
-                            while (dr.Read())
-                            {
-                                Ent_ValeCompra valeCompra = new Ent_ValeCompra();
-                                valeCompra.valCompra_id = Int32.Parse(dr["VCom_ID"].ToString());
-                                valeCompra.valCompra_generado = dr["VCom_Generado"].ToString();  
-                                valeCompra.valCompra_ruc = dr["VCom_Ruc"].ToString();
-                                valeCompra.valCompra_razon = dr["VCom_Razon"].ToString();
-                                valeCompra.valCompra_descripcion = dr["VCom_Descripcion"].ToString();
-                                valeCompra.valCompra_fecVigenIni = String.Format("{0:dd/MM/yyyy}", Convert.ToDateTime(dr["VCom_FecIniVigencia"]));  
-                                valeCompra.valCompra_fecVigenFin = String.Format("{0:dd/MM/yyyy}", Convert.ToDateTime(dr["VCom_FecFinVigencia"])); 
-                                valeCompra.valCompra_usuCreacion = dr["VCom_UsuarioCreacion"].ToString();
-                                valeCompra.valCompra_fecCreacion = String.Format("{0:dd/MM/yyyy}", Convert.ToDateTime(dr["VCom_FecCreacion"]));  
-                                valeCompra.valCompra_ipCreacion = dr["VCom_IpCreacion"].ToString();
-                                
-                                list.Add(valeCompra);
+                                         valCompra_id = Int32.Parse(dr["VCom_ID"].ToString()),
+                                            valCompra_generado = dr["VCom_Generado"].ToString(),
+                                            valCompra_ruc = dr["VCom_Ruc"].ToString(),
+                                            valCompra_razon = dr["VCom_Razon"].ToString(),
+                                            valCompra_descripcion = dr["VCom_Descripcion"].ToString(),
+                                            valCompra_fecVigenIni = String.Format("{0:dd/MM/yyyy}", Convert.ToDateTime(dr["VCom_FecIniVigencia"])),
+                                            valCompra_fecVigenFin = String.Format("{0:dd/MM/yyyy}", Convert.ToDateTime(dr["VCom_FecFinVigencia"])),
+                                            valCompra_usuCreacion = dr["VCom_UsuarioCreacion"].ToString(),
+                                            valCompra_fecCreacion = String.Format("{0:dd/MM/yyyy}", Convert.ToDateTime(dr["VCom_FecCreacion"])),
+                                            valCompra_ipCreacion = dr["VCom_IpCreacion"].ToString(),
 
-                            }
+                                     }).ToList();
+
                         }
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
                 list = null;
