@@ -40,6 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArticuloStock\Distrito.cs" />
+    <Compile Include="ArticuloStock\Provincia.cs" />
+    <Compile Include="ArticuloStock\Departamento.cs" />
+    <Compile Include="ArticuloStock\Articulo_Tienda.cs" />
     <Compile Include="Control\Ent_Aplicacion.cs" />
     <Compile Include="ReportsValeCompra\Reporte_Resultado.cs" />
     <Compile Include="ReportsValeCompra\Reporte_Filtro.cs" />
