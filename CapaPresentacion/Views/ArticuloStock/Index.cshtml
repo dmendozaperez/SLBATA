@@ -2,6 +2,7 @@
 
 <link href="~/ContentSelect/bootstrap-select.css" rel="stylesheet" />
 
+
 <style>
 
 #dwcliente{
@@ -34,19 +35,20 @@
             <label for="disponible">Departamento</label>
         </div>
         <div class="col-sm-2">
-         @Html.DropDownList("dwDep", new SelectList(ViewBag.listDepartamento, "Dep_Id", "Dep_Descripcion", "-1"), new { @class = "selectCountry form-control", @data_live_search = "true", @id = "dwDep", @onchange = "ListarProvincia();ComboMostrarArticulo()" })
+            
+         @Html.DropDownList("dwDep", new SelectList(ViewBag.listDepartamento, "Dep_Id", "Dep_Descripcion", "-1"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwDep", @onchange = "ListarProvincia()",@placeholder = ".col-xs-1" })
         </div>
         <div class="col-sm-1">
             <label for="disponible">Provincia</label>
         </div>
         <div class="col-sm-2">
-            @Html.DropDownList("dwProv", new SelectList(ViewBag.General, "Dep_Id", "Dep_Descripcion", "-1"), new { @class = "selectCountry form-control", @data_live_search = "true", @id = "dwProv", @onchange = "ListarDistrito();ComboMostrarArticulo()" })
+            @Html.DropDownList("dwProv", new SelectList(ViewBag.General, "Dep_Id", "Dep_Descripcion", "-1"), new { @class = "selectCountry form-control", @data_live_search = "true", @id = "dwProv", @onchange = "ListarDistrito()" })
         </div>
         <div class="col-sm-1">
             <label for="disponible">Distrito</label>
         </div>
         <div class="col-sm-2">
-            @Html.DropDownList("dwDistrito", new SelectList(ViewBag.General, "Dep_Id", "Dep_Descripcion", "-1"), new { @class = "selectCountry form-control", @data_live_search = "true", @id = "dwDistrito", @onchange = "ComboMostrarArticulo()" })
+            @Html.DropDownList("dwDistrito", new SelectList(ViewBag.General, "Dep_Id", "Dep_Descripcion", "-1"), new { @class = "selectCountry form-control", @data_live_search = "true", @id = "dwDistrito"})
         </div>
         <div class="col-sm-1">
             <label for="disponible">Articulo</label>
