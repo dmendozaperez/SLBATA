@@ -27,22 +27,22 @@ namespace CapaPresentacion.Controllers
         public ActionResult Login(string returnUrl = null)
         {      
 
-            if (returnUrl == "Index|ArticuloStock") {
-                string _error_con = "";
-                Boolean _acceso = IsValid("Invitado", "Invitado123", ref _error_con);
-                Ent_Usuario _usuario2 = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
-                string return_action = ""; string return_controller = "";
+            //if (returnUrl == "Index|ArticuloStock") {
+            //    string _error_con = "";
+            //    Boolean _acceso = IsValid("Invitado", "Invitado123", ref _error_con);
+            //    Ent_Usuario _usuario2 = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            //    string return_action = ""; string return_controller = "";
 
-                string[] controller_action = returnUrl.Split('|');
-                return_action = controller_action[0].ToString();
-                return_controller = controller_action[1].ToString();
+            //    string[] controller_action = returnUrl.Split('|');
+            //    return_action = controller_action[0].ToString();
+            //    return_controller = controller_action[1].ToString();
 
-                var data = new Dat_Menu();
-                var items = data.navbarItems(_usuario2.usu_id).ToList();
-                Session[Ent_Global._session_menu_user] = items;
-                return RedirectToAction(return_action, return_controller);
+            //    var data = new Dat_Menu();
+            //    var items = data.navbarItems(_usuario2.usu_id).ToList();
+            //    Session[Ent_Global._session_menu_user] = items;
+            //    return RedirectToAction(return_action, return_controller);
 
-            }
+            //}
            
             Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
             if (_usuario == null)
