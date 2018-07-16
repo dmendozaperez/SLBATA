@@ -32,20 +32,20 @@
       <div class="row">                  
                     
         <div class="col-sm-1">
-            <label for="disponible">Departamento</label>
+            <label for="disponible">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dep.</label>
         </div>
         <div class="col-sm-2">
             
          @Html.DropDownList("dwDep", new SelectList(ViewBag.listDepartamento, "Dep_Id", "Dep_Descripcion", "-1"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwDep", @onchange = "ListarProvincia()",@placeholder = ".col-xs-1" })
         </div>
         <div class="col-sm-1">
-            <label for="disponible">Provincia</label>
+            <label for="disponible">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Prov.</label>
         </div>
         <div class="col-sm-2">
             @Html.DropDownList("dwProv", new SelectList(ViewBag.General, "Dep_Id", "Dep_Descripcion", "-1"), new { @class = "selectCountry form-control", @data_live_search = "true", @id = "dwProv", @onchange = "ListarDistrito()" })
         </div>
         <div class="col-sm-1">
-            <label for="disponible">Distrito</label>
+            <label for="disponible">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dist.</label>
         </div>
         <div class="col-sm-2">
             @Html.DropDownList("dwDistrito", new SelectList(ViewBag.General, "Dep_Id", "Dep_Descripcion", "-1"), new { @class = "selectCountry form-control", @data_live_search = "true", @id = "dwDistrito"})
@@ -57,7 +57,7 @@
             <input id="txtArticulo" type="text" placeholder="codigo" style="padding-left:6px;padding-right:6px" autofocus class="form-control" />
         </div>
         <div class="col-sm-1">
-            <button type="button" onclick="MostrarArticulo()" title="Consultar" class="btn btn-primary">
+            <button type="button" onclick="ValidarMostrarArticulo()" title="Consultar" class="btn btn-primary">
                 <span class="glyphicon glyphicon-search"></span>
             </button>
         </div>
@@ -163,19 +163,23 @@
         return Data
     }
 
-    function ComboMostrarArticulo() {
-    
+    function ValidarMostrarArticulo() {
+     
         var codArticulo = $('#txtArticulo').val();
         codArticulo = codArticulo.replace(/^\s+|\s+$/g, "")
 
         if (codArticulo != '')
             MostrarArticulo();
+        else
+            toastr.error("Debe ingresar un código de articulo.", "Mensaje");
 
     }
 
 
 
     function MostrarArticulo() {
+
+       
         waitingDialog.show('Espere un momento por favor');
         document.getElementById('listTienda').innerHTML = '';
 
