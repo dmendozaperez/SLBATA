@@ -32,7 +32,7 @@
       <div class="row">                  
                     
         <div class="col-sm-1">
-            <label for="disponible">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dep.</label>
+            <label for="disponible">Depto.</label>
         </div>
         <div class="col-sm-2">
             
@@ -51,19 +51,55 @@
             @Html.DropDownList("dwDistrito", new SelectList(ViewBag.General, "Dep_Id", "Dep_Descripcion", "-1"), new { @class = "selectCountry form-control", @data_live_search = "true", @id = "dwDistrito"})
         </div>
         <div class="col-sm-1">
-            <label for="disponible">Articulo</label>
+            @*<label for="disponible">Articulo</label>*@
         </div>
         <div class="col-sm-1">
-            <input id="txtArticulo" type="text" placeholder="codigo" style="padding-left:6px;padding-right:6px" autofocus class="form-control" />
+            @*<input id="txtArticulo" type="text" placeholder="codigo" style="padding-left:6px;padding-right:6px" autofocus class="form-control" />*@
         </div>
         <div class="col-sm-1">
-            <button type="button" onclick="ValidarMostrarArticulo()" title="Consultar" class="btn btn-primary">
+            @*<button type="button" onclick="ValidarMostrarArticulo()" title="Consultar" class="btn btn-primary">
                 <span class="glyphicon glyphicon-search"></span>
-            </button>
+            </button>*@
         </div>
 
                     
         </div>
+
+     <div class="row" style="margin-top:10px">
+
+         <div class="col-sm-1">
+             <label for="disponible">Articulo</label>
+         </div>
+         <div class="col-sm-2">
+             <input id="txtArticulo" type="text"  placeholder="codigo" style="width :100%;" autofocus class="form-control" />
+         </div>
+         <div class="col-sm-1">
+             <label for="disponible">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Talla</label>
+            
+         </div>
+         <div class="col-sm-2">
+             <input id="txtTalla" type="text" placeholder="Talla" maxlength="4" style="padding-left:6px;padding-right:6px;width :100%;" autofocus class="form-control" />
+         </div>
+         <div class="col-sm-1">
+             <button type="button" onclick="ValidarMostrarArticulo()" title="Consultar" class="btn btn-primary">
+                 <span class="glyphicon glyphicon-search"></span>
+             </button>
+         </div>
+         <div class="col-sm-2">
+           
+         </div>
+         <div class="col-sm-1">
+            
+         </div>
+         <div class="col-sm-1">
+           
+         </div>
+         <div class="col-sm-1">
+            
+         </div>
+
+
+     </div>
 </form>
     <table id="example" class="table table-hover dataTable  table-striped table-responsive">
 
@@ -92,6 +128,7 @@
 <script>
    
     $(document).ready(function () {
+        $("body").toggleClass('sidebar-collapse');
        
         //if ($("#NombreUsuario").val() == 'Invitado')
         //    setInterval('ContinuarConexion()', 5000);
@@ -166,7 +203,7 @@
     function ValidarMostrarArticulo() {
      
         var codArticulo = $('#txtArticulo').val();
-        codArticulo = codArticulo.replace(/^\s+|\s+$/g, "")
+        codArticulo = codArticulo.replace(/^\s+|\s+$/g, "")     
 
         if (codArticulo != '')
             MostrarArticulo();
@@ -187,6 +224,10 @@
         var CodDepartamento = $("#dwDep").val();
         var Codprovincia = $("#dwProv").val();
         var CodDistrito = $("#dwDistrito").val();
+        var codtalla = $('#txtTalla').val();
+
+        codArticulo = codArticulo.replace(/^\s+|\s+$/g, "")
+        codtalla = codtalla.replace(/^\s+|\s+$/g, "")
 
         var ControllerUrl = "@Url.Action("listarStr_ArticuloStock", "ArticuloStock")";
         var css = 'class="row"'
@@ -205,7 +246,7 @@
             type: "GET",
             url: ControllerUrl,
             contentType: "application/json; charset=utf-8",
-            data: { codArticulo: codArticulo, CodDpto: CodDepartamento, CodPrv: Codprovincia, CodDist: CodDistrito },
+            data: { codArticulo: codArticulo, CodDpto: CodDepartamento, CodPrv: Codprovincia, CodDist: CodDistrito, codTalla: codtalla },
             datatype: "json",
             cache: true,
             success: function (data) {

@@ -304,11 +304,11 @@ namespace CapaPresentacion.Controllers
             return list;
         }
 
-        public string listarStr_ArticuloStock(string codArticulo, string CodDpto, string CodPrv, string CodDist)
+        public string listarStr_ArticuloStock(string codArticulo, string CodDpto, string CodPrv, string CodDist, string codTalla)
         {
             string strJson = "";
             JsonResult jRespuesta = null;
-            strJson = datArticuloStock.listarStr_ArticuloStock(codArticulo, CodDpto, CodPrv, CodDist);
+            strJson = datArticuloStock.listarStr_ArticuloStock(codArticulo, CodDpto, CodPrv, CodDist, codTalla);
             var serializer = new JavaScriptSerializer();
             jRespuesta = Json(serializer.Deserialize<List<Articulo_Stock_Tienda>>(strJson), JsonRequestBehavior.AllowGet);
 
