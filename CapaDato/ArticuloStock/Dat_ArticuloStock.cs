@@ -218,7 +218,7 @@ namespace CapaDato.ReportsValeCompra
             return strJson;
         }
 
-        public string listarStr_ArticuloStock(string Cod_Articulo, string Cod_Dpto, string Cod_Prv, string Cod_Dist)
+        public string listarStr_ArticuloStock(string Cod_Articulo, string Cod_Dpto, string Cod_Prv, string Cod_Dist, string codTalla)
         {
             string strJson = "";
             try
@@ -243,6 +243,10 @@ namespace CapaDato.ReportsValeCompra
                 SqlParameter ocodDist = oComando.Parameters.Add("@codDist", SqlDbType.VarChar);
                 ocodDist.Direction = ParameterDirection.Input;
                 ocodDist.Value = Cod_Dist;
+
+                SqlParameter ocodTalla = oComando.Parameters.Add("@codTalla", SqlDbType.VarChar);
+                ocodTalla.Direction = ParameterDirection.Input;
+                ocodTalla.Value = codTalla;
 
                 SqlDataReader oReader = oComando.ExecuteReader(CommandBehavior.SingleResult);
                 DataTable dataTable = new DataTable("row");
