@@ -254,8 +254,6 @@
     <Content Include="Content\images\lupa.jpg" />
     <Content Include="Content\images\wall-calendar-with-lines.svg" />
     <Content Include="Content\sweetalert.css" />
-    <Content Include="Content\TarjetaCss\20161222091802_landings.min.css" />
-    <Content Include="Content\TarjetaCss\20161222091802_main.min.css" />
     <Content Include="Content\toastr.css" />
     <Content Include="Content\toastr.min.css" />
     <Content Include="favicon.ico" />
@@ -1051,9 +1049,11 @@
     <Content Include="Views\ReportsValeCompra\ListaValeCompra.cshtml" />
     <Content Include="Views\ArticuloStock\Index.cshtml" />
     <Content Include="Views\Intermedio\Index.cshtml" />
+    <Content Include="Views\ArticuloStock\Index_Acceso.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\TarjetaCss\" />
     <Folder Include="Cupones\" />
     <Folder Include="Views\Shared\Menu\" />
     <Folder Include="Views\Usuario\" />

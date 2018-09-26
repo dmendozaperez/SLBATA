@@ -22,7 +22,7 @@ namespace CapaEntidad.Util
             get
             {
                 // return "Server=des.bgr.pe;Database=BdTiendaReplica;User ID=junior;Password=Bata2018**@;Trusted_Connection=False;";
-                return "Server=posperu.bgr.pe;Database=BDPOS;User ID=junior;Password=Bata2018;Trusted_Connection=False;";
+                return "Server=posperu.bgr.pe;Database=BDPOS;User ID=pos_oracle;Password=Bata2018**;Trusted_Connection=False;";
 
             }
         }

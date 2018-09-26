@@ -28,8 +28,8 @@ namespace CapaPresentacion.Controllers
     
         public ActionResult Index()
         {
-            Response.Cookies["Usuario"].Value = "Invitado";
-            Response.Cookies["contraseña"].Value = "Invitado123";
+            Response.Cookies["User"].Value = "Invitado";
+            Response.Cookies["Pass"].Value = "Invitado123";
             Response.Redirect("../ArticuloStock/Index");
 
             return View();
