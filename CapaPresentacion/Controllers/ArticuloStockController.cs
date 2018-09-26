@@ -137,6 +137,43 @@ namespace CapaPresentacion.Controllers
             return result;
         }
 
+        public ActionResult Index_Acceso()
+        {
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
+            Boolean _acceso = false;
+            try
+            {
+
+
+                if (this.Request.Params["varemp"].ToString() == "1FCCD4D0-19C6-45AC-AFAC-FC0EF4AF32D5")
+                {
+                    Response.Cookies["User"].Value = "Invitado";
+                    Response.Cookies["Pass"].Value = "Invitado123";
+                    _acceso = true;
+                    Response.Redirect("../ArticuloStock/Index");
+                }
+                else
+                {
+                    _acceso = false;
+                }
+            }
+            catch (Exception)
+            {
+                _acceso = false;
+            }
+
+            if (!_acceso)
+            {
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+            }
+            else
+            {
+                return View();
+            }
+
+        }
 
         public ActionResult Index()
         {
@@ -148,11 +185,11 @@ namespace CapaPresentacion.Controllers
 
             try
             {
-                if (!DBNull.Value.Equals(Request.Cookies["Usuario"].Value) && _usuario == null)
+                if (!DBNull.Value.Equals(Request.Cookies["User"].Value) && _usuario == null)
                 {
 
-                    usuario_nom = Request.Cookies["Usuario"].Value;
-                    usuario_con = Request.Cookies["contraseña"].Value;
+                    usuario_nom = Request.Cookies["User"].Value;
+                    usuario_con = Request.Cookies["Pass"].Value;
                     string _error_con = "";
                     _acceso = IsValid(usuario_nom, usuario_con, ref _error_con);
                     if(_acceso)
