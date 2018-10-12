@@ -126,10 +126,16 @@
 <script src="~/ScriptsSelect/bootstrap-select.js"></script>
 <script src="~/Scripts/BI.js"></script>
 <script>
+    var gSite = ''
    
     $(document).ready(function () {
         $("body").toggleClass('sidebar-collapse');
-       
+        var pathname = window.location.pathname;
+        var res = pathname.split("/")
+    
+        if (res[1].toString() != "ArticuloStock") {
+          gSite = "/" + res[1].toString();
+        }
         //if ($("#NombreUsuario").val() == 'Invitado')
         //    setInterval('ContinuarConexion()', 5000);
     });
@@ -320,7 +326,7 @@
                     ConstHtmlTienda = ConstHtmlTienda.replace('<button class="btn btn-white btn-xs" style="width:100%;">Tallas:</button>', '');
                     ConstHtmlTienda = ConstHtmlTienda.replace('<button class="btn btn-white btn-xs" style="width:100%;">Cantidad:</button>', '');
                     divFinal += ConstHtmlTienda;
-                    document.getElementById('imagenCatalogo').src = '~/Content/images/lupa.jpg';
+                    document.getElementById('imagenCatalogo').src = gSite + '/Content/images/lupa.jpg';
                     document.getElementById("listTienda").innerHTML = divFinal;
                     document.getElementById("DivNombre").innerHTML = '<h3>Buscando</h3>';
                 }
