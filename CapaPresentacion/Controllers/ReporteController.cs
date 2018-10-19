@@ -112,7 +112,7 @@ namespace CapaPresentacion.Controllers
 
             reportViewer.ServerReport.ReportServerCredentials = reportCredential;
             reportViewer.ServerReport.ReportServerUrl = new Uri(reportServerUrl);
-            reportViewer.ServerReport.ReportPath = "/" + reportFolder + "/Rpt_Planilla2";
+            reportViewer.ServerReport.ReportPath = "/" + reportFolder + "/Rpt_PlanillaWeb";
             reportViewer.ShowParameterPrompts = false;
             reportViewer.ServerReport.SetParameters(paramList);
             reportViewer.ServerReport.Refresh();
