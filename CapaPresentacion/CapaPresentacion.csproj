@@ -89,13 +89,24 @@
       <HintPath>..\packages\Microsoft.Owin.Security.Cookies.3.1.0\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.ReportViewer.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\BataEcommerceReport\BataEcommerceWebReport\bin\Microsoft.ReportViewer.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\BataEcommerceReport\BataEcommerceWebReport\bin\Microsoft.ReportViewer.WebForms.DLL</HintPath>
+    </Reference>
     <Reference Include="NReco.PdfGenerator, Version=1.1.12.0, Culture=neutral, PublicKeyToken=231663d50a41b451, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\NReco.PdfGenerator.dll</HintPath>
+      <HintPath>..\..\SLBATA\CapaPresentacion\bin\NReco.PdfGenerator.dll</HintPath>
     </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="ReportViewerForMvc">
+      <HintPath>..\..\BataMVC_Ecommerce\packages\ReportViewerForMvc.1.1.1\lib\net45\ReportViewerForMvc.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -169,13 +180,16 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Bll\Basico.cs" />
     <Compile Include="Bll\ExcelExportHelper.cs" />
+    <Compile Include="Bll\ReportCredentials.cs" />
     <Compile Include="Controllers\AdminLteController.cs" />
     <Compile Include="Controllers\AplicacionController.cs" />
     <Compile Include="Controllers\IntermedioController.cs" />
     <Compile Include="Controllers\ControlController.cs" />
     <Compile Include="Controllers\FuncionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LoginIntermedioController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
+    <Compile Include="Controllers\ReporteController.cs" />
     <Compile Include="Controllers\ReportsBataclubController.cs" />
     <Compile Include="Controllers\ArticuloStockController.cs" />
     <Compile Include="Controllers\ReportsValeCompraController.cs" />
@@ -265,6 +279,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Models\data\saveAsExcel.js" />
+    <Content Include="ReportViewerWebForm.aspx" />
     <Content Include="ScriptsSelect\bootstrap-select.js" />
     <Content Include="Scripts\AdminLTE\app.js" />
     <Content Include="Scripts\AdminLTE\app.min.js" />
@@ -762,6 +777,7 @@
     <Content Include="Scripts\AdminLTE\plugins\timepicker\bootstrap-timepicker.js" />
     <Content Include="Scripts\AdminLTE\plugins\timepicker\bootstrap-timepicker.min.css" />
     <Content Include="Scripts\AdminLTE\plugins\timepicker\bootstrap-timepicker.min.js" />
+    <Content Include="Scripts\bata.app.reporteventas.js" />
     <Content Include="Scripts\BI.js" />
     <Content Include="Scripts\bootbox.js" />
     <Content Include="Scripts\bootbox.min.js" />
@@ -1050,6 +1066,12 @@
     <Content Include="Views\ArticuloStock\Index.cshtml" />
     <Content Include="Views\Intermedio\Index.cshtml" />
     <Content Include="Views\ArticuloStock\Index_Acceso.cshtml" />
+    <Content Include="Views\Reporte\ReporteVentas.cshtml" />
+    <Content Include="Views\Reporte\ReporteVentasView.cshtml" />
+    <Content Include="Views\Shared\_GlobalJsPartial.cshtml" />
+    <Content Include="Views\Reporte\ReportePlanillaTda.cshtml" />
+    <Content Include="Views\Reporte\ReportePlanillaTdaView.cshtml" />
+    <Content Include="Views\LoginIntermedio\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

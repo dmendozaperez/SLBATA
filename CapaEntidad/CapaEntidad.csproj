@@ -45,8 +45,10 @@
     <Compile Include="ArticuloStock\Departamento.cs" />
     <Compile Include="ArticuloStock\Articulo_Tienda.cs" />
     <Compile Include="Control\Ent_Aplicacion.cs" />
+    <Compile Include="Control\Ent_Tienda.cs" />
     <Compile Include="ReportsValeCompra\Reporte_Resultado.cs" />
     <Compile Include="ReportsValeCompra\Reporte_Filtro.cs" />
+    <Compile Include="Util\Ent_Combo.cs" />
     <Compile Include="ValeCompra\Ent_Cliente.cs" />
     <Compile Include="Control\Ent_Funcion.cs" />
     <Compile Include="Control\Ent_Roles.cs" />

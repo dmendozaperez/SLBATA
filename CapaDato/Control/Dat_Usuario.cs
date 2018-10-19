@@ -57,6 +57,48 @@ namespace CapaDato.Control
         }
         #endregion
 
+        #region<Region de Acceso al sistema por una tienda>
+        public Ent_Tienda get_loginTienda(string codTienda)
+        {
+            string sqlquery = "[USP_Leer_Tienda]";
+            Ent_Tienda tienda = null;
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+                    if (cn.State == 0) cn.Open();
+                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@codTienda", codTienda);
+
+                        SqlDataReader dr = cmd.ExecuteReader();
+
+                        if (dr.HasRows)
+                        {
+                            tienda = new Ent_Tienda();
+
+                            while (dr.Read())
+                            {
+
+                                tienda.tda_codigo = dr["cod_entid"].ToString();
+
+                            }
+                        }
+
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                tienda = null;
+            }
+            return tienda;
+        }
+        #endregion
+
         #region<Region de Mantenimiento de usuarios>
 
         public Ent_Usuario usu { get; set; }
