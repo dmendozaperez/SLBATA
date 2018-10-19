@@ -89,8 +89,9 @@ namespace CapaPresentacion.Controllers
             string Param_cate = (cate == "") ? "" : cate;
             string Param_subcate = (subcate == "") ? "" : subcate;
             string Param_estado = (estado == "") ? "" : estado;
+            gcodTda = (String)Session["Tienda"];
 
-            if (gcodTda != "") {
+            if (gcodTda != "" && gcodTda!=null) {
                 Param_tienda = gcodTda;
             }
             //Param_tienda = "50143";

@@ -31,7 +31,7 @@ namespace CapaPresentacion.Controllers
         {
             string ip = Request.ServerVariables["REMOTE_ADDR"];
             string nombrePc = System.Net.Dns.GetHostEntry(Request.ServerVariables["remote_addr"]).HostName;
-
+            nombrePc = "TIENDA-109-1";
             Dat_Usuario _usuario = new Dat_Usuario();
             Ent_Tienda _data_tda = _usuario.get_loginTienda(nombrePc);
             LoginViewModel view = new LoginViewModel();
