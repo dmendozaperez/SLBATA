@@ -26,10 +26,9 @@
             </div>
             <!-- /.login-logo -->
             <div class="login-box-body">
-                @*@using (Html.BeginForm("Login", "Control", new { returnUrl = Model.returnUrl }, FormMethod.Post, new { @class = "login-box-body" }))
-                    {*@
-                <form id="CreateForm" action="/Control/Login" method="post">
-                    @*@Html.AntiForgeryToken()*@
+                @using (Html.BeginForm("Login", "Control", new { returnUrl = Model.returnUrl }, FormMethod.Post, new { @id = "signupform" }))
+                {
+              
                     <p class="login-box-msg">Accede para comenzar tu sesión</p>
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                     <div class="form-group has-feedback">
@@ -50,13 +49,13 @@
                         </div>
                         <!-- /.col -->
                         <div class="col-xs-4">
-                            <button type="submit" class="btn btn-primary btn-block btn-flat" form="CreateForm">Ingresar</button>
+                            <button type="submit" class="btn btn-primary btn-block btn-flat">Ingresar</button>
                         </div>
                         <!-- /.col -->
                     </div>
                     <a href="#">¿Ha olvidado la contraseña?</a><br>
-                    @*}*@
-                </form>
+                    }
+               
             </div>
             <!-- /.login-box-body -->
         </div>
@@ -68,7 +67,7 @@
 <script>
     $(document).ready(function () {
 
-        document.getElementById('CreateForm').submit();
+        document.getElementById('signupform').submit();
         @*var contras = (@Model.Password).toString();
         var usuario = @Model.Usuario;*@
         //alert(usuario)

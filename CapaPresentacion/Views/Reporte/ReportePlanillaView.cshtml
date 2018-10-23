@@ -35,7 +35,9 @@
                             <div class="row">
                                 <div class="form-group col-md-3">
                                     <label for="txtCliente">Cod Tda.</label>
-                                    <input type="text" name="txtTda" id="txtCliente" class="form-control" maxlength="255" data-parsley-maxlength="255" data-parsley-maxlength-message="Ingrese un nombre usuario válido.">
+                                    @*@Html.DropDownList("txtTda", new SelectList(ViewBag.Tienda, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "txtTda", @name = "txtTda", style = "width:270px;max-width:270px;" })*@
+                                    @Html.DropDownList("txtTda", new SelectList(ViewBag.Tienda, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectCountry form-control", @data_live_search = "true", @id = "txtTda" })
+                                    @*<input type="text" name="txtTda" id="txtTda" class="form-control" maxlength="255" data-parsley-maxlength="255" data-parsley-maxlength-message="Ingrese un nombre usuario válido.">*@
                                 </div>
                                 
                                 <div class="form-group col-md-3">
@@ -95,28 +97,36 @@
         var grupo =  $('#dwGrupo').val();
         var cate = $('#dwCate').val();
         var sbCate = $('#dwsbCate').val();
-        var Estado = $('#dwEstado').val();
+        var Estado = $('#dwEstado').val();     
 
-        $.ajax({
-            url: GLB_RUT_APP_REPVENR + "?tda=" + tda + "&grupo=" + grupo + "&cate=" + cate + "&subcate=" + sbCate + "&estado=" + Estado,
-            cache: false,
-            async: false,
-            dataType: "html",
-            success: function (data) {
-                document.getElementById("ifrReporte").innerHTML = data;
-                return false;
-            },
-            error: function (request, status, error) {
-               
-            }
-        }).done(function () {
-           
-        });
+        if (grupo == '' || grupo == null) { grupo = '0' };
+        if (cate == '' || cate == null) { cate = '0' };
+        if (sbCate == '' || sbCate == null) { sbCate = '0' };
+        if (Estado == '' || Estado == null) { Estado = '0' };
 
-       
+        if (tda != '' || tda == null) {
+            waitingDialog.show('Espere un momento por favor');
+            $.ajax({
+                url: GLB_RUT_APP_REPVENR + "?tda=" + tda + "&grupo=" + grupo + "&cate=" + cate + "&subcate=" + sbCate + "&estado=" + Estado,
+                cache: false,
+                async: false,
+                dataType: "html",
+                success: function (data) {
+                   
+                    document.getElementById("ifrReporte").innerHTML = data;
+                    waitingDialog.hide();
+                    return false;
+                },
+                error: function (request, status, error) {
+                    waitingDialog.hide();
+                }
+            }).done(function () {
 
-       
+            });
+        } else {
 
+            toastr.error('Debe Ingresar Tienda', "Alerta");
+        }
     }
 
     function ListarCategoria() {

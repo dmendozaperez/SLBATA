@@ -1071,8 +1071,8 @@
     <Content Include="Views\ArticuloStock\Index.cshtml" />
     <Content Include="Views\Intermedio\Index.cshtml" />
     <Content Include="Views\ArticuloStock\Index_Acceso.cshtml" />
-    <Content Include="Views\Reporte\ReporteVentas.cshtml" />
-    <Content Include="Views\Reporte\ReporteVentasView.cshtml" />
+    <Content Include="Views\Reporte\ReportePlanilla.cshtml" />
+    <Content Include="Views\Reporte\ReportePlanillaView.cshtml" />
     <Content Include="Views\Shared\_GlobalJsPartial.cshtml" />
     <Content Include="Views\Reporte\ReportePlanillaTda.cshtml" />
     <Content Include="Views\Reporte\ReportePlanillaTdaView.cshtml" />

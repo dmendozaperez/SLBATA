@@ -93,6 +93,12 @@
         var sbCate = $('#dwsbCate').val();
         var Estado = $('#dwEstado').val();
 
+        if (grupo == '' || grupo == null) { grupo = '0' };
+        if (cate == '' || cate == null) { cate = '0' };
+        if (sbCate == '' || sbCate == null) { sbCate = '0' };
+        if (Estado == '' || Estado == null) { Estado = '0' };
+        
+        waitingDialog.show('Espere un momento por favor');
         $.ajax({
             url: GLB_RUT_APP_REPVENR + "?tda=" + tda + "&grupo=" + grupo + "&cate=" + cate + "&subcate=" + sbCate + "&estado=" + Estado,
             cache: false,
@@ -100,10 +106,11 @@
             dataType: "html",
             success: function (data) {
                 document.getElementById("ifrReporte").innerHTML = data;
+                waitingDialog.hide();
                 return false;
             },
             error: function (request, status, error) {
-               
+                waitingDialog.hide();               
             }
         }).done(function () {
            

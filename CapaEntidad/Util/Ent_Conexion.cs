@@ -46,5 +46,47 @@ namespace CapaEntidad.Util
 
             }
         }
+
+        public static string servidorReporte
+        {
+            get
+            {
+                return "http://posperu.bgr.pe:80/BataRptSrv/";
+            }
+        }
+
+        public static string usuarioReporte
+        {
+            get
+            {
+                return "ReportBata";
+            }
+        }
+
+        public static string passwordReporte
+        {
+            get
+            {
+                return "Bata2018**";
+            }
+        }
+
+        public static string dominioReporte
+        {
+            get
+            {
+                return "BataRptSrv";
+            }
+        }
+
+        public static string CarpetaPlanillaReporte
+        {
+            get
+            {
+                return "ReportBata";
+            }
+        }
+
+
     }
 }
