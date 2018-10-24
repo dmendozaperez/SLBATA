@@ -149,6 +149,8 @@ namespace CapaPresentacion.Controllers
                 reportViewer.Height = Unit.Percentage(300);
                 reportViewer.AsyncRendering = true;
 
+                reportViewer.ShowPrintButton = true;
+
                 reportViewer.ServerReport.ReportServerCredentials = reportCredential;
                 reportViewer.ServerReport.ReportServerUrl = new Uri(reportServerUrl);
                 reportViewer.ServerReport.ReportPath = "/" + reportFolder + "/Rpt_PlanillaWeb";
