@@ -188,6 +188,7 @@
     <Compile Include="Bll\ReportCredentials.cs" />
     <Compile Include="Controllers\AdminLteController.cs" />
     <Compile Include="Controllers\AplicacionController.cs" />
+    <Compile Include="Controllers\ArticuloSustitutoController.cs" />
     <Compile Include="Controllers\IntermedioController.cs" />
     <Compile Include="Controllers\ControlController.cs" />
     <Compile Include="Controllers\FuncionController.cs" />
@@ -1077,6 +1078,9 @@
     <Content Include="Views\Reporte\ReportePlanillaTda.cshtml" />
     <Content Include="Views\Reporte\ReportePlanillaTdaView.cshtml" />
     <Content Include="Views\LoginIntermedio\Index.cshtml" />
+    <Content Include="Views\ArticuloSustituto\Index.cshtml" />
+    <Content Include="Views\ArticuloSustituto\Index_Acceso.cshtml" />
+    <Content Include="Views\LoginIntermedio\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

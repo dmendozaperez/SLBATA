@@ -13,6 +13,7 @@ namespace CapaEntidad.ArticuloStock
         public string Descripcion { get; set; }
         public string Caracteristica { get; set; }
         public string Url_Imagen { get; set; }
+        public string Url_Imagen_susti { get; set; }
         //datos del Stock
         public string Talla { get; set; }
         public int Cantidad { get; set; }

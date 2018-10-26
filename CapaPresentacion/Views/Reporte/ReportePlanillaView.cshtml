@@ -33,40 +33,50 @@
                     <div class="well">
                         <form id="frmConsulta" data-parsley-validate>
                             <div class="row">
-                                <div class="form-group col-md-3">
+                                <div class="form-group col-md-1">
                                     <label for="txtCliente">Cod Tda.</label>
+                                </div>
                                     @*@Html.DropDownList("txtTda", new SelectList(ViewBag.Tienda, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "txtTda", @name = "txtTda", style = "width:270px;max-width:270px;" })*@
-                                    @Html.DropDownList("txtTda", new SelectList(ViewBag.Tienda, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectCountry form-control", @data_live_search = "true", @id = "txtTda" })
-                                    @*<input type="text" name="txtTda" id="txtTda" class="form-control" maxlength="255" data-parsley-maxlength="255" data-parsley-maxlength-message="Ingrese un nombre usuario válido.">*@
-                                </div>
+                                    <div class="form-group col-md-3">
+                                        @Html.DropDownList("txtTda", new SelectList(ViewBag.Tienda, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectCountry form-control", @data_live_search = "true", @id = "txtTda" })
+                                        @*<input type="text" name="txtTda" id="txtTda" class="form-control" maxlength="255" data-parsley-maxlength="255" data-parsley-maxlength-message="Ingrese un nombre usuario válido.">*@
+                                    </div>
                                 
-                                <div class="form-group col-md-3">
-                                    <label class="control-label" for="selEstado">Grupo</label>
-                                     @Html.DropDownList("dwGrupo", new SelectList(ViewBag.Grupo, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwGrupo", @name = "dwGrupo", style = "width:270px;max-width:270px;", @onchange = "ListarCategoria()" })
+                                    <div class="form-group col-md-1">
+                                        <label class="control-label" for="selEstado">Grupo</label>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        @Html.DropDownList("dwGrupo", new SelectList(ViewBag.Grupo, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwGrupo", @name = "dwGrupo", style = "width:270px;max-width:270px;", @onchange = "ListarCategoria()" })
 
-                                </div>
-                                <div class="form-group col-md-3">
+                                    </div>
+                                <div class="form-group col-md-1">
                                     <label class="control-label" for="selEstado">Categoria</label>
-                                    @Html.DropDownList("dwCate", new SelectList(ViewBag.Categoria, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectCountry form-control", @data_live_search = "true", @id = "dwCate", @onchange = "ListarSubCategoria()" })
-                                  
                                 </div>
+                                    <div class="form-group col-md-3">
+                                        @Html.DropDownList("dwCate", new SelectList(ViewBag.Categoria, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectCountry form-control", @data_live_search = "true", @id = "dwCate", @onchange = "ListarSubCategoria()" })
+
+                                    </div>
 
 
 
                             </div>
                             <div class="row">
                                 
-                                <div class="form-group col-md-3">
-                                    <label class="control-label" for="selEstado">Sub-Categoria</label>
-                                    @Html.DropDownList("dwsbCate", new SelectList(ViewBag.Categoria, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectCountry form-control", @data_live_search = "true", @id = "dwsbCate" })
-                                    
+                                <div class="form-group col-md-1">
+                                    <label class="control-label" for="selEstado">Sub-Categ.</label>
                                 </div>
-                                <div class="form-group col-md-3">
+                                    <div class="form-group col-md-3">
+                                        @Html.DropDownList("dwsbCate", new SelectList(ViewBag.Categoria, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectCountry form-control", @data_live_search = "true", @id = "dwsbCate" })
+
+                                    </div>
+                                <div class="form-group col-md-1">
                                     <label class="control-label" for="selEstado">Estado</label>
-                                 @Html.DropDownList("dwEstado", new SelectList(ViewBag.Estado, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwEstado", @name = "dwEstado", style = "width:270px;max-width:270px;" })
                                 </div>
                                 <div class="form-group col-md-3">
-                                    <label class="control-label" for="selEstado">&nbsp;&nbsp;</label><br/>
+                                    @Html.DropDownList("dwEstado", new SelectList(ViewBag.Estado, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwEstado", @name = "dwEstado", style = "width:270px;max-width:270px;" })
+                                </div>
+                                <div class="form-group col-md-3">
+                       
                                     <button type="button" class="btn btn-primary" onclick="javascript: MostrarReporte()">
                                         <span class="glyphicon glyphicon-th-list"></span>&nbsp;Ver Reporte
                                     </button>
