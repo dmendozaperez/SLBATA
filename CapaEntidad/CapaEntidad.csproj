@@ -44,6 +44,7 @@
     <Compile Include="ArticuloStock\Provincia.cs" />
     <Compile Include="ArticuloStock\Departamento.cs" />
     <Compile Include="ArticuloStock\Articulo_Tienda.cs" />
+    <Compile Include="ArticuloSustituto\Articulo_Sustituto_Tienda.cs" />
     <Compile Include="Control\Ent_Aplicacion.cs" />
     <Compile Include="Control\Ent_Tienda.cs" />
     <Compile Include="ReportsValeCompra\Reporte_Resultado.cs" />

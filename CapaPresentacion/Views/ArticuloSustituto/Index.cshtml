@@ -102,73 +102,8 @@
         }
         //if ($("#NombreUsuario").val() == 'Invitado')
         //    setInterval('ContinuarConexion()', 5000);
-    });
+    });   
 
-    function ListarProvincia() {
-        var combo;
-        var CodDepartamento = $("#dwDep").val();
-       
-        combo = GenerarLista('1', CodDepartamento);
-        llenarComboPrv("dwProv", combo);
-        
-    }
-
-    function llenarComboPrv(Id, Data) {
-        var cod_Combo = "";
-        var des_Combo = "";
-        $('#' + Id).find('option').remove();
-        $.each(Data, function (index, item) {
-            cod_Combo = item.Prv_Cod;
-            des_Combo = item.Prv_Descripcion;
-            var option = $('<option value="' + cod_Combo + '">' + des_Combo + '</option>');
-            $('#' + Id).append(option);
-
-        });
-
-        $('#dwDistrito').find('option').remove();
-        var option = $('<option value="-1">-------TODOS-------</option>');
-        $('#dwDistrito').append(option);
-    }
-
-    function ListarDistrito() {
-     
-     
-        var combo;
-        var CodDepartamento = $("#dwDep").val();
-        var Codprovincia = $("#dwProv").val();
-        var Params = CodDepartamento + '|' + Codprovincia;
-        combo = GenerarLista('2', Params);
-        llenarComboDist("dwDistrito", combo);
-
-    }
-
-    function llenarComboDist(Id, Data) {
-        var cod_Combo = "";
-        var des_Combo = "";
-        $('#' + Id).find('option').remove();
-        $.each(Data, function (index, item) {
-            cod_Combo = item.Dist_Cod;
-            des_Combo = item.Dist_Descripcion;
-            var option = $('<option value="' + cod_Combo + '">' + des_Combo + '</option>');
-            $('#' + Id).append(option);
-
-        });
-    }
-
-    function GenerarLista(Numsp, Params) {
-        var Data
-
-        var url = '@Url.Action("GenerarCombo", "ArticuloStock")';
-        function exito(rpta) {
-            Data = rpta
-        }
-        function error(rpta) {
-            BI.AbrirPopup(20, 15, "Comuniquese con Soporte Tecnico<br>" + rpta.statusText, 'Disculpe!!!', false, true, false)
-        }
-        BI.AjaxJsonSeg("post", url, { Numsp: Numsp, Params: Params }, false, exito, error);
-
-        return Data
-    }
 
     function ValidarMostrarArticulo() {
      
@@ -232,7 +167,7 @@
                     var NombreArticulo = '';
                
                     $.each(valors, function (index, item) {
-                        codTienda = item.Codigo_tienda;
+                        codTienda = item.Codigo_Susti;
                         NombreArticulo = item.Descripcion;
                         strUrlImagen = item.Url_Imagen
                       
@@ -255,8 +190,8 @@
                         }
 
                         urlImagenSusti = item.Url_Imagen_susti
-                        nombreTienda = item.Nombre_Tienda;
-                        DireccionTienda = item.Direccion_Tienda;
+                        nombreTienda = item.Nombre_Susti;
+                        DireccionTienda = item.Direccion_Susti;
                         talla = item.Talla;
                         cantidad = (item.Cantidad).toString();
 

@@ -1,5 +1,5 @@
 ﻿
-using CapaEntidad.ArticuloStock;
+using CapaEntidad.ArticuloSustituto;
 using CapaEntidad.Control;
 using CapaDato.Control;
 using CapaEntidad.Menu;
@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-
 using System.Web.Script.Serialization;
 using CapaDato.Menu;
 using CapaDato.Articulosustituto;
@@ -208,13 +207,7 @@ namespace CapaPresentacion.Controllers
             {
                 if (_accesoMenu == true)
                 {
-                    var lista = datArticuloSusti.listar_Departamento();
-                    var obj = lista[0];
-                    List<Departamento> listobj = new List<Departamento>();
-                    listobj.Add(obj);
-
-                    ViewBag.listDepartamento = lista;
-                    ViewBag.General = listobj;
+                  
                     ViewBag.Usuario = _usuario.usu_nombre;
 
                     return View();
@@ -232,13 +225,7 @@ namespace CapaPresentacion.Controllers
                     #endregion
                     if (valida_rol)
                     {
-                        var lista = datArticuloSusti.listar_Departamento();
-                        var obj = lista[0];
-                        List<Departamento> listobj = new List<Departamento>();
-                        listobj.Add(obj);
-
-                        ViewBag.listDepartamento = lista;
-                        ViewBag.General = listobj;
+                     
                         ViewBag.Usuario = _usuario.usu_nombre;
                     
                         return View();
@@ -259,15 +246,7 @@ namespace CapaPresentacion.Controllers
 
             return Json("Success", JsonRequestBehavior.AllowGet);
         }
-
-        public List<Articulo_Stock_Tienda> lista_ArticuloStockTienda(string codArticulo)
-        {
-
-            List<Articulo_Stock_Tienda> list = datArticuloSusti.listar_ArticuloStock(codArticulo);
-            
-            Session[_session_liststockArticulo] = list;
-            return list;
-        }
+      
 
         public string listarStr_ArticuloSustituto(string codTda, string codArticulo, string codTalla)
         {
@@ -283,7 +262,7 @@ namespace CapaPresentacion.Controllers
             JsonResult jRespuesta = null;
             strJson = datArticuloSusti.listarStr_ArticuloSustituto(codTda, codArticulo, codTalla);
             var serializer = new JavaScriptSerializer();
-            jRespuesta = Json(serializer.Deserialize<List<Articulo_Stock_Tienda>>(strJson), JsonRequestBehavior.AllowGet);
+            jRespuesta = Json(serializer.Deserialize<List<Articulo_Sustituto_Tienda>>(strJson), JsonRequestBehavior.AllowGet);
 
             return strJson;
         }
