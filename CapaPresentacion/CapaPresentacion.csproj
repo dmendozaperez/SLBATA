@@ -1081,6 +1081,7 @@
     <Content Include="Views\ArticuloSustituto\Index.cshtml" />
     <Content Include="Views\ArticuloSustituto\Index_Acceso.cshtml" />
     <Content Include="Views\LoginIntermedio\Login.cshtml" />
+    <Content Include="Views\ArticuloSustituto\IndexAdmin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

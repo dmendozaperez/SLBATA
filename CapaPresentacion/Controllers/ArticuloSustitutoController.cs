@@ -12,6 +12,7 @@ using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using CapaDato.Menu;
 using CapaDato.Articulosustituto;
+using CapaDato.Reporte;
 
 namespace CapaPresentacion.Controllers
 {
@@ -237,8 +238,83 @@ namespace CapaPresentacion.Controllers
                 }
             }
         }
-               
-       public JsonResult UpdateStats()
+
+        public ActionResult IndexAdmin()
+        {
+            string usuario_nom = "";
+            string usuario_con = "";
+            Boolean _acceso = false;
+            Boolean _accesoMenu = true;
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            Dat_Combo datCbo = new Dat_Combo();
+
+            try
+            {
+                if (!DBNull.Value.Equals(Request.Cookies["User"].Value) && _usuario == null)
+                {
+
+                    usuario_nom = Request.Cookies["User"].Value;
+                    usuario_con = Request.Cookies["Pass"].Value;
+                    string _error_con = "";
+                    _acceso = IsValid(usuario_nom, usuario_con, ref _error_con);
+                    if (_acceso)
+                        _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+
+                    _accesoMenu = false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                _acceso = false;
+            }
+
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
+
+            if ((_usuario == null && _acceso == false) || (_usuario == null && _accesoMenu == true))
+            {
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+            }
+            else
+            {
+                if (_accesoMenu == true)
+                {
+
+                    ViewBag.Usuario = _usuario.usu_nombre;
+                    ViewBag.Tienda = datCbo.get_ListaTiendaXstore();
+
+                    return View();
+                }
+                else
+                {
+                    var data = new Dat_Menu();
+                    var items = data.navbarItems(_usuario.usu_id).ToList();
+                    Session[Ent_Global._session_menu_user] = items;
+
+                    #region<VALIDACION DE ROLES DE USUARIO>
+                    Boolean valida_rol = true;
+                    Basico valida_controller = new Basico();
+                    List<Ent_Menu_Items> menu = (List<Ent_Menu_Items>)Session[Ent_Global._session_menu_user];
+                    valida_rol = valida_controller.AccesoMenu(menu, this);
+                    #endregion
+                    if (valida_rol)
+                    {
+
+                        ViewBag.Usuario = _usuario.usu_nombre;
+
+                        return View();
+                    }
+                    else
+                    {
+                        return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+                    }
+                }
+            }
+        }
+
+        public JsonResult UpdateStats()
         {
             Dat_Usuario _usuario = new Dat_Usuario();
             Ent_Usuario _data_user = _usuario.get_login("Invitado");
@@ -251,7 +327,9 @@ namespace CapaPresentacion.Controllers
         public string listarStr_ArticuloSustituto(string codTda, string codArticulo, string codTalla)
         {
             string strJson = "";
-            codTda = "50339";
+            if (codTda == null)
+                codTda = "50339";
+
             string gcodTda = (String)Session["Tienda"];
             if (gcodTda != "" && gcodTda != null)
             {
