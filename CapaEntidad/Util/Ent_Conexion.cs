@@ -51,8 +51,8 @@ namespace CapaEntidad.Util
         {
             get
             {
-                //return "http://posperu.bgr.pe:80/BataRptSrv/";
-                return "http://posperu/BataRptSrv/";
+                return "http://posperu.bgr.pe:80/BataRptSrv/";
+                //return "http://posperu/BataRptSrv/";
             }
         }
 
