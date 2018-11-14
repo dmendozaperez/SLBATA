@@ -8,6 +8,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Xml.Linq;
+using CapaEntidad.Util;
+using CapaEntidad.Control;
 
 namespace CapaPresentacion.Controllers
 {
@@ -19,8 +21,21 @@ namespace CapaPresentacion.Controllers
         // GET: Consulta
         public ActionResult ConDocTienda()
         {
-            ViewBag.concepto_suna = dat_concepto_suna.lista_concepto_suna();
-            return View();
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
+
+            if (_usuario == null)
+            {
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+            }
+            else
+            {
+
+                ViewBag.concepto_suna = dat_concepto_suna.lista_concepto_suna();
+                return View();
+            }
         }
         public PartialViewResult ListaDocumento(string dwtipodoc, string numdoc, string fecini, string fecfinc)
         {
@@ -29,7 +44,14 @@ namespace CapaPresentacion.Controllers
 
         public List<Ent_Documentos_Tda> lista(string tipo_doc,string num_doc,string fec_ini,string fec_fin)
         {
-            List<Ent_Documentos_Tda> listdoc = dat_doc.get_lista(tipo_doc,num_doc,fec_ini,fec_fin);
+            string gcodTda = (String)Session["Tienda"];
+            string strParams = "";
+            if (gcodTda != "" && gcodTda != null)
+            {
+                strParams = gcodTda;
+            }
+
+            List<Ent_Documentos_Tda> listdoc = dat_doc.get_lista(strParams, tipo_doc, num_doc,fec_ini,fec_fin);
             Session[_session_listdocumentoDetalle_private] = listdoc;
             return listdoc;
         }

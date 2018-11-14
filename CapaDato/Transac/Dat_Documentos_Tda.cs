@@ -13,7 +13,7 @@ namespace CapaDato.Transac
 {
     public class Dat_Documentos_Tda
     {
-        public List<Ent_Documentos_Tda> get_lista(string tipo_doc,string num_doc,string fecha_ini,string fecha_fin)
+        public List<Ent_Documentos_Tda> get_lista(string tienda, string tipo_doc,string num_doc,string fecha_ini,string fecha_fin)
         {
             string sqlquery = "USP_GET_DOCUMENTOS_TIENDA";
             List<Ent_Documentos_Tda> listar = null;
@@ -29,7 +29,8 @@ namespace CapaDato.Transac
                             cmd.CommandTimeout = 0;
                             cmd.CommandType = CommandType.StoredProcedure;
                             cmd.Parameters.AddWithValue("@TIP_DOC", tipo_doc);
-                            cmd.Parameters.AddWithValue("@NUM_DOC", num_doc);
+                            cmd.Parameters.AddWithValue("@NUM_DOC", num_doc);  
+                            cmd.Parameters.AddWithValue("@COD_TDA", tienda);
                             if (fecha_ini.Length>0 && fecha_fin.Length>0)
                             { 
                                 cmd.Parameters.AddWithValue("@FEC_INI", Convert.ToDateTime(fecha_ini));
