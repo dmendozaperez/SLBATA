@@ -50,6 +50,7 @@
     <Compile Include="Control\Dat_Funcion.cs" />
     <Compile Include="Control\Dat_Roles.cs" />
     <Compile Include="Control\Dat_Usuario.cs" />
+    <Compile Include="Maestros\Dat_Concepto_Suna.cs" />
     <Compile Include="Maestros\Dat_Estado.cs" />
     <Compile Include="Maestros\Dat_Usuario_Tipo.cs" />
     <Compile Include="Menu\Dat_Menu.cs" />
@@ -57,6 +58,7 @@
     <Compile Include="Reporte\Dat_Combo.cs" />
     <Compile Include="ReportsValeCompra\Dat_ReportValeCompra.cs" />
     <Compile Include="Reports\Dat_Bataclub.cs" />
+    <Compile Include="Transac\Dat_Documentos_Tda.cs" />
     <Compile Include="ValeCompra\Dat_Cliente.cs" />
     <Compile Include="ValeCompra\Dat_ValeCompra.cs" />
   </ItemGroup>
