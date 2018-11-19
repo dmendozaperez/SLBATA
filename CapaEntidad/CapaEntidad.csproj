@@ -48,8 +48,10 @@
     <Compile Include="Control\Ent_Aplicacion.cs" />
     <Compile Include="Control\Ent_Tienda.cs" />
     <Compile Include="Maestros\Ent_Concepto_Suna.cs" />
+    <Compile Include="Maestros\Ent_ListaTienda.cs" />
     <Compile Include="ReportsValeCompra\Reporte_Resultado.cs" />
     <Compile Include="ReportsValeCompra\Reporte_Filtro.cs" />
+    <Compile Include="Transac\Ent_Analisis_Mov.cs" />
     <Compile Include="Transac\Ent_Documentos_Tda.cs" />
     <Compile Include="Util\Ent_Combo.cs" />
     <Compile Include="ValeCompra\Ent_Cliente.cs" />

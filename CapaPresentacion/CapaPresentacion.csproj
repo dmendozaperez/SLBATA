@@ -188,6 +188,7 @@
     <Compile Include="Bll\ExcelExportHelper.cs" />
     <Compile Include="Bll\ReportCredentials.cs" />
     <Compile Include="Controllers\AdminLteController.cs" />
+    <Compile Include="Controllers\AnalisisMovController.cs" />
     <Compile Include="Controllers\AplicacionController.cs" />
     <Compile Include="Controllers\ArticuloSustitutoController.cs" />
     <Compile Include="Controllers\ConsultaController.cs" />
@@ -214,7 +215,12 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Service References\FEBata\Reference.cs">
+    <Compile Include="Service References\FEBataBack\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\FEBataEpos\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -1030,48 +1036,93 @@
     <Content Include="Scripts\toastr.min.js" />
     <Content Include="Scripts\waitingfor.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Service References\FEBata\CapaPresentacion.FEBata.AddDocInfoResponse.datasource">
+    <Content Include="Service References\FEBataBack\CapaPresentacion.FEBataBack.AddDocInfoResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Service References\FEBata\CapaPresentacion.FEBata.CargaInformeBajasResponse.datasource">
+    <Content Include="Service References\FEBataBack\CapaPresentacion.FEBataBack.CargaInformeBajasResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Service References\FEBata\CapaPresentacion.FEBata.ConsultaInformeReversionesResponse.datasource">
+    <Content Include="Service References\FEBataBack\CapaPresentacion.FEBataBack.ConsultaInformeReversionesResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Service References\FEBata\CapaPresentacion.FEBata.GenInformeReversionesResponse.datasource">
+    <Content Include="Service References\FEBataBack\CapaPresentacion.FEBataBack.GenInformeReversionesResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Service References\FEBata\CapaPresentacion.FEBata.InformeResBoletasDiarioResponse.datasource">
+    <Content Include="Service References\FEBataBack\CapaPresentacion.FEBataBack.InformeResBoletasDiarioResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Service References\FEBata\CapaPresentacion.FEBata.listarAdjuntosRecibidosResponse.datasource">
+    <Content Include="Service References\FEBataBack\CapaPresentacion.FEBataBack.listarAdjuntosRecibidosResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Service References\FEBata\CapaPresentacion.FEBata.OnlineARCResponse.datasource">
+    <Content Include="Service References\FEBataBack\CapaPresentacion.FEBataBack.OnlineARCResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Service References\FEBata\CapaPresentacion.FEBata.OnlineConsultaEstadoResponse.datasource">
+    <Content Include="Service References\FEBataBack\CapaPresentacion.FEBataBack.OnlineConsultaEstadoResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Service References\FEBata\CapaPresentacion.FEBata.OnlineEventosResponse.datasource">
+    <Content Include="Service References\FEBataBack\CapaPresentacion.FEBataBack.OnlineEventosResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Service References\FEBata\CapaPresentacion.FEBata.OnlineGenerationResponse.datasource">
+    <Content Include="Service References\FEBataBack\CapaPresentacion.FEBataBack.OnlineGenerationResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Service References\FEBata\CapaPresentacion.FEBata.OnlineRecoveryRecListResponse.datasource">
+    <Content Include="Service References\FEBataBack\CapaPresentacion.FEBataBack.OnlineRecoveryRecListResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Service References\FEBata\CapaPresentacion.FEBata.OnlineRecoveryRecResponse.datasource">
+    <Content Include="Service References\FEBataBack\CapaPresentacion.FEBataBack.OnlineRecoveryRecResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Service References\FEBata\CapaPresentacion.FEBata.OnlineRecoveryResponse.datasource">
+    <Content Include="Service References\FEBataBack\CapaPresentacion.FEBataBack.OnlineRecoveryResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <None Include="Service References\FEBata\configuration91.svcinfo" />
-    <None Include="Service References\FEBata\configuration.svcinfo" />
-    <None Include="Service References\FEBata\Reference.svcmap">
+    <None Include="Service References\FEBataBack\configuration91.svcinfo" />
+    <None Include="Service References\FEBataBack\configuration.svcinfo" />
+    <None Include="Service References\FEBataBack\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <Content Include="Service References\FEBataEpos\CapaPresentacion.FEBataEpos.AddDocInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\FEBataEpos\CapaPresentacion.FEBataEpos.CargaInformeBajasResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\FEBataEpos\CapaPresentacion.FEBataEpos.ConsultaInformeReversionesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\FEBataEpos\CapaPresentacion.FEBataEpos.GenInformeReversionesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\FEBataEpos\CapaPresentacion.FEBataEpos.InformeResBoletasDiarioResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\FEBataEpos\CapaPresentacion.FEBataEpos.listarAdjuntosRecibidosResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\FEBataEpos\CapaPresentacion.FEBataEpos.OnlineARCResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\FEBataEpos\CapaPresentacion.FEBataEpos.OnlineConsultaEstadoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\FEBataEpos\CapaPresentacion.FEBataEpos.OnlineEventosResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\FEBataEpos\CapaPresentacion.FEBataEpos.OnlineGenerationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\FEBataEpos\CapaPresentacion.FEBataEpos.OnlineRecoveryRecListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\FEBataEpos\CapaPresentacion.FEBataEpos.OnlineRecoveryRecResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\FEBataEpos\CapaPresentacion.FEBataEpos.OnlineRecoveryResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <None Include="Service References\FEBataEpos\configuration91.svcinfo" />
+    <None Include="Service References\FEBataEpos\configuration.svcinfo" />
+    <None Include="Service References\FEBataEpos\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
@@ -1146,7 +1197,10 @@
     <Content Include="Views\ArticuloSustituto\IndexAdmin.cshtml" />
     <Content Include="Views\Consulta\ConDocTienda.cshtml" />
     <Content Include="Views\Consulta\ListaDocumento.cshtml" />
-    <None Include="Service References\FEBata\Online.wsdl" />
+    <Content Include="Views\AnalisisMov\Index.cshtml" />
+    <Content Include="Views\AnalisisMov\ListaAnalisisMov.cshtml" />
+    <None Include="Service References\FEBataBack\Online.wsdl" />
+    <None Include="Service References\FEBataEpos\Online.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1177,7 +1231,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadataStorage Include="Service References\FEBata\" />
+    <WCFMetadataStorage Include="Service References\FEBataBack\" />
+    <WCFMetadataStorage Include="Service References\FEBataEpos\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

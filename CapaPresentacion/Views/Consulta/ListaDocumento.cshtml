@@ -8,7 +8,7 @@
 @*<a href="#" class="btn btn-success btn-sm">
     <span class="glyphicon glyphicon-download-alt"></span>
 </a>*@
-@*<div> <a href="" class="icon-link icon-primary icon-large" target="_blank"><i class="glyphicon glyphicon-trash"></i></a></div>*@
+@*<div> <a href="" onclick="get_url()" class="icon-link icon-primary icon-large" target="_blank"><i class="glyphicon glyphicon-trash"></i></a></div>*@
 @*<button title="Descargar Archivo" class="btn btn-primary"><span class="glyphicon glyphicon-download-alt"></span></button>*@
 <table id="example" class="table table-hover dataTable  table-striped table-responsive">    
     <thead>
@@ -83,8 +83,11 @@
                    //{ "sName": "num_doc_ws", "mData": "num_doc_ws", "sClass": "right" },
 
                    {"render":function ( data, type, full ){
-                       if (full.FE == 'S') {                       
-                           return '<div> <a href=/Consulta/descargar_pdf?user_ws=' + full.user_ws + '&pass_ws=' + full.pass_ws + '&ruc_ws=' + full.ruc_ws + '&tipodoc_ws=' + full.tipodoc_ws + '&num_doc_ws=' + full.num_doc_ws + ' target="_blank" class="btn btn-success btn-sm"> <span class="glyphicon glyphicon-download-alt"></span></a></div>';
+                       if (full.FE == 'S') {
+
+                           var envio = "'" + full.user_ws + "','" + full.pass_ws + "','" + full.ruc_ws + "','" + full.tipodoc_ws + "','" + full.num_doc_ws + "'"
+
+                           return '<div> <a onclick="get_url(' + envio + ')" target="_blank" class="btn btn-success btn-sm"> <span class="glyphicon glyphicon-download-alt"></span></a></div>';
                        } else {
                            return '<div style="display: none;"><a href=' + data + ' ><i class="fa fa-file fa-lg"></i></a></div>';
                        }
@@ -111,15 +114,59 @@
             'copyHtml5',
              ]
         });
-
-        @*$('#txtDisponible').val('0.00');
-        $('#txtconsumido').val('0.00');
-
-        $('#txtDisponible').val(@ViewBag.TotalDisponible);
-        $('#txtconsumido').val(@ViewBag.TotalConsumido);*@
+    
 
 
     });
+
+
+    //function get_url(user_ws, pass_ws, ruc_ws, tipodoc_ws, num_doc_ws) {
+
+        function get_url(user_ws, pass_ws, ruc_ws, tipodoc_ws, num_doc_ws) {
+            //var msg_titulo = 'Mensaje Aquarella!';
+            //var id = $("#idfun").val();
+            //var nombre = $("#nombre").val();
+            //var padre = $('select[name=dwfuncion]').selectpicker('val');
+            //var orden = $("#orden").val();
+            //waitingDialog.show('Espere un momento por favor');
+            $.ajax
+                 ({
+                     url: '../Consulta/descargar_pdf',
+                     dataType: "json",
+                     type: "POST",
+                     data: { user_ws: user_ws, pass_ws: pass_ws, ruc_ws: ruc_ws, tipodoc_ws: tipodoc_ws, num_doc_ws: num_doc_ws },
+                     success: function (data, textStatus, XMLHttpRequest) {
+
+                         //alert(data.toString());
+                         
+                         window.open(data.toString());
+
+                         @*if (data.estado == '1') {
+
+                             //$('#myModal').modal('hide');
+                             //$('body').removeClass('modal-open');
+                             //$('.modal-backdrop').remove();
+
+                             $('#lista').load('@Url.Action("ListaFuncion", "Funcion")', {});
+                             waitingDialog.hide();
+                             toastr.success(data.desmsg, msg_titulo);
+                         }
+                         else {
+                             waitingDialog.hide();
+                             toastr.error(data.desmsg, msg_titulo);
+                         }*@
+                     },
+                     error: function (xhr) {
+                         alert(xhr);
+                         //waitingDialog.hide();
+                         //toastr.error(xhr, msg_titulo);
+                     }
+                 })
+
+        }
+
+    //    return '<div> <a href=/Consulta/descargar_pdf?user_ws=' + full.user_ws + '&pass_ws=' + full.pass_ws + '&ruc_ws=' + full.ruc_ws + '&tipodoc_ws=' + full.tipodoc_ws + '&num_doc_ws=' + full.num_doc_ws + ' target="_blank" class="btn btn-success btn-sm"> <span class="glyphicon glyphicon-download-alt"></span></a></div>';
+    //}
 
 
 

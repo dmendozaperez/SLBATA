@@ -61,7 +61,7 @@ namespace CapaDato.Transac
 
                         }
                     }
-                    catch (Exception)
+                    catch (Exception EXC)
                     {
                         listar = null;
                     }

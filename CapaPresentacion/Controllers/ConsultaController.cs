@@ -119,16 +119,23 @@ namespace CapaPresentacion.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
 
-        [HttpGet]
-        public string descargar_pdf(string user_ws, string pass_ws, string ruc_ws, string tipodoc_ws, string num_doc_ws)
+        [HttpPost]
+        public JsonResult descargar_pdf(string user_ws, string pass_ws, string ruc_ws, string tipodoc_ws, string num_doc_ws)
         {
             string url_pdf = "";
-            FEBata.OnlinePortTypeClient gen_fe = new FEBata.OnlinePortTypeClient();
-
-            //FEBata.OnlineRecoveryRequest f = new FEBata.OnlineRecoveryRequest();
-            
-
-            string consulta = gen_fe.OnlineRecovery(ruc_ws, user_ws, pass_ws, Convert.ToInt32(tipodoc_ws), num_doc_ws, 2);
+            string consulta = "";
+            if (tipodoc_ws=="9")
+            { 
+                /*web servive backoficce*/
+                FEBataBack.OnlinePortTypeClient gen_fe = new FEBataBack.OnlinePortTypeClient();
+                consulta = gen_fe.OnlineRecovery(ruc_ws, user_ws, pass_ws, Convert.ToInt32(tipodoc_ws), num_doc_ws, 2);
+            }
+            else
+            {
+                /*web servive e-pos*/
+                FEBataEpos.OnlinePortTypeClient gen_fe = new FEBataEpos.OnlinePortTypeClient();
+                consulta = gen_fe.OnlineRecovery(ruc_ws, user_ws, pass_ws, Convert.ToInt32(tipodoc_ws), num_doc_ws, 2);
+            }
             consulta = consulta.Replace("&", "amp;");
             var docpdf = XDocument.Parse(consulta);
             var resultpdf = from factura in docpdf.Descendants("Respuesta")
@@ -141,7 +148,11 @@ namespace CapaPresentacion.Controllers
             {
                 url_pdf = itempdf.Mensaje;
             }
-            return "";
+
+            JsonResult result = new JsonResult();
+            result.Data= url_pdf;
+            return result;
+            //return  url_pdf;
         }
     }
 }

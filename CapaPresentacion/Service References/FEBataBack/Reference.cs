@@ -8,129 +8,129 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CapaPresentacion.FEBata {
+namespace CapaPresentacion.FEBataBack {
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(Namespace="http://ws.online.asp.core.paperless.cl", ConfigurationName="FEBata.OnlinePortType")]
+    [System.ServiceModel.ServiceContractAttribute(Namespace="http://ws.online.asp.core.paperless.cl", ConfigurationName="FEBataBack.OnlinePortType")]
     public interface OnlinePortType {
         
         // CODEGEN: El parámetro 'return' requiere información adicional de esquema que no se puede capturar con el modo de parámetros. El atributo específico es 'System.Xml.Serialization.XmlElementAttribute'.
         [System.ServiceModel.OperationContractAttribute(Action="urn:OnlineRecovery", ReplyAction="urn:OnlineRecoveryResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [return: System.ServiceModel.MessageParameterAttribute(Name="return")]
-        CapaPresentacion.FEBata.OnlineRecoveryResponse OnlineRecovery(CapaPresentacion.FEBata.OnlineRecoveryRequest request);
+        CapaPresentacion.FEBataBack.OnlineRecoveryResponse OnlineRecovery(CapaPresentacion.FEBataBack.OnlineRecoveryRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:OnlineRecovery", ReplyAction="urn:OnlineRecoveryResponse")]
-        System.Threading.Tasks.Task<CapaPresentacion.FEBata.OnlineRecoveryResponse> OnlineRecoveryAsync(CapaPresentacion.FEBata.OnlineRecoveryRequest request);
+        System.Threading.Tasks.Task<CapaPresentacion.FEBataBack.OnlineRecoveryResponse> OnlineRecoveryAsync(CapaPresentacion.FEBataBack.OnlineRecoveryRequest request);
         
         // CODEGEN: El parámetro 'return' requiere información adicional de esquema que no se puede capturar con el modo de parámetros. El atributo específico es 'System.Xml.Serialization.XmlElementAttribute'.
         [System.ServiceModel.OperationContractAttribute(Action="urn:CargaInformeBajas", ReplyAction="urn:CargaInformeBajasResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [return: System.ServiceModel.MessageParameterAttribute(Name="return")]
-        CapaPresentacion.FEBata.CargaInformeBajasResponse CargaInformeBajas(CapaPresentacion.FEBata.CargaInformeBajasRequest request);
+        CapaPresentacion.FEBataBack.CargaInformeBajasResponse CargaInformeBajas(CapaPresentacion.FEBataBack.CargaInformeBajasRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:CargaInformeBajas", ReplyAction="urn:CargaInformeBajasResponse")]
-        System.Threading.Tasks.Task<CapaPresentacion.FEBata.CargaInformeBajasResponse> CargaInformeBajasAsync(CapaPresentacion.FEBata.CargaInformeBajasRequest request);
+        System.Threading.Tasks.Task<CapaPresentacion.FEBataBack.CargaInformeBajasResponse> CargaInformeBajasAsync(CapaPresentacion.FEBataBack.CargaInformeBajasRequest request);
         
         // CODEGEN: El parámetro 'return' requiere información adicional de esquema que no se puede capturar con el modo de parámetros. El atributo específico es 'System.Xml.Serialization.XmlElementAttribute'.
         [System.ServiceModel.OperationContractAttribute(Action="urn:OnlineARC", ReplyAction="urn:OnlineARCResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [return: System.ServiceModel.MessageParameterAttribute(Name="return")]
-        CapaPresentacion.FEBata.OnlineARCResponse OnlineARC(CapaPresentacion.FEBata.OnlineARCRequest request);
+        CapaPresentacion.FEBataBack.OnlineARCResponse OnlineARC(CapaPresentacion.FEBataBack.OnlineARCRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:OnlineARC", ReplyAction="urn:OnlineARCResponse")]
-        System.Threading.Tasks.Task<CapaPresentacion.FEBata.OnlineARCResponse> OnlineARCAsync(CapaPresentacion.FEBata.OnlineARCRequest request);
+        System.Threading.Tasks.Task<CapaPresentacion.FEBataBack.OnlineARCResponse> OnlineARCAsync(CapaPresentacion.FEBataBack.OnlineARCRequest request);
         
         // CODEGEN: El parámetro 'return' requiere información adicional de esquema que no se puede capturar con el modo de parámetros. El atributo específico es 'System.Xml.Serialization.XmlElementAttribute'.
         [System.ServiceModel.OperationContractAttribute(Action="urn:OnlineConsultaEstado", ReplyAction="urn:OnlineConsultaEstadoResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [return: System.ServiceModel.MessageParameterAttribute(Name="return")]
-        CapaPresentacion.FEBata.OnlineConsultaEstadoResponse OnlineConsultaEstado(CapaPresentacion.FEBata.OnlineConsultaEstadoRequest request);
+        CapaPresentacion.FEBataBack.OnlineConsultaEstadoResponse OnlineConsultaEstado(CapaPresentacion.FEBataBack.OnlineConsultaEstadoRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:OnlineConsultaEstado", ReplyAction="urn:OnlineConsultaEstadoResponse")]
-        System.Threading.Tasks.Task<CapaPresentacion.FEBata.OnlineConsultaEstadoResponse> OnlineConsultaEstadoAsync(CapaPresentacion.FEBata.OnlineConsultaEstadoRequest request);
+        System.Threading.Tasks.Task<CapaPresentacion.FEBataBack.OnlineConsultaEstadoResponse> OnlineConsultaEstadoAsync(CapaPresentacion.FEBataBack.OnlineConsultaEstadoRequest request);
         
         // CODEGEN: El parámetro 'return' requiere información adicional de esquema que no se puede capturar con el modo de parámetros. El atributo específico es 'System.Xml.Serialization.XmlElementAttribute'.
         [System.ServiceModel.OperationContractAttribute(Action="urn:GenInformeReversiones", ReplyAction="urn:GenInformeReversionesResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [return: System.ServiceModel.MessageParameterAttribute(Name="return")]
-        CapaPresentacion.FEBata.GenInformeReversionesResponse GenInformeReversiones(CapaPresentacion.FEBata.GenInformeReversionesRequest request);
+        CapaPresentacion.FEBataBack.GenInformeReversionesResponse GenInformeReversiones(CapaPresentacion.FEBataBack.GenInformeReversionesRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:GenInformeReversiones", ReplyAction="urn:GenInformeReversionesResponse")]
-        System.Threading.Tasks.Task<CapaPresentacion.FEBata.GenInformeReversionesResponse> GenInformeReversionesAsync(CapaPresentacion.FEBata.GenInformeReversionesRequest request);
+        System.Threading.Tasks.Task<CapaPresentacion.FEBataBack.GenInformeReversionesResponse> GenInformeReversionesAsync(CapaPresentacion.FEBataBack.GenInformeReversionesRequest request);
         
         // CODEGEN: El parámetro 'return' requiere información adicional de esquema que no se puede capturar con el modo de parámetros. El atributo específico es 'System.Xml.Serialization.XmlElementAttribute'.
         [System.ServiceModel.OperationContractAttribute(Action="urn:AddDocInfo", ReplyAction="urn:AddDocInfoResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [return: System.ServiceModel.MessageParameterAttribute(Name="return")]
-        CapaPresentacion.FEBata.AddDocInfoResponse AddDocInfo(CapaPresentacion.FEBata.AddDocInfoRequest request);
+        CapaPresentacion.FEBataBack.AddDocInfoResponse AddDocInfo(CapaPresentacion.FEBataBack.AddDocInfoRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:AddDocInfo", ReplyAction="urn:AddDocInfoResponse")]
-        System.Threading.Tasks.Task<CapaPresentacion.FEBata.AddDocInfoResponse> AddDocInfoAsync(CapaPresentacion.FEBata.AddDocInfoRequest request);
+        System.Threading.Tasks.Task<CapaPresentacion.FEBataBack.AddDocInfoResponse> AddDocInfoAsync(CapaPresentacion.FEBataBack.AddDocInfoRequest request);
         
         // CODEGEN: El parámetro 'return' requiere información adicional de esquema que no se puede capturar con el modo de parámetros. El atributo específico es 'System.Xml.Serialization.XmlElementAttribute'.
         [System.ServiceModel.OperationContractAttribute(Action="urn:listarAdjuntosRecibidos", ReplyAction="urn:listarAdjuntosRecibidosResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [return: System.ServiceModel.MessageParameterAttribute(Name="return")]
-        CapaPresentacion.FEBata.listarAdjuntosRecibidosResponse listarAdjuntosRecibidos(CapaPresentacion.FEBata.listarAdjuntosRecibidosRequest request);
+        CapaPresentacion.FEBataBack.listarAdjuntosRecibidosResponse listarAdjuntosRecibidos(CapaPresentacion.FEBataBack.listarAdjuntosRecibidosRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:listarAdjuntosRecibidos", ReplyAction="urn:listarAdjuntosRecibidosResponse")]
-        System.Threading.Tasks.Task<CapaPresentacion.FEBata.listarAdjuntosRecibidosResponse> listarAdjuntosRecibidosAsync(CapaPresentacion.FEBata.listarAdjuntosRecibidosRequest request);
+        System.Threading.Tasks.Task<CapaPresentacion.FEBataBack.listarAdjuntosRecibidosResponse> listarAdjuntosRecibidosAsync(CapaPresentacion.FEBataBack.listarAdjuntosRecibidosRequest request);
         
         // CODEGEN: El parámetro 'return' requiere información adicional de esquema que no se puede capturar con el modo de parámetros. El atributo específico es 'System.Xml.Serialization.XmlElementAttribute'.
         [System.ServiceModel.OperationContractAttribute(Action="urn:OnlineRecoveryRecList", ReplyAction="urn:OnlineRecoveryRecListResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [return: System.ServiceModel.MessageParameterAttribute(Name="return")]
-        CapaPresentacion.FEBata.OnlineRecoveryRecListResponse OnlineRecoveryRecList(CapaPresentacion.FEBata.OnlineRecoveryRecListRequest request);
+        CapaPresentacion.FEBataBack.OnlineRecoveryRecListResponse OnlineRecoveryRecList(CapaPresentacion.FEBataBack.OnlineRecoveryRecListRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:OnlineRecoveryRecList", ReplyAction="urn:OnlineRecoveryRecListResponse")]
-        System.Threading.Tasks.Task<CapaPresentacion.FEBata.OnlineRecoveryRecListResponse> OnlineRecoveryRecListAsync(CapaPresentacion.FEBata.OnlineRecoveryRecListRequest request);
+        System.Threading.Tasks.Task<CapaPresentacion.FEBataBack.OnlineRecoveryRecListResponse> OnlineRecoveryRecListAsync(CapaPresentacion.FEBataBack.OnlineRecoveryRecListRequest request);
         
         // CODEGEN: El parámetro 'return' requiere información adicional de esquema que no se puede capturar con el modo de parámetros. El atributo específico es 'System.Xml.Serialization.XmlElementAttribute'.
         [System.ServiceModel.OperationContractAttribute(Action="urn:InformeResBoletasDiario", ReplyAction="urn:InformeResBoletasDiarioResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [return: System.ServiceModel.MessageParameterAttribute(Name="return")]
-        CapaPresentacion.FEBata.InformeResBoletasDiarioResponse InformeResBoletasDiario(CapaPresentacion.FEBata.InformeResBoletasDiarioRequest request);
+        CapaPresentacion.FEBataBack.InformeResBoletasDiarioResponse InformeResBoletasDiario(CapaPresentacion.FEBataBack.InformeResBoletasDiarioRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:InformeResBoletasDiario", ReplyAction="urn:InformeResBoletasDiarioResponse")]
-        System.Threading.Tasks.Task<CapaPresentacion.FEBata.InformeResBoletasDiarioResponse> InformeResBoletasDiarioAsync(CapaPresentacion.FEBata.InformeResBoletasDiarioRequest request);
+        System.Threading.Tasks.Task<CapaPresentacion.FEBataBack.InformeResBoletasDiarioResponse> InformeResBoletasDiarioAsync(CapaPresentacion.FEBataBack.InformeResBoletasDiarioRequest request);
         
         // CODEGEN: El parámetro 'return' requiere información adicional de esquema que no se puede capturar con el modo de parámetros. El atributo específico es 'System.Xml.Serialization.XmlElementAttribute'.
         [System.ServiceModel.OperationContractAttribute(Action="urn:ConsultaInformeReversiones", ReplyAction="urn:ConsultaInformeReversionesResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [return: System.ServiceModel.MessageParameterAttribute(Name="return")]
-        CapaPresentacion.FEBata.ConsultaInformeReversionesResponse ConsultaInformeReversiones(CapaPresentacion.FEBata.ConsultaInformeReversionesRequest request);
+        CapaPresentacion.FEBataBack.ConsultaInformeReversionesResponse ConsultaInformeReversiones(CapaPresentacion.FEBataBack.ConsultaInformeReversionesRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:ConsultaInformeReversiones", ReplyAction="urn:ConsultaInformeReversionesResponse")]
-        System.Threading.Tasks.Task<CapaPresentacion.FEBata.ConsultaInformeReversionesResponse> ConsultaInformeReversionesAsync(CapaPresentacion.FEBata.ConsultaInformeReversionesRequest request);
+        System.Threading.Tasks.Task<CapaPresentacion.FEBataBack.ConsultaInformeReversionesResponse> ConsultaInformeReversionesAsync(CapaPresentacion.FEBataBack.ConsultaInformeReversionesRequest request);
         
         // CODEGEN: El parámetro 'return' requiere información adicional de esquema que no se puede capturar con el modo de parámetros. El atributo específico es 'System.Xml.Serialization.XmlElementAttribute'.
         [System.ServiceModel.OperationContractAttribute(Action="urn:OnlineGeneration", ReplyAction="urn:OnlineGenerationResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [return: System.ServiceModel.MessageParameterAttribute(Name="return")]
-        CapaPresentacion.FEBata.OnlineGenerationResponse OnlineGeneration(CapaPresentacion.FEBata.OnlineGenerationRequest request);
+        CapaPresentacion.FEBataBack.OnlineGenerationResponse OnlineGeneration(CapaPresentacion.FEBataBack.OnlineGenerationRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:OnlineGeneration", ReplyAction="urn:OnlineGenerationResponse")]
-        System.Threading.Tasks.Task<CapaPresentacion.FEBata.OnlineGenerationResponse> OnlineGenerationAsync(CapaPresentacion.FEBata.OnlineGenerationRequest request);
+        System.Threading.Tasks.Task<CapaPresentacion.FEBataBack.OnlineGenerationResponse> OnlineGenerationAsync(CapaPresentacion.FEBataBack.OnlineGenerationRequest request);
         
         // CODEGEN: El parámetro 'return' requiere información adicional de esquema que no se puede capturar con el modo de parámetros. El atributo específico es 'System.Xml.Serialization.XmlElementAttribute'.
         [System.ServiceModel.OperationContractAttribute(Action="urn:OnlineEventos", ReplyAction="urn:OnlineEventosResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [return: System.ServiceModel.MessageParameterAttribute(Name="return")]
-        CapaPresentacion.FEBata.OnlineEventosResponse OnlineEventos(CapaPresentacion.FEBata.OnlineEventosRequest request);
+        CapaPresentacion.FEBataBack.OnlineEventosResponse OnlineEventos(CapaPresentacion.FEBataBack.OnlineEventosRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:OnlineEventos", ReplyAction="urn:OnlineEventosResponse")]
-        System.Threading.Tasks.Task<CapaPresentacion.FEBata.OnlineEventosResponse> OnlineEventosAsync(CapaPresentacion.FEBata.OnlineEventosRequest request);
+        System.Threading.Tasks.Task<CapaPresentacion.FEBataBack.OnlineEventosResponse> OnlineEventosAsync(CapaPresentacion.FEBataBack.OnlineEventosRequest request);
         
         // CODEGEN: El parámetro 'return' requiere información adicional de esquema que no se puede capturar con el modo de parámetros. El atributo específico es 'System.Xml.Serialization.XmlElementAttribute'.
         [System.ServiceModel.OperationContractAttribute(Action="urn:OnlineRecoveryRec", ReplyAction="urn:OnlineRecoveryRecResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [return: System.ServiceModel.MessageParameterAttribute(Name="return")]
-        CapaPresentacion.FEBata.OnlineRecoveryRecResponse OnlineRecoveryRec(CapaPresentacion.FEBata.OnlineRecoveryRecRequest request);
+        CapaPresentacion.FEBataBack.OnlineRecoveryRecResponse OnlineRecoveryRec(CapaPresentacion.FEBataBack.OnlineRecoveryRecRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:OnlineRecoveryRec", ReplyAction="urn:OnlineRecoveryRecResponse")]
-        System.Threading.Tasks.Task<CapaPresentacion.FEBata.OnlineRecoveryRecResponse> OnlineRecoveryRecAsync(CapaPresentacion.FEBata.OnlineRecoveryRecRequest request);
+        System.Threading.Tasks.Task<CapaPresentacion.FEBataBack.OnlineRecoveryRecResponse> OnlineRecoveryRecAsync(CapaPresentacion.FEBataBack.OnlineRecoveryRecRequest request);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -898,12 +898,12 @@ namespace CapaPresentacion.FEBata {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface OnlinePortTypeChannel : CapaPresentacion.FEBata.OnlinePortType, System.ServiceModel.IClientChannel {
+    public interface OnlinePortTypeChannel : CapaPresentacion.FEBataBack.OnlinePortType, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class OnlinePortTypeClient : System.ServiceModel.ClientBase<CapaPresentacion.FEBata.OnlinePortType>, CapaPresentacion.FEBata.OnlinePortType {
+    public partial class OnlinePortTypeClient : System.ServiceModel.ClientBase<CapaPresentacion.FEBataBack.OnlinePortType>, CapaPresentacion.FEBataBack.OnlinePortType {
         
         public OnlinePortTypeClient() {
         }
@@ -925,76 +925,76 @@ namespace CapaPresentacion.FEBata {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        CapaPresentacion.FEBata.OnlineRecoveryResponse CapaPresentacion.FEBata.OnlinePortType.OnlineRecovery(CapaPresentacion.FEBata.OnlineRecoveryRequest request) {
+        CapaPresentacion.FEBataBack.OnlineRecoveryResponse CapaPresentacion.FEBataBack.OnlinePortType.OnlineRecovery(CapaPresentacion.FEBataBack.OnlineRecoveryRequest request) {
             return base.Channel.OnlineRecovery(request);
         }
         
         public string OnlineRecovery(string ruc, string login, string clave, int tipoDoc, string folio, int tipoRetorno) {
-            CapaPresentacion.FEBata.OnlineRecoveryRequest inValue = new CapaPresentacion.FEBata.OnlineRecoveryRequest();
+            CapaPresentacion.FEBataBack.OnlineRecoveryRequest inValue = new CapaPresentacion.FEBataBack.OnlineRecoveryRequest();
             inValue.ruc = ruc;
             inValue.login = login;
             inValue.clave = clave;
             inValue.tipoDoc = tipoDoc;
             inValue.folio = folio;
             inValue.tipoRetorno = tipoRetorno;
-            CapaPresentacion.FEBata.OnlineRecoveryResponse retVal = ((CapaPresentacion.FEBata.OnlinePortType)(this)).OnlineRecovery(inValue);
+            CapaPresentacion.FEBataBack.OnlineRecoveryResponse retVal = ((CapaPresentacion.FEBataBack.OnlinePortType)(this)).OnlineRecovery(inValue);
             return retVal.@return;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<CapaPresentacion.FEBata.OnlineRecoveryResponse> CapaPresentacion.FEBata.OnlinePortType.OnlineRecoveryAsync(CapaPresentacion.FEBata.OnlineRecoveryRequest request) {
+        System.Threading.Tasks.Task<CapaPresentacion.FEBataBack.OnlineRecoveryResponse> CapaPresentacion.FEBataBack.OnlinePortType.OnlineRecoveryAsync(CapaPresentacion.FEBataBack.OnlineRecoveryRequest request) {
             return base.Channel.OnlineRecoveryAsync(request);
         }
         
-        public System.Threading.Tasks.Task<CapaPresentacion.FEBata.OnlineRecoveryResponse> OnlineRecoveryAsync(string ruc, string login, string clave, int tipoDoc, string folio, int tipoRetorno) {
-            CapaPresentacion.FEBata.OnlineRecoveryRequest inValue = new CapaPresentacion.FEBata.OnlineRecoveryRequest();
+        public System.Threading.Tasks.Task<CapaPresentacion.FEBataBack.OnlineRecoveryResponse> OnlineRecoveryAsync(string ruc, string login, string clave, int tipoDoc, string folio, int tipoRetorno) {
+            CapaPresentacion.FEBataBack.OnlineRecoveryRequest inValue = new CapaPresentacion.FEBataBack.OnlineRecoveryRequest();
             inValue.ruc = ruc;
             inValue.login = login;
             inValue.clave = clave;
             inValue.tipoDoc = tipoDoc;
             inValue.folio = folio;
             inValue.tipoRetorno = tipoRetorno;
-            return ((CapaPresentacion.FEBata.OnlinePortType)(this)).OnlineRecoveryAsync(inValue);
+            return ((CapaPresentacion.FEBataBack.OnlinePortType)(this)).OnlineRecoveryAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        CapaPresentacion.FEBata.CargaInformeBajasResponse CapaPresentacion.FEBata.OnlinePortType.CargaInformeBajas(CapaPresentacion.FEBata.CargaInformeBajasRequest request) {
+        CapaPresentacion.FEBataBack.CargaInformeBajasResponse CapaPresentacion.FEBataBack.OnlinePortType.CargaInformeBajas(CapaPresentacion.FEBataBack.CargaInformeBajasRequest request) {
             return base.Channel.CargaInformeBajas(request);
         }
         
         public string CargaInformeBajas(string ruc, string login, string clave, string docTxt, string periodo) {
-            CapaPresentacion.FEBata.CargaInformeBajasRequest inValue = new CapaPresentacion.FEBata.CargaInformeBajasRequest();
+            CapaPresentacion.FEBataBack.CargaInformeBajasRequest inValue = new CapaPresentacion.FEBataBack.CargaInformeBajasRequest();
             inValue.ruc = ruc;
             inValue.login = login;
             inValue.clave = clave;
             inValue.docTxt = docTxt;
             inValue.periodo = periodo;
-            CapaPresentacion.FEBata.CargaInformeBajasResponse retVal = ((CapaPresentacion.FEBata.OnlinePortType)(this)).CargaInformeBajas(inValue);
+            CapaPresentacion.FEBataBack.CargaInformeBajasResponse retVal = ((CapaPresentacion.FEBataBack.OnlinePortType)(this)).CargaInformeBajas(inValue);
             return retVal.@return;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<CapaPresentacion.FEBata.CargaInformeBajasResponse> CapaPresentacion.FEBata.OnlinePortType.CargaInformeBajasAsync(CapaPresentacion.FEBata.CargaInformeBajasRequest request) {
+        System.Threading.Tasks.Task<CapaPresentacion.FEBataBack.CargaInformeBajasResponse> CapaPresentacion.FEBataBack.OnlinePortType.CargaInformeBajasAsync(CapaPresentacion.FEBataBack.CargaInformeBajasRequest request) {
             return base.Channel.CargaInformeBajasAsync(request);
         }
         
-        public System.Threading.Tasks.Task<CapaPresentacion.FEBata.CargaInformeBajasResponse> CargaInformeBajasAsync(string ruc, string login, string clave, string docTxt, string periodo) {
-            CapaPresentacion.FEBata.CargaInformeBajasRequest inValue = new CapaPresentacion.FEBata.CargaInformeBajasRequest();
+        public System.Threading.Tasks.Task<CapaPresentacion.FEBataBack.CargaInformeBajasResponse> CargaInformeBajasAsync(string ruc, string login, string clave, string docTxt, string periodo) {
+            CapaPresentacion.FEBataBack.CargaInformeBajasRequest inValue = new CapaPresentacion.FEBataBack.CargaInformeBajasRequest();
             inValue.ruc = ruc;
             inValue.login = login;
             inValue.clave = clave;
             inValue.docTxt = docTxt;
             inValue.periodo = periodo;
-            return ((CapaPresentacion.FEBata.OnlinePortType)(this)).CargaInformeBajasAsync(inValue);
+            return ((CapaPresentacion.FEBataBack.OnlinePortType)(this)).CargaInformeBajasAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        CapaPresentacion.FEBata.OnlineARCResponse CapaPresentacion.FEBata.OnlinePortType.OnlineARC(CapaPresentacion.FEBata.OnlineARCRequest request) {
+        CapaPresentacion.FEBataBack.OnlineARCResponse CapaPresentacion.FEBataBack.OnlinePortType.OnlineARC(CapaPresentacion.FEBataBack.OnlineARCRequest request) {
             return base.Channel.OnlineARC(request);
         }
         
         public string OnlineARC(string ruc, string login, string clave, string rucEmisor, int tipoDoc, string folio, int estado, string version) {
-            CapaPresentacion.FEBata.OnlineARCRequest inValue = new CapaPresentacion.FEBata.OnlineARCRequest();
+            CapaPresentacion.FEBataBack.OnlineARCRequest inValue = new CapaPresentacion.FEBataBack.OnlineARCRequest();
             inValue.ruc = ruc;
             inValue.login = login;
             inValue.clave = clave;
@@ -1003,17 +1003,17 @@ namespace CapaPresentacion.FEBata {
             inValue.folio = folio;
             inValue.estado = estado;
             inValue.version = version;
-            CapaPresentacion.FEBata.OnlineARCResponse retVal = ((CapaPresentacion.FEBata.OnlinePortType)(this)).OnlineARC(inValue);
+            CapaPresentacion.FEBataBack.OnlineARCResponse retVal = ((CapaPresentacion.FEBataBack.OnlinePortType)(this)).OnlineARC(inValue);
             return retVal.@return;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<CapaPresentacion.FEBata.OnlineARCResponse> CapaPresentacion.FEBata.OnlinePortType.OnlineARCAsync(CapaPresentacion.FEBata.OnlineARCRequest request) {
+        System.Threading.Tasks.Task<CapaPresentacion.FEBataBack.OnlineARCResponse> CapaPresentacion.FEBataBack.OnlinePortType.OnlineARCAsync(CapaPresentacion.FEBataBack.OnlineARCRequest request) {
             return base.Channel.OnlineARCAsync(request);
         }
         
-        public System.Threading.Tasks.Task<CapaPresentacion.FEBata.OnlineARCResponse> OnlineARCAsync(string ruc, string login, string clave, string rucEmisor, int tipoDoc, string folio, int estado, string version) {
-            CapaPresentacion.FEBata.OnlineARCRequest inValue = new CapaPresentacion.FEBata.OnlineARCRequest();
+        public System.Threading.Tasks.Task<CapaPresentacion.FEBataBack.OnlineARCResponse> OnlineARCAsync(string ruc, string login, string clave, string rucEmisor, int tipoDoc, string folio, int estado, string version) {
+            CapaPresentacion.FEBataBack.OnlineARCRequest inValue = new CapaPresentacion.FEBataBack.OnlineARCRequest();
             inValue.ruc = ruc;
             inValue.login = login;
             inValue.clave = clave;
@@ -1022,16 +1022,16 @@ namespace CapaPresentacion.FEBata {
             inValue.folio = folio;
             inValue.estado = estado;
             inValue.version = version;
-            return ((CapaPresentacion.FEBata.OnlinePortType)(this)).OnlineARCAsync(inValue);
+            return ((CapaPresentacion.FEBataBack.OnlinePortType)(this)).OnlineARCAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        CapaPresentacion.FEBata.OnlineConsultaEstadoResponse CapaPresentacion.FEBata.OnlinePortType.OnlineConsultaEstado(CapaPresentacion.FEBata.OnlineConsultaEstadoRequest request) {
+        CapaPresentacion.FEBataBack.OnlineConsultaEstadoResponse CapaPresentacion.FEBataBack.OnlinePortType.OnlineConsultaEstado(CapaPresentacion.FEBataBack.OnlineConsultaEstadoRequest request) {
             return base.Channel.OnlineConsultaEstado(request);
         }
         
         public string OnlineConsultaEstado(string ruc, string login, string clave, string rucReceptor, string fechaInicio, string fechaFin, int estado) {
-            CapaPresentacion.FEBata.OnlineConsultaEstadoRequest inValue = new CapaPresentacion.FEBata.OnlineConsultaEstadoRequest();
+            CapaPresentacion.FEBataBack.OnlineConsultaEstadoRequest inValue = new CapaPresentacion.FEBataBack.OnlineConsultaEstadoRequest();
             inValue.ruc = ruc;
             inValue.login = login;
             inValue.clave = clave;
@@ -1039,17 +1039,17 @@ namespace CapaPresentacion.FEBata {
             inValue.fechaInicio = fechaInicio;
             inValue.fechaFin = fechaFin;
             inValue.estado = estado;
-            CapaPresentacion.FEBata.OnlineConsultaEstadoResponse retVal = ((CapaPresentacion.FEBata.OnlinePortType)(this)).OnlineConsultaEstado(inValue);
+            CapaPresentacion.FEBataBack.OnlineConsultaEstadoResponse retVal = ((CapaPresentacion.FEBataBack.OnlinePortType)(this)).OnlineConsultaEstado(inValue);
             return retVal.@return;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<CapaPresentacion.FEBata.OnlineConsultaEstadoResponse> CapaPresentacion.FEBata.OnlinePortType.OnlineConsultaEstadoAsync(CapaPresentacion.FEBata.OnlineConsultaEstadoRequest request) {
+        System.Threading.Tasks.Task<CapaPresentacion.FEBataBack.OnlineConsultaEstadoResponse> CapaPresentacion.FEBataBack.OnlinePortType.OnlineConsultaEstadoAsync(CapaPresentacion.FEBataBack.OnlineConsultaEstadoRequest request) {
             return base.Channel.OnlineConsultaEstadoAsync(request);
         }
         
-        public System.Threading.Tasks.Task<CapaPresentacion.FEBata.OnlineConsultaEstadoResponse> OnlineConsultaEstadoAsync(string ruc, string login, string clave, string rucReceptor, string fechaInicio, string fechaFin, int estado) {
-            CapaPresentacion.FEBata.OnlineConsultaEstadoRequest inValue = new CapaPresentacion.FEBata.OnlineConsultaEstadoRequest();
+        public System.Threading.Tasks.Task<CapaPresentacion.FEBataBack.OnlineConsultaEstadoResponse> OnlineConsultaEstadoAsync(string ruc, string login, string clave, string rucReceptor, string fechaInicio, string fechaFin, int estado) {
+            CapaPresentacion.FEBataBack.OnlineConsultaEstadoRequest inValue = new CapaPresentacion.FEBataBack.OnlineConsultaEstadoRequest();
             inValue.ruc = ruc;
             inValue.login = login;
             inValue.clave = clave;
@@ -1057,16 +1057,16 @@ namespace CapaPresentacion.FEBata {
             inValue.fechaInicio = fechaInicio;
             inValue.fechaFin = fechaFin;
             inValue.estado = estado;
-            return ((CapaPresentacion.FEBata.OnlinePortType)(this)).OnlineConsultaEstadoAsync(inValue);
+            return ((CapaPresentacion.FEBataBack.OnlinePortType)(this)).OnlineConsultaEstadoAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        CapaPresentacion.FEBata.GenInformeReversionesResponse CapaPresentacion.FEBata.OnlinePortType.GenInformeReversiones(CapaPresentacion.FEBata.GenInformeReversionesRequest request) {
+        CapaPresentacion.FEBataBack.GenInformeReversionesResponse CapaPresentacion.FEBataBack.OnlinePortType.GenInformeReversiones(CapaPresentacion.FEBataBack.GenInformeReversionesRequest request) {
             return base.Channel.GenInformeReversiones(request);
         }
         
         public string GenInformeReversiones(string ruc, string login, string clave, int tpoGen, string tramaTxt, string periodo, bool envioSUNAT) {
-            CapaPresentacion.FEBata.GenInformeReversionesRequest inValue = new CapaPresentacion.FEBata.GenInformeReversionesRequest();
+            CapaPresentacion.FEBataBack.GenInformeReversionesRequest inValue = new CapaPresentacion.FEBataBack.GenInformeReversionesRequest();
             inValue.ruc = ruc;
             inValue.login = login;
             inValue.clave = clave;
@@ -1074,17 +1074,17 @@ namespace CapaPresentacion.FEBata {
             inValue.tramaTxt = tramaTxt;
             inValue.periodo = periodo;
             inValue.envioSUNAT = envioSUNAT;
-            CapaPresentacion.FEBata.GenInformeReversionesResponse retVal = ((CapaPresentacion.FEBata.OnlinePortType)(this)).GenInformeReversiones(inValue);
+            CapaPresentacion.FEBataBack.GenInformeReversionesResponse retVal = ((CapaPresentacion.FEBataBack.OnlinePortType)(this)).GenInformeReversiones(inValue);
             return retVal.@return;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<CapaPresentacion.FEBata.GenInformeReversionesResponse> CapaPresentacion.FEBata.OnlinePortType.GenInformeReversionesAsync(CapaPresentacion.FEBata.GenInformeReversionesRequest request) {
+        System.Threading.Tasks.Task<CapaPresentacion.FEBataBack.GenInformeReversionesResponse> CapaPresentacion.FEBataBack.OnlinePortType.GenInformeReversionesAsync(CapaPresentacion.FEBataBack.GenInformeReversionesRequest request) {
             return base.Channel.GenInformeReversionesAsync(request);
         }
         
-        public System.Threading.Tasks.Task<CapaPresentacion.FEBata.GenInformeReversionesResponse> GenInformeReversionesAsync(string ruc, string login, string clave, int tpoGen, string tramaTxt, string periodo, bool envioSUNAT) {
-            CapaPresentacion.FEBata.GenInformeReversionesRequest inValue = new CapaPresentacion.FEBata.GenInformeReversionesRequest();
+        public System.Threading.Tasks.Task<CapaPresentacion.FEBataBack.GenInformeReversionesResponse> GenInformeReversionesAsync(string ruc, string login, string clave, int tpoGen, string tramaTxt, string periodo, bool envioSUNAT) {
+            CapaPresentacion.FEBataBack.GenInformeReversionesRequest inValue = new CapaPresentacion.FEBataBack.GenInformeReversionesRequest();
             inValue.ruc = ruc;
             inValue.login = login;
             inValue.clave = clave;
@@ -1092,233 +1092,233 @@ namespace CapaPresentacion.FEBata {
             inValue.tramaTxt = tramaTxt;
             inValue.periodo = periodo;
             inValue.envioSUNAT = envioSUNAT;
-            return ((CapaPresentacion.FEBata.OnlinePortType)(this)).GenInformeReversionesAsync(inValue);
+            return ((CapaPresentacion.FEBataBack.OnlinePortType)(this)).GenInformeReversionesAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        CapaPresentacion.FEBata.AddDocInfoResponse CapaPresentacion.FEBata.OnlinePortType.AddDocInfo(CapaPresentacion.FEBata.AddDocInfoRequest request) {
+        CapaPresentacion.FEBataBack.AddDocInfoResponse CapaPresentacion.FEBataBack.OnlinePortType.AddDocInfo(CapaPresentacion.FEBataBack.AddDocInfoRequest request) {
             return base.Channel.AddDocInfo(request);
         }
         
         public string AddDocInfo(string ruc, string login, string clave, int tipoDoc, string folio, string infoAdicional) {
-            CapaPresentacion.FEBata.AddDocInfoRequest inValue = new CapaPresentacion.FEBata.AddDocInfoRequest();
+            CapaPresentacion.FEBataBack.AddDocInfoRequest inValue = new CapaPresentacion.FEBataBack.AddDocInfoRequest();
             inValue.ruc = ruc;
             inValue.login = login;
             inValue.clave = clave;
             inValue.tipoDoc = tipoDoc;
             inValue.folio = folio;
             inValue.infoAdicional = infoAdicional;
-            CapaPresentacion.FEBata.AddDocInfoResponse retVal = ((CapaPresentacion.FEBata.OnlinePortType)(this)).AddDocInfo(inValue);
+            CapaPresentacion.FEBataBack.AddDocInfoResponse retVal = ((CapaPresentacion.FEBataBack.OnlinePortType)(this)).AddDocInfo(inValue);
             return retVal.@return;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<CapaPresentacion.FEBata.AddDocInfoResponse> CapaPresentacion.FEBata.OnlinePortType.AddDocInfoAsync(CapaPresentacion.FEBata.AddDocInfoRequest request) {
+        System.Threading.Tasks.Task<CapaPresentacion.FEBataBack.AddDocInfoResponse> CapaPresentacion.FEBataBack.OnlinePortType.AddDocInfoAsync(CapaPresentacion.FEBataBack.AddDocInfoRequest request) {
             return base.Channel.AddDocInfoAsync(request);
         }
         
-        public System.Threading.Tasks.Task<CapaPresentacion.FEBata.AddDocInfoResponse> AddDocInfoAsync(string ruc, string login, string clave, int tipoDoc, string folio, string infoAdicional) {
-            CapaPresentacion.FEBata.AddDocInfoRequest inValue = new CapaPresentacion.FEBata.AddDocInfoRequest();
+        public System.Threading.Tasks.Task<CapaPresentacion.FEBataBack.AddDocInfoResponse> AddDocInfoAsync(string ruc, string login, string clave, int tipoDoc, string folio, string infoAdicional) {
+            CapaPresentacion.FEBataBack.AddDocInfoRequest inValue = new CapaPresentacion.FEBataBack.AddDocInfoRequest();
             inValue.ruc = ruc;
             inValue.login = login;
             inValue.clave = clave;
             inValue.tipoDoc = tipoDoc;
             inValue.folio = folio;
             inValue.infoAdicional = infoAdicional;
-            return ((CapaPresentacion.FEBata.OnlinePortType)(this)).AddDocInfoAsync(inValue);
+            return ((CapaPresentacion.FEBataBack.OnlinePortType)(this)).AddDocInfoAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        CapaPresentacion.FEBata.listarAdjuntosRecibidosResponse CapaPresentacion.FEBata.OnlinePortType.listarAdjuntosRecibidos(CapaPresentacion.FEBata.listarAdjuntosRecibidosRequest request) {
+        CapaPresentacion.FEBataBack.listarAdjuntosRecibidosResponse CapaPresentacion.FEBataBack.OnlinePortType.listarAdjuntosRecibidos(CapaPresentacion.FEBataBack.listarAdjuntosRecibidosRequest request) {
             return base.Channel.listarAdjuntosRecibidos(request);
         }
         
         public string listarAdjuntosRecibidos(string ruc, string login, string clave, string rucEmisor, int tipoDocumento, string folio) {
-            CapaPresentacion.FEBata.listarAdjuntosRecibidosRequest inValue = new CapaPresentacion.FEBata.listarAdjuntosRecibidosRequest();
+            CapaPresentacion.FEBataBack.listarAdjuntosRecibidosRequest inValue = new CapaPresentacion.FEBataBack.listarAdjuntosRecibidosRequest();
             inValue.ruc = ruc;
             inValue.login = login;
             inValue.clave = clave;
             inValue.rucEmisor = rucEmisor;
             inValue.tipoDocumento = tipoDocumento;
             inValue.folio = folio;
-            CapaPresentacion.FEBata.listarAdjuntosRecibidosResponse retVal = ((CapaPresentacion.FEBata.OnlinePortType)(this)).listarAdjuntosRecibidos(inValue);
+            CapaPresentacion.FEBataBack.listarAdjuntosRecibidosResponse retVal = ((CapaPresentacion.FEBataBack.OnlinePortType)(this)).listarAdjuntosRecibidos(inValue);
             return retVal.@return;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<CapaPresentacion.FEBata.listarAdjuntosRecibidosResponse> CapaPresentacion.FEBata.OnlinePortType.listarAdjuntosRecibidosAsync(CapaPresentacion.FEBata.listarAdjuntosRecibidosRequest request) {
+        System.Threading.Tasks.Task<CapaPresentacion.FEBataBack.listarAdjuntosRecibidosResponse> CapaPresentacion.FEBataBack.OnlinePortType.listarAdjuntosRecibidosAsync(CapaPresentacion.FEBataBack.listarAdjuntosRecibidosRequest request) {
             return base.Channel.listarAdjuntosRecibidosAsync(request);
         }
         
-        public System.Threading.Tasks.Task<CapaPresentacion.FEBata.listarAdjuntosRecibidosResponse> listarAdjuntosRecibidosAsync(string ruc, string login, string clave, string rucEmisor, int tipoDocumento, string folio) {
-            CapaPresentacion.FEBata.listarAdjuntosRecibidosRequest inValue = new CapaPresentacion.FEBata.listarAdjuntosRecibidosRequest();
+        public System.Threading.Tasks.Task<CapaPresentacion.FEBataBack.listarAdjuntosRecibidosResponse> listarAdjuntosRecibidosAsync(string ruc, string login, string clave, string rucEmisor, int tipoDocumento, string folio) {
+            CapaPresentacion.FEBataBack.listarAdjuntosRecibidosRequest inValue = new CapaPresentacion.FEBataBack.listarAdjuntosRecibidosRequest();
             inValue.ruc = ruc;
             inValue.login = login;
             inValue.clave = clave;
             inValue.rucEmisor = rucEmisor;
             inValue.tipoDocumento = tipoDocumento;
             inValue.folio = folio;
-            return ((CapaPresentacion.FEBata.OnlinePortType)(this)).listarAdjuntosRecibidosAsync(inValue);
+            return ((CapaPresentacion.FEBataBack.OnlinePortType)(this)).listarAdjuntosRecibidosAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        CapaPresentacion.FEBata.OnlineRecoveryRecListResponse CapaPresentacion.FEBata.OnlinePortType.OnlineRecoveryRecList(CapaPresentacion.FEBata.OnlineRecoveryRecListRequest request) {
+        CapaPresentacion.FEBataBack.OnlineRecoveryRecListResponse CapaPresentacion.FEBataBack.OnlinePortType.OnlineRecoveryRecList(CapaPresentacion.FEBataBack.OnlineRecoveryRecListRequest request) {
             return base.Channel.OnlineRecoveryRecList(request);
         }
         
         public string OnlineRecoveryRecList(string ruc, string login, string clave, string fecha) {
-            CapaPresentacion.FEBata.OnlineRecoveryRecListRequest inValue = new CapaPresentacion.FEBata.OnlineRecoveryRecListRequest();
+            CapaPresentacion.FEBataBack.OnlineRecoveryRecListRequest inValue = new CapaPresentacion.FEBataBack.OnlineRecoveryRecListRequest();
             inValue.ruc = ruc;
             inValue.login = login;
             inValue.clave = clave;
             inValue.fecha = fecha;
-            CapaPresentacion.FEBata.OnlineRecoveryRecListResponse retVal = ((CapaPresentacion.FEBata.OnlinePortType)(this)).OnlineRecoveryRecList(inValue);
+            CapaPresentacion.FEBataBack.OnlineRecoveryRecListResponse retVal = ((CapaPresentacion.FEBataBack.OnlinePortType)(this)).OnlineRecoveryRecList(inValue);
             return retVal.@return;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<CapaPresentacion.FEBata.OnlineRecoveryRecListResponse> CapaPresentacion.FEBata.OnlinePortType.OnlineRecoveryRecListAsync(CapaPresentacion.FEBata.OnlineRecoveryRecListRequest request) {
+        System.Threading.Tasks.Task<CapaPresentacion.FEBataBack.OnlineRecoveryRecListResponse> CapaPresentacion.FEBataBack.OnlinePortType.OnlineRecoveryRecListAsync(CapaPresentacion.FEBataBack.OnlineRecoveryRecListRequest request) {
             return base.Channel.OnlineRecoveryRecListAsync(request);
         }
         
-        public System.Threading.Tasks.Task<CapaPresentacion.FEBata.OnlineRecoveryRecListResponse> OnlineRecoveryRecListAsync(string ruc, string login, string clave, string fecha) {
-            CapaPresentacion.FEBata.OnlineRecoveryRecListRequest inValue = new CapaPresentacion.FEBata.OnlineRecoveryRecListRequest();
+        public System.Threading.Tasks.Task<CapaPresentacion.FEBataBack.OnlineRecoveryRecListResponse> OnlineRecoveryRecListAsync(string ruc, string login, string clave, string fecha) {
+            CapaPresentacion.FEBataBack.OnlineRecoveryRecListRequest inValue = new CapaPresentacion.FEBataBack.OnlineRecoveryRecListRequest();
             inValue.ruc = ruc;
             inValue.login = login;
             inValue.clave = clave;
             inValue.fecha = fecha;
-            return ((CapaPresentacion.FEBata.OnlinePortType)(this)).OnlineRecoveryRecListAsync(inValue);
+            return ((CapaPresentacion.FEBataBack.OnlinePortType)(this)).OnlineRecoveryRecListAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        CapaPresentacion.FEBata.InformeResBoletasDiarioResponse CapaPresentacion.FEBata.OnlinePortType.InformeResBoletasDiario(CapaPresentacion.FEBata.InformeResBoletasDiarioRequest request) {
+        CapaPresentacion.FEBataBack.InformeResBoletasDiarioResponse CapaPresentacion.FEBataBack.OnlinePortType.InformeResBoletasDiario(CapaPresentacion.FEBataBack.InformeResBoletasDiarioRequest request) {
             return base.Channel.InformeResBoletasDiario(request);
         }
         
         public string InformeResBoletasDiario(string ruc, string login, string clave, string fechaInforme) {
-            CapaPresentacion.FEBata.InformeResBoletasDiarioRequest inValue = new CapaPresentacion.FEBata.InformeResBoletasDiarioRequest();
+            CapaPresentacion.FEBataBack.InformeResBoletasDiarioRequest inValue = new CapaPresentacion.FEBataBack.InformeResBoletasDiarioRequest();
             inValue.ruc = ruc;
             inValue.login = login;
             inValue.clave = clave;
             inValue.fechaInforme = fechaInforme;
-            CapaPresentacion.FEBata.InformeResBoletasDiarioResponse retVal = ((CapaPresentacion.FEBata.OnlinePortType)(this)).InformeResBoletasDiario(inValue);
+            CapaPresentacion.FEBataBack.InformeResBoletasDiarioResponse retVal = ((CapaPresentacion.FEBataBack.OnlinePortType)(this)).InformeResBoletasDiario(inValue);
             return retVal.@return;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<CapaPresentacion.FEBata.InformeResBoletasDiarioResponse> CapaPresentacion.FEBata.OnlinePortType.InformeResBoletasDiarioAsync(CapaPresentacion.FEBata.InformeResBoletasDiarioRequest request) {
+        System.Threading.Tasks.Task<CapaPresentacion.FEBataBack.InformeResBoletasDiarioResponse> CapaPresentacion.FEBataBack.OnlinePortType.InformeResBoletasDiarioAsync(CapaPresentacion.FEBataBack.InformeResBoletasDiarioRequest request) {
             return base.Channel.InformeResBoletasDiarioAsync(request);
         }
         
-        public System.Threading.Tasks.Task<CapaPresentacion.FEBata.InformeResBoletasDiarioResponse> InformeResBoletasDiarioAsync(string ruc, string login, string clave, string fechaInforme) {
-            CapaPresentacion.FEBata.InformeResBoletasDiarioRequest inValue = new CapaPresentacion.FEBata.InformeResBoletasDiarioRequest();
+        public System.Threading.Tasks.Task<CapaPresentacion.FEBataBack.InformeResBoletasDiarioResponse> InformeResBoletasDiarioAsync(string ruc, string login, string clave, string fechaInforme) {
+            CapaPresentacion.FEBataBack.InformeResBoletasDiarioRequest inValue = new CapaPresentacion.FEBataBack.InformeResBoletasDiarioRequest();
             inValue.ruc = ruc;
             inValue.login = login;
             inValue.clave = clave;
             inValue.fechaInforme = fechaInforme;
-            return ((CapaPresentacion.FEBata.OnlinePortType)(this)).InformeResBoletasDiarioAsync(inValue);
+            return ((CapaPresentacion.FEBataBack.OnlinePortType)(this)).InformeResBoletasDiarioAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        CapaPresentacion.FEBata.ConsultaInformeReversionesResponse CapaPresentacion.FEBata.OnlinePortType.ConsultaInformeReversiones(CapaPresentacion.FEBata.ConsultaInformeReversionesRequest request) {
+        CapaPresentacion.FEBataBack.ConsultaInformeReversionesResponse CapaPresentacion.FEBataBack.OnlinePortType.ConsultaInformeReversiones(CapaPresentacion.FEBataBack.ConsultaInformeReversionesRequest request) {
             return base.Channel.ConsultaInformeReversiones(request);
         }
         
         public string ConsultaInformeReversiones(string ruc, string login, string clave, int idRegistro, string numTicketSunat) {
-            CapaPresentacion.FEBata.ConsultaInformeReversionesRequest inValue = new CapaPresentacion.FEBata.ConsultaInformeReversionesRequest();
+            CapaPresentacion.FEBataBack.ConsultaInformeReversionesRequest inValue = new CapaPresentacion.FEBataBack.ConsultaInformeReversionesRequest();
             inValue.ruc = ruc;
             inValue.login = login;
             inValue.clave = clave;
             inValue.idRegistro = idRegistro;
             inValue.numTicketSunat = numTicketSunat;
-            CapaPresentacion.FEBata.ConsultaInformeReversionesResponse retVal = ((CapaPresentacion.FEBata.OnlinePortType)(this)).ConsultaInformeReversiones(inValue);
+            CapaPresentacion.FEBataBack.ConsultaInformeReversionesResponse retVal = ((CapaPresentacion.FEBataBack.OnlinePortType)(this)).ConsultaInformeReversiones(inValue);
             return retVal.@return;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<CapaPresentacion.FEBata.ConsultaInformeReversionesResponse> CapaPresentacion.FEBata.OnlinePortType.ConsultaInformeReversionesAsync(CapaPresentacion.FEBata.ConsultaInformeReversionesRequest request) {
+        System.Threading.Tasks.Task<CapaPresentacion.FEBataBack.ConsultaInformeReversionesResponse> CapaPresentacion.FEBataBack.OnlinePortType.ConsultaInformeReversionesAsync(CapaPresentacion.FEBataBack.ConsultaInformeReversionesRequest request) {
             return base.Channel.ConsultaInformeReversionesAsync(request);
         }
         
-        public System.Threading.Tasks.Task<CapaPresentacion.FEBata.ConsultaInformeReversionesResponse> ConsultaInformeReversionesAsync(string ruc, string login, string clave, int idRegistro, string numTicketSunat) {
-            CapaPresentacion.FEBata.ConsultaInformeReversionesRequest inValue = new CapaPresentacion.FEBata.ConsultaInformeReversionesRequest();
+        public System.Threading.Tasks.Task<CapaPresentacion.FEBataBack.ConsultaInformeReversionesResponse> ConsultaInformeReversionesAsync(string ruc, string login, string clave, int idRegistro, string numTicketSunat) {
+            CapaPresentacion.FEBataBack.ConsultaInformeReversionesRequest inValue = new CapaPresentacion.FEBataBack.ConsultaInformeReversionesRequest();
             inValue.ruc = ruc;
             inValue.login = login;
             inValue.clave = clave;
             inValue.idRegistro = idRegistro;
             inValue.numTicketSunat = numTicketSunat;
-            return ((CapaPresentacion.FEBata.OnlinePortType)(this)).ConsultaInformeReversionesAsync(inValue);
+            return ((CapaPresentacion.FEBataBack.OnlinePortType)(this)).ConsultaInformeReversionesAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        CapaPresentacion.FEBata.OnlineGenerationResponse CapaPresentacion.FEBata.OnlinePortType.OnlineGeneration(CapaPresentacion.FEBata.OnlineGenerationRequest request) {
+        CapaPresentacion.FEBataBack.OnlineGenerationResponse CapaPresentacion.FEBataBack.OnlinePortType.OnlineGeneration(CapaPresentacion.FEBataBack.OnlineGenerationRequest request) {
             return base.Channel.OnlineGeneration(request);
         }
         
         public string OnlineGeneration(string ruc, string login, string clave, string docTxt, int tipoFoliacion, int tipoRetorno) {
-            CapaPresentacion.FEBata.OnlineGenerationRequest inValue = new CapaPresentacion.FEBata.OnlineGenerationRequest();
+            CapaPresentacion.FEBataBack.OnlineGenerationRequest inValue = new CapaPresentacion.FEBataBack.OnlineGenerationRequest();
             inValue.ruc = ruc;
             inValue.login = login;
             inValue.clave = clave;
             inValue.docTxt = docTxt;
             inValue.tipoFoliacion = tipoFoliacion;
             inValue.tipoRetorno = tipoRetorno;
-            CapaPresentacion.FEBata.OnlineGenerationResponse retVal = ((CapaPresentacion.FEBata.OnlinePortType)(this)).OnlineGeneration(inValue);
+            CapaPresentacion.FEBataBack.OnlineGenerationResponse retVal = ((CapaPresentacion.FEBataBack.OnlinePortType)(this)).OnlineGeneration(inValue);
             return retVal.@return;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<CapaPresentacion.FEBata.OnlineGenerationResponse> CapaPresentacion.FEBata.OnlinePortType.OnlineGenerationAsync(CapaPresentacion.FEBata.OnlineGenerationRequest request) {
+        System.Threading.Tasks.Task<CapaPresentacion.FEBataBack.OnlineGenerationResponse> CapaPresentacion.FEBataBack.OnlinePortType.OnlineGenerationAsync(CapaPresentacion.FEBataBack.OnlineGenerationRequest request) {
             return base.Channel.OnlineGenerationAsync(request);
         }
         
-        public System.Threading.Tasks.Task<CapaPresentacion.FEBata.OnlineGenerationResponse> OnlineGenerationAsync(string ruc, string login, string clave, string docTxt, int tipoFoliacion, int tipoRetorno) {
-            CapaPresentacion.FEBata.OnlineGenerationRequest inValue = new CapaPresentacion.FEBata.OnlineGenerationRequest();
+        public System.Threading.Tasks.Task<CapaPresentacion.FEBataBack.OnlineGenerationResponse> OnlineGenerationAsync(string ruc, string login, string clave, string docTxt, int tipoFoliacion, int tipoRetorno) {
+            CapaPresentacion.FEBataBack.OnlineGenerationRequest inValue = new CapaPresentacion.FEBataBack.OnlineGenerationRequest();
             inValue.ruc = ruc;
             inValue.login = login;
             inValue.clave = clave;
             inValue.docTxt = docTxt;
             inValue.tipoFoliacion = tipoFoliacion;
             inValue.tipoRetorno = tipoRetorno;
-            return ((CapaPresentacion.FEBata.OnlinePortType)(this)).OnlineGenerationAsync(inValue);
+            return ((CapaPresentacion.FEBataBack.OnlinePortType)(this)).OnlineGenerationAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        CapaPresentacion.FEBata.OnlineEventosResponse CapaPresentacion.FEBata.OnlinePortType.OnlineEventos(CapaPresentacion.FEBata.OnlineEventosRequest request) {
+        CapaPresentacion.FEBataBack.OnlineEventosResponse CapaPresentacion.FEBataBack.OnlinePortType.OnlineEventos(CapaPresentacion.FEBataBack.OnlineEventosRequest request) {
             return base.Channel.OnlineEventos(request);
         }
         
         public string OnlineEventos(string ruc, string login, string clave, string docTxt) {
-            CapaPresentacion.FEBata.OnlineEventosRequest inValue = new CapaPresentacion.FEBata.OnlineEventosRequest();
+            CapaPresentacion.FEBataBack.OnlineEventosRequest inValue = new CapaPresentacion.FEBataBack.OnlineEventosRequest();
             inValue.ruc = ruc;
             inValue.login = login;
             inValue.clave = clave;
             inValue.docTxt = docTxt;
-            CapaPresentacion.FEBata.OnlineEventosResponse retVal = ((CapaPresentacion.FEBata.OnlinePortType)(this)).OnlineEventos(inValue);
+            CapaPresentacion.FEBataBack.OnlineEventosResponse retVal = ((CapaPresentacion.FEBataBack.OnlinePortType)(this)).OnlineEventos(inValue);
             return retVal.@return;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<CapaPresentacion.FEBata.OnlineEventosResponse> CapaPresentacion.FEBata.OnlinePortType.OnlineEventosAsync(CapaPresentacion.FEBata.OnlineEventosRequest request) {
+        System.Threading.Tasks.Task<CapaPresentacion.FEBataBack.OnlineEventosResponse> CapaPresentacion.FEBataBack.OnlinePortType.OnlineEventosAsync(CapaPresentacion.FEBataBack.OnlineEventosRequest request) {
             return base.Channel.OnlineEventosAsync(request);
         }
         
-        public System.Threading.Tasks.Task<CapaPresentacion.FEBata.OnlineEventosResponse> OnlineEventosAsync(string ruc, string login, string clave, string docTxt) {
-            CapaPresentacion.FEBata.OnlineEventosRequest inValue = new CapaPresentacion.FEBata.OnlineEventosRequest();
+        public System.Threading.Tasks.Task<CapaPresentacion.FEBataBack.OnlineEventosResponse> OnlineEventosAsync(string ruc, string login, string clave, string docTxt) {
+            CapaPresentacion.FEBataBack.OnlineEventosRequest inValue = new CapaPresentacion.FEBataBack.OnlineEventosRequest();
             inValue.ruc = ruc;
             inValue.login = login;
             inValue.clave = clave;
             inValue.docTxt = docTxt;
-            return ((CapaPresentacion.FEBata.OnlinePortType)(this)).OnlineEventosAsync(inValue);
+            return ((CapaPresentacion.FEBataBack.OnlinePortType)(this)).OnlineEventosAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        CapaPresentacion.FEBata.OnlineRecoveryRecResponse CapaPresentacion.FEBata.OnlinePortType.OnlineRecoveryRec(CapaPresentacion.FEBata.OnlineRecoveryRecRequest request) {
+        CapaPresentacion.FEBataBack.OnlineRecoveryRecResponse CapaPresentacion.FEBataBack.OnlinePortType.OnlineRecoveryRec(CapaPresentacion.FEBataBack.OnlineRecoveryRecRequest request) {
             return base.Channel.OnlineRecoveryRec(request);
         }
         
         public string OnlineRecoveryRec(string ruc, string login, string clave, string rucEmisor, int tipoDoc, string folio, int tipoRetorno) {
-            CapaPresentacion.FEBata.OnlineRecoveryRecRequest inValue = new CapaPresentacion.FEBata.OnlineRecoveryRecRequest();
+            CapaPresentacion.FEBataBack.OnlineRecoveryRecRequest inValue = new CapaPresentacion.FEBataBack.OnlineRecoveryRecRequest();
             inValue.ruc = ruc;
             inValue.login = login;
             inValue.clave = clave;
@@ -1326,17 +1326,17 @@ namespace CapaPresentacion.FEBata {
             inValue.tipoDoc = tipoDoc;
             inValue.folio = folio;
             inValue.tipoRetorno = tipoRetorno;
-            CapaPresentacion.FEBata.OnlineRecoveryRecResponse retVal = ((CapaPresentacion.FEBata.OnlinePortType)(this)).OnlineRecoveryRec(inValue);
+            CapaPresentacion.FEBataBack.OnlineRecoveryRecResponse retVal = ((CapaPresentacion.FEBataBack.OnlinePortType)(this)).OnlineRecoveryRec(inValue);
             return retVal.@return;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<CapaPresentacion.FEBata.OnlineRecoveryRecResponse> CapaPresentacion.FEBata.OnlinePortType.OnlineRecoveryRecAsync(CapaPresentacion.FEBata.OnlineRecoveryRecRequest request) {
+        System.Threading.Tasks.Task<CapaPresentacion.FEBataBack.OnlineRecoveryRecResponse> CapaPresentacion.FEBataBack.OnlinePortType.OnlineRecoveryRecAsync(CapaPresentacion.FEBataBack.OnlineRecoveryRecRequest request) {
             return base.Channel.OnlineRecoveryRecAsync(request);
         }
         
-        public System.Threading.Tasks.Task<CapaPresentacion.FEBata.OnlineRecoveryRecResponse> OnlineRecoveryRecAsync(string ruc, string login, string clave, string rucEmisor, int tipoDoc, string folio, int tipoRetorno) {
-            CapaPresentacion.FEBata.OnlineRecoveryRecRequest inValue = new CapaPresentacion.FEBata.OnlineRecoveryRecRequest();
+        public System.Threading.Tasks.Task<CapaPresentacion.FEBataBack.OnlineRecoveryRecResponse> OnlineRecoveryRecAsync(string ruc, string login, string clave, string rucEmisor, int tipoDoc, string folio, int tipoRetorno) {
+            CapaPresentacion.FEBataBack.OnlineRecoveryRecRequest inValue = new CapaPresentacion.FEBataBack.OnlineRecoveryRecRequest();
             inValue.ruc = ruc;
             inValue.login = login;
             inValue.clave = clave;
@@ -1344,7 +1344,7 @@ namespace CapaPresentacion.FEBata {
             inValue.tipoDoc = tipoDoc;
             inValue.folio = folio;
             inValue.tipoRetorno = tipoRetorno;
-            return ((CapaPresentacion.FEBata.OnlinePortType)(this)).OnlineRecoveryRecAsync(inValue);
+            return ((CapaPresentacion.FEBataBack.OnlinePortType)(this)).OnlineRecoveryRecAsync(inValue);
         }
     }
 }
