@@ -38,8 +38,9 @@
                                 </div>
                                     @*@Html.DropDownList("txtTda", new SelectList(ViewBag.Tienda, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "txtTda", @name = "txtTda", style = "width:270px;max-width:270px;" })*@
                                     <div class="form-group col-md-3">
-                                        @Html.DropDownList("txtTda", new SelectList(ViewBag.Tienda, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectCountry form-control", @data_live_search = "true", @id = "txtTda" })
-                                        @*<input type="text" name="txtTda" id="txtTda" class="form-control" maxlength="255" data-parsley-maxlength="255" data-parsley-maxlength-message="Ingrese un nombre usuario válido.">*@
+                                        @*@Html.DropDownList("txtTda", new SelectList(ViewBag.Tienda, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectCountry form-control", @data_live_search = "true", @id = "txtTda" })*@
+                                        @Html.DropDownList("txtTda", new SelectList(ViewBag.tienda, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", @data_live_search = "true", @id = "txtTda", @name = "txtTda" })                                                
+    @*<input type="text" name="txtTda" id="txtTda" class="form-control" maxlength="255" data-parsley-maxlength="255" data-parsley-maxlength-message="Ingrese un nombre usuario válido.">*@
                                     </div>
                                 
                                     <div class="form-group col-md-1">

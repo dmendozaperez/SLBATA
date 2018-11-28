@@ -114,6 +114,12 @@ namespace CapaPresentacion.Controllers
             string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
             string return_view = actionName + "|" + controllerName;
 
+            string gcodTda = (String)Session["Tienda"];
+            if (gcodTda != "" && gcodTda != null)
+            {
+                tda = gcodTda;
+            }
+
             if (_usuario == null)
             {
                 return RedirectToAction("Login", "Control", new { returnUrl = return_view });

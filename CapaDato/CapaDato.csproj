@@ -50,6 +50,7 @@
     <Compile Include="Control\Dat_Funcion.cs" />
     <Compile Include="Control\Dat_Roles.cs" />
     <Compile Include="Control\Dat_Usuario.cs" />
+    <Compile Include="Interface\Dat_Interface.cs" />
     <Compile Include="Maestros\Dat_Concepto_Suna.cs" />
     <Compile Include="Maestros\Dat_Estado.cs" />
     <Compile Include="Maestros\Dat_ListaTienda.cs" />

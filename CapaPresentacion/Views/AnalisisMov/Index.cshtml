@@ -27,7 +27,7 @@
                     <div class="form-group">
                         <div class="input-group">
                             <div id="tienda" class="input-group">
-                                @Html.DropDownList("dwtienda", new SelectList(ViewBag.tienda, "cod_entid", "des_entid", "-1"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwtienda", @name = "dwtienda" })
+                                @Html.DropDownList("dwtienda", new SelectList(ViewBag.tienda, "cod_entid", "des_entid", "-1"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwtienda", @name = "dwtienda",@enable ="false" })
                             </div>
                         </div>
                     </div>
@@ -155,13 +155,22 @@
 
 <script>
     $(document).ready(function () {
-
+        //, disabled = "disabled"
         //MostrarListado()
+        var codTienda = '@ViewBag.codTienda'
+
+        if (codTienda != '') {
+           
+            $("#dwtienda").val(codTienda);
+            document.getElementById("dwtienda").disabled = true;
+        }
+       
+       
     });
 
     function MostrarListado() {
-       
-        var TeamDetailPostBackURL ="@Url.Action("ListaAnalisisMov", "AnalisisMov")";
+
+        var TeamDetailPostBackURL = "@Url.Action("ListaAnalisisMov", "AnalisisMov")";
 
         var options = { "backdrop": "static", keyboard: true };
         $.ajax({

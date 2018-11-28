@@ -47,6 +47,8 @@
     <Compile Include="ArticuloSustituto\Articulo_Sustituto_Tienda.cs" />
     <Compile Include="Control\Ent_Aplicacion.cs" />
     <Compile Include="Control\Ent_Tienda.cs" />
+    <Compile Include="Interface\Ent_TiendaInterface.cs" />
+    <Compile Include="Interface\Ent_Interface.cs" />
     <Compile Include="Maestros\Ent_Concepto_Suna.cs" />
     <Compile Include="Maestros\Ent_ListaTienda.cs" />
     <Compile Include="ReportsValeCompra\Reporte_Resultado.cs" />

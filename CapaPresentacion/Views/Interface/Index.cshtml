@@ -1,0 +1,477 @@
+﻿
+
+<link href="~/ContentSelect/bootstrap-select.css" rel="stylesheet" />
+
+
+<style>
+
+#dwcliente{
+ width:200px;   
+}
+
+.imgRedonda {
+    width:150px;
+    height:120px;
+    border-radius:15px;
+}
+
+#divImagen {
+    width: 100%;
+    height: 100%;
+}
+#lugar {
+ border-radius: 10px 10px 10px 10px;-moz-border-radius: 10px 10px 10px 10px;-webkit-border-radius: 10px 10px 10px 10px;border: 2px
+}
+
+
+</style>
+<p class="text-danger"></p>
+<div class="box box-body box-primary">
+    <div class="row" style="margin-top:10px;margin-left:10px;margin-right:10px;margin-bottom:10px;background-color:#f4f4f4;border-radius:5px;padding-top:10px;padding-bottom:10px;">
+               
+        <div class="col-sm-3" style="margin-top:2px;margin-bottom:2px;">
+            <label for="disponible">Pais</label>
+        </div>
+        <div class="col-sm-3" style="margin-top:2px;margin-bottom:2px;">
+            @Html.DropDownList("dwPais", new SelectList(ViewBag.listPais, "cbo_codigo", "cbo_descripcion", "-1"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwPais", @onchange = "ListarTienda()",@placeholder = ".col-xs-1" })
+        </div>
+        <div class="col-sm-3" style="margin-top:2px;margin-bottom:2px;">
+            <label for="disponible">Tienda</label>
+        </div>
+        <div class="col-sm-3" style="margin-top:2px;margin-bottom:2px;">
+            @Html.DropDownList("dwTienda", new SelectList(ViewBag.listPais, "cbo_codigo", "cbo_descripcion", "-1"), new { @class = "selectCountry form-control", @data_live_search = "true", @id = "dwTienda" })
+        </div>
+
+    </div>  
+
+    <div class="row" style="margin-top:10px;margin-left:10px;margin-right:10px;margin-bottom:10px;border-radius:5px;padding-top:10px;padding-bottom:10px;">
+        <div class="modal-content" id="id_xoffice">
+            <div class="modal-header modal-header-danger">
+                <h5 class="modal-title" id="CabXoffice">X-office</h5>
+            </div>
+            <div id="listXoffice" class="modal-body">             
+
+           
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row" style="margin-top:10px;margin-left:10px;margin-right:10px;margin-bottom:10px;border-radius:5px;padding-top:10px;padding-bottom:10px;">
+        <div class="modal-content" id="id_Orce">
+            <div class="modal-header modal-header-danger">
+                <h5 class="modal-title" id="CabOrce">Orce</h5>
+            </div>
+            <div id="listOrce" class="modal-body">
+
+            </div>
+
+        </div>
+    </div>
+    <div class="row" style="margin-top:10px;margin-left:10px;margin-right:10px;margin-bottom:10px;border-radius:5px;padding-top:10px;padding-bottom:10px;">
+
+        <div class="col-sm-1" style="margin-top:2px;margin-bottom:2px;">
+            <button type="button" class="btn btn-primary" onclick="javascript: ConfirmarInterface()">
+                <span class="glyphicon glyphicon-floppy-disk"></span>Generar
+            </button>
+        </div>
+        
+    </div>
+    
+</div>
+
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/ScriptsSelect/bootstrap-select.js"></script>
+<script src="~/Scripts/BI.js"></script>
+<script>
+    var gSite = ''
+   
+    $(document).ready(function () {
+        $("body").toggleClass('sidebar-collapse');
+        ListarTienda();
+        ListarInterface();
+    });
+
+    function ListarTienda() {
+        var combo;
+        var CodPais = $("#dwPais").val();
+       
+        combo = GenerarLista('1', CodPais);
+        llenarComboTda("dwTienda", combo);
+        
+    }
+
+    function llenarComboTda(Id, Data) {
+        var cod_Combo = "";
+        var des_Combo = "";
+    
+        $('#' + Id).find('option').remove();
+
+        var option2 = $('<option value="-1">-------TODOS X-STORE-------</option>');
+        $('#' + Id).append(option2);
+        $.each(Data, function (index, item) {
+            cod_Combo = item.cbo_codigo;
+            des_Combo = item.cbo_descripcion;
+            var option = $('<option value="' + cod_Combo + '">' + des_Combo + '</option>');
+            $('#' + Id).append(option);
+
+        });
+       
+    }
+  
+
+    function GenerarLista(Numsp, Params) {
+        var Data
+
+        var url = '@Url.Action("GenerarCombo", "Interface")';
+        function exito(rpta) {
+            Data = rpta
+        }
+        function error(rpta) {
+            BI.AbrirPopup(20, 15, "Comuniquese con Soporte Tecnico<br>" + rpta.statusText, 'Disculpe!!!', false, true, false)
+        }
+        BI.AjaxJsonSeg("post", url, { Numsp: Numsp, Params: Params }, false, exito, error);
+
+        return Data
+    }
+
+    function ValidaInterface() {
+     
+        var codArticulo = $('#txtArticulo').val();
+        codArticulo = codArticulo.replace(/^\s+|\s+$/g, "")     
+
+        if (codArticulo != '')
+            MostrarArticulo();
+        else
+            toastr.error("Debe ingresar un código de articulo.", "Mensaje");
+
+    }
+    
+
+    function ListarInterface() {
+
+       
+        waitingDialog.show('Espere un momento por favor');
+        document.getElementById('listXoffice').innerHTML = '';
+        document.getElementById('listOrce').innerHTML = '';
+      
+        var ControllerUrl = "@Url.Action("listarStr_Interface", "Interface")";        
+        
+        var ConstHtmlrow = '<div class="row" style="margin-top:10px;margin-left:10px;margin-right:10px;margin-bottom:10px;border-radius:5px;padding-top:10px;padding-bottom:10px;">';
+             ConstHtmlrow += 'listDetalle'
+             ConstHtmlrow += '</div>';
+
+             var buttonDescarga = '<button title="Descargar archivo" class="btneditar btn btn-success" onclick="javascript:descargarInterface(CodInterface)" data-modal="" data-toggle="modal"><span class="glyphicon glyphicon-save"></span></button>'
+             var buttonVerStock = '<button title="Consultar Stock" class="btneditar btn btn-primary" onclick="javascript:verificarStock()" data-modal="" data-toggle="modal"><span class="glyphicon glyphicon-eye-open"></span></button>'
+             var iconoProgramado = '<span class="glyphicon glyphicon-time"></span>'
+             var iconoRapido = '<span class="glyphicon glyphicon-flash"></span>'
+             var constControl = '<div class="col-sm-4" style="margin-top:2px;margin-bottom:2px;">'
+        constControl = constControl + '<input id="grup_gxx" type="hidden" value="desgrupo"/>'
+        constControl = constControl + '<input id="des_remm" type="hidden" value="descrip"/>'
+        constControl = constControl + 'tipoIcono' + '&nbsp;&nbsp;'
+        constControl = constControl + '<label for="disponible">descripcionDetalle</label>';
+        constControl = constControl + '</div>';
+        constControl = constControl + '<div class="col-sm-2" style="margin-top:2px;margin-bottom:2px;">';
+       
+        constControl = constControl + buttonDescarga+'&nbsp;&nbsp;';
+        constControl = constControl + '<input type="checkbox" id="IdCheck" name="Interface" class="regular-checkbox" />';
+        constControl = constControl + '&nbsp;&nbsp;botonStock' + '';
+        constControl = constControl + '</div>'
+     
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: ControllerUrl,
+            contentType: "application/json; charset=utf-8",
+            data: {},
+            datatype: "json",
+            cache: true,
+            success: function (data) {                
+               
+                if (data != '' && data != '[]') {
+
+                    var valors = JSON.parse(data);
+                    var DescripcionInterface = '';
+                    var nroColum = 2;
+                    var contColum = 0;
+                    var contColumOrce = 0;
+                    var gListRow = '';
+                    var gTemRow = '';
+
+                    var gListRowOrce = '';
+                    var gTemRowOrce = '';
+                                  
+                    $.each(valors, function (index, item) {
+
+                        var codEnt = item.Cod_Ent;
+                        var codInterf = item.Cod_Interface;
+                        var desInterf = item.Descripcion_Interface;
+
+                        var strView = item.V_View
+                        var strAuto = item.Cod_Auto
+
+                        if (codEnt == '02') {
+                            
+                            contColum++;
+
+                            if (contColum > nroColum) {
+
+                                gListRow += ConstHtmlrow.replace("listDetalle", gTemRow);
+                                gTemRow = '';
+                                contColum = 1
+                            }
+
+                            var StrControl = constControl;
+                            StrControl = StrControl.replace("descripcionDetalle", desInterf);
+                            StrControl = StrControl.replace("IdCheck", codInterf); 
+
+                            var htmlbotonStk = strView == '1' ? buttonVerStock : "";
+                            StrControl = StrControl.replace("botonStock", htmlbotonStk);
+
+                            var htmlbotontipo = strAuto == '1' ? iconoProgramado : iconoRapido;
+                            StrControl = StrControl.replace("tipoIcono", htmlbotontipo);
+
+                            StrControl = StrControl.replace("descrip", desInterf);
+                            StrControl = StrControl.replace("remm", codInterf);
+
+                            StrControl = StrControl.replace("desgrupo", codEnt);
+                            StrControl = StrControl.replace("gxx", codInterf);
+
+                            StrControl = StrControl.replace("CodInterface", "'" + codInterf + "'");
+                       
+                            gTemRow += StrControl
+                           
+                        } else {
+                                                        
+                            contColumOrce++;
+
+                            if (contColumOrce > nroColum) {
+
+                                gListRowOrce += ConstHtmlrow.replace("listDetalle", gTemRowOrce);
+                                gTemRowOrce = '';
+                                contColumOrce = 1
+                            }
+
+                            var StrControl = constControl;
+                            StrControl = StrControl.replace("descripcionDetalle", desInterf);
+                            StrControl = StrControl.replace("IdCheck", codInterf);
+
+                            var htmlbotonStk = strView == '1' ? buttonVerStock : "";
+                            StrControl = StrControl.replace("botonStock", htmlbotonStk);
+
+                            var htmlbotontipo = strAuto == '1' ? iconoProgramado : iconoRapido;
+                            StrControl = StrControl.replace("tipoIcono", htmlbotontipo);
+
+                            StrControl = StrControl.replace("descrip", desInterf);
+                            StrControl = StrControl.replace("remm", codInterf);
+
+                            StrControl = StrControl.replace("desgrupo", codEnt);
+                            StrControl = StrControl.replace("gxx", codInterf);
+
+                            StrControl = StrControl.replace("CodInterface", "'" + codInterf + "'");
+
+                            gTemRowOrce += StrControl
+                        }
+                                    
+                    });                                 
+                    
+                    if(gTemRow!='')
+                        gListRow += ConstHtmlrow.replace("listDetalle", gTemRow);
+
+                    if (gTemRowOrce != '')
+                        gListRowOrce += ConstHtmlrow.replace("listDetalle", gTemRowOrce);
+                
+                }
+
+                document.getElementById("listXoffice").innerHTML = gListRow;
+                document.getElementById("listOrce").innerHTML = gListRowOrce;
+                waitingDialog.hide();
+                
+            },
+            error: function () {
+                waitingDialog.hide();
+                alert('Error')
+            }
+
+        });
+    }
+
+
+
+    function GuardarInterface() {
+
+
+        waitingDialog.show('Espere un momento por favor');
+        var Id = '';
+        var Interface_strList = '';
+        var msg_titulo = 'Mensaje ';
+        var CodPais = $("#dwPais").val();
+        var CodTda = $("#dwTienda").val();
+
+        $('input[name="Interface"]').each(function () {
+
+            Id = $(this).attr("id");
+            if ($("#" + Id).is(':checked')) {               
+                Interface_strList += 'row1 cod_interf="' + Id + '" row2'
+            }           
+
+        });     
+        
+        var objInterface = {
+            Cod_Pais: CodPais,
+            Cod_Tda: CodTda,
+            List_strListDetalle: Interface_strList
+        }
+
+        $.ajax
+         ({
+             url: '../Interface/GuardarInterface',
+             dataType: "json",
+             type: "POST",
+             data: objInterface,
+             success: function (data, textStatus, XMLHttpRequest) {
+                 var strId = data.Message;
+                
+                 waitingDialog.hide();
+                 toastr.success("Las interface fueron guardardo para su generación.", msg_titulo);
+                 
+
+             },
+             error: function (xhr) {
+                 waitingDialog.hide();
+                 toastr.error(xhr, msg_titulo);
+             }
+         })
+               
+    }
+      
+    function descargarInterface(codInterface) {
+
+        var CodTda = $("#dwTienda").val();
+        if (CodTda == '-1') {
+            alert('debe elegir una tienda')
+        } else { 
+            alert('Descargando interface ' + codInterface + 'de la tienda ' + CodTda)
+        }
+    }
+
+    function verificarStock() {
+
+        var CodTda = $("#dwTienda").val();
+        if (CodTda == '-1') {
+            alert('debe elegir una tienda')
+        } else {
+            alert('viendo Stock ')
+        }
+    }
+    
+    function ConfirmarInterface() {
+
+        var ListXoficce = '';
+        var ListOrce = '';
+
+        var combo = document.getElementById("dwTienda");
+        var tienda = combo.options[combo.selectedIndex].text;
+        tienda = tienda.replace("-------", "");
+        tienda = tienda.replace("-------", "");
+       
+       
+
+        $('input[name="Interface"]').each(function () {
+
+            Id = $(this).attr("id");          
+
+            if ($("#" + Id).is(':checked')) {
+
+                var CodGrupo = $("#grup_" + Id).val();
+                var Descripcion = $("#des_" + Id).val();
+
+                if (CodGrupo == '02') {
+                    ListXoficce = ListXoficce + '<b>* ' + Descripcion + '</b><br/>';
+                   
+                } else {
+                    ListOrce = ListOrce + '<b>* ' + Descripcion + '</b><br/>';
+                }               
+            }
+        });
+
+        var inidiv = '<div style="background-color:#f4f4f4;padding-left:10px;padding-top:10px;padding-bottom:10px;">'
+        var findiv = '</div>'
+
+        if (ListXoficce != '') {
+            ListXoficce = '<br/>' + inidiv + '<b>Xoficce<b>' + findiv + '<br/>' + ListXoficce;
+        }
+        if (ListOrce != '') {
+            ListOrce = '<br/>' + inidiv + '<b>Orce<b>' + findiv + '<br/>' + ListOrce;
+        }
+
+
+        bootbox.confirm({
+            message: "<b>Esta seguro de enviar a la tienda "+tienda+",las siguientes interfaces ?   :</b><br/>" + ListXoficce + ListOrce,
+            buttons: {
+                confirm: {
+                    label: 'Si',
+                    className: 'btn-success'
+                },
+                cancel: {
+                    label: 'No',
+                    className: 'btn-danger'
+                }
+            },
+            callback: function (result) {
+                if (result) {
+                    GuardarInterface()
+                }
+            }
+        });
+
+
+        //waitingDialog.show('Espere un momento por favor');
+        //var Id = '';
+        //var Interface_strList = '';
+        //var msg_titulo = 'Mensaje ';
+        //var CodPais = $("#dwPais").val();
+        //var CodTda = $("#dwTienda").val();
+
+        //$('input[name="Interface"]').each(function () {
+
+        //    Id = $(this).attr("id");
+        //    if ($("#" + Id).is(':checked')) {
+        //        var Descripcion = $("#des_" + Id).val();
+        //        Interface_strList += 'row1 cod_interf="' + Id + '" row2'
+        //    }
+
+
+        //});
+
+        //var objInterface = {
+        //    Cod_Pais: CodPais,
+        //    Cod_Tda: CodTda,
+        //    List_strListDetalle: Interface_strList
+        //}
+
+        //$.ajax
+        // ({
+        //     url: '../Interface/GuardarInterface',
+        //     dataType: "json",
+        //     type: "POST",
+        //     data: objInterface,
+        //     success: function (data, textStatus, XMLHttpRequest) {
+        //         var strId = data.Message;
+
+        //         waitingDialog.hide();
+        //         toastr.success("Las interface fueron guardardo para su generación.", msg_titulo);
+
+
+        //     },
+        //     error: function (xhr) {
+        //         waitingDialog.hide();
+        //         toastr.error(xhr, msg_titulo);
+        //     }
+        // })
+
+    }
+
+
+</script>
+
