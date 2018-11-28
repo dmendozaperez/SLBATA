@@ -36,7 +36,15 @@ namespace CapaEntidad.Util
 
             }
         }
+        public static string strDirectorio_StkLedger
+        {
+            get
+            {
 
+                return "~/StkLedger/"; 
+
+            }
+        }
         public static string plantilla
         {
             get

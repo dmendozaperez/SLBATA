@@ -1206,6 +1206,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Content\TarjetaCss\" />
     <Folder Include="Cupones\" />
+    <Folder Include="StkLedger\" />
     <Folder Include="Views\Shared\Menu\" />
     <Folder Include="Views\Usuario\" />
   </ItemGroup>

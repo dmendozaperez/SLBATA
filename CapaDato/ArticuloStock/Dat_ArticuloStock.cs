@@ -13,6 +13,37 @@ namespace CapaDato.ReportsValeCompra
 {
     public class Dat_ArticuloStock
     {
+        public DataTable get_stock_ledger(string fecha, string codtda, string pais)
+        {
+            DataTable dt = null;
+            string sqlquery = "USP_XSTORE_GET_STOCK_LEDGER_ECU";
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@fecha_stk", fecha);
+                        cmd.Parameters.AddWithValue("@cod_tda", codtda);
+                        cmd.Parameters.AddWithValue("@PAIS", pais);
+
+                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                        {
+                            dt = new DataTable();
+                            da.Fill(dt);
+                        }
+
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                dt = null;
+            }
+            return dt;
+        }
         public List<Articulo_Stock_Tienda> listar_ArticuloStock(string Cod_Articulo)  
         {
             string sqlquery = "USP_Obtener_Articulo_StockTienda";

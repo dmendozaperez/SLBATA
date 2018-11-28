@@ -56,6 +56,7 @@ namespace CapaDato.Transac
                                               ruc_ws = dr["ruc_ws"].ToString(),
                                               tipodoc_ws = dr["tipodoc_ws"].ToString(),
                                               num_doc_ws = dr["num_doc_ws"].ToString(),
+                                              tcantidad= dr["TCANT"].ToString(),
                                           }).ToList();
                             }
 
