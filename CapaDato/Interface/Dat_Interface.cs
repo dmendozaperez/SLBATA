@@ -62,7 +62,7 @@ namespace CapaDato.Interface
             {
                 SqlConnection cn = new SqlConnection(Ent_Conexion.conexionPosPeru);
                 cn.Open();
-                SqlCommand oComando = new SqlCommand("USP_GET_XSTORE_TIENDA_PAIS", cn);
+                SqlCommand oComando = new SqlCommand("USP_GET_XSTORE_TIENDA_PAIS_WEB", cn);
                 oComando.CommandType = CommandType.StoredProcedure;
 
                 SqlParameter odepartamento = oComando.Parameters.Add("@PAIS", SqlDbType.VarChar);

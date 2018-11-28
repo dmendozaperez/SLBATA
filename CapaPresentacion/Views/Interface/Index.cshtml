@@ -135,17 +135,6 @@
         return Data
     }
 
-    function ValidaInterface() {
-     
-        var codArticulo = $('#txtArticulo').val();
-        codArticulo = codArticulo.replace(/^\s+|\s+$/g, "")     
-
-        if (codArticulo != '')
-            MostrarArticulo();
-        else
-            toastr.error("Debe ingresar un código de articulo.", "Mensaje");
-
-    }
     
 
     function ListarInterface() {
@@ -405,70 +394,30 @@
             ListOrce = '<br/>' + inidiv + '<b>Orce<b>' + findiv + '<br/>' + ListOrce;
         }
 
+        if (ListOrce == '' && ListXoficce=='') {
+             toastr.error("Debe seleccionar al menos un interface.", "Mensaje");
+        }else{
 
-        bootbox.confirm({
-            message: "<b>Esta seguro de enviar a la tienda "+tienda+",las siguientes interfaces ?   :</b><br/>" + ListXoficce + ListOrce,
-            buttons: {
-                confirm: {
-                    label: 'Si',
-                    className: 'btn-success'
+            bootbox.confirm({
+                message: "<b>Esta seguro de enviar a la tienda "+tienda+",las siguientes interfaces ?   :</b><br/>" + ListXoficce + ListOrce,
+                buttons: {
+                    confirm: {
+                        label: 'Si',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'No',
+                        className: 'btn-danger'
+                    }
                 },
-                cancel: {
-                    label: 'No',
-                    className: 'btn-danger'
+                callback: function (result) {
+                    if (result) {
+                        GuardarInterface()
+                    }
                 }
-            },
-            callback: function (result) {
-                if (result) {
-                    GuardarInterface()
-                }
-            }
-        });
+            });
+        }
 
-
-        //waitingDialog.show('Espere un momento por favor');
-        //var Id = '';
-        //var Interface_strList = '';
-        //var msg_titulo = 'Mensaje ';
-        //var CodPais = $("#dwPais").val();
-        //var CodTda = $("#dwTienda").val();
-
-        //$('input[name="Interface"]').each(function () {
-
-        //    Id = $(this).attr("id");
-        //    if ($("#" + Id).is(':checked')) {
-        //        var Descripcion = $("#des_" + Id).val();
-        //        Interface_strList += 'row1 cod_interf="' + Id + '" row2'
-        //    }
-
-
-        //});
-
-        //var objInterface = {
-        //    Cod_Pais: CodPais,
-        //    Cod_Tda: CodTda,
-        //    List_strListDetalle: Interface_strList
-        //}
-
-        //$.ajax
-        // ({
-        //     url: '../Interface/GuardarInterface',
-        //     dataType: "json",
-        //     type: "POST",
-        //     data: objInterface,
-        //     success: function (data, textStatus, XMLHttpRequest) {
-        //         var strId = data.Message;
-
-        //         waitingDialog.hide();
-        //         toastr.success("Las interface fueron guardardo para su generación.", msg_titulo);
-
-
-        //     },
-        //     error: function (xhr) {
-        //         waitingDialog.hide();
-        //         toastr.error(xhr, msg_titulo);
-        //     }
-        // })
 
     }
 
