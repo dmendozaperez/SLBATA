@@ -190,6 +190,7 @@
     <Compile Include="Controllers\AdminLteController.cs" />
     <Compile Include="Controllers\AnalisisMovController.cs" />
     <Compile Include="Controllers\AplicacionController.cs" />
+    <Compile Include="Controllers\InterfaceController.cs" />
     <Compile Include="Controllers\ArticuloSustitutoController.cs" />
     <Compile Include="Controllers\ConsultaController.cs" />
     <Compile Include="Controllers\IntermedioController.cs" />
@@ -1201,6 +1202,8 @@
     <Content Include="Views\AnalisisMov\ListaAnalisisMov.cshtml" />
     <None Include="Service References\FEBataBack\Online.wsdl" />
     <None Include="Service References\FEBataEpos\Online.wsdl" />
+    <Content Include="Views\Interface\Index.cshtml" />
+    <Content Include="Views\Interface\Index_Acceso.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
