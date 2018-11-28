@@ -20,5 +20,6 @@ namespace CapaEntidad.Transac
         public string ruc_ws { get; set; }
         public string tipodoc_ws { get; set; }
         public string num_doc_ws { get; set; }
+        public string tcantidad { get; set; }
     }
 }

@@ -107,7 +107,8 @@ namespace CapaPresentacion.Controllers
                              a.pass_ws,
                              a.ruc_ws,
                              a.tipodoc_ws,
-                             a.num_doc_ws                             
+                             a.num_doc_ws,  
+                             a.tcantidad                           
                          };
             //Se devuelven los resultados por json
             return Json(new

@@ -20,6 +20,7 @@ using System.IO.Compression;
 using System.Text;
 using System.Web.Script.Serialization;
 using CapaDato.Menu;
+using System.Data;
 
 namespace CapaPresentacion.Controllers
 {
@@ -314,7 +315,59 @@ namespace CapaPresentacion.Controllers
 
             return strJson;
         }
+        public FileResult Download_stk_ledger(string id)
+        {
+            if (id != "CD345655BGTRYU67") return null;
+            //string directorio = System.Web.HttpContext.Current.Server.MapPath(Ent_Conexion.strDirectorio_StkLedger);
+            string file = "";string ruta_file = "";
+            ejecuta_stock_ledger(ref file, ref ruta_file);
+            byte[] fileBytes = System.IO.File.ReadAllBytes(ruta_file);
+            string fileName = file;
+            return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
+        }
+        private  void ejecuta_stock_ledger(ref string file,ref string ruta_file)
+        {
+            
+                string codtda = "50865";
 
+                Dat_ArticuloStock stk = new Dat_ArticuloStock();
+                string strDirectorio = System.Web.HttpContext.Current.Server.MapPath(Ent_Conexion.strDirectorio_StkLedger);
 
+                DataTable dt = stk.get_stock_ledger("", codtda, "EC");
+                StringBuilder str = null;
+                string str_cadena = "";
+                if (dt != null)
+                {
+                    string name_stock_ledger = ""; string in_stock_ledger = "";
+                    if (dt.Rows.Count > 0)
+                    {
+                        str = new StringBuilder();
+                        for (Int32 i = 0; i < dt.Rows.Count; ++i)
+                        {
+                            str.Append(dt.Rows[i]["STOCK_LEDGER"].ToString());
+
+                            if (i < dt.Rows.Count - 1)
+                            {
+                                str.Append("\r\n");
+                            }
+                        }
+                        str_cadena = str.ToString();
+
+                        name_stock_ledger = "STOCK_LEDGER_" + codtda + "_" + DateTime.Today.ToString("yyyyMMdd") + ".MNT";
+
+                        file = name_stock_ledger;
+
+                        in_stock_ledger = strDirectorio + "\\" + name_stock_ledger;
+
+                        ruta_file = in_stock_ledger;
+
+                        if (System.IO.File.Exists(@in_stock_ledger)) System.IO.File.Delete(@in_stock_ledger);
+                        System.IO.File.WriteAllText(@in_stock_ledger, str_cadena);
+
+                        //mensaje = "Se creo en la ruta : " + in_stock_ledger;
+                    }
+
+                }                     
+        }
     }
 }
