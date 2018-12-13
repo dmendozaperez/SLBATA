@@ -27,7 +27,7 @@
                     <div class="form-group">
                         <div class="input-group">
                             <div id="tienda" class="input-group">
-                                @Html.DropDownList("dwtienda", new SelectList(ViewBag.tienda, "cod_entid", "des_entid", "-1"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwtienda", @name = "dwtienda",@enable ="false" })
+                                @Html.DropDownList("dwtienda", new SelectList(ViewBag.tienda, "cod_entid", "des_entid", "-1"), new { @class = "selectpicker", @data_live_search = "false", @id = "dwtienda", @name = "dwtienda",@enable ="false" })
                             </div>
                         </div>
                     </div>
@@ -140,7 +140,8 @@
 </script>
 <script>
     function rf_filtro() {    
-        var aplid = $('select[name=dwtienda]').text();
+        //var aplid = $('select[name=dwtienda]').text();
+        var aplid = $("#dwtienda option:selected").text();
         var articulo = $("#articulo").val();
         var talla = $("#talla").val();
         var fecfin = $("#fecfinc").val();

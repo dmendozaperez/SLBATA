@@ -97,6 +97,43 @@ namespace CapaDato.ReportsValeCompra
             return lista;
         }
 
+        public List<Ent_Distrito> listar_distrito()
+        {
+            string sqlquery = "USP_GET_DISTRITO";
+            List<Ent_Distrito> lista = null;
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexionPosPeru))
+                {
+                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                    {
+
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                        {
+                            DataTable dt = new DataTable();
+                            da.Fill(dt);
+                            lista = new List<Ent_Distrito>();
+                            lista = (from DataRow dr in dt.Rows
+                                     select new Ent_Distrito()
+                                     {
+                                         cod_dis = dr["cod_dis"].ToString(),
+                                         des_dis = dr["des_dis"].ToString(),
+
+                                     }).ToList();
+
+                        }
+                    }
+                }
+            }
+            catch (Exception exc)
+            {
+
+                lista = null;
+            }
+            return lista;
+        }
 
         public List<Departamento> listar_Departamento()
         {
@@ -249,7 +286,8 @@ namespace CapaDato.ReportsValeCompra
             return strJson;
         }
 
-        public string listarStr_ArticuloStock(string Cod_Articulo, string Cod_Dpto, string Cod_Prv, string Cod_Dist, string codTalla)
+        public string listarStr_ArticuloStock(string Cod_Articulo, string Cod_Dpto, string Cod_Prv, string Cod_Dist, 
+                                              string codTalla,String coddist_b,string cod_tda)
         {
             string strJson = "";
             try
@@ -278,6 +316,14 @@ namespace CapaDato.ReportsValeCompra
                 SqlParameter ocodTalla = oComando.Parameters.Add("@codTalla", SqlDbType.VarChar);
                 ocodTalla.Direction = ParameterDirection.Input;
                 ocodTalla.Value = codTalla;
+
+                SqlParameter ocoddist_b = oComando.Parameters.Add("@coddist_b", SqlDbType.VarChar);
+                ocoddist_b.Direction = ParameterDirection.Input;
+                ocoddist_b.Value = coddist_b;
+
+                SqlParameter ocod_tda = oComando.Parameters.Add("@cod_tda", SqlDbType.VarChar);
+                ocod_tda.Direction = ParameterDirection.Input;
+                ocod_tda.Value = cod_tda;
 
                 SqlDataReader oReader = oComando.ExecuteReader(CommandBehavior.SingleResult);
                 DataTable dataTable = new DataTable("row");

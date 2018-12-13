@@ -48,6 +48,10 @@
       <HintPath>..\packages\AdminLteMvc.1.0.0\lib\AdminLte.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Encripta, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\MVC_IT_BATA\www.it.bataperu.com\www.it.bataperu.com\EncryptaData\Encripta.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
@@ -296,6 +300,7 @@
     <Content Include="Content\sweetalert.css" />
     <Content Include="Content\toastr.css" />
     <Content Include="Content\toastr.min.css" />
+    <Content Include="EncryptaData\Encripta.dll" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="FormatoCupon\cupon.jpg" />

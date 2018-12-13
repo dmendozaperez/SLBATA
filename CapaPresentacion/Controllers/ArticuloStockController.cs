@@ -216,6 +216,9 @@ namespace CapaPresentacion.Controllers
             {
                 if (_accesoMenu == true)
                 {
+
+                    var distrito = datArticuloStock.listar_distrito();
+
                     var lista = datArticuloStock.listar_Departamento();
                     var obj = lista[0];
                     List<Departamento> listobj = new List<Departamento>();
@@ -224,7 +227,7 @@ namespace CapaPresentacion.Controllers
                     ViewBag.listDepartamento = lista;
                     ViewBag.General = listobj;
                     ViewBag.Usuario = _usuario.usu_nombre;
-
+                    ViewBag.distrito = distrito;
                     return View();
                 }
                 else {
@@ -240,6 +243,9 @@ namespace CapaPresentacion.Controllers
                     #endregion
                     if (valida_rol)
                     {
+
+                        var distrito = datArticuloStock.listar_distrito();
+
                         var lista = datArticuloStock.listar_Departamento();
                         var obj = lista[0];
                         List<Departamento> listobj = new List<Departamento>();
@@ -248,7 +254,9 @@ namespace CapaPresentacion.Controllers
                         ViewBag.listDepartamento = lista;
                         ViewBag.General = listobj;
                         ViewBag.Usuario = _usuario.usu_nombre;
-                    
+
+                        ViewBag.distrito = distrito;
+
                         return View();
                     }
                     else
@@ -305,11 +313,19 @@ namespace CapaPresentacion.Controllers
             return list;
         }
 
-        public string listarStr_ArticuloStock(string codArticulo, string CodDpto, string CodPrv, string CodDist, string codTalla)
+        public string listarStr_ArticuloStock(string codArticulo, string CodDpto, string CodPrv, string CodDist, string codTalla,string coddist_b)
         {
             string strJson = "";
             JsonResult jRespuesta = null;
-            strJson = datArticuloStock.listarStr_ArticuloStock(codArticulo, CodDpto, CodPrv, CodDist, codTalla);
+            string cod_tda = "";
+            if (Session["Tienda"]!=null)
+            {
+                cod_tda = Session["Tienda"].ToString();
+            }
+            
+          
+
+            strJson = datArticuloStock.listarStr_ArticuloStock(codArticulo, CodDpto, CodPrv, CodDist, codTalla, coddist_b, cod_tda);
             var serializer = new JavaScriptSerializer();
             jRespuesta = Json(serializer.Deserialize<List<Articulo_Stock_Tienda>>(strJson), JsonRequestBehavior.AllowGet);
 

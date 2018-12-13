@@ -28,78 +28,80 @@
 <p class="text-danger"></p>
 <div class="box box-body box-primary">
  <form id="form1">
-     
-      <div class="row">                  
-                    
-        <div class="col-sm-1">
-            <label for="disponible">Depto.</label>
-        </div>
-        <div class="col-sm-2">
-            
-         @Html.DropDownList("dwDep", new SelectList(ViewBag.listDepartamento, "Dep_Id", "Dep_Descripcion", "-1"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwDep", @onchange = "ListarProvincia()",@placeholder = ".col-xs-1" })
-        </div>
-        <div class="col-sm-1">
-            <label for="disponible">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Prov.</label>
-        </div>
-        <div class="col-sm-2">
-            @Html.DropDownList("dwProv", new SelectList(ViewBag.General, "Dep_Id", "Dep_Descripcion", "-1"), new { @class = "selectCountry form-control", @data_live_search = "true", @id = "dwProv", @onchange = "ListarDistrito()" })
-        </div>
-        <div class="col-sm-1">
-            <label for="disponible">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dist.</label>
-        </div>
-        <div class="col-sm-2">
-            @Html.DropDownList("dwDistrito", new SelectList(ViewBag.General, "Dep_Id", "Dep_Descripcion", "-1"), new { @class = "selectCountry form-control", @data_live_search = "true", @id = "dwDistrito"})
-        </div>
-        <div class="col-sm-1">
-            @*<label for="disponible">Articulo</label>*@
-        </div>
-        <div class="col-sm-1">
-            @*<input id="txtArticulo" type="text" placeholder="codigo" style="padding-left:6px;padding-right:6px" autofocus class="form-control" />*@
-        </div>
-        <div class="col-sm-1">
-            @*<button type="button" onclick="ValidarMostrarArticulo()" title="Consultar" class="btn btn-primary">
-                <span class="glyphicon glyphicon-search"></span>
-            </button>*@
-        </div>
-
-                    
-        </div>
-
-     <div class="row" style="margin-top:10px">
-
-         <div class="col-sm-1">
-             <label for="disponible">Articulo</label>
+     <div class="row">
+         <div class="col-sm-3">
+             <label for="dwDep">Depto.</label>
+             <div class="form-group">
+                 <div class="input-group">
+                     <div id="tipodoc" class="input-group">
+                         @Html.DropDownList("dwDep", new SelectList(ViewBag.listDepartamento, "Dep_Id", "Dep_Descripcion", "-1"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwDep", @name = "dwDep", @onchange = "ListarProvincia()" })
+                     </div>
+                 </div>
+             </div>
          </div>
-         <div class="col-sm-2">
-             <input id="txtArticulo" type="text"  placeholder="codigo" style="width :100%;" autofocus class="form-control" />
+         <div class="col-sm-3">
+             <label for="dwProv">Prov.</label>
+             <div class="form-group" id="divprov" >
+                 <div class="input-group" >
+                     <div id="divprov1" class="input-group">
+                         @Html.DropDownList("dwProv", new SelectList(ViewBag.General, "Dep_Id", "Dep_Descripcion", "-1"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwProv", @name = "dwProv", @onchange = "ListarDistrito()" })
+                     </div>
+                 </div>
+             </div>
          </div>
-         <div class="col-sm-1">
-             <label for="disponible">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Talla</label>
-            
+         <div class="col-sm-3">
+             <label for="dwDistrito">Dist.</label>
+             <div class="form-group" id="divdis">
+                 <div class="input-group" >
+                     <div id="tipodoc" class="input-group">
+                         @Html.DropDownList("dwDistrito", new SelectList(ViewBag.General, "Dep_Id", "Dep_Descripcion", "-1"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwDistrito", @name = "dwDistrito" })
+                     </div>
+                 </div>
+             </div>
          </div>
-         <div class="col-sm-2">
-             <input id="txtTalla" type="text" placeholder="Talla" maxlength="4" style="padding-left:6px;padding-right:6px;width :100%;" autofocus class="form-control" />
+         <div class="col-sm-3">
+             <label for="dwDistri">Dist.Bata</label>
+             <div class="form-group">
+                 <div class="input-group">
+                     <div id="tipodoc" class="input-group">
+                         @Html.DropDownList("dwDistri", new SelectList(ViewBag.distrito, "cod_dis", "des_dis", "-1"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwDistri", @name = "dwDistri"})
+                     </div>
+                 </div>
+             </div>
          </div>
-         <div class="col-sm-1">
-             <button type="button" onclick="ValidarMostrarArticulo()" title="Consultar" class="btn btn-primary">
-                 <span class="glyphicon glyphicon-search"></span>
-             </button>
-         </div>
-         <div class="col-sm-2">
-           
-         </div>
-         <div class="col-sm-1">
-            
-         </div>
-         <div class="col-sm-1">
-           
-         </div>
-         <div class="col-sm-1">
-            
-         </div>
-
-
      </div>
+   
+     <div class="row">
+         <div class="col-sm-3">
+             <label for="txtArticulo">Articulo</label>
+             <div class="form-group">
+                 <div class="input-group">
+                     <div id="numdoc" class="input-group">
+                         <input id="txtArticulo" name="txtArticulo" value="" maxlength="8" placeholder="codigo" autofocus class="form-control" type="text" />                         
+                     </div>
+                 </div>
+             </div>
+         </div>
+         <div class="col-sm-1">
+             <label for="txtTalla">Talla</label>
+             <div class="form-group">
+                 <div class="input-group">
+                     <div id="numdoc" class="input-group">
+                         <input id="txtTalla" name="txtTalla" value="" maxlength="4" autofocus class="form-control" type="text" />
+                     </div>
+                   
+                 </div>
+
+             </div>
+         </div>
+         <div class="col-sm-2">
+             <label></label><br />
+             <button type="button" onclick="ValidarMostrarArticulo()" title="Consultar" class="btn btn-primary">
+            <span class="glyphicon glyphicon-search"></span>
+        </button>          
+         </div>       
+     </div>
+   
 </form>
     <table id="example" class="table table-hover dataTable  table-striped table-responsive">
 
@@ -145,8 +147,69 @@
         var CodDepartamento = $("#dwDep").val();
        
         combo = GenerarLista('1', CodDepartamento);
-        llenarComboPrv("dwProv", combo);
+        llenarCombo("divprov", "dwProv", combo, '', '', "ListarDistrito");
         
+    }
+    function llenarCombo(DivId, IdControl, Data, codDefecto, desDefecto, onchangeFuncion) {
+
+        var str = '<select class="selectpicker" data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '">';
+        var ItemNormal = '<option value="codItem">desItem</option>';
+        var colectItemNormal = '';
+
+        if (codDefecto != '') { str += '<option value="' + codDefecto + '" selected="selected">------' + desDefecto + '------</option>'; }
+
+        if (onchangeFuncion != '') { onchangeFuncion = 'onchange = "' + onchangeFuncion + '()"' }
+        str = str.replace("onchangeFuncion", onchangeFuncion);
+
+        $.each(Data, function (index, item) {
+
+            colectItemNormal = colectItemNormal + ItemNormal
+            colectItemNormal = colectItemNormal.replace("codItem", item.Prv_Cod);
+            colectItemNormal = colectItemNormal.replace("desItem", item.Prv_Descripcion);
+
+        });
+
+        str += colectItemNormal
+        str += '</select>'
+
+        document.getElementById(DivId).innerHTML = str
+
+        $('.selectpicker').selectpicker({
+            liveSearch: true,
+            showSubtext: true
+        });
+
+    }
+
+    function llenarCombo_dis(DivId, IdControl, Data, codDefecto, desDefecto, onchangeFuncion) {
+
+        var str = '<select class="selectpicker" data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '">';
+        var ItemNormal = '<option value="codItem">desItem</option>';
+        var colectItemNormal = '';
+
+        if (codDefecto != '') { str += '<option value="' + codDefecto + '" selected="selected">------' + desDefecto + '------</option>'; }
+
+        if (onchangeFuncion != '') { onchangeFuncion = 'onchange = "' + onchangeFuncion + '()"' }
+        str = str.replace("onchangeFuncion", onchangeFuncion);
+
+        $.each(Data, function (index, item) {
+
+            colectItemNormal = colectItemNormal + ItemNormal
+            colectItemNormal = colectItemNormal.replace("codItem", item.Dist_Cod);
+            colectItemNormal = colectItemNormal.replace("desItem", item.Dist_Descripcion);
+
+        });
+
+        str += colectItemNormal
+        str += '</select>'
+
+        document.getElementById(DivId).innerHTML = str
+
+        $('.selectpicker').selectpicker({
+            liveSearch: true,
+            showSubtext: true
+        });
+
     }
 
     function llenarComboPrv(Id, Data) {
@@ -174,22 +237,22 @@
         var Codprovincia = $("#dwProv").val();
         var Params = CodDepartamento + '|' + Codprovincia;
         combo = GenerarLista('2', Params);
-        llenarComboDist("dwDistrito", combo);
-
+        //llenarComboDist("dwDistrito", combo);
+        llenarCombo_dis("divdis", "dwDistrito", combo, '', '', "");
     }
 
-    function llenarComboDist(Id, Data) {
-        var cod_Combo = "";
-        var des_Combo = "";
-        $('#' + Id).find('option').remove();
-        $.each(Data, function (index, item) {
-            cod_Combo = item.Dist_Cod;
-            des_Combo = item.Dist_Descripcion;
-            var option = $('<option value="' + cod_Combo + '">' + des_Combo + '</option>');
-            $('#' + Id).append(option);
+    //function llenarComboDist(Id, Data) {
+    //    var cod_Combo = "";
+    //    var des_Combo = "";
+    //    $('#' + Id).find('option').remove();
+    //    $.each(Data, function (index, item) {
+    //        cod_Combo = item.Dist_Cod;
+    //        des_Combo = item.Dist_Descripcion;
+    //        var option = $('<option value="' + cod_Combo + '">' + des_Combo + '</option>');
+    //        $('#' + Id).append(option);
 
-        });
-    }
+    //    });
+    //}
 
     function GenerarLista(Numsp, Params) {
         var Data
@@ -223,14 +286,18 @@
     function MostrarArticulo() {
 
        
+
         waitingDialog.show('Espere un momento por favor');
         document.getElementById('listTienda').innerHTML = '';
+
+        var total = 0;
 
         var codArticulo = $('#txtArticulo').val();
         var CodDepartamento = $("#dwDep").val();
         var Codprovincia = $("#dwProv").val();
         var CodDistrito = $("#dwDistrito").val();
         var codtalla = $('#txtTalla').val();
+        var coddist_b = $("#dwDistri").val();
 
         codArticulo = codArticulo.replace(/^\s+|\s+$/g, "")
         codtalla = codtalla.replace(/^\s+|\s+$/g, "")
@@ -240,7 +307,7 @@
         //css = '';
         var border2 = 'padding: 5px 5px 5px 5px;border:2px'
         //border2 =''
-        var ConstHtmlTienda = '<br/><div id="lugar" style="background:#FFFFFF;' + border2 + '" ><div ' + css + '  style="background:#FFFFFF;" ><div class="col-sm-12"><div><h4><strong>VariableTienda</strong></h4><p><i class="fa fa-map-marker"></i>&nbsp;&nbsp;DireccionTienda</p></div><table><tr><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs" style="width:100%;">Tallas:</button></div></td>ListvariableTalla</tr><tr><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs" style="width:100%;">Cantidad:</button></div></td>ListvariableCantidad</tr></table></div><br/></div></div>';
+        var ConstHtmlTienda = '<br/><div id="lugar" style="background:#FFFFFF;' + border2 + '" ><div ' + css + '  style="background:#FFFFFF;" ><div class="col-sm-12"><div><h4><strong>VariableTienda</strong></h4><p><i class="fa fa-map-marker"></i>&nbsp;&nbsp;DireccionTienda</p></div><table><tr><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs" style="width:100%;">Tallas:</button></div></td><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-success btn-xs" style="width:100%;">Total:</button></div></td>ListvariableTalla</tr><tr><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs" style="width:100%;">Cantidad:</button></div></td></td><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-success btn-xs" style="width:100%;">VTotal</button></div></td>ListvariableCantidad</tr></table></div><br/></div></div>';
         var ConstTalla = '<td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs" style="width:100%;">variableTalla</button></div></td>'
         var ConstCantidad = '<td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs" style="width:100%;">variableCantidad</button></div></td>'
         var listTalla = '';
@@ -252,7 +319,7 @@
             type: "GET",
             url: ControllerUrl,
             contentType: "application/json; charset=utf-8",
-            data: { codArticulo: codArticulo, CodDpto: CodDepartamento, CodPrv: Codprovincia, CodDist: CodDistrito, codTalla: codtalla },
+            data: { codArticulo: codArticulo, CodDpto: CodDepartamento, CodPrv: Codprovincia, CodDist: CodDistrito, codTalla: codtalla, coddist_b: coddist_b },
             datatype: "json",
             cache: true,
             success: function (data) {
@@ -282,14 +349,16 @@
                                 strhtml = strhtml.replace("DireccionTienda", DireccionTienda);
                                 strhtml = strhtml.replace("ListvariableTalla", listTalla);
                                 strhtml = strhtml.replace("ListvariableCantidad", listCantidad);
+                                strhtml = strhtml.replace("VTotal", total.toString());
                                 divFinal += strhtml;
                                 listTalla = '';
                                 listCantidad = '';
+                                total = 0;
                             }
                             consTienda = codTienda;
                         }
 
-                   
+                        total += item.Cantidad;
                         nombreTienda = item.Nombre_Tienda;
                         DireccionTienda = item.Direccion_Tienda;
                         talla = item.Talla;
@@ -309,6 +378,7 @@
                         ConstHtmlTienda = ConstHtmlTienda.replace("DireccionTienda", DireccionTienda);
                         ConstHtmlTienda = ConstHtmlTienda.replace("ListvariableTalla", listTalla);
                         ConstHtmlTienda = ConstHtmlTienda.replace("ListvariableCantidad", listCantidad);
+                        ConstHtmlTienda = ConstHtmlTienda.replace("VTotal", total.toString());
                         divFinal += ConstHtmlTienda;
                         document.getElementById('imagenCatalogo').src = strUrlImagen;
                         document.getElementById("listTienda").innerHTML = divFinal;
@@ -321,10 +391,15 @@
                     ConstHtmlTienda = ConstHtmlTienda.replace("DireccionTienda", '');
                     ConstHtmlTienda = ConstHtmlTienda.replace("ListvariableTalla", '');
                     ConstHtmlTienda = ConstHtmlTienda.replace("ListvariableCantidad", '');
-                    ConstHtmlTienda = ConstHtmlTienda.replace("ListvariableCantidad", ''); 
+                    //ConstHtmlTienda = ConstHtmlTienda.replace("ListvariableCantidad", '');
+                    //ConstHtmlTienda = ConstHtmlTienda.replace("VTotal", '');
                     ConstHtmlTienda = ConstHtmlTienda.replace('<i class="fa fa-map-marker"></i>', '');
                     ConstHtmlTienda = ConstHtmlTienda.replace('<button class="btn btn-white btn-xs" style="width:100%;">Tallas:</button>', '');
                     ConstHtmlTienda = ConstHtmlTienda.replace('<button class="btn btn-white btn-xs" style="width:100%;">Cantidad:</button>', '');
+                    ConstHtmlTienda = ConstHtmlTienda.replace('<button class="btn btn-success btn-xs" style="width:100%;">Total:</button>', '');
+
+                    ConstHtmlTienda = ConstHtmlTienda.replace('<button class="btn btn-success btn-xs" style="width:100%;">VTotal</button>', '');
+
                     divFinal += ConstHtmlTienda;
                     document.getElementById('imagenCatalogo').src = gSite + '/Content/images/lupa.jpg';
                     document.getElementById("listTienda").innerHTML = divFinal;

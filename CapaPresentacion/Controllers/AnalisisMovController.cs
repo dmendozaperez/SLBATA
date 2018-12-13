@@ -49,6 +49,9 @@ namespace CapaPresentacion.Controllers
         }
         public PartialViewResult ListaAnalisisMov(string dwtienda,string fecini, string fecfinc,string articulo,string talla)
         {
+
+            if (dwtienda == null) dwtienda = Session["Tienda"].ToString();
+
             string _cod_art = Basico.Left(articulo, 7);
             string _calidad = Basico.Right(articulo, 1);
 

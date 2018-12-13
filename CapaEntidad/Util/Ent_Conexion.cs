@@ -8,25 +8,29 @@ namespace CapaEntidad.Util
 {
     public class Ent_Conexion
     {
-        public static string conexion
-        {
-            get {
-                // return "Server=des.bgr.pe;Database=BdTiendaReplica;User ID=junior;Password=Bata2018**@;Trusted_Connection=False;";
-                //return "Server=10.10.10.208;Database=BdTienda;User ID=sa;Password=Bata2013;Trusted_Connection=False;";
-                return "Server=posperu.bgr.pe;Database=BDPOS;User ID=pos_oracle;Password=Bata2018**;Trusted_Connection=False;";
 
-            }
-        }
+        public static string conexion { get; set; }
+        public static string conexionPosPeru { get; set; }
 
-        public static string conexionPosPeru
-        {
-            get
-            {
-                // return "Server=des.bgr.pe;Database=BdTiendaReplica;User ID=junior;Password=Bata2018**@;Trusted_Connection=False;";
-                return "Server=posperu.bgr.pe;Database=BDPOS;User ID=pos_oracle;Password=Bata2018**;Trusted_Connection=False;";
+        //public static string conexion
+        //{
+        //    get {
+        //        // return "Server=des.bgr.pe;Database=BdTiendaReplica;User ID=junior;Password=Bata2018**@;Trusted_Connection=False;";
+        //        //return "Server=10.10.10.208;Database=BdTienda;User ID=sa;Password=Bata2013;Trusted_Connection=False;";
+        //        return "Server=posperu.bgr.pe;Database=BDPOS;User ID=pos_oracle;Password=Bata2018**;Trusted_Connection=False;";
 
-            }
-        }
+        //    }
+        //}
+
+        //public static string conexionPosPeru
+        //{
+        //    get
+        //    {
+        //        // return "Server=des.bgr.pe;Database=BdTiendaReplica;User ID=junior;Password=Bata2018**@;Trusted_Connection=False;";
+        //        return "Server=posperu.bgr.pe;Database=BDPOS;User ID=pos_oracle;Password=Bata2018**;Trusted_Connection=False;";
+
+        //    }
+        //}
         public static string strDirectorio
         {
             get
@@ -59,8 +63,8 @@ namespace CapaEntidad.Util
         {
             get
             {
-                return "http://posperu.bgr.pe:80/BataRptSrv/";
-                //return "http://posperu/BataRptSrv/";
+                //return "http://posperu.bgr.pe:80/BataRptSrv/";
+                return "http://posperu/BataRptSrv/";
             }
         }
 
