@@ -45,16 +45,17 @@
              <input id="txtTalla" type="text" placeholder="Talla" maxlength="4" style="padding-left:6px;padding-right:6px;width :100%;" autofocus class="form-control" />
          </div>
          <div class="col-sm-1">
+             <label for="disponible">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Calidad</label>
+
+         </div>
+         <div class="col-sm-2">
+             <input id="txtCalidad" type="text" placeholder="Calidad" maxlength="4" style="padding-left:6px;padding-right:6px;width :100%;" autofocus class="form-control" />
+         </div>
+         <div class="col-sm-1">
              <button type="button" onclick="ValidarMostrarArticulo()" title="Consultar" class="btn btn-primary">
                  <span class="glyphicon glyphicon-search"></span>
              </button>
-         </div>
-         <div class="col-sm-2">
-           
-         </div>
-         <div class="col-sm-1">
-            
-         </div>
+         </div>         
          <div class="col-sm-1">
            
          </div>
@@ -108,12 +109,17 @@
     function ValidarMostrarArticulo() {
      
         var codArticulo = $('#txtArticulo').val();
-        codArticulo = codArticulo.replace(/^\s+|\s+$/g, "")     
+        var codtalla = $('#txtTalla').val();
+        var calidad = $('#txtCalidad').val();
 
-        if (codArticulo != '')
+        codArticulo = codArticulo.replace(/^\s+|\s+$/g, "")
+        codtalla = codtalla.replace(/^\s+|\s+$/g, "")
+        calidad = calidad.replace(/^\s+|\s+$/g, "")
+
+        if (codArticulo != '' && codtalla != '' && calidad != '')
             MostrarArticulo();
         else
-            toastr.error("Debe ingresar un código de articulo.", "Mensaje");
+            toastr.error("Debe ingresar un código de articulo, Talla y calidad", "Mensaje");
 
     }
 
@@ -127,123 +133,125 @@
 
         var codArticulo = $('#txtArticulo').val();
         var codtalla = $('#txtTalla').val();
+        var calidad = $('#txtCalidad').val();
 
         codArticulo = codArticulo.replace(/^\s+|\s+$/g, "")
         codtalla = codtalla.replace(/^\s+|\s+$/g, "")
+        calidad = calidad.replace(/^\s+|\s+$/g, "")
 
-        var ControllerUrl = "@Url.Action("listarStr_ArticuloSustituto", "ArticuloSustituto")";
-        var css = 'class="row"'
-        //css = '';
-        var border2 = 'padding: 5px 5px 5px 5px;border:2px'
-        //border2 =''
-        var espacio = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
-        var ConstHtmlTienda = '<br/><div id="lugar" style="background:#FFFFFF;' + border2 + '" ><div ' + css + '  style="background:#FFFFFF;" ><div class="col-sm-12"><div><h4><strong>VariableTienda</strong></h4><p><i class="fa fa-map-marker"></i>&nbsp;&nbsp;DireccionTienda</p></div><table><tr><td rowspan="5">VariableImagen</td><td>' + espacio + '</td><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs" style="width:100%;">Tallas:</button></div></td>ListvariableTalla</tr><tr><td>' + espacio + '</td><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs" style="width:100%;">Cantidad:</button></div></td>ListvariableCantidad</tr><tr></tr><tr></tr><tr></tr></table></div><br/></div></div>';
-        var ConstTalla = '<td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs" style="width:100%;">variableTalla</button></div></td>'
-        var ConstCantidad = '<td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs" style="width:100%;">variableCantidad</button></div></td>'
-        var listTalla = '';
-        var listCantidad = '';
-        var divFinal = '';
-        var strUrlImagen = '';
-        var options = { "backdrop": "static", keyboard: true };
-        $.ajax({
-            type: "GET",
-            url: ControllerUrl,
-            contentType: "application/json; charset=utf-8",
-            data: { codArticulo: codArticulo, codTalla: codtalla },
-            datatype: "json",
-            cache: true,
-            success: function (data) {
-                
-                var codTienda = ''
-                var consTienda = ''
-               
-                if (data != '' && data != '[]') {
-                    var valors = JSON.parse(data);
-                    var nombreTienda = '';
-                    var urlImagenSusti = '';
-                    var DireccionTienda = '';
-                    var talla = '';
-                    var cantidad = '';
-                    var NombreArticulo = '';
-               
-                    $.each(valors, function (index, item) {
-                        codTienda = item.Codigo_Susti;
-                        NombreArticulo = item.Descripcion;
-                        strUrlImagen = item.Url_Imagen
-                      
-                        if (codTienda != consTienda) {
-                       
-                       
-                            if (consTienda != '') {
-                                var strhtml = ConstHtmlTienda;
-                                var strImagen = ' <img id="imagenCatalogo" class="imgRedonda" src="' + urlImagenSusti + '" width="150" height="120" />'
-                                strhtml = strhtml.replace("VariableImagen", strImagen);
-                                strhtml = strhtml.replace("VariableTienda", nombreTienda);
-                                strhtml = strhtml.replace("DireccionTienda", DireccionTienda);
-                                strhtml = strhtml.replace("ListvariableTalla", listTalla);
-                                strhtml = strhtml.replace("ListvariableCantidad", listCantidad);
-                                divFinal += strhtml;
-                                listTalla = '';
-                                listCantidad = '';
+            var ControllerUrl = "@Url.Action("listarStr_ArticuloSustituto", "ArticuloSustituto")";
+            var css = 'class="row"'
+            //css = '';
+            var border2 = 'padding: 5px 5px 5px 5px;border:2px'
+            //border2 =''
+            var espacio = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
+            var ConstHtmlTienda = '<br/><div id="lugar" style="background:#FFFFFF;' + border2 + '" ><div ' + css + '  style="background:#FFFFFF;" ><div class="col-sm-12"><div><h4><strong>VariableTienda</strong></h4><p><i class="fa fa-map-marker"></i>&nbsp;&nbsp;DireccionTienda</p></div><table><tr><td rowspan="5">VariableImagen</td><td>' + espacio + '</td><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs" style="width:100%;">Tallas:</button></div></td>ListvariableTalla</tr><tr><td>' + espacio + '</td><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs" style="width:100%;">Cantidad:</button></div></td>ListvariableCantidad</tr><tr></tr><tr></tr><tr></tr></table></div><br/></div></div>';
+            var ConstTalla = '<td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs" style="width:100%;">variableTalla</button></div></td>'
+            var ConstCantidad = '<td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs" style="width:100%;">variableCantidad</button></div></td>'
+            var listTalla = '';
+            var listCantidad = '';
+            var divFinal = '';
+            var strUrlImagen = '';
+            var options = { "backdrop": "static", keyboard: true };
+            $.ajax({
+                type: "GET",
+                url: ControllerUrl,
+                contentType: "application/json; charset=utf-8",
+                data: { codArticulo: codArticulo, codTalla: codtalla },
+                datatype: "json",
+                cache: true,
+                success: function (data) {
+
+                    var codTienda = ''
+                    var consTienda = ''
+
+                    if (data != '' && data != '[]') {
+                        var valors = JSON.parse(data);
+                        var nombreTienda = '';
+                        var urlImagenSusti = '';
+                        var DireccionTienda = '';
+                        var talla = '';
+                        var cantidad = '';
+                        var NombreArticulo = '';
+
+                        $.each(valors, function (index, item) {
+                            codTienda = item.Codigo_Susti;
+                            NombreArticulo = item.Descripcion;
+                            strUrlImagen = item.Url_Imagen
+
+                            if (codTienda != consTienda) {
+
+
+                                if (consTienda != '') {
+                                    var strhtml = ConstHtmlTienda;
+                                    var strImagen = ' <img id="imagenCatalogo" class="imgRedonda" src="' + urlImagenSusti + '" width="150" height="120" />'
+                                    strhtml = strhtml.replace("VariableImagen", strImagen);
+                                    strhtml = strhtml.replace("VariableTienda", nombreTienda);
+                                    strhtml = strhtml.replace("DireccionTienda", DireccionTienda);
+                                    strhtml = strhtml.replace("ListvariableTalla", listTalla);
+                                    strhtml = strhtml.replace("ListvariableCantidad", listCantidad);
+                                    divFinal += strhtml;
+                                    listTalla = '';
+                                    listCantidad = '';
+                                }
+                                consTienda = codTienda;
                             }
-                            consTienda = codTienda;
+
+                            urlImagenSusti = item.Url_Imagen_susti
+                            nombreTienda = item.Nombre_Susti;
+                            DireccionTienda = item.Direccion_Susti;
+                            talla = item.Talla;
+                            cantidad = (item.Cantidad).toString();
+
+                            listTalla += ConstTalla;
+                            listTalla = listTalla.replace("variableTalla", talla);
+
+
+                            listCantidad += ConstCantidad;
+                            listCantidad = listCantidad.replace("variableCantidad", cantidad);
+
+
+                        });
+
+                        if (codTienda != '') {
+                            var strImagen = ' <img id="imagenCatalogo" class="imgRedonda" src="' + urlImagenSusti + '" width="150" height="120" />'
+                            ConstHtmlTienda = ConstHtmlTienda.replace("VariableImagen", strImagen);
+                            ConstHtmlTienda = ConstHtmlTienda.replace("VariableTienda", nombreTienda);
+                            ConstHtmlTienda = ConstHtmlTienda.replace("DireccionTienda", DireccionTienda);
+                            ConstHtmlTienda = ConstHtmlTienda.replace("ListvariableTalla", listTalla);
+                            ConstHtmlTienda = ConstHtmlTienda.replace("ListvariableCantidad", listCantidad);
+                            divFinal += ConstHtmlTienda;
+                            document.getElementById('imagenCatalogo').src = strUrlImagen;
+                            document.getElementById("listTienda").innerHTML = divFinal;
+                            document.getElementById("DivNombre").innerHTML = '<h3>' + NombreArticulo + '</h3>';
                         }
 
-                        urlImagenSusti = item.Url_Imagen_susti
-                        nombreTienda = item.Nombre_Susti;
-                        DireccionTienda = item.Direccion_Susti;
-                        talla = item.Talla;
-                        cantidad = (item.Cantidad).toString();
+                    } else {
 
-                        listTalla += ConstTalla;
-                        listTalla = listTalla.replace("variableTalla", talla);
-
-
-                        listCantidad += ConstCantidad;
-                        listCantidad = listCantidad.replace("variableCantidad", cantidad);
-
-                                    
-                    });
-                 
-                    if (codTienda != '') {
-                        var strImagen = ' <img id="imagenCatalogo" class="imgRedonda" src="' + urlImagenSusti + '" width="150" height="120" />'
-                        ConstHtmlTienda = ConstHtmlTienda.replace("VariableImagen", strImagen);
-                        ConstHtmlTienda = ConstHtmlTienda.replace("VariableTienda", nombreTienda);
-                        ConstHtmlTienda = ConstHtmlTienda.replace("DireccionTienda", DireccionTienda);
-                        ConstHtmlTienda = ConstHtmlTienda.replace("ListvariableTalla", listTalla);
-                        ConstHtmlTienda = ConstHtmlTienda.replace("ListvariableCantidad", listCantidad);
+                        ConstHtmlTienda = ConstHtmlTienda.replace("VariableTienda", 'No se encontraron sustitutos.');
+                        ConstHtmlTienda = ConstHtmlTienda.replace("DireccionTienda", '');
+                        ConstHtmlTienda = ConstHtmlTienda.replace("ListvariableTalla", '');
+                        ConstHtmlTienda = ConstHtmlTienda.replace("ListvariableCantidad", '');
+                        ConstHtmlTienda = ConstHtmlTienda.replace("ListvariableCantidad", '');
+                        ConstHtmlTienda = ConstHtmlTienda.replace("VariableImagen", '');
+                        ConstHtmlTienda = ConstHtmlTienda.replace('<i class="fa fa-map-marker"></i>', '');
+                        ConstHtmlTienda = ConstHtmlTienda.replace('<button class="btn btn-white btn-xs" style="width:100%;">Tallas:</button>', '');
+                        ConstHtmlTienda = ConstHtmlTienda.replace('<button class="btn btn-white btn-xs" style="width:100%;">Cantidad:</button>', '');
                         divFinal += ConstHtmlTienda;
-                        document.getElementById('imagenCatalogo').src = strUrlImagen;
+                        document.getElementById('imagenCatalogo').src = gSite + '/Content/images/lupa.jpg';
                         document.getElementById("listTienda").innerHTML = divFinal;
-                        document.getElementById("DivNombre").innerHTML = '<h3>' + NombreArticulo + '</h3>';
+                        document.getElementById("DivNombre").innerHTML = '<h3>Buscando</h3>';
                     }
-                
-                } else {
-                   
-                    ConstHtmlTienda = ConstHtmlTienda.replace("VariableTienda",'No se encontraron sustitutos.');
-                    ConstHtmlTienda = ConstHtmlTienda.replace("DireccionTienda", '');
-                    ConstHtmlTienda = ConstHtmlTienda.replace("ListvariableTalla", '');
-                    ConstHtmlTienda = ConstHtmlTienda.replace("ListvariableCantidad", '');
-                    ConstHtmlTienda = ConstHtmlTienda.replace("ListvariableCantidad", '');
-                    ConstHtmlTienda = ConstHtmlTienda.replace("VariableImagen", '');
-                    ConstHtmlTienda = ConstHtmlTienda.replace('<i class="fa fa-map-marker"></i>', '');
-                    ConstHtmlTienda = ConstHtmlTienda.replace('<button class="btn btn-white btn-xs" style="width:100%;">Tallas:</button>', '');
-                    ConstHtmlTienda = ConstHtmlTienda.replace('<button class="btn btn-white btn-xs" style="width:100%;">Cantidad:</button>', '');
-                    divFinal += ConstHtmlTienda;
-                    document.getElementById('imagenCatalogo').src = gSite + '/Content/images/lupa.jpg';
-                    document.getElementById("listTienda").innerHTML = divFinal;
-                    document.getElementById("DivNombre").innerHTML = '<h3>Buscando</h3>';
+                    waitingDialog.hide();
+
+                },
+                error: function () {
+                    waitingDialog.hide();
+                    alert('Error')
                 }
-                waitingDialog.hide();
-                
-            },
-            error: function () {
-                waitingDialog.hide();
-                alert('Error')
-            }
 
-        });
-
+            });
+       
     }
 
     function ContinuarConexion() {

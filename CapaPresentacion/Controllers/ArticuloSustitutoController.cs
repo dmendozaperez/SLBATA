@@ -324,11 +324,11 @@ namespace CapaPresentacion.Controllers
         }
       
 
-        public string listarStr_ArticuloSustituto(string codTda, string codArticulo, string codTalla)
+        public string listarStr_ArticuloSustituto(string codTda, string codArticulo, string codTalla, string calidad)
         {
             string strJson = "";
             if (codTda == null)
-                codTda = "50339";
+                codTda = "50203";
 
             string gcodTda = (String)Session["Tienda"];
             if (gcodTda != "" && gcodTda != null)
@@ -338,7 +338,7 @@ namespace CapaPresentacion.Controllers
 
 
             JsonResult jRespuesta = null;
-            strJson = datArticuloSusti.listarStr_ArticuloSustituto(codTda, codArticulo, codTalla);
+            strJson = datArticuloSusti.listarStr_ArticuloSustituto(codTda, codArticulo, codTalla, calidad);
             var serializer = new JavaScriptSerializer();
             jRespuesta = Json(serializer.Deserialize<List<Articulo_Sustituto_Tienda>>(strJson), JsonRequestBehavior.AllowGet);
 

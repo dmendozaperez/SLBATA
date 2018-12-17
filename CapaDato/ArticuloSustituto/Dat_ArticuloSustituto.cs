@@ -14,14 +14,14 @@ namespace CapaDato.Articulosustituto
     public class Dat_ArticuloSustituto
     {
         
-        public string listarStr_ArticuloSustituto(string Cod_tda, string Cod_Articulo, string codTalla)
+        public string listarStr_ArticuloSustituto(string Cod_tda, string Cod_Articulo, string codTalla, string calidad)
         {
             string strJson = "";
             try
             {
                 SqlConnection cn = new SqlConnection(Ent_Conexion.conexionPosPeru);
                 cn.Open();
-                SqlCommand oComando = new SqlCommand("USP_OBTENER_ARTICULO_SUSTITUTO", cn);
+                SqlCommand oComando = new SqlCommand("USP_OBTENER_ARTICULO_SUSTITUTO2", cn);
                 oComando.CommandType = CommandType.StoredProcedure;
 
                 SqlParameter oArticulo = oComando.Parameters.Add("@codArticulo", SqlDbType.VarChar);
@@ -35,6 +35,10 @@ namespace CapaDato.Articulosustituto
                 SqlParameter ocodTalla = oComando.Parameters.Add("@codTalla", SqlDbType.VarChar);
                 ocodTalla.Direction = ParameterDirection.Input;
                 ocodTalla.Value = codTalla;
+
+                SqlParameter ocalidad = oComando.Parameters.Add("@calidad", SqlDbType.VarChar);
+                ocalidad.Direction = ParameterDirection.Input;
+                ocalidad.Value = calidad;
 
                 SqlDataReader oReader = oComando.ExecuteReader(CommandBehavior.SingleResult);
                 DataTable dataTable = new DataTable("row");

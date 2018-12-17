@@ -123,6 +123,13 @@
  
 <div><input id="NombreUsuario" type="hidden" value="@ViewBag.Usuario"/></div>
 </div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" ng-app>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
+        </div>
+    </div>
+</div>
 
 <script src="~/Scripts/bootstrap.min.js"></script>
 <script src="~/ScriptsSelect/bootstrap-select.js"></script>
@@ -308,8 +315,8 @@
         var border2 = 'padding: 5px 5px 5px 5px;border:2px'
         //border2 =''
         var ConstHtmlTienda = '<br/><div id="lugar" style="background:#FFFFFF;' + border2 + '" ><div ' + css + '  style="background:#FFFFFF;" ><div class="col-sm-12"><div><h4><strong>VariableTienda</strong></h4><p><i class="fa fa-map-marker"></i>&nbsp;&nbsp;DireccionTienda</p></div><table><tr><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs" style="width:100%;">Tallas:</button></div></td><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-success btn-xs" style="width:100%;">Total:</button></div></td>ListvariableTalla</tr><tr><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs" style="width:100%;">Cantidad:</button></div></td></td><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-success btn-xs" style="width:100%;">VTotal</button></div></td>ListvariableCantidad</tr></table></div><br/></div></div>';
-        var ConstTalla = '<td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs" style="width:100%;">variableTalla</button></div></td>'
-        var ConstCantidad = '<td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs" style="width:100%;">variableCantidad</button></div></td>'
+        var ConstTalla = '<td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs"  style="width:100%;" title="ver Sustituto" onclick="MostrarArticuloSustituto(this)" data-id="codTienda" data-modal="codTalla" data-art="codArticulo"  >variableTalla <span class="glyphicon glyphicon-eye-open"></span></button></div></td>'
+        var ConstCantidad = '<td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs" style="width:100%;text-align:center;">variableCantidad</button></div></td>'
         var listTalla = '';
         var listCantidad = '';
         var divFinal = '';
@@ -366,6 +373,10 @@
 
                         listTalla += ConstTalla;
                         listTalla = listTalla.replace("variableTalla", talla);
+                        listTalla = listTalla.replace("codTienda", codTienda);
+                        listTalla = listTalla.replace("codTalla", talla);
+                        listTalla = listTalla.replace("codArticulo", codArticulo);
+
 
                         listCantidad += ConstCantidad;
                         listCantidad = listCantidad.replace("variableCantidad", cantidad);
@@ -416,6 +427,170 @@
         });
 
     }
+
+    function MostrarArticuloSustituto1(control) {
+
+        var tienda = control.getAttribute('data-id');
+        var talla = control.getAttribute('data-modal');
+        var articulo = control.getAttribute('data-art');
+        alert(tienda)
+        alert(talla)
+        alert(articulo)
+
+    }
+
+
+    function MostrarArticuloSustituto(control) {
+
+        waitingDialog.show('Espere un momento por favor');
+        var tienda = control.getAttribute('data-id');
+        var codtalla = control.getAttribute('data-modal');
+        var codArticulo = control.getAttribute('data-art');
+        var calidad = '1';
+
+        var ControllerUrl = "@Url.Action("listarStr_ArticuloSustituto", "ArticuloSustituto")";
+        var css = 'class="row"'
+        //css = '';
+        var border2 = 'padding: 5px 5px 5px 5px;border:2px'
+        //border2 =''
+        var espacio = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
+        var ConstHtmlTienda = '<br/><div id="lugar" style="background:#FFFFFF;' + border2 + '" ><div ' + css + '  style="background:#FFFFFF;" ><div class="col-sm-12"><div><h4><strong>VariableTienda</strong></h4><p><i class="fa fa-map-marker"></i>&nbsp;&nbsp;DireccionTienda</p></div><table><tr><td rowspan="5">VariableImagen</td><td>' + espacio + '</td><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs" style="width:100%;">Tallas:</button></div></td>ListvariableTalla</tr><tr><td>' + espacio + '</td><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs" style="width:100%;">Cantidad:</button></div></td>ListvariableCantidad</tr><tr></tr><tr></tr><tr></tr></table></div><br/></div></div>';
+        var ConstTalla = '<td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs" style="width:100%;">variableTalla</button></div></td>'
+        var ConstCantidad = '<td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs" style="width:100%;">variableCantidad</button></div></td>'
+        var listTalla = '';
+        var listCantidad = '';
+        var divFinal = '';
+        var strUrlImagen = '';
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: ControllerUrl,
+            contentType: "application/json; charset=utf-8",
+            data: { codTda: tienda, codArticulo: codArticulo, codTalla: codtalla, calidad: calidad},
+            datatype: "json",
+            cache: true,
+            success: function (data) {
+
+                var codTienda = ''
+                var consTienda = ''
+
+                if (data != '' && data != '[]') {
+                    var valors = JSON.parse(data);
+                    var nombreTienda = '';
+                    var urlImagenSusti = '';
+                    var DireccionTienda = '';
+                    var talla = '';
+                    var cantidad = '';
+                    var NombreArticulo = '';
+
+                    $.each(valors, function (index, item) {
+                        codTienda = item.Codigo_Susti;
+                        NombreArticulo = item.Descripcion;
+                        strUrlImagen = item.Url_Imagen
+
+                        if (codTienda != consTienda) {
+
+
+                            if (consTienda != '') {
+                                var strhtml = ConstHtmlTienda;
+                                var strImagen = ' <img id="imagenCatalogoSust" class="imgRedonda" src="' + urlImagenSusti + '" width="150" height="120" />'
+                                strhtml = strhtml.replace("VariableImagen", strImagen);
+                                strhtml = strhtml.replace("VariableTienda", nombreTienda);
+                                strhtml = strhtml.replace("DireccionTienda", DireccionTienda);
+                                strhtml = strhtml.replace("ListvariableTalla", listTalla);
+                                strhtml = strhtml.replace("ListvariableCantidad", listCantidad);
+                                divFinal += strhtml;
+                                listTalla = '';
+                                listCantidad = '';
+                            }
+                            consTienda = codTienda;
+                        }
+
+                        urlImagenSusti = item.Url_Imagen_susti
+                        nombreTienda = item.Nombre_Susti;
+                        DireccionTienda = item.Direccion_Susti;
+                        talla = item.Talla;
+                        cantidad = (item.Cantidad).toString();
+
+                        listTalla += ConstTalla;
+                        listTalla = listTalla.replace("variableTalla", talla);                
+
+                        listCantidad += ConstCantidad;
+                        listCantidad = listCantidad.replace("variableCantidad", cantidad);
+
+
+                    });
+
+                    if (codTienda != '') {
+                        var strImagen = ' <img id="imagenCatalogoSust" class="imgRedonda" src="' + urlImagenSusti + '" width="150" height="120" />'
+                        ConstHtmlTienda = ConstHtmlTienda.replace("VariableImagen", strImagen);
+                        ConstHtmlTienda = ConstHtmlTienda.replace("VariableTienda", nombreTienda);
+                        ConstHtmlTienda = ConstHtmlTienda.replace("DireccionTienda", DireccionTienda);
+                        ConstHtmlTienda = ConstHtmlTienda.replace("ListvariableTalla", listTalla);
+                        ConstHtmlTienda = ConstHtmlTienda.replace("ListvariableCantidad", listCantidad);
+                        divFinal += ConstHtmlTienda;
+                        //document.getElementById('imagenCatalogoOri').src = strUrlImagen;
+                        //document.getElementById("listTienda").innerHTML = divFinal;
+                        //document.getElementById("DivNombre").innerHTML = '<h3>' + NombreArticulo + '</h3>';
+
+
+                        var strhtml = ''
+
+                        strhtml += '<div class="modal-header modal-header-danger" style="margin-top:0px;margin-bottom:0px;padding-top:2px;padding-bottom:2px;">'
+                        strhtml += '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
+                        strhtml += '<h5 class="modal-title" id="myModalLabel">'
+                        strhtml += '<table style="border-bottom:0px;font-size:14px;width:100%;">'
+                        strhtml += '<tr>'
+                        strhtml += '<td style="font-size:14px;width:90%;text-align:left;">Articulos Sustitutos de:&nbsp;&nbsp;' + codArticulo + '</td>'
+                        strhtml += '<td style="font-size:14px;width:10%;text-align:left;">'
+                        strhtml += '</td>'
+                        strhtml += '</tr>'
+                        strhtml += '</table>'
+                        strhtml += '</h5>'
+                        strhtml += '</div>'
+                        strhtml += '<div class="modal-body">'
+                        strhtml += '<table id="example" class="table table-hover dataTable  table-striped table-responsive">'
+                        strhtml += '<tbody>'
+                        strhtml += '<tr>'
+                        strhtml += '<td  style="background:#FFFFFF;width:30%;text-align:center;vertical-align:middle;border: 1px solid;border-color:gainsboro">'
+                        strhtml += '<div id="DivNombreOri"><h3>' + NombreArticulo + '</h3></div>'
+                        strhtml += '<img id="imagenCatalogoOri" class="imgRedonda" src="' + strUrlImagen + '" width="150" height="120" />'
+                        strhtml += '</td>'
+                        strhtml += '<td>'
+                        strhtml += '<div id="listTiendaSusti" style="overflow-x: hidden; overflow-y:auto; height: 378px;">'
+                        strhtml += divFinal
+                        strhtml += '</div>'
+                        strhtml += '</td>'
+                        strhtml += '</tr>'
+                        strhtml += '</tbody>'
+                        strhtml += '</table>'
+                        strhtml += '</div>'
+                        strhtml += '<div class="modal-footer" style="margin-top:-30px">'
+                        strhtml += '<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>'
+                        strhtml += '</div>'
+
+                        $('#myModalContent').html(strhtml);
+                        $('#myModal').modal(options);
+                        $('#myModal').modal('show');
+
+                    }
+
+                } else {
+                    
+                    toastr.error("No se encontraron Sustitutos", "Mensaje");
+                }
+                waitingDialog.hide();
+
+            },
+            error: function () {
+                waitingDialog.hide();
+                alert('Error')
+            }
+
+        });
+       
+    }
+
 
     function ContinuarConexion() {
 
