@@ -29,17 +29,17 @@
 <div class="box box-body box-primary">
     <div class="row" style="margin-top:10px;margin-left:10px;margin-right:10px;margin-bottom:10px;background-color:#f4f4f4;border-radius:5px;padding-top:10px;padding-bottom:10px;">
                
-        <div class="col-sm-3" style="margin-top:2px;margin-bottom:2px;">
+        <div class="col-sm-1" style="margin-top:2px;margin-bottom:2px;">
             <label for="disponible">Pais</label>
         </div>
         <div class="col-sm-3" style="margin-top:2px;margin-bottom:2px;">
             @Html.DropDownList("dwPais", new SelectList(ViewBag.listPais, "cbo_codigo", "cbo_descripcion", "-1"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwPais", @onchange = "ListarTienda()",@placeholder = ".col-xs-1" })
         </div>
-        <div class="col-sm-3" style="margin-top:2px;margin-bottom:2px;">
+        <div class="col-sm-1" style="margin-top:2px;margin-bottom:2px;">
             <label for="disponible">Tienda</label>
         </div>
-        <div class="col-sm-3" style="margin-top:2px;margin-bottom:2px;">
-            @Html.DropDownList("dwTienda", new SelectList(ViewBag.listPais, "cbo_codigo", "cbo_descripcion", "-1"), new { @class = "selectCountry form-control", @data_live_search = "true", @id = "dwTienda" })
+        <div id="divtda" class="col-sm-3" style="margin-top:2px;margin-bottom:2px;">
+            @Html.DropDownList("dwTienda", new SelectList(ViewBag.listPais, "cbo_codigo", "cbo_descripcion", "-1"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwTienda" })
         </div>
 
     </div>  
@@ -97,10 +97,46 @@
         var CodPais = $("#dwPais").val();
        
         combo = GenerarLista('1', CodPais);
-        llenarComboTda("dwTienda", combo);
+        //llenarComboTda("dwTienda", combo);
+        llenarCombo("divtda", "dwTienda", combo, '', '', "");
         
     }
+    function llenarCombo(DivId, IdControl, Data, codDefecto, desDefecto, onchangeFuncion) {
 
+        var str = '<select class="selectpicker" data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '">';
+        var ItemNormal = '<option value="codItem">desItem</option>';
+        var colectItemNormal = '';
+
+        if (codDefecto != '') { str += '<option value="' + codDefecto + '" selected="selected">------' + desDefecto + '------</option>'; }
+
+        if (onchangeFuncion != '') { onchangeFuncion = 'onchange = "' + onchangeFuncion + '()"' }
+        str = str.replace("onchangeFuncion", onchangeFuncion);
+
+        //$('#' + IdControl).find('option').remove();
+
+        //var option2 = $('<option value="-1">-------TODOS X-STORE-------</option>');
+        //$.append(option2);
+
+
+        $.each(Data, function (index, item) {
+
+            colectItemNormal = colectItemNormal + ItemNormal
+            colectItemNormal = colectItemNormal.replace("codItem", item.cbo_codigo);
+            colectItemNormal = colectItemNormal.replace("desItem", item.cbo_descripcion);
+
+        });
+
+        str += colectItemNormal
+        str += '</select>'
+
+        document.getElementById(DivId).innerHTML = str
+
+        $('.selectpicker').selectpicker({
+            liveSearch: true,
+            showSubtext: true
+        });
+
+    }
     function llenarComboTda(Id, Data) {
         var cod_Combo = "";
         var des_Combo = "";
