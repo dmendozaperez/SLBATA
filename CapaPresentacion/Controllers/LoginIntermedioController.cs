@@ -55,15 +55,16 @@ namespace CapaPresentacion.Controllers
             string strCambiante = DateTime.Now.ToString("M/d/yyyy")+"_";
             string resultVariable = DesEncriptar(variable);
             string nombrePc = resultVariable.Replace(strCambiante, "");
-              //nombrePc = "TIENDA-109-1";
+            //nombrePc = "TIENDA-109-1";
             Dat_Usuario _usuario = new Dat_Usuario();
             Ent_Tienda _data_tda = _usuario.get_loginTienda(nombrePc);
             LoginViewModel view = new LoginViewModel();
 
             if (_data_tda != null)
             {
+                string UserTienda = (_data_tda.tda_xstore) ? "Tienda" : "TiendaPOS";
                 Session["Tienda"] = _data_tda.tda_codigo;
-                Ent_Usuario _data_user = _usuario.get_login("Tienda");
+                Ent_Usuario _data_user = _usuario.get_login(UserTienda);
                 view.Usuario = _data_user.usu_login;
                 view.Password = _data_user.usu_contraseña;
             }
@@ -84,8 +85,15 @@ namespace CapaPresentacion.Controllers
         public static string DesEncriptar(string _cadenaAdesencriptar)
         {
             string result = string.Empty;
-            byte[] decryted = Convert.FromBase64String(_cadenaAdesencriptar);
-            result = System.Text.Encoding.Unicode.GetString(decryted);
+            try
+            {
+                byte[] decryted = Convert.FromBase64String(_cadenaAdesencriptar);
+                result = System.Text.Encoding.Unicode.GetString(decryted);
+            }
+            catch (Exception ex) {
+                result = "";
+            }
+           
             return result;
         }
 

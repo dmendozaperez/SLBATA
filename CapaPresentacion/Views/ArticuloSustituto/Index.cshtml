@@ -161,7 +161,7 @@
             var border2 = 'padding: 5px 5px 5px 5px;border:2px'
             //border2 =''
             var espacio = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
-            var ConstHtmlTienda = '<br/><div id="lugar" style="background:#FFFFFF;' + border2 + '" ><div ' + css + '  style="background:#FFFFFF;" ><div class="col-sm-12"><div><h4><strong>VariableTienda</strong></h4><p><i class="fa fa-map-marker"></i>&nbsp;&nbsp;DireccionTienda</p></div><table><tr><td rowspan="5">VariableImagen</td><td>' + espacio + '</td><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs" style="width:100%;">Tallas:</button></div></td>ListvariableTalla</tr><tr><td>' + espacio + '</td><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs" style="width:100%;">Cantidad:</button></div></td>ListvariableCantidad</tr><tr></tr><tr></tr><tr></tr></table></div><br/></div></div>';
+            var ConstHtmlTienda = '<br/><div id="lugar" style="background:#FFFFFF;' + border2 + '" ><div ' + css + '  style="background:#FFFFFF;" ><div class="col-sm-12"><div><h4><strong>VariableTienda</strong></h4><p></p></div><table><tr><td rowspan="5">VariableImagen</td><td>' + espacio + '</td><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs" style="width:100%;">Tallas:</button></div></td>ListvariableTalla</tr><tr><td>' + espacio + '</td><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs" style="width:100%;">Cantidad:</button></div></td>ListvariableCantidad</tr><tr></tr><tr></tr><tr></tr></table></div><br/></div></div>';
             var ConstTalla = '<td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs" style="width:100%;">variableTalla</button></div></td>'
             var ConstCantidad = '<td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs" style="width:100%;">variableCantidad</button></div></td>'
             var listTalla = '';
@@ -203,7 +203,7 @@
                                     var strImagen = ' <img id="imagenCatalogo" class="imgRedonda" src="' + urlImagenSusti + '" width="150" height="120" />'
                                     strhtml = strhtml.replace("VariableImagen", strImagen);
                                     strhtml = strhtml.replace("VariableTienda", nombreTienda);
-                                    strhtml = strhtml.replace("DireccionTienda", DireccionTienda);
+                               
                                     strhtml = strhtml.replace("ListvariableTalla", listTalla);
                                     strhtml = strhtml.replace("ListvariableCantidad", listCantidad);
                                     divFinal += strhtml;
@@ -233,7 +233,7 @@
                             var strImagen = ' <img id="imagenCatalogo" class="imgRedonda" src="' + urlImagenSusti + '" width="150" height="120" />'
                             ConstHtmlTienda = ConstHtmlTienda.replace("VariableImagen", strImagen);
                             ConstHtmlTienda = ConstHtmlTienda.replace("VariableTienda", nombreTienda);
-                            ConstHtmlTienda = ConstHtmlTienda.replace("DireccionTienda", DireccionTienda);
+               
                             ConstHtmlTienda = ConstHtmlTienda.replace("ListvariableTalla", listTalla);
                             ConstHtmlTienda = ConstHtmlTienda.replace("ListvariableCantidad", listCantidad);
                             divFinal += ConstHtmlTienda;
@@ -245,7 +245,7 @@
                     } else {
 
                         ConstHtmlTienda = ConstHtmlTienda.replace("VariableTienda", 'No se encontraron sustitutos.');
-                        ConstHtmlTienda = ConstHtmlTienda.replace("DireccionTienda", '');
+                
                         ConstHtmlTienda = ConstHtmlTienda.replace("ListvariableTalla", '');
                         ConstHtmlTienda = ConstHtmlTienda.replace("ListvariableCantidad", '');
                         ConstHtmlTienda = ConstHtmlTienda.replace("ListvariableCantidad", '');

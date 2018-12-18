@@ -9,6 +9,7 @@ namespace CapaEntidad.Control
     public class Ent_Tienda
     {
         public string tda_codigo { get; set; }
+        public Boolean tda_xstore { get; set; }
 
     }
 }
