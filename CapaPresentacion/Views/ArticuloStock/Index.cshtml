@@ -1,5 +1,7 @@
 ﻿
-
+@{
+    ViewBag.Title = "Consulta de Articulo Stock";   
+}
 <link href="~/ContentSelect/bootstrap-select.css" rel="stylesheet" />
 
 
@@ -25,7 +27,7 @@
 
 
 </style>
-<p class="text-danger"></p>
+<p class="text-danger">Consulta del stock de un articulo en las tiendas, por filtro departamento, provincia, distrito, distrito Bata , codigo de articulo,Articulo y/o talla.</p>
 <div class="box box-body box-primary">
  <form id="form1">
      <div class="row">
@@ -315,7 +317,7 @@
         var border2 = 'padding: 5px 5px 5px 5px;border:2px'
         //border2 =''
         var ConstHtmlTienda = '<br/><div id="lugar" style="background:#FFFFFF;' + border2 + '" ><div ' + css + '  style="background:#FFFFFF;" ><div class="col-sm-12"><div><h4><strong>VariableTienda</strong></h4><p><i class="fa fa-map-marker"></i>&nbsp;&nbsp;DireccionTienda</p></div><table><tr><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs" style="width:100%;">Tallas:</button></div></td><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-success btn-xs" style="width:100%;">Total:</button></div></td>ListvariableTalla</tr><tr><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs" style="width:100%;">Cantidad:</button></div></td></td><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-success btn-xs" style="width:100%;">VTotal</button></div></td>ListvariableCantidad</tr></table></div><br/></div></div>';
-        var ConstTalla = '<td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs"  style="width:100%;" title="ver Sustituto" onclick="MostrarArticuloSustituto(this)" data-id="codTienda" data-modal="codTalla" data-art="codArticulo"  >variableTalla <span class="glyphicon glyphicon-eye-open"></span></button></div></td>'
+        var ConstTalla = '<td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs"  style="width:100%;" title="ver Sustituto" onclick="MostrarArticuloSustituto(this)" data-id="codTienda" data-tda="desTiendaS" data-modal="codTalla" data-art="codArticulo"  >variableTalla <span class="glyphicon glyphicon-eye-open"></span></button></div></td>'
         var ConstCantidad = '<td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs" style="width:100%;text-align:center;">variableCantidad</button></div></td>'
         var listTalla = '';
         var listCantidad = '';
@@ -373,6 +375,7 @@
 
                         listTalla += ConstTalla;
                         listTalla = listTalla.replace("variableTalla", talla);
+                        listTalla = listTalla.replace("desTiendaS", nombreTienda);
                         listTalla = listTalla.replace("codTienda", codTienda);
                         listTalla = listTalla.replace("codTalla", talla);
                         listTalla = listTalla.replace("codArticulo", codArticulo);
@@ -443,6 +446,7 @@
     function MostrarArticuloSustituto(control) {
 
         waitingDialog.show('Espere un momento por favor');
+        var destienda = control.getAttribute('data-tda');
         var tienda = control.getAttribute('data-id');
         var codtalla = control.getAttribute('data-modal');
         var codArticulo = control.getAttribute('data-art');
@@ -454,7 +458,7 @@
         var border2 = 'padding: 5px 5px 5px 5px;border:2px'
         //border2 =''
         var espacio = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
-        var ConstHtmlTienda = '<br/><div id="lugar" style="background:#FFFFFF;' + border2 + '" ><div ' + css + '  style="background:#FFFFFF;" ><div class="col-sm-12"><div><h4><strong>VariableTienda</strong></h4><p><i class="fa fa-map-marker"></i>&nbsp;&nbsp;DireccionTienda</p></div><table><tr><td rowspan="5">VariableImagen</td><td>' + espacio + '</td><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs" style="width:100%;">Tallas:</button></div></td>ListvariableTalla</tr><tr><td>' + espacio + '</td><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs" style="width:100%;">Cantidad:</button></div></td>ListvariableCantidad</tr><tr></tr><tr></tr><tr></tr></table></div><br/></div></div>';
+        var ConstHtmlTienda = '<br/><div id="lugar" style="background:#FFFFFF;' + border2 + '" ><div ' + css + '  style="background:#FFFFFF;" ><div class="col-sm-12"><div><h4><strong>VariableTienda</strong></h4></div><table><tr><td rowspan="5">VariableImagen</td><td>' + espacio + '</td><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs" style="width:100%;">Tallas:</button></div></td>ListvariableTalla</tr><tr><td>' + espacio + '</td><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs" style="width:100%;">Cantidad:</button></div></td>ListvariableCantidad</tr><tr></tr><tr></tr><tr></tr></table></div><br/></div></div>';
         var ConstTalla = '<td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs" style="width:100%;">variableTalla</button></div></td>'
         var ConstCantidad = '<td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs" style="width:100%;">variableCantidad</button></div></td>'
         var listTalla = '';
@@ -541,7 +545,7 @@
                         strhtml += '<h5 class="modal-title" id="myModalLabel">'
                         strhtml += '<table style="border-bottom:0px;font-size:14px;width:100%;">'
                         strhtml += '<tr>'
-                        strhtml += '<td style="font-size:14px;width:90%;text-align:left;">Articulos Sustitutos de:&nbsp;&nbsp;' + codArticulo + '</td>'
+                        strhtml += '<td style="font-size:14px;width:90%;text-align:left;">Articulos Sustitutos de:&nbsp;&nbsp;' + codArticulo + '&nbsp;&nbsp;-&nbsp;&nbsp;Tienda:&nbsp;&nbsp;' + destienda + '</td>'
                         strhtml += '<td style="font-size:14px;width:10%;text-align:left;">'
                         strhtml += '</td>'
                         strhtml += '</tr>'

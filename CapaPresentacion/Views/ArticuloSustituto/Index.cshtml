@@ -1,4 +1,6 @@
-﻿
+﻿@{
+    ViewBag.Title = "Consulta de Articulos Sustitutos";
+}
 
 <link href="~/ContentSelect/bootstrap-select.css" rel="stylesheet" />
 
@@ -25,43 +27,57 @@
 
 
 </style>
-<p class="text-danger"></p>
+<p class="text-danger">Consulta los articulos sustitutos de un articulo que existen en la tienda, por filtro articulo,talla y calidad.</p>
 <div class="box box-body box-primary">
  <form id="form1">
          
      <div class="row" style="margin-top:10px">
+        
+         <div class="col-sm-3">
+             <label for="txtArticulo">Articulo.</label>
+             <div class="form-group">
+                 <div class="input-group">
+                     <div id="Articulo" class="input-group">
+                         <input id="txtArticulo" type="text" placeholder="codigo" style="width :100%;" autofocus class="form-control" />
+                     </div>
+                 </div>
+             </div>
+         </div>
 
-         <div class="col-sm-1">
-             <label for="disponible">Articulo</label>
+         <div class="col-sm-3">
+             <label for="txtTalla">Talla.</label>
+             <div class="form-group">
+                 <div class="input-group">
+                     <div id="talla" class="input-group">
+                         <input id="txtTalla" type="text" placeholder="Talla" maxlength="4" style="padding-left:6px;padding-right:6px;width :100%;" autofocus class="form-control" />
+                     </div>
+                 </div>
+             </div>
          </div>
-         <div class="col-sm-2">
-             <input id="txtArticulo" type="text"  placeholder="codigo" style="width :100%;" autofocus class="form-control" />
-         </div>
-         <div class="col-sm-1">
-             <label for="disponible">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Talla</label>
-            
-         </div>
-         <div class="col-sm-2">
-             <input id="txtTalla" type="text" placeholder="Talla" maxlength="4" style="padding-left:6px;padding-right:6px;width :100%;" autofocus class="form-control" />
-         </div>
-         <div class="col-sm-1">
-             <label for="disponible">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Calidad</label>
 
+         <div class="col-sm-3">
+             <label for="txtCalidad">Calidad.</label>
+             <div class="form-group">
+                 <div class="input-group">
+                     <div id="talla" class="input-group">
+                         <input id="txtCalidad" type="text" placeholder="Calidad" maxlength="4" style="padding-left:6px;padding-right:6px;width :100%;" autofocus class="form-control" />
+                     </div>
+                 </div>
+             </div>
          </div>
-         <div class="col-sm-2">
-             <input id="txtCalidad" type="text" placeholder="Calidad" maxlength="4" style="padding-left:6px;padding-right:6px;width :100%;" autofocus class="form-control" />
-         </div>
-         <div class="col-sm-1">
-             <button type="button" onclick="ValidarMostrarArticulo()" title="Consultar" class="btn btn-primary">
-                 <span class="glyphicon glyphicon-search"></span>
-             </button>
-         </div>         
-         <div class="col-sm-1">
-           
-         </div>
-         <div class="col-sm-1">
-            
-         </div>
+         <div class="col-sm-3">
+             <label for="txtCalidad"></label>
+             <div class="form-group">
+                 <div class="input-group">
+                     <div id="buscar" class="input-group">
+                         <button type="button" onclick="ValidarMostrarArticulo()" title="Consultar" class="btn btn-primary">
+                             <span class="glyphicon glyphicon-search"></span>
+                         </button>
+                     </div>
+                 </div>
+             </div>
+         </div>            
+         
 
 
      </div> <br/>
