@@ -21,7 +21,7 @@ namespace CapaDato.Articulosustituto
             {
                 SqlConnection cn = new SqlConnection(Ent_Conexion.conexionPosPeru);
                 cn.Open();
-                SqlCommand oComando = new SqlCommand("USP_OBTENER_ARTICULO_SUSTITUTO2", cn);
+                SqlCommand oComando = new SqlCommand("USP_OBTENER_ARTICULO_SUSTITUTO", cn);
                 oComando.CommandType = CommandType.StoredProcedure;
 
                 SqlParameter oArticulo = oComando.Parameters.Add("@codArticulo", SqlDbType.VarChar);
