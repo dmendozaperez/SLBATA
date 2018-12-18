@@ -1,129 +1,143 @@
 ﻿
 @{
-    ViewBag.Title = "Consulta de Articulo Stock";   
+    ViewBag.Title = "Consulta de Articulo Stock";
 }
 <link href="~/ContentSelect/bootstrap-select.css" rel="stylesheet" />
 
 
 <style>
+    #dwcliente {
+        width: 200px;
+    }
 
-#dwcliente{
- width:200px;   
-}
+    .imgRedonda {
+        width: 150px;
+        height: 120px;
+        border-radius: 15px;
+    }
 
-.imgRedonda {
-    width:150px;
-    height:120px;
-    border-radius:15px;
-}
+    #divImagen {
+        width: 100%;
+        height: 100%;
+    }
 
-#divImagen {
-    width: 100%;
-    height: 100%;
-}
-#lugar {
- border-radius: 10px 10px 10px 10px;-moz-border-radius: 10px 10px 10px 10px;-webkit-border-radius: 10px 10px 10px 10px;border: 2px
-}
-
-
+    #lugar {
+        border-radius: 10px 10px 10px 10px;
+        -moz-border-radius: 10px 10px 10px 10px;
+        -webkit-border-radius: 10px 10px 10px 10px;
+        border: 2px;
+    }
 </style>
 <p class="text-danger">Consulta del stock de un articulo en las tiendas, por filtro departamento, provincia, distrito, distrito Bata , codigo de articulo,Articulo y/o talla.</p>
 <div class="box box-body box-primary">
- <form id="form1">
-     <div class="row">
-         <div class="col-sm-3">
-             <label for="dwDep">Depto.</label>
-             <div class="form-group">
-                 <div class="input-group">
-                     <div id="tipodoc" class="input-group">
-                         @Html.DropDownList("dwDep", new SelectList(ViewBag.listDepartamento, "Dep_Id", "Dep_Descripcion", "-1"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwDep", @name = "dwDep", @onchange = "ListarProvincia()" })
-                     </div>
-                 </div>
-             </div>
-         </div>
-         <div class="col-sm-3">
-             <label for="dwProv">Prov.</label>
-             <div class="form-group" id="divprov" >
-                 <div class="input-group" >
-                     <div id="divprov1" class="input-group">
-                         @Html.DropDownList("dwProv", new SelectList(ViewBag.General, "Dep_Id", "Dep_Descripcion", "-1"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwProv", @name = "dwProv", @onchange = "ListarDistrito()" })
-                     </div>
-                 </div>
-             </div>
-         </div>
-         <div class="col-sm-3">
-             <label for="dwDistrito">Dist.</label>
-             <div class="form-group" id="divdis">
-                 <div class="input-group" >
-                     <div id="tipodoc" class="input-group">
-                         @Html.DropDownList("dwDistrito", new SelectList(ViewBag.General, "Dep_Id", "Dep_Descripcion", "-1"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwDistrito", @name = "dwDistrito" })
-                     </div>
-                 </div>
-             </div>
-         </div>
-         <div class="col-sm-3">
-             <label for="dwDistri">Dist.Bata</label>
-             <div class="form-group">
-                 <div class="input-group">
-                     <div id="tipodoc" class="input-group">
-                         @Html.DropDownList("dwDistri", new SelectList(ViewBag.distrito, "cod_dis", "des_dis", "-1"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwDistri", @name = "dwDistri"})
-                     </div>
-                 </div>
-             </div>
-         </div>
-     </div>
-   
-     <div class="row">
-         <div class="col-sm-3">
-             <label for="txtArticulo">Articulo</label>
-             <div class="form-group">
-                 <div class="input-group">
-                     <div id="numdoc" class="input-group">
-                         <input id="txtArticulo" name="txtArticulo" value="" maxlength="8" placeholder="codigo" autofocus class="form-control" type="text" />                         
-                     </div>
-                 </div>
-             </div>
-         </div>
-         <div class="col-sm-1">
-             <label for="txtTalla">Talla</label>
-             <div class="form-group">
-                 <div class="input-group">
-                     <div id="numdoc" class="input-group">
-                         <input id="txtTalla" name="txtTalla" value="" maxlength="4" autofocus class="form-control" type="text" />
-                     </div>
-                   
-                 </div>
-
-             </div>
-         </div>
-         <div class="col-sm-2">
-             <label></label><br />
-             <button type="button" onclick="ValidarMostrarArticulo()" title="Consultar" class="btn btn-primary">
-            <span class="glyphicon glyphicon-search"></span>
-        </button>          
-         </div>       
-     </div>
-   
-</form>
-    <table id="example" class="table table-hover dataTable  table-striped table-responsive">
-
-        <tbody>
-            <tr>
-                <td  style="background:#FFFFFF;width:30%;text-align:center;vertical-align:middle;border: 1px solid;border-color:gainsboro">
-                    <div id="DivNombre"><h3>Buscando</h3></div>
-                    @*<img id="imagenCatalogo" class="imgRedonda" src="https://d13xymm0hzzbsd.cloudfront.net/2/20140210/13920663947653.jpg" width="150" height="120">*@
-                    <img id="imagenCatalogo" class="imgRedonda" src="~/Content/images/lupa.jpg" width="150" height="120" />
-                </td>
-                <td>               
-                    <div id="listTienda" style="overflow-x: hidden; overflow-y:auto; height: 378px;">                        
-                       
+    <form id="form1">
+        <div class="row">
+            <div class="col-sm-3">
+                <label for="dwDep">Depto.</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div id="tipodoc" class="input-group">
+                            @Html.DropDownList("dwDep", new SelectList(ViewBag.listDepartamento, "Dep_Id", "Dep_Descripcion", "-1"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwDep", @name = "dwDep", @onchange = "ListarProvincia()" })
+                        </div>
                     </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
- 
-<div><input id="NombreUsuario" type="hidden" value="@ViewBag.Usuario"/></div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <label for="dwProv">Prov.</label>
+                <div class="form-group" id="divprov">
+                    <div class="input-group">
+                        <div id="divprov1" class="input-group">
+                            @Html.DropDownList("dwProv", new SelectList(ViewBag.General, "Dep_Id", "Dep_Descripcion", "-1"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwProv", @name = "dwProv", @onchange = "ListarDistrito()" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <label for="dwDistrito">Dist.</label>
+                <div class="form-group" id="divdis">
+                    <div class="input-group">
+                        <div id="tipodoc" class="input-group">
+                            @Html.DropDownList("dwDistrito", new SelectList(ViewBag.General, "Dep_Id", "Dep_Descripcion", "-1"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwDistrito", @name = "dwDistrito" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <label for="dwDistri">Dist.Bata</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div id="tipodoc" class="input-group">
+                            @Html.DropDownList("dwDistri", new SelectList(ViewBag.distrito, "cod_dis", "des_dis", "-1"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwDistri", @name = "dwDistri" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-3">
+                <label for="txtArticulo">Articulo</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div id="numdoc" class="input-group">
+                            <input id="txtArticulo" name="txtArticulo" value="" maxlength="8" placeholder="codigo" autofocus class="form-control" type="text" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-1">
+                <label for="txtTalla">Talla</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div id="numdoc" class="input-group">
+                            <input id="txtTalla" name="txtTalla" value="" maxlength="4" autofocus class="form-control" type="text" />
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <label></label><br />
+                <button type="button" onclick="ValidarMostrarArticulo()" title="Consultar" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-search"></span>
+                </button>
+            </div>
+        </div>
+
+    </form>
+    <div class="modal-header modal-header-danger" style="margin-top:0px;margin-bottom:0px;padding-top:2px;padding-bottom:2px;overflow-x:auto; ">
+       
+            <table style="border-bottom:0px;font-size:14px;width:100%;">
+                <tr>
+                    <td style="font-size:14px;width:8%;text-align:left;">
+                        <span id="bocuP" onclick="ocultarDiv('tdImagen'); mostrarDivFast('bverP'); ocultarDivFast('bocuP')" class="glyphicon glyphicon-eye-close"></span>
+                        <span id="bverP" onclick="mostrarDiv('tdImagen'); ocultarDivFast('bverP'); mostrarDivFast('bocuP')" style="display:none" class="glyphicon glyphicon-picture"></span>
+                    </td>
+                    <td style="font-size:14px;width:92%;text-align:left;"><h5 class="modal-title" id="myModalLabel">Stock de Articulo</h5></td>
+                    
+                </tr>
+            </table>
+        
+    </div>
+<table id="example" class="table table-hover dataTable  table-striped table-responsive">
+
+    <tbody>
+        <tr>
+            <td id="tdImagen" style="background:#FFFFFF;width:30%;text-align:center;vertical-align:middle;border: 1px solid;border-color:gainsboro">
+                <div id="DivNombre"><h3>Buscando</h3></div>
+                <img id="imagenCatalogo" class="imgRedonda" src="~/Content/images/lupa.jpg" width="150" height="120" />
+            </td>
+            <td>
+                <div id="listTienda" style="overflow-x: hidden; overflow-y:auto; height: 378px;">
+
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+<div><input id="NombreUsuario" type="hidden" value="@ViewBag.Usuario" /></div>
 </div>
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" ng-app>
     <div class="modal-dialog">
@@ -138,26 +152,46 @@
 <script src="~/Scripts/BI.js"></script>
 <script>
     var gSite = ''
-   
+
     $(document).ready(function () {
         $("body").toggleClass('sidebar-collapse');
         var pathname = window.location.pathname;
         var res = pathname.split("/")
-    
+
         if (res[1].toString() != "ArticuloStock") {
-          gSite = "/" + res[1].toString();
+            gSite = "/" + res[1].toString();
         }
         //if ($("#NombreUsuario").val() == 'Invitado')
         //    setInterval('ContinuarConexion()', 5000);
     });
 
+    function ocultarDiv(divId) {
+
+        $("#" + divId).hide("slow");
+    }
+
+    function mostrarDiv(divId) {
+
+        $("#" + divId).show("slow");
+    }
+
+    function ocultarDivFast(divId) {
+
+        $("#" + divId).hide();
+    }
+
+    function mostrarDivFast(divId) {
+
+        $("#" + divId).show();
+    }
+
     function ListarProvincia() {
         var combo;
         var CodDepartamento = $("#dwDep").val();
-       
+
         combo = GenerarLista('1', CodDepartamento);
         llenarCombo("divprov", "dwProv", combo, '', '', "ListarDistrito");
-        
+
     }
     function llenarCombo(DivId, IdControl, Data, codDefecto, desDefecto, onchangeFuncion) {
 
@@ -239,8 +273,8 @@
     }
 
     function ListarDistrito() {
-     
-     
+
+
         var combo;
         var CodDepartamento = $("#dwDep").val();
         var Codprovincia = $("#dwProv").val();
@@ -279,9 +313,9 @@
     }
 
     function ValidarMostrarArticulo() {
-     
+
         var codArticulo = $('#txtArticulo').val();
-        codArticulo = codArticulo.replace(/^\s+|\s+$/g, "")     
+        codArticulo = codArticulo.replace(/^\s+|\s+$/g, "")
 
         if (codArticulo != '')
             MostrarArticulo();
@@ -294,7 +328,7 @@
 
     function MostrarArticulo() {
 
-       
+
 
         waitingDialog.show('Espere un momento por favor');
         document.getElementById('listTienda').innerHTML = '';
@@ -332,10 +366,10 @@
             datatype: "json",
             cache: true,
             success: function (data) {
-                
+
                 var codTienda = ''
                 var consTienda = ''
-               
+
                 if (data != '' && data != '[]') {
                     var valors = JSON.parse(data);
                     var nombreTienda = '';
@@ -343,14 +377,14 @@
                     var talla = '';
                     var cantidad = '';
                     var NombreArticulo = '';
-               
+
                     $.each(valors, function (index, item) {
                         codTienda = item.Codigo_tienda;
                         NombreArticulo = item.Descripcion;
-                         strUrlImagen = item.Url_Imagen
+                        strUrlImagen = item.Url_Imagen
                         if (codTienda != consTienda) {
-                       
-                       
+
+
                             if (consTienda != '') {
                                 var strhtml = ConstHtmlTienda;
 
@@ -384,9 +418,9 @@
                         listCantidad += ConstCantidad;
                         listCantidad = listCantidad.replace("variableCantidad", cantidad);
 
-                                    
+
                     });
-                 
+
                     if (codTienda != '') {
                         ConstHtmlTienda = ConstHtmlTienda.replace("VariableTienda", nombreTienda);
                         ConstHtmlTienda = ConstHtmlTienda.replace("DireccionTienda", DireccionTienda);
@@ -398,10 +432,10 @@
                         document.getElementById("listTienda").innerHTML = divFinal;
                         document.getElementById("DivNombre").innerHTML = '<h3>' + NombreArticulo + '</h3>';
                     }
-                
+
                 } else {
-                   
-                    ConstHtmlTienda = ConstHtmlTienda.replace("VariableTienda",'Articulo no encontrado.');
+
+                    ConstHtmlTienda = ConstHtmlTienda.replace("VariableTienda", 'Articulo no encontrado.');
                     ConstHtmlTienda = ConstHtmlTienda.replace("DireccionTienda", '');
                     ConstHtmlTienda = ConstHtmlTienda.replace("ListvariableTalla", '');
                     ConstHtmlTienda = ConstHtmlTienda.replace("ListvariableCantidad", '');
@@ -420,7 +454,7 @@
                     document.getElementById("DivNombre").innerHTML = '<h3>Buscando</h3>';
                 }
                 waitingDialog.hide();
-                
+
             },
             error: function () {
                 waitingDialog.hide();
@@ -428,17 +462,6 @@
             }
 
         });
-
-    }
-
-    function MostrarArticuloSustituto1(control) {
-
-        var tienda = control.getAttribute('data-id');
-        var talla = control.getAttribute('data-modal');
-        var articulo = control.getAttribute('data-art');
-        alert(tienda)
-        alert(talla)
-        alert(articulo)
 
     }
 
@@ -470,7 +493,7 @@
             type: "GET",
             url: ControllerUrl,
             contentType: "application/json; charset=utf-8",
-            data: { codTda: tienda, codArticulo: codArticulo, codTalla: codtalla, calidad: calidad},
+            data: { codTda: tienda, codArticulo: codArticulo, codTalla: codtalla, calidad: calidad },
             datatype: "json",
             cache: true,
             success: function (data) {
@@ -517,7 +540,7 @@
                         cantidad = (item.Cantidad).toString();
 
                         listTalla += ConstTalla;
-                        listTalla = listTalla.replace("variableTalla", talla);                
+                        listTalla = listTalla.replace("variableTalla", talla);
 
                         listCantidad += ConstCantidad;
                         listCantidad = listCantidad.replace("variableCantidad", cantidad);
@@ -545,9 +568,15 @@
                         strhtml += '<h5 class="modal-title" id="myModalLabel">'
                         strhtml += '<table style="border-bottom:0px;font-size:14px;width:100%;">'
                         strhtml += '<tr>'
-                        strhtml += '<td style="font-size:14px;width:90%;text-align:left;">Articulos Sustitutos de:&nbsp;&nbsp;' + codArticulo + '&nbsp;&nbsp;-&nbsp;&nbsp;Tienda:&nbsp;&nbsp;' + destienda + '</td>'
                         strhtml += '<td style="font-size:14px;width:10%;text-align:left;">'
+                        var pOcu = "ocultarDiv('tdImagenOri');mostrarDivFast('bverPS'); ocultarDivFast('bocuPS')"
+                        var pVer = "mostrarDiv('tdImagenOri');ocultarDivFast('bverPS'); mostrarDivFast('bocuPS')"
+                        strhtml += '<span id="bocuPS" onclick ="' + pOcu + '"  class="glyphicon glyphicon-eye-close"></span>'
+                        strhtml += '<span id="bverPS" onclick ="' + pVer + '" style="display:none" class="glyphicon glyphicon-picture"></span>'
+                   
                         strhtml += '</td>'
+                        strhtml += '<td style="font-size:14px;width:90%;text-align:left;">Articulos Sustitutos de:&nbsp;&nbsp;' + codArticulo + '&nbsp;&nbsp;-&nbsp;&nbsp;Tienda:&nbsp;&nbsp;' + destienda + '</td>'
+                      
                         strhtml += '</tr>'
                         strhtml += '</table>'
                         strhtml += '</h5>'
@@ -556,7 +585,7 @@
                         strhtml += '<table id="example" class="table table-hover dataTable  table-striped table-responsive">'
                         strhtml += '<tbody>'
                         strhtml += '<tr>'
-                        strhtml += '<td  style="background:#FFFFFF;width:30%;text-align:center;vertical-align:middle;border: 1px solid;border-color:gainsboro">'
+                        strhtml += '<td  id="tdImagenOri" style="background:#FFFFFF;width:30%;text-align:center;vertical-align:middle;border: 1px solid;border-color:gainsboro">'
                         strhtml += '<div id="DivNombreOri"><h3>' + NombreArticulo + '</h3></div>'
                         strhtml += '<img id="imagenCatalogoOri" class="imgRedonda" src="' + strUrlImagen + '" width="150" height="120" />'
                         strhtml += '</td>'
@@ -580,7 +609,7 @@
                     }
 
                 } else {
-                    
+
                     toastr.error("No se encontraron Sustitutos", "Mensaje");
                 }
                 waitingDialog.hide();
@@ -592,7 +621,7 @@
             }
 
         });
-       
+
     }
 
 
@@ -601,7 +630,7 @@
         if (Modernizr.webworkers) {
             var worker = new Worker('/scripts/LogStats.js');
             worker.onmessage = function (event) {
-                //alert(event.data);              
+                //alert(event.data);
             };
             worker.onerror = function (event) {
                 alert(event.message, event);
@@ -611,7 +640,7 @@
         }
 
     }
-   
+
 
 
 </script>

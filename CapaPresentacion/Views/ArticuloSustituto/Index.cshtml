@@ -82,11 +82,25 @@
 
      </div> <br/>
 </form>
+    <div class="modal-header modal-header-danger" style="margin-top:0px;margin-bottom:0px;padding-top:2px;padding-bottom:2px;overflow-x:auto; ">
+
+        <table style="border-bottom:0px;font-size:14px;width:100%;">
+            <tr>
+                <td style="font-size:14px;width:8%;text-align:left;">
+                    <span id="bocuP" onclick="ocultarDiv('tdImagen'); mostrarDivFast('bverP'); ocultarDivFast('bocuP')" class="glyphicon glyphicon-eye-close"></span>
+                    <span id="bverP" onclick="mostrarDiv('tdImagen'); ocultarDivFast('bverP'); mostrarDivFast('bocuP')" style="display:none" class="glyphicon glyphicon-picture"></span>
+                </td>
+                <td style="font-size:14px;width:92%;text-align:left;"><h5 class="modal-title" id="myModalLabel">Articulo Sustituto</h5></td>
+
+            </tr>
+        </table>
+
+    </div>
     <table id="example" class="table table-hover dataTable  table-striped table-responsive">
 
         <tbody>
             <tr>
-                <td  style="background:#FFFFFF;width:30%;text-align:center;vertical-align:middle;border: 1px solid;border-color:gainsboro">
+                <td id="tdImagen"  style="background:#FFFFFF;width:30%;text-align:center;vertical-align:middle;border: 1px solid;border-color:gainsboro">
                     <div id="DivNombre"><h3>Buscando</h3></div>
                     @*<img id="imagenCatalogo" class="imgRedonda" src="https://d13xymm0hzzbsd.cloudfront.net/2/20140210/13920663947653.jpg" width="150" height="120">*@
                     <img id="imagenCatalogo" class="imgRedonda" src="~/Content/images/lupa.jpg" width="150" height="120" />
@@ -119,7 +133,28 @@
         }
         //if ($("#NombreUsuario").val() == 'Invitado')
         //    setInterval('ContinuarConexion()', 5000);
-    });   
+    });
+
+
+    function ocultarDiv(divId) {
+
+        $("#" + divId).hide("slow");
+    }
+
+    function mostrarDiv(divId) {
+
+        $("#" + divId).show("slow");
+    }
+
+    function ocultarDivFast(divId) {
+
+        $("#" + divId).hide();
+    }
+
+    function mostrarDivFast(divId) {
+
+        $("#" + divId).show();
+    }
 
 
     function ValidarMostrarArticulo() {
