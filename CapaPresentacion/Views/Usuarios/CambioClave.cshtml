@@ -19,6 +19,8 @@
     </script>
 }
 <section class="content">
+@using (Ajax.BeginForm("Edit", new AjaxOptions { OnBegin = "CambiarClave();" }))
+{
     <div class="row">
         <div class="login-box">
             <div class="login-logo">
@@ -42,7 +44,7 @@
                     <div class="row">
                         
                         <div class="col-xs-12">
-                            <button type="submit" onclick="CambiarClave()" class="btn btn-primary btn-block btn-flat">Cambiar Clave</button>
+                            <button type="submit"  class="btn btn-primary btn-block btn-flat">Cambiar Clave</button>
                         </div>
                        
                     </div>                   
@@ -51,6 +53,7 @@
             <!-- /.login-box-body -->
         </div>
     </div>
+}
     <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="~/ScriptsSelect/bootstrap-select.js"></script>
     <script src="~/Scripts/BI.js"></script>
@@ -66,8 +69,16 @@
         var _password1 = $('#txtClave1').val();
         var _password2 = $('#txtClave2').val();
 
-        if (_password1 != _password2) {
-            toastr.error("Las contraseñas ingresadas no coinciden", "Error");
+      
+        _password1 = _password1.replace(/^\s+|\s+$/g, "")
+        _password2 = _password2.replace(/^\s+|\s+$/g, "")
+     
+
+        if ((_password1 != _password2) || _password1 == '') {
+            if (_password1 == '')
+                toastr.error("Debe ingresar una contraseña", "Error");
+            else
+                toastr.error("Las contraseñas ingresadas no coinciden", "Error");
         } else {
 
             waitingDialog.show('Espere un momento por favor');
