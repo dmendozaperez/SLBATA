@@ -111,8 +111,8 @@
             <table style="border-bottom:0px;font-size:14px;width:100%;">
                 <tr>
                     <td style="font-size:14px;width:8%;text-align:left;">
-                        <span id="bocuP" onclick="ocultarDiv('tdImagen'); mostrarDivFast('bverP'); ocultarDivFast('bocuP')" class="glyphicon glyphicon-eye-close"></span>
-                        <span id="bverP" onclick="mostrarDiv('tdImagen'); ocultarDivFast('bverP'); mostrarDivFast('bocuP')" style="display:none" class="glyphicon glyphicon-picture"></span>
+                        <span id="bocuP" onclick="ocultarDivFast('tdImagen'); mostrarDivFast('bverP'); ocultarDivFast('bocuP')" class="glyphicon glyphicon-eye-close"></span>
+                        <span id="bverP" onclick="mostrarDivFast('tdImagen'); ocultarDivFast('bverP'); mostrarDivFast('bocuP')" style="display:none" class="glyphicon glyphicon-picture"></span>
                     </td>
                     <td style="font-size:14px;width:92%;text-align:left;"><h5 class="modal-title" id="myModalLabel">Stock de Articulo</h5></td>
                     
@@ -569,8 +569,8 @@
                         strhtml += '<table style="border-bottom:0px;font-size:14px;width:100%;">'
                         strhtml += '<tr>'
                         strhtml += '<td style="font-size:14px;width:10%;text-align:left;">'
-                        var pOcu = "ocultarDiv('tdImagenOri');mostrarDivFast('bverPS'); ocultarDivFast('bocuPS')"
-                        var pVer = "mostrarDiv('tdImagenOri');ocultarDivFast('bverPS'); mostrarDivFast('bocuPS')"
+                        var pOcu = "ocultarDivFast('tdImagenOri');mostrarDivFast('bverPS'); ocultarDivFast('bocuPS')"
+                        var pVer = "mostrarDivFast('tdImagenOri');ocultarDivFast('bverPS'); mostrarDivFast('bocuPS')"
                         strhtml += '<span id="bocuPS" onclick ="' + pOcu + '"  class="glyphicon glyphicon-eye-close"></span>'
                         strhtml += '<span id="bverPS" onclick ="' + pVer + '" style="display:none" class="glyphicon glyphicon-picture"></span>'
                    

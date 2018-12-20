@@ -94,6 +94,9 @@ namespace CapaPresentacion.Controllers
 
                 if (return_action.Length == 0)
                 {
+
+                    if (model.Usuario.Substring(0, 2) == "50") Session["Tienda"] = model.Usuario;
+
                     return RedirectToAction("Index", "Home");
                 }
                 else
