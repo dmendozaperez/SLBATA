@@ -29,8 +29,9 @@
 </style>
 <p class="text-danger">Consulta los articulos sustitutos de un articulo que existen en la tienda, por filtro articulo,talla y calidad.</p>
 <div class="box box-body box-primary">
- <form id="form1">
-         
+@using (Ajax.BeginForm("Edit", new AjaxOptions { OnBegin = "ValidarMostrarArticulo();" }))
+{
+
      <div class="row" style="margin-top:10px">
         
          <div class="col-sm-3">
@@ -70,7 +71,7 @@
              <div class="form-group">
                  <div class="input-group">
                      <div id="buscar" class="input-group">
-                         <button type="button" onclick="ValidarMostrarArticulo()" title="Consultar" class="btn btn-primary">
+                         <button  type="submit" title="Consultar" class="btn btn-primary">
                              <span class="glyphicon glyphicon-search"></span>
                          </button>
                      </div>
@@ -78,10 +79,10 @@
              </div>
          </div>            
          
-
+         @*type="button" onclick="ValidarMostrarArticulo()"*@
 
      </div> <br/>
-</form>
+}
     <div class="modal-header modal-header-danger"  onclick="visualizarImagen()"  style="margin-top:0px;margin-bottom:0px;padding-top:2px;padding-bottom:2px;overflow-x:auto; ">
 
         <table style="border-bottom:0px;font-size:14px;width:100%;">
