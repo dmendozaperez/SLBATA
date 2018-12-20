@@ -82,47 +82,47 @@
 
      </div> <br/>
 </form>
-    <div class="modal-header modal-header-danger" style="margin-top:0px;margin-bottom:0px;padding-top:2px;padding-bottom:2px;overflow-x:auto; ">
+    <div class="modal-header modal-header-danger"  onclick="visualizarImagen()"  style="margin-top:0px;margin-bottom:0px;padding-top:2px;padding-bottom:2px;overflow-x:auto; ">
 
         <table style="border-bottom:0px;font-size:14px;width:100%;">
             <tr>
-                <td style="font-size:14px;width:8%;text-align:left;">
-                    <span id="bocuP" onclick="ocultarDivFast('tdImagen'); mostrarDivFast('bverP'); ocultarDivFast('bocuP')" class="glyphicon glyphicon-eye-close"></span>
-                    <span id="bverP" onclick="mostrarDivFast('tdImagen'); ocultarDivFast('bverP'); mostrarDivFast('bocuP')" style="display:none" class="glyphicon glyphicon-picture"></span>
+                <td style="font-size:14px;width:2%;text-align:left;">
+                    <span id="bocuP"  style="display:none"  class="glyphicon glyphicon-eye-close"></span>
+                    <span id="bverP" class="glyphicon glyphicon-picture"></span>
                 </td>
-                <td style="font-size:14px;width:92%;text-align:left;"><h5 class="modal-title" id="myModalLabel">Articulo Sustituto</h5></td>
+                <td style="font-size:14px;width:98%;text-align:left;"><h5 class="modal-title" id="myModalLabel"><div id="DivNombre">Articulo Sustituto</div></h5></td>
 
             </tr>
         </table>
 
     </div>
-    <table id="example" class="table table-hover dataTable  table-striped table-responsive">
+    <div style="overflow-x: auto; overflow-y:hidden; height: 378px;width:100%">
+        <table id="example" class="table table-hover dataTable  table-striped table-responsive">
 
-        <tbody>
-            <tr>
-                <td id="tdImagen"  style="background:#FFFFFF;width:30%;text-align:center;vertical-align:middle;border: 1px solid;border-color:gainsboro">
-                    <div id="DivNombre"><h3>Buscando</h3></div>
-                    @*<img id="imagenCatalogo" class="imgRedonda" src="https://d13xymm0hzzbsd.cloudfront.net/2/20140210/13920663947653.jpg" width="150" height="120">*@
-                    <img id="imagenCatalogo" class="imgRedonda" src="~/Content/images/lupa.jpg" width="150" height="120" />
-                </td>
-                <td>               
-                    <div id="listTienda" style="overflow-x: hidden; overflow-y:auto; height: 378px;">                        
-                       
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
- 
-<div><input id="NombreUsuario" type="hidden" value="@ViewBag.Usuario"/></div>
-</div>
+            <tbody>
+                <tr>
+                    <td id="tdImagen" style="display:none;background:#FFFFFF;width:20%;text-align:center;vertical-align:middle;border: 1px solid;border-color:gainsboro">
+                        @*<img id="imagenCatalogo" class="imgRedonda" src="https://d13xymm0hzzbsd.cloudfront.net/2/20140210/13920663947653.jpg" width="150" height="120">*@
+                        <img id="imagenCatalogo" class="imgRedonda" src="~/Content/images/lupa.jpg" width="150" height="120" />
+                    </td>
+                    <td>
+                        <div id="listTienda" style="overflow-x: hidden; overflow-y:auto; height: 378px;">
+
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+        <div><input id="NombreUsuario" type="hidden" value="@ViewBag.Usuario" /></div>
+    </div>
 
 <script src="~/Scripts/bootstrap.min.js"></script>
 <script src="~/ScriptsSelect/bootstrap-select.js"></script>
 <script src="~/Scripts/BI.js"></script>
 <script>
     var gSite = ''
-   
+    var gVisible = 'F'
     $(document).ready(function () {
         $("body").toggleClass('sidebar-collapse');
         var pathname = window.location.pathname;
@@ -135,7 +135,21 @@
         //    setInterval('ContinuarConexion()', 5000);
     });
 
+    function visualizarImagen() {
 
+        if (gVisible == 'F') {
+            gVisible = 'V';
+            mostrarDivFast('tdImagen');
+            ocultarDivFast('bverP');
+            mostrarDivFast('bocuP');
+        } else {
+            gVisible = 'F';
+            ocultarDivFast('tdImagen');
+            mostrarDivFast('bverP');
+            ocultarDivFast('bocuP');
+        }
+
+    }
     function ocultarDiv(divId) {
 
         $("#" + divId).hide("slow");
@@ -274,7 +288,7 @@
                             divFinal += ConstHtmlTienda;
                             document.getElementById('imagenCatalogo').src = strUrlImagen;
                             document.getElementById("listTienda").innerHTML = divFinal;
-                            document.getElementById("DivNombre").innerHTML = '<h3>' + NombreArticulo + '</h3>';
+                            document.getElementById("DivNombre").innerHTML = 'Articulo Sustituto:&nbsp;' + NombreArticulo + '';
                         }
 
                     } else {
@@ -291,7 +305,7 @@
                         divFinal += ConstHtmlTienda;
                         document.getElementById('imagenCatalogo').src = gSite + '/Content/images/lupa.jpg';
                         document.getElementById("listTienda").innerHTML = divFinal;
-                        document.getElementById("DivNombre").innerHTML = '<h3>Buscando</h3>';
+                        document.getElementById("DivNombre").innerHTML = 'Articulo Sustituto';
                     }
                     waitingDialog.hide();
 

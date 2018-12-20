@@ -71,6 +71,48 @@ namespace CapaPresentacion.Controllers
             ViewBag.usuariotipo = usuariotipo.get_lista();
             return View();
         }
+
+        public ActionResult CambioClave()
+        {
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            if (_usuario == null)
+            {
+                string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+                string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+                string return_view = actionName + "|" + controllerName;
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+            }
+            else { 
+                return View();
+            }
+        }
+
+        [HttpPost]
+        public ActionResult CambiarClave( string password)
+        {
+
+            Ent_Usuario _oldusuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+
+            Ent_Usuario _usuario = new Ent_Usuario();
+
+            _usuario.usu_id = _oldusuario.usu_id;
+            _usuario.usu_nombre = _oldusuario.usu_nombre;
+            _usuario.usu_contraseña = password;
+            _usuario.usu_tip_id = _oldusuario.usu_tip_id;
+            _usuario.usu_est_id = _oldusuario.usu_est_id;
+            string pass = "1";
+
+            Dat_Usuario usuario = new Dat_Usuario();
+            usuario.usu = _usuario;
+
+            Boolean _valida_editar = usuario.EditarUsuario((pass == "1") ? true : false);
+
+            return Json(new { estado = (_valida_editar) ? "1" : "-1", desmsg = (_valida_editar) ? "Se actualizo satisfactoriamente." : "Hubo un error al actualizar." });
+        }
+
+
+
+
         [HttpPost]
         public ActionResult Nuevo(string nombre, string login, string password, string tipo)
         {

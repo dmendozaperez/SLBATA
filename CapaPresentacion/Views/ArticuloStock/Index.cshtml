@@ -106,36 +106,40 @@
         </div>
 
     </form>
-    <div class="modal-header modal-header-danger" style="margin-top:0px;margin-bottom:0px;padding-top:2px;padding-bottom:2px;overflow-x:auto; ">
-       
-            <table style="border-bottom:0px;font-size:14px;width:100%;">
-                <tr>
-                    <td style="font-size:14px;width:8%;text-align:left;">
-                        <span id="bocuP" onclick="ocultarDivFast('tdImagen'); mostrarDivFast('bverP'); ocultarDivFast('bocuP')" class="glyphicon glyphicon-eye-close"></span>
-                        <span id="bverP" onclick="mostrarDivFast('tdImagen'); ocultarDivFast('bverP'); mostrarDivFast('bocuP')" style="display:none" class="glyphicon glyphicon-picture"></span>
-                    </td>
-                    <td style="font-size:14px;width:92%;text-align:left;"><h5 class="modal-title" id="myModalLabel">Stock de Articulo</h5></td>
-                    
-                </tr>
-            </table>
-        
+    <div class="modal-header modal-header-danger" onclick="visualizarImagen()" style="margin-top:0px;margin-bottom:0px;padding-top:2px;padding-bottom:2px;overflow-x:auto; ">
+
+        <table style="border-bottom:0px;font-size:14px;width:100%;">
+            <tr>
+                <td style="font-size:14px;width:10px;text-align:left;">
+                    <div>
+                        <span id="bocuP" style="display:none" class="glyphicon glyphicon-eye-close"></span>
+                        <span id="bverP"  class="glyphicon glyphicon-picture"></span>
+                    </div>
+                </td>
+                <td style="font-size:14px;width:98%;text-align:left;"><h5 class="modal-title" id="myModalLabel"><div id="DivNombre"> &nbsp;Stock de Articulo</div></h5></td>
+
+            </tr>
+        </table>
+
     </div>
-<table id="example" class="table table-hover dataTable  table-striped table-responsive">
+    <div style="overflow-x: auto; overflow-y:hidden; height: 378px;width:100%">
+        <table id="example" class="table table-hover dataTable  table-striped table-responsive">
 
-    <tbody>
-        <tr>
-            <td id="tdImagen" style="background:#FFFFFF;width:30%;text-align:center;vertical-align:middle;border: 1px solid;border-color:gainsboro">
-                <div id="DivNombre"><h3>Buscando</h3></div>
-                <img id="imagenCatalogo" class="imgRedonda" src="~/Content/images/lupa.jpg" width="150" height="120" />
-            </td>
-            <td>
-                <div id="listTienda" style="overflow-x: hidden; overflow-y:auto; height: 378px;">
+            <tbody>
+                <tr>
+                    <td id="tdImagen" style="display:none;background:#FFFFFF;width:20%;text-align:center;vertical-align:middle;border: 1px solid;border-color:gainsboro">
 
-                </div>
-            </td>
-        </tr>
-    </tbody>
-</table>
+                        <img id="imagenCatalogo" class="imgRedonda" src="~/Content/images/lupa.jpg" width="150" height="120" />
+                    </td>
+                    <td>
+                        <div id="listTienda" style="overflow-x: hidden; overflow-y:auto; height: 378px;">
+
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 <div><input id="NombreUsuario" type="hidden" value="@ViewBag.Usuario" /></div>
 </div>
@@ -152,7 +156,8 @@
 <script src="~/Scripts/BI.js"></script>
 <script>
     var gSite = ''
-
+    var gVisible = 'F'
+    var gVisibleS = 'F'
     $(document).ready(function () {
         $("body").toggleClass('sidebar-collapse');
         var pathname = window.location.pathname;
@@ -164,6 +169,23 @@
         //if ($("#NombreUsuario").val() == 'Invitado')
         //    setInterval('ContinuarConexion()', 5000);
     });
+
+
+    function visualizarImagen() {
+        
+        if (gVisible == 'F') {
+            gVisible = 'V';
+            mostrarDivFast('tdImagen');
+            ocultarDivFast('bverP');
+            mostrarDivFast('bocuP');
+        }else{
+            gVisible = 'F';
+            ocultarDivFast('tdImagen');
+            mostrarDivFast('bverP');
+            ocultarDivFast('bocuP');
+        }      
+
+    }
 
     function ocultarDiv(divId) {
 
@@ -430,7 +452,7 @@
                         divFinal += ConstHtmlTienda;
                         document.getElementById('imagenCatalogo').src = strUrlImagen;
                         document.getElementById("listTienda").innerHTML = divFinal;
-                        document.getElementById("DivNombre").innerHTML = '<h3>' + NombreArticulo + '</h3>';
+                        document.getElementById("DivNombre").innerHTML = 'Stock de Articulo:&nbsp;' + codArticulo+'-' + NombreArticulo;
                     }
 
                 } else {
@@ -451,7 +473,7 @@
                     divFinal += ConstHtmlTienda;
                     document.getElementById('imagenCatalogo').src = gSite + '/Content/images/lupa.jpg';
                     document.getElementById("listTienda").innerHTML = divFinal;
-                    document.getElementById("DivNombre").innerHTML = '<h3>Buscando</h3>';
+                    document.getElementById("DivNombre").innerHTML = 'Stock de Articulo';
                 }
                 waitingDialog.hide();
 
@@ -467,7 +489,7 @@
 
 
     function MostrarArticuloSustituto(control) {
-
+        gVisibleS = 'F';
         waitingDialog.show('Espere un momento por favor');
         var destienda = control.getAttribute('data-tda');
         var tienda = control.getAttribute('data-id');
@@ -563,29 +585,28 @@
 
                         var strhtml = ''
 
-                        strhtml += '<div class="modal-header modal-header-danger" style="margin-top:0px;margin-bottom:0px;padding-top:2px;padding-bottom:2px;">'
+                        strhtml += '<div onclick ="visualizarImagenSusti()" class="modal-header modal-header-danger" style="margin-top:0px;margin-bottom:0px;padding-top:2px;padding-bottom:2px;">'
                         strhtml += '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
                         strhtml += '<h5 class="modal-title" id="myModalLabel">'
                         strhtml += '<table style="border-bottom:0px;font-size:14px;width:100%;">'
                         strhtml += '<tr>'
-                        strhtml += '<td style="font-size:14px;width:10%;text-align:left;">'
-                        var pOcu = "ocultarDivFast('tdImagenOri');mostrarDivFast('bverPS'); ocultarDivFast('bocuPS')"
-                        var pVer = "mostrarDivFast('tdImagenOri');ocultarDivFast('bverPS'); mostrarDivFast('bocuPS')"
-                        strhtml += '<span id="bocuPS" onclick ="' + pOcu + '"  class="glyphicon glyphicon-eye-close"></span>'
-                        strhtml += '<span id="bverPS" onclick ="' + pVer + '" style="display:none" class="glyphicon glyphicon-picture"></span>'
+                        strhtml += '<td style="font-size:14px;width:5%;text-align:left;">'
+                        strhtml += '<span id="bocuPS"   style="display:none" class="glyphicon glyphicon-eye-close"></span>'
+                        strhtml += '<span id="bverPS" class="glyphicon glyphicon-picture"></span>'
                    
                         strhtml += '</td>'
-                        strhtml += '<td style="font-size:14px;width:90%;text-align:left;">Articulos Sustitutos de:&nbsp;&nbsp;' + codArticulo + '&nbsp;&nbsp;-&nbsp;&nbsp;Tienda:&nbsp;&nbsp;' + destienda + '</td>'
+                        strhtml += '<td style="font-size:14px;width:95%;text-align:left;">Articulos Sustitutos de:&nbsp;&nbsp;' + codArticulo + '&nbsp;&nbsp;-&nbsp;&nbsp;Tienda:&nbsp;&nbsp;' + destienda + '</td>'
                       
                         strhtml += '</tr>'
                         strhtml += '</table>'
                         strhtml += '</h5>'
                         strhtml += '</div>'
                         strhtml += '<div class="modal-body">'
-                        strhtml += '<table id="example" class="table table-hover dataTable  table-striped table-responsive">'
+                        strhtml += '<div style="overflow-x: auto; overflow-y:hidden; height: 378px;width:100%">'
+                        strhtml += '<table id="example2" class="table table-hover dataTable  table-striped table-responsive">'
                         strhtml += '<tbody>'
                         strhtml += '<tr>'
-                        strhtml += '<td  id="tdImagenOri" style="background:#FFFFFF;width:30%;text-align:center;vertical-align:middle;border: 1px solid;border-color:gainsboro">'
+                        strhtml += '<td  id="tdImagenOri" style="display:none;background:#FFFFFF;width:30%;text-align:center;vertical-align:middle;border: 1px solid;border-color:gainsboro">'
                         strhtml += '<div id="DivNombreOri"><h3>' + NombreArticulo + '</h3></div>'
                         strhtml += '<img id="imagenCatalogoOri" class="imgRedonda" src="' + strUrlImagen + '" width="150" height="120" />'
                         strhtml += '</td>'
@@ -597,6 +618,7 @@
                         strhtml += '</tr>'
                         strhtml += '</tbody>'
                         strhtml += '</table>'
+                        strhtml += '</div>'
                         strhtml += '</div>'
                         strhtml += '<div class="modal-footer" style="margin-top:-30px">'
                         strhtml += '<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>'
@@ -621,6 +643,22 @@
             }
 
         });
+
+    }
+
+    function visualizarImagenSusti() {
+
+        if (gVisibleS == 'F') {
+            gVisibleS = 'V';
+            mostrarDivFast('tdImagenOri');
+            ocultarDivFast('bverPS');
+            mostrarDivFast('bocuPS');
+        } else {
+            gVisibleS = 'F';
+            ocultarDivFast('tdImagenOri');
+            mostrarDivFast('bverPS');
+            ocultarDivFast('bocuPS');
+        }
 
     }
 

@@ -1,0 +1,106 @@
+﻿
+@{
+    ViewBag.Title = "";
+}
+@section Scripts
+{
+    <script type="text/javascript">
+
+        function InvalidMsg(textbox,str) {
+
+            if (textbox.value.length == 0) {
+                textbox.setCustomValidity(str);
+            }
+            else {
+                    textbox.setCustomValidity('');
+            }
+            return true;
+        }
+    </script>
+}
+<section class="content">
+    <div class="row">
+        <div class="login-box">
+            <div class="login-logo">
+                <a href=""><b>Cambio de Clave</b></a>
+            </div>
+            <!-- /.login-logo -->
+            <div class="login-box-body">
+              
+                    @*@Html.AntiForgeryToken()*@
+                    <p class="login-box-msg">Modificar su contraseña</p>
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <div class="form-group has-feedback">
+                        <input id="txtClave1" type="password" class="form-control" name="Constraseña" placeholder="Nueva Constraseña"  required="required">
+                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                    </div>
+                <div class="form-group has-feedback">
+                    <input id="txtClave2" type="password" class="form-control" name="Password" placeholder="Repetir Nueva Constraseña" required="required">
+                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                </div>
+                    <div class="row">
+                        
+                        <div class="col-xs-12">
+                            <button type="submit" onclick="CambiarClave()" class="btn btn-primary btn-block btn-flat">Cambiar Clave</button>
+                        </div>
+                       
+                    </div>                   
+                
+            </div>
+            <!-- /.login-box-body -->
+        </div>
+    </div>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/ScriptsSelect/bootstrap-select.js"></script>
+    <script src="~/Scripts/BI.js"></script>
+    <script>
+   
+    $(document).ready(function () {
+        
+
+    });
+
+    function CambiarClave() {
+
+        var _password1 = $('#txtClave1').val();
+        var _password2 = $('#txtClave2').val();
+
+        if (_password1 != _password2) {
+            toastr.error("Las contraseñas ingresadas no coinciden", "Error");
+        } else {
+
+            waitingDialog.show('Espere un momento por favor');
+            $.ajax
+                 ({
+                     url: '../Usuarios/CambiarClave',
+                     dataType: "json",
+                     type: "POST",
+                     data: { password: _password2 },
+                     success: function (data, textStatus, XMLHttpRequest) {
+                         if (data.estado == '1') {
+                                                        
+                             toastr.success(data.desmsg, "Mensaje");
+                             $('#txtClave1').val('');
+                             $('#txtClave2').val('');
+                             waitingDialog.hide();
+                         }
+                         else {
+                             waitingDialog.hide();
+                             toastr.error(data.desmsg, "Error");
+                         }
+                     },
+                     error: function (xhr) {
+                         waitingDialog.hide();
+                         toastr.error(xhr, "Error");
+                     }
+                 })
+
+
+
+        }
+
+    }
+    </script>
+
+</section>

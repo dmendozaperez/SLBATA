@@ -41,6 +41,7 @@ namespace CapaDato.Control
                                 usuario.usu_contraseña = dr["usu_contraseña"].ToString();
                                 usuario.usu_est_id = dr["usu_est_id"].ToString();
                                 usuario.usu_tip_nom = dr["usu_tip_nombre"].ToString();
+                                usuario.usu_tip_id = dr["Usu_Tip_Id"].ToString();
                                 usuario.usu_login = dr["usu_login"].ToString();
                             }
                         }
@@ -163,18 +164,18 @@ namespace CapaDato.Control
                     {
                         cmd.CommandTimeout = 0;
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@usu_id",usu.usu_id);
-                        cmd.Parameters.AddWithValue("@usu_nombre",usu.usu_nombre);
-                        cmd.Parameters.AddWithValue("@usu_password",usu.usu_contraseña);
-                        cmd.Parameters.AddWithValue("@usu_est_id",usu.usu_est_id);
-                        cmd.Parameters.AddWithValue("@usu_tip_id",usu.usu_tip_id);
+                        cmd.Parameters.AddWithValue("@usu_id", usu.usu_id);
+                        cmd.Parameters.AddWithValue("@usu_nombre", usu.usu_nombre);
+                        cmd.Parameters.AddWithValue("@usu_password", usu.usu_contraseña);
+                        cmd.Parameters.AddWithValue("@usu_est_id", usu.usu_est_id);
+                        cmd.Parameters.AddWithValue("@usu_tip_id", usu.usu_tip_id);
                         cmd.Parameters.AddWithValue("@pass", edit_pass);
                         cmd.ExecuteNonQuery();
                         valida = true;
                     }
                 }
             }
-            catch
+            catch(Exception ex)
             {
                 valida = false;
             }
