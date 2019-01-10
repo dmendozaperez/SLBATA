@@ -1,0 +1,29 @@
+@model string
+
+@Html.DevExpress().FileManager(settings => {
+    settings.Name = "FileManager";
+    settings.CallbackRouteValues = new { Controller = "Comunicado", Action = "FileManagerPartial" };
+
+    settings.DownloadRouteValues = new { Controller = "Comunicado", Action = "FileManagerPartialDownload" };
+    settings.SettingsEditing.AllowDownload = true;
+
+    settings.Settings.ThumbnailFolder = Url.Content("~/Content/FileManager/Thumbnails");
+    settings.Settings.AllowedFileExtensions =new string[] {".doc,.docs,.pdf,.xls,.xlsx,.mp4" };
+    settings.SettingsEditing.AllowCreate = true;
+    settings.SettingsEditing.AllowRename = true;
+    settings.SettingsEditing.AllowMove = true;
+    settings.SettingsEditing.AllowDelete = true;
+    settings.SettingsUpload.Enabled = true;
+    settings.SettingsUpload.UseAdvancedUploadMode = true;
+    settings.SettingsUpload.AdvancedModeSettings.EnableMultiSelect = true;
+
+    settings.SettingsFileList.View = DevExpress.Web.FileListView.Thumbnails;
+
+    settings.SettingsPermissions.AccessRules.Add(new FileManagerFolderAccessRule { Path = "Tiendas Calientes", Browse = Rights.Deny });
+    settings.SettingsPermissions.AccessRules.Add(new FileManagerFolderAccessRule { Path = "Tiendas Frias", Browse = Rights.Deny });
+    settings.SettingsPermissions.AccessRules.Add(new FileManagerFolderAccessRule { Path = "BG", Browse = Rights.Deny });
+    settings.SettingsPermissions.AccessRules.Add(new FileManagerFolderAccessRule { Path = "WB", Browse = Rights.Deny });
+    settings.SettingsPermissions.AccessRules.Add(new FileManagerFolderAccessRule { Role = "Administrator", Edit =Rights.Allow,Browse=});
+
+
+}).BindToFolder(Model).GetHtml()
