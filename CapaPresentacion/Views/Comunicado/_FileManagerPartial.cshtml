@@ -1,4 +1,5 @@
 @model string
+@using CapaPresentacion.Controllers;
 
 @Html.DevExpress().FileManager(settings => {
     settings.Name = "FileManager";
@@ -8,22 +9,40 @@
     settings.SettingsEditing.AllowDownload = true;
 
     settings.Settings.ThumbnailFolder = Url.Content("~/Content/FileManager/Thumbnails");
-    settings.Settings.AllowedFileExtensions =new string[] {".doc,.docs,.pdf,.xls,.xlsx,.mp4" };
-    settings.SettingsEditing.AllowCreate = true;
-    settings.SettingsEditing.AllowRename = true;
-    settings.SettingsEditing.AllowMove = true;
-    settings.SettingsEditing.AllowDelete = true;
-    settings.SettingsUpload.Enabled = true;
-    settings.SettingsUpload.UseAdvancedUploadMode = true;
-    settings.SettingsUpload.AdvancedModeSettings.EnableMultiSelect = true;
+    //settings.Settings.AllowedFileExtensions = new string[] { ".doc,.docs,.pdf,.xls,.xlsx,.mp4" };
+
 
     settings.SettingsFileList.View = DevExpress.Web.FileListView.Thumbnails;
 
-    settings.SettingsPermissions.AccessRules.Add(new FileManagerFolderAccessRule { Path = "Tiendas Calientes", Browse = Rights.Deny });
-    settings.SettingsPermissions.AccessRules.Add(new FileManagerFolderAccessRule { Path = "Tiendas Frias", Browse = Rights.Deny });
-    settings.SettingsPermissions.AccessRules.Add(new FileManagerFolderAccessRule { Path = "BG", Browse = Rights.Deny });
-    settings.SettingsPermissions.AccessRules.Add(new FileManagerFolderAccessRule { Path = "WB", Browse = Rights.Deny });
-    settings.SettingsPermissions.AccessRules.Add(new FileManagerFolderAccessRule { Role = "Administrator", Edit =Rights.Allow,Browse=});
+
+    if (ViewBag.opcion_admin=="1")
+    {
+        settings.SettingsUpload.Enabled = false;
+        settings.SettingsUpload.UseAdvancedUploadMode = false;
+        settings.SettingsUpload.AdvancedModeSettings.EnableMultiSelect = false;
+        settings.SettingsEditing.AllowCreate = false;
+        settings.SettingsEditing.AllowRename = false;
+        settings.SettingsEditing.AllowMove = false;
+        settings.SettingsEditing.AllowDelete = false;
+        if (@ViewBag.tipo_tda=="BATA")
+        {
+            settings.SettingsPermissions.AccessRules.Add(new FileManagerFolderAccessRule { Path =(@ViewBag.estado_acceso=="0")? "Tiendas Calientes": "Tiendas Frias", Browse = Rights.Deny });
+        }
+        else
+        {
+            settings.SettingsPermissions.AccessRules.Add(new FileManagerFolderAccessRule { Path = (@ViewBag.cadena == "BG") ? "WB" : "BG", Browse = Rights.Deny });
+        }
+    }
+    else
+    {
+        settings.SettingsUpload.Enabled = true;
+        settings.SettingsUpload.UseAdvancedUploadMode = true;
+        settings.SettingsUpload.AdvancedModeSettings.EnableMultiSelect = true;
+        settings.SettingsEditing.AllowCreate = true;
+        settings.SettingsEditing.AllowRename = true;
+        settings.SettingsEditing.AllowMove = true;
+        settings.SettingsEditing.AllowDelete = true;
+    }
 
 
 }).BindToFolder(Model).GetHtml()
