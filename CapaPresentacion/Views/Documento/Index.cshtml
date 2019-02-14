@@ -1,0 +1,28 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout_FileManager.cshtml";
+    ViewBag.Title = "Documentos de Tienda";
+}
+
+@Scripts.Render("~/bundles/bootstrap")
+<div class="box box-body box-primary">
+    @using (Html.BeginForm())
+    {
+        @Html.Action("FileManagerPartial")
+    }
+</div>
+<script>
+    var gSite = ''
+    var gVisible = 'F'
+    var gVisibleS = 'F'
+    $(document).ready(function () {
+        $("body").toggleClass('sidebar-collapse');
+        var pathname = window.location.pathname;
+        var res = pathname.split("/")
+
+        if (res[1].toString() != "Comunicado") {
+            gSite = "/" + res[1].toString();
+        }
+        //if ($("#NombreUsuario").val() == 'Invitado')
+        //    setInterval('ContinuarConexion()', 5000);
+    });
+</script>

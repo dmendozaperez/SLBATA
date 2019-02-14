@@ -1,0 +1,259 @@
+﻿@using CapaEntidad.Util;
+@{
+    ViewBag.Title = "Reporte de Planilla";
+    AjaxOptions options = new AjaxOptions
+    {
+        HttpMethod = "GET",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "lista",
+        OnComplete = "waitingDialog.hide();",
+        OnBegin = "waitingDialog.show('Espere un momento por favor');",
+        OnFailure = "waitingDialog.hide();"
+    };
+
+}
+
+@*@Scripts.Render("~/bundles/bootstrap-select_Select")*@
+<link href="~/ContentSelect/bootstrap-select.css" rel="stylesheet" />
+<style>
+    iframe {
+        border: none;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        height: 800px;
+    }
+</style>
+<div class="">
+
+    <div class="">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+
+                <div class="x_content">
+                    <div class="well">
+                        <form id="frmConsulta" data-parsley-validate>
+                            <div class="row">
+                                <div class="form-group col-md-1">
+                                    <label for="txtCliente">Cod Tda.</label>
+                                </div>
+                                @*@Html.DropDownList("txtTda", new SelectList(ViewBag.Tienda, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "txtTda", @name = "txtTda", style = "width:270px;max-width:270px;" })*@
+                                <div class="form-group col-md-3">
+                                    @*@Html.DropDownList("txtTda", new SelectList(ViewBag.Tienda, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectCountry form-control", @data_live_search = "true", @id = "txtTda" })*@
+                                    @Html.DropDownList("txtTda", new SelectList(ViewBag.tienda, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", @data_live_search = "true", @id = "txtTda", @name = "txtTda" })
+                                    @*<input type="text" name="txtTda" id="txtTda" class="form-control" maxlength="255" data-parsley-maxlength="255" data-parsley-maxlength-message="Ingrese un nombre usuario válido.">*@
+                                </div>
+
+                                <div class="form-group col-md-1">
+                                    <label class="control-label" for="selEstado">Grupo</label>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    @Html.DropDownList("dwGrupo", new SelectList(ViewBag.Grupo, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwGrupo", @name = "dwGrupo", style = "width:270px;max-width:270px;", @onchange = "ListarCategoria()" })
+
+                                </div>
+                                <div class="form-group col-md-1">
+                                    <label class="control-label" for="selEstado">Categoria</label>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    @Html.DropDownList("dwCate", new SelectList(ViewBag.Categoria, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectCountry form-control", @data_live_search = "true", @id = "dwCate", @onchange = "ListarSubCategoria()" })
+
+                                </div>
+
+
+
+                            </div>
+                            <div class="row">
+
+                                <div class="form-group col-md-1">
+                                    <label class="control-label" for="selEstado">Sub-Categ.</label>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    @Html.DropDownList("dwsbCate", new SelectList(ViewBag.Categoria, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectCountry form-control", @data_live_search = "true", @id = "dwsbCate" })
+
+                                </div>
+                                <div class="form-group col-md-1">
+                                    <label class="control-label" for="selEstado">Estado</label>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    @Html.DropDownList("dwEstado", new SelectList(ViewBag.Estado, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwEstado", @name = "dwEstado", style = "width:270px;max-width:270px;" })
+                                </div>
+                                <div class="form-group col-md-3">
+
+                                    <button type="button" class="btn btn-primary" onclick="javascript: MostrarReporte()">
+                                        <span class="glyphicon glyphicon-th-list"></span>&nbsp;Ver Reporte
+                                    </button>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">  
+                            <div id="ifrReporte" class="well" style="width: 100%; height: 800px;">
+                                <iframe id="load"  src="" frameborder="0" marginheight="1"
+                                        marginwidth="1" scrolling="auto" onload="javascript: waitingDialog.hide();"></iframe> 
+                            </div>
+                                                     
+                                                      
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/ScriptsSelect/bootstrap-select.js"></script>
+<script src="~/Scripts/BI.js"></script>
+<script>
+
+
+    function loadedFrame() {
+        $('#loading').hide();
+    }
+    function MostrarReporte(e) {
+
+        var tda = $('#txtTda').val();
+        var grupo = $('#dwGrupo').val();
+        //var str = grupo.toString();
+        var cate = $('#dwCate').val();
+        var sbCate = $('#dwsbCate').val();
+        var Estado = $('#dwEstado').val();
+
+        if (grupo == '' || grupo == null) { grupo = '0' };
+        if (cate == '' || cate == null) { cate = '0' };
+        if (sbCate == '' || sbCate == null) { sbCate = '0' };
+        if (Estado == '' || Estado == null) { Estado = '0' };
+        grupo = grupo.toString();
+        cate = cate.toString();
+        sbCate = sbCate.toString();
+        Estado = Estado.toString();
+
+        var TeamDetailPostBackURL ="@Url.Action("ShowGenericReportInNewWin", "ReporteCrystal")";
+        if (tda != '' || tda == null) {
+            waitingDialog.show('Espere un momento por favor');
+            $.ajax({
+                //url: GLB_RUT_APP_REPVENR + "?tda=" + tda + "&grupo=" + grupo + "&cate=" + cate + "&subcate=" + sbCate + "&estado=" + Estado,
+                url:TeamDetailPostBackURL,// '../ReporteCrystal/ShowGenericReportInNewWin',
+                dataType: 'json',
+                type: 'POST',
+                //dataType: "html",
+                data: { cod_tda: tda, grupo: grupo, categoria: cate, subcategoria: sbCate, estado: Estado },
+                //cache: false,
+                //async: false,
+                //dataType: "html",
+                success: function (data) {
+                    //alert('ok');
+                    $('#load').show();
+                    $("#load").attr("src", "../AspNetForms/Planilla.aspx");
+                    //document.getElementById("ifrReporte").innerHTML = data;
+                    //waitingDialog.hide();
+                    return false;
+                },
+                error: function (request, status, error) {
+                    waitingDialog.hide();
+                }
+            }).done(function () {
+
+            });
+        } else {
+
+            toastr.error('Debe Ingresar Tienda', "Alerta");
+        }
+    }
+
+    function ListarCategoria() {        
+        @*var jsonObj = @Html.Raw(Json.Encode(ViewBag.ClCategoria));*@
+        var data=function() { return @Html.Raw(Json.Encode(ViewBag.ClCategoria)); }();
+        var dataArray=data.Data;
+        var strgrupo = $('#dwGrupo').val();
+        var listar=[];   
+        var lista_default = dataArray.filter(obj => obj.cbo_filter === '');
+        $.each(lista_default, function (index, item) {
+
+            listar.push(item);
+
+        });
+
+
+        if (strgrupo!=null){        
+            for(var i=0;i<strgrupo.length;i++)
+            {
+                var lista_filter = dataArray.filter(obj => obj.cbo_filter === strgrupo[i]);           
+                $.each(lista_filter, function (index, item) {
+
+                    listar.push(item);
+                });          
+            };
+        }
+        llenarCombo("dwCate",listar);
+       
+    }
+
+    function ListarSubCategoria() {
+
+        var strcate = $('#dwCate').val();
+        @*var jsonObj = @Html.Raw(Json.Encode(ViewBag.ClCategoria));*@
+        var data=function() { return @Html.Raw(Json.Encode(ViewBag.ClSBCategoria)); }();
+        var dataArray=data.Data;
+        //var strgrupo = $('#dwGrupo').val();
+        var listar=[];   
+        var lista_default = dataArray.filter(obj => obj.cbo_filter === '');
+        $.each(lista_default, function (index, item) {
+
+            listar.push(item);
+
+        });
+
+
+        if (strcate != null) {
+            //for (var i = 0; i < strcate.length; i++)
+            //{
+                var lista_filter = dataArray.filter(obj => obj.cbo_filter === strcate);
+                $.each(lista_filter, function (index, item) {
+
+                    listar.push(item);
+                });          
+            //};
+        }
+        llenarCombo("dwsbCate", listar);
+
+
+     
+    }
+
+    function GenerarLista(Numsp, Params) {
+        var Data
+
+        var url = '@Url.Action("GenerarCombo", "Reporte")';
+        function exito(rpta) {
+            Data = rpta
+        }
+        function error(rpta) {
+            BI.AbrirPopup(20, 15, "Comuniquese con Soporte Tecnico<br>" + rpta.statusText, 'Disculpe!!!', false, true, false)
+        }
+        BI.AjaxJsonSeg("post", url, { Numsp: Numsp, Params: Params }, false, exito, error);
+
+        return Data
+    }
+
+    function llenarCombo(Id, Data) {
+
+        var cod_Combo = "";
+        var des_Combo = "";
+        $('#' + Id).find('option').remove();
+        $.each(Data, function (index, item) {
+
+            cod_Combo = item.cbo_codigo;
+            des_Combo = item.cbo_descripcion;
+            var option = $('<option value="' + cod_Combo + '">' + des_Combo + '</option>');
+
+            $('#' + Id).append(option);
+
+        });
+    }
+
+
+</script>

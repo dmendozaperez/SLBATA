@@ -1,4 +1,6 @@
 ﻿using CapaDato.Comunicado;
+using CapaEntidad.Control;
+using CapaEntidad.Util;
 using DevExpress.Web;
 using DevExpress.Web.Mvc;
 using Newtonsoft.Json;
@@ -15,7 +17,22 @@ namespace CapaPresentacion.Controllers
         // GET: Comunicado
         public ActionResult Index()
         {
-            return View();
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
+
+            if (_usuario == null)
+            {
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+            }
+            else
+            {              
+
+                return View();
+            }
+            //return View();
         }
 
         [ValidateInput(false)]
@@ -63,44 +80,28 @@ namespace CapaPresentacion.Controllers
                 ViewBag.empresa = _emp;
                 ViewBag.tipo_tda = _tipo_tda;
             }
-            //ViewBag.tipo_tda
-            Session["_folder_root"] = _folder_root;
-            return PartialView("_FileManagerPartial", _folder_root /*ComunicadoControllerFileManagerSettings.Model*/);
+       
+            Session["_folder_root"] = _folder_root;       
+
+            return PartialView("_FileManagerPartial", _folder_root);
         }
 
         public FileStreamResult FileManagerPartialDownload()
         {
             return FileManagerExtension.DownloadFiles(ComunicadoControllerFileManagerSettings.CreateFileManagerDownloadSettings(), (string)Session["_folder_root"].ToString());
         }
+
     }
     public class ComunicadoControllerFileManagerSettings
-    {
-        //public const string RootFolder = @"~\Files\Comunicado\Emcomer";
-
-        //public static string Model { get { return RootFolder; } }
-
+    {       
         public static DevExpress.Web.Mvc.FileManagerSettings CreateFileManagerDownloadSettings()
         {
             var settings = new DevExpress.Web.Mvc.FileManagerSettings();
 
-            settings.SettingsEditing.AllowDownload = true;
-
+            settings.SettingsEditing.AllowDownload = true;          
             settings.Name = "FileManager";
             return settings;
         }
-
-        //public static FileManagerSettingsPermissions settings = new FileManagerSettingsPermissions(null);
-        //public static FileManagerSettingsPermissions SettingsPermissions { get { return settings; } }
-
-        //public static void ApplyRules(FileManagerFolder folder)
-        //{
-        //    settings.AccessRules.Add(new FileManagerFolderAccessRule("Tiendas Calientes") { Browse = Rights.Deny });
-        //    settings.AccessRules.Add(new FileManagerFolderAccessRule("Tiendas Frias") { Browse = Rights.Deny });
-        //    settings.AccessRules.Add(new FileManagerFolderAccessRule("BG") { Browse = Rights.Deny });
-        //    settings.AccessRules.Add(new FileManagerFolderAccessRule("WB") { Browse = Rights.Deny });
-        //    foreach (var sFolder in folder.GetFolders())
-        //        ApplyRules(sFolder);
-        //}
-    }
-
+        
+    }   
 }

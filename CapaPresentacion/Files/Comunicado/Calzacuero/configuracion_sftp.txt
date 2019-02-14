@@ -1,0 +1,190 @@
+*****************DESARROLLO************************
+https://172.24.12.176:8443/xadmin/      privado
+
+https://104.130.91.176:8443/xadmin/      publico
+
+SFTP       : 172.24.12.176 
+Usuario    : retailc
+Contraseña : 1wiAwNRa
+
+sudo su – webxst
+Contraseña: 1wiAwNRa
+
+La ruta es: cd /app/webxst/BCL/autodeploy/data/org2000 
+
+
+*****************QA*************************************
+
+https://172.24.20.147:8443/xadmin/
+
+
+SFTP       : 172.24.20.182
+Usuario    : retailc
+Contraseña : 1wiAwNRa
+
+sudo su – webxst
+Contraseña: 1wiAwNRa
+
+La ruta es: cd /app/webxst/BCL/autodeploy/data/org2000 
+
+********ORCE QA*****************************************************************************
+SFTP       :172.24.20.183
+
+Usuario    : retailc
+Contraseña : 1wiAwNRa
+
+sudo su – webce
+
+/tmp/
+/app/webce/BPE/CE/batch_processing/auto_fileset
+
+https://172.24.20.183:8446/BPE/OrceUI/?locale=es_PE
+
+Usuario: bpeCEuser 
+Clave: batacl123
+
+
+
+****************************************************
+
+
+*********************PRODUCCION XADMIN**************************
+
+https://172.16.24.221:8443/xadmin/
+
+Usuario: bpeXSTuser
+Clave:mvKDRT5aqHnb
+
+
+
+
+172.16.24.216
+/opt/webxst/BCL/autodeploy/data/org2000
+Perú:
+User: webposbpe  
+Pass: JU737CbDmJvu
+
+/**************PRODUCCION ORCE**************/
+https://172.16.24.223:8446/BPE/OrceUI/
+User: bpeCEuser
+Pass: yrHtDUy6pyPs
+
+Carpeta FTP:
+172.24.28.220
+/app/webce/BPE
+
+********************************************
+
+
+
+
+********FACTURACION ELECTRONICA ***********************
+********PRODUCCION**************************
+http://asp403r.paperless.com.pe/Facturacion/login.jsp?error=Su%20session%20ha%20expirado
+
+http://200.121.128.110:8060/Facturacion/
+
+
+Usuario Plataforma: admin_bata
+Clave: abc123
+20101951872
+
+
+cp /tmp/ITEM2_20180320.MNT .
+
+cp /tmp/ITEM_20180822.MNT .
+
+
+VENTA POS XSTORE
+select * from trn_trans_p;
+select * from trn_trans;
+select * from bcl_electronic_correlatives;
+
+****CONFIGURACION******************
+Carga de datos para ORCE:
+•	IP: 172.24.16.220
+•	Usuario: webposbpe
+•	Clave: JU737CbDmJvu
+•	Ruta: /app/webce/BPE/CE/batch_processing/auto_fileset
+
+Usuario técnico de XSTORE:
+•	Usuario: 9999
+•	Clave: 9460
+
+XEnvironment:
+•	Clave: bpeuser
+
+Conexión a base de datos de XCenter:
+
+BATA_CLP_PROD_XCENTER = (DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 172.24.16.62)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = XCENTER) ) )
+User: dtv
+Password: bMWUTfYV5rC
+
+
+POS ORACLE TIENDA
+Usuario: pos
+Clave: mPx3ahUEV6ez
+
+*******************SERVER NUBE POS PERU****************************
+User: Administrator
+Password: 25fVRvGcRnc3ZmcFfsS1
+
+
+Usuario:  WS_posperu
+Password: Ws123456+
+
+
+*************ORDER BROCKER*****************************
+https://172.24.20.55:8445/LocateUI/
+USER=bclobuser
+PASS=batacl123
+		
+WEB SERVICE
+https://172.24.20.55:8445/Locate/LocateServices?wsdl
+
+*********************************************************
+SERVER 208
+user=Administrador
+Pass=*Bata2018.emc
+
+REPORT SERVICE
+
+ACCESO WIN Y SQL
+ReportBata
+Bata2018**
+
+
+******************VISA CONEXION IP
+150.165.118.22   PORT 15000
+35.162.224.6     PORT 15000
+
+
+
+*************************XSTORE*******************
+Hola David.
+
+Ese fue debido que durante el proceso de cierre la tienda no tenía conectividad con Xoffice y no logró hacer la tarea enviar los logs de la tienda hacía Xoffice (POSPoll). Cuando eso pasa te sale esa advertencia.
+
+Estamos a revisar el motivo de no ter logrado hacer este envío.
+
+Te vamos limpiar las advertencias. En futuro, para eliminares la advertencia haces “Delete note”, ingresas usuario/clave y cuando te pedir la clave de sistema es “bpeuser”.
+
+La tienda 50140 no esta conectada. Puedes conectar para que sea posible revisarla?
+
+
+*****ACCESO XADMIN ECUADOR******
+https://172.16.24.221:8443/xadmin/?locale=es_EC
+USER=becXSTuser
+PASS=rLUdcdFJa75y
+
+***************************************
+
+SERVER DE TAREAS
+usario:tareas
+pass=tareas
+
+
+*****AQUARELLA****************
+Del servidor 172.19.7.162 (nuevo interfaces)
+Usuario                interface01
+Clave                    Binter2019++

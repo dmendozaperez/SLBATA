@@ -1,0 +1,18 @@
+﻿<Transaction xmlns:dtv="http://www.datavantagecorp.com/xstore/" CancelFlag="false" OfflineFlag="false" TrainingModeFlag="false" AppVersion="16.0.4.0.12 - 2.46.1410 - 0.0" InventoryDocumentType="INVENTORY_COUNT" TransactionType="INVENTORY_CONTROL">
+  <OrganizationID>2000</OrganizationID>
+  <RetailStoreID>50141</RetailStoreID>
+  <WorkstationID>1</WorkstationID>
+  <TillID>5014100100040</TillID>
+  <SequenceNumber>924</SequenceNumber>
+  <BusinessDayDate>2018-11-21</BusinessDayDate>
+  <BeginDateTime>2018-11-21T11:20:30.763</BeginDateTime>
+  <OperatorID>9999</OperatorID>
+  <CurrencyCode>PEN</CurrencyCode>
+  <InventoryTransaction>
+    <InventoryCount>
+      <CountID>14T7I11311134</CountID>
+      <CountType>CYCLE_COUNT</CountType>
+      <CountStatus>COMPLETE</CountStatus>
+    </InventoryCount>
+  </InventoryTransaction>
+</Transaction>

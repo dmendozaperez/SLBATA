@@ -1,0 +1,73 @@
+﻿<Transaction xmlns:dtv="http://www.datavantagecorp.com/xstore/" CancelFlag="false" OfflineFlag="false" TrainingModeFlag="false" AppVersion="16.0.4.0.12 - 5.14.1532 - 0.0" InventoryDocumentSubType="STORE_TRANSFER" InventoryDocumentType="SHIPPING" TransactionType="INVENTORY_CONTROL">
+  <OrganizationID>5000</OrganizationID>
+  <RetailStoreID>50854</RetailStoreID>
+  <WorkstationID>1</WorkstationID>
+  <TillID>5085400100008</TillID>
+  <SequenceNumber>102</SequenceNumber>
+  <BusinessDayDate>2019-01-09</BusinessDayDate>
+  <BeginDateTime>2019-01-09T12:12:21.227</BeginDateTime>
+  <EndDateTime>2019-01-09T12:12:21.244</EndDateTime>
+  <OperatorID>0940515182</OperatorID>
+  <CurrencyCode>USD</CurrencyCode>
+  <PosTransactionProperties>
+    <PosTransactionPropertyCode>FOLIO</PosTransactionPropertyCode>
+    <PosTransactionPropertyValue>2885</PosTransactionPropertyValue>
+  </PosTransactionProperties>
+  <PosTransactionProperties>
+    <PosTransactionPropertyCode>TIPO_DOCUMENTO</PosTransactionPropertyCode>
+    <PosTransactionPropertyValue>GUIA_DESPACHO</PosTransactionPropertyValue>
+  </PosTransactionProperties>
+  <InventoryTransaction>
+    <TransferOut>
+      <DocumentStatus>IN_PROCESS</DocumentStatus>
+      <DocumentID>TF14W9X11311116</DocumentID>
+      <RetailStoreID>50854</RetailStoreID>
+      <OriginatorID>50854</OriginatorID>
+      <OriginatorName>B MALL DEL SOL</OriginatorName>
+      <DocumentTypeDescription>SHIPPING_STORE_TRANSFER</DocumentTypeDescription>
+      <DocumentType>SHIPPING</DocumentType>
+      <DocumentSubType>STORE_TRANSFER</DocumentSubType>
+      <RecordCreationType>STORE</RecordCreationType>
+      <CreationTimestamp>2019-01-09T11:10:26.758</CreationTimestamp>
+      <LastActivityTimestamp>2019-01-09T00:00:00.000</LastActivityTimestamp>
+      <Note>
+        <NoteID>1</NoteID>
+        <CreatorPartyID>5085400100012</CreatorPartyID>
+        <CreationTimestamp>2019-01-09T11:12:20.034</CreationTimestamp>
+        <NoteText>Traspaso de prueba</NoteText>
+      </Note>
+      <Shipment>
+        <ShipmentSequence>1</ShipmentSequence>
+        <ActualDeliveryDate>2019-01-09T00:00:00.000</ActualDeliveryDate>
+        <ActualShipDate>2019-01-09T00:00:00.000</ActualShipDate>
+        <DestinationRetailLocationID>50865</DestinationRetailLocationID>
+        <ShippingCarrier>OTRO</ShippingCarrier>
+        <StatusCode>IN_PROCESS</StatusCode>
+        <Address>
+          <AddressLine1 Type="Text">AV. AMAZONAS Nº 36-152 Y NACIONES UNIDAS</AddressLine1>
+          <City>200625</City>
+          <Territory TypeCode="State">20</Territory>
+          <PostalCode>170507</PostalCode>
+          <Country>EC</Country>
+          <County>2006</County>
+        </Address>
+      </Shipment>
+      <LineItem VoidFlag="false">
+        <ItemID>5116837105</ItemID>
+        <QuantityShipped>1</QuantityShipped>
+        <LineItemNumber>1</LineItemNumber>
+        <Description>LITARGMODE - BLACK/NEGRO - BATA</Description>
+        <LineItemProperty>
+          <LineItemPropertyCode>STOCK_DEFAULT</LineItemPropertyCode>
+          <LineItemPropertyType>BIGDECIMAL</LineItemPropertyType>
+          <LineItemPropertyDecimal>1.0000000</LineItemPropertyDecimal>
+        </LineItemProperty>
+        <LineItemProperty>
+          <LineItemPropertyCode>UNIT_PRICE</LineItemPropertyCode>
+          <LineItemPropertyType>BIGDECIMAL</LineItemPropertyType>
+          <LineItemPropertyDecimal>54.9900000</LineItemPropertyDecimal>
+        </LineItemProperty>
+      </LineItem>
+    </TransferOut>
+  </InventoryTransaction>
+</Transaction>

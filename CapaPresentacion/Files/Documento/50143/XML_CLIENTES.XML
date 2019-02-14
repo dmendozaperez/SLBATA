@@ -1,0 +1,1503 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Customers>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Luis Samuel</Name><Name Location="Last">Merero Zarzunde</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acant_deor@hotmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>965735730</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>10087781</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Arsenio</Name><Name Location="Last">Capa Paz</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acapapaz@gmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>NA</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>18057559</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">andres carbajal bello</Name><Name Location="Last"></Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City>HUARAZ</City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acarbajal.05@gmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>998543568</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>45860134</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">ANTONIO</Name><Name Location="Last">CARBAJAL AGUIRRE</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City>LIMA METROPOLITANA</City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acarbajal@manelsa.com.pe</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>991671791</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>08462256</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">ANGIE PAOLA</Name><Name Location="Last">CARCELEN RAFFO</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acarcelen.biotech@gmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>999851386</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>43920129</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Ana Cecilia</Name><Name Location="Last">Cardenas Pezo</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acardenas@osinerg.gob.pe</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>NA</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>07643388</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Aoner</Name><Name Location="Last">C rdenas Justiniano</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acardenasj@hotmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>996901055</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>25785774</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Angelica Fatima</Name><Name Location="Last">Cardenas Ruiz</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acardenasruiz82@gmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>993254218</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>41340673</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Angel</Name><Name Location="Last">Cardoso Ore</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acardoso@impreflexperu.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>NA</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>32538270</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Alex Franklin</Name><Name Location="Last">Carlos Aguilar</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acarlosaguilar@hotmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>951050664</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>45920000</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Carlos Anthony</Name><Name Location="Last">Ramirez Moreno</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acarlosrm18@hotmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>NA</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>47198591</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">AURORA</Name><Name Location="Last">CARMELO TELLO</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acarmelo00@hotmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>945465579</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>09379002</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">CARMEN</Name><Name Location="Last">MARCOS SALVATIERRA</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City>LIMA METROPOLITANA</City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acarmen24@hotmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>996712761</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>40245906</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Alfredo</Name><Name Location="Last">Carmona Garcia</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acarmonag@gmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>979736458</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>16725520</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Ana Magaly</Name><Name Location="Last">Caro</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City>BARRANCA</City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acaro25@hotmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>942113702</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>32585</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>45770662</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">ANA CAROLA</Name><Name Location="Last">DEZA</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acarola77@hotmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>NA</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>10508442</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Lissete</Name><Name Location="Last">Acaro</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City>LIMA METROPOLITANA</City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acarolissete@yahoo.es</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>51992031276</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>29596</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>40904024</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">AUGUSTO ARTURO</Name><Name Location="Last">CARPIO</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acarpio@gmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>948150313</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>43240219</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Ana Cecilia</Name><Name Location="Last">Carranza Qui¤ones</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acarranza3011@gmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>992413729</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>40065574</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Amadeus Ari</Name><Name Location="Last">Carranza Dominguez</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City>LIMA METROPOLITANA</City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acarranzadominguez@gmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>950409200</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>32797</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>45977940</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Grinaldina Elvia</Name><Name Location="Last">Ticlia Carranza</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acarranzat@hotmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>5683933</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>08490141</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">MATIAS LUCIANO</Name><Name Location="Last">CARRASCO CRUZ</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acarrasco@dhlicores.com.pe</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>NA</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>61330735</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Arnold Arthur</Name><Name Location="Last">Carrero</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City>LAMBAYEQUE</City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acarrero@crece.uss.edu.pe</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>971848626</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>31778</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>44056908</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Alejandro</Name><Name Location="Last">Carrillo Alvarez Maza</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acarrillo4994@gmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>994155599</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>74299130</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">RITA ANEL</Name><Name Location="Last">CARRILLO BALCAZAR</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acarrillobr@hotmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>NA</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>15415878</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Gladys Adriana</Name><Name Location="Last">Carrillo Cruz</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acarrillocruz@gruciil.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>951577938</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>10348536</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Cesar Antonio</Name><Name Location="Last">Travi Palomino</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acartagena33@hotmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>998831388</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>09341524</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Gloria azucena</Name><Name Location="Last">casas</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City>CHICLAYO</City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acasasleonardo@gmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>973823417</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>42415015</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Julia Vanessa</Name><Name Location="Last">Moron Acasiete</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>ACASIETE94@hotmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>955990872</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>74393131</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">MARIA del Carmen</Name><Name Location="Last">Acasiete</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City>ICA</City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acasietegonzalesm@gmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>983712323</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>29963</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>41746718</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">GLADYS ORFELINDA</Name><Name Location="Last">RODRIGUEZ NU?EZ</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acasma17@yahoo.es</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>961013098</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>17442958</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Anell Marcela</Name><Name Location="Last">Casos Gonzales</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acasosg1003@gmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>948102450</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>41939254</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">ANA KARINA</Name><Name Location="Last">CASTAGNOLA</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City>LIMA METROPOLITANA</City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acastagnola@gmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>998336864</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>26681</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>09530645</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">ANDREA DEL ROSARIO</Name><Name Location="Last">CASTA?EDA</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acasta¤eda@hotmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>956723814</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>70918773</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Angie</Name><Name Location="Last">Casta¤eda</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City>LIMA METROPOLITANA</City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acastanedaru@gmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>936338004</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>33263</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>46737554</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Pablo Aaron</Name><Name Location="Last">Castillo Rodriguez</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acastillo@cliandina.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>982562589</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>43029353</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">ANTONIO</Name><Name Location="Last">CASTILLO PONCE</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City>PUCALLPA</City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acastillo1998@hotmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>947834346</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>09594269</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">ALBERTO RAUL</Name><Name Location="Last">CASTILLO SEDANO</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City>LIMA METROPOLITANA</City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acastillo3011@hotmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>990462186</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>07472761</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Andrea</Name><Name Location="Last">Castillo</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City>LIMA METROPOLITANA</City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acastillos19.92@gmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>965421259</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>33713</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>46928103</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">ANA CECILIA</Name><Name Location="Last">CASTRO GAGO</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City>LIMA METROPOLITANA</City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acastro@lmcymsa.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>989251125</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>10815401</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">ana maria</Name><Name Location="Last">castro valcarcel</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City>LIMA METROPOLITANA</City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acastro@visionestrategica.net</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>979361357</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>29906</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>41123124</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Angel Segundo</Name><Name Location="Last">Castro Cuadros</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City>LIMA METROPOLITANA</City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acastro_cuadros@hotmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>997450418</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>25143</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>09380328</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Angelica Veronica</Name><Name Location="Last">Castro Espilco</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acastro919@gmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>980537249</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>44822531</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Alvaro Enrique</Name><Name Location="Last">Castro Guzman</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acastrog@outlook.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>986640238</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>42770885</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">ALEXIS MARTIN</Name><Name Location="Last">CASTRO POLANCO</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City>LIMA METROPOLITANA</City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acastropolanco@gmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>952601896</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>40550066</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Angel Anibal</Name><Name Location="Last">Castro Suasnabar</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acastrosuasnabar@gmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>964350062</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>44138428</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Ana</Name><Name Location="Last">Catal n Espinoza</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acatalan_e@hotmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>5424008</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>41508745</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">ASTRID</Name><Name Location="Last">CATALAN LOPEZ</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acatalan11@outlook.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>975621054</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>74127605</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Catia</Name><Name Location="Last">Huanca</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City>JULIACA</City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acati48@gmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>945310449</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>32789</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>46101228</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">ASTRID STEPHANIE</Name><Name Location="Last">CAVALLIER</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acavallier9@gmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>993444868</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>71099899</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">AMELIA DEL ROSARIO</Name><Name Location="Last">CAYETANO CERNA</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City>PIURA</City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acayetano090379@hotmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>979355798</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>40213151</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">ANTHONY MANUEL</Name><Name Location="Last">CAYO</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City>TACNA</City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acayo558@gmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>978888456</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>34322</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>70432772</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Jaime Jose</Name><Name Location="Last">Briones Ramirez</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acb.evangelista@gmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>NA</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>10086583</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">ANA CECILIA</Name><Name Location="Last">BASAURI ROJAS</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City>LIMA METROPOLITANA</City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acbasauri@gmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>941375286</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>28624</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>10689013</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Zoila</Name><Name Location="Last">Qui¤ones</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City>LIMA METROPOLITANA</City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acc.zoilaqv.unfv@gmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>971295031</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>32730</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>70439532</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Alvaro</Name><Name Location="Last">Condezo Caceres</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>ACC_289@hotmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>977645908</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>46139937</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Albert Frank</Name><Name Location="Last">Cuadros Caceres</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acc1204@hotmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>945245372</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>00954828</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Atenas de lPilar</Name><Name Location="Last">Cornejo Calder¢n</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acc989540@gmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>984228475</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>44290565</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">AYDE</Name><Name Location="Last">CCALA FLOREZ</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>accalaf@hotmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>935202848</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>47715754</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">David Alberto</Name><Name Location="Last">Falc¢n Utrilla</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acce77@hotmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>978420994</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>43545266</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">JORDAN HASSAN</Name><Name Location="Last">BRIONES</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>accel_world_16@hotmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>965366946</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>70580634</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Artemia</Name><Name Location="Last">Novoa</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City>CHICLAYO</City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>accepap@live.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>975131865</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>23343</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>16420101</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Svetlana</Name><Name Location="Last">Kaplia</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City>LIMA METROPOLITANA</City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>accesobienesraices@gmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>946593999</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>41383024</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">HUGO</Name><Name Location="Last">MEDRANO</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>Accesorioslima@hotmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>958986653</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>09328625</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Milagros Nayle</Name><Name Location="Last">Huaroto Conislla</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>accesoriospalomino@gmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>956411563</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>43560720</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">ROXANA ALEXANDRA</Name><Name Location="Last">MANZANARES</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acche23@hotmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>952362519</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>72192658</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Juan Wilder</Name><Name Location="Last">Isquillay Quispe</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>accionmedica.007@gmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>NA</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>10024937</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">ALEX</Name><Name Location="Last">CCORIMANYA MAYTA</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City>CUSCO</City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>accm_xto@yahoo.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>955023251</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>42903757</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Avelino</Name><Name Location="Last">Ccoaquira Quispe</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>accoaquira@gmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>989646255</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>24006626</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Diego</Name><Name Location="Last">ACCO GARCIA</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>accogarciad@gmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>959154067</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>35329</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>74917058</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Abraham</Name><Name Location="Last">Cosar Chancar</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>accosar1988@gmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>987813045</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>45550783</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Angelita del carmen</Name><Name Location="Last">Cubas</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>Accv1599@gmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>980126577</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>71202682</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Ana Cecilia</Name><Name Location="Last">Delgado Davila</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acdelgadod@hotmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>996033600</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>11383</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>07581159</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">ANA CECILIA</Name><Name Location="Last">DEXTRE URCIA</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City>CHICLAYO</City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acdextre@gmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>959258971</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>40915955</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">ANA CECILIA</Name><Name Location="Last">PEREZ VELASQUEZ</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acecilia_pv@hotmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>994906181</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>10129656</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">ANA CECILIA</Name><Name Location="Last">PEREZ BECERRA</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acecilia4@hotmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>NA</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>18021917</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">ANA CECILIA</Name><Name Location="Last">COLINA BRUSH</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>aceciliacb@hotmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>NA</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>43008217</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">ADELAIDA CECILIA</Name><Name Location="Last">SAAVEDRA SANDOVAL</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City>TUMAN</City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>aceciliasaas@hotmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>953990519</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>16580285</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">ANA CECILIA</Name><Name Location="Last">VERGARA BAO</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City>LIMA METROPOLITANA</City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acecilin@yahoo.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>NA</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>07738789</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">ANA CELINA</Name><Name Location="Last">COLLAZOS VALERIO</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City>LIMA METROPOLITANA</City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acecova06@hotmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>NA</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>42801554</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Grimaneza</Name><Name Location="Last">Mendoza Palomino</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acecy5@hotmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>976082401</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>26723689</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Abraham</Name><Name Location="Last">Contreras Egas</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>aceing_3@hotmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>NA</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>23248195</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">ELSA ROSALIA</Name><Name Location="Last">FERNANDEZ BRAMON</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City>LIMA METROPOLITANA</City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>aceitunafb@hotmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>994855263</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>09978592</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">ROSA AMERICA</Name><Name Location="Last">PEVES VERA</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>aceleste0401@hotmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>958565832</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>15359527</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">ANDREA</Name><Name Location="Last">GARCIA LOYOLA</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City>HUANCAYO</City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>aceleste28@hotmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>994539687</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>19929807</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">DIEGO LUIS ARMANDO</Name><Name Location="Last">MACHA CELIS</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acelis_s@hotmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>966967850</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>71105833</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">CRISEL DEL ROCIO</Name><Name Location="Last">PANDO ORNETE</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City>LIMA METROPOLITANA</City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acemcris2@hotmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>986015034</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>09886509</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">ANALI</Name><Name Location="Last">CESTI MOSQUERA</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acemos.007@hotmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>997396949</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>10385250</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">µngela Jacqueline</Name><Name Location="Last">Centty Cabana</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acentty610@gmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>944808110</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>41346121</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Ana Cecilia</Name><Name Location="Last">Reyes L¢pez</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City>LIMA METROPOLITANA</City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acerelo@hotmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>969731555</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>41730</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>40496564</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">ANIBAL ARTURO</Name><Name Location="Last">ACERO MAMANI</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acero_anibal@hotmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>956374819</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>04749376</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Merida Corina</Name><Name Location="Last">Baldeon Ponce</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acerometalmarc@gmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>NA</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>10375295</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Maria del Rosario</Name><Name Location="Last">Vargas Paredes</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>aceros_industrialesla@hotmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>990552600</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>40822759</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">GLADYS PILAR</Name><Name Location="Last">CHATA YAPURASI</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acerosjunior2014@gmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>999338076</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>45037619</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">ALBERTO ADEMIR</Name><Name Location="Last">VILCA RAMOS</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City>TACNA</City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acervanttes@gmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>962977651</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>00461622</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">JACQUELINE INES</Name><Name Location="Last">CCUNO AMANQUI</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City>AREQUIPA</City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acerwil3107@yahoo.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>947044386</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>41547547</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">MARIA ESTELA</Name><Name Location="Last">TINTAYA</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acestelapc@hotmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>NA</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>41295322</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">Amparto Juliana</Name><Name Location="Last">Chave Naica</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acesuraqp-@hotmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>NA</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>29576525</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">MELISSA ELIZABETH</Name><Name Location="Last">ACEVEDO RODULFO</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City>LIMA METROPOLITANA</City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acevedo.melissa0@gmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>993245474</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>46316171</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+<Customer Action="AddOrUpdate">
+<EntityInformation><Individual><Name><Name Location="First">SOLANGE JACKELINE</Name><Name Location="Last">MARTINEZ</Name></Name>
+<ContactInformation><Address PrimaryFlag="true" ValidFlag="true" TypeCode="HOME"><AddressLine1></AddressLine1><City></City><County></County><Country>PE</Country></Address>
+<EMail ContactPreferenceCode="N" PrimaryFlag="true" TypeCode="HOME"><EMailAddress>acevedo5475@gmail.com</EMailAddress></EMail>
+<Telephone PrimaryFlag="true" TypeCode="HOME"><PhoneNumber>990726407</PhoneNumber></Telephone><Telephone PrimaryFlag="false" TypeCode="WORK"><PhoneNumber>NA</PhoneNumber></Telephone></ContactInformation>
+<PersonalSummary><GenderType></GenderType><BirthDate></BirthDate><Rent>false</Rent><LanguageCode>es</LanguageCode></PersonalSummary>
+</Individual>
+</EntityInformation>
+<PersonalPreferences><ContactPreference ContactType="Mail" Permission="false"/><ContactPreference ContactType="Email" Permission="false"/>
+<ContactPreference ContactType="Fax" Permission="false"/><ContactPreference ContactType="Phone" Permission="false"/></PersonalPreferences>
+<AlternateKey TypeCode="DNI"><AlternateID>71217161</AlternateID></AlternateKey><SignupDate>NA</SignupDate>
+<CustomAttribute name="GIRO"><AttributeValue>COMUNIDAD</AttributeValue></CustomAttribute>
+<CustomAttribute name="REP_LEGAL"><AttributeValue></AttributeValue></CustomAttribute>
+<CustomAttribute name="CUSTOMER_GROUPS"><AttributeValue>BATA_CLUB</AttributeValue></CustomAttribute>
+</Customer>
+</Customers>

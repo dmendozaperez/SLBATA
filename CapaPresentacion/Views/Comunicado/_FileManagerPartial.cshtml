@@ -1,21 +1,61 @@
 @model string
 @using CapaPresentacion.Controllers;
 
-@Html.DevExpress().FileManager(settings => {
+
+@Html.DevExpress().FileManager(settings =>
+{
     settings.Name = "FileManager";
     settings.CallbackRouteValues = new { Controller = "Comunicado", Action = "FileManagerPartial" };
 
     settings.DownloadRouteValues = new { Controller = "Comunicado", Action = "FileManagerPartialDownload" };
     settings.SettingsEditing.AllowDownload = true;
 
-    settings.Settings.ThumbnailFolder = Url.Content("~/Content/FileManager/Thumbnails");
-    //settings.Settings.AllowedFileExtensions = new string[] { ".doc,.docs,.pdf,.xls,.xlsx,.mp4" };
+ 
+    settings.SettingsFileList.DetailsViewSettings.AllowColumnResize = true;
+    settings.SettingsFileList.DetailsViewSettings.AllowColumnDragDrop = true;
+    settings.SettingsFileList.DetailsViewSettings.AllowColumnSort = true;
+    settings.SettingsFileList.DetailsViewSettings.ShowHeaderFilterButton = false;    
+    settings.SettingsFileList.View = DevExpress.Web.FileListView.Details;
+    settings.SettingsFileList.DetailsViewSettings.Columns.Add(new FileManagerDetailsColumn(FileInfoType.Thumbnail));
+
+    settings.SettingsFileList.DetailsViewSettings.Columns.Add(new FileManagerDetailsColumn(FileInfoType.FileName));
+
+    FileManagerDetailsColumn colFN = new FileManagerDetailsColumn(FileInfoType.LastWriteTime);
+    colFN.SortOrder = DevExpress.Data.ColumnSortOrder.Descending;
+
+    settings.SettingsFileList.DetailsViewSettings.Columns.Add(colFN);
 
 
-    settings.SettingsFileList.View = DevExpress.Web.FileListView.Thumbnails;
+    settings.SettingsFileList.DetailsViewSettings.Columns.Add(new FileManagerDetailsColumn(FileInfoType.Size));
 
 
-    if (ViewBag.opcion_admin=="1")
+    settings.CustomThumbnail = (s, e) =>
+    {
+        switch (((FileManagerFile)e.Item).Extension)
+        {
+            case ".pdf":
+                e.ThumbnailImage.Url = @"~/Content/images/pdf-viewer.png";
+                break;
+                //case ".zip":
+                //    e.ThumbnailImage.Url = @"~/Images/archive.png";
+                //    break;
+                //case ".txt":
+                //    e.ThumbnailImage.Url = @"~/Images/txt.png";
+                //    break;
+                //case ".rtf":
+                //    e.ThumbnailImage.Url = @"~/Images/richtxt.png";
+                //    break;
+                //case ".mp3":
+                //    e.ThumbnailImage.Url = @"~/Images/music.png";
+                //    break;
+                //case ".xml":
+                //    e.ThumbnailImage.Url = @"~/Images/code.png";
+                //    break;
+        }
+    };
+
+
+    if (ViewBag.opcion_admin == "1")
     {
         settings.SettingsUpload.Enabled = false;
         settings.SettingsUpload.UseAdvancedUploadMode = false;
@@ -24,9 +64,9 @@
         settings.SettingsEditing.AllowRename = false;
         settings.SettingsEditing.AllowMove = false;
         settings.SettingsEditing.AllowDelete = false;
-        if (@ViewBag.tipo_tda=="BATA")
+        if (@ViewBag.tipo_tda == "BATA")
         {
-            settings.SettingsPermissions.AccessRules.Add(new FileManagerFolderAccessRule { Path =(@ViewBag.estado_acceso=="0")? "Tiendas Calientes": "Tiendas Frias", Browse = Rights.Deny });
+            settings.SettingsPermissions.AccessRules.Add(new FileManagerFolderAccessRule { Path = (@ViewBag.estado_acceso == "0") ? "Tiendas Calientes" : "Tiendas Frias", Browse = Rights.Deny });
         }
         else
         {
@@ -42,7 +82,6 @@
         settings.SettingsEditing.AllowRename = true;
         settings.SettingsEditing.AllowMove = true;
         settings.SettingsEditing.AllowDelete = true;
+
     }
-
-
 }).BindToFolder(Model).GetHtml()

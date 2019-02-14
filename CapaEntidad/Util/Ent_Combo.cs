@@ -10,6 +10,6 @@ namespace CapaEntidad.Util
     {
         public string cbo_codigo { get; set; }
         public string cbo_descripcion { get; set; }        
-
+        public string cbo_filter { get; set; }
     }
 }

@@ -98,7 +98,7 @@ namespace CapaDato.Reporte
             {
                 SqlConnection cn = new SqlConnection(Ent_Conexion.conexion);
                 cn.Open();
-                SqlCommand oComando = new SqlCommand("Leer_Categoria", cn);
+                SqlCommand oComando = new SqlCommand("USP_Leer_Categoria", cn);
                 oComando.CommandType = CommandType.StoredProcedure;
 
                 SqlParameter odepartamento = oComando.Parameters.Add("@Grupo", SqlDbType.VarChar);
@@ -170,7 +170,7 @@ namespace CapaDato.Reporte
             {
                 SqlConnection cn = new SqlConnection(Ent_Conexion.conexion);
                 cn.Open();
-                SqlCommand oComando = new SqlCommand("Leer_SubCategoria", cn);
+                SqlCommand oComando = new SqlCommand("USP_Leer_SubCategoria", cn);
                 oComando.CommandType = CommandType.StoredProcedure;
 
                 SqlParameter odepartamento = oComando.Parameters.Add("@Categoria", SqlDbType.VarChar);

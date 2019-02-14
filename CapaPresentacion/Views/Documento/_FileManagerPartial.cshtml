@@ -1,0 +1,76 @@
+@model string
+
+@Html.DevExpress().FileManager(settings => {
+    settings.Name = "FileManager";
+    settings.CallbackRouteValues = new { Controller = "Documento", Action = "FileManagerPartial" };
+
+    settings.DownloadRouteValues = new { Controller = "Documento", Action = "FileManagerPartialDownload" };
+    settings.SettingsEditing.AllowDownload = true;
+    settings.SettingsFileList.DetailsViewSettings.AllowColumnResize = true;
+    settings.SettingsFileList.DetailsViewSettings.AllowColumnDragDrop = true;
+
+    settings.SettingsFileList.DetailsViewSettings.AllowColumnSort = true;
+    settings.SettingsFileList.DetailsViewSettings.ShowHeaderFilterButton = false;
+    settings.SettingsFileList.View = DevExpress.Web.FileListView.Details;
+    settings.SettingsFileList.DetailsViewSettings.Columns.Add(new FileManagerDetailsColumn(FileInfoType.Thumbnail));
+
+    settings.SettingsFileList.DetailsViewSettings.Columns.Add(new FileManagerDetailsColumn(FileInfoType.FileName));
+
+    FileManagerDetailsColumn colFN = new FileManagerDetailsColumn(FileInfoType.LastWriteTime);
+    colFN.SortOrder = DevExpress.Data.ColumnSortOrder.Descending;
+
+    settings.SettingsFileList.DetailsViewSettings.Columns.Add(colFN);
+
+
+    settings.SettingsFileList.DetailsViewSettings.Columns.Add(new FileManagerDetailsColumn(FileInfoType.Size));
+
+    settings.CustomThumbnail = (s, e) =>
+    {
+        switch (((FileManagerFile)e.Item).Extension)
+        {
+            case ".pdf":
+                e.ThumbnailImage.Url = @"~/Content/images/pdf-viewer.png";
+                break;
+                //case ".zip":
+                //    e.ThumbnailImage.Url = @"~/Images/archive.png";
+                //    break;
+                //case ".txt":
+                //    e.ThumbnailImage.Url = @"~/Images/txt.png";
+                //    break;
+                //case ".rtf":
+                //    e.ThumbnailImage.Url = @"~/Images/richtxt.png";
+                //    break;
+                //case ".mp3":
+                //    e.ThumbnailImage.Url = @"~/Images/music.png";
+                //    break;
+                //case ".xml":
+                //    e.ThumbnailImage.Url = @"~/Images/code.png";
+                //    break;
+        }
+    };
+
+
+
+
+
+    if (ViewBag.opcion_admin == "0")
+    {
+        settings.SettingsUpload.Enabled = false;
+        settings.SettingsUpload.UseAdvancedUploadMode = false;
+        settings.SettingsUpload.AdvancedModeSettings.EnableMultiSelect = false;
+        settings.SettingsEditing.AllowCreate = false;
+        settings.SettingsEditing.AllowRename = false;
+        settings.SettingsEditing.AllowMove = false;
+        settings.SettingsEditing.AllowDelete = false;
+    }
+    else
+    {
+        settings.SettingsUpload.Enabled = true;
+        settings.SettingsUpload.UseAdvancedUploadMode = true;
+
+        settings.SettingsEditing.AllowCreate = false;
+        settings.SettingsEditing.AllowRename = true;
+        settings.SettingsEditing.AllowMove = true;
+        settings.SettingsEditing.AllowDelete = true;
+    }
+}).BindToFolder(Model).GetHtml()

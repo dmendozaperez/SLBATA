@@ -13,6 +13,8 @@ namespace CapaPresentacion
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.IgnoreRoute("{resource}.ashx/{*pathInfo}");
+            routes.IgnoreRoute("{resource}.aspx/{*pathInfo}");
+            routes.IgnoreRoute("AspNetForms/{resource}.aspx/{*pathInfo}");
 
             routes.MapRoute(
                 name: "Default",
