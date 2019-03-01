@@ -2,8 +2,8 @@
 @{
     ViewBag.Title = "Consulta de Articulo Stock";
 }
-<link href="~/ContentSelect/bootstrap-select.css" rel="stylesheet" />
-
+@*<link href="~/ContentSelect/bootstrap-select.css" rel="stylesheet" />*@
+<link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />
 
 <style>
     #dwcliente {
@@ -37,65 +37,65 @@
             <div class="col-sm-3">
                 <label for="dwDep">Depto.</label>
                 <div class="form-group">
-                    <div class="input-group">
-                        <div id="tipodoc" class="input-group">
+                    @*<div class="input-group">*@
+                        <div id="tipodoc" class="form-group">
                             @Html.DropDownList("dwDep", new SelectList(ViewBag.listDepartamento, "Dep_Id", "Dep_Descripcion", "-1"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwDep", @name = "dwDep", @onchange = "ListarProvincia()" })
                         </div>
-                    </div>
+                    @*</div>*@
                 </div>
             </div>
             <div class="col-sm-3">
                 <label for="dwProv">Prov.</label>
                 <div class="form-group" id="divprov">
-                    <div class="input-group">
-                        <div id="divprov1" class="input-group">
+                    @*<div class="input-group">*@
+                        <div id="divprov1" class="form-group">
                             @Html.DropDownList("dwProv", new SelectList(ViewBag.General, "Dep_Id", "Dep_Descripcion", "-1"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwProv", @name = "dwProv", @onchange = "ListarDistrito()" })
                         </div>
-                    </div>
+                    @*</div>*@
                 </div>
             </div>
             <div class="col-sm-3">
                 <label for="dwDistrito">Dist.</label>
                 <div class="form-group" id="divdis">
-                    <div class="input-group">
-                        <div id="tipodoc" class="input-group">
+                    @*<div class="input-group">*@
+                        <div id="tipodoc" class="form-group">
                             @Html.DropDownList("dwDistrito", new SelectList(ViewBag.General, "Dep_Id", "Dep_Descripcion", "-1"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwDistrito", @name = "dwDistrito" })
                         </div>
-                    </div>
+                    @*</div>*@
                 </div>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-2">
                 <label for="dwDistri">Dist.Bata</label>
                 <div class="form-group">
-                    <div class="input-group">
-                        <div id="tipodoc" class="input-group">
+                    @*<div class="input-group">*@
+                        <div id="tipodoc" class="form-group">
                             @Html.DropDownList("dwDistri", new SelectList(ViewBag.distrito, "cod_dis", "des_dis", "-1"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwDistri", @name = "dwDistri" })
                         </div>
-                    </div>
+                    @*</div>*@
                 </div>
             </div>
         </div>
 
         <div class="row">
-            <div class="col-sm-3">
+            <div class="col-sm-2">
                 <label for="txtArticulo">Articulo</label>
                 <div class="form-group">
-                    <div class="input-group">
-                        <div id="numdoc" class="input-group">
+                    @*<div class="input-group">*@
+                        <div id="numdoc" class="form-group">
                             <input id="txtArticulo" name="txtArticulo" value="" maxlength="8" placeholder="codigo" autofocus class="form-control" type="text" />
                         </div>
-                    </div>
+                    @*</div>*@
                 </div>
             </div>
             <div class="col-sm-1">
                 <label for="txtTalla">Talla</label>
                 <div class="form-group">
-                    <div class="input-group">
-                        <div id="numdoc" class="input-group">
+                    @*<div class="input-group">*@
+                        <div id="numdoc" class="form-group">
                             <input id="txtTalla" name="txtTalla" value="" maxlength="4" autofocus class="form-control" type="text" />
                         </div>
 
-                    </div>
+                    @*</div>*@
 
                 </div>
             </div>
@@ -144,7 +144,6 @@
     </div>
 </div>
 <div><input id="NombreUsuario" type="hidden" value="@ViewBag.Usuario" /></div>
-</div>
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" ng-app>
     <div class="modal-dialog">
         <div class="modal-content">
@@ -153,8 +152,10 @@
     </div>
 </div>
 
-<script src="~/Scripts/bootstrap.min.js"></script>
-<script src="~/ScriptsSelect/bootstrap-select.js"></script>
+@*<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/ScriptsSelect/bootstrap-select.js"></script>*@
+<script src="~/Scripts/bootstrap-select.min.js"></script>
+<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
 <script src="~/Scripts/BI.js"></script>
 <script>
     var gSite = ''

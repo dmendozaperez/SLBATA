@@ -12,8 +12,8 @@
         OnFailure = "waitingDialog.hide();"
     };
 }
-<link href="~/ContentSelect/bootstrap-select.css" rel="stylesheet" />
-
+@*<link href="~/ContentSelect/bootstrap-select.css" rel="stylesheet" />*@
+<link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />
 <p class="text-danger">Consulta de analisis de movimiento de tienda, por filtro tienda,rango de fecha , codigo de articulo,calidad  y/o talla</p>
 <div class="box box-body box-primary">
     @using (Ajax.BeginForm("ListaAnalisisMov", options))
@@ -25,11 +25,11 @@
                 <div class="col-sm-3">
                     <label for="segape">Tienda</label>
                     <div class="form-group">
-                        <div class="input-group">
-                            <div id="tienda" class="input-group">
-                                @Html.DropDownList("dwtienda", new SelectList(ViewBag.tienda, "cod_entid", "des_entid", "-1"), new { @class = "selectpicker", @data_live_search = "false", @id = "dwtienda", @name = "dwtienda",@enable ="false" })
+                        @*<div class="input-group">*@
+                            <div id="tienda" class="form-group">
+                                @Html.DropDownList("dwtienda", new SelectList(ViewBag.tienda, "cod_entid", "des_entid", "-1"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwtienda", @name = "dwtienda",@enable ="false" })
                             </div>
-                        </div>
+                        @*</div>*@
                     </div>
                 </div>
                 <div class="col-sm-2">
@@ -114,8 +114,10 @@
 
 
 </div>
-<script src="~/Scripts/bootstrap.min.js"></script>
-<script src="~/ScriptsSelect/bootstrap-select.js"></script>
+<script src="~/Scripts/bootstrap-select.min.js"></script>
+<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+@*<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/ScriptsSelect/bootstrap-select.js"></script>*@
 <script type="text/javascript">
     function InvalidMsg(textbox, str) {
 
