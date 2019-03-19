@@ -1,0 +1,115 @@
+﻿@*@{
+    Layout = null;
+}*@
+@*<link href="~/ContentSelect/bootstrap-select.css" rel="stylesheet" />*@
+@{ 
+    ViewBag.Title = "Ultimo Correlativos de Documento";
+}
+ 
+
+<link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />
+<p class="text-danger">Consulta de documentos Correlativos de boletas,facturas y notas Formulario para la configuración en tiendas.</p>
+<div class="box box-body box-primary">
+    <div class="row">
+
+        <form id="form1">
+
+            <div class="col-sm-3">
+                <label for="segape">Tienda</label>
+                <div class="form-group">                 
+                        <div id="tienda" class="form-group">
+                            @Html.DropDownList("dwtienda", new SelectList(ViewBag.tienda, "cod_entid", "des_entid", "-1"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwtienda", @name = "dwtienda", @autofocus = "true", @onchange = "jquery_buscar()" })                          
+                        </div>                                       
+                </div>
+            </div>                              
+        </form>
+    </div>
+    <div class="panel panel-primary">
+        <div class="panel-heading">Información de la tienda (Ultimos Correlativos)</div>
+        <div class="panel-body">
+            <div class="form-group">
+                <div class="form-group row">
+                    <div class="col-md-3"><span class="label label-success" style="font-size:small">TIENDA</span></div><div class="col-md-3"><label for="lbltienda" style="font-size:medium;font-weight:bold" id="txttienda"></label></div>
+                    <div class="col-md-3"><span class="label label-success" style="font-size:small">NRO.INTERNO</span></div><div class="col-md-3"><label for="lblinterno" style="font-size:medium;font-weight:bold" id="txtinterno"></label></div>
+                </div>             
+                <div class="form-group row">
+                    <div class="col-md-3"><span class="label label-success" style="font-size:small">BOLETA</span></div><div class="col-md-3"><label for="lblboleta" style="font-size:medium;font-weight:bold" id="txtboleta"></label></div>
+                    <div class="col-md-3"><span class="label label-success" style="font-size:small">FACTURA</span></div><div class="col-md-3"><label for="lblfactura" style="font-size:medium;font-weight:bold" id="txtfactura"></label></div>
+                </div>               
+                <div class="form-group row">
+                    <div class="col-md-3"><span class="label label-success" style="font-size:small">NORA DE CREDITO(BOLETA)</span></div><div class="col-md-3"><label for="lblncb" style="font-size:medium;font-weight:bold" id="txtncb"></label></div>
+                    <div class="col-md-3"><span class="label label-success" style="font-size:small">NORA DE CREDITO(FACTURA)</span></div><div class="col-md-3"><label for="lblncf" style="font-size:medium;font-weight:bold" id="txtncf"></label></div>
+                </div>
+            </div>
+            </div>
+    </div>
+</div>
+@*<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/ScriptsSelect/bootstrap-select.js"></script>*@
+<script src="~/Scripts/bootstrap-select.min.js"></script>
+<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+<script>
+    function limpiarobj() {
+        $("#txttienda").text('');
+        $("#txtinterno").text('');
+
+        $("#txtboleta").text('');
+        $("#txtfactura").text('');
+        $("#txtncb").text('');
+        $("#txtncf").text('');
+    }
+    function jquery_buscar() {
+        //alert('ok');
+        var codtda = $('select[name=dwtienda]').val();
+        
+        if (codtda == "-1")
+        {
+            toastr.warning("seleccione una tienda", "Aviso");
+            $('#dwtienda').focus();
+            return;
+        }
+
+        //var destda = $('select[name=dwtienda]').html();
+        var destda = $('#dwtienda').find('option:selected').text();
+        limpiarobj();
+        //alert(destda);
+        waitingDialog.show('Espere un momento por favor');
+
+        var TeamDetailPostBackURL ="@Url.Action("getconfigtda", "Soporte")";
+
+        $.ajax
+        ({
+            url: TeamDetailPostBackURL,
+            dataType: "json",
+            type: "POST",
+            //contentType: 'application/json; charset=utf-8',
+            data: { codtda: codtda },
+            //async: true,  
+            //processData: false,  
+            // cache: false,  
+            success: function (data) {
+                waitingDialog.hide();
+                if (data.estado == '1') {
+                    $("#txttienda").text(destda);
+                    $("#txtinterno").text(data.interno);
+
+                    $("#txtboleta").text(data.boleta);
+                    $("#txtfactura").text(data.factura);
+                    $("#txtncb").text(data.ncboleta);
+                    $("#txtncf").text(data.ncfactura);
+
+                    //ShowMessage("ok", 'Exito');
+                    //limpiaobj();
+                }
+                else {
+                    toastr.error(data.desmsg, "Alerta");                    
+                }
+            },
+            error: function (xhr) {
+                waitingDialog.hide();
+                toastr.error(xhr, "Alerta");
+                //ShowMessage(xhr, 'Error');
+            }
+        })       
+    }
+</script>

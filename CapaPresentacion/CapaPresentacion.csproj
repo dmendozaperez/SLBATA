@@ -260,6 +260,7 @@
     <Compile Include="Controllers\ArticuloStockController.cs" />
     <Compile Include="Controllers\ReportsValeCompraController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
+    <Compile Include="Controllers\SoporteController.cs" />
     <Compile Include="Controllers\UsuariosController.cs" />
     <Compile Include="Controllers\ValeCompraController.cs" />
     <Compile Include="Data\Crystal\Reporte\Data_Planilla.cs" />
@@ -1279,6 +1280,7 @@
     <Content Include="Views\Documento\Index.cshtml" />
     <Content Include="Views\Documento\_FileManagerPartial.cshtml" />
     <Content Include="Views\ReporteCrystal\Index.cshtml" />
+    <Content Include="Views\Soporte\ConfigTda.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
