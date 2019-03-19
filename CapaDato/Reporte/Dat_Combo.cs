@@ -91,6 +91,50 @@ namespace CapaDato.Reporte
             return list;
         }
 
+        public List<Ent_Combo> get_Listar_TiendaXstore(string codTienda)
+        {
+            List<Ent_Combo> list = null;
+            string sqlquery = "USP_LISTAR_TDA_XSTORE";
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+                    if (cn.State == 0) cn.Open();
+                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        SqlParameter otienda = cmd.Parameters.Add("@Tienda", SqlDbType.VarChar);
+                        otienda.Direction = ParameterDirection.Input;
+                        otienda.Value = codTienda;
+
+                        SqlDataReader dr = cmd.ExecuteReader();
+                        if (dr.HasRows)
+                        {
+                            list = new List<Ent_Combo>();
+
+                            while (dr.Read())
+                            {
+                                Ent_Combo combo = new Ent_Combo();
+                                combo.cbo_codigo = dr["CODIGO"].ToString();
+                                combo.cbo_descripcion = dr["DESCRIP"].ToString();
+
+                                list.Add(combo);
+
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                list = null;
+            }
+            return list;
+        }
+
         public string listarStr_ListaCategoria(string strGrupo)
         {
             string strJson = "";

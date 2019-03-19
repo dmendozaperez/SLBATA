@@ -73,6 +73,7 @@
     <Compile Include="ValeCompra\Ent_ValeCompra.cs" />
     <Compile Include="ValeCompra\Ent_ValeCompraDetalle.cs" />
     <Compile Include="ValeCompra\JsonResponse.cs" />
+    <Compile Include="XstoreTda\Ent_Tienda.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
