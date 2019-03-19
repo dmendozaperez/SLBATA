@@ -64,7 +64,7 @@ namespace Data.Crystal.Reporte
             return lista;
         }
     
-        public List<Models_Planilla> get_planilla(string cod_tda, string grupo, string categoria, string subcategoria, string estado)
+        public List<Models_Planilla> get_planilla(string cod_tda, string grupo, string categoria, string subcategoria, string estado, string tipo)
         {
             string sqlquery = "[USP_ReportePlanilla]";
             List<Models_Planilla> lista = null;
@@ -83,6 +83,7 @@ namespace Data.Crystal.Reporte
                             cmd.Parameters.AddWithValue("@Categoria", categoria);
                             cmd.Parameters.AddWithValue("@SubCategoria", subcategoria);
                             cmd.Parameters.AddWithValue("@Estado", estado);
+                            cmd.Parameters.AddWithValue("@Tipo", tipo);
 
                             using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                             {

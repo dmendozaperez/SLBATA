@@ -47,24 +47,33 @@
                                 </div>
 
                                 <div class="form-group col-md-1">
-                                    <label class="control-label" for="selEstado">Grupo</label>
+                                    <label class="control-label" for="selEstado">Tipo</label>
                                 </div>
                                 <div class="form-group col-md-3">
-                                    @Html.DropDownList("dwGrupo", new SelectList(ViewBag.Grupo, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwGrupo", @name = "dwGrupo", style = "width:270px;max-width:270px;", @onchange = "ListarCategoria()" })
+                                    @Html.DropDownList("dwtipo", new SelectList(ViewBag.Tipo, "cbo_codigo", "cbo_descripcion", "1"), new { @class = "selectpicker",  @id = "dwTipo", @name = "dwTipo", style = "width:270px;max-width:270px;", @onchange = "ListarGrupo()" })
 
                                 </div>
+
                                 <div class="form-group col-md-1">
-                                    <label class="control-label" for="selEstado">Categoria</label>
+                                    <label class="control-label" for="selEstado">Grupo</label>
                                 </div>
-                                <div class="form-group col-md-3" id="divcateg">
-                                    @Html.DropDownList("dwCate", new SelectList(ViewBag.Categoria, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwCate", @onchange = "ListarSubCategoria()" })
+                                <div class="form-group col-md-3"  id="divgrupo">
+                                    @Html.DropDownList("dwGrupo", new SelectList(ViewBag.Categoria, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwGrupo", @name = "dwGrupo", style = "width:270px;max-width:270px;", @onchange = "ListarCategoria()" })
 
                                 </div>
+                                
 
 
 
                             </div>
                             <div class="row">
+
+                                <div class="form-group col-md-1">
+                                    <label class="control-label" for="selEstado">Categoria</label>
+                                </div>
+                                <div class="form-group col-md-3" id="divcateg">
+                                    @Html.DropDownList("dwCate", new SelectList(ViewBag.Categoria, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwCate", @onchange = "ListarSubCategoria()" })
+                                </div>
 
                                 <div class="form-group col-md-1">
                                     <label class="control-label" for="selEstado">Sub-Categ.</label>
@@ -79,6 +88,11 @@
                                 <div class="form-group col-md-3">
                                     @Html.DropDownList("dwEstado", new SelectList(ViewBag.Estado, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwEstado", @name = "dwEstado", style = "width:270px;max-width:270px;" })
                                 </div>
+                                
+                            </div>
+
+                            <div class="row">
+                                
                                 <div class="form-group col-md-3">
 
                                     <button type="button" class="btn btn-primary" onclick="javascript: MostrarReporte()">
@@ -113,15 +127,20 @@
 
 <script src="~/Scripts/BI.js"></script>
 <script>
+    $(document).ready(function () {
 
+        ListarGrupo()
+    });
 
     function loadedFrame() {
         $('#loading').hide();
     }
+
     function MostrarReporte(e) {
 
         var tda = $('#txtTda').val();
         var grupo = $('#dwGrupo').val();
+        var tipo = $('#dwTipo').val();
         //var str = grupo.toString();
         var cate = $('#dwCate').val();
         var sbCate = $('#dwsbCate').val();
@@ -145,7 +164,7 @@
                 dataType: 'json',
                 type: 'POST',
                 //dataType: "html",
-                data: { cod_tda: tda, grupo: grupo, categoria: cate, subcategoria: sbCate, estado: Estado },
+                data: { cod_tda: tda, grupo: grupo, categoria: cate, subcategoria: sbCate, estado: Estado, tipo: tipo },
                 //cache: false,
                 //async: false,
                 //dataType: "html",
@@ -161,7 +180,7 @@
                         $('#load').hide();
                         waitingDialog.hide();
                         toastr.error('Hubo un error en el reporte', "Alerta");
-                       
+
                     }
                     //document.getElementById("ifrReporte").innerHTML = data;
                     //waitingDialog.hide();
@@ -179,11 +198,36 @@
         }
     }
 
+    function ListarGrupo() {     
+   
+   
+        var data = function () { return @Html.Raw(Json.Encode(ViewBag.ClGrupo)); }();
+     
+        var dataArray = data.Data;     
+        var strTipo = $('#dwTipo').val();     
+        var listar=[];    
+        
+        if (strTipo != null) {
+            var lista_filter = dataArray.filter(obj => obj.cbo_filter_2 === strTipo);
+             $.each(lista_filter, function (index, item) {
+               
+                    listar.push(item);
+             });
+        }
+
+        llenarCombo("divgrupo", "dwGrupo", listar, '', '', "ListarCategoria");
+        ListarCategoria();
+        ListarSubCategoria()
+
+    }
+
+
     function ListarCategoria() {
         @*var jsonObj = @Html.Raw(Json.Encode(ViewBag.ClCategoria));*@
         var data=function() { return @Html.Raw(Json.Encode(ViewBag.ClCategoria)); }();
         var dataArray=data.Data;
         var strgrupo = $('#dwGrupo').val();
+        var strTipo = $('#dwTipo').val();
         var listar=[];
         var lista_default = dataArray.filter(obj => obj.cbo_filter === '');
         $.each(lista_default, function (index, item) {
@@ -192,31 +236,39 @@
 
         });
 
-
+       
         if (strgrupo!=null){
             for(var i=0;i<strgrupo.length;i++)
             {
-                var lista_filter = dataArray.filter(obj => obj.cbo_filter === strgrupo[i]);
-                $.each(lista_filter, function (index, item) {
+                if (i == 1) { 
+                    var lista_filteAnt = dataArray.filter(obj => obj.cbo_filter_2 === strTipo);
+                    var cbo_filter = strgrupo[i].length == 1 ? '0' + strgrupo[i]: strgrupo[i];
+                    var lista_filter = lista_filteAnt.filter(obj => obj.cbo_filter === cbo_filter);
 
-                    listar.push(item);
-                });
-               
+                    $.each(lista_filter, function (index, item) {
+
+                        listar.push(item);
+                    });
+                }
+
             };
         }
         llenarCombo("divcateg", "dwCate", listar, '', '', "ListarSubCategoria");
-        //llenarCombo("dwCate",listar);
-        
+
     }
 
     function ListarSubCategoria() {
 
         var strcate = $('#dwCate').val();
+        var strTipo = $('#dwTipo').val();
         @*var jsonObj = @Html.Raw(Json.Encode(ViewBag.ClCategoria));*@
         var data=function() { return @Html.Raw(Json.Encode(ViewBag.ClSBCategoria)); }();
         var dataArray=data.Data;
         //var strgrupo = $('#dwGrupo').val();
-        var listar=[];
+        var listar = [];
+
+     
+
         var lista_default = dataArray.filter(obj => obj.cbo_filter === '');
         $.each(lista_default, function (index, item) {
 
@@ -228,7 +280,10 @@
         if (strcate != null) {
             //for (var i = 0; i < strcate.length; i++)
             //{
-                var lista_filter = dataArray.filter(obj => obj.cbo_filter === strcate);
+            var lista_filteAnt = dataArray.filter(obj => obj.cbo_filter_2 === strTipo);
+            var cbo_filter = strcate.length == 1 ? '0' + strcate : strcate;
+          
+            var lista_filter = lista_filteAnt.filter(obj => obj.cbo_filter === cbo_filter);
                 $.each(lista_filter, function (index, item) {
 
                     listar.push(item);

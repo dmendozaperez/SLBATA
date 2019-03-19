@@ -66,12 +66,12 @@ namespace CapaPresentacion.Controllers
             return jRespuesta;
         }
         [HttpPost]
-        public ActionResult ShowGenericReportInNewWin(string cod_tda, string grupo, string categoria, string subcategoria, string estado)
+        public ActionResult ShowGenericReportInNewWin(string cod_tda, string grupo, string categoria, string subcategoria, string estados, string tipo)
         {
             //grupo = "0";categoria = "0";subcategoria = "0";estado = "0";
             Data_Planilla pl = new Data_Planilla();
             this.HttpContext.Session["ReportName"] = "Planilla.rpt";
-            this.HttpContext.Session["rptSource"] =pl.get_planilla(cod_tda,grupo,categoria,subcategoria,estado);
+            this.HttpContext.Session["rptSource"] =pl.get_planilla(cod_tda,grupo,categoria,subcategoria, estados, tipo);
             this.HttpContext.Session["rptSource_sub"] = pl.get_reglamed_cab();
             return Json(new
             {

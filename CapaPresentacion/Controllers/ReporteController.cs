@@ -46,8 +46,13 @@ namespace CapaPresentacion.Controllers
                 entCombo.cbo_codigo = "0";
                 entCombo.cbo_descripcion = "----Todos----";
                 list.Add(entCombo);
+                ViewBag.Categoria = list;
+
+                
                 ViewBag.Title = "Reporte de Planilla";
-                ViewBag.Grupo = datCbo.get_ListaGrupo();
+       
+                ViewBag.Tipo = datCbo.get_ListaTipoCategoria();              
+
                 ViewBag.Estado = datCbo.get_ListaEstado();
 
                 if (Session["Tienda"]!=null)
@@ -60,16 +65,20 @@ namespace CapaPresentacion.Controllers
                 }
 
                 
-                ViewBag.Categoria = list;
+                
 
                 string strJson = "";
                 JsonResult jRespuesta = null;
                 var serializer = new JavaScriptSerializer();
 
 
+                strJson = datCbo.listarStr_ListaGrupoTipo();
+                jRespuesta = Json(serializer.Deserialize<List<Ent_Combo>>(strJson), JsonRequestBehavior.AllowGet);
+                ViewBag.ClGrupo = jRespuesta;
+
                 strJson = datCbo.listarStr_ListaCategoria("");
                 jRespuesta = Json(serializer.Deserialize<List<Ent_Combo>>(strJson), JsonRequestBehavior.AllowGet);
-                ViewBag.ClCategoria = jRespuesta;
+                ViewBag.ClCategoria = jRespuesta;                          
 
                 strJson = datCbo.listarStr_ListaSubCategoria("");
                 jRespuesta = Json(serializer.Deserialize<List<Ent_Combo>>(strJson), JsonRequestBehavior.AllowGet);
@@ -245,13 +254,13 @@ namespace CapaPresentacion.Controllers
             return jRespuesta;
         }
         [HttpPost]
-        public ActionResult ShowGenericReportInNewWin(string cod_tda, string grupo, string categoria, string subcategoria, string estado)
+        public ActionResult ShowGenericReportInNewWin(string cod_tda, string grupo, string categoria, string subcategoria, string estado,string tipo)
         {
             //grupo = "0";categoria = "0";subcategoria = "0";estado = "0";
             Data_Planilla pl = new Data_Planilla();
             this.HttpContext.Session["ReportName"] = "Planilla.rpt";
 
-            List<Models_Planilla> model_planilla= pl.get_planilla(cod_tda, grupo, categoria, subcategoria, estado);
+            List<Models_Planilla> model_planilla= pl.get_planilla(cod_tda, grupo, categoria, subcategoria, estado, tipo);
 
             this.HttpContext.Session["rptSource"] = model_planilla;
             this.HttpContext.Session["rptSource_sub"] = pl.get_reglamed_cab();

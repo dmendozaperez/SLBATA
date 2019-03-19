@@ -50,6 +50,75 @@ namespace CapaDato.Reporte
                 list = null;
             }
             return list;
+        }        
+
+        public string listarStr_ListaGrupoTipo()
+        {
+            string strJson = "";
+            try
+            {
+                SqlConnection cn = new SqlConnection(Ent_Conexion.conexion);
+                cn.Open();
+                SqlCommand oComando = new SqlCommand("USP_GET_GRUPO", cn);
+                oComando.CommandType = CommandType.StoredProcedure;
+
+                SqlDataReader oReader = oComando.ExecuteReader(CommandBehavior.SingleResult);
+                DataTable dataTable = new DataTable("row");
+                dataTable.Load(oReader);
+
+                strJson = JsonConvert.SerializeObject(dataTable, Newtonsoft.Json.Formatting.Indented);
+                strJson = strJson.Replace(Environment.NewLine, "");
+                //strJson = strJson.Replace(" ", "");
+                cn.Close();
+            }
+            catch (Exception ex)
+            {
+
+                return strJson;
+            }
+
+            //return oLista;
+            return strJson;
+        }
+
+
+        public List<Ent_Combo> get_ListaTipoCategoria()
+        {
+            List<Ent_Combo> list = null;
+            string sqlquery = "USP_GET_TIPOCATEGORIA";
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+                    if (cn.State == 0) cn.Open();
+                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        SqlDataReader dr = cmd.ExecuteReader();
+                        if (dr.HasRows)
+                        {
+                            list = new List<Ent_Combo>();
+
+                            while (dr.Read())
+                            {
+                                Ent_Combo combo = new Ent_Combo();
+                                combo.cbo_codigo = dr["CAT_TIP_COD"].ToString();
+                                combo.cbo_descripcion = dr["CAT_TIP_DES"].ToString();
+
+                                list.Add(combo);
+
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+                list = null;
+            }
+            return list;
         }
 
         public List<Ent_Combo> get_ListaTiendaXstore()
