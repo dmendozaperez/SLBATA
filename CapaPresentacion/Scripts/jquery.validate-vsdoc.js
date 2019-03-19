@@ -52,7 +52,7 @@ $.extend($.fn, {
 
 		// if nothing is selected, return nothing; can't chain anyway
 		if (!this.length) {
-			options && options.debug && window.console && console.warn( "nothing selected, can't validate, returning nothing" );
+		    options && options.debug && window.console && console.warn("---Seleccione---, can't validate, returning nothing");
 			return;
 		}
 

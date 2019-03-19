@@ -54,6 +54,7 @@
     <Compile Include="Maestros\Ent_ListaTienda.cs" />
     <Compile Include="ReportsValeCompra\Reporte_Resultado.cs" />
     <Compile Include="ReportsValeCompra\Reporte_Filtro.cs" />
+    <Compile Include="Soporte\Ent_Tienda_Config.cs" />
     <Compile Include="Transac\Ent_Analisis_Mov.cs" />
     <Compile Include="Transac\Ent_Documentos_Tda.cs" />
     <Compile Include="Util\Ent_Combo.cs" />
@@ -73,7 +74,6 @@
     <Compile Include="ValeCompra\Ent_ValeCompra.cs" />
     <Compile Include="ValeCompra\Ent_ValeCompraDetalle.cs" />
     <Compile Include="ValeCompra\JsonResponse.cs" />
-    <Compile Include="XstoreTda\Ent_Tienda.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

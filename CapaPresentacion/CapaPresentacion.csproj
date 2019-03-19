@@ -243,8 +243,6 @@
     <Compile Include="Controllers\AdminLteController.cs" />
     <Compile Include="Controllers\AnalisisMovController.cs" />
     <Compile Include="Controllers\AplicacionController.cs" />
-    <Compile Include="Controllers\XstoreTdaController.cs" />
-    <Compile Include="Controllers\InventarioController.cs" />
     <Compile Include="Controllers\ComunicadoController.cs" />
     <Compile Include="Controllers\DocumentoController.cs" />
     <Compile Include="Controllers\InterfaceController.cs" />
@@ -262,6 +260,7 @@
     <Compile Include="Controllers\ArticuloStockController.cs" />
     <Compile Include="Controllers\ReportsValeCompraController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
+    <Compile Include="Controllers\SoporteController.cs" />
     <Compile Include="Controllers\UsuariosController.cs" />
     <Compile Include="Controllers\ValeCompraController.cs" />
     <Compile Include="Data\Crystal\Reporte\Data_Planilla.cs" />
@@ -1281,9 +1280,7 @@
     <Content Include="Views\Documento\Index.cshtml" />
     <Content Include="Views\Documento\_FileManagerPartial.cshtml" />
     <Content Include="Views\ReporteCrystal\Index.cshtml" />
-    <Content Include="Views\LoginIntermedio\LoginAuditor.cshtml" />
-    <Content Include="Views\Inventario\CorteInventario.cshtml" />
-    <Content Include="Views\Inventario\CorteInventario2.cshtml" />
+    <Content Include="Views\Soporte\ConfigTda.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

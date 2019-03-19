@@ -15,6 +15,8 @@
 
 @*@Scripts.Render("~/bundles/bootstrap-select_Select")*@
 <link href="~/ContentSelect/bootstrap-select.css" rel="stylesheet" />
+<link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />
+@*<link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />*@
 <style>
     iframe {
         border: none;
@@ -40,7 +42,7 @@
                                 @*@Html.DropDownList("txtTda", new SelectList(ViewBag.Tienda, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "txtTda", @name = "txtTda", style = "width:270px;max-width:270px;" })*@
                                 <div class="form-group col-md-3">
                                     @*@Html.DropDownList("txtTda", new SelectList(ViewBag.Tienda, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectCountry form-control", @data_live_search = "true", @id = "txtTda" })*@
-                                    @Html.DropDownList("txtTda", new SelectList(ViewBag.tienda, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", @data_live_search = "true", @id = "txtTda", @name = "txtTda" })
+                                    @Html.DropDownList("txtTda", new SelectList(ViewBag.tienda, "cbo_codigo", "cbo_descripcion","0"), new { @class = "selectpicker", @data_live_search = "true", @id = "txtTda", @name = "txtTda" })
                                     @*<input type="text" name="txtTda" id="txtTda" class="form-control" maxlength="255" data-parsley-maxlength="255" data-parsley-maxlength-message="Ingrese un nombre usuario válido.">*@
                                 </div>
 
@@ -54,8 +56,8 @@
                                 <div class="form-group col-md-1">
                                     <label class="control-label" for="selEstado">Categoria</label>
                                 </div>
-                                <div class="form-group col-md-3">
-                                    @Html.DropDownList("dwCate", new SelectList(ViewBag.Categoria, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectCountry form-control", @data_live_search = "true", @id = "dwCate", @onchange = "ListarSubCategoria()" })
+                                <div class="form-group col-md-3" id="divcateg">
+                                    @Html.DropDownList("dwCate", new SelectList(ViewBag.Categoria, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwCate", @onchange = "ListarSubCategoria()" })
 
                                 </div>
 
@@ -67,8 +69,8 @@
                                 <div class="form-group col-md-1">
                                     <label class="control-label" for="selEstado">Sub-Categ.</label>
                                 </div>
-                                <div class="form-group col-md-3">
-                                    @Html.DropDownList("dwsbCate", new SelectList(ViewBag.Categoria, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectCountry form-control", @data_live_search = "true", @id = "dwsbCate" })
+                                <div class="form-group col-md-3" id="divsbcateg">
+                                    @Html.DropDownList("dwsbCate", new SelectList(ViewBag.Categoria, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwsbCate" })
 
                                 </div>
                                 <div class="form-group col-md-1">
@@ -104,8 +106,11 @@
     </div>
 
 </div>
-<script src="~/Scripts/bootstrap.min.js"></script>
-<script src="~/ScriptsSelect/bootstrap-select.js"></script>
+@*<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/ScriptsSelect/bootstrap-select.js"></script>*@
+<script src="~/Scripts/bootstrap-select.min.js"></script>
+<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+
 <script src="~/Scripts/BI.js"></script>
 <script>
 
@@ -146,8 +151,18 @@
                 //dataType: "html",
                 success: function (data) {
                     //alert('ok');
-                    $('#load').show();
-                    $("#load").attr("src", "../AspNetForms/Planilla.aspx");
+                    if (data.estado == "1")
+                    {
+                        $('#load').show();
+                        $("#load").attr("src", "../AspNetForms/Planilla.aspx");
+                    }
+                    else
+                    {
+                        $('#load').hide();
+                        waitingDialog.hide();
+                        toastr.error('Hubo un error en el reporte', "Alerta");
+                       
+                    }
                     //document.getElementById("ifrReporte").innerHTML = data;
                     //waitingDialog.hide();
                     return false;
@@ -186,10 +201,12 @@
 
                     listar.push(item);
                 });
+               
             };
         }
-        llenarCombo("dwCate",listar);
-
+        llenarCombo("divcateg", "dwCate", listar, '', '', "ListarSubCategoria");
+        //llenarCombo("dwCate",listar);
+        
     }
 
     function ListarSubCategoria() {
@@ -218,7 +235,8 @@
                 });
             //};
         }
-        llenarCombo("dwsbCate", listar);
+        llenarCombo("divsbcateg", "dwsbCate", listar, '', '', "");
+        //llenarCombo("dwsbCate", listar);
 
 
 
@@ -239,21 +257,53 @@
         return Data
     }
 
-    function llenarCombo(Id, Data) {
+    function llenarCombo(DivId, IdControl, Data, codDefecto, desDefecto, onchangeFuncion) {
 
-        var cod_Combo = "";
-        var des_Combo = "";
-        $('#' + Id).find('option').remove();
+        $('#' + IdControl).find('option').remove();
+        var str = '<select class="selectpicker" data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '">';
+        var ItemNormal = '<option value="codItem">desItem</option>';
+        var colectItemNormal = '';
+
+        if (codDefecto != '') { str += '<option value="' + codDefecto + '" selected="selected">------' + desDefecto + '------</option>'; }
+
+        if (onchangeFuncion != '') { onchangeFuncion = 'onchange = "' + onchangeFuncion + '()"' }
+        str = str.replace("onchangeFuncion", onchangeFuncion);
+
         $.each(Data, function (index, item) {
 
-            cod_Combo = item.cbo_codigo;
-            des_Combo = item.cbo_descripcion;
-            var option = $('<option value="' + cod_Combo + '">' + des_Combo + '</option>');
-
-            $('#' + Id).append(option);
+            colectItemNormal = colectItemNormal + ItemNormal
+            colectItemNormal = colectItemNormal.replace("codItem", item.cbo_codigo);
+            colectItemNormal = colectItemNormal.replace("desItem", item.cbo_descripcion);
 
         });
+
+        str += colectItemNormal
+        str += '</select>'
+
+        document.getElementById(DivId).innerHTML = str
+
+        $('.selectpicker').selectpicker({
+            liveSearch: true,
+            showSubtext: true
+        });
+
     }
+
+    //function llenarCombo(Id, Data) {
+
+    //    var cod_Combo = "";
+    //    var des_Combo = "";
+    //    $('#' + Id).find('option').remove();
+    //    $.each(Data, function (index, item) {
+
+    //        cod_Combo = item.cbo_codigo;
+    //        des_Combo = item.cbo_descripcion;
+    //        var option = $('<option value="' + cod_Combo + '">' + des_Combo + '</option>');
+
+    //        $('#' + Id).append(option);
+
+    //    });
+    //}
 
 
 </script>

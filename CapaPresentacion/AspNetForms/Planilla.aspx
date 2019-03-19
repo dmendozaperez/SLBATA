@@ -8,13 +8,13 @@
 <head runat="server">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title></title>
-    <link href="../Content/bootstrap.css" rel="stylesheet" />
+   <%-- <link href="../Content/bootstrap.css" rel="stylesheet" />
     <link href="../Content/bootstrap.min.css" rel="stylesheet" />
-    <link href="../Content/Site.css" rel="stylesheet" />
+    <link href="../Content/Site.css" rel="stylesheet" />--%>
 </head>
 <body>
     <form id="form1" runat="server">
-        <asp:Button runat="server" ID="btnPrint" CssClass="btn-danger" OnClick="Print" Text="Imprimir" />
+      <%--  <asp:Button runat="server" ID="btnPrint" CssClass="btn-danger" OnClick="Print" Text="Imprimir" />--%>
         <%--<asp:Button ID="print" runat="server" Text="Button" OnClick="print_Click" />
         <input id="btnPrint" type="button" value="Print" onclick="Print()" />--%>
     <div id="dvReport">

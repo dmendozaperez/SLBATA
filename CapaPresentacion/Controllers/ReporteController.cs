@@ -11,6 +11,7 @@ using System.Web.UI.WebControls;
 using System.Web.Script.Serialization;
 using CapaEntidad.Control;
 using Data.Crystal.Reporte;
+using Models.Crystal.Reporte;
 
 namespace CapaPresentacion.Controllers
 {
@@ -48,7 +49,17 @@ namespace CapaPresentacion.Controllers
                 ViewBag.Title = "Reporte de Planilla";
                 ViewBag.Grupo = datCbo.get_ListaGrupo();
                 ViewBag.Estado = datCbo.get_ListaEstado();
-                ViewBag.Tienda = datCbo.get_ListaTiendaXstore();
+
+                if (Session["Tienda"]!=null)
+                {
+                    ViewBag.Tienda = datCbo.get_ListaTiendaXstore().Where(t => t.cbo_codigo == Session["Tienda"].ToString()).ToList();
+                }
+                else
+                {
+                    ViewBag.Tienda = datCbo.get_ListaTiendaXstore();
+                }
+
+                
                 ViewBag.Categoria = list;
 
                 string strJson = "";
@@ -239,13 +250,21 @@ namespace CapaPresentacion.Controllers
             //grupo = "0";categoria = "0";subcategoria = "0";estado = "0";
             Data_Planilla pl = new Data_Planilla();
             this.HttpContext.Session["ReportName"] = "Planilla.rpt";
-            this.HttpContext.Session["rptSource"] = pl.get_planilla(cod_tda, grupo, categoria, subcategoria, estado);
+
+            List<Models_Planilla> model_planilla= pl.get_planilla(cod_tda, grupo, categoria, subcategoria, estado);
+
+            this.HttpContext.Session["rptSource"] = model_planilla;
             this.HttpContext.Session["rptSource_sub"] = pl.get_reglamed_cab();
+
+            /*error=0;exito=1*/
+            string _estado = (model_planilla==null)?"0":"1";
+
+            //if (model_planilla==null)
+
             return Json(new
-            {
-                estado = "1"
-            }
-            );
+            {                
+                estado = _estado
+            });
         }
 
     }

@@ -74,32 +74,6 @@ namespace CapaPresentacion.Controllers
             return View(view);
         }
 
-        public ActionResult LoginAuditor(string variable)
-        {
-            string strCambiante = DateTime.Now.ToString("M/d/yyyy") + "_";
-            string resultVariable = DesEncriptar(variable);
-            string nombrePc = resultVariable.Replace(strCambiante, "");
-            //nombrePc = "TIENDA-109-1";
-            Dat_Usuario _usuario = new Dat_Usuario();
-            Ent_Tienda _data_tda = _usuario.get_loginTienda(nombrePc);
-            //Session["Tienda"] = _data_tda.tda_codigo;
-            Session["Tienda"] ="50147";
-            LoginViewModel view = new LoginViewModel();
-
-            //if (_data_tda != null)
-            //{
-            //    string UserTienda = (_data_tda.tda_xstore) ? "Tienda" : "TiendaPOS";
-            //    Session["Tienda"] = _data_tda.tda_codigo;
-            //    Ent_Usuario _data_user = _usuario.get_login(UserTienda);
-            //    view.Usuario = _data_user.usu_login;
-            //    view.Password = _data_user.usu_contraseña;
-            //}
-
-            view.returnUrl = "";
-
-            return View(view);
-        }
-
         public static string Post(string campo)
         {
 
