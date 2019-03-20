@@ -7,8 +7,10 @@ namespace Models.Crystal.Reporte
 {
     public class Models_Art_Sin_Mov
     {
+        public string semana_str { get; set; }
         public string tiend { get; set; }
         public string des_entid { get; set; }
+        public string store_name { get; set; }
         public string cate3 { get; set; }
         public string subc3 { get; set; }
         public string artic { get; set; }

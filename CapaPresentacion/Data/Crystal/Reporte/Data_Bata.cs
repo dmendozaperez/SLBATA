@@ -41,6 +41,8 @@ namespace Data.Crystal.Reporte
                                          {
                                              tiend=dr["tiend"].ToString(),
                                              des_entid= dr["des_entid"].ToString(),
+                                             store_name = dr["storename"].ToString(),
+                                             semana_str = dr["semana_str"].ToString(),
                                              cate3 = dr["cate3"].ToString(),
                                              subc3 = dr["subc3"].ToString(),
                                              artic = dr["artic"].ToString(),
