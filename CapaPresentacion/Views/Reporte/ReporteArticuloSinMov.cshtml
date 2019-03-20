@@ -1,0 +1,176 @@
+﻿@using CapaEntidad.Util;
+@{
+    ViewBag.Title = "Reporte de Articulos sin movimiento";
+    AjaxOptions options = new AjaxOptions
+    {
+        HttpMethod = "GET",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "lista",
+        OnComplete = "waitingDialog.hide();",
+        OnBegin = "waitingDialog.show('Espere un momento por favor');",
+        OnFailure = "waitingDialog.hide();"
+    };
+
+}
+
+<link href="~/ContentSelect/bootstrap-select.css" rel="stylesheet" />
+<link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />
+
+<style>
+    iframe {
+        border: none;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        height: 800px;
+    }
+</style>
+<div class="">
+
+    <div class="">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+
+                <div class="x_content">
+                    <div class="well">
+                        <form id="frmConsulta" data-parsley-validate>
+                            <div class="row">                                
+
+                                <div class="col-sm-3">
+                                    <label for="dwCate">Tienda</label>
+                                    <div class="form-group">
+                                        <div  class="form-group">
+                                            @Html.DropDownList("txtTda", new SelectList(ViewBag.tienda, "cbo_codigo", "cbo_descripcion"), new { @class = "selectpicker", @data_live_search = "true", @id = "txtTda", @name = "txtTda" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <label for="dwCate">Semanas</label>
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <input name="txtsemana" type="number" id="txtsemana" value="1" style="width:50%" autofocus class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <label for="dwCate">Max.Pares</label>
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <input name="txtpares" type="number" id="txtpares" value="1" style="width:50%" autofocus class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <label for="dwEstado"></label>
+                                    <div class="form-group">
+                                        <div id="tipodoc" class="form-group">
+                                            <button type="button" class="btn btn-primary" onclick="javascript: MostrarReporte()">
+                                                <span class="glyphicon glyphicon-th-list"></span>&nbsp;Ver Reporte
+                                            </button>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                          
+
+
+                        </form>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="ifrReporte" class="well" style="width: 100%; height: 800px;">
+                                <iframe id="load" src="" frameborder="0" marginheight="1"
+                                        marginwidth="1" scrolling="auto" onload="javascript: waitingDialog.hide();"></iframe>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="~/Scripts/bootstrap-select.min.js"></script>
+<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+
+<script src="~/Scripts/BI.js"></script>
+<script>
+   
+
+    function loadedFrame() {
+        $('#loading').hide();
+    }
+
+    function MostrarReporte(e) {
+
+        var tda = $('#txtTda').val();
+        var cadena ="-1";
+        var semana = $('#txtsemana').val();
+        var strpares = $('#txtpares').val();
+
+  
+        if (semana == '' || semana == null) { semana = '0' };
+        if (strpares == '' || strpares == null) { strpares = '0' };
+
+        var paresInt = parseInt(strpares);
+        var semanaInt = parseInt(semana);
+     
+        var TeamDetailPostBackURL ="@Url.Action("ShowGenericReportArtSinMovInNewWin", "Reporte")";
+        if (tda != '' && tda != null && paresInt > 0 && semanaInt > 0) {
+            waitingDialog.show('Espere un momento por favor');
+            $.ajax({
+              
+                url:TeamDetailPostBackURL,
+                dataType: 'json',
+                type: 'POST',
+                data: { cod_cadena: cadena, cod_tda: tda, nsemana: semana, maxpares: strpares },
+                
+                success: function (data) {
+                    //alert('ok');
+                    if (data.estado == "1")
+                    {
+                        $('#load').show();
+                        $("#load").attr("src", "../AspNetForms/ArticuloSinMov.aspx");
+                    }
+                    else
+                    {
+                        $('#load').hide();
+                        waitingDialog.hide();
+                        toastr.error('Hubo un error en el reporte', "Alerta");
+
+                    }
+                    //document.getElementById("ifrReporte").innerHTML = data;
+                    //waitingDialog.hide();
+                    return false;
+                },
+                error: function (request, status, error) {
+                    waitingDialog.hide();
+                }
+            }).done(function () {
+
+            });
+        } else {
+
+            if (tda == '' || tda == null)
+                toastr.error('Debe Ingresar Tienda', "Alerta");
+
+            if (paresInt <= 0)
+                toastr.error('Numero de Pares es inválido', "Alerta");
+
+            if (semanaInt <= 0)
+                toastr.error('Numero de semanas es inválido', "Alerta");
+        }
+    }
+
+</script>

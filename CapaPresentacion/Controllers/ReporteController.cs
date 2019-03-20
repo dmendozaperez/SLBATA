@@ -290,18 +290,18 @@ namespace CapaPresentacion.Controllers
             else
             {              
 
-                ViewBag.Title = "Reporte Vendedor";            
+                ViewBag.Title = "Reporte Vendedor";
 
                 if (Session["Tienda"] != null)
                 {
-                    ViewBag.Tienda = datCbo.get_ListaTiendaXstore().Where(t => t.cbo_codigo == Session["Tienda"].ToString()).ToList();
+                    ViewBag.Tienda = datCbo.get_ListaTiendaXstoreActivo(Session["Tienda"].ToString());
                 }
                 else
                 {
-                    ViewBag.Tienda = datCbo.get_ListaTiendaXstore();
+                    ViewBag.Tienda = datCbo.get_ListaTiendaXstoreActivo("");
                 }
 
-                ViewBag.Cadena = datCbo.get_ListaCadena();
+              
 
                 return View();
             }
@@ -322,6 +322,61 @@ namespace CapaPresentacion.Controllers
 
             /*error=0;exito=1*/
             string _estado = (model_vendedor == null) ? "0" : "1";
+
+            //if (model_planilla==null)
+
+            return Json(new
+            {
+                estado = _estado
+            });
+        }
+
+        public ActionResult ReporteArticuloSinMov()
+        {
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
+
+            if (_usuario == null)
+            {
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+            }
+            else
+            {
+
+                ViewBag.Title = "Reporte Articulo sin movimiento";
+
+                if (Session["Tienda"] != null)
+                {
+                    ViewBag.Tienda = datCbo.get_ListaTiendaXstoreActivo(Session["Tienda"].ToString());
+                }
+                else
+                {
+                    ViewBag.Tienda = datCbo.get_ListaTiendaXstoreActivo("");
+                }
+
+                //ViewBag.Cadena = datCbo.get_ListaCadena();
+
+                return View();
+            }
+
+        }
+
+        [HttpPost]
+        public ActionResult ShowGenericReportArtSinMovInNewWin(string cod_cadena, string cod_tda, Int32 nsemana, Int32 maxpares)
+        {
+            //grupo = "0";categoria = "0";subcategoria = "0";estado = "0";
+            Data_Bata pl = new Data_Bata();
+            this.HttpContext.Session["ReportName"] = "ReportArtSinMov.rpt";
+
+            List<Models_Art_Sin_Mov> model_Art_sn_mov = pl.list_art_sin_mov(cod_cadena, cod_tda, nsemana, maxpares);
+
+            this.HttpContext.Session["rptSource"] = model_Art_sn_mov;
+
+
+            /*error=0;exito=1*/
+            string _estado = (model_Art_sn_mov == null) ? "0" : "1";
 
             //if (model_planilla==null)
 
