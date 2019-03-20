@@ -270,12 +270,14 @@
     <Compile Include="Controllers\SoporteController.cs" />
     <Compile Include="Controllers\UsuariosController.cs" />
     <Compile Include="Controllers\ValeCompraController.cs" />
+    <Compile Include="Data\Crystal\Reporte\Data_Bata.cs" />
     <Compile Include="Data\Crystal\Reporte\Data_Planilla.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Control\LoginViewModel.cs" />
     <Compile Include="Models\Crystal\Reporte\Models_Vendedor.cs" />
+    <Compile Include="Models\Crystal\Reporte\Models_Art_Sin_Mov.cs" />
     <Compile Include="Models\Crystal\Reporte\Models_Planilla.cs" />
     <Compile Include="Models\FileManager\DataProvider.cs" />
     <Compile Include="Models\FileManager\FileSystemProvider.cs" />
@@ -295,6 +297,12 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Planilla.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RptsCrystal\ReportArtSinMov.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ReportArtSinMov.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Service References\FEBataBack\Reference.cs">
@@ -1344,6 +1352,10 @@
     <EmbeddedResource Include="RptsCrystal\Planilla.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>Planilla.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RptsCrystal\ReportArtSinMov.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>ReportArtSinMov.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

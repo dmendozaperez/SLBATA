@@ -1,0 +1,19 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace Models.Crystal.Reporte
+{
+    public class Models_Art_Sin_Mov
+    {
+        public string tiend { get; set; }
+        public string des_entid { get; set; }
+        public string cate3 { get; set; }
+        public string subc3 { get; set; }
+        public string artic { get; set; }
+        public Decimal pplan { get; set; }
+        public Int32 pares { get; set; }
+        public Int32 stock { get; set; }
+    }
+}
