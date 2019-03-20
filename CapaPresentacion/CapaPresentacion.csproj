@@ -230,6 +230,13 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="AspNetForms\ArticuloSinMov.aspx.cs">
+      <DependentUpon>ArticuloSinMov.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AspNetForms\ArticuloSinMov.aspx.designer.cs">
+      <DependentUpon>ArticuloSinMov.aspx</DependentUpon>
+    </Compile>
     <Compile Include="AspNetForms\Vendedor.aspx.cs">
       <DependentUpon>Vendedor.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -319,6 +326,7 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AspNetForms\ArticuloSinMov.aspx" />
     <Content Include="AspNetForms\Vendedor.aspx" />
     <Content Include="AspNetForms\Planilla.aspx" />
     <Content Include="ContentSelect\bootstrap-select.css" />
@@ -1305,6 +1313,7 @@
     <Content Include="Views\ReporteCrystal\Index.cshtml" />
     <Content Include="Views\Soporte\ConfigTda.cshtml" />
     <Content Include="Views\Reporte\ReporteVendedor.cshtml" />
+    <Content Include="Views\Reporte\ReporteArticuloSinMov.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
