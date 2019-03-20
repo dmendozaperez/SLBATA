@@ -1,6 +1,6 @@
 ﻿@using CapaEntidad.Util;
 @{
-    ViewBag.Title = "Reporte de Articulos sin movimiento";
+    ViewBag.Title = "Reporte de Articulos sin movimientos";
     AjaxOptions options = new AjaxOptions
     {
         HttpMethod = "GET",
@@ -25,64 +25,57 @@
         height: 800px;
     }
 </style>
-<div class="">
+<p class="text-danger">Consulta de articulos sin movimiento, por filtro Tiendas semanas y máximo de pares</p>
+<div class="box box-body box-primary">
 
-    <div class="">
-        <div class="col-md-12 col-sm-12 col-xs-12">
-            <div class="x_panel">
+    <div class="row">
 
-                <div class="x_content">
-                    <div class="well">
-                        <form id="frmConsulta" data-parsley-validate>
-                            <div class="row">                                
+        <div class="col-sm-3">
+            <label for="dwCate">Tienda</label>
+            <div class="form-group">
+                <div class="form-group">
+                    @Html.DropDownList("txtTda", new SelectList(ViewBag.tienda, "cbo_codigo", "cbo_descripcion"), new { @class = "selectpicker", @data_live_search = "true", @id = "txtTda", @name = "txtTda" })
+                </div>
+            </div>
+        </div>
 
-                                <div class="col-sm-3">
-                                    <label for="dwCate">Tienda</label>
-                                    <div class="form-group">
-                                        <div  class="form-group">
-                                            @Html.DropDownList("txtTda", new SelectList(ViewBag.tienda, "cbo_codigo", "cbo_descripcion"), new { @class = "selectpicker", @data_live_search = "true", @id = "txtTda", @name = "txtTda" })
-                                        </div>
-                                    </div>
-                                </div>
+        <div class="col-sm-3">
+            <label for="dwCate">Semanas</label>
+            <div class="form-group">
+                <div class="form-group">
+                    <input name="txtsemana" type="number" id="txtsemana" value="1" style="width:100%" autofocus class="form-control" />
+                </div>
+            </div>
+        </div>
 
-                                <div class="col-sm-3">
-                                    <label for="dwCate">Semanas</label>
-                                    <div class="form-group">
-                                        <div class="form-group">
-                                            <input name="txtsemana" type="number" id="txtsemana" value="1" style="width:50%" autofocus class="form-control" />
-                                        </div>
-                                    </div>
-                                </div>
+        <div class="col-sm-3">
+            <label for="dwCate">Max.Pares</label>
+            <div class="form-group">
+                <div class="form-group">
+                    <input name="txtpares" type="number" id="txtpares" value="1" style="width:100%" autofocus class="form-control" />
+                </div>
+            </div>
+        </div>
 
-                                <div class="col-sm-3">
-                                    <label for="dwCate">Max.Pares</label>
-                                    <div class="form-group">
-                                        <div class="form-group">
-                                            <input name="txtpares" type="number" id="txtpares" value="1" style="width:50%" autofocus class="form-control" />
-                                        </div>
-                                    </div>
-                                </div>
+        <div class="col-sm-3">
+            <label for="dwEstado"></label>
+            <div class="form-group">
+                <div id="tipodoc" class="form-group">
+                    <button type="button" class="btn btn-primary" onclick="javascript: MostrarReporte()">
+                        <span class="glyphicon glyphicon-th-list"></span>&nbsp;Ver Reporte
+                    </button>
+                </div>
 
-                                <div class="col-sm-3">
-                                    <label for="dwEstado"></label>
-                                    <div class="form-group">
-                                        <div id="tipodoc" class="form-group">
-                                            <button type="button" class="btn btn-primary" onclick="javascript: MostrarReporte()">
-                                                <span class="glyphicon glyphicon-th-list"></span>&nbsp;Ver Reporte
-                                            </button>
-                                        </div>
-
-                                    </div>
-                                </div>
+            </div>
+        </div>
 
 
 
-                            </div>
-                          
+    </div>
 
 
-                        </form>
-                    </div>
+</div>
+                     
                     <div class="row">
                         <div class="col-md-12">
                             <div id="ifrReporte" class="well" style="width: 100%; height: 800px;">
@@ -94,12 +87,7 @@
                         </div>
                     </div>
 
-                </div>
-            </div>
-        </div>
-    </div>
-
-</div>
+               
 
 <script src="~/Scripts/bootstrap-select.min.js"></script>
 <script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
