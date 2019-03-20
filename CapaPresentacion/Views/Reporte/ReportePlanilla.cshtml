@@ -26,360 +26,326 @@
         height: 800px;
     }
 </style>
-<div class="">
+<p class="text-danger">Consulta de la planilla de tiendas, por filtro Tienda, Tipo, Grupo, Categoria , SubCategoria,Estado.</p>
+<div class="box box-body box-primary">  
+    <div class="row">
 
-    <div class="">
-        <div class="col-md-12 col-sm-12 col-xs-12">
-            <div class="x_panel">
-
-                <div class="x_content">
-                    <div class="well">
-                        <form id="frmConsulta" data-parsley-validate>
-                            <div class="row">
-                                <div class="form-group col-md-1">
-                                    <label for="txtCliente">Cod Tda.</label>
-                                </div>
-                                @*@Html.DropDownList("txtTda", new SelectList(ViewBag.Tienda, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "txtTda", @name = "txtTda", style = "width:270px;max-width:270px;" })*@
-                                <div class="form-group col-md-3">
-                                    @*@Html.DropDownList("txtTda", new SelectList(ViewBag.Tienda, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectCountry form-control", @data_live_search = "true", @id = "txtTda" })*@
-                                    @Html.DropDownList("txtTda", new SelectList(ViewBag.tienda, "cbo_codigo", "cbo_descripcion","0"), new { @class = "selectpicker", @data_live_search = "true", @id = "txtTda", @name = "txtTda" })
-                                    @*<input type="text" name="txtTda" id="txtTda" class="form-control" maxlength="255" data-parsley-maxlength="255" data-parsley-maxlength-message="Ingrese un nombre usuario válido.">*@
-                                </div>
-
-                                <div class="form-group col-md-1">
-                                    <label class="control-label" for="selEstado">Tipo</label>
-                                </div>
-                                <div class="form-group col-md-3">
-                                    @Html.DropDownList("dwtipo", new SelectList(ViewBag.Tipo, "cbo_codigo", "cbo_descripcion", "1"), new { @class = "selectpicker",  @id = "dwTipo", @name = "dwTipo", style = "width:270px;max-width:270px;", @onchange = "ListarGrupo()" })
-
-                                </div>
-
-                                <div class="form-group col-md-1">
-                                    <label class="control-label" for="selEstado">Grupo</label>
-                                </div>
-                                <div class="form-group col-md-3"  id="divgrupo">
-                                    @Html.DropDownList("dwGrupo", new SelectList(ViewBag.Categoria, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwGrupo", @name = "dwGrupo", style = "width:270px;max-width:270px;", @onchange = "ListarCategoria()" })
-
-                                </div>
-                                
-
-
-
-                            </div>
-                            <div class="row">
-
-                                <div class="form-group col-md-1">
-                                    <label class="control-label" for="selEstado">Categoria</label>
-                                </div>
-                                <div class="form-group col-md-3" id="divcateg">
-                                    @Html.DropDownList("dwCate", new SelectList(ViewBag.Categoria, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwCate", @onchange = "ListarSubCategoria()" })
-                                </div>
-
-                                <div class="form-group col-md-1">
-                                    <label class="control-label" for="selEstado">Sub-Categ.</label>
-                                </div>
-                                <div class="form-group col-md-3" id="divsbcateg">
-                                    @Html.DropDownList("dwsbCate", new SelectList(ViewBag.Categoria, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwsbCate" })
-
-                                </div>
-                                <div class="form-group col-md-1">
-                                    <label class="control-label" for="selEstado">Estado</label>
-                                </div>
-                                <div class="form-group col-md-3">
-                                    @Html.DropDownList("dwEstado", new SelectList(ViewBag.Estado, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwEstado", @name = "dwEstado", style = "width:270px;max-width:270px;" })
-                                </div>
-                                
-                            </div>
-
-                            <div class="row">
-                                
-
-                                <div class="form-group col-md-1">
-
-                                </div>
-                                <div class="form-group col-md-3" >
-
-                                </div>
-
-                                <div class="form-group col-md-1">
-
-                                </div>
-                                <div class="form-group col-md-3" >
-
-
-                                </div>
-                                <div class="form-group col-md-1">
-
-                                </div>
-                                <div class="form-group col-md-1">
-
-                                </div>
-                                <div class="form-group col-md-2">
-
-                                    <button type="button" class="btn btn-primary" onclick="javascript: MostrarReporte()">
-                                        <span class="glyphicon glyphicon-th-list"></span>&nbsp;Ver Reporte
-                                    </button>
-                                </div>
-                            </div>
-
-                        </form>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div id="ifrReporte" class="well" style="width: 100%; height: 800px;">
-                                <iframe id="load" src="" frameborder="0" marginheight="1"
-                                        marginwidth="1" scrolling="auto" onload="javascript: waitingDialog.hide();"></iframe>
-                            </div>
-
-
-                        </div>
-                    </div>
-
+        <div class="col-sm-3">
+            <label for="txtTda">Cod Tda.</label>
+            <div class="form-group">
+                <div id="tipodoc" class="form-group">
+                    @Html.DropDownList("txtTda", new SelectList(ViewBag.tienda, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", @data_live_search = "true", @id = "txtTda", @name = "txtTda" })
                 </div>
             </div>
         </div>
+
+        <div class="col-sm-3">
+            <label for="dwTipo">Tipo</label>
+            <div class="form-group">
+                <div id="tipodoc" class="form-group">
+                    @Html.DropDownList("dwtipo", new SelectList(ViewBag.Tipo, "cbo_codigo", "cbo_descripcion", "1"), new { @class = "selectpicker", @id = "dwTipo", @name = "dwTipo", style = "width:270px;max-width:270px;", @onchange = "ListarGrupo()" })
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <label for="dwGrupo">Grupo</label>
+            <div class="form-group">
+                <div id="divgrupo" class="form-group">
+                    @Html.DropDownList("dwGrupo", new SelectList(ViewBag.Categoria, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwGrupo", @name = "dwGrupo", style = "width:270px;max-width:270px;", @onchange = "ListarCategoria()" })
+                </div>
+            </div>
+        </div>
+
     </div>
+    <div class="row">
+        <div class="col-sm-3">
+            <label for="dwCate">Categoria</label>
+            <div class="form-group">
+                <div id="divcateg" class="form-group">
+                    @Html.DropDownList("dwCate", new SelectList(ViewBag.Categoria, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwCate", @onchange = "ListarSubCategoria()" })
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <label for="dwsbCate">Sub-Categ.</label>
+            <div class="form-group">
+                <div id="divsbcateg" class="form-group">
+                    @Html.DropDownList("dwsbCate", new SelectList(ViewBag.Categoria, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwsbCate" })
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <label for="dwEstado">Estado</label>
+            <div class="form-group">
+                <div id="tipodoc" class="form-group">
+                    @Html.DropDownList("dwEstado", new SelectList(ViewBag.Estado, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwEstado", @name = "dwEstado", style = "width:270px;max-width:270px;" })
+                </div>
 
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <label for="dwEstado"></label>
+            <div class="form-group">
+                <div id="tipodoc" class="form-group">
+                    <button type="button" class="btn btn-primary" onclick="javascript: MostrarReporte()">
+                        <span class="glyphicon glyphicon-th-list"></span>&nbsp;Ver Reporte
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
 </div>
-@*<script src="~/Scripts/bootstrap.min.js"></script>
-<script src="~/ScriptsSelect/bootstrap-select.js"></script>*@
-<script src="~/Scripts/bootstrap-select.min.js"></script>
-<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+  
+    <div class="row">
+        <div class="col-md-12">
+            <div id="ifrReporte" class="well" style="width: 100%; height: 800px;">
+                <iframe id="load" src="" frameborder="0" marginheight="1"
+                        marginwidth="1" scrolling="auto" onload="javascript: waitingDialog.hide();"></iframe>
+            </div>
 
-<script src="~/Scripts/BI.js"></script>
-<script>
-    $(document).ready(function () {
 
-        ListarGrupo()
-    });
+        </div>
+    </div>
+  
+    @*<script src="~/Scripts/bootstrap.min.js"></script>
+        <script src="~/ScriptsSelect/bootstrap-select.js"></script>*@
+    <script src="~/Scripts/bootstrap-select.min.js"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
 
-    function loadedFrame() {
-        $('#loading').hide();
-    }
+    <script src="~/Scripts/BI.js"></script>
+    <script>
+        $(document).ready(function () {
 
-    function MostrarReporte(e) {
+            ListarGrupo()
+        });
 
-        var tda = $('#txtTda').val();
-        var grupo = $('#dwGrupo').val();
-        var tipo = $('#dwTipo').val();
-        //var str = grupo.toString();
-        var cate = $('#dwCate').val();
-        var sbCate = $('#dwsbCate').val();
-        var Estado = $('#dwEstado').val();
+        function loadedFrame() {
+            $('#loading').hide();
+        }
 
-        if (grupo == '' || grupo == null) { grupo = '0' };
-        if (cate == '' || cate == null) { cate = '0' };
-        if (sbCate == '' || sbCate == null) { sbCate = '0' };
-        if (Estado == '' || Estado == null) { Estado = '0' };
-        grupo = grupo.toString();
-        cate = cate.toString();
-        sbCate = sbCate.toString();
-        Estado = Estado.toString();
+        function MostrarReporte(e) {
 
-        var TeamDetailPostBackURL ="@Url.Action("ShowGenericReportInNewWin", "Reporte")";
-        if (tda != '' || tda == null) {
-            waitingDialog.show('Espere un momento por favor');
-            $.ajax({
-                //url: GLB_RUT_APP_REPVENR + "?tda=" + tda + "&grupo=" + grupo + "&cate=" + cate + "&subcate=" + sbCate + "&estado=" + Estado,
-                url:TeamDetailPostBackURL,// '../ReporteCrystal/ShowGenericReportInNewWin',
-                dataType: 'json',
-                type: 'POST',
-                //dataType: "html",
-                data: { cod_tda: tda, grupo: grupo, categoria: cate, subcategoria: sbCate, estado: Estado, tipo: tipo },
-                //cache: false,
-                //async: false,
-                //dataType: "html",
-                success: function (data) {
-                    //alert('ok');
-                    if (data.estado == "1")
-                    {
-                        $('#load').show();
-                        $("#load").attr("src", "../AspNetForms/Planilla.aspx");
-                    }
-                    else
-                    {
-                        $('#load').hide();
+            var tda = $('#txtTda').val();
+            var grupo = $('#dwGrupo').val();
+            var tipo = $('#dwTipo').val();
+            //var str = grupo.toString();
+            var cate = $('#dwCate').val();
+            var sbCate = $('#dwsbCate').val();
+            var Estado = $('#dwEstado').val();
+
+            if (grupo == '' || grupo == null) { grupo = '0' };
+            if (cate == '' || cate == null) { cate = '0' };
+            if (sbCate == '' || sbCate == null) { sbCate = '0' };
+            if (Estado == '' || Estado == null) { Estado = '0' };
+            grupo = grupo.toString();
+            cate = cate.toString();
+            sbCate = sbCate.toString();
+            Estado = Estado.toString();
+
+            var TeamDetailPostBackURL = "@Url.Action("ShowGenericReportInNewWin", "Reporte")";
+            if (tda != '' || tda == null) {
+                waitingDialog.show('Espere un momento por favor');
+                $.ajax({
+                    //url: GLB_RUT_APP_REPVENR + "?tda=" + tda + "&grupo=" + grupo + "&cate=" + cate + "&subcate=" + sbCate + "&estado=" + Estado,
+                    url: TeamDetailPostBackURL,// '../ReporteCrystal/ShowGenericReportInNewWin',
+                    dataType: 'json',
+                    type: 'POST',
+                    //dataType: "html",
+                    data: { cod_tda: tda, grupo: grupo, categoria: cate, subcategoria: sbCate, estado: Estado, tipo: tipo },
+                    //cache: false,
+                    //async: false,
+                    //dataType: "html",
+                    success: function (data) {
+                        //alert('ok');
+                        if (data.estado == "1") {
+                            $('#load').show();
+                            $("#load").attr("src", "../AspNetForms/Planilla.aspx");
+                        }
+                        else {
+                            $('#load').hide();
+                            waitingDialog.hide();
+                            toastr.error('Hubo un error en el reporte', "Alerta");
+
+                        }
+                        //document.getElementById("ifrReporte").innerHTML = data;
+                        //waitingDialog.hide();
+                        return false;
+                    },
+                    error: function (request, status, error) {
                         waitingDialog.hide();
-                        toastr.error('Hubo un error en el reporte', "Alerta");
-
                     }
-                    //document.getElementById("ifrReporte").innerHTML = data;
-                    //waitingDialog.hide();
-                    return false;
-                },
-                error: function (request, status, error) {
-                    waitingDialog.hide();
-                }
-            }).done(function () {
+                }).done(function () {
 
-            });
-        } else {
+                });
+            } else {
 
-            toastr.error('Debe Ingresar Tienda', "Alerta");
-        }
-    }
-
-    function ListarGrupo() {     
-   
-   
-        var data = function () { return @Html.Raw(Json.Encode(ViewBag.ClGrupo)); }();
-     
-        var dataArray = data.Data;     
-        var strTipo = $('#dwTipo').val();     
-        var listar=[];    
-        
-        if (strTipo != null) {
-            var lista_filter = dataArray.filter(obj => obj.cbo_filter_2 === strTipo);
-             $.each(lista_filter, function (index, item) {
-               
-                    listar.push(item);
-             });
+                toastr.error('Debe Ingresar Tienda', "Alerta");
+            }
         }
 
-        llenarCombo("divgrupo", "dwGrupo", listar, '', '', "ListarCategoria");
-        ListarCategoria();
-        ListarSubCategoria()
-
-    }
+        function ListarGrupo() {
 
 
-    function ListarCategoria() {
-        @*var jsonObj = @Html.Raw(Json.Encode(ViewBag.ClCategoria));*@
-        var data=function() { return @Html.Raw(Json.Encode(ViewBag.ClCategoria)); }();
-        var dataArray=data.Data;
-        var strgrupo = $('#dwGrupo').val();
-        var strTipo = $('#dwTipo').val();
-        var listar=[];
-        var lista_default = dataArray.filter(obj => obj.cbo_filter === '');
-        $.each(lista_default, function (index, item) {
+            var data = function () { return @Html.Raw(Json.Encode(ViewBag.ClGrupo)); }();
 
-            listar.push(item);
+            var dataArray = data.Data;
+            var strTipo = $('#dwTipo').val();
+            var listar = [];
 
-        });
-
-       
-        if (strgrupo!=null){
-            for(var i=0;i<strgrupo.length;i++)
-            {
-                if (i == 1) { 
-                    var lista_filteAnt = dataArray.filter(obj => obj.cbo_filter_2 === strTipo);
-                    var cbo_filter = strgrupo[i].length == 1 ? '0' + strgrupo[i]: strgrupo[i];
-                    var lista_filter = lista_filteAnt.filter(obj => obj.cbo_filter === cbo_filter);
-
-                    $.each(lista_filter, function (index, item) {
-
-                        listar.push(item);
-                    });
-                }
-
-            };
-        }
-        llenarCombo("divcateg", "dwCate", listar, '', '', "ListarSubCategoria");
-
-    }
-
-    function ListarSubCategoria() {
-
-        var strcate = $('#dwCate').val();
-        var strTipo = $('#dwTipo').val();
-        @*var jsonObj = @Html.Raw(Json.Encode(ViewBag.ClCategoria));*@
-        var data=function() { return @Html.Raw(Json.Encode(ViewBag.ClSBCategoria)); }();
-        var dataArray=data.Data;
-        //var strgrupo = $('#dwGrupo').val();
-        var listar = [];
-
-     
-
-        var lista_default = dataArray.filter(obj => obj.cbo_filter === '');
-        $.each(lista_default, function (index, item) {
-
-            listar.push(item);
-
-        });
-
-
-        if (strcate != null) {
-            //for (var i = 0; i < strcate.length; i++)
-            //{
-            var lista_filteAnt = dataArray.filter(obj => obj.cbo_filter_2 === strTipo);
-            var cbo_filter = strcate.length == 1 ? '0' + strcate : strcate;
-          
-            var lista_filter = lista_filteAnt.filter(obj => obj.cbo_filter === cbo_filter);
+            if (strTipo != null) {
+                var lista_filter = dataArray.filter(obj => obj.cbo_filter_2 === strTipo);
                 $.each(lista_filter, function (index, item) {
 
                     listar.push(item);
                 });
-            //};
+            }
+
+            llenarCombo("divgrupo", "dwGrupo", listar, '', '', "ListarCategoria");
+            ListarCategoria();
+            ListarSubCategoria()
+
         }
-        llenarCombo("divsbcateg", "dwsbCate", listar, '', '', "");
-        //llenarCombo("dwsbCate", listar);
 
 
+        function ListarCategoria() {
+            @*var jsonObj = @Html.Raw(Json.Encode(ViewBag.ClCategoria));*@
+            var data = function () { return @Html.Raw(Json.Encode(ViewBag.ClCategoria)); }();
+            var dataArray = data.Data;
+            var strgrupo = $('#dwGrupo').val();
+            var strTipo = $('#dwTipo').val();
+            var listar = [];
+            var lista_default = dataArray.filter(obj => obj.cbo_filter === '');
+            $.each(lista_default, function (index, item) {
 
-    }
+                listar.push(item);
 
-    function GenerarLista(Numsp, Params) {
-        var Data
+            });
 
-        var url = '@Url.Action("GenerarCombo", "Reporte")';
-        function exito(rpta) {
-            Data = rpta
+
+            if (strgrupo != null) {
+                for (var i = 0; i < strgrupo.length; i++) {
+                    if (i == 1) {
+                        var lista_filteAnt = dataArray.filter(obj => obj.cbo_filter_2 === strTipo);
+                        var cbo_filter = strgrupo[i].length == 1 ? '0' + strgrupo[i] : strgrupo[i];
+                        var lista_filter = lista_filteAnt.filter(obj => obj.cbo_filter === cbo_filter);
+
+                        $.each(lista_filter, function (index, item) {
+
+                            listar.push(item);
+                        });
+                    }
+
+                };
+            }
+            llenarCombo("divcateg", "dwCate", listar, '', '', "ListarSubCategoria");
+
         }
-        function error(rpta) {
-            BI.AbrirPopup(20, 15, "Comuniquese con Soporte Tecnico<br>" + rpta.statusText, 'Disculpe!!!', false, true, false)
+
+        function ListarSubCategoria() {
+
+            var strcate = $('#dwCate').val();
+            var strTipo = $('#dwTipo').val();
+            @*var jsonObj = @Html.Raw(Json.Encode(ViewBag.ClCategoria));*@
+            var data = function () { return @Html.Raw(Json.Encode(ViewBag.ClSBCategoria)); }();
+            var dataArray = data.Data;
+            //var strgrupo = $('#dwGrupo').val();
+            var listar = [];
+
+
+
+            var lista_default = dataArray.filter(obj => obj.cbo_filter === '');
+            $.each(lista_default, function (index, item) {
+
+                listar.push(item);
+
+            });
+
+
+            if (strcate != null) {
+                //for (var i = 0; i < strcate.length; i++)
+                //{
+                var lista_filteAnt = dataArray.filter(obj => obj.cbo_filter_2 === strTipo);
+                var cbo_filter = strcate.length == 1 ? '0' + strcate : strcate;
+
+                var lista_filter = lista_filteAnt.filter(obj => obj.cbo_filter === cbo_filter);
+                $.each(lista_filter, function (index, item) {
+
+                    listar.push(item);
+                });
+                //};
+            }
+            llenarCombo("divsbcateg", "dwsbCate", listar, '', '', "");
+            //llenarCombo("dwsbCate", listar);
+
+
+
         }
-        BI.AjaxJsonSeg("post", url, { Numsp: Numsp, Params: Params }, false, exito, error);
 
-        return Data
-    }
+        function GenerarLista(Numsp, Params) {
+            var Data
 
-    function llenarCombo(DivId, IdControl, Data, codDefecto, desDefecto, onchangeFuncion) {
+            var url = '@Url.Action("GenerarCombo", "Reporte")';
+            function exito(rpta) {
+                Data = rpta
+            }
+            function error(rpta) {
+                BI.AbrirPopup(20, 15, "Comuniquese con Soporte Tecnico<br>" + rpta.statusText, 'Disculpe!!!', false, true, false)
+            }
+            BI.AjaxJsonSeg("post", url, { Numsp: Numsp, Params: Params }, false, exito, error);
 
-        $('#' + IdControl).find('option').remove();
-        var str = '<select class="selectpicker" data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '">';
-        var ItemNormal = '<option value="codItem">desItem</option>';
-        var colectItemNormal = '';
+            return Data
+        }
 
-        if (codDefecto != '') { str += '<option value="' + codDefecto + '" selected="selected">------' + desDefecto + '------</option>'; }
+        function llenarCombo(DivId, IdControl, Data, codDefecto, desDefecto, onchangeFuncion) {
 
-        if (onchangeFuncion != '') { onchangeFuncion = 'onchange = "' + onchangeFuncion + '()"' }
-        str = str.replace("onchangeFuncion", onchangeFuncion);
+            $('#' + IdControl).find('option').remove();
+            var str = '<select class="selectpicker" data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '">';
+            var ItemNormal = '<option value="codItem">desItem</option>';
+            var colectItemNormal = '';
 
-        $.each(Data, function (index, item) {
+            if (codDefecto != '') { str += '<option value="' + codDefecto + '" selected="selected">------' + desDefecto + '------</option>'; }
 
-            colectItemNormal = colectItemNormal + ItemNormal
-            colectItemNormal = colectItemNormal.replace("codItem", item.cbo_codigo);
-            colectItemNormal = colectItemNormal.replace("desItem", item.cbo_descripcion);
+            if (onchangeFuncion != '') { onchangeFuncion = 'onchange = "' + onchangeFuncion + '()"' }
+            str = str.replace("onchangeFuncion", onchangeFuncion);
 
-        });
+            $.each(Data, function (index, item) {
 
-        str += colectItemNormal
-        str += '</select>'
+                colectItemNormal = colectItemNormal + ItemNormal
+                colectItemNormal = colectItemNormal.replace("codItem", item.cbo_codigo);
+                colectItemNormal = colectItemNormal.replace("desItem", item.cbo_descripcion);
 
-        document.getElementById(DivId).innerHTML = str
+            });
 
-        $('.selectpicker').selectpicker({
-            liveSearch: true,
-            showSubtext: true
-        });
+            str += colectItemNormal
+            str += '</select>'
 
-    }
+            document.getElementById(DivId).innerHTML = str
 
-    //function llenarCombo(Id, Data) {
+            $('.selectpicker').selectpicker({
+                liveSearch: true,
+                showSubtext: true
+            });
 
-    //    var cod_Combo = "";
-    //    var des_Combo = "";
-    //    $('#' + Id).find('option').remove();
-    //    $.each(Data, function (index, item) {
+        }
 
-    //        cod_Combo = item.cbo_codigo;
-    //        des_Combo = item.cbo_descripcion;
-    //        var option = $('<option value="' + cod_Combo + '">' + des_Combo + '</option>');
+        //function llenarCombo(Id, Data) {
 
-    //        $('#' + Id).append(option);
+        //    var cod_Combo = "";
+        //    var des_Combo = "";
+        //    $('#' + Id).find('option').remove();
+        //    $.each(Data, function (index, item) {
 
-    //    });
-    //}
+        //        cod_Combo = item.cbo_codigo;
+        //        des_Combo = item.cbo_descripcion;
+        //        var option = $('<option value="' + cod_Combo + '">' + des_Combo + '</option>');
+
+        //        $('#' + Id).append(option);
+
+        //    });
+        //}
 
 
-</script>
+    </script>
