@@ -276,5 +276,60 @@ namespace CapaPresentacion.Controllers
             });
         }
 
+        public ActionResult ReporteVendedor()
+        {
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
+
+            if (_usuario == null)
+            {
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+            }
+            else
+            {              
+
+                ViewBag.Title = "Reporte Vendedor";            
+
+                if (Session["Tienda"] != null)
+                {
+                    ViewBag.Tienda = datCbo.get_ListaTiendaXstore().Where(t => t.cbo_codigo == Session["Tienda"].ToString()).ToList();
+                }
+                else
+                {
+                    ViewBag.Tienda = datCbo.get_ListaTiendaXstore();
+                }
+
+                ViewBag.Cadena = datCbo.get_ListaCadena();
+
+                return View();
+            }
+           
+        }
+
+        [HttpPost]
+        public ActionResult ShowGenericReportVendedorInNewWin(string cod_tda, string fecIni, string FecFin)
+        {
+            //grupo = "0";categoria = "0";subcategoria = "0";estado = "0";
+            Data_Planilla pl = new Data_Planilla();
+            this.HttpContext.Session["ReportName"] = "Vendedor.rpt";
+
+            List<Models_Vendedor> model_vendedor = pl.get_reporteVendedor(cod_tda, fecIni, FecFin);
+
+            this.HttpContext.Session["rptSource"] = model_vendedor;
+           
+
+            /*error=0;exito=1*/
+            string _estado = (model_vendedor == null) ? "0" : "1";
+
+            //if (model_planilla==null)
+
+            return Json(new
+            {
+                estado = _estado
+            });
+        }
+
     }
 }

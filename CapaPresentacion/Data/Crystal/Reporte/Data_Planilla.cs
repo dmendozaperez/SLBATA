@@ -136,5 +136,67 @@ namespace Data.Crystal.Reporte
             }
             return lista;
         }
+
+        public List<Models_Vendedor> get_reporteVendedor(string cod_tda, string fecIni, string fecFin)
+        {
+            string sqlquery = "USP_XSTORE_REPORTE_VENDEDORES";
+            List<Models_Vendedor> lista = null;
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexionPosPeru))
+                {
+                    try
+                    {
+                        using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                        {
+                            cmd.CommandTimeout = 0;
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.AddWithValue("@codtda", cod_tda);
+                            cmd.Parameters.AddWithValue("@FEC_INI", fecIni);
+                            cmd.Parameters.AddWithValue("@FEC_FIN", fecFin);                          
+
+                            using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                            {
+                                DataTable dt = new DataTable();
+                                da.Fill(dt);
+                                lista = new List<Models_Vendedor>();
+                                lista = (from DataRow dr in dt.Rows
+                                         select new Models_Vendedor()
+                                         {
+                                             cod_entid = dr["COD_ENTID"].ToString(),
+                                             des_entid = dr["DES_ENTID"].ToString(),
+                                             store_name = dr["STORE_NAME"].ToString(),
+                                             semana_str = dr["SEMANA_STR"].ToString(),
+                                             dni = dr["DNI"].ToString(),
+                                             pares = string.IsNullOrEmpty(dr["PARES"].ToString()) ? 0 : Convert.ToDecimal(dr["PARES"].ToString()),
+                                             ropa = string.IsNullOrEmpty(dr["ROPA"].ToString()) ? 0 : Convert.ToDecimal(dr["ROPA"].ToString()), //Convert.ToDecimal(dr["tcant"]),
+                                             acc = string.IsNullOrEmpty(dr["ACC"].ToString()) ? 0 : Convert.ToDecimal(dr["ACC"].ToString()), //Convert.ToDecimal(dr["valor"]),
+                                             cant_total = string.IsNullOrEmpty(dr["ACC"].ToString()) ? 0 : Convert.ToDecimal(dr["CANT_TOTAL"].ToString()),
+                                             neto = string.IsNullOrEmpty(dr["ACC"].ToString()) ? 0 : Convert.ToDecimal(dr["NETO"].ToString()),
+                                             igv = string.IsNullOrEmpty(dr["ACC"].ToString()) ? 0 : Convert.ToDecimal(dr["IGV"].ToString()),
+                                             total = string.IsNullOrEmpty(dr["ACC"].ToString()) ? 0 : Convert.ToDecimal(dr["TOTAL"].ToString()),
+                                             upt = string.IsNullOrEmpty(dr["ACC"].ToString()) ? 0 : Convert.ToDecimal(dr["UPT"].ToString()),
+                                             ntk = string.IsNullOrEmpty(dr["ACC"].ToString()) ? 0 : Convert.ToDecimal(dr["NTK"].ToString()),
+                                             mayor_1 = string.IsNullOrEmpty(dr["ACC"].ToString()) ? 0 : Convert.ToDecimal(dr["MAYOR_1"].ToString()),
+                                             pormay1 = string.IsNullOrEmpty(dr["ACC"].ToString()) ? 0 : Convert.ToDecimal(dr["PORMAY1"].ToString()),
+                                             ticket_prom = string.IsNullOrEmpty(dr["ACC"].ToString()) ? 0 : Convert.ToDecimal(dr["TICKET_PROM"].ToString()),
+
+                                         }).ToList();
+                            }
+                        }
+                    }
+                    catch (Exception exc)
+                    {
+
+
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            return lista;
+        }
     }
 }

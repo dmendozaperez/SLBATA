@@ -230,6 +230,13 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="AspNetForms\Vendedor.aspx.cs">
+      <DependentUpon>Vendedor.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AspNetForms\Vendedor.aspx.designer.cs">
+      <DependentUpon>Vendedor.aspx</DependentUpon>
+    </Compile>
     <Compile Include="AspNetForms\Planilla.aspx.cs">
       <DependentUpon>Planilla.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -268,6 +275,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Control\LoginViewModel.cs" />
+    <Compile Include="Models\Crystal\Reporte\Models_Vendedor.cs" />
     <Compile Include="Models\Crystal\Reporte\Models_Planilla.cs" />
     <Compile Include="Models\FileManager\DataProvider.cs" />
     <Compile Include="Models\FileManager\FileSystemProvider.cs" />
@@ -276,6 +284,12 @@
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="RptsCrystal\Vendedor.cs">
+      <DependentUpon>Vendedor.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="RptsCrystal\Planilla.cs">
       <AutoGen>True</AutoGen>
@@ -297,6 +311,7 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AspNetForms\Vendedor.aspx" />
     <Content Include="AspNetForms\Planilla.aspx" />
     <Content Include="ContentSelect\bootstrap-select.css" />
     <Content Include="Content\AdminLTE\AdminLTE.css" />
@@ -1281,6 +1296,7 @@
     <Content Include="Views\Documento\_FileManagerPartial.cshtml" />
     <Content Include="Views\ReporteCrystal\Index.cshtml" />
     <Content Include="Views\Soporte\ConfigTda.cshtml" />
+    <Content Include="Views\Reporte\ReporteVendedor.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1321,6 +1337,10 @@
     <WCFMetadataStorage Include="Service References\FEBataEpos\" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="RptsCrystal\Vendedor.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Vendedor.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="RptsCrystal\Planilla.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>Planilla.cs</LastGenOutput>
