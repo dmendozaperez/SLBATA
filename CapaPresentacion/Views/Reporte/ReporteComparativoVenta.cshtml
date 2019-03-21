@@ -1,0 +1,213 @@
+﻿@using CapaEntidad.Transac
+@model IEnumerable<Ent_Analisis_Mov>
+@{
+    ViewBag.Title = "Reporte Comparativo Venta";
+    AjaxOptions options = new AjaxOptions
+    {
+        HttpMethod = "GET",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "lista",
+        OnComplete = "waitingDialog.hide();rf_filtro();",
+        OnBegin = "waitingDialog.show('Espere un momento por favor');",
+        OnFailure = "waitingDialog.hide();"
+    };
+}
+
+<link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />
+<p class="text-danger">Reporte comparativo de venta,, por filtro tienda y dos rangos de fechas.</p>
+<div class="box box-body box-primary">
+    @using (Ajax.BeginForm("ListaComparativo", options))
+    { <form id="form1">
+        <div class="row">
+
+
+
+            <div class="col-sm-3">
+                <label for="segape">Tienda</label>
+                <div class="form-group">
+                    @*<div class="input-group">*@
+                    <div id="tienda" class="form-group">
+                        @Html.DropDownList("dwtienda", new SelectList(ViewBag.Tienda, "cbo_codigo", "cbo_descripcion"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwtienda", @name = "dwtienda",@enable ="false" })
+                    </div>
+                    @*</div>*@
+                </div>
+            </div>
+            <div class="col-sm-1">
+
+                <label for="segape"></label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div id="r1" class="input-group date">
+                            <label for="segape">Filtro 1</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <label for="segape">Fecha Inicio</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div id="datepickerini" class="input-group date" data-date-format="dd-mm-yyyy">
+                            <input id="fecini" name="fecini" value="" class="form-control custom-input" placeholder="dd-mm-yyyy" type="text" oninvalid="InvalidMsg(this,'Ingrese la fecha inicial')" required="required" />
+                            <span class="input-group-addon  bg-white"><img src="~/Content/images/wall-calendar-with-lines.svg" height="20" width="20"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <label for="fecnac">Fecha Final</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div id="datepickerfin" class="input-group date" data-date-format="dd-mm-yyyy">
+                            <input id="fecfinc" name="fecfinc" value="" class="form-control custom-input" placeholder="dd-mm-yyyy" type="text" oninvalid="InvalidMsg(this,'Ingrese la fecha final')" required="required" />
+                            <span class="input-group-addon  bg-white"><img src="~/Content/images/wall-calendar-with-lines.svg" height="20" width="20"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-1">
+
+            </div>
+            <div class="col-sm-2">
+                <label></label><br />
+                <button type="submit" title="Consultar" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-search"></span>
+                </button>
+                @*<a href="@Url.Action("ExportToExcel")" title="Exportar a excel" class="btn btn-primary">Exportar</a>*@
+            </div>
+
+
+
+
+
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+
+            </div>
+            <div class="col-sm-1">
+
+                <label for="segape"></label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div id="r1" class="input-group date">
+                            <label for="segape">Filtro 2</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <label for="segape">Fecha Inicio</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div id="datepickerini2" class="input-group date" data-date-format="dd-mm-yyyy">
+                            <input id="fecini2" name="fecini2" value="" class="form-control custom-input" placeholder="dd-mm-yyyy" type="text" oninvalid="InvalidMsg(this,'Ingrese la fecha inicial')" required="required" />
+                            <span class="input-group-addon  bg-white"><img src="~/Content/images/wall-calendar-with-lines.svg" height="20" width="20"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <label for="fecnac">Fecha Final</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div id="datepickerfin2" class="input-group date" data-date-format="dd-mm-yyyy">
+                            <input id="fecfinc2" name="fecfinc2" value="" class="form-control custom-input" placeholder="dd-mm-yyyy" type="text" oninvalid="InvalidMsg(this,'Ingrese la fecha final')" required="required" />
+                            <span class="input-group-addon  bg-white"><img src="~/Content/images/wall-calendar-with-lines.svg" height="20" width="20"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-1">
+
+            </div>
+            <div class="col-sm-2">
+
+            </div>
+        </div>
+    </form>
+    }
+   
+    <div class="box-body" id="lista">
+       
+    </div>
+    <br />
+
+
+</div>
+<script src="~/Scripts/bootstrap-select.min.js"></script>
+<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+@*<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/ScriptsSelect/bootstrap-select.js"></script>*@
+<script type="text/javascript">
+    function InvalidMsg(textbox, str) {
+
+        if (textbox.value.length == 0) {
+            textbox.setCustomValidity(str);
+        }
+        else {
+            textbox.setCustomValidity('');
+        }
+        return true;
+    }
+   
+</script>
+
+<script>
+    $(document).ready(function () {
+        
+       
+       
+    });
+
+    function MostrarListado() {
+
+        var TeamDetailPostBackURL = "@Url.Action("ListaAnalisisMov", "AnalisisMov")";
+
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: TeamDetailPostBackURL,
+            contentType: "application/json; charset=utf-8",
+            data: {},
+            datatype: "json",
+            cache: true,
+            success: function (data) {
+                document.getElementById("lista").innerHTML = data;
+
+            },
+            error: function () {
+
+            }
+        });
+
+    }
+
+</script>
+<script>
+    $(function () {
+        $("#datepickerini").datepicker({
+            autoclose: true,
+            todayHighlight: true
+        }).datepicker("setDate", "0");;
+    });
+    $(function () {
+        $("#datepickerfin").datepicker({
+            autoclose: true,
+            todayHighlight: true
+        }).datepicker("setDate", "0");;
+    });
+    $(function () {
+        $("#datepickerini2").datepicker({
+            autoclose: true,
+            todayHighlight: true
+        }).datepicker("setDate", "0");;
+    });
+    $(function () {
+        $("#datepickerfin2").datepicker({
+            autoclose: true,
+            todayHighlight: true
+        }).datepicker("setDate", "0");;
+    });
+
+</script>
