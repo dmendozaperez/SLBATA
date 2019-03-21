@@ -66,6 +66,7 @@
     <Compile Include="Transac\Dat_Documentos_Tda.cs" />
     <Compile Include="ValeCompra\Dat_Cliente.cs" />
     <Compile Include="ValeCompra\Dat_ValeCompra.cs" />
+    <Compile Include="XstoreTda\Dat_XstoreTienda.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CapaEntidad\CapaEntidad.csproj">

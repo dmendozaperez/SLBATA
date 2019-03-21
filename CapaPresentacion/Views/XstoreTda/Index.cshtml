@@ -1,0 +1,333 @@
+﻿@using CapaEntidad.XstoreTda
+@model IEnumerable<Ent_TiendaConf>
+@{
+    ViewBag.Title = "Consulta de Tiendas";
+    AjaxOptions options = new AjaxOptions
+    {
+        HttpMethod = "GET",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "lista",
+        OnComplete = "waitingDialog.hide();",
+        OnBegin = "waitingDialog.show('Espere un momento por favor');",
+        OnFailure = "waitingDialog.hide();"
+    };
+}
+<link href="~/ContentSelect/bootstrap-select.css" rel="stylesheet" />
+
+<p class="text-danger">Consulta de tiendas para que puedan ser activadas o desactivadas</p>
+<div class="box box-body box-primary">
+      
+    <div class="box-body" id="lista">
+        <table id="example" class="table table-hover dataTable  table-striped table-responsive">
+            <thead>
+                <tr style="background-color:#3d566e; color:#ecf0f1">
+                    <th>Cod Tienda</th>
+                    <th>Des tienda</th>
+                    <th>Cod Empresa</th>
+                    <th>Des Empresa</th>
+                    <th>Cadena</th>
+                    <th>Xstore</th>
+                    <th>Detalle</th>
+
+                </tr>
+            </thead>
+            <tbody data-bind="foreach:"></tbody>
+            <tfoot>
+                <tr>
+                    <th>Cod Tienda</th>
+                    <th>Des tienda</th>
+                    <th>Cod Empresa</th>
+                    <th>Des Empresa</th>
+                    <th>Cadena</th>
+                    <th>Xstore</th>
+                    <th>Detalle</th>
+
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <br />
+
+
+</div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" ng-app>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/ScriptsSelect/bootstrap-select.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.table').dataTable({
+            "language": {
+                "url": "../Scripts/DataTables/Spanish.json"
+            },
+            "bServerSide": true,
+            "bAutoWidth": false,
+            "sAjaxSource": '@Url.Action("getTienda", "XstoreTda")',
+            "bdestroy": true,
+            "start": 0,
+            "order": [0, "asc"],
+            "bDeferRender": true,
+            "aoColumns": [
+                 { "sName": "cod_Entid", "mData": "cod_Entid" },
+                   { "sName": "des_Entid", "mData": "des_Entid" },
+
+                   { "sName": "cod_Emp", "mData": "cod_Emp", "sClass": "center" },
+                   { "sName": "des_Emp", "mData": "des_Emp", "sClass": "right" },
+                   { "sName": "des_Cadena", "mData": "des_Cadena", "sClass": "right" },
+                   {
+                       "render": function (data, type, full) {
+                           var envio = "'" + full.cod_Entid + "','" + full.des_Entid + "'"
+
+                           if (full.bol_xstore == 'True') {
+
+                               return '<div> <a title="Xstore Activado"  onclick="PopupDesactivarTienda(' + envio + ')" target="_blank" class="btn btn-success btn-sm"> <span class="glyphicon glyphicon-off"></span></a></div>';
+                           } else {
+                               return '<div> <a title="Xstore Desactivo"  onclick="PopupActivarTienda(' + envio + ')" target="_blank" class="btn btn-default btn-sm"> <span class="glyphicon glyphicon-off"></span></a></div>';
+                           }
+                       }
+                   },
+                   {
+                       "render": function (data, type, full) {
+                           var envio = "'" + full.cod_Entid + "'"
+
+                           return '<div> <a title="Ver Detalle"  onclick="verDetalle(' + envio + ')" target="_blank" class="btn btn-primary btn-sm"> <span class="	glyphicon glyphicon-th-list"></span></a></div>';
+                       }
+                   }
+
+
+
+            ],
+            dom: 'Bfrtip',
+            buttons: [
+           {
+               extend: 'excelHtml5',
+               title: 'Bataclub_xls'
+           },
+           {
+               extend: 'csvHtml5',
+               title: 'BataClub_csv'
+           },
+           {
+               extend: 'pdfHtml5',
+               title: 'BataClub_pdf'
+           },
+           'copyHtml5',
+            ]
+        });
+
+    });
+
+    function MostrarListado() {
+        var strCadena=' <table id="example" class="table table-hover dataTable  table-striped table-responsive">'+
+                            '<thead>'+
+                            '<tr style="background-color:#3d566e; color:#ecf0f1">'+
+                            '<th>Cod Tienda</th>'+
+                            '<th>Des tienda</th>'+
+                            '<th>Cod Empresa</th>'+
+                            '<th>Des Empresa</th>'+
+                            '<th>Cadena</th>'+
+                            '<th>Xstore</th>'+
+                            '<th>Detalle</th>'+
+                            '</tr>'+
+                            ' </thead>'+
+                            '<tbody data-bind="foreach:"></tbody>'+
+                            '<tfoot>'+
+                            '<tr>'+
+                            '<th>Cod Tienda</th>'+
+                            '<th>Des tienda</th>'+
+                            '<th>Cod Empresa</th>'+
+                            '<th>Des Empresa</th>'+
+                            ' <th>Cadena</th>'+
+                            ' <th>Xstore</th>'+
+                            ' <th>Detalle</th>'+
+
+                            '</tr>'+
+                            ' </tfoot>'+
+                        '</table>'
+        document.getElementById("lista").innerHTML = strCadena;
+
+        $('.table').dataTable({
+            "language": {
+                "url": "../Scripts/DataTables/Spanish.json"
+            },
+            "bServerSide": true,
+            "bAutoWidth": false,
+            "sAjaxSource": '@Url.Action("getTienda", "XstoreTda")',
+            "bdestroy": true,
+            "start": 0,
+            "order": [0, "asc"],
+            "bDeferRender": true,
+            "aoColumns": [
+                 { "sName": "cod_Entid", "mData": "cod_Entid" },
+                   { "sName": "des_Entid", "mData": "des_Entid" },
+
+                   { "sName": "cod_Emp", "mData": "cod_Emp", "sClass": "center" },
+                   { "sName": "des_Emp", "mData": "des_Emp", "sClass": "right" },
+                   { "sName": "des_Cadena", "mData": "des_Cadena", "sClass": "right" },
+                   {
+                       "render": function (data, type, full) {
+                           var envio = "'" + full.cod_Entid + "','" + full.des_Entid + "'"
+
+                           if (full.bol_xstore == 'True') {
+
+                               return '<div> <a title="Xstore Activado"  onclick="PopupDesactivarTienda(' + envio + ')" target="_blank" class="btn btn-success btn-sm"> <span class="glyphicon glyphicon-off"></span></a></div>';
+                           } else {
+                               return '<div> <a title="Xstore Desactivo"  onclick="PopupActivarTienda(' + envio + ')" target="_blank" class="btn btn-default btn-sm"> <span class="glyphicon glyphicon-off"></span></a></div>';
+                           }
+                       }
+                   },
+                   {
+                       "render": function (data, type, full) {
+                           var envio = "'" + full.cod_Entid + "'"
+
+                           return '<div> <a title="Ver Detalle"  onclick="verDetalle(' + envio + ')" target="_blank" class="btn btn-primary btn-sm"> <span class="	glyphicon glyphicon-th-list"></span></a></div>';
+                       }
+                   }
+
+
+
+            ],
+            dom: 'Bfrtip',
+            buttons: [
+           {
+               extend: 'excelHtml5',
+               title: 'Bataclub_xls'
+           },
+           {
+               extend: 'csvHtml5',
+               title: 'BataClub_csv'
+           },
+           {
+               extend: 'pdfHtml5',
+               title: 'BataClub_pdf'
+           },
+           'copyHtml5',
+            ]
+        });
+
+    }
+
+    function PopupDesactivarTienda(codTienda,descTeinda) {
+
+
+            var strhtml = ''
+            strhtml += '<div class="modal-header modal-header-danger" style="margin-top:0px;margin-bottom:0px;padding-top:2px;padding-bottom:2px;">'
+            strhtml += '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
+            strhtml += '<h5 class="modal-title" id="myModalLabel">'
+            strhtml += '<table style="border-bottom:0px;font-size:14px;width:50%;">'
+            strhtml += '<tr>'
+            strhtml += '<td style="font-size:14px;width:100%;text-align:left;">Confirmar Desactivación</td>'
+            strhtml += '</tr>'
+            strhtml += '</table>'
+            strhtml += '</h5>'
+            strhtml += '</div>'
+            strhtml += '<div class="modal-body">'
+            strhtml += 'Desea desactivar la Tienda: <b>' + descTeinda + ' </b>?.'
+            strhtml += '</div>'
+            strhtml += '<div class="modal-footer" style="margin-top:-30px">'
+            strhtml += '<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>'
+            strhtml += '<button type="button" class="btn btn-danger"  onclick="ActualizarTienda(' + codTienda + ',0)"   data-dismiss="modal">Desactivar</button>'
+            //strhtml += ' <button type="button"  title="Eliminar class="btn btn-danger" data-dismiss="modal" detalle" onclick="EliminarDetalle(this)"  data-id="' + codArticulo + '" data-modal="" data-toggle="modal">Elimninar</button>';
+            //strhtml += '<input type="submit" class="btn btn-primary" onclick="agregarLista()"  id="btnSubmit" value="Agregar" />'
+            strhtml += '</div>'
+            var options = { "backdrop": "static", keyboard: true };
+
+            $('#myModalContent').html(strhtml);
+            $('#myModal').modal(options);
+            $('#myModal').modal('show');
+
+
+    }
+
+    function PopupActivarTienda(codTienda,descTeinda) {
+
+            var strhtml = ''
+            strhtml += '<div class="modal-header modal-header-danger" style="margin-top:0px;margin-bottom:0px;padding-top:2px;padding-bottom:2px;">'
+            strhtml += '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
+            strhtml += '<h5 class="modal-title" id="myModalLabel">'
+            strhtml += '<table style="border-bottom:0px;font-size:14px;width:50%;">'
+            strhtml += '<tr>'
+            strhtml += '<td style="font-size:14px;width:100%;text-align:left;">Confirmar Activación</td>'
+            strhtml += '</tr>'
+            strhtml += '</table>'
+            strhtml += '</h5>'
+            strhtml += '</div>'
+            strhtml += '<div class="modal-body">'
+            strhtml += 'Desea activar la Tienda: <b>' + descTeinda + '</b> ?.'
+            strhtml += '</div>'
+            strhtml += '<div class="modal-footer" style="margin-top:-30px">'
+            strhtml += '<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>'
+            strhtml += '<button type="button" class="btn btn-primary"  onclick="ActualizarTienda('+codTienda+',1)"   data-dismiss="modal">Activar</button>'
+            //strhtml += ' <button type="button"  title="Eliminar class="btn btn-danger" data-dismiss="modal" detalle" onclick="EliminarDetalle(this)"  data-id="' + codArticulo + '" data-modal="" data-toggle="modal">Elimninar</button>';
+            //strhtml += '<input type="submit" class="btn btn-primary" onclick="agregarLista()"  id="btnSubmit" value="Agregar" />'
+            strhtml += '</div>'
+            var options = { "backdrop": "static", keyboard: true };
+
+            $('#myModalContent').html(strhtml);
+            $('#myModal').modal(options);
+            $('#myModal').modal('show');
+
+    }
+
+    function ActualizarTienda(codEntid,Estado) {
+
+        waitingDialog.show('Espere un momento por favor');
+
+        var objTienda = {
+            CodTienda: codEntid,
+            estado: Estado
+        }
+
+        var msj = 'desactivada.'
+
+        if (parseInt(Estado) > 0)
+            msj = 'activada.'
+
+        $.ajax
+          ({
+              url: '../XstoreTda/ActualizarEstadoTienda',
+              dataType: "json",
+              type: "POST",
+              data: objTienda,
+              success: function (data, textStatus, XMLHttpRequest) {
+                  waitingDialog.hide();
+
+                  if ((data.Success).toString() == "true") {
+
+                      if (data.Message == "1") {
+                          toastr.success("La tienda Nro: " + codEntid + " fue " + msj, "Mensaje");
+                          MostrarListado();
+                          waitingDialog.hide();
+
+                      } else {
+
+                          toastr.success("La tienda Nro: " + codEntid + " no fue " + msj, "Error");
+                          MostrarListado();
+                          waitingDialog.hide();
+                      }
+
+                  } else {
+                      toastr.error("No fue " + msj + " la tienda: " + codEntid, "Error");
+                      waitingDialog.hide();
+                  }
+
+              },
+              error: function (xhr) {
+                  waitingDialog.hide();
+                  toastr.error(xhr, 'Error');
+                  waitingDialog.hide();
+              }
+          })
+
+    }
+
+
+
+
+</script>
+

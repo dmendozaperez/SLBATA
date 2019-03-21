@@ -277,6 +277,7 @@
     <Compile Include="Controllers\SoporteController.cs" />
     <Compile Include="Controllers\UsuariosController.cs" />
     <Compile Include="Controllers\ValeCompraController.cs" />
+    <Compile Include="Controllers\XstoreTdaController.cs" />
     <Compile Include="Data\Crystal\Reporte\Data_Bata.cs" />
     <Compile Include="Data\Crystal\Reporte\Data_Planilla.cs" />
     <Compile Include="Global.asax.cs">
@@ -1314,6 +1315,8 @@
     <Content Include="Views\Soporte\ConfigTda.cshtml" />
     <Content Include="Views\Reporte\ReporteVendedor.cshtml" />
     <Content Include="Views\Reporte\ReporteArticuloSinMov.cshtml" />
+    <Content Include="Views\XstoreTda\ListaTienda.cshtml" />
+    <Content Include="Views\XstoreTda\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
