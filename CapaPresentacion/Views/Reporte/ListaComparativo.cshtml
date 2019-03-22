@@ -9,8 +9,8 @@
 <table id="example" class="table table-hover dataTable  table-striped table-responsive">    
     <thead>
         <tr style="background-color:#3d566e; color:#ecf0f1">
-            <th>Filtro </th>
             <th>Tienda</th>
+            <th>Filtro</th>
             <th>Pares</th>
             <th>Ropas</th>
             <th>Accesorios</th>
@@ -52,12 +52,17 @@
             "sAjaxSource": '@Url.Action("getComparativo", "Reporte")',
             "bdestroy": true,
             "start": 0,
+            "searching": false,
+          
+            //"ordering": false,
+            "order": [0, "asc"],
+           
        
             "bDeferRender": true,
             "aoColumns": [
                  { "sName": "Tienda", "mData": "des_entid" },
                    { "sName": "Filtro", "mData": "rango" },
-                   { "sName": "Pares", "mData": "pares", "sClass": "center" },
+                   { "sName": "Pares", "mData": "pares", "sClass": "right" },
                    { "sName": "Ropa", "mData": "ropa", "sClass": "right" },
                    { "sName": "Accesorio", "mData": "acc", "sClass": "right" },
                    { "sName": "Total", "mData": "cant_total", "sClass": "right" },
