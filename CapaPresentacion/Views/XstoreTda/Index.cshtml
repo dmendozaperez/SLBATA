@@ -16,6 +16,29 @@
 
 <p class="text-danger">Consulta de tiendas para que puedan ser activadas o desactivadas</p>
 <div class="box box-body box-primary">
+
+    <div class="row">
+
+        
+        <div class="col-sm-2">
+            
+        </div>        
+            <div class="col-sm-2">
+                <label for="segape">Tiendas Xstore:</label>
+            </div>
+            <div class="col-sm-2" id="TotalXstore">
+               
+            </div>
+            <div class="col-sm-2">
+                <label for="segape">Tiendas no Xstore :</label>
+            </div>
+            <div class="col-sm-2" id="TotalNXstore">
+               
+            </div>
+
+    
+
+    </div>
       
     <div class="box-body" id="lista">
         <table id="example" class="table table-hover dataTable  table-striped table-responsive">
@@ -108,7 +131,7 @@
 
                                 return '<div> <a title="Correlativos ya generados" target="_blank" class="btn btn-default btn-sm"> <span class="fa fa-cogs"></span></a></div>';
                             } else {
-                                return '<div> <a title="Pendiente de generación"  onclick="PopupGenerarCorrelativo(' + envio + ')" target="_blank" class="btn btn-primary btn-sm"> <span class="fa fa-cogs"></span></a></div>';
+                                return '<div> <a title="Generar correlativos"  onclick="PopupGenerarCorrelativo(' + envio + ')" target="_blank" class="btn btn-primary btn-sm"> <span class="fa fa-cogs"></span></a></div>';
                             }
 
                             
@@ -136,6 +159,8 @@
             ]
         });
 
+
+        Obtenertotales();
     });
 
     function MostrarListado() {
@@ -214,7 +239,7 @@
 
                                 return '<div> <a title="Correlativos ya generados" target="_blank" class="btn btn-default btn-sm"> <span class="fa fa-cogs"></span></a></div>';
                             } else {
-                                return '<div> <a title="Pendiente de generación"  onclick="PopupGenerarCorrelativo(' + envio + ')" target="_blank" class="btn btn-primary btn-sm"> <span class="fa fa-cogs"></span></a></div>';
+                                return '<div> <a title="Generar correlativos"  onclick="PopupGenerarCorrelativo(' + envio + ')" target="_blank" class="btn btn-primary btn-sm"> <span class="fa fa-cogs"></span></a></div>';
                             }
 
 
@@ -485,5 +510,37 @@
 
     }
 
+    function Obtenertotales() {
+
+        waitingDialog.show('Espere un momento por favor');
+
+        var objTienda = {          
+        }
+
+        $.ajax
+          ({
+              url: '../XstoreTda/GetTotales',
+              dataType: "json",
+              type: "POST",
+              data: objTienda,
+              success: function (data, textStatus, XMLHttpRequest) {
+                  waitingDialog.hide();
+
+                  if ((data.Success).toString() == "true") {
+
+                      document.getElementById("TotalXstore").innerHTML = '<label for="segape">' + data.Message + '</label>'
+                      document.getElementById("TotalNXstore").innerHTML = '<label for="segape">' + data.Data + '</label>'
+                    
+                  } 
+
+              },
+              error: function (xhr) {
+                  waitingDialog.hide();
+                  toastr.error(xhr, 'Error');
+                  waitingDialog.hide();
+              }
+          })
+
+    }
 </script>
 
