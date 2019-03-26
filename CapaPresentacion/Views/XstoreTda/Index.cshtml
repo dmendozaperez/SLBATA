@@ -28,7 +28,8 @@
                     <th>Cadena</th>
                     <th>Xstore</th>
                     <th>Detalle</th>
-
+                    <th>G. Corr.</th>
+                    
                 </tr>
             </thead>
             <tbody data-bind="foreach:"></tbody>
@@ -41,6 +42,7 @@
                     <th>Cadena</th>
                     <th>Xstore</th>
                     <th>Detalle</th>
+                    <th>G. Corr.</th>
 
                 </tr>
             </tfoot>
@@ -93,11 +95,25 @@
                    },
                    {
                        "render": function (data, type, full) {
-                           var envio = "'" + full.cod_Entid + "'"
+                           var envio = "'" + full.cod_Entid + "','" + full.des_Entid + "','" + full.direccion + "','" + full.cod_Jefe + "','" + full.consecionario + "'"
 
-                           return '<div> <a title="Ver Detalle"  onclick="verDetalle(' + envio + ')" target="_blank" class="btn btn-primary btn-sm"> <span class="	glyphicon glyphicon-th-list"></span></a></div>';
+                           return '<div> <a title="Ver Detalle"  onclick="PopupDetalle(' + envio + ')" target="_blank" class="btn btn-primary btn-sm"> <span class="	glyphicon glyphicon-th-list"></span></a></div>';
                        }
-                   }
+                   },
+                    {
+                        "render": function (data, type, full) {
+                                var envio = "'" + full.cod_Entid + "','" + full.des_Entid + "'"
+
+                            if (full.bol_gcorrelativo == '1') {
+
+                                return '<div> <a title="Correlativos ya generados" target="_blank" class="btn btn-default btn-sm"> <span class="fa fa-cogs"></span></a></div>';
+                            } else {
+                                return '<div> <a title="Pendiente de generación"  onclick="PopupGenerarCorrelativo(' + envio + ')" target="_blank" class="btn btn-primary btn-sm"> <span class="fa fa-cogs"></span></a></div>';
+                            }
+
+                            
+                        }
+                    }
 
 
 
@@ -132,7 +148,8 @@
                             '<th>Des Empresa</th>'+
                             '<th>Cadena</th>'+
                             '<th>Xstore</th>'+
-                            '<th>Detalle</th>'+
+                            '<th>Detalle</th>' +
+                               '<th>G. Corr.</th>'+
                             '</tr>'+
                             ' </thead>'+
                             '<tbody data-bind="foreach:"></tbody>'+
@@ -144,7 +161,8 @@
                             '<th>Des Empresa</th>'+
                             ' <th>Cadena</th>'+
                             ' <th>Xstore</th>'+
-                            ' <th>Detalle</th>'+
+                            ' <th>Detalle</th>' +
+                            '<th>G. Corr.</th>' +
 
                             '</tr>'+
                             ' </tfoot>'+
@@ -183,11 +201,25 @@
                    },
                    {
                        "render": function (data, type, full) {
-                           var envio = "'" + full.cod_Entid + "'"
+                           var envio = "'" + full.cod_Entid + "','" + full.des_Entid + "','" + full.direccion + "','" + full.cod_Jefe + "','" + full.consecionario + "'"
 
-                           return '<div> <a title="Ver Detalle"  onclick="verDetalle(' + envio + ')" target="_blank" class="btn btn-primary btn-sm"> <span class="	glyphicon glyphicon-th-list"></span></a></div>';
+                           return '<div> <a title="Ver Detalle"  onclick="PopupDetalle(' + envio + ')" target="_blank" class="btn btn-primary btn-sm"> <span class="	glyphicon glyphicon-th-list"></span></a></div>';
                        }
-                   }
+                   },
+                    {
+                        "render": function (data, type, full) {
+                            var envio = "'" + full.cod_Entid + "','" + full.des_Entid + "'"
+
+                            if (full.bol_gcorrelativo == '1') {
+
+                                return '<div> <a title="Correlativos ya generados" target="_blank" class="btn btn-default btn-sm"> <span class="fa fa-cogs"></span></a></div>';
+                            } else {
+                                return '<div> <a title="Pendiente de generación"  onclick="PopupGenerarCorrelativo(' + envio + ')" target="_blank" class="btn btn-primary btn-sm"> <span class="fa fa-cogs"></span></a></div>';
+                            }
+
+
+                        }
+                    }
 
 
 
@@ -325,7 +357,133 @@
           })
 
     }
-    
+
+    function PopupDetalle(codTienda, descTienda,Direccion,Jefe,Concesion) {
+
+        var strhtml = ''
+        strhtml += '<div class="modal-header modal-header-danger" style="margin-top:0px;margin-bottom:0px;padding-top:2px;padding-bottom:2px;">'
+        strhtml += '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
+        strhtml += '<h5 class="modal-title" id="myModalLabel">'
+        strhtml += '<table style="border-bottom:0px;font-size:14px;width:50%;">'
+        strhtml += '<tr>'
+        strhtml += '<td style="font-size:14px;width:100%;text-align:left;">' + descTienda + '</td>'
+        strhtml += '</tr>'
+        strhtml += '</table>'
+        strhtml += '</h5>'
+        strhtml += '</div>'
+        strhtml += '<div class="modal-body">'
+        strhtml += '<table class="table table-striped" RULES="none">'
+        strhtml += '<tr>'
+        strhtml += '<td colspan="1" valign="middle"><label>Jefe</label></td>'
+        strhtml += '<td colspan="2">'
+        strhtml += '<i class="fa fa-briefcase"></i>&nbsp;&nbsp;' + Jefe
+        strhtml += '</td>'
+        strhtml += '</tr>'
+        strhtml += '<tr>'
+        strhtml += '<td colspan="1" valign="middle"><label>Consecionaria</label></td>'
+        strhtml += '<td colspan="2">'
+        strhtml += '<i class="fa fa-university"></i>&nbsp;&nbsp;' + Concesion
+        strhtml += '</td>'
+        strhtml += '</tr>'
+        strhtml += '<tr>'
+        strhtml += '<td colspan="1" valign="middle"><label>Dirección</label></td>'
+        strhtml += '<td colspan="2">'
+        strhtml += '<i class="fa fa-map-marker"></i>&nbsp;&nbsp;'+Direccion
+        strhtml += '</td>'
+        strhtml += '</tr>'
+        strhtml += '</table>'
+        strhtml += '</div>'
+        strhtml += '<div class="modal-footer" style="margin-top:-30px">'
+        strhtml += '<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>'
+
+        strhtml += '</div>'
+        var options = { "backdrop": "static", keyboard: true };
+
+        $('#myModalContent').html(strhtml);
+        $('#myModal').modal(options);
+        $('#myModal').modal('show');
+
+    }
+
+
+    function PopupGenerarCorrelativo(codTienda, descTeinda) {
+
+        var strhtml = ''
+        strhtml += '<div class="modal-header modal-header-danger" style="margin-top:0px;margin-bottom:0px;padding-top:2px;padding-bottom:2px;">'
+        strhtml += '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
+        strhtml += '<h5 class="modal-title" id="myModalLabel">'
+        strhtml += '<table style="border-bottom:0px;font-size:14px;width:50%;">'
+        strhtml += '<tr>'
+        strhtml += '<td style="font-size:14px;width:100%;text-align:left;">Confirmar Generacion de correlativos</td>'
+        strhtml += '</tr>'
+        strhtml += '</table>'
+        strhtml += '</h5>'
+        strhtml += '</div>'
+        strhtml += '<div class="modal-body">'
+        strhtml += 'Desea Generar correlativos para la tienda: <b>' + descTeinda + '</b> ?.'
+        strhtml += '</div>'
+        strhtml += '<div class="modal-footer" style="margin-top:-30px">'
+        strhtml += '<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>'
+        strhtml += '<button type="button" class="btn btn-primary"  onclick="GenerarCorrelativoTienda(' + codTienda + ',1)"   data-dismiss="modal">Generar Correlativos</button>'
+        //strhtml += ' <button type="button"  title="Eliminar class="btn btn-danger" data-dismiss="modal" detalle" onclick="EliminarDetalle(this)"  data-id="' + codArticulo + '" data-modal="" data-toggle="modal">Elimninar</button>';
+        //strhtml += '<input type="submit" class="btn btn-primary" onclick="agregarLista()"  id="btnSubmit" value="Agregar" />'
+        strhtml += '</div>'
+        var options = { "backdrop": "static", keyboard: true };
+
+        $('#myModalContent').html(strhtml);
+        $('#myModal').modal(options);
+        $('#myModal').modal('show');
+
+    }
+
+    function GenerarCorrelativoTienda(codEntid) {
+
+        waitingDialog.show('Espere un momento por favor');
+
+        var objTienda = {
+            CodTienda: codEntid
+        }
+
+        var msj = 'Se genero los correlativos para la tienda Nro: ' + codEntid
+               
+
+        $.ajax
+          ({
+              url: '../XstoreTda/GenerarCorrelativoTienda',
+              dataType: "json",
+              type: "POST",
+              data: objTienda,
+              success: function (data, textStatus, XMLHttpRequest) {
+                  waitingDialog.hide();
+
+                  if ((data.Success).toString() == "true") {
+
+                      if (data.Message == "1") {
+                          toastr.success(msj);
+                          MostrarListado();
+                          waitingDialog.hide();
+
+                      } else {
+
+                          toastr.error("No se genero correlativos para la tienda : " + codEntid, "Error");
+                          MostrarListado();
+                          waitingDialog.hide();
+                      }
+
+                  } else {
+                      toastr.error("No se genero correlativos para la tienda : " + codEntid, "Error");
+                      waitingDialog.hide();
+                  }
+
+              },
+              error: function (xhr) {
+                  waitingDialog.hide();
+                  toastr.error(xhr, 'Error');
+                  waitingDialog.hide();
+              }
+          })
+
+    }
 
 </script>
 

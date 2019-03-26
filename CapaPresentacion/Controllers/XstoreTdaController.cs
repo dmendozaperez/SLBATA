@@ -99,6 +99,7 @@ namespace CapaPresentacion.Controllers
                              a.direccion,
                              a.cod_Jefe,
                              a.consecionario,
+                             a.bol_gcorrelativo,
                              a.bol_xstore                        
                          };
             //Se devuelven los resultados por json
@@ -114,7 +115,6 @@ namespace CapaPresentacion.Controllers
 
         public ActionResult ActualizarEstadoTienda(string CodTienda, Int32 estado)
         {
-
 
             Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
             Int32 respuesta = 0;
@@ -136,7 +136,31 @@ namespace CapaPresentacion.Controllers
                 oJRespuesta.Success = false;
             }
 
+            return Json(oJRespuesta, JsonRequestBehavior.AllowGet);
+        }
 
+        public ActionResult GenerarCorrelativoTienda(string CodTienda)
+        {
+
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            Int32 respuesta = 0;
+            respuesta = dat_storeTda.GenerarCorrelativoTiendaXstore(CodTienda, _usuario.usu_id);
+
+            var oJRespuesta = new JsonResponse();
+
+            if (respuesta == 1)
+            {
+                oJRespuesta.Message = (respuesta).ToString();
+                oJRespuesta.Data = true;
+                oJRespuesta.Success = true;
+            }
+            else
+            {
+
+                oJRespuesta.Message = (respuesta).ToString();
+                oJRespuesta.Data = false;
+                oJRespuesta.Success = false;
+            }
 
             return Json(oJRespuesta, JsonRequestBehavior.AllowGet);
         }

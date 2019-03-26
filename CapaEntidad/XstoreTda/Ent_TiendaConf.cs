@@ -17,5 +17,6 @@ namespace CapaEntidad.XstoreTda
         public string cod_Jefe { get; set; }
         public string consecionario { get; set; }
         public string bol_xstore { get; set; }
+        public string bol_gcorrelativo { get; set; }
     }
 }
