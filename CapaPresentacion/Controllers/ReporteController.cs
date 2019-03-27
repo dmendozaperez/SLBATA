@@ -303,11 +303,36 @@ namespace CapaPresentacion.Controllers
 
                 if (Session["Tienda"] != null)
                 {
-                    ViewBag.Tienda = datCbo.get_ListaTiendaXstoreActivo(Session["Tienda"].ToString());
+                    string strJson = "";
+                    JsonResult jRespuesta = null;
+                    var serializer = new JavaScriptSerializer();
+
+
+                    strJson = datCbo.listarStr_ListaTienda("PE");
+                    jRespuesta = Json(serializer.Deserialize<List<Ent_ListaTienda>>(strJson).Where(t => t.cod_entid == Session["Tienda"].ToString()), JsonRequestBehavior.AllowGet);
+                    ViewBag.ClTienda = jRespuesta;
+                    ViewBag.tda = "0";
+
+
+                    List<Ent_ListaTienda> listar_tda = serializer.Deserialize<List<Ent_ListaTienda>>(strJson);
+                    var tda = listar_tda.Where(t => t.cod_entid == Session["Tienda"].ToString()).ToList();
+                    ViewBag.Tienda = tda;
+
+                    
+
+                    ViewBag.Distrito = distrito_list.listar_distrito().Where(d => d.cod_dis == tda[0].cod_distri);
                 }
                 else
                 {
-                    ViewBag.Tienda = list_tda.get_tienda("PE"); //datCbo.get_ListaTiendaXstoreActivo("");
+                    ViewBag.tda = "1";
+                    /*ViewBag.Tienda = list_tda.get_tienda("PE");*/ //datCbo.get_ListaTiendaXstoreActivo("");
+                    List<Ent_ListaTienda> list = new List<Ent_ListaTienda>();
+                    Ent_ListaTienda entCombo = new Ent_ListaTienda();
+                    entCombo.cod_entid= "-1";
+                    entCombo.des_entid = "----Todos----";
+                    list.Add(entCombo);
+                    ViewBag.Tienda = list;
+
                     ViewBag.Distrito = distrito_list.listar_distrito();
 
                     string strJson = "";
@@ -329,13 +354,13 @@ namespace CapaPresentacion.Controllers
         }
 
         [HttpPost]
-        public ActionResult ShowGenericReportVendedorInNewWin(string cod_tda, string fecIni, string FecFin)
+        public ActionResult ShowGenericReportVendedorInNewWin(string coddis,string cod_tda, string fecIni, string FecFin)
         {
             //grupo = "0";categoria = "0";subcategoria = "0";estado = "0";
             Data_Planilla pl = new Data_Planilla();
             this.HttpContext.Session["ReportName"] = "Vendedor.rpt";
 
-            List<Models_Vendedor> model_vendedor = pl.get_reporteVendedor(cod_tda, fecIni, FecFin);
+            List<Models_Vendedor> model_vendedor = pl.get_reporteVendedor(coddis, cod_tda, fecIni, FecFin);
 
             this.HttpContext.Session["rptSource"] = model_vendedor;
            

@@ -40,8 +40,8 @@
         <div class="col-sm-3">
             <label for="txtTda">Cod Tda.</label>
             <div class="form-group">
-                <div id="tipodoc" class="form-group">
-                    @Html.DropDownList("txtTda", new SelectList(ViewBag.tienda, "cod_entid", "des_entid", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "txtTda", @name = "txtTda" })
+                <div id="div_tda" class="form-group">
+                    @Html.DropDownList("dwtda", new SelectList(ViewBag.tienda, "cod_entid", "des_entid", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwtda", @name = "dwtda" })
                 </div>
             </div>
         </div> 
@@ -102,39 +102,49 @@
     <script>
         function ListarTienda() {
            var data = function () { return @Html.Raw(Json.Encode(ViewBag.ClTienda)); }();
+            var tipo=@ViewBag.tda;
 
             var dataArray = data.Data;
             var strTipo = $('#dwDis').val();
             var listar = [];
 
             if (strTipo != null) {
-                var lista_filter = (strTipo == "-1") ? dataArray.filter(obj => obj.cod_distri != strTipo) : dataArray.filter(obj => obj.cod_distri === strTipo);
+                var lista_filter = (strTipo == "-1") ? dataArray.filter(obj => obj.cod_distri != strTipo) : dataArray.filter(obj => obj.cod_distri === strTipo || obj.cod_distri=='0');
                 $.each(lista_filter, function (index, item) {
 
                     listar.push(item);
                 });
             }
 
-            llenarCombo("tipodoc", "txtTda", listar, '', '', "ListarCategoria");
+            llenarCombo("div_tda", "dwtda", listar, '0', '', "ListarCategoria",tipo);
             //ListarCategoria();
             //ListarSubCategoria()
         }
-        function llenarCombo(DivId, IdControl, Data, codDefecto, desDefecto, onchangeFuncion) {
+        function llenarCombo(DivId, IdControl, Data, codDefecto, desDefecto, onchangeFuncion,tipo) {
 
             $('#' + IdControl).find('option').remove();
-            var str = '<select class="selectpicker" data-live-search="true" multiple = "multiple" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '">';
+
+            
+
+            var str =(tipo=='1')? '<select class="selectpicker" multiple = "multiple"  data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '">':'<select class="selectpicker"  data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '">';
             var ItemNormal = '<option value="codItem">desItem</option>';
             var colectItemNormal = '';
 
-            if (codDefecto != '') { str += '<option value="' + codDefecto + '" selected="selected">------' + desDefecto + '------</option>'; }
+            //if (codDefecto != '') { str += '<option value="' + codDefecto + '" selected="selected">------' + desDefecto + '------</option>'; }
 
-            //if (onchangeFuncion != '') { onchangeFuncion = 'onchange = "' + onchangeFuncion + '()"' }
+            if (onchangeFuncion != '') { onchangeFuncion = 'onchange = "' + onchangeFuncion + '()"' }
             str = str.replace("onchangeFuncion", onchangeFuncion);
 
             $.each(Data, function (index, item) {
 
                 colectItemNormal = colectItemNormal + ItemNormal
-                colectItemNormal = colectItemNormal.replace("codItem", item.cod_entid);
+                var strSelected = '"';
+
+                if (item.cod_entid == codDefecto) {
+                    strSelected = '" selected="selected" '
+
+                }
+                colectItemNormal = colectItemNormal.replace("codItem", item.cod_entid + strSelected);
                 colectItemNormal = colectItemNormal.replace("desItem", item.des_entid);
 
             });
@@ -168,7 +178,7 @@
     </script>
     <script>
         $(document).ready(function () {
-
+            ListarTienda();
         });
 
         //function loadedFrame() {
@@ -177,13 +187,14 @@
 
 
         function MostrarReporte(e) {
-            
-            var tda = $('#txtTda').val();
+            var dis = $('#dwDis').val();
+            var tda = $('#dwtda').val();
             var fecIni = ($("#fecini").val()).split('-');
             var fecFin = ($("#fecfin").val()).split('-');
             var strIni = fecIni[2] + fecIni[1] + fecIni[0];
             var strFin = fecFin[2] + fecFin[1] + fecFin[0];
             tda = tda.toString();
+            //dis = dis.toString();
             var TeamDetailPostBackURL = "@Url.Action("ShowGenericReportVendedorInNewWin", "Reporte")";
             if (tda != '' || tda == null) {
                 waitingDialog.show('Espere un momento por favor');
@@ -193,7 +204,7 @@
                     dataType: 'json',
                     type: 'POST',
                     //dataType: "html",
-                    data: { cod_tda: tda, fecIni: strIni, FecFin: strFin },
+                    data: { coddis:dis, cod_tda: tda, fecIni: strIni, FecFin: strFin },
                     //cache: false,
                     //async: false,
                     //dataType: "html",

@@ -137,12 +137,15 @@ namespace Data.Crystal.Reporte
             return lista;
         }
 
-        public List<Models_Vendedor> get_reporteVendedor(string cod_tda, string fecIni, string fecFin)
+        public List<Models_Vendedor> get_reporteVendedor(string coddis,string cod_tda, string fecIni, string fecFin)
         {
             string sqlquery = "USP_XSTORE_REPORTE_VENDEDORES";
             List<Models_Vendedor> lista = null;
             try
             {
+             
+                if (cod_tda.Substring(0, 1).ToString() == "0") cod_tda = "0";
+
                 using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexionPosPeru))
                 {
                     try
@@ -153,7 +156,8 @@ namespace Data.Crystal.Reporte
                             cmd.CommandType = CommandType.StoredProcedure;
                             cmd.Parameters.AddWithValue("@codtda", cod_tda);
                             cmd.Parameters.AddWithValue("@FEC_INI", fecIni);
-                            cmd.Parameters.AddWithValue("@FEC_FIN", fecFin);                          
+                            cmd.Parameters.AddWithValue("@FEC_FIN", fecFin);
+                            cmd.Parameters.AddWithValue("@coddist", coddis);
 
                             using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                             {

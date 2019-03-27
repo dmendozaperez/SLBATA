@@ -88,10 +88,10 @@ namespace CapaDato.Reporte
             {
                 SqlConnection cn = new SqlConnection(Ent_Conexion.conexion);
                 cn.Open();
-                SqlCommand oComando = new SqlCommand("USP_GET_XSTORE_TIENDA", cn);
+                SqlCommand oComando = new SqlCommand("USP_LISTAR_TIENDAS", cn);
                 oComando.CommandTimeout = 0;
                 oComando.CommandType = CommandType.StoredProcedure;
-                oComando.Parameters.AddWithValue("@PAIS", pais);
+                //oComando.Parameters.AddWithValue("@PAIS", pais);
                 SqlDataReader oReader = oComando.ExecuteReader(CommandBehavior.SingleResult);
                 DataTable dataTable = new DataTable("row");
                 dataTable.Load(oReader);
