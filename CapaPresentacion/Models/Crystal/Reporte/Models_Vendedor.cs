@@ -8,6 +8,7 @@ namespace Models.Crystal.Reporte
     public class Models_Vendedor
     {
         public string semana_str { get; set; }
+        public string cod_distri { get; set; }
         public string cod_entid { get; set; }
         public string des_entid { get; set; }
         public string store_name { get; set; }

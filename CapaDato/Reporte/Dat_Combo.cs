@@ -81,6 +81,36 @@ namespace CapaDato.Reporte
             return strJson;
         }
 
+        public string listarStr_ListaTienda(string pais)
+        {
+            string strJson = "";
+            try
+            {
+                SqlConnection cn = new SqlConnection(Ent_Conexion.conexion);
+                cn.Open();
+                SqlCommand oComando = new SqlCommand("USP_GET_XSTORE_TIENDA", cn);
+                oComando.CommandTimeout = 0;
+                oComando.CommandType = CommandType.StoredProcedure;
+                oComando.Parameters.AddWithValue("@PAIS", pais);
+                SqlDataReader oReader = oComando.ExecuteReader(CommandBehavior.SingleResult);
+                DataTable dataTable = new DataTable("row");
+                dataTable.Load(oReader);
+
+                strJson = JsonConvert.SerializeObject(dataTable, Newtonsoft.Json.Formatting.Indented);
+                strJson = strJson.Replace(Environment.NewLine, "");
+                //strJson = strJson.Replace(" ", "");
+                cn.Close();
+            }
+            catch (Exception ex)
+            {
+
+                return strJson;
+            }
+
+            //return oLista;
+            return strJson;
+        }
+
 
         public List<Ent_Combo> get_ListaTipoCategoria()
         {

@@ -163,6 +163,7 @@ namespace Data.Crystal.Reporte
                                 lista = (from DataRow dr in dt.Rows
                                          select new Models_Vendedor()
                                          {
+                                             cod_distri=dr["DISTRITO"].ToString(),
                                              cod_entid = dr["COD_ENTID"].ToString(),
                                              des_entid = dr["DES_ENTID"].ToString(),
                                              store_name = dr["STORE_NAME"].ToString(),

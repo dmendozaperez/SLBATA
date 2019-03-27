@@ -13,6 +13,9 @@ using CapaEntidad.Control;
 using Data.Crystal.Reporte;
 using Models.Crystal.Reporte;
 using CapaEntidad.General;
+using CapaDato.ReportsValeCompra;
+using CapaDato.Maestros;
+using CapaEntidad.Maestros;
 
 namespace CapaPresentacion.Controllers
 {
@@ -294,13 +297,28 @@ namespace CapaPresentacion.Controllers
 
                 ViewBag.Title = "Reporte Vendedor";
 
+                Dat_ArticuloStock distrito_list = new Dat_ArticuloStock();
+                Dat_ListaTienda list_tda = new Dat_ListaTienda();
+
+
                 if (Session["Tienda"] != null)
                 {
                     ViewBag.Tienda = datCbo.get_ListaTiendaXstoreActivo(Session["Tienda"].ToString());
                 }
                 else
                 {
-                    ViewBag.Tienda = datCbo.get_ListaTiendaXstoreActivo("");
+                    ViewBag.Tienda = list_tda.get_tienda("PE"); //datCbo.get_ListaTiendaXstoreActivo("");
+                    ViewBag.Distrito = distrito_list.listar_distrito();
+
+                    string strJson = "";
+                    JsonResult jRespuesta = null;
+                    var serializer = new JavaScriptSerializer();
+
+
+                    strJson = datCbo.listarStr_ListaTienda("PE");
+                    jRespuesta = Json(serializer.Deserialize<List<Ent_ListaTienda>>(strJson), JsonRequestBehavior.AllowGet);
+                    ViewBag.ClTienda = jRespuesta;
+
                 }
 
               
