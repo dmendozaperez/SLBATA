@@ -40,6 +40,8 @@ namespace CapaDato.Maestros
                                     Ent_ListaTienda tienda = new Ent_ListaTienda();
                                     tienda.cod_entid =dr["cod_entid"].ToString();
                                     tienda.des_entid = dr["des_entid"].ToString();
+                                    tienda.cod_distri= dr["cod_distri"].ToString();
+                                    tienda.xstore =Convert.ToBoolean(dr["xstore"]);
                                     lista.Add(tienda);
                                 }
                             }

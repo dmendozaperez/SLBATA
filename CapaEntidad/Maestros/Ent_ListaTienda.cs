@@ -10,5 +10,7 @@ namespace CapaEntidad.Maestros
     {
         public string cod_entid { get; set; }
         public string des_entid { get; set; }
+        public string cod_distri { get; set; }
+        public Boolean xstore { get; set; }
     }
 }
