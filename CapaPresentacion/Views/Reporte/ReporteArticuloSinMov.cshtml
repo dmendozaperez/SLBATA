@@ -39,8 +39,8 @@
             </div>
         </div>
 
-        <div class="col-sm-3">
-            <label for="dwCate">Semanas</label>
+        <div class="col-sm-2">
+            <label for="dwCate">Semanas vta. a evaluar</label>
             <div class="form-group">
                 <div class="form-group">
                     <input name="txtsemana" type="number" id="txtsemana" value="1" style="width:100%" autofocus class="form-control" />
@@ -48,16 +48,24 @@
             </div>
         </div>
 
-        <div class="col-sm-3">
-            <label for="dwCate">Max.Pares</label>
+        <div class="col-sm-2">
+            <label for="dwCate">Stock Max.</label>
             <div class="form-group">
                 <div class="form-group">
                     <input name="txtpares" type="number" id="txtpares" value="1" style="width:100%" autofocus class="form-control" />
                 </div>
             </div>
         </div>
-
         <div class="col-sm-3">
+            <label for="dwCate">Estado</label>
+            <div class="form-group">
+                <div class="form-group">
+                    @Html.DropDownList("txtEstado", new SelectList(ViewBag.Estado, "cbo_codigo", "cbo_descripcion"), new { @class = "selectpicker", @data_live_search = "true", @id = "txtEstado", @name = "txtEstado" })
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-1">
             <label for="dwEstado"></label>
             <div class="form-group">
                 <div id="tipodoc" class="form-group">
@@ -106,6 +114,7 @@
         var cadena ="-1";
         var semana = $('#txtsemana').val();
         var strpares = $('#txtpares').val();
+        var strestado  = $('#txtEstado').val();
 
   
         if (semana == '' || semana == null) { semana = '0' };
@@ -122,7 +131,7 @@
                 url:TeamDetailPostBackURL,
                 dataType: 'json',
                 type: 'POST',
-                data: { cod_cadena: cadena, cod_tda: tda, nsemana: semana, maxpares: strpares },
+                data: { cod_cadena: cadena, cod_tda: tda, nsemana: semana, maxpares: strpares, estado: strestado },
                 
                 success: function (data) {
                     //alert('ok');

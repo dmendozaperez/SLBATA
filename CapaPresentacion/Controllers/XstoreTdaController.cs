@@ -19,6 +19,8 @@ namespace CapaPresentacion.Controllers
     {
         private Dat_XstoreTienda dat_storeTda = new Dat_XstoreTienda();  
         private string _session_listTdaXstore_private = "_session_listTda_private";
+        private string _session_Totalxstore = "_session_totalxstore";
+        private string _session_TotalNxstore = "_session_totalNxstore";
         // GET: Consulta
         public ActionResult Index()
         {
@@ -45,13 +47,26 @@ namespace CapaPresentacion.Controllers
         public List<Ent_TiendaConf> lista()
         {           
             List<Ent_TiendaConf> liststoreConf = dat_storeTda.List_Tienda_config();
+
+
+            int nroXstoreActivo = (from n in liststoreConf
+                                    where n.bol_xstore == "True"
+                                    select n).Count();
+
+            int nroXstoreInactivo = (from n in liststoreConf
+                                   where n.bol_xstore == "False"
+                                   select n).Count();
+
+            Session[_session_Totalxstore] = nroXstoreActivo;
+            Session[_session_TotalNxstore] = nroXstoreInactivo;
+
             Session[_session_listTdaXstore_private] = liststoreConf;
             return liststoreConf;
         }
         public ActionResult getTienda(Ent_jQueryDataTableParams param)
         {
             List<Ent_TiendaConf> liststoreConf2 = dat_storeTda.List_Tienda_config();
-            Session[_session_listTdaXstore_private] = liststoreConf2;
+            Session[_session_listTdaXstore_private] = liststoreConf2;          
 
             /*verificar si esta null*/
             if (Session[_session_listTdaXstore_private] == null)
@@ -59,6 +74,17 @@ namespace CapaPresentacion.Controllers
                 List<Ent_TiendaConf> liststoreConf = new List<Ent_TiendaConf>();
                 Session[_session_listTdaXstore_private] = liststoreConf;
             }
+
+            int nroXstoreActivo = (from n in liststoreConf2
+                                   where n.bol_xstore == "True"
+                                   select n).Count();
+
+            int nroXstoreInactivo = (from n in liststoreConf2
+                                     where n.bol_xstore == "False"
+                                     select n).Count();
+
+            Session[_session_Totalxstore] = nroXstoreActivo;
+            Session[_session_TotalNxstore] = nroXstoreInactivo;
 
             //Traer registros
             IQueryable<Ent_TiendaConf> membercol = ((List<Ent_TiendaConf>)(Session[_session_listTdaXstore_private])).AsQueryable();  //lista().AsQueryable();
@@ -122,7 +148,7 @@ namespace CapaPresentacion.Controllers
 
             var oJRespuesta = new JsonResponse();
 
-            if (respuesta==1)
+            if (respuesta == 1)
             {
                 oJRespuesta.Message = (respuesta).ToString();
                 oJRespuesta.Data = true;
@@ -133,6 +159,33 @@ namespace CapaPresentacion.Controllers
 
                 oJRespuesta.Message = (respuesta).ToString();
                 oJRespuesta.Data = false;
+                oJRespuesta.Success = false;
+            }
+
+            return Json(oJRespuesta, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetTotales()
+        {
+            Int32 strTotalXstore = (Int32)Session[_session_Totalxstore];
+            Int32 strTotalNXstore = (Int32)Session[_session_TotalNxstore];
+         
+            Int32 respuesta = 0;
+            respuesta = 1;
+
+            var oJRespuesta = new JsonResponse();
+
+            if (respuesta == 1)
+            {
+                oJRespuesta.Message = (strTotalXstore).ToString();
+                oJRespuesta.Data = (strTotalNXstore).ToString();  
+                oJRespuesta.Success = true;
+            }
+            else
+            {
+
+                oJRespuesta.Message = (strTotalXstore).ToString();
+                oJRespuesta.Data =  (strTotalNXstore).ToString();
                 oJRespuesta.Success = false;
             }
 

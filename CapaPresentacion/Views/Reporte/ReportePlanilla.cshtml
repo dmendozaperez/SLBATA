@@ -52,6 +52,7 @@
             <div class="form-group">
                 <div id="divgrupo" class="form-group">
                     @Html.DropDownList("dwGrupo", new SelectList(ViewBag.Categoria, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwGrupo", @name = "dwGrupo", style = "width:270px;max-width:270px;", @onchange = "ListarCategoria()" })
+
                 </div>
             </div>
         </div>
@@ -203,7 +204,8 @@
                 });
             }
 
-            llenarCombo("divgrupo", "dwGrupo", listar, '', '', "ListarCategoria");
+            llenarCombo("divgrupo", "dwGrupo", listar, '0', '', "ListarCategoria");
+ 
             ListarCategoria();
             ListarSubCategoria()
 
@@ -211,36 +213,86 @@
 
 
         function ListarCategoria() {
+           
             @*var jsonObj = @Html.Raw(Json.Encode(ViewBag.ClCategoria));*@
             var data = function () { return @Html.Raw(Json.Encode(ViewBag.ClCategoria)); }();
             var dataArray = data.Data;
             var strgrupo = $('#dwGrupo').val();
+          
             var strTipo = $('#dwTipo').val();
             var listar = [];
             var lista_default = dataArray.filter(obj => obj.cbo_filter === '');
+
+            //para subcategoria
+            var dataSb = function () { return @Html.Raw(Json.Encode(ViewBag.ClSBCategoria)); }();
+            var dataArraySb = dataSb.Data;
+            var listarSb = [];
+
+            var lista_defaultSb = dataArraySb.filter(obj => obj.cbo_filter === '');
+            $.each(lista_defaultSb, function (indexSb, itemSb) {
+                listarSb.push(itemSb);
+            });
+
+            var lista_filteAntSb = dataArraySb.filter(obj => obj.cbo_filter_2 === strTipo);
+
+            //fin para subcategoria
+
             $.each(lista_default, function (index, item) {
 
                 listar.push(item);
 
             });
 
-
             if (strgrupo != null) {
-                for (var i = 0; i < strgrupo.length; i++) {
-                    if (i == 1) {
-                        var lista_filteAnt = dataArray.filter(obj => obj.cbo_filter_2 === strTipo);
-                        var cbo_filter = strgrupo[i].length == 1 ? '0' + strgrupo[i] : strgrupo[i];
-                        var lista_filter = lista_filteAnt.filter(obj => obj.cbo_filter === cbo_filter);
 
-                        $.each(lista_filter, function (index, item) {
+                if (strgrupo != '0') {
+                    var lista_filteAnt = dataArray.filter(obj => obj.cbo_filter_2 === strTipo);
 
-                            listar.push(item);
+                    $.each(strgrupo, function (index, item) {
+
+                        var lista_filter = lista_filteAnt.filter(obj => obj.cbo_filter === item);
+                 
+                        $.each(lista_filter, function (index2, item2) {
+
+                            listar.push(item2);
+
+                            var lista_filterSb = lista_filteAntSb.filter(obj => obj.cbo_filter === item2.cbo_codigo);
+                          
+                            $.each(lista_filterSb, function (indexSb, itemSb) {
+
+                                listarSb.push(itemSb);
+                            });
+
                         });
-                    }
+                    });
+                }
 
-                };
+                //for (var i = 0; i < strgrupo.length; i++) {
+                //    if (i == 1) {
+                //        var lista_filteAnt = dataArray.filter(obj => obj.cbo_filter_2 === strTipo);
+                //        var cbo_filter = strgrupo[i].length == 1 ? '0' + strgrupo[i] : strgrupo[i];
+                //        var lista_filter = lista_filteAnt.filter(obj => obj.cbo_filter === cbo_filter);
+                 
+                //        $.each(lista_filter, function (index, item) {
+
+                //            listar.push(item);
+                //        });
+                //    }
+
+                //};
+
+                if (strgrupo == '0') {
+                    var lista_filteAnt = dataArray.filter(obj => obj.cbo_filter_2 === strTipo);
+                    var lista_filter = lista_filteAnt;
+
+                    $.each(lista_filter, function (index, item) {
+
+                        listar.push(item);
+                    });
+                }
             }
-            llenarCombo("divcateg", "dwCate", listar, '', '', "ListarSubCategoria");
+            llenarCombo("divcateg", "dwCate", listar, '0', '', "ListarSubCategoria");
+            llenarCombo("divsbcateg", "dwsbCate", listarSb, '0', '', "");
 
         }
 
@@ -258,26 +310,31 @@
 
             var lista_default = dataArray.filter(obj => obj.cbo_filter === '');
             $.each(lista_default, function (index, item) {
-
                 listar.push(item);
-
             });
 
 
             if (strcate != null) {
-                //for (var i = 0; i < strcate.length; i++)
-                //{
+
+
                 var lista_filteAnt = dataArray.filter(obj => obj.cbo_filter_2 === strTipo);
                 var cbo_filter = strcate.length == 1 ? '0' + strcate : strcate;
 
-                var lista_filter = lista_filteAnt.filter(obj => obj.cbo_filter === cbo_filter);
-                $.each(lista_filter, function (index, item) {
 
-                    listar.push(item);
+
+                $.each(strcate, function (index2, item2) {
+
+                    var lista_filter = lista_filteAnt.filter(obj => obj.cbo_filter === item2);
+                    $.each(lista_filter, function (index, item) {
+
+                        listar.push(item);
+                    });
+
                 });
-                //};
+
+               
             }
-            llenarCombo("divsbcateg", "dwsbCate", listar, '', '', "");
+            llenarCombo("divsbcateg", "dwsbCate", listar, '0', '', "");
             //llenarCombo("dwsbCate", listar);
 
 
@@ -302,11 +359,11 @@
         function llenarCombo(DivId, IdControl, Data, codDefecto, desDefecto, onchangeFuncion) {
 
             $('#' + IdControl).find('option').remove();
-            var str = '<select class="selectpicker" data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '">';
-            var ItemNormal = '<option value="codItem">desItem</option>';
+            var str = '<select class="selectpicker"  multiple = "multiple"  data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '">';
+            var ItemNormal = '<option value="codItem>desItem</option>';
             var colectItemNormal = '';
-
-            if (codDefecto != '') { str += '<option value="' + codDefecto + '" selected="selected">------' + desDefecto + '------</option>'; }
+          
+            //if (codDefecto != '') { str += '<option value="' + codDefecto + '" selected="selected">------' + desDefecto + '------</option>'; }
 
             if (onchangeFuncion != '') { onchangeFuncion = 'onchange = "' + onchangeFuncion + '()"' }
             str = str.replace("onchangeFuncion", onchangeFuncion);
@@ -314,7 +371,14 @@
             $.each(Data, function (index, item) {
 
                 colectItemNormal = colectItemNormal + ItemNormal
-                colectItemNormal = colectItemNormal.replace("codItem", item.cbo_codigo);
+                var strSelected = '"';
+              
+                if (item.cbo_codigo == codDefecto) {
+                    strSelected = '" selected="selected" '
+
+                }
+
+                colectItemNormal = colectItemNormal.replace("codItem", item.cbo_codigo + strSelected);
                 colectItemNormal = colectItemNormal.replace("desItem", item.cbo_descripcion);
 
             });

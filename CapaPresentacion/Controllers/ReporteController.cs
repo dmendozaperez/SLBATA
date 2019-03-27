@@ -358,6 +358,26 @@ namespace CapaPresentacion.Controllers
             string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
             string return_view = actionName + "|" + controllerName;
 
+            List<Ent_Combo> list = new List<Ent_Combo>();
+            Ent_Combo entCombo = new Ent_Combo();
+            entCombo.cbo_codigo = "0";
+            entCombo.cbo_descripcion = "----Todos----";
+            list.Add(entCombo);
+
+            entCombo = new Ent_Combo();
+            entCombo.cbo_codigo = "1";
+            entCombo.cbo_descripcion = "    Con Venta   ";
+            list.Add(entCombo);
+
+            entCombo = new Ent_Combo();
+            entCombo.cbo_codigo = "2";
+            entCombo.cbo_descripcion = "    Sin venta   ";
+
+            list.Add(entCombo);
+            ViewBag.Estado = list;
+
+
+
             if (_usuario == null)
             {
                 return RedirectToAction("Login", "Control", new { returnUrl = return_view });
@@ -384,13 +404,13 @@ namespace CapaPresentacion.Controllers
         }
 
         [HttpPost]
-        public ActionResult ShowGenericReportArtSinMovInNewWin(string cod_cadena, string cod_tda, Int32 nsemana, Int32 maxpares)
+        public ActionResult ShowGenericReportArtSinMovInNewWin(string cod_cadena, string cod_tda, Int32 nsemana, Int32 maxpares, string estado)
         {
             //grupo = "0";categoria = "0";subcategoria = "0";estado = "0";
             Data_Bata pl = new Data_Bata();
             this.HttpContext.Session["ReportName"] = "ReportArtSinMov.rpt";
 
-            List<Models_Art_Sin_Mov> model_Art_sn_mov = pl.list_art_sin_mov(cod_cadena, cod_tda, nsemana, maxpares);
+            List<Models_Art_Sin_Mov> model_Art_sn_mov = pl.list_art_sin_mov(cod_cadena, cod_tda, nsemana, maxpares, estado);
 
             this.HttpContext.Session["rptSource"] = model_Art_sn_mov;
 
