@@ -459,16 +459,17 @@ namespace CapaPresentacion.Controllers
         }
 
 
-        public PartialViewResult ListaComparativo(string dwtienda, string fecini, string fecfinc, string fecini2, string fecfinc2)
+        public PartialViewResult ListaComparativo(string dwtienda, string fecini, string fecfinc, string fecini2, string fecfinc2, string idcomparativo)
         {
-            return PartialView(lista(dwtienda, fecini, fecfinc, fecini2, fecfinc2));
+            if (idcomparativo == null) { idcomparativo = "0"; };
+            return PartialView(lista(dwtienda, fecini, fecfinc, fecini2, fecfinc2, idcomparativo));
         }
 
-        public List<Models_Comparativo_Venta> lista(string dwtienda, string fecini, string fecfinc, string fecini2, string fecfinc2)
+        public List<Models_Comparativo_Venta> lista(string dwtienda, string fecini, string fecfinc, string fecini2, string fecfinc2, string idcomparativo)
         {
             Data_Bata pl = new Data_Bata();
          
-            List<Models_Comparativo_Venta> model_vent_comp = pl.list_comparativo_venta(dwtienda, fecini, fecfinc, fecini2, fecfinc2);
+            List<Models_Comparativo_Venta> model_vent_comp = pl.list_comparativo_venta(dwtienda, fecini, fecfinc, fecini2, fecfinc2, idcomparativo);
 
             Session[_session_listcomparativo_private] = model_vent_comp;
             return model_vent_comp;
@@ -501,17 +502,17 @@ namespace CapaPresentacion.Controllers
             var sortIdx = Convert.ToInt32(Request["iSortCol_0"]);
             Func<Models_Comparativo_Venta, string> orderingFunction =
             (
-            m => sortIdx == 0 ? m.orden :
-             m.orden
+            //m => sortIdx == 0 ? m.orden :
+             m => m.orden
             );
             var sortDirection = Request["sSortDir_0"];
-            if (sortDirection == "asc")
-                filteredMembers = filteredMembers.OrderBy(orderingFunction);
-            else
-                filteredMembers = filteredMembers.OrderByDescending(orderingFunction);
+            //if (sortDirection == "asc")
+            //    filteredMembers = filteredMembers.OrderBy(orderingFunction);
+            //else
+            //    filteredMembers = filteredMembers.OrderByDescending(orderingFunction);
             var displayMembers = filteredMembers
-                .Skip(param.iDisplayStart)
-                .Take(param.iDisplayLength);
+                .Skip(param.iDisplayStart);
+              
             var result = from a in displayMembers
                          select new
                          {
@@ -522,7 +523,7 @@ namespace CapaPresentacion.Controllers
                              a.acc,
                              a.cant_total,
                              a.neto
-                         };
+                         } ;
             //Se devuelven los resultados por json
             return Json(new
             {

@@ -67,7 +67,7 @@ namespace Data.Crystal.Reporte
             return lista;
         }
 
-        public List<Models_Comparativo_Venta> list_comparativo_venta(string codEntid, string fecIni_1, string fecFin_1, string fecIni_2, string fecFin_2)
+        public List<Models_Comparativo_Venta> list_comparativo_venta(string codEntid, string fecIni_1, string fecFin_1, string fecIni_2, string fecFin_2, string idcomparativo)
         {
             string sqlquery = "USP_XSTORE_COMPARATIVO_VENTAS_NEW";
             List<Models_Comparativo_Venta> lista = null;
@@ -99,6 +99,7 @@ namespace Data.Crystal.Reporte
                             cmd.Parameters.AddWithValue("@FEC_INI2", strFi2);
                             cmd.Parameters.AddWithValue("@FEC_FIN2", strFf2);
                             cmd.Parameters.AddWithValue("@codtda", codEntid);
+                            cmd.Parameters.AddWithValue("@comparativo", idcomparativo);
 
                             using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                             {

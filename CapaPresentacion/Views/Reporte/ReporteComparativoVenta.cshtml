@@ -66,7 +66,7 @@
                 </div>
             </div>
             <div class="col-sm-1">
-
+               
             </div>
             <div class="col-sm-2">
                 <label></label><br />
@@ -83,9 +83,10 @@
         </div>
         <div class="row">
             <div class="col-sm-3">
-
+                &nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" checked onchange="validarComparativo()" id="idcomparativo" name="idcomparativo" value="1">&nbsp;&nbsp;<label>Comparativo</label>
+                @*<input type="checkbox" id="editpass" name="editpass" value="false"> Cambiar Password*@
             </div>
-            <div class="col-sm-1">
+            <div id="Fcom" class="col-sm-1">
 
                 <label for="segape"></label>
                 <div class="form-group">
@@ -96,7 +97,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-2">
+            <div id="FC1com" class="col-sm-2">
                 <label for="segape">Fecha Inicio</label>
                 <div class="form-group">
                     <div class="input-group">
@@ -107,7 +108,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-2">
+            <div id="FC2com" class="col-sm-2">
                 <label for="fecnac">Fecha Final</label>
                 <div class="form-group">
                     <div class="input-group">
@@ -159,6 +160,22 @@
        
        
     });
+
+    function validarComparativo() {
+
+        if ($('#idcomparativo').is(':checked')) {
+            $("#idcomparativo").val('1');
+            $("#Fcom").show();
+            $("#FC1com").show();
+            $("#FC2com").show();
+
+        } else {           
+            $("#idcomparativo").val('0');
+            $("#Fcom").hide();
+            $("#FC1com").hide();
+            $("#FC2com").hide();
+        }
+    }
 
     function MostrarListado() {
 
