@@ -1320,6 +1320,7 @@
     <Content Include="Views\XstoreTda\Index.cshtml" />
     <Content Include="Views\Reporte\ReporteComparativoVenta.cshtml" />
     <Content Include="Views\Reporte\ListaComparativo.cshtml" />
+    <Content Include="Views\Reporte\ReporteObs.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,92 @@
+﻿
+@{
+    ViewBag.Title = "Reporte de Obsolescencia";
+}
+<link href="~/ContentSelect/bootstrap-select.css" rel="stylesheet" />
+<link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />
+<style>
+    iframe {
+        border: none;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        height: 800px;
+    }
+</style>
+<p class="text-danger">Reporte de Obsolescencia, por filtro Distrito,Tienda,Linea,Categoria,Calidad,Rango de precio,Tipo,Rango de Obsolescencia</p>
+<div class="box box-body box-primary">
+    <div class="row">
+        <div class="col-sm-3">
+            <label for="txtTda">Distrito.</label>
+            <div class="form-group">
+                <div id="distrito" class="form-group">
+                    @*@Html.DropDownList("dwDis", new SelectList(ViewBag.Distrito, "cod_dis", "des_dis", "-1"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwDis", @name = "dwDis", @onchange = "ListarTienda()" })*@
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <label for="txtTda">Cod Tda.</label>
+            <div class="form-group">
+                <div id="div_tda" class="form-group">
+                    @*@Html.DropDownList("dwtda", new SelectList(ViewBag.tienda, "cod_entid", "des_entid", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwtda", @name = "dwtda" })*@
+                </div>
+            </div>
+        </div> 
+        <div class="col-sm-3">
+            <label for="txtTda">Tipo</label>
+            <div class="form-group">
+                <div id="div_tda" class="form-group">
+                    @*@Html.DropDownList("dwtda", new SelectList(ViewBag.tienda, "cod_entid", "des_entid", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwtda", @name = "dwtda" })*@
+                </div>
+            </div>
+        </div> 
+        <div class="col-sm-3">
+            <label for="txtTda">Grupo</label>
+            <div class="form-group">
+                <div id="div_tda" class="form-group">
+                    @*@Html.DropDownList("dwtda", new SelectList(ViewBag.tienda, "cod_entid", "des_entid", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwtda", @name = "dwtda" })*@
+                </div>
+            </div>
+        </div> 
+        <div class="col-sm-3">
+            <label for="txtTda">Categoria</label>
+            <div class="form-group">
+                <div id="div_tda" class="form-group">
+                    @*@Html.DropDownList("dwtda", new SelectList(ViewBag.tienda, "cod_entid", "des_entid", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwtda", @name = "dwtda" })*@
+                </div>
+            </div>
+        </div> 
+        <div class="col-sm-3">
+            <label for="txtTda">Calidad</label>
+            <div class="form-group">
+                <div id="div_tda" class="form-group">
+                    @*@Html.DropDownList("dwtda", new SelectList(ViewBag.tienda, "cod_entid", "des_entid", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwtda", @name = "dwtda" })*@
+                </div>
+            </div>
+        </div> 
+        <div class="col-sm-3">
+            <label for="txtTda">Rango de Precio</label>
+            <div class="form-group">
+                <div id="div_tda" class="form-group">
+                    @*@Html.DropDownList("dwtda", new SelectList(ViewBag.tienda, "cod_entid", "des_entid", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwtda", @name = "dwtda" })*@
+                </div>
+            </div>
+        </div> 
+        <div class="col-sm-3">
+            <label for="txtTda">Tipo Obs.</label>
+            <div class="form-group">
+                <div id="div_tda" class="form-group">
+                    @*@Html.DropDownList("dwtda", new SelectList(ViewBag.tienda, "cod_entid", "des_entid", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwtda", @name = "dwtda" })*@
+                </div>
+            </div>
+        </div> 
+        <div class="col-sm-3">
+            <label for="txtTda">Rango de Obs.</label>
+            <div class="form-group">
+                <div id="div_tda" class="form-group">
+                    @*@Html.DropDownList("dwtda", new SelectList(ViewBag.tienda, "cod_entid", "des_entid", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwtda", @name = "dwtda" })*@
+                </div>
+            </div>
+        </div> 
+    </div>
+</div>

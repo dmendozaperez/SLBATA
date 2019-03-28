@@ -280,7 +280,10 @@ namespace CapaPresentacion.Controllers
                 estado = _estado
             });
         }
-
+        public ActionResult ReporteObs()
+        {
+            return View();
+        }
         public ActionResult ReporteVendedor()
         {
             Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
