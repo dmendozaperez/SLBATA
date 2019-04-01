@@ -79,7 +79,7 @@
                     <div style="width:50%" class="col-sm-3">
                         <label for="txtTda">Calidad</label>
                         <div class="form-group">
-                            <div id="dwCalidad" class="form-group">
+                            <div id="div_dwCalidad" class="form-group">
                                 @Html.DropDownList("dwCalidad", new SelectList(ViewBag.listTipoObs, "cbo_codigo", "cbo_descripcion", "-1"), new { @class = "selectpicker",  @id = "dwCalidad", @name = "dwCalidad",  })
                             </div>
                         </div>
@@ -88,7 +88,7 @@
                         <label for="txtTda">Tipo Obs.</label>
                         <div class="form-group">
                             <div id="div_dwTipo" class="form-group">
-                                @Html.DropDownList("dwTipoObs", new SelectList(ViewBag.listCalidad, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker",  @id = "dwTipoObs", @name = "dwTipoObs" })
+                                @Html.DropDownList("dwTipoObs", new SelectList(ViewBag.listCalidad, "cbo_codigo", "cbo_descripcion", "-1"), new { @class = "selectpicker",  @id = "dwTipoObs", @name = "dwTipoObs" })
                             </div>
                         </div>
                     </div>
@@ -106,7 +106,7 @@
                         <label for="txtTda">Tipo.</label>
                         <div class="form-group">
                             <div id="divTipo" class="form-group">
-                               @Html.DropDownList("dwtipo", new SelectList(ViewBag.Tipo, "cbo_codigo", "cbo_descripcion", "1"), new { @class = "selectpicker", @id = "dwTipo", @name = "dwTipo", style = "width:270px;max-width:270px;", @onchange = "ListarGrupo()" })
+                               @Html.DropDownList("dwTipo", new SelectList(ViewBag.Tipo, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", @id = "dwTipo", @name = "dwTipo", style = "width:270px;max-width:270px;", @onchange = "ListarGrupo()" })
                             </div>
                         </div>
                     </div>
@@ -150,8 +150,8 @@
                     <div style="width:25%" class="col-sm-3">
                         <label for="txtTda">Rango.</label>
                         <div class="form-group">
-                            <div id="dwRango" class="form-group">
-                                @Html.DropDownList("dwRango", new SelectList(ViewBag.lisRango, "cbo_codigo", "cbo_descripcion", "-1"), new { @class = "selectpicker", @id = "dwRango", @name = "dwRango", })
+                            <div id="div_dwRango" class="form-group">
+                                @Html.DropDownList("dwRango", new SelectList(ViewBag.lisRango, "cbo_codigo", "cbo_descripcion"), new { @class = "selectpicker", @id = "dwRango", @name = "dwRango", })
                             </div>
                         </div>
                     </div>
@@ -164,18 +164,18 @@
                         </div>
                     </div>                  
                     <div  id="divprcFin" style="width:25%;display:none" class="col-sm-3">
-                        <label for="txtprcIni">Precio ini</label>
+                        <label for="lbltxtprcIni">Precio ini</label>
                         <div class="form-group">
-                            <div id="txtprcIni" class="form-group">
-                                <input name="txtprcIni" type="number" id="txtprcIni" value="1" style="width:100%" autofocus class="form-control" />
+                            <div id="divtxtprcIni" class="form-group">
+                                <input name="txtprcIni" type="number" id="txtprcIni" value="-1" style="width:100%" autofocus class="form-control" />
                             </div>
                         </div>
                     </div>
                     <div id="divprcIni" style="width:25%;display:none" class="col-sm-3">
-                        <label for="txtprcIni">Precio Fin</label>
+                        <label for="lbltxtprcIni">Precio Fin</label>
                         <div class="form-group">
-                            <div id="txtprcIni" class="form-group">
-                                <input name="txtprcIni" type="number" id="txtprcIni" value="1" style="width:100%" autofocus class="form-control" />
+                            <div id="divtxtprcFin" class="form-group">
+                                <input name="txtprcFin" type="number" id="txtprcFin" value="-1" style="width:100%" autofocus class="form-control" />
                             </div>
                         </div>
                     </div>
@@ -311,30 +311,44 @@
             ListarGrupo();
         });
 
-        //function loadedFrame() {
-        //    $('#loading').hide();
-        //}
-
+        
 
         function MostrarReporte(e) {
-            var dis = $('#dwDis').val();
-            var tda = $('#dwtda').val();
-            var fecIni = ($("#fecini").val()).split('-');
-            var fecFin = ($("#fecfin").val()).split('-');
-            var strIni = fecIni[2] + fecIni[1] + fecIni[0];
-            var strFin = fecFin[2] + fecFin[1] + fecFin[0];
-            tda = tda.toString();
-            //dis = dis.toString();
-            var TeamDetailPostBackURL = "@Url.Action("ShowGenericReportVendedorInNewWin", "Reporte")";
-            if (tda != '' || tda == null) {
+            var coddis = $('#dwDis').val();
+            var cod_tda = $('#dwtda').val();
+
+            
+            var tipo_cat = $('#dwTipo').val();
+            var cod_linea = $('#dwGrupo').val(); 
+            var cod_categ = $('#dwCate').val();
+            var strTipo = $('#dwTipo').val();         
+
+            var calidad = $('#dwCalidad').val();
+            var tipoObs = $('#dwTipoObs').val();
+
+            var rangoObs = $('#dwRango').val();
+            var precio1 = $('#txtprcIni').val();
+            var precio2 = $('#txtprcFin').val();
+
+            coddis = coddis == '0'  ||coddis == '' ? '-1'  : coddis;
+            cod_tda = cod_tda == '0' ||cod_tda == ''  ? '-1'  : cod_tda;
+            cod_linea = cod_linea == '0' ||cod_linea == '' ? '-1'  : cod_linea;
+            cod_categ = cod_categ == '0' ||cod_categ == '' ? '-1'  : cod_categ;
+
+            tipo_cat = tipo_cat == '01'  ? 'S'  : tipo_cat;
+            tipo_cat = tipo_cat == '02'  ? 'R'  : tipo_cat;
+           
+         
+            //tda = tda.toString();
+          
+            var TeamDetailPostBackURL = "@Url.Action("ShowGenericReportObsolescenciaInNewWin", "Reporte")";
+            if (cod_tda != '' || cod_tda == null) {
                 waitingDialog.show('Espere un momento por favor');
                 $.ajax({
-                    //url: GLB_RUT_APP_REPVENR + "?tda=" + tda + "&grupo=" + grupo + "&cate=" + cate + "&subcate=" + sbCate + "&estado=" + Estado,
                     url: TeamDetailPostBackURL,// '../ReporteCrystal/ShowGenericReportInNewWin',
                     dataType: 'json',
-                    type: 'POST',
-                    //dataType: "html",
-                    data: { coddis:dis, cod_tda: tda, fecIni: strIni, FecFin: strFin },
+                    type: 'POST',                  
+                    data: { coddis:coddis, cod_tda: cod_tda, tipo_cat:tipo_cat,cod_linea:cod_linea,cod_categ:cod_categ,calidad:calidad,precio1:precio1,precio2:precio2,tipoObs:tipoObs,rangoObs:rangoObs},
                     //cache: false,
                     //async: false,
                     //dataType: "html",
@@ -342,7 +356,7 @@
                         //alert('ok');
                         if (data.estado == "1") {
                             $('#load').show();
-                            $("#load").attr("src", "../AspNetForms/Vendedor.aspx");
+                            $("#load").attr("src", "../AspNetForms/ReporteObs.aspx");
                         }
                         else {
                             $('#load').hide();
@@ -367,16 +381,20 @@
         }
 
     function validarRangoPrecio() {
-
+      
         if ($('#idRango').is(':checked')) {
             $("#idRango").val('1');
             $("#divprcFin").show();          
-            $("#divprcIni").show();          
+            $("#divprcIni").show();  
+            $('#txtprcIni').val(0);
+            $('#txtprcFin').val(0);
 
         } else {           
             $("#idRango").val('0');
             $("#divprcFin").hide();          
-            $("#divprcIni").hide();    
+            $("#divprcIni").hide();  
+            $('#txtprcIni').val(-1);
+            $('#txtprcFin').val(-1);
          
         }
     }

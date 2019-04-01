@@ -654,5 +654,28 @@ namespace CapaPresentacion.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        public ActionResult ShowGenericReportObsolescenciaInNewWin(string coddis, string cod_tda, string tipo_cat, string cod_linea, string cod_categ, string calidad, string precio1, string precio2, string tipoObs,string rangoObs)
+        {
+            //grupo = "0";categoria = "0";subcategoria = "0";estado = "0";
+            Data_Bata da = new Data_Bata();
+            this.HttpContext.Session["ReportName"] = "Vendedor.rpt";
+
+            List<Models_Obs> model_obs = da.list_obs(coddis, cod_tda, tipo_cat, cod_linea, cod_categ, calidad, Convert.ToDecimal(precio1), Convert.ToDecimal(precio2), tipoObs, rangoObs);
+
+            this.HttpContext.Session["data"] = model_obs;
+
+
+            /*error=0;exito=1*/
+            string _estado = (model_obs == null) ? "0" : "1";
+
+            //if (model_planilla==null)
+
+            return Json(new
+            {
+                estado = _estado
+            });
+        }
+
     }
 }
