@@ -237,6 +237,13 @@
     <Compile Include="AspNetForms\ArticuloSinMov.aspx.designer.cs">
       <DependentUpon>ArticuloSinMov.aspx</DependentUpon>
     </Compile>
+    <Compile Include="AspNetForms\ReporteObs.aspx.cs">
+      <DependentUpon>ReporteObs.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AspNetForms\ReporteObs.aspx.designer.cs">
+      <DependentUpon>ReporteObs.aspx</DependentUpon>
+    </Compile>
     <Compile Include="AspNetForms\Vendedor.aspx.cs">
       <DependentUpon>Vendedor.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -285,6 +292,7 @@
     </Compile>
     <Compile Include="Models\Control\LoginViewModel.cs" />
     <Compile Include="Models\Crystal\Reporte\Models_Comparativo_Venta.cs" />
+    <Compile Include="Models\Crystal\Reporte\Models_Obs.cs" />
     <Compile Include="Models\Crystal\Reporte\Models_Vendedor.cs" />
     <Compile Include="Models\Crystal\Reporte\Models_Art_Sin_Mov.cs" />
     <Compile Include="Models\Crystal\Reporte\Models_Planilla.cs" />
@@ -295,6 +303,12 @@
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="RptsCrystal\ReporteOBS.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ReporteOBS.rpt</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="RptsCrystal\Vendedor.cs">
       <DependentUpon>Vendedor.rpt</DependentUpon>
@@ -329,6 +343,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AspNetForms\ArticuloSinMov.aspx" />
+    <Content Include="AspNetForms\ReporteObs.aspx" />
     <Content Include="AspNetForms\Vendedor.aspx" />
     <Content Include="AspNetForms\Planilla.aspx" />
     <Content Include="ContentSelect\bootstrap-select.css" />
@@ -1361,6 +1376,10 @@
     <WCFMetadataStorage Include="Service References\FEBataEpos\" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="RptsCrystal\ReporteOBS.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>ReporteOBS.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="RptsCrystal\Vendedor.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>Vendedor.cs</LastGenOutput>

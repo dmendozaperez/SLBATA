@@ -134,5 +134,72 @@ namespace Data.Crystal.Reporte
             }
             return lista;
         }
+        public List<Models_Obs> list_obs (string cod_distri,string codtda,string tipo_cat,string cod_linea,string cod_categ,
+                                          string calidad,Decimal rprecio1,Decimal rprecio2,string tipo_obs,string rango_obs  )
+        {
+            List<Models_Obs> lista = null;
+            string sqlquery = "USP_XSTORE_REPORTE_OBSOLESCENCIA";
+            DataTable dt = null;
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+                    try
+                    {
+                        using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                        {
+                            cmd.CommandTimeout = 0;
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.AddWithValue("@cod_distri", cod_distri);
+                            cmd.Parameters.AddWithValue("@codtda", codtda);
+                            cmd.Parameters.AddWithValue("@tipo_cat", tipo_cat);
+                            cmd.Parameters.AddWithValue("@cod_linea", cod_linea);
+                            cmd.Parameters.AddWithValue("@cod_categ", cod_categ);
+                            cmd.Parameters.AddWithValue("@calidad", calidad);
+                            cmd.Parameters.AddWithValue("@rprecio1", rprecio1);
+                            cmd.Parameters.AddWithValue("@rprecio2", rprecio2);
+                            cmd.Parameters.AddWithValue("@tipo_obs", tipo_obs);
+                            cmd.Parameters.AddWithValue("@rango_obs", rango_obs);
+
+                            using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                            {
+                                dt = new DataTable();
+                                da.Fill(dt);
+                                lista = new List<Models_Obs>();
+                                lista = (from DataRow dr in dt.Rows
+                                         select new Models_Obs()
+                                         {
+                                             rango_fecha =dr["RANGO_FECHA"].ToString(),
+                                             distrito = dr["DISTRITO"].ToString(),
+                                             tienda = dr["TIENDA"].ToString(),   
+                                             tipo_cat= dr["TIPO_CAT"].ToString(),
+                                             cod_linea = dr["COD_LINEA"].ToString(),
+                                             cod_categ = dr["COD_CATEG"].ToString(),
+                                             artic = dr["ARTIC"].ToString(),
+                                             calid = dr["CALID"].ToString(),
+                                             pplanilla = Convert.ToDecimal(dr["PPLANILLA"]),
+                                             tip_obsol = dr["TIP_OBSOL"].ToString(),
+                                             des_obsol = dr["DES_OBSOL"].ToString(),
+                                             stk = Convert.ToDecimal(dr["STK"]),
+                                             vtas4sem = Convert.ToInt32(dr["VTAS4SEM"]),
+                                         }).ToList();
+                            }
+                                                    
+                        }
+                    }
+                    catch 
+                    {
+                        lista = null;
+
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+                lista = null;
+            }
+            return lista;
+        }
     }
 }
