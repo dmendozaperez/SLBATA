@@ -1,9 +1,21 @@
-﻿
+﻿@using CapaEntidad.Util;
 @{
-    ViewBag.Title = "Reporte de Obsolescencia";
+    ViewBag.Title = "Reporte Obsolescencia";
+    AjaxOptions options = new AjaxOptions
+    {
+        HttpMethod = "GET",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "lista",
+        OnComplete = "waitingDialog.hide();",
+        OnBegin = "waitingDialog.show('Espere un momento por favor');",
+        OnFailure = "waitingDialog.hide();"
+    };
+
 }
+
 <link href="~/ContentSelect/bootstrap-select.css" rel="stylesheet" />
 <link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />
+
 <style>
     iframe {
         border: none;
@@ -12,81 +24,433 @@
         width: 100%;
         height: 800px;
     }
+     #lugar {
+  /*border-top-color:  lightsteelblue;*/
+  border-top-color:  #E7E5E5;
+  border-right-color:  #E7E5E5;
+  border-bottom-color: #E7E5E5;
+  border-left-color: #E7E5E5;
+
+  /*border-top-width: 5px;
+  border-left-width: 5px;
+  border-bottom-width: 5px;
+  border-right-width: 5px;*/
+  border-style: solid;
+   border-radius: 10px 10px 10px 10px;
+    -moz-border-radius: 10px 10px 10px 10px;
+    -webkit-border-radius: 10px 10px 10px 10px;
+    margin-left:5px;
+    margin-right:5px;
+ 
+   
+    }
 </style>
-<p class="text-danger">Reporte de Obsolescencia, por filtro Distrito,Tienda,Linea,Categoria,Calidad,Rango de precio,Tipo,Rango de Obsolescencia</p>
+<p class="text-danger">Consulta de reporte de obsolescencia.</p>
 <div class="box box-body box-primary">
-    <div class="row">
-        <div class="col-sm-3">
-            <label for="txtTda">Distrito.</label>
-            <div class="form-group">
-                <div id="distrito" class="form-group">
-                    @*@Html.DropDownList("dwDis", new SelectList(ViewBag.Distrito, "cod_dis", "des_dis", "-1"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwDis", @name = "dwDis", @onchange = "ListarTienda()" })*@
+    <table width="100%">
+        <tr>
+        <td width="50%" style="padding:1px">
+            <div id="lugar" class="row">
+
+                <div style="width:50%" class="col-sm-3">
+                    <label for="txtTda">Distrito.</label>
+                    <div class="form-group">
+                        <div id="div_dwDis" class="form-group">
+                            @Html.DropDownList("dwDis", new SelectList(ViewBag.Distrito, "cod_dis", "des_dis", "-1"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwDis", @name = "dwDis", @onchange = "ListarTienda()" })
+                        </div>
+                    </div>
                 </div>
-            </div>
+                <div style="width:50%" class="col-sm-3">
+                    <label for="txtTda">Cod Tda.</label>
+                    <div class="form-group">
+                        <div id="div_tda" class="form-group">
+                            @Html.DropDownList("dwtda", new SelectList(ViewBag.tienda, "cod_entid", "des_entid", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwtda", @name = "dwtda" })
+                        </div>
+                    </div>
+                </div>
+
+
+            </div> 
+
+        </td>
+            <td width="50%" style="padding:1px">
+                <div id="lugar" class="row">
+
+                    <div style="width:50%" class="col-sm-3">
+                        <label for="txtTda">Calidad</label>
+                        <div class="form-group">
+                            <div id="dwCalidad" class="form-group">
+                                @Html.DropDownList("dwCalidad", new SelectList(ViewBag.listTipoObs, "cbo_codigo", "cbo_descripcion", "-1"), new { @class = "selectpicker",  @id = "dwCalidad", @name = "dwCalidad",  })
+                            </div>
+                        </div>
+                    </div>
+                    <div style="width:50%" class="col-sm-3">
+                        <label for="txtTda">Tipo Obs.</label>
+                        <div class="form-group">
+                            <div id="div_dwTipo" class="form-group">
+                                @Html.DropDownList("dwTipoObs", new SelectList(ViewBag.listCalidad, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker",  @id = "dwTipoObs", @name = "dwTipoObs" })
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </td>
+        </tr>
+        <tr style="padding-top:2px">
+            <td width="100%" colspan="2" style="padding:1px">
+                <div id="lugar" class="row">
+
+                    <div style="width:25%" class="col-sm-3">
+                        <label for="txtTda">Tipo.</label>
+                        <div class="form-group">
+                            <div id="divTipo" class="form-group">
+                               @Html.DropDownList("dwtipo", new SelectList(ViewBag.Tipo, "cbo_codigo", "cbo_descripcion", "1"), new { @class = "selectpicker", @id = "dwTipo", @name = "dwTipo", style = "width:270px;max-width:270px;", @onchange = "ListarGrupo()" })
+                            </div>
+                        </div>
+                    </div>
+                    <div style="width:25%" class="col-sm-3">
+                        <label for="dwGrupo">Grupo</label>
+                        <div class="form-group">
+                            <div id="divgrupo" class="form-group">
+                                @Html.DropDownList("dwGrupo", new SelectList(ViewBag.Categoria, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwGrupo", @name = "dwGrupo", style = "width:270px;max-width:270px;", @onchange = "ListarCategoria()" })
+                            </div>
+                        </div>
+                    </div>
+                    <div style="width:25%" class="col-sm-3">
+                        <label for="dwCate">Categoria</label>
+                        <div class="form-group">
+                            <div id="divcateg" class="form-group">
+                                @Html.DropDownList("dwCate", new SelectList(ViewBag.Categoria, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwCate", @onchange = "ListarSubCategoria()" })
+                            </div>
+                        </div>
+                    </div>
+                    <div style="width:25%" class="col-sm-3">
+                        <label for="txtTda"></label>
+                        <div class="form-group">
+                            <div id="divButton" class="form-group">
+                                <button type="button" class="btn btn-primary" onclick="javascript: MostrarReporte()">
+                                    <span class="glyphicon glyphicon-th-list"></span>&nbsp;Ver Reporte
+                                </button>
+
+                            </div>
+                        </div>
+                    </div>                      
+
+
+               </div>
+
+            </td>
+        </tr>
+        <tr style="padding-top:2px">
+            <td width="100%" colspan="2" style="padding:1px">
+                <div id="lugar" class="row">
+
+                    <div style="width:25%" class="col-sm-3">
+                        <label for="txtTda">Rango.</label>
+                        <div class="form-group">
+                            <div id="dwRango" class="form-group">
+                                @Html.DropDownList("dwRango", new SelectList(ViewBag.lisRango, "cbo_codigo", "cbo_descripcion", "-1"), new { @class = "selectpicker", @id = "dwRango", @name = "dwRango", })
+                            </div>
+                        </div>
+                    </div>
+                    <div style="width:25%" class="col-sm-3">
+                        <label for="rprc"></label>
+                        <div class="form-group">
+                            <div id="divRangoPrc" class="form-group">
+                                &nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" onchange="validarRangoPrecio()" id="idRango" name="idRango" value="1">&nbsp;&nbsp;<label>Rango de precio</label>
+                            </div>
+                        </div>
+                    </div>                  
+                    <div  id="divprcFin" style="width:25%;display:none" class="col-sm-3">
+                        <label for="txtprcIni">Precio ini</label>
+                        <div class="form-group">
+                            <div id="txtprcIni" class="form-group">
+                                <input name="txtprcIni" type="number" id="txtprcIni" value="1" style="width:100%" autofocus class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div id="divprcIni" style="width:25%;display:none" class="col-sm-3">
+                        <label for="txtprcIni">Precio Fin</label>
+                        <div class="form-group">
+                            <div id="txtprcIni" class="form-group">
+                                <input name="txtprcIni" type="number" id="txtprcIni" value="1" style="width:100%" autofocus class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                   
+                   
+
+
+                </div>
+
+            </td>
+        </tr>
+     
+    </table>
+     
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div id="ifrReporte" class="well" style="width: 100%; height: 800px;">
+            <iframe id="load" src="" frameborder="0" marginheight="1"
+                    marginwidth="1" scrolling="auto" onload="javascript: waitingDialog.hide();"></iframe>
         </div>
-        <div class="col-sm-3">
-            <label for="txtTda">Cod Tda.</label>
-            <div class="form-group">
-                <div id="div_tda" class="form-group">
-                    @*@Html.DropDownList("dwtda", new SelectList(ViewBag.tienda, "cod_entid", "des_entid", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwtda", @name = "dwtda" })*@
-                </div>
-            </div>
-        </div> 
-        <div class="col-sm-3">
-            <label for="txtTda">Tipo</label>
-            <div class="form-group">
-                <div id="div_tda" class="form-group">
-                    @*@Html.DropDownList("dwtda", new SelectList(ViewBag.tienda, "cod_entid", "des_entid", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwtda", @name = "dwtda" })*@
-                </div>
-            </div>
-        </div> 
-        <div class="col-sm-3">
-            <label for="txtTda">Grupo</label>
-            <div class="form-group">
-                <div id="div_tda" class="form-group">
-                    @*@Html.DropDownList("dwtda", new SelectList(ViewBag.tienda, "cod_entid", "des_entid", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwtda", @name = "dwtda" })*@
-                </div>
-            </div>
-        </div> 
-        <div class="col-sm-3">
-            <label for="txtTda">Categoria</label>
-            <div class="form-group">
-                <div id="div_tda" class="form-group">
-                    @*@Html.DropDownList("dwtda", new SelectList(ViewBag.tienda, "cod_entid", "des_entid", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwtda", @name = "dwtda" })*@
-                </div>
-            </div>
-        </div> 
-        <div class="col-sm-3">
-            <label for="txtTda">Calidad</label>
-            <div class="form-group">
-                <div id="div_tda" class="form-group">
-                    @*@Html.DropDownList("dwtda", new SelectList(ViewBag.tienda, "cod_entid", "des_entid", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwtda", @name = "dwtda" })*@
-                </div>
-            </div>
-        </div> 
-        <div class="col-sm-3">
-            <label for="txtTda">Rango de Precio</label>
-            <div class="form-group">
-                <div id="div_tda" class="form-group">
-                    @*@Html.DropDownList("dwtda", new SelectList(ViewBag.tienda, "cod_entid", "des_entid", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwtda", @name = "dwtda" })*@
-                </div>
-            </div>
-        </div> 
-        <div class="col-sm-3">
-            <label for="txtTda">Tipo Obs.</label>
-            <div class="form-group">
-                <div id="div_tda" class="form-group">
-                    @*@Html.DropDownList("dwtda", new SelectList(ViewBag.tienda, "cod_entid", "des_entid", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwtda", @name = "dwtda" })*@
-                </div>
-            </div>
-        </div> 
-        <div class="col-sm-3">
-            <label for="txtTda">Rango de Obs.</label>
-            <div class="form-group">
-                <div id="div_tda" class="form-group">
-                    @*@Html.DropDownList("dwtda", new SelectList(ViewBag.tienda, "cod_entid", "des_entid", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwtda", @name = "dwtda" })*@
-                </div>
-            </div>
-        </div> 
+
+
     </div>
 </div>
+
+<script src="~/Scripts/bootstrap-select.min.js"></script>
+<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+<script src="~/Scripts/BI.js"></script>
+<script>
+        function ListarTienda() {
+           var data = function () { return @Html.Raw(Json.Encode(ViewBag.ClTienda)); }();
+            var tipo=@ViewBag.tda;
+
+            var dataArray = data.Data;
+            var strTipo = $('#dwDis').val();
+            var listar = [];
+
+            if (strTipo != null) {
+                var lista_filter = (strTipo == "-1") ? dataArray.filter(obj => obj.cod_distri != strTipo) : dataArray.filter(obj => obj.cod_distri === strTipo || obj.cod_distri=='0');
+                $.each(lista_filter, function (index, item) {
+
+                    listar.push(item);
+                });
+            }
+
+            llenarCombo("div_tda", "dwtda", listar, '0', '', "",tipo);
+            //ListarCategoria();
+            //ListarSubCategoria()
+        }
+
+        function llenarCombo(DivId, IdControl, Data, codDefecto, desDefecto, onchangeFuncion,tipo) {
+
+            $('#' + IdControl).find('option').remove();
+
+
+
+            var str =(tipo=='1')? '<select class="selectpicker" multiple = "multiple"  data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '">':'<select class="selectpicker"  data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '">';
+            var ItemNormal = '<option value="codItem">desItem</option>';
+            var colectItemNormal = '';
+
+            //if (codDefecto != '') { str += '<option value="' + codDefecto + '" selected="selected">------' + desDefecto + '------</option>'; }
+
+            if (onchangeFuncion != '') { onchangeFuncion = 'onchange = "' + onchangeFuncion + '()"' }
+            str = str.replace("onchangeFuncion", onchangeFuncion);
+
+            $.each(Data, function (index, item) {
+
+                colectItemNormal = colectItemNormal + ItemNormal
+                var strSelected = '"';
+
+                if (item.cod_entid == codDefecto) {
+                    strSelected = '" selected="selected" '
+
+                }
+                colectItemNormal = colectItemNormal.replace("codItem", item.cod_entid + strSelected);
+                colectItemNormal = colectItemNormal.replace("desItem", item.des_entid);
+
+            });
+
+            str += colectItemNormal
+            str += '</select>'
+
+            document.getElementById(DivId).innerHTML = str
+
+            $('.selectpicker').selectpicker({
+                liveSearch: true,
+                showSubtext: true
+            });
+
+        }
+
+        function llenarComboAlt(DivId, IdControl, Data, codDefecto, desDefecto, onchangeFuncion) {
+
+            $('#' + IdControl).find('option').remove();
+            var str = '<select class="selectpicker"  multiple = "multiple"  data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '">';
+            var ItemNormal = '<option value="codItem>desItem</option>';
+            var colectItemNormal = '';
+          
+            if (onchangeFuncion != '') { onchangeFuncion = 'onchange = "' + onchangeFuncion + '()"' }
+            str = str.replace("onchangeFuncion", onchangeFuncion);
+
+            $.each(Data, function (index, item) {
+
+                colectItemNormal = colectItemNormal + ItemNormal
+                var strSelected = '"';
+              
+                if (item.cbo_codigo == codDefecto) {
+                    strSelected = '" selected="selected" '
+
+                }
+
+                colectItemNormal = colectItemNormal.replace("codItem", item.cbo_codigo + strSelected);
+                colectItemNormal = colectItemNormal.replace("desItem", item.cbo_descripcion);
+
+            });
+
+            str += colectItemNormal
+            str += '</select>'
+
+            document.getElementById(DivId).innerHTML = str
+
+            $('.selectpicker').selectpicker({
+                liveSearch: true,
+                showSubtext: true
+            });
+
+        }
+</script>
+<script>
+        $(document).ready(function () {
+            ListarTienda();
+            ListarGrupo();
+        });
+
+        //function loadedFrame() {
+        //    $('#loading').hide();
+        //}
+
+
+        function MostrarReporte(e) {
+            var dis = $('#dwDis').val();
+            var tda = $('#dwtda').val();
+            var fecIni = ($("#fecini").val()).split('-');
+            var fecFin = ($("#fecfin").val()).split('-');
+            var strIni = fecIni[2] + fecIni[1] + fecIni[0];
+            var strFin = fecFin[2] + fecFin[1] + fecFin[0];
+            tda = tda.toString();
+            //dis = dis.toString();
+            var TeamDetailPostBackURL = "@Url.Action("ShowGenericReportVendedorInNewWin", "Reporte")";
+            if (tda != '' || tda == null) {
+                waitingDialog.show('Espere un momento por favor');
+                $.ajax({
+                    //url: GLB_RUT_APP_REPVENR + "?tda=" + tda + "&grupo=" + grupo + "&cate=" + cate + "&subcate=" + sbCate + "&estado=" + Estado,
+                    url: TeamDetailPostBackURL,// '../ReporteCrystal/ShowGenericReportInNewWin',
+                    dataType: 'json',
+                    type: 'POST',
+                    //dataType: "html",
+                    data: { coddis:dis, cod_tda: tda, fecIni: strIni, FecFin: strFin },
+                    //cache: false,
+                    //async: false,
+                    //dataType: "html",
+                    success: function (data) {
+                        //alert('ok');
+                        if (data.estado == "1") {
+                            $('#load').show();
+                            $("#load").attr("src", "../AspNetForms/Vendedor.aspx");
+                        }
+                        else {
+                            $('#load').hide();
+                            waitingDialog.hide();
+                            toastr.error('Hubo un error en el reporte', "Alerta");
+
+                        }
+                        //document.getElementById("ifrReporte").innerHTML = data;
+                        //waitingDialog.hide();
+                        return false;
+                    },
+                    error: function (request, status, error) {
+                        waitingDialog.hide();
+                    }
+                }).done(function () {
+
+                });
+            } else {
+
+                toastr.error('Debe Ingresar Tienda', "Alerta");
+            }
+        }
+
+    function validarRangoPrecio() {
+
+        if ($('#idRango').is(':checked')) {
+            $("#idRango").val('1');
+            $("#divprcFin").show();          
+            $("#divprcIni").show();          
+
+        } else {           
+            $("#idRango").val('0');
+            $("#divprcFin").hide();          
+            $("#divprcIni").hide();    
+         
+        }
+    }
+
+    
+    function ListarGrupo() {
+
+
+        var data = function () { return @Html.Raw(Json.Encode(ViewBag.ClGrupo)); }();
+
+        var dataArray = data.Data;
+        var strTipo = $('#dwTipo').val();
+        var listar = [];
+
+        if (strTipo != null) {
+            var lista_filter = dataArray.filter(obj => obj.cbo_filter_2 === strTipo);
+            $.each(lista_filter, function (index, item) {
+
+                listar.push(item);
+            });
+        }
+       
+        llenarComboAlt("divgrupo", "dwGrupo", listar, '0', '', "ListarCategoria");
+ 
+        ListarCategoria();
+   
+
+    }
+
+    function ListarCategoria() {
+        
+        var data = function () { return @Html.Raw(Json.Encode(ViewBag.ClCategoria)); }();
+        var dataArray = data.Data;
+        var strgrupo = $('#dwGrupo').val();
+          
+        var strTipo = $('#dwTipo').val();
+        var listar = [];
+        var lista_default = dataArray.filter(obj => obj.cbo_filter === '');
+
+
+        $.each(lista_default, function (index, item) {
+            listar.push(item);
+        });
+
+        if (strgrupo != null) {
+
+            if (strgrupo != '0') {
+                var lista_filteAnt = dataArray.filter(obj => obj.cbo_filter_2 === strTipo);
+
+                $.each(strgrupo, function (index, item) {
+
+                    var lista_filter = lista_filteAnt.filter(obj => obj.cbo_filter === item);
+                 
+                    $.each(lista_filter, function (index2, item2) {
+
+                        listar.push(item2);                       
+
+                    });
+                });
+            }        
+
+            if (strgrupo == '0') {
+                var lista_filteAnt = dataArray.filter(obj => obj.cbo_filter_2 === strTipo);
+                var lista_filter = lista_filteAnt;
+
+                $.each(lista_filter, function (index, item) {
+
+                    listar.push(item);
+                });
+            }
+        }
+        llenarComboAlt("divcateg", "dwCate", listar, '0', '', "");
+     
+
+    }
+
+</script>

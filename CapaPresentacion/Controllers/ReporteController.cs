@@ -282,7 +282,99 @@ namespace CapaPresentacion.Controllers
         }
         public ActionResult ReporteObs()
         {
-            return View();
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
+
+            if (_usuario == null)
+            {
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+            }
+            else
+            {
+
+                ViewBag.Title = "Reporte Obselescensia";
+
+                Dat_ArticuloStock distrito_list = new Dat_ArticuloStock();
+                Dat_ListaTienda list_tda = new Dat_ListaTienda();
+
+                List<Ent_Combo> listD = new List<Ent_Combo>();
+                Ent_Combo entComboD = new Ent_Combo();
+                entComboD.cbo_codigo = "0";
+                entComboD.cbo_descripcion = "----Todos----";
+                listD.Add(entComboD);
+                ViewBag.Categoria = listD;
+
+                if (Session["Tienda"] != null)
+                {
+                    string strJson = "";
+                    JsonResult jRespuesta = null;
+                    var serializer = new JavaScriptSerializer();
+
+
+                    strJson = datCbo.listarStr_ListaTienda("PE");
+                    jRespuesta = Json(serializer.Deserialize<List<Ent_ListaTienda>>(strJson).Where(t => t.cod_entid == Session["Tienda"].ToString()), JsonRequestBehavior.AllowGet);
+                    ViewBag.ClTienda = jRespuesta;
+                    ViewBag.tda = "0";
+
+
+                    List<Ent_ListaTienda> listar_tda = serializer.Deserialize<List<Ent_ListaTienda>>(strJson);
+                    var tda = listar_tda.Where(t => t.cod_entid == Session["Tienda"].ToString()).ToList();
+                    ViewBag.Tienda = tda;
+
+
+
+                    ViewBag.Distrito = distrito_list.listar_distrito().Where(d => d.cod_dis == tda[0].cod_distri);
+                }
+                else
+                {
+                    ViewBag.tda = "1";
+                    /*ViewBag.Tienda = list_tda.get_tienda("PE");*/ //datCbo.get_ListaTiendaXstoreActivo("");
+                    List<Ent_ListaTienda> list = new List<Ent_ListaTienda>();
+                    Ent_ListaTienda entCombo = new Ent_ListaTienda();
+                    entCombo.cod_entid = "-1";
+                    entCombo.des_entid = "----Todos----";
+                    list.Add(entCombo);
+                    ViewBag.Tienda = list;
+
+                    ViewBag.Distrito = distrito_list.listar_distrito();
+
+                    string strJson = "";
+                    JsonResult jRespuesta = null;
+                    var serializer = new JavaScriptSerializer();
+
+
+                    strJson = datCbo.listarStr_ListaTienda("PE");
+                    jRespuesta = Json(serializer.Deserialize<List<Ent_ListaTienda>>(strJson), JsonRequestBehavior.AllowGet);
+                    ViewBag.ClTienda = jRespuesta;
+
+                }
+
+                ViewBag.Tipo = datCbo.get_ListaTipoCategoria();
+
+                string strJson2 = "";
+                JsonResult jRespuesta2 = null;
+                var serializer2 = new JavaScriptSerializer();
+
+
+                strJson2 = datCbo.listarStr_ListaGrupoTipo();
+
+                jRespuesta2 = Json(serializer2.Deserialize<List<Ent_Combo>>(strJson2), JsonRequestBehavior.AllowGet);
+                ViewBag.ClGrupo = jRespuesta2;
+
+                strJson2 = datCbo.listarStr_ListaCategoria("");
+                jRespuesta2 = Json(serializer2.Deserialize<List<Ent_Combo>>(strJson2), JsonRequestBehavior.AllowGet);
+                ViewBag.ClCategoria = jRespuesta2;
+                Ent_ComboList filtros = datCbo.Listar_Filtros_OBS();
+
+
+                ViewBag.listTipoObs = filtros.Lista_1;
+                ViewBag.listCalidad = filtros.Lista_2;
+                ViewBag.lisRango = filtros.Lista_3;
+
+                return View();
+            }
         }
         public ActionResult ReporteVendedor()
         {

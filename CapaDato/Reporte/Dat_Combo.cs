@@ -50,7 +50,9 @@ namespace CapaDato.Reporte
                 list = null;
             }
             return list;
-        }        
+        } 
+        
+               
 
         public string listarStr_ListaGrupoTipo()
         {
@@ -110,8 +112,6 @@ namespace CapaDato.Reporte
             //return oLista;
             return strJson;
         }
-
-
         public List<Ent_Combo> get_ListaTipoCategoria()
         {
             List<Ent_Combo> list = null;
@@ -455,5 +455,76 @@ namespace CapaDato.Reporte
             }
             return list;
         }
+
+        public Ent_ComboList Listar_Filtros_OBS()
+        {
+            DataSet dsReturn = new DataSet();
+            string sqlquery = "USP_LISTAR_FILTRO_OBS";
+            List<Ent_Combo> ListCalidad = null;
+            List<Ent_Combo> ListTipo = null;
+            List<Ent_Combo> ListRango = null;
+
+            Ent_ComboList ListaFiltro = new Ent_ComboList();         
+
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                    {
+
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                        {
+
+                            da.Fill(dsReturn);
+                            ListCalidad = new List<Ent_Combo>();
+                            ListCalidad = (from DataRow dr in dsReturn.Tables[0].Rows
+                                             select new Ent_Combo()
+                                             {
+                                                 cbo_codigo = dr["cbo_codigo"].ToString(),
+                                                 cbo_descripcion = dr["cbo_descripcion"].ToString(),
+
+                                             }).ToList();
+
+                            ListTipo = new List<Ent_Combo>();
+                            ListTipo = (from DataRow dr in dsReturn.Tables[1].Rows
+                                           select new Ent_Combo()
+                                           {
+                                               cbo_codigo = dr["cbo_codigo"].ToString(),
+                                               cbo_descripcion = dr["cbo_descripcion"].ToString(),
+
+                                           }).ToList();
+
+                            ListRango = new List<Ent_Combo>();
+                            ListRango = (from DataRow dr in dsReturn.Tables[2].Rows
+                                           select new Ent_Combo()
+                                           {
+                                               cbo_codigo = dr["cbo_codigo"].ToString(),
+                                               cbo_descripcion = dr["cbo_descripcion"].ToString(),
+
+                                           }).ToList();
+
+
+
+                        }
+                    }
+                }
+
+                ListaFiltro.Lista_1 = ListCalidad;
+                ListaFiltro.Lista_2 = ListTipo;
+                ListaFiltro.Lista_3 = ListRango;
+
+
+            }
+            catch (Exception exc)
+            {
+
+                ListaFiltro = null;
+            }
+            return ListaFiltro;
+        }
+
     }
 }
