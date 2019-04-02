@@ -164,7 +164,7 @@
                         </div>
                     </div>                  
                     <div  id="divprcFin" style="width:25%;display:none" class="col-sm-3">
-                        <label for="lbltxtprcIni">Precio ini</label>
+                        <label for="lbltxtprcIni">Precio Ini.</label>
                         <div class="form-group">
                             <div id="divtxtprcIni" class="form-group">
                                 <input name="txtprcIni" type="number" id="txtprcIni" value="-1" style="width:100%" autofocus class="form-control" />
@@ -172,7 +172,7 @@
                         </div>
                     </div>
                     <div id="divprcIni" style="width:25%;display:none" class="col-sm-3">
-                        <label for="lbltxtprcIni">Precio Fin</label>
+                        <label for="lbltxtprcIni">Precio Fin.</label>
                         <div class="form-group">
                             <div id="divtxtprcFin" class="form-group">
                                 <input name="txtprcFin" type="number" id="txtprcFin" value="-1" style="width:100%" autofocus class="form-control" />
@@ -314,6 +314,8 @@
         
 
         function MostrarReporte(e) {
+
+            var bValidacion = true;
             var coddis = $('#dwDis').val();
             var cod_tda = $('#dwtda').val();
 
@@ -339,12 +341,14 @@
 
             tipo_cat = tipo_cat == '01'  ? 'S'  : tipo_cat;
             tipo_cat = tipo_cat == '02'  ? 'R'  : tipo_cat;
-           
-         
+        
+            if( precio1 == '' || precio1 == null|| precio2 == '' || precio2 == null){bValidacion=false }
+            if(parseFloat(precio1) > parseFloat(precio2)){bValidacion=false }        
+           //bValidacion=false;
             //tda = tda.toString();
           
             var TeamDetailPostBackURL = "@Url.Action("ShowGenericReportObsolescenciaInNewWin", "Reporte")";
-            if (cod_tda != '' || cod_tda == null) {
+            if (bValidacion) {
                 waitingDialog.show('Espere un momento por favor');
                 $.ajax({
                     url: TeamDetailPostBackURL,// '../ReporteCrystal/ShowGenericReportInNewWin',
@@ -378,7 +382,8 @@
                 });
             } else {
 
-                toastr.error('Debe Ingresar Tienda', "Alerta");
+                if( precio1 == '' || precio1 == null|| precio2 == '' || precio2 == null){ toastr.error('Precio Ini y precio Fin son obligatorio', "Error"); }
+                if(parseFloat(precio1) > parseFloat(precio2)){ toastr.error('Precio Ini no debe ser mayor al precio Fin.', "Error"); }
             }
         }
 
