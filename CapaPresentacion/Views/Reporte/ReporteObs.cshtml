@@ -330,6 +330,8 @@
             var precio1 = $('#txtprcIni').val();
             var precio2 = $('#txtprcFin').val();
 
+            rangoObs=rangoObs.replace("\n","");
+
             coddis = coddis == '0'  ||coddis == '' ? '-1'  : coddis;
             cod_tda = cod_tda == '0' ||cod_tda == ''  ? '-1'  : cod_tda;
             cod_linea = cod_linea == '0' ||cod_linea == '' ? '-1'  : cod_linea;
