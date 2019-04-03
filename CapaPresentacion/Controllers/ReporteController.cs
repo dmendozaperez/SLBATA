@@ -751,7 +751,7 @@ namespace CapaPresentacion.Controllers
         {
             Data_Bata pl = new Data_Bata();
 
-            Models_GuiaConten model_vent_comp = pl.list_Guia_Tienda(dwtienda);
+            Models_GuiaConten model_vent_comp = pl.list_Guia_Tienda(dwtienda, tipo_cat, cod_linea, cod_categ);
 
             return model_vent_comp;
         }

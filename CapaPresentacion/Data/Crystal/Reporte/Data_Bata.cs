@@ -203,7 +203,7 @@ namespace Data.Crystal.Reporte
             return lista;
         }
 
-        public Models_GuiaConten list_Guia_Tienda(string codEntid)
+        public Models_GuiaConten list_Guia_Tienda(string codEntid, string tipo_cat, string cod_linea, string cod_categ)
         {
             string sqlquery = "USP_XSTORE_REPORTE_PRESCRIPCIONES";
             List<Models_Guia> lista = null;
@@ -222,7 +222,10 @@ namespace Data.Crystal.Reporte
                             cmd.CommandTimeout = 0;
                             cmd.CommandType = CommandType.StoredProcedure;
                             cmd.Parameters.AddWithValue("@COD_TDA", codEntid);
-                       
+                            cmd.Parameters.AddWithValue("@TIPO_CAT", tipo_cat);
+                            cmd.Parameters.AddWithValue("@COD_LINEA", cod_linea);
+                            cmd.Parameters.AddWithValue("@COD_CATEG", cod_categ);
+
                             using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                             {
                                 ds = new DataSet();
