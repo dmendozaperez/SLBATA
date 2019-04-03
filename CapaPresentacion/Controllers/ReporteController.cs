@@ -274,13 +274,14 @@ namespace CapaPresentacion.Controllers
         public ActionResult ShowGenericReportInNewWin(string cod_tda, string grupo, string categoria, string subcategoria, string estado,string tipo,string tipoReport)
         {
             //grupo = "0";categoria = "0";subcategoria = "0";estado = "0";
+         //   tipoReport = "1";
             Data_Planilla pl = new Data_Planilla();
             string nombreReporte = tipoReport == "-1" ? "Planilla.rpt" : "Planilladet.rpt";
             this.HttpContext.Session["ReportName"] = nombreReporte;
 
-            string tipo_rep = "1";
+            //string tipo_rep = "1";
 
-            List<Models_Planilla> model_planilla= pl.get_planilla(cod_tda, grupo, categoria, subcategoria, estado, tipo, tipo_rep);
+            List<Models_Planilla> model_planilla= pl.get_planilla(cod_tda, grupo, categoria, subcategoria, estado, tipo, tipoReport);
 
             this.HttpContext.Session["rptSource"] = model_planilla;
             this.HttpContext.Session["rptSource_sub"] = pl.get_reglamed_cab();
