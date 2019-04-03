@@ -25,6 +25,27 @@
         width: 100%;
         height: 800px;
     }
+
+      #lugar {
+  /*border-top-color:  lightsteelblue;*/
+  border-top-color:  #E7E5E5;
+  border-right-color:  #E7E5E5;
+  border-bottom-color: #E7E5E5;
+  border-left-color: #E7E5E5;
+
+  /*border-top-width: 5px;
+  border-left-width: 5px;
+  border-bottom-width: 5px;
+  border-right-width: 5px;*/
+  border-style: solid;
+   border-radius: 10px 10px 10px 10px;
+    -moz-border-radius: 10px 10px 10px 10px;
+    -webkit-border-radius: 10px 10px 10px 10px;
+    margin-left:0px;
+    margin-right:0px;
+ 
+   
+    }
 </style>
 <p class="text-danger">Consulta de la planilla de tiendas, por filtro Tienda, Tipo, Grupo, Categoria , SubCategoria,Estado.</p>
 <div class="box box-body box-primary">  
@@ -56,6 +77,19 @@
                 </div>
             </div>
         </div>
+        <div class="col-sm-3">
+
+            <label for="dwEstado"></label>
+            <div class="form-group">
+                <div id="tipodoc" class="form-group">
+                    <button type="button" class="btn btn-primary" onclick="javascript: MostrarReporte()">
+                        <span class="glyphicon glyphicon-th-list"></span>&nbsp;Ver Reporte
+                    </button>
+                </div>
+
+            </div>
+            
+        </div>
 
     </div>
     <div class="row">
@@ -85,15 +119,14 @@
             </div>
         </div>
         <div class="col-sm-3">
-            <label for="dwEstado"></label>
+            <label for="txtTda">Reporte</label>
             <div class="form-group">
-                <div id="tipodoc" class="form-group">
-                    <button type="button" class="btn btn-primary" onclick="javascript: MostrarReporte()">
-                        <span class="glyphicon glyphicon-th-list"></span>&nbsp;Ver Reporte
-                    </button>
+                <div id="tipor" class="form-group">
+                    @Html.DropDownList("dwReporte", new SelectList(ViewBag.TipoReporte, "cbo_codigo", "cbo_descripcion", "-1"), new { @class = "selectpicker", @id = "dwReporte", @data_live_search = "false", @name = "dwReporte" })
+                   
                 </div>
-
             </div>
+
         </div>
 
 
@@ -136,6 +169,7 @@
             var cate = $('#dwCate').val();
             var sbCate = $('#dwsbCate').val();
             var Estado = $('#dwEstado').val();
+            var tipoReport = $('#dwReporte').val();
 
             if (grupo == '' || grupo == null) { grupo = '0' };
             if (cate == '' || cate == null) { cate = '0' };
@@ -155,7 +189,7 @@
                     dataType: 'json',
                     type: 'POST',
                     //dataType: "html",
-                    data: { cod_tda: tda, grupo: grupo, categoria: cate, subcategoria: sbCate, estado: Estado, tipo: tipo },
+                    data: { cod_tda: tda, grupo: grupo, categoria: cate, subcategoria: sbCate, estado: Estado, tipo: tipo,tipoReport:tipoReport },
                     //cache: false,
                     //async: false,
                     //dataType: "html",
