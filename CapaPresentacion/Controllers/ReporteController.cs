@@ -54,7 +54,18 @@ namespace CapaPresentacion.Controllers
                 list.Add(entCombo);
                 ViewBag.Categoria = list;
 
-                
+                list = new List<Ent_Combo>();
+                 entCombo = new Ent_Combo();
+                entCombo.cbo_codigo = "-1";
+                entCombo.cbo_descripcion = "ESTANDAR";
+                list.Add(entCombo);
+                entCombo = new Ent_Combo();
+                entCombo.cbo_codigo = "1";
+                entCombo.cbo_descripcion = "DETALLADO";
+                list.Add(entCombo);
+                ViewBag.TipoReporte = list;
+
+
                 ViewBag.Title = "Reporte de Planilla";
        
                 ViewBag.Tipo = datCbo.get_ListaTipoCategoria();              
@@ -260,11 +271,12 @@ namespace CapaPresentacion.Controllers
             return jRespuesta;
         }
         [HttpPost]
-        public ActionResult ShowGenericReportInNewWin(string cod_tda, string grupo, string categoria, string subcategoria, string estado,string tipo)
+        public ActionResult ShowGenericReportInNewWin(string cod_tda, string grupo, string categoria, string subcategoria, string estado,string tipo,string tipoReport)
         {
             //grupo = "0";categoria = "0";subcategoria = "0";estado = "0";
             Data_Planilla pl = new Data_Planilla();
-            this.HttpContext.Session["ReportName"] = "Planilla.rpt";
+            string nombreReporte = tipoReport == "-1" ? "Planilla.rpt" : "Planilladet.rpt";
+            this.HttpContext.Session["ReportName"] = nombreReporte;
 
             List<Models_Planilla> model_planilla= pl.get_planilla(cod_tda, grupo, categoria, subcategoria, estado, tipo);
 
