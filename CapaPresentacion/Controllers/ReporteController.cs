@@ -266,7 +266,9 @@ namespace CapaPresentacion.Controllers
             Data_Planilla pl = new Data_Planilla();
             this.HttpContext.Session["ReportName"] = "Planilla.rpt";
 
-            List<Models_Planilla> model_planilla= pl.get_planilla(cod_tda, grupo, categoria, subcategoria, estado, tipo);
+            string tipo_rep = "1";
+
+            List<Models_Planilla> model_planilla= pl.get_planilla(cod_tda, grupo, categoria, subcategoria, estado, tipo, tipo_rep);
 
             this.HttpContext.Session["rptSource"] = model_planilla;
             this.HttpContext.Session["rptSource_sub"] = pl.get_reglamed_cab();

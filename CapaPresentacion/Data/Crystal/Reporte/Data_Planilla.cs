@@ -64,7 +64,7 @@ namespace Data.Crystal.Reporte
             return lista;
         }
     
-        public List<Models_Planilla> get_planilla(string cod_tda, string grupo, string categoria, string subcategoria, string estado, string tipo)
+        public List<Models_Planilla> get_planilla(string cod_tda, string grupo, string categoria, string subcategoria, string estado, string tipo,string tipo_rep="-1")
         {
             string sqlquery = "[USP_ReportePlanilla]";
             List<Models_Planilla> lista = null;
@@ -84,6 +84,7 @@ namespace Data.Crystal.Reporte
                             cmd.Parameters.AddWithValue("@SubCategoria", subcategoria);
                             cmd.Parameters.AddWithValue("@Estado", estado);
                             cmd.Parameters.AddWithValue("@Tipo", tipo);
+                            cmd.Parameters.AddWithValue("@tip_rep", tipo_rep);
 
                             using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                             {
@@ -107,18 +108,19 @@ namespace Data.Crystal.Reporte
                                              tcant = string.IsNullOrEmpty(dr["tcant"].ToString()) ? 0 : Convert.ToDecimal(dr["tcant"].ToString()), //Convert.ToDecimal(dr["tcant"]),
                                              valor = string.IsNullOrEmpty(dr["valor"].ToString()) ? 0 : Convert.ToDecimal(dr["valor"].ToString()), //Convert.ToDecimal(dr["valor"]),
                                              med = dr["rmed"].ToString(),
-                                             _00 = dr["00"].ToString(),
-                                             _01 = dr["01"].ToString(),
-                                             _02 = dr["02"].ToString(),
-                                             _03 = dr["03"].ToString(),
-                                             _04 = dr["04"].ToString(),
-                                             _05 = dr["05"].ToString(),
-                                             _06 = dr["06"].ToString(),
-                                             _07 = dr["07"].ToString(),
-                                             _08 = dr["08"].ToString(),
-                                             _09 = dr["09"].ToString(),
-                                             _10 = dr["10"].ToString(),
-                                             _11 = dr["11"].ToString(),
+                                             reg_med= dr["reg_med"].ToString(),
+                                             _00 =(tipo_rep == "-1") ?dr["00"].ToString():"",
+                                             _01 = (tipo_rep == "-1") ? dr["01"].ToString() : "",
+                                             _02 = (tipo_rep == "-1") ? dr["02"].ToString() : "",
+                                             _03 = (tipo_rep == "-1") ? dr["03"].ToString() : "",
+                                             _04 = (tipo_rep == "-1") ? dr["04"].ToString() : "",
+                                             _05 = (tipo_rep == "-1") ? dr["05"].ToString() : "",
+                                             _06 = (tipo_rep == "-1") ? dr["06"].ToString() : "",
+                                             _07 = (tipo_rep == "-1") ? dr["07"].ToString() : "",
+                                             _08 = (tipo_rep == "-1") ? dr["08"].ToString() : "",
+                                             _09 = (tipo_rep == "-1") ? dr["09"].ToString() : "",
+                                             _10 = (tipo_rep == "-1") ? dr["10"].ToString() : "",
+                                             _11 = (tipo_rep == "-1") ? dr["11"].ToString() : "",
                                          }).ToList();
                             }
                         }

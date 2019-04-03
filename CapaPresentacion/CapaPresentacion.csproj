@@ -305,6 +305,12 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="RptsCrystal\PlanillaDet.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PlanillaDet.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="RptsCrystal\ReporteOBS.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1379,6 +1385,10 @@
     <WCFMetadataStorage Include="Service References\FEBataEpos\" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="RptsCrystal\PlanillaDet.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>PlanillaDet.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="RptsCrystal\ReporteOBS.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>ReporteOBS.cs</LastGenOutput>

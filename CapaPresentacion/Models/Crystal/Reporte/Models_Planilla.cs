@@ -21,6 +21,7 @@ namespace Models.Crystal.Reporte
         public decimal tcant { get; set; }
         public decimal valor { get; set; }
         public string med { get; set; }
+        public string reg_med { get; set; }
         public string _00 {get;set;}
         public string _01 { get; set; }
         public string _02 { get; set; }
