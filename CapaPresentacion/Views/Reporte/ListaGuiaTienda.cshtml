@@ -17,10 +17,10 @@
         <tr style="background-color:#3d566e; color:#ecf0f1">
             <th>NUMERO</th>
             <th>FECHA</th>
-            <th>Pares</th>
+            <th>PARES</th>
             <th>V. CALZADO</th>
             <th>NO CALZADO</th>
-            <th>V NO CALZADO</th>
+            <th>V. NO CALZADO</th>
             <th>ESTADO</th>
             <th>DETALLE</th>
 
@@ -70,7 +70,7 @@
             "aoColumns": [
                  { "sName": "NUMERO", "mData": "NUMERO" },
                    { "sName": "FECHA", "mData": "FECHA" },
-                   { "sName": "PARES", "mData": "PARES", "sClass": "right" },
+                   { "sName": "CALZADO", "mData": "PARES", "sClass": "right" },
                    { "sName": "VCALZADO", "mData": "VCALZADO", "sClass": "right" },
                    { "sName": "NOCALZADO", "mData": "NOCALZADO", "sClass": "right" },
                    { "sName": "VNOCALZADO", "mData": "VNOCALZADO", "sClass": "right" },
@@ -122,11 +122,11 @@
         var tbody = '';
         theader += '<thead>';
         theader += '<tr>'; 
-        theader += '<th '+style+' >';
-        theader += '<div class="col-sm-1" style="margin-top:2px;margin-bottom:2px;">';
-        theader += '<label for="disponible">TIPO</label>';
-        theader += '</div>';
-        theader += '</th>';
+        //theader += '<th '+style+' >';
+        //theader += '<div class="col-sm-1" style="margin-top:2px;margin-bottom:2px;">';
+        //theader += '<label for="disponible">TIPO</label>';
+        //theader += '</div>';
+        //theader += '</th>';
         theader += '<th ' + style + ' >';
         theader += '<div class="col-sm-1" style="margin-top:2px;margin-bottom:2px;">';
         theader += '<label for="disponible">GRUPO</label>';
@@ -155,11 +155,11 @@
         theader += '</tr>';
         theader += '</thead>';
 
-        tbody += '<td  ' + style + ' >';
-        tbody += '<div class="col-sm-1" style="width:100%;margin-top:2px;margin-bottom:2px;">';
-        tbody += 'tipo';
-        tbody += '</div>';
-        tbody += '</td>';
+        //tbody += '<td  ' + style + ' >';
+        //tbody += '<div class="col-sm-1" style="width:100%;margin-top:2px;margin-bottom:2px;">';
+        //tbody += 'tipo';
+        //tbody += '</div>';
+        //tbody += '</td>';
         tbody += '<td   ' + style + '>';
         tbody += '<div class="col-sm-1" style="width:100%;margin-top:2px;margin-bottom:2px;">';
         tbody += 'grupo';
@@ -205,6 +205,13 @@
         var articulo_old = ''
         var calidad_old = ''
         var Body = '';
+
+        var tipo = '';
+        var calzado = '';
+        var Vcalzado = '';
+        var Ncalzado = '';
+        var VNcalzado = '';
+        var Estado = '';
        
         $.each(lista_default, function (index, item) {
            
@@ -212,12 +219,20 @@
 
             articulo = item.ARTICULO;
             calidad = item.CALIDAD;
+
+            tipo = item.TIPO_CATE;
+            calzado = item.PARES;
+            Vcalzado = item.VCALZADO;
+            Ncalzado = item.NOCALZADO;
+            VNcalzado = item.VNOCALZADO;
+            Estado = item.ESTADO;
             
 
             if (articulo != articulo_old || calidad != calidad_old) {               
 
                 var temrBody = tbody
-                temrBody = temrBody.replace("tipo", tpCategoria);
+                temrBody = temrBody.replace("tipo", '');
+                //temrBody = temrBody.replace("tipo", tpCategoria);
                 temrBody = temrBody.replace("grupo", linea);
                 temrBody = temrBody.replace("categoria", categoria);
                 temrBody = temrBody.replace("articulo", articulo_old);
@@ -270,19 +285,53 @@
         Body += temrBody;
 
         strtable = '<table style="width:100%;" class="table table-hover dataTable  table-striped table-responsive" role="grid">' + theader + '<tbody>' + Body + '</tbody>' + '</table>';
-
+       
         var strhtml = ''
         strhtml += '<div class="modal-header modal-header-danger" style="margin-top:0px;margin-bottom:0px;padding-top:2px;padding-bottom:2px;">'
         strhtml += '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
         strhtml += '<h5 class="modal-title" id="myModalLabel">'
         strhtml += '<table style="border-bottom:0px;font-size:14px;width:100%;"  class="table-responsive">'
         strhtml += '<tr>'
-        strhtml += '<td style="font-size:14px;width:100%;text-align:left;">Nro Guia:' + numero + '</td>'
+        strhtml += '<td style="font-size:18px;width:100%;text-align:left;"><B>Nro Guia : ' + numero + '</B></td>'
         strhtml += '</tr>'
         strhtml += '</table>'
         strhtml += '</h5>'
         strhtml += '</div>'
         strhtml += '<div class="modal-body">'
+        strhtml += '<table class="table table-striped" RULES="none">'
+        strhtml += '<tr>'
+        strhtml += '<td colspan="1" valign="middle"><label>TIPO</label></td>'
+        strhtml += '<td colspan="1">'
+        strhtml += '&nbsp;&nbsp;' + tipo
+        strhtml += '</td>'
+        strhtml += '<td colspan="1" valign="middle"><label>ESTADO</label></td>'
+        strhtml += '<td colspan="1">'
+        strhtml += '&nbsp;&nbsp;' + Estado
+        strhtml += '</td>'
+        strhtml += '</tr>'
+        strhtml += '<tr>'
+        strhtml += '<td colspan="1" valign="middle"><label>CALZADO</label></td>'
+        strhtml += '<td colspan="1">'
+        strhtml += '&nbsp;&nbsp;' + calzado
+        strhtml += '</td>'
+        strhtml += '<td colspan="1" valign="middle"><label>V. CALZADO</label></td>'
+        strhtml += '<td colspan="1">'
+        strhtml += '&nbsp;&nbsp;S/.&nbsp;' + Vcalzado
+        strhtml += '</td>'
+        strhtml += '</tr>'
+        strhtml += '<tr>'
+        strhtml += '<td colspan="1" valign="middle"><label>NO CALZADO</label></td>'
+        strhtml += '<td colspan="1">'
+        strhtml += '&nbsp;&nbsp;' + Ncalzado
+        strhtml += '</td>'
+        strhtml += '<td colspan="1" valign="middle"><label>V. NO CALZADO</label></td>'
+        strhtml += '<td colspan="1">'
+        strhtml += '&nbsp;&nbsp;S/.&nbsp;' + VNcalzado
+        strhtml += '</td>'
+        strhtml += '</tr>'
+        strhtml += '<tr>'
+        
+        strhtml += '</table>'
         strhtml += strtable
         strhtml += '</div>'
         strhtml += '<div class="modal-footer" style="margin-top:-30px">'
