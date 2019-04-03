@@ -1,5 +1,6 @@
 ﻿using CapaEntidad.Util;
 using Models.Crystal.Reporte;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -201,5 +202,69 @@ namespace Data.Crystal.Reporte
             }
             return lista;
         }
+
+        public Models_GuiaConten list_Guia_Tienda(string codEntid)
+        {
+            string sqlquery = "USP_XSTORE_REPORTE_PRESCRIPCIONES";
+            List<Models_Guia> lista = null;
+            Models_GuiaConten content = new Models_GuiaConten();
+            string strJsonDetalle = "";
+            DataSet ds = null;        
+
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+                    try
+                    {
+                        using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                        {
+                            cmd.CommandTimeout = 0;
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.AddWithValue("@COD_TDA", codEntid);
+                       
+                            using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                            {
+                                ds = new DataSet();
+                                da.Fill(ds);
+                                lista = new List<Models_Guia>();
+                                lista = (from DataRow dr in ds.Tables[0].Rows
+                                         select new Models_Guia()
+                                         {
+                                             NUMERO = dr["NUMERO"].ToString(),
+                                             FECHA = dr["FECHA"].ToString(),
+                                             PARES = dr["PARES"].ToString(),
+                                             VCALZADO = dr["VCALZADO"].ToString(),
+                                             NOCALZADO = dr["NOCALZADO"].ToString(),
+                                             VNOCALZADO = dr["VNOCALZADO"].ToString(),
+                                             ESTADO = dr["ESTADO"].ToString()
+                                             //ARTICULO = dr["ARTICULO"].ToString(),
+                                             //CALIDAD = dr["CALIDAD"].ToString(),
+                                             //TALLA = dr["TALLA"].ToString(),
+                                             //CANTIDAD = dr["CANTIDAD"].ToString()
+                                         }).ToList();
+
+
+                                strJsonDetalle = JsonConvert.SerializeObject(ds.Tables[1], Newtonsoft.Json.Formatting.Indented);
+                                strJsonDetalle = strJsonDetalle.Replace(Environment.NewLine, "");
+                            }
+                        }
+                        content.listGuia = lista;
+                        content.strDetalle = strJsonDetalle;
+
+                    }
+                    catch (Exception ex)
+                    {
+                        content = null;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                content = null;
+            }
+            return content;
+        }
+
     }
 }

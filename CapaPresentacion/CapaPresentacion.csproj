@@ -291,6 +291,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Control\LoginViewModel.cs" />
+    <Compile Include="Models\Crystal\Reporte\Models_Guia.cs" />
     <Compile Include="Models\Crystal\Reporte\Models_Comparativo_Venta.cs" />
     <Compile Include="Models\Crystal\Reporte\Models_Obs.cs" />
     <Compile Include="Models\Crystal\Reporte\Models_Vendedor.cs" />
@@ -1336,6 +1337,8 @@
     <Content Include="Views\Reporte\ReporteComparativoVenta.cshtml" />
     <Content Include="Views\Reporte\ListaComparativo.cshtml" />
     <Content Include="Views\Reporte\ReporteObs.cshtml" />
+    <Content Include="Views\Reporte\ReporteConsultaGuia.cshtml" />
+    <Content Include="Views\Reporte\ListaGuiaTienda.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

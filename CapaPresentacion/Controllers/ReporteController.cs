@@ -27,6 +27,7 @@ namespace CapaPresentacion.Controllers
         public string reportFolder = Ent_Conexion.CarpetaPlanillaReporte;
         private string gcodTda = "";
         private string _session_listcomparativo_private = "_session_listcomparativo_private";
+        private string _session_listguia_private = "_session_listguia_private";
         private Dat_Combo datCbo = new Dat_Combo();
         //public ActionResult Index()
         //{
@@ -675,6 +676,143 @@ namespace CapaPresentacion.Controllers
             {
                 estado = _estado
             });
+        }
+
+
+        public ActionResult ReporteConsultaGuia()
+        {
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
+
+            if (_usuario == null)
+            {
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+            }
+            else
+            {
+
+                ViewBag.Title = "Reporte Guia por tienda";
+
+                if (Session["Tienda"] != null)
+                {
+                    ViewBag.Tienda = datCbo.get_ListaTiendaXstoreActivo(Session["Tienda"].ToString());
+                }
+                else
+                {
+                    ViewBag.Tienda = datCbo.get_ListaTiendaXstoreActivo("");
+                }
+
+                ViewBag.Tipo = datCbo.get_ListaTipoCategoria();
+
+                string strJson2 = "";
+                JsonResult jRespuesta2 = null;
+                var serializer2 = new JavaScriptSerializer();
+
+
+                strJson2 = datCbo.listarStr_ListaGrupoTipo();
+
+                jRespuesta2 = Json(serializer2.Deserialize<List<Ent_Combo>>(strJson2), JsonRequestBehavior.AllowGet);
+                ViewBag.ClGrupo = jRespuesta2;
+
+                strJson2 = datCbo.listarStr_ListaCategoria("");
+                jRespuesta2 = Json(serializer2.Deserialize<List<Ent_Combo>>(strJson2), JsonRequestBehavior.AllowGet);
+                ViewBag.ClCategoria = jRespuesta2;
+
+                List<Ent_Combo> listD = new List<Ent_Combo>();
+                Ent_Combo entComboD = new Ent_Combo();
+                entComboD.cbo_codigo = "0";
+                entComboD.cbo_descripcion = "----Todos----";
+                listD.Add(entComboD);
+                ViewBag.Categoria = listD;
+
+                return View();
+            }
+
+        }
+
+
+        public PartialViewResult ListaGuiaTienda(string dwtienda, string dwTipo, string dwGrupo, string dwCate)
+        {
+            dwTipo= dwTipo =="01"? "S" : "R";
+            dwGrupo = dwGrupo == "0" ? "-1" : dwGrupo;
+            dwCate = dwCate == "0" ? "-1" : dwCate;
+
+            Models_GuiaConten model_vent_comp = listaGuia(dwtienda, dwTipo, dwGrupo, dwCate);
+
+          ViewBag.GuiaDetalle = model_vent_comp.strDetalle;
+          Session[_session_listguia_private] = model_vent_comp.listGuia;
+
+            return PartialView(model_vent_comp.listGuia);
+        }
+
+        public Models_GuiaConten listaGuia(string dwtienda, string tipo_cat, string cod_linea, string cod_categ)
+        {
+            Data_Bata pl = new Data_Bata();
+
+            Models_GuiaConten model_vent_comp = pl.list_Guia_Tienda(dwtienda);
+
+            return model_vent_comp;
+        }
+
+        public ActionResult getGuias(Ent_jQueryDataTableParams param)
+        {
+
+            /*verificar si esta null*/
+            if (Session[_session_listguia_private] == null)
+            {
+                List<Models_Guia> lisguia = new List<Models_Guia>();
+                Session[_session_listguia_private] = lisguia;
+            }
+
+            //Traer registros
+            IQueryable<Models_Guia> membercol = ((List<Models_Guia>)(Session[_session_listguia_private])).AsQueryable();
+
+            //Manejador de filtros
+            int totalCount = membercol.Count();
+            IEnumerable<Models_Guia> filteredMembers = membercol;
+
+            if (!string.IsNullOrEmpty(param.sSearch))
+            {
+                filteredMembers = membercol
+                    .Where(m => m.NUMERO.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                     m.NUMERO.ToUpper().Contains(param.sSearch.ToUpper()));
+            }
+            //Manejador de orden
+            var sortIdx = Convert.ToInt32(Request["iSortCol_0"]);
+            Func<Models_Comparativo_Venta, string> orderingFunction =
+            (
+            //m => sortIdx == 0 ? m.orden :
+             m => m.orden
+            );
+            var sortDirection = Request["sSortDir_0"];
+            //if (sortDirection == "asc")
+            //    filteredMembers = filteredMembers.OrderBy(orderingFunction);
+            //else
+            //    filteredMembers = filteredMembers.OrderByDescending(orderingFunction);
+            var displayMembers = filteredMembers
+                .Skip(param.iDisplayStart);
+
+            var result = from a in displayMembers
+                         select new
+                         {
+                             a.NUMERO,
+                             a.FECHA,
+                             a.PARES,
+                             a.VCALZADO,
+                             a.NOCALZADO,
+                             a.VNOCALZADO,
+                             a.ESTADO
+                         };
+            //Se devuelven los resultados por json
+            return Json(new
+            {
+                sEcho = param.sEcho,
+                iTotalRecords = totalCount,
+                iTotalDisplayRecords = filteredMembers.Count(),
+                aaData = result
+            }, JsonRequestBehavior.AllowGet);
         }
 
     }

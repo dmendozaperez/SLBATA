@@ -122,7 +122,7 @@
                         <label for="dwCate">Categoria</label>
                         <div class="form-group">
                             <div id="divcateg" class="form-group">
-                                @Html.DropDownList("dwCate", new SelectList(ViewBag.Categoria, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwCate", @onchange = "ListarSubCategoria()" })
+                                @Html.DropDownList("dwCate", new SelectList(ViewBag.Categoria, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwCate" })
                             </div>
                         </div>
                     </div>
