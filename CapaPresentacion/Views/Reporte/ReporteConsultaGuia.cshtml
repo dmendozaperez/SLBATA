@@ -1,7 +1,7 @@
 ﻿@using CapaEntidad.Transac
 @model IEnumerable<Ent_Analisis_Mov>
 @{
-    ViewBag.Title = "Reporte Comparativo Venta";
+    ViewBag.Title = "Consulta de Prescripciones";
     AjaxOptions options = new AjaxOptions
     {
         HttpMethod = "GET",
@@ -31,7 +31,7 @@
           margin-right: 5px;
       }*/
 </style>
-<p class="text-danger">Reporte comparativo de venta, por filtro tienda y dos rangos de fechas.</p>
+<p class="text-danger">Reporte de prescripciones, por filtro tienda, tipo, grupo y categoria.</p>
 <div class="box box-body box-primary">
     @using (Ajax.BeginForm("ListaGuiaTienda", options))
     { <form id="form1">
