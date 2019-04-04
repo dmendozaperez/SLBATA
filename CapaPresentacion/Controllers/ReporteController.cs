@@ -57,11 +57,11 @@ namespace CapaPresentacion.Controllers
                 list = new List<Ent_Combo>();
                  entCombo = new Ent_Combo();
                 entCombo.cbo_codigo = "-1";
-                entCombo.cbo_descripcion = "ESTANDAR";
+                entCombo.cbo_descripcion = "OPERACIONES";
                 list.Add(entCombo);
                 entCombo = new Ent_Combo();
                 entCombo.cbo_codigo = "1";
-                entCombo.cbo_descripcion = "DETALLADO";
+                entCombo.cbo_descripcion = "AUDITORIA";
                 list.Add(entCombo);
                 ViewBag.TipoReporte = list;
 
@@ -88,11 +88,12 @@ namespace CapaPresentacion.Controllers
                 JsonResult jRespuesta = null;
                 var serializer = new JavaScriptSerializer();
 
+                ViewBag.listCalidad = datCbo.get_ListaCalidad();
 
                 strJson = datCbo.listarStr_ListaGrupoTipo();
                 jRespuesta = Json(serializer.Deserialize<List<Ent_Combo>>(strJson), JsonRequestBehavior.AllowGet);
                 ViewBag.ClGrupo = jRespuesta;
-
+                
                 strJson = datCbo.listarStr_ListaCategoria("");
                 jRespuesta = Json(serializer.Deserialize<List<Ent_Combo>>(strJson), JsonRequestBehavior.AllowGet);
                 ViewBag.ClCategoria = jRespuesta;                          
@@ -271,7 +272,7 @@ namespace CapaPresentacion.Controllers
             return jRespuesta;
         }
         [HttpPost]
-        public ActionResult ShowGenericReportInNewWin(string cod_tda, string grupo, string categoria, string subcategoria, string estado,string tipo,string tipoReport)
+        public ActionResult ShowGenericReportInNewWin(string cod_tda, string grupo, string categoria, string subcategoria, string estado,string tipo,string tipoReport, string calidad)
         {
             //grupo = "0";categoria = "0";subcategoria = "0";estado = "0";
          //   tipoReport = "1";
@@ -281,7 +282,7 @@ namespace CapaPresentacion.Controllers
 
             //string tipo_rep = "1";
 
-            List<Models_Planilla> model_planilla= pl.get_planilla(cod_tda, grupo, categoria, subcategoria, estado, tipo, tipoReport);
+            List<Models_Planilla> model_planilla= pl.get_planilla(cod_tda, grupo, categoria, subcategoria, estado, tipo, tipoReport, calidad);
 
             this.HttpContext.Session["rptSource"] = model_planilla;
             this.HttpContext.Session["rptSource_sub"] = pl.get_reglamed_cab();
@@ -457,7 +458,9 @@ namespace CapaPresentacion.Controllers
 
                 }
 
-              
+                ViewBag.listCalidad = datCbo.get_ListaCalidad();
+
+
 
                 return View();
             }
@@ -465,13 +468,13 @@ namespace CapaPresentacion.Controllers
         }
 
         [HttpPost]
-        public ActionResult ShowGenericReportVendedorInNewWin(string coddis,string cod_tda, string fecIni, string FecFin)
+        public ActionResult ShowGenericReportVendedorInNewWin(string coddis,string cod_tda, string fecIni, string FecFin, string calidad)
         {
             //grupo = "0";categoria = "0";subcategoria = "0";estado = "0";
             Data_Planilla pl = new Data_Planilla();
             this.HttpContext.Session["ReportName"] = "Vendedor.rpt";
 
-            List<Models_Vendedor> model_vendedor = pl.get_reporteVendedor(coddis, cod_tda, fecIni, FecFin);
+            List<Models_Vendedor> model_vendedor = pl.get_reporteVendedor(coddis, cod_tda, fecIni, FecFin, calidad);
 
             this.HttpContext.Session["rptSource"] = model_vendedor;
            
@@ -828,6 +831,82 @@ namespace CapaPresentacion.Controllers
                 iTotalDisplayRecords = filteredMembers.Count(),
                 aaData = result
             }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult ReporteRendCateg()
+        {
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
+            //Session["Tienda"] = "50143";
+
+            if (_usuario == null)
+            {
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+            }
+            else
+            {
+                ViewBag.Title = "Reporte Rendiniento por Categoria";
+
+                Dat_ArticuloStock distrito_list = new Dat_ArticuloStock();
+                Dat_ListaTienda list_tda = new Dat_ListaTienda();
+
+                if (Session["Tienda"] != null)
+                {
+                    string strJson = "";
+                    JsonResult jRespuesta = null;
+                    var serializer = new JavaScriptSerializer();
+
+                    strJson = datCbo.listarStr_ListaTienda("PE");
+                    jRespuesta = Json(serializer.Deserialize<List<Ent_ListaTienda>>(strJson).Where(t => t.cod_entid == Session["Tienda"].ToString()), JsonRequestBehavior.AllowGet);
+                    ViewBag.ClTienda = jRespuesta;
+                    ViewBag.tda = "0";
+
+                    List<Ent_ListaTienda> listar_tda = serializer.Deserialize<List<Ent_ListaTienda>>(strJson);
+                    var tda = listar_tda.Where(t => t.cod_entid == Session["Tienda"].ToString()).ToList();
+                    ViewBag.Tienda = tda;
+
+                    ViewBag.Distrito = distrito_list.listar_distrito().Where(d => d.cod_dis == tda[0].cod_distri);
+                }
+                else
+                {
+                    ViewBag.tda = "1";
+               
+                    List<Ent_ListaTienda> list = new List<Ent_ListaTienda>();
+                    Ent_ListaTienda entCombo = new Ent_ListaTienda();
+                    entCombo.cod_entid = "-1";
+                    entCombo.des_entid = "----Todos----";
+                    list.Add(entCombo);
+                    ViewBag.Tienda = list;
+
+                    ViewBag.Distrito = distrito_list.listar_distrito();
+
+                    string strJson = "";
+                    JsonResult jRespuesta = null;
+                    var serializer = new JavaScriptSerializer();
+
+                    strJson = datCbo.listarStr_ListaTienda("PE");
+                    jRespuesta = Json(serializer.Deserialize<List<Ent_ListaTienda>>(strJson), JsonRequestBehavior.AllowGet);
+                    ViewBag.ClTienda = jRespuesta;
+                }
+
+                List<Ent_Combo> listcbo = new List<Ent_Combo>();
+                Ent_Combo entCombocbo = new Ent_Combo();
+                entCombocbo.cbo_codigo = "S";
+                entCombocbo.cbo_descripcion = "STANDAR";
+                listcbo.Add(entCombocbo);
+                entCombocbo = new Ent_Combo();
+                entCombocbo.cbo_codigo = "S";
+                entCombocbo.cbo_descripcion = "RIMS";
+                listcbo.Add(entCombocbo);
+                ViewBag.Tipo = listcbo;
+
+                ViewBag.Semana = datCbo.get_ListaSemana();
+
+                return View();
+            }
+
         }
 
     }

@@ -64,7 +64,7 @@ namespace Data.Crystal.Reporte
             return lista;
         }
     
-        public List<Models_Planilla> get_planilla(string cod_tda, string grupo, string categoria, string subcategoria, string estado, string tipo,string tipo_rep="-1")
+        public List<Models_Planilla> get_planilla(string cod_tda, string grupo, string categoria, string subcategoria, string estado, string tipo,string tipo_rep="-1", string calidad="1")
         {
             string sqlquery = "[USP_ReportePlanilla]";
             List<Models_Planilla> lista = null;
@@ -85,6 +85,7 @@ namespace Data.Crystal.Reporte
                             cmd.Parameters.AddWithValue("@Estado", estado);
                             cmd.Parameters.AddWithValue("@Tipo", tipo);
                             cmd.Parameters.AddWithValue("@tip_rep", tipo_rep);
+                            cmd.Parameters.AddWithValue("@calidad", calidad);
 
                             using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                             {
@@ -139,7 +140,7 @@ namespace Data.Crystal.Reporte
             return lista;
         }
 
-        public List<Models_Vendedor> get_reporteVendedor(string coddis,string cod_tda, string fecIni, string fecFin)
+        public List<Models_Vendedor> get_reporteVendedor(string coddis,string cod_tda, string fecIni, string fecFin, string calidad)
         {
             string sqlquery = "USP_XSTORE_REPORTE_VENDEDORES";
             List<Models_Vendedor> lista = null;
@@ -160,6 +161,7 @@ namespace Data.Crystal.Reporte
                             cmd.Parameters.AddWithValue("@FEC_INI", fecIni);
                             cmd.Parameters.AddWithValue("@FEC_FIN", fecFin);
                             cmd.Parameters.AddWithValue("@coddist", coddis);
+                            cmd.Parameters.AddWithValue("@calidad", calidad);
 
                             using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                             {

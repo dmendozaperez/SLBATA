@@ -151,6 +151,44 @@ namespace CapaDato.Reporte
             return list;
         }
 
+        public List<Ent_Combo> get_ListaSemana()
+        {
+            List<Ent_Combo> list = null;
+            string sqlquery = "USP_GET_SEMANA";
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+                    if (cn.State == 0) cn.Open();
+                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        SqlDataReader dr = cmd.ExecuteReader();
+                        if (dr.HasRows)
+                        {
+                            list = new List<Ent_Combo>();
+
+                            while (dr.Read())
+                            {
+                                Ent_Combo combo = new Ent_Combo();
+                                combo.cbo_codigo = dr["cbo_codigo"].ToString();
+                                combo.cbo_descripcion = dr["cbo_descripcion"].ToString();
+
+                                list.Add(combo);
+
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+                list = null;
+            }
+            return list;
+        }
         public List<Ent_Combo> get_ListaTiendaXstore()
         {
             List<Ent_Combo> list = null;
@@ -526,5 +564,43 @@ namespace CapaDato.Reporte
             return ListaFiltro;
         }
 
+        public List<Ent_Combo> get_ListaCalidad()
+        {
+            List<Ent_Combo> list = null;
+            string sqlquery = "USP_LISTAR_CALIDAD";
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+                    if (cn.State == 0) cn.Open();
+                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        SqlDataReader dr = cmd.ExecuteReader();
+                        if (dr.HasRows)
+                        {
+                            list = new List<Ent_Combo>();
+
+                            while (dr.Read())
+                            {
+                                Ent_Combo combo = new Ent_Combo();
+                                combo.cbo_codigo = dr["cbo_codigo"].ToString();
+                                combo.cbo_descripcion = dr["cbo_descripcion"].ToString();
+
+                                list.Add(combo);
+
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+                list = null;
+            }
+            return list;
+        }
     }
 }

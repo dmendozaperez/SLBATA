@@ -75,6 +75,14 @@
                 <span class="glyphicon glyphicon-floppy-disk"></span>Generar
             </button>
         </div>
+        <div class="col-sm-10" style="margin-top:2px;margin-bottom:2px;">
+           
+        </div>
+        <div class="col-sm-1" style="margin-top:2px;margin-bottom:2px;">
+            <button type="button" class="btn btn-success" onclick="javascript: ConfirmarDescarga()">
+                <span class="glyphicon glyphicon-download-alt"></span>&nbsp;&nbsp;Descargar
+            </button>
+        </div>
         
     </div>
     
@@ -457,6 +465,73 @@
 
     }
 
+
+    function ConfirmarDescarga() {
+
+        var ListXoficce = '';
+        var ListOrce = '';
+
+        var combo = document.getElementById("dwTienda");
+        var tienda = combo.options[combo.selectedIndex].text;
+        tienda = tienda.replace("-------", "");
+        tienda = tienda.replace("-------", "");
+
+
+
+        $('input[name="Interface"]').each(function () {
+
+            Id = $(this).attr("id");
+
+            if ($("#" + Id).is(':checked')) {
+
+                var CodGrupo = $("#grup_" + Id).val();
+                var Descripcion = $("#des_" + Id).val();
+
+                if (CodGrupo == '02') {
+                    ListXoficce = ListXoficce + '<b>* ' + Descripcion + '</b><br/>';
+
+                } else {
+                    ListOrce = ListOrce + '<b>* ' + Descripcion + '</b><br/>';
+                }
+            }
+        });
+
+        var inidiv = '<div style="background-color:#f4f4f4;padding-left:10px;padding-top:10px;padding-bottom:10px;">'
+        var findiv = '</div>'
+
+        if (ListXoficce != '') {
+            ListXoficce = '<br/>' + inidiv + '<b>Xoficce<b>' + findiv + '<br/>' + ListXoficce;
+        }
+        if (ListOrce != '') {
+            ListOrce = '<br/>' + inidiv + '<b>Orce<b>' + findiv + '<br/>' + ListOrce;
+        }
+
+        if (ListOrce == '' && ListXoficce == '') {
+            toastr.error("Debe seleccionar al menos un interface.", "Mensaje");
+        } else {
+
+            bootbox.confirm({
+                message: "<b>Esta seguro de descargar de la tienda " + tienda + ",las siguientes interfaces ?   :</b><br/>" + ListXoficce + ListOrce,
+                buttons: {
+                    confirm: {
+                        label: 'Si',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'No',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
+                    if (result) {
+                      
+                    }
+                }
+            });
+        }
+
+
+    }
 
 </script>
 

@@ -59,7 +59,6 @@
                 </div>
             </div>
         </div>
-
         <div class="col-sm-3">
             <label for="dwTipo">Tipo</label>
             <div class="form-group">
@@ -79,21 +78,6 @@
         </div>
         <div class="col-sm-3">
 
-            <label for="dwEstado"></label>
-            <div class="form-group">
-                <div id="tipodoc" class="form-group">
-                    <button type="button" class="btn btn-primary" onclick="javascript: MostrarReporte()">
-                        <span class="glyphicon glyphicon-th-list"></span>&nbsp;Ver Reporte
-                    </button>
-                </div>
-
-            </div>
-            
-        </div>
-
-    </div>
-    <div class="row">
-        <div class="col-sm-3">
             <label for="dwCate">Categoria</label>
             <div class="form-group">
                 <div id="divcateg" class="form-group">
@@ -101,6 +85,9 @@
                 </div>
             </div>
         </div>
+
+    </div>
+    <div class="row">        
         <div class="col-sm-3">
             <label for="dwsbCate">Sub-Categ.</label>
             <div class="form-group">
@@ -119,7 +106,16 @@
             </div>
         </div>
         <div class="col-sm-3">
-            <label for="txtTda">Reporte</label>
+            <label for="dwCalidad">Calidad</label>
+            <div class="form-group">
+                <div id="tipocal" class="form-group">
+                    @Html.DropDownList("dwCalidad", new SelectList(ViewBag.listCalidad, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwCalidad", @name = "dwCalidad", style = "width:270px;max-width:270px;" })
+                </div>
+
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <label for="txtTda">Tipo Reporte</label>
             <div class="form-group">
                 <div id="tipor" class="form-group">
                     @Html.DropDownList("dwReporte", new SelectList(ViewBag.TipoReporte, "cbo_codigo", "cbo_descripcion", "-1"), new { @class = "selectpicker", @id = "dwReporte", @data_live_search = "false", @name = "dwReporte" })
@@ -129,6 +125,38 @@
 
         </div>
 
+    </div>
+    <div class="row">
+
+        <div class="col-sm-3">
+            <label for="txtTda"></label>
+            <div class="form-group">                
+            </div>
+        </div>
+
+        <div class="col-sm-3">
+            <label for="dwTipo"></label>
+            <div class="form-group">                
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <label for="dwGrupo"></label>
+            <div class="form-group">
+            </div>
+        </div>
+        <div class="col-sm-3">
+
+            <label for="dwEstado"></label>
+            <div class="form-group">
+                <div id="tipodoc" class="form-group">
+                    <button type="button" class="btn btn-primary" onclick="javascript: MostrarReporte()">
+                        <span class="glyphicon glyphicon-th-list"></span>&nbsp;Ver Reporte
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
 
     </div>
 </div>
@@ -169,16 +197,19 @@
             var cate = $('#dwCate').val();
             var sbCate = $('#dwsbCate').val();
             var Estado = $('#dwEstado').val();
+            var Calidad = $('#dwCalidad').val();
             var tipoReport = $('#dwReporte').val();
 
             if (grupo == '' || grupo == null) { grupo = '0' };
             if (cate == '' || cate == null) { cate = '0' };
             if (sbCate == '' || sbCate == null) { sbCate = '0' };
             if (Estado == '' || Estado == null) { Estado = '0' };
+            if (Calidad == '' || Calidad == null) { Calidad = '0' };
             grupo = grupo.toString();
             cate = cate.toString();
             sbCate = sbCate.toString();
             Estado = Estado.toString();
+            Calidad = Calidad.toString();
 
             var TeamDetailPostBackURL = "@Url.Action("ShowGenericReportInNewWin", "Reporte")";
             if (tda != '' || tda == null) {
@@ -189,7 +220,7 @@
                     dataType: 'json',
                     type: 'POST',
                     //dataType: "html",
-                    data: { cod_tda: tda, grupo: grupo, categoria: cate, subcategoria: sbCate, estado: Estado, tipo: tipo,tipoReport:tipoReport },
+                    data: { cod_tda: tda, grupo: grupo, categoria: cate, subcategoria: sbCate, estado: Estado, tipo: tipo, tipoReport: tipoReport, calidad: Calidad },
                     //cache: false,
                     //async: false,
                     //dataType: "html",

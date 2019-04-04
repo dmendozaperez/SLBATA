@@ -1345,6 +1345,7 @@
     <Content Include="Views\Reporte\ReporteObs.cshtml" />
     <Content Include="Views\Reporte\ReporteConsultaGuia.cshtml" />
     <Content Include="Views\Reporte\ListaGuiaTienda.cshtml" />
+    <Content Include="Views\Reporte\ReporteRendCateg.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
