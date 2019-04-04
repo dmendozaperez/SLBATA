@@ -56,7 +56,7 @@
                     <label for="txtTda">Distrito.</label>
                     <div class="form-group">
                         <div id="div_dwDis" class="form-group">
-                            @Html.DropDownList("dwDis", new SelectList(ViewBag.Distrito, "cod_dis", "des_dis", "-1"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwDis", @name = "dwDis", @onchange = "ListarTienda()" })
+                            @Html.DropDownList("dwDis", new SelectList(ViewBag.Distrito, "cod_dis", "des_dis", "-1"), new { @class = "selectpicker", @data_live_search = "true", multiple = "multiple", @id = "dwDis", @name = "dwDis", @onchange = "ListarTienda()" })
                         </div>
                     </div>
                 </div>
@@ -80,7 +80,7 @@
                         <label for="txtTda">Calidad</label>
                         <div class="form-group">
                             <div id="div_dwCalidad" class="form-group">
-                                @Html.DropDownList("dwCalidad", new SelectList(ViewBag.listTipoObs, "cbo_codigo", "cbo_descripcion", "-1"), new { @class = "selectpicker",  @id = "dwCalidad", @name = "dwCalidad",  })
+                                @Html.DropDownList("dwCalidad", new SelectList(ViewBag.listCalidad, "cbo_codigo", "cbo_descripcion", "-1"), new { @class = "selectpicker", multiple = "multiple", @id = "dwCalidad", @name = "dwCalidad",  })
                             </div>
                         </div>
                     </div>
@@ -88,7 +88,7 @@
                         <label for="txtTda">Tipo Obs.</label>
                         <div class="form-group">
                             <div id="div_dwTipo" class="form-group">
-                                @Html.DropDownList("dwTipoObs", new SelectList(ViewBag.listCalidad, "cbo_codigo", "cbo_descripcion", "-1"), new { @class = "selectpicker",  @id = "dwTipoObs", @name = "dwTipoObs" })
+                                @Html.DropDownList("dwTipoObs", new SelectList(ViewBag.listTipoObs , "cbo_codigo", "cbo_descripcion", "-1"), new { @class = "selectpicker",  @id = "dwTipoObs", @name = "dwTipoObs" })
                             </div>
                         </div>
                     </div>
@@ -211,15 +211,37 @@
             var tipo=@ViewBag.tda;
 
             var dataArray = data.Data;
-            var strTipo = $('#dwDis').val();
+            var strTipo = $('#dwDis').val();          
+           
+
             var listar = [];
 
-            if (strTipo != null) {
-                var lista_filter = (strTipo == "-1") ? dataArray.filter(obj => obj.cod_distri != strTipo) : dataArray.filter(obj => obj.cod_distri === strTipo || obj.cod_distri=='0');
-                $.each(lista_filter, function (index, item) {
+            if (strTipo != null) {             
 
-                    listar.push(item);
-                });
+               if(strTipo == "-1"){
+                    var lista_filter = (strTipo == "-1") ? dataArray.filter(obj => obj.cod_distri != strTipo) : dataArray.filter(obj => obj.cod_distri === strTipo || obj.cod_distri=='0');
+                    $.each(lista_filter, function (index, item) {
+
+                        listar.push(item);
+                    });
+                }else{
+                    
+                   var lista_filter = dataArray.filter(obj => obj.cod_distri=='0');
+                   $.each(lista_filter, function (index, item) {
+
+                       listar.push(item);
+                   });                
+
+                   $.each(strTipo, function (index2, item2) {
+
+                       var lista_filter = dataArray.filter(obj => obj.cod_distri === item2);
+                       $.each(lista_filter, function (index, item) {
+
+                           listar.push(item);
+                       });
+                       
+                   });
+                }
             }
 
             llenarCombo("div_tda", "dwtda", listar, '0', '', "",tipo);
@@ -346,6 +368,9 @@
             if(parseFloat(precio1) > parseFloat(precio2)){bValidacion=false }        
            //bValidacion=false;
             //tda = tda.toString();
+
+            calidad = calidad.toString();
+            coddis = coddis.toString();
           
             var TeamDetailPostBackURL = "@Url.Action("ShowGenericReportObsolescenciaInNewWin", "Reporte")";
             if (bValidacion) {

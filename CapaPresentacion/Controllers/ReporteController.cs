@@ -386,8 +386,8 @@ namespace CapaPresentacion.Controllers
                 Ent_ComboList filtros = datCbo.Listar_Filtros_OBS();
 
 
-                ViewBag.listTipoObs = filtros.Lista_1;
-                ViewBag.listCalidad = filtros.Lista_2;
+                ViewBag.listCalidad  = filtros.Lista_1;
+                ViewBag.listTipoObs = filtros.Lista_2;
                 ViewBag.lisRango = filtros.Lista_3;
 
                 return View();
