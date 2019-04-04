@@ -39,7 +39,35 @@
             </div>
         </div>
 
-        <div class="col-sm-2">
+        <div  class="col-sm-3">
+            <label for="txtTda">Tipo.</label>
+            <div class="form-group">
+                <div id="divTipo" class="form-group">
+                    @Html.DropDownList("dwTipo", new SelectList(ViewBag.Tipo, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", @id = "dwTipo", @name = "dwTipo", style = "width:270px;max-width:270px;", @onchange = "ListarGrupo()" })
+                </div>
+            </div>
+        </div>
+        <div  class="col-sm-3">
+            <label for="dwGrupo">Grupo</label>
+            <div class="form-group">
+                <div id="divgrupo" class="form-group">
+                    @Html.DropDownList("dwGrupo", new SelectList(ViewBag.Categoria, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwGrupo", @name = "dwGrupo", style = "width:270px;max-width:270px;", @onchange = "ListarCategoria()" })
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <label for="dwCate">Categoria</label>
+            <div class="form-group">
+                <div id="divcateg" class="form-group">
+                    @Html.DropDownList("dwCate", new SelectList(ViewBag.Categoria, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwCate" })
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+
+        <div class="col-sm-3">
             <label for="dwCate">Semanas vta. a evaluar</label>
             <div class="form-group">
                 <div class="form-group">
@@ -48,7 +76,7 @@
             </div>
         </div>
 
-        <div class="col-sm-2">
+        <div class="col-sm-3">
             <label for="dwCate">Stock Max.</label>
             <div class="form-group">
                 <div class="form-group">
@@ -65,7 +93,7 @@
             </div>
         </div>
 
-        <div class="col-sm-1">
+        <div class="col-sm-3">
             <label for="dwEstado"></label>
             <div class="form-group">
                 <div id="tipodoc" class="form-group">
@@ -102,7 +130,10 @@
 
 <script src="~/Scripts/BI.js"></script>
 <script>
-   
+    $(document).ready(function () {
+        
+        ListarGrupo();
+    });
 
     function loadedFrame() {
         $('#loading').hide();
@@ -168,6 +199,114 @@
             if (semanaInt <= 0)
                 toastr.error('Numero de semanas es inválido', "Alerta");
         }
+    }
+
+    function ListarGrupo() {
+
+
+        var data = function () { return @Html.Raw(Json.Encode(ViewBag.ClGrupo)); }();
+
+        var dataArray = data.Data;
+        var strTipo = $('#dwTipo').val();
+        var listar = [];
+
+        if (strTipo != null) {
+            var lista_filter = dataArray.filter(obj => obj.cbo_filter_2 === strTipo);
+            $.each(lista_filter, function (index, item) {
+
+                listar.push(item);
+            });
+        }
+       
+        llenarComboAlt("divgrupo", "dwGrupo", listar, '0', '', "ListarCategoria");
+ 
+        ListarCategoria();
+   
+
+    }
+
+    function ListarCategoria() {
+        
+        var data = function () { return @Html.Raw(Json.Encode(ViewBag.ClCategoria)); }();
+        var dataArray = data.Data;
+        var strgrupo = $('#dwGrupo').val();
+          
+        var strTipo = $('#dwTipo').val();
+        var listar = [];
+        var lista_default = dataArray.filter(obj => obj.cbo_filter === '');
+
+
+        $.each(lista_default, function (index, item) {
+            listar.push(item);
+        });
+
+        if (strgrupo != null) {
+
+            if (strgrupo != '0') {
+                var lista_filteAnt = dataArray.filter(obj => obj.cbo_filter_2 === strTipo);
+
+                $.each(strgrupo, function (index, item) {
+
+                    var lista_filter = lista_filteAnt.filter(obj => obj.cbo_filter === item);
+                 
+                    $.each(lista_filter, function (index2, item2) {
+
+                        listar.push(item2);                       
+
+                    });
+                });
+            }        
+
+            if (strgrupo == '0') {
+                var lista_filteAnt = dataArray.filter(obj => obj.cbo_filter_2 === strTipo);
+                var lista_filter = lista_filteAnt;
+
+                $.each(lista_filter, function (index, item) {
+
+                    listar.push(item);
+                });
+            }
+        }
+        llenarComboAlt("divcateg", "dwCate", listar, '0', '', "");
+     
+
+    }
+
+    function llenarComboAlt(DivId, IdControl, Data, codDefecto, desDefecto, onchangeFuncion) {
+
+        $('#' + IdControl).find('option').remove();
+        var str = '<select class="selectpicker"  multiple = "multiple"  data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '">';
+        var ItemNormal = '<option value="codItem>desItem</option>';
+        var colectItemNormal = '';
+
+        if (onchangeFuncion != '') { onchangeFuncion = 'onchange = "' + onchangeFuncion + '()"' }
+        str = str.replace("onchangeFuncion", onchangeFuncion);
+
+        $.each(Data, function (index, item) {
+
+            colectItemNormal = colectItemNormal + ItemNormal
+            var strSelected = '"';
+
+            if (item.cbo_codigo == codDefecto) {
+                strSelected = '" selected="selected" '
+
+            }
+
+            colectItemNormal = colectItemNormal.replace("codItem", item.cbo_codigo + strSelected);
+            colectItemNormal = colectItemNormal.replace("desItem", item.cbo_descripcion);
+
+        });
+
+        str += colectItemNormal
+        str += '</select>'
+
+        document.getElementById(DivId).innerHTML = str
+
+        $('.selectpicker').selectpicker({
+            liveSearch: true,
+            showSubtext: true
+        });
+
     }
 
 </script>

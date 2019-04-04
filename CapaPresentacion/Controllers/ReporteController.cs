@@ -497,6 +497,13 @@ namespace CapaPresentacion.Controllers
             string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
             string return_view = actionName + "|" + controllerName;
 
+            List<Ent_Combo> listD = new List<Ent_Combo>();
+            Ent_Combo entComboD = new Ent_Combo();
+            entComboD.cbo_codigo = "0";
+            entComboD.cbo_descripcion = "----Todos----";
+            listD.Add(entComboD);
+            ViewBag.Categoria = listD;
+
             List<Ent_Combo> list = new List<Ent_Combo>();
             Ent_Combo entCombo = new Ent_Combo();
             entCombo.cbo_codigo = "0";
@@ -534,6 +541,22 @@ namespace CapaPresentacion.Controllers
                 {
                     ViewBag.Tienda = datCbo.get_ListaTiendaXstoreActivo("");
                 }
+
+                ViewBag.Tipo = datCbo.get_ListaTipoCategoria();
+
+                string strJson2 = "";
+                JsonResult jRespuesta2 = null;
+                var serializer2 = new JavaScriptSerializer();
+
+
+                strJson2 = datCbo.listarStr_ListaGrupoTipo();
+
+                jRespuesta2 = Json(serializer2.Deserialize<List<Ent_Combo>>(strJson2), JsonRequestBehavior.AllowGet);
+                ViewBag.ClGrupo = jRespuesta2;
+
+                strJson2 = datCbo.listarStr_ListaCategoria("");
+                jRespuesta2 = Json(serializer2.Deserialize<List<Ent_Combo>>(strJson2), JsonRequestBehavior.AllowGet);
+                ViewBag.ClCategoria = jRespuesta2;
 
                 //ViewBag.Cadena = datCbo.get_ListaCadena();
 
