@@ -368,9 +368,9 @@
             if(parseFloat(precio1) > parseFloat(precio2)){bValidacion=false }        
            //bValidacion=false;
             //tda = tda.toString();
-
-            calidad = calidad.toString();
-            coddis = coddis.toString();
+            if(coddis != '-1'){ coddis = coddis.toString();}
+            if(calidad != '-1'){ calidad = calidad.toString();}
+             
           
             var TeamDetailPostBackURL = "@Url.Action("ShowGenericReportObsolescenciaInNewWin", "Reporte")";
             if (bValidacion) {

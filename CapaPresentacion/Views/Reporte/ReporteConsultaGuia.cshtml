@@ -51,18 +51,21 @@
             </div>
            
             <div class="col-sm-3">
-                <label for="segape"></label>
+                <label for="dwCate">Articulo</label>
                 <div class="form-group">
-                    <div class="input-group">
-                        
+                    <div class="form-group">
+                        <input name="txtarticulo" type="text" maxlength="7" id="txtarticulo" value="" style="width:100%" autofocus class="form-control" />
                     </div>
                 </div>
             </div>
             <div class="col-sm-3">
-                <label for="fecnac"></label>
+                <label for="dwCalidad">Calidad</label>
                 <div class="form-group">
-                    <div class="input-group">                        
+                    <div id="tipocal" class="form-group">
+                        @Html.DropDownList("dwCalidad", new SelectList(ViewBag.listCalidad, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwCalidad", @name = "dwCalidad", style = "width:270px;max-width:270px;" })
+
                     </div>
+
                 </div>
             </div>
            
@@ -100,7 +103,7 @@
                   <label for="dwCate">Categoria</label>
                   <div class="form-group">
                       <div id="divcateg" class="form-group">
-                          @Html.DropDownList("dwCate", new SelectList(ViewBag.Categoria, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwCate", @onchange = "ListarSubCategoria()" })
+                          @Html.DropDownList("dwCate", new SelectList(ViewBag.Categoria, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwCate" })
                       </div>
                   </div>
               </div>         
@@ -144,13 +147,10 @@
 
 <script>
     $(document).ready(function () {
-        ListarGrupo();      
-       
-    });  
-
+        ListarGrupo();        
+    });
 
     function ListarGrupo() {
-
 
         var data = function () { return @Html.Raw(Json.Encode(ViewBag.ClGrupo)); }();
 
@@ -161,28 +161,22 @@
         if (strTipo != null) {
             var lista_filter = dataArray.filter(obj => obj.cbo_filter_2 === strTipo);
             $.each(lista_filter, function (index, item) {
-
                 listar.push(item);
             });
         }
 
         llenarComboAlt("divgrupo", "dwGrupo", listar, '0', '', "ListarCategoria");
-
         ListarCategoria();
-
-
     }
 
     function ListarCategoria() {
         
         var data = function () { return @Html.Raw(Json.Encode(ViewBag.ClCategoria)); }();
         var dataArray = data.Data;
-        var strgrupo = $('#dwGrupo').val();
-          
+        var strgrupo = $('#dwGrupo').val();          
         var strTipo = $('#dwTipo').val();
         var listar = [];
         var lista_default = dataArray.filter(obj => obj.cbo_filter === '');
-
 
         $.each(lista_default, function (index, item) {
             listar.push(item);
@@ -215,8 +209,7 @@
                 });
             }
         }
-        llenarComboAlt("divcateg", "dwCate", listar, '0', '', "");
-     
+        llenarComboAlt("divcateg", "dwCate", listar, '0', '', "");    
 
     }
 

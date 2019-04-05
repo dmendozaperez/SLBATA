@@ -121,12 +121,7 @@
         var theader = '';
         var tbody = '';
         theader += '<thead>';
-        theader += '<tr>'; 
-        //theader += '<th '+style+' >';
-        //theader += '<div class="col-sm-1" style="margin-top:2px;margin-bottom:2px;">';
-        //theader += '<label for="disponible">TIPO</label>';
-        //theader += '</div>';
-        //theader += '</th>';
+        theader += '<tr>';         
         theader += '<th ' + style + ' >';
         theader += '<div class="col-sm-1" style="margin-top:2px;margin-bottom:2px;">';
         theader += '<label for="disponible">GRUPO</label>';
@@ -155,11 +150,7 @@
         theader += '</tr>';
         theader += '</thead>';
 
-        //tbody += '<td  ' + style + ' >';
-        //tbody += '<div class="col-sm-1" style="width:100%;margin-top:2px;margin-bottom:2px;">';
-        //tbody += 'tipo';
-        //tbody += '</div>';
-        //tbody += '</td>';
+        
         tbody += '<td   ' + style + '>';
         tbody += '<div class="col-sm-1" style="width:100%;margin-top:2px;margin-bottom:2px;">';
         tbody += 'grupo';
@@ -212,6 +203,12 @@
         var Ncalzado = '';
         var VNcalzado = '';
         var Estado = '';
+
+        var fcalzado = 0
+        var fvcalzado = 0.00
+
+        var fncalzado = 0
+        var fnvcalzado = 0.00
        
         $.each(lista_default, function (index, item) {
            
@@ -226,6 +223,9 @@
             Ncalzado = item.NOCALZADO;
             VNcalzado = item.VNOCALZADO;
             Estado = item.ESTADO;
+
+            cod_linea = cod_linea == '0' || cod_linea == '' ? '-1' : cod_linea;
+            cod_linea = cod_linea == '0' || cod_linea == '' ? '-1' : cod_linea;
             
 
             if (articulo != articulo_old || calidad != calidad_old) {               

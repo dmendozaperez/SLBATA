@@ -754,6 +754,8 @@ namespace CapaPresentacion.Controllers
 
                 strJson2 = datCbo.listarStr_ListaGrupoTipo();
 
+                ViewBag.listCalidad = datCbo.get_ListaCalidad();
+
                 jRespuesta2 = Json(serializer2.Deserialize<List<Ent_Combo>>(strJson2), JsonRequestBehavior.AllowGet);
                 ViewBag.ClGrupo = jRespuesta2;
 
@@ -774,13 +776,16 @@ namespace CapaPresentacion.Controllers
         }
 
 
-        public PartialViewResult ListaGuiaTienda(string dwtienda, string dwTipo, string dwGrupo, string dwCate)
+        public PartialViewResult ListaGuiaTienda(string dwtienda, string dwTipo, string dwGrupo, string dwCate, string txtarticulo, string dwCalidad)
         {
-            dwTipo= dwTipo =="01"? "S" : "R";
+            dwTipo= dwTipo =="01"? "S" : "R";         
+            txtarticulo = txtarticulo.Trim();
             dwGrupo = dwGrupo == "0" ? "-1" : dwGrupo;
             dwCate = dwCate == "0" ? "-1" : dwCate;
+            txtarticulo = txtarticulo == "" ? "-1" : txtarticulo;
+            dwCalidad = dwCalidad==null ? "0" : dwCalidad;
 
-            Models_GuiaConten model_vent_comp = listaGuia(dwtienda, dwTipo, dwGrupo, dwCate);
+            Models_GuiaConten model_vent_comp = listaGuia(dwtienda, dwTipo, dwGrupo, dwCate, txtarticulo, dwCalidad);
 
           ViewBag.GuiaDetalle = model_vent_comp.strDetalle;
           Session[_session_listguia_private] = model_vent_comp.listGuia;
@@ -788,11 +793,11 @@ namespace CapaPresentacion.Controllers
             return PartialView(model_vent_comp.listGuia);
         }
 
-        public Models_GuiaConten listaGuia(string dwtienda, string tipo_cat, string cod_linea, string cod_categ)
+        public Models_GuiaConten listaGuia(string dwtienda, string tipo_cat, string cod_linea, string cod_categ, string articulo, string calidad)
         {
             Data_Bata pl = new Data_Bata();
 
-            Models_GuiaConten model_vent_comp = pl.list_Guia_Tienda(dwtienda, tipo_cat, cod_linea, cod_categ);
+            Models_GuiaConten model_vent_comp = pl.list_Guia_Tienda(dwtienda, tipo_cat, cod_linea, cod_categ, articulo, calidad);
 
             return model_vent_comp;
         }
