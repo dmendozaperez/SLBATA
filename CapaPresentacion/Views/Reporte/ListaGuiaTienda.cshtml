@@ -223,9 +223,12 @@
             Ncalzado = item.NOCALZADO;
             VNcalzado = item.VNOCALZADO;
             Estado = item.ESTADO;
+        
+            fnvcalzado = articulo.charAt(0) == '9' ? fnvcalzado + parseFloat(item.VDETALLE) : fnvcalzado;
+            fncalzado = articulo.charAt(0) == '9' ? fncalzado + parseInt(item.CANTIDAD) : fncalzado;
 
-            cod_linea = cod_linea == '0' || cod_linea == '' ? '-1' : cod_linea;
-            cod_linea = cod_linea == '0' || cod_linea == '' ? '-1' : cod_linea;
+            fvcalzado = articulo.charAt(0) != '9' ? fvcalzado + parseFloat(item.VDETALLE) : fvcalzado;
+            fcalzado = articulo.charAt(0) != '9' ? fcalzado + parseInt(item.CANTIDAD) : fcalzado;
             
 
             if (articulo != articulo_old || calidad != calidad_old) {               
@@ -267,6 +270,11 @@
             
         });
 
+        //alert(parseFloat(fnvcalzado).toFixed(2))
+        //alert(parseFloat(fncalzado).toFixed(2))
+        //alert(parseFloat(fcalzado).toFixed(2))
+        //alert(parseFloat(fvcalzado).toFixed(2))
+
         var temrBody = tbody
         temrBody = temrBody.replace("tipo", tpCategoria);
         temrBody = temrBody.replace("grupo", linea);
@@ -283,6 +291,14 @@
         listCantidad = '';
         total = 0;
         Body += temrBody;
+        var strStyle = '';
+        alert(calzado)
+        alert(fcalzado)
+        alert(Ncalzado)
+        alert(fncalzado)
+        if (calzado == fcalzado && Ncalzado==fncalzado){
+            strStyle = 'style="display:none"'
+        }
 
         strtable = '<table style="width:100%;" class="table table-hover dataTable  table-striped table-responsive" role="grid">' + theader + '<tbody>' + Body + '</tbody>' + '</table>';
        
@@ -300,12 +316,12 @@
         strhtml += '<div class="modal-body">'
         strhtml += '<table class="table table-striped" RULES="none">'
         strhtml += '<tr>'
-        strhtml += '<td colspan="1" valign="middle"><label>TIPO</label></td>'
-        strhtml += '<td colspan="1">'
+        strhtml += '<td colspan="2" valign="middle"><label>TIPO</label></td>'
+        strhtml += '<td colspan="2">'
         strhtml += '&nbsp;&nbsp;' + tipo
         strhtml += '</td>'
-        strhtml += '<td colspan="1" valign="middle"><label>ESTADO</label></td>'
-        strhtml += '<td colspan="1">'
+        strhtml += '<td colspan="2" valign="middle"><label>ESTADO</label></td>'
+        strhtml += '<td colspan="2">'
         strhtml += '&nbsp;&nbsp;' + Estado
         strhtml += '</td>'
         strhtml += '</tr>'
@@ -318,8 +334,6 @@
         strhtml += '<td colspan="1">'
         strhtml += '&nbsp;&nbsp;S/.&nbsp;' + Vcalzado
         strhtml += '</td>'
-        strhtml += '</tr>'
-        strhtml += '<tr>'
         strhtml += '<td colspan="1" valign="middle"><label>NO CALZADO</label></td>'
         strhtml += '<td colspan="1">'
         strhtml += '&nbsp;&nbsp;' + Ncalzado
@@ -327,6 +341,24 @@
         strhtml += '<td colspan="1" valign="middle"><label>V. NO CALZADO</label></td>'
         strhtml += '<td colspan="1">'
         strhtml += '&nbsp;&nbsp;S/.&nbsp;' + VNcalzado
+        strhtml += '</td>'
+        strhtml += '</tr>'
+        strhtml += '<tr '+strStyle+' >'
+        strhtml += '<td colspan="1" style="text-align:left;"><button class="btn btn-success btn-xs" style="width:100%;text-align:left;">CALZADO</button></td>'
+        strhtml += '<td colspan="1">'
+        strhtml += '&nbsp;&nbsp;' + fcalzado
+        strhtml += '</td>'
+        strhtml += '<td colspan="1" style="text-align:left;"><button class="btn btn-success btn-xs" style="width:100%;text-align:left;">V. CALZADO</button></td>'
+        strhtml += '<td colspan="1">'
+        strhtml += '&nbsp;&nbsp;S/.&nbsp;' + parseFloat(fvcalzado).toFixed(2)
+        strhtml += '</td>'
+       strhtml += '<td colspan="1" style="text-align:left;"><button class="btn btn-success btn-xs" style="width:100%;text-align:left;">NO CALZADO</button></td>'
+        strhtml += '<td colspan="1">'
+        strhtml += '&nbsp;&nbsp;' + fncalzado
+        strhtml += '</td>'
+        strhtml += '<td colspan="1" style="text-align:left;"><button class="btn btn-success btn-xs" style="width:100%;text-align:left;">V. NO CALZADO</button></td>'
+        strhtml += '<td colspan="1">'
+        strhtml += '&nbsp;&nbsp;S/.&nbsp;' + parseFloat(fnvcalzado).toFixed(2)
         strhtml += '</td>'
         strhtml += '</tr>'
         strhtml += '<tr>'

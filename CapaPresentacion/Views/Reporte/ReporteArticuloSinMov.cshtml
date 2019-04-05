@@ -145,14 +145,22 @@
         var cadena ="-1";
         var semana = $('#txtsemana').val();
         var strpares = $('#txtpares').val();
-        var strestado  = $('#txtEstado').val();
+        var strestado = $('#txtEstado').val();
+        var grupo = $('#dwGrupo').val();
+        var tipo = $('#dwTipo').val();
+        //var str = grupo.toString();
+        var cate = $('#dwCate').val();
 
-  
+        if (grupo == '' || grupo == null) { grupo = '0' };
+        if (cate == '' || cate == null) { cate = '0' };  
         if (semana == '' || semana == null) { semana = '0' };
         if (strpares == '' || strpares == null) { strpares = '0' };
 
         var paresInt = parseInt(strpares);
         var semanaInt = parseInt(semana);
+
+        grupo = grupo.toString();
+        cate = cate.toString();
      
         var TeamDetailPostBackURL ="@Url.Action("ShowGenericReportArtSinMovInNewWin", "Reporte")";
         if (tda != '' && tda != null && paresInt > 0 && semanaInt > 0) {
@@ -162,7 +170,7 @@
                 url:TeamDetailPostBackURL,
                 dataType: 'json',
                 type: 'POST',
-                data: { cod_cadena: cadena, cod_tda: tda, nsemana: semana, maxpares: strpares, estado: strestado },
+                data: { cod_cadena: cadena, cod_tda: tda, nsemana: semana, maxpares: strpares, estado: strestado, grupo: grupo, categoria: cate, tipo: tipo },
                 
                 success: function (data) {
                     //alert('ok');
