@@ -12,7 +12,7 @@ namespace CapaPresentacion.AspNetForms
     public partial class ArticuloSinMov : System.Web.UI.Page
     {
         ReportDocument rd = null;
-        protected void Page_Load(object sender, EventArgs e)
+        protected void Page_Init(object sender, EventArgs e)
         {
             try
             {

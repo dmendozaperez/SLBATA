@@ -195,7 +195,7 @@ namespace Data.Crystal.Reporte
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception exc)
             {
 
                 lista = null;
