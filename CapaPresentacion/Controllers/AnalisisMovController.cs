@@ -77,12 +77,12 @@ namespace CapaPresentacion.Controllers
         public List<Ent_Analisis_Mov> lista(string cod_tda, DateTime fec_ini, DateTime fec_fin,
                                                 string cod_art, string calidad, string talla)
         {
-            //string gcodTda = (String)Session["Tienda"];
+            string gcodTda = (String)Session["Tienda"];
             string strParams = "";
-            //if (gcodTda != "" && gcodTda != null)
-            //{
-            //    strParams = gcodTda;
-            //}
+            if (gcodTda != "" && gcodTda != null)
+            {
+                strParams = gcodTda;
+            }
 
             List<Ent_Analisis_Mov> listdoc = dat_analisis.get_lista(cod_tda, fec_ini, fec_fin, cod_art, calidad, talla);
             Session[_session_listanalisisDetalle_private] = listdoc;
