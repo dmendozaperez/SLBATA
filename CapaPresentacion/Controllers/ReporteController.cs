@@ -299,6 +299,7 @@ namespace CapaPresentacion.Controllers
         }
         public ActionResult ReporteObs()
         {
+         
             Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
             string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
             string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
@@ -566,7 +567,7 @@ namespace CapaPresentacion.Controllers
         }
 
         [HttpPost]
-        public ActionResult ShowGenericReportArtSinMovInNewWin(string cod_cadena, string cod_tda, Int32 nsemana, Int32 maxpares, string estado)
+        public ActionResult ShowGenericReportArtSinMovInNewWin(string cod_cadena, string cod_tda, Int32 nsemana, Int32 maxpares, string estado, string grupo, string categoria, string subcategoria, string tipo)
         {
             //grupo = "0";categoria = "0";subcategoria = "0";estado = "0";
             Data_Bata pl = new Data_Bata();
