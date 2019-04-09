@@ -34,7 +34,7 @@
             <label for="dwCate">Tienda</label>
             <div class="form-group">
                 <div class="form-group">
-                    @Html.DropDownList("txtTda", new SelectList(ViewBag.tienda, "cbo_codigo", "cbo_descripcion"), new { @class = "selectpicker", @data_live_search = "true", @id = "txtTda", @name = "txtTda" })
+                    @Html.DropDownList("txtTda", new SelectList(ViewBag.tienda, "cbo_codigo", "cbo_descripcion"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "txtTda", @name = "txtTda" })
                 </div>
             </div>
         </div>
@@ -155,12 +155,14 @@
         if (cate == '' || cate == null) { cate = '0' };  
         if (semana == '' || semana == null) { semana = '0' };
         if (strpares == '' || strpares == null) { strpares = '0' };
+        if (tda == '' || tda == null) { tda = '0' };
 
         var paresInt = parseInt(strpares);
         var semanaInt = parseInt(semana);
 
         grupo = grupo.toString();
         cate = cate.toString();
+        tda = tda.toString();
      
         var TeamDetailPostBackURL ="@Url.Action("ShowGenericReportArtSinMovInNewWin", "Reporte")";
         if (tda != '' && tda != null && paresInt > 0 && semanaInt > 0) {

@@ -12,7 +12,7 @@ namespace Data.Crystal.Reporte
 {
     public class Data_Bata
     {
-        public List<Models_Art_Sin_Mov> list_art_sin_mov(string cadena,string tienda,Int32 nsemana,Int32 maxpares, string estado)
+        public List<Models_Art_Sin_Mov> list_art_sin_mov(string cadena,string tienda,Int32 nsemana,Int32 maxpares, string estado, string grupo, string categoria, string tipo)
         {
             string sqlquery = "USP_XSTORE_REPORTE_ART_SIN_MOVIMIENTOS";
             List<Models_Art_Sin_Mov> lista = null;
@@ -32,6 +32,9 @@ namespace Data.Crystal.Reporte
                             cmd.Parameters.AddWithValue("@nsemanas", nsemana);
                             cmd.Parameters.AddWithValue("@nstock", maxpares);
                             cmd.Parameters.AddWithValue("@estado", estado);
+                            cmd.Parameters.AddWithValue("@Grupo", grupo);
+                            cmd.Parameters.AddWithValue("@Categoria", categoria);
+                            cmd.Parameters.AddWithValue("@Tipo", tipo);
 
                             using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                             {
@@ -55,7 +58,7 @@ namespace Data.Crystal.Reporte
                             }
                         }
                     }
-                    catch 
+                    catch(Exception ex)
                     {
                         
                     }

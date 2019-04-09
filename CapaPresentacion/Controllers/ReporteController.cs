@@ -567,13 +567,13 @@ namespace CapaPresentacion.Controllers
         }
 
         [HttpPost]
-        public ActionResult ShowGenericReportArtSinMovInNewWin(string cod_cadena, string cod_tda, Int32 nsemana, Int32 maxpares, string estado, string grupo, string categoria, string subcategoria, string tipo)
+        public ActionResult ShowGenericReportArtSinMovInNewWin(string cod_cadena, string cod_tda, Int32 nsemana, Int32 maxpares, string estado, string grupo, string categoria, string tipo)
         {
             //grupo = "0";categoria = "0";subcategoria = "0";estado = "0";
             Data_Bata pl = new Data_Bata();
             this.HttpContext.Session["ReportName"] = "ReportArtSinMov.rpt";
 
-            List<Models_Art_Sin_Mov> model_Art_sn_mov = pl.list_art_sin_mov(cod_cadena, cod_tda, nsemana, maxpares, estado);
+            List<Models_Art_Sin_Mov> model_Art_sn_mov = pl.list_art_sin_mov(cod_cadena, cod_tda, nsemana, maxpares, estado, grupo, categoria, tipo);
 
             this.HttpContext.Session["rptSource"] = model_Art_sn_mov;
 
