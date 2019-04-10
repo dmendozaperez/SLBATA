@@ -720,7 +720,6 @@ namespace CapaPresentacion.Controllers
             });
         }
 
-
         public ActionResult ReporteConsultaGuia()
         {
             Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
@@ -775,7 +774,6 @@ namespace CapaPresentacion.Controllers
             }
 
         }
-
 
         public PartialViewResult ListaGuiaTienda(string dwtienda, string dwTipo, string dwGrupo, string dwCate, string txtarticulo, string dwCalidad)
         {
@@ -936,6 +934,30 @@ namespace CapaPresentacion.Controllers
                 return View();
             }
 
+        }
+
+
+        [HttpPost]
+        public ActionResult ShowGenericReportRendimientoCateg(string tip_Categ, string cod_Dis, string codEntid, string cod_Semana)
+        {
+            //grupo = "0";categoria = "0";subcategoria = "0";estado = "0";
+            Data_Bata pl = new Data_Bata();
+            this.HttpContext.Session["ReportName"] = "ReporteRendCateg.rpt";
+
+            List<Models_Rendimiento_Categ> model_Art_rend_categ = pl.list_RendimientoxCategoria(tip_Categ, cod_Dis, codEntid, cod_Semana);
+
+            this.HttpContext.Session["rptSource"] = model_Art_rend_categ;
+
+
+            /*error=0;exito=1*/
+            string _estado = (model_Art_rend_categ == null) ? "0" : "1";
+
+            //if (model_planilla==null)
+
+            return Json(new
+            {
+                estado = _estado
+            });
         }
 
     }

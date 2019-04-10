@@ -59,7 +59,7 @@
             <div class="form-group">
                 <div class="form-group">
                     <div id="div_tipo" class="form-group">
-                        @Html.DropDownList("dwTipo", new SelectList(ViewBag.Semana, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", @data_live_search = "false", @id = "dwTipo", @name = "dwTipo" })
+                        @Html.DropDownList("dwSemana", new SelectList(ViewBag.Semana, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", @data_live_search = "false", @id = "dwSemana", @name = "dwSemana" })
                     </div>
                 </div>
 
@@ -136,7 +136,7 @@
                 });
             }
 
-            llenarCombo("div_tda", "dwtda", listar, '0', '', "ListarCategoria",tipo);
+            llenarCombo("div_tda", "dwtda", listar, '0', '', "",tipo);
             //ListarCategoria();
             //ListarSubCategoria()
         }
@@ -189,15 +189,19 @@
 
 
         function MostrarReporte(e) {
-            var dis = $('#dwDis').val();
+            var coddis = $('#dwDis').val();
             var tda = $('#dwtda').val();
-            var fecIni = ($("#fecini").val()).split('-');
-            var fecFin = ($("#fecfin").val()).split('-');
-            var strIni = fecIni[2] + fecIni[1] + fecIni[0];
-            var strFin = fecFin[2] + fecFin[1] + fecFin[0];
-            tda = tda.toString();
-            //dis = dis.toString();
-            var TeamDetailPostBackURL = "@Url.Action("ShowGenericReportVendedorInNewWin", "Reporte")";
+            var tipo_cat = $('#dwTipo').val();
+            var semana = $('#dwSemana').val();
+          
+            tipo_cat = tipo_cat == '01'  ? 'S'  : tipo_cat;
+            tipo_cat = tipo_cat == '02'  ? 'R'  : tipo_cat;
+           
+            if(coddis != '-1'){ coddis = coddis.toString();}
+            if(tda != '-1'){ tda = tda.toString();}
+            if(tipo_cat != '-1'){ tipo_cat = tipo_cat.toString();}
+
+            var TeamDetailPostBackURL = "@Url.Action("ShowGenericReportRendimientoCateg", "Reporte")";
             if (tda != '' || tda == null) {
                 waitingDialog.show('Espere un momento por favor');
                 $.ajax({
@@ -206,7 +210,7 @@
                     dataType: 'json',
                     type: 'POST',
                     //dataType: "html",
-                    data: { coddis:dis, cod_tda: tda, fecIni: strIni, FecFin: strFin },
+                    data: { tip_Categ:tipo_cat, cod_Dis:coddis, codEntid:tda, cod_Semana:semana},
                     //cache: false,
                     //async: false,
                     //dataType: "html",
@@ -214,7 +218,7 @@
                         //alert('ok');
                         if (data.estado == "1") {
                             $('#load').show();
-                            $("#load").attr("src", "../AspNetForms/Vendedor.aspx");
+                            $("#load").attr("src", "../AspNetForms/RendimientoxCateg.aspx");
                         }
                         else {
                             $('#load').hide();

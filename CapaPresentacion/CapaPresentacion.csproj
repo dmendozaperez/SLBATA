@@ -244,6 +244,13 @@
     <Compile Include="AspNetForms\ReporteObs.aspx.designer.cs">
       <DependentUpon>ReporteObs.aspx</DependentUpon>
     </Compile>
+    <Compile Include="AspNetForms\RendimientoxCateg.aspx.cs">
+      <DependentUpon>RendimientoxCateg.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AspNetForms\RendimientoxCateg.aspx.designer.cs">
+      <DependentUpon>RendimientoxCateg.aspx</DependentUpon>
+    </Compile>
     <Compile Include="AspNetForms\Vendedor.aspx.cs">
       <DependentUpon>Vendedor.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -291,6 +298,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Control\LoginViewModel.cs" />
+    <Compile Include="Models\Crystal\Reporte\Models_Rendimiento_Categ.cs" />
     <Compile Include="Models\Crystal\Reporte\Models_Guia.cs" />
     <Compile Include="Models\Crystal\Reporte\Models_Comparativo_Venta.cs" />
     <Compile Include="Models\Crystal\Reporte\Models_Obs.cs" />
@@ -310,6 +318,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PlanillaDet.rpt</DependentUpon>
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RptsCrystal\ReporteRendCateg.cs">
+      <DependentUpon>ReporteRendCateg.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="RptsCrystal\ReporteOBS.cs">
       <AutoGen>True</AutoGen>
@@ -351,6 +365,7 @@
   <ItemGroup>
     <Content Include="AspNetForms\ArticuloSinMov.aspx" />
     <Content Include="AspNetForms\ReporteObs.aspx" />
+    <Content Include="AspNetForms\RendimientoxCateg.aspx" />
     <Content Include="AspNetForms\Vendedor.aspx" />
     <Content Include="AspNetForms\Planilla.aspx" />
     <Content Include="ContentSelect\bootstrap-select.css" />
@@ -1389,6 +1404,10 @@
     <EmbeddedResource Include="RptsCrystal\PlanillaDet.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>PlanillaDet.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RptsCrystal\ReporteRendCateg.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>ReporteRendCateg.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="RptsCrystal\ReporteOBS.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

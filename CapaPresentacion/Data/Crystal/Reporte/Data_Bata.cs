@@ -274,5 +274,73 @@ namespace Data.Crystal.Reporte
             return content;
         }
 
+
+        public List<Models_Rendimiento_Categ> list_RendimientoxCategoria(string tip_Categ, string cod_Dis, string codEntid, string cod_Semana)
+        {
+            string sqlquery = "USP_XSTORE_REPORTE_RENDIMIENTO_CATEGORIA";
+            List<Models_Rendimiento_Categ> lista = null;
+            DataTable dt = null;
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+                    try
+                    {
+                        using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                        {
+                            cmd.CommandTimeout = 0;
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.AddWithValue("@TIP_CAT", tip_Categ);
+                            cmd.Parameters.AddWithValue("@COD_DIS", cod_Dis);
+                            cmd.Parameters.AddWithValue("@COD_TDA", codEntid);
+                            cmd.Parameters.AddWithValue("@COD_SEM", cod_Semana);
+                           
+
+                            using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                            {
+                                dt = new DataTable();
+                                da.Fill(dt);
+                                lista = new List<Models_Rendimiento_Categ>();
+                                lista = (from DataRow dr in dt.Rows
+                                         select new Models_Rendimiento_Categ()
+                                         {
+                                             distrito = dr["DISTRITO"].ToString(),
+                                             tienda = dr["TIENDA"].ToString(),
+                                             linea = dr["LINEA"].ToString(),
+                                             categoria = dr["CATEGORIA"].ToString(),
+                                             stk_ant = Convert.ToInt32(dr["STK_ANT"]),
+                                             stk_real = Convert.ToInt32(dr["STK_REAL"]),
+                                             saly_stk = Convert.ToDecimal(dr["SALY_STK"]),
+                                             pares_venta_ant = Convert.ToInt32(dr["PARES_VENTA_ANT"]),
+                                             pares_venta_real = Convert.ToInt32(dr["PARES_VENTA_REAL"]),
+                                             saly_pares = Convert.ToDecimal(dr["SALY_PARES"]),
+                                             ratio = Convert.ToDecimal(dr["ratio"]),
+                                             pares_acum_ant = Convert.ToInt32(dr["PARES_ACUM_ANT"]),
+                                             pares_acum_real = Convert.ToInt32(dr["PARES_ACUM_REAL"]),
+                                             taly_pares_ant = Convert.ToDecimal(dr["TALY_PARES_ANT"]),
+                                             soles_ant = Convert.ToDecimal(dr["SOLES_ANT"]),
+                                             soles_real = Convert.ToDecimal(dr["SOLES_REAL"]),
+                                             saly_soles = Convert.ToDecimal(dr["SALY_SOLES"]),
+                                             soles_acum_ant = Convert.ToDecimal(dr["SOLES_ACUM_ANT"]),
+                                             soles_acum_real = Convert.ToDecimal(dr["SOLES_ACUM_REAL"]),
+                                             saly_soles_acum = Convert.ToDecimal(dr["SALY_SOLES_ACUM"]),
+                                            
+                                         }).ToList();
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+                }
+            }
+            catch
+            {
+
+            }
+            return lista;
+        }
+
     }
 }
