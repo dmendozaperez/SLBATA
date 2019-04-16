@@ -143,6 +143,7 @@ namespace CapaDato.ValeCompra
         {
             string sqlquery = "USP_Insertar_GeneracionValeCompra";
             Boolean valida = false;
+            Convert.ToInt32("");
             try
             {
                 using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))

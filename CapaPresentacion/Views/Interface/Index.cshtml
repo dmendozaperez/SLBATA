@@ -33,13 +33,13 @@
             <label for="disponible">Pais</label>
         </div>
         <div class="col-sm-3" style="margin-top:2px;margin-bottom:2px;">
-            @Html.DropDownList("dwPais", new SelectList(ViewBag.listPais, "cbo_codigo", "cbo_descripcion", "-1"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwPais", @onchange = "ListarTienda()",@placeholder = ".col-xs-1" })
+            @Html.DropDownList("dwPais", new SelectList(ViewBag.listPais, "cbo_codigo", "cbo_descripcion", "-1"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwPais" ,@name = "dwPais", @onchange = "ListarTienda()",@placeholder = ".col-xs-1" })
         </div>
         <div class="col-sm-1" style="margin-top:2px;margin-bottom:2px;">
             <label for="disponible">Tienda</label>
         </div>
         <div id="divtda" class="col-sm-3" style="margin-top:2px;margin-bottom:2px;">
-            @Html.DropDownList("dwTienda", new SelectList(ViewBag.listPais, "cbo_codigo", "cbo_descripcion", "-1"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwTienda" })
+            @Html.DropDownList("dwTienda", new SelectList(ViewBag.listPais, "cbo_codigo", "cbo_descripcion", "-1"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwTienda", @name = "dwTienda" })
         </div>
 
     </div>  
@@ -270,7 +270,7 @@
                             StrControl = StrControl.replace("desgrupo", codEnt);
                             StrControl = StrControl.replace("gxx", codInterf);
 
-                            StrControl = StrControl.replace("CodInterface", "'" + codInterf + "'");
+                            StrControl = StrControl.replace("CodInterface", "'" + desInterf + "'");
                        
                             gTemRow += StrControl
                            
@@ -476,8 +476,6 @@
         tienda = tienda.replace("-------", "");
         tienda = tienda.replace("-------", "");
 
-
-
         $('input[name="Interface"]').each(function () {
 
             Id = $(this).attr("id");
@@ -524,12 +522,107 @@
                 },
                 callback: function (result) {
                     if (result) {
-                      
+                        GenerarArchivoInterface()
                     }
                 }
             });
         }
 
+
+    }
+
+    function GenerarArchivoInterface() {
+
+        var listInterface = [];
+
+        waitingDialog.show('Espere un momento por favor');
+        var Id = '';
+        var Interface_strList = '';
+        var msg_titulo = 'Mensaje ';
+        var CodPais = $("#dwPais").val();
+        var CodTda = $("#dwTienda").val();
+
+        $('input[name="Interface"]').each(function () {
+
+            Id = $(this).attr("id");
+            if ($("#" + Id).is(':checked')) {
+                var Descripcion = $("#des_" + Id).val();
+
+                listInterface.push(Descripcion);
+            }
+
+        });
+
+        Interface_strList = Interface_strList.slice(0, -1);
+
+        var objInterface = {
+            Cod_Pais: CodPais,
+            Cod_Tda: CodTda,
+            listInterface: listInterface
+        }
+
+        $.ajax
+         ({
+             url: '../Interface/GenerearArchivoInterface',
+             dataType: "json",
+             type: "POST",
+             data: objInterface,
+             success: function (data, textStatus, XMLHttpRequest) {
+                 var strId = data.Message;
+
+                 waitingDialog.hide();
+                 toastr.success("Las interface fueron guardardo para su generación.", msg_titulo);
+
+
+             },
+             error: function (xhr) {
+                 waitingDialog.hide();
+                 toastr.error(xhr, msg_titulo);
+             }
+         })
+
+    }
+
+    function DescargarArchivoInterface_() {
+
+
+        waitingDialog.show('Espere un momento por favor');
+        var Id = '';
+
+        var msg_titulo = 'Mensaje ';
+        var CodPais = $("#dwPais").val();
+        var CodTda = $("#dwTienda").val();
+        var Interface_strList = '';
+        alert('pais')
+        alert(CodPais);
+        alert('dwTienda')
+        alert(CodTda);
+
+
+        $('input[name="Interface"]').each(function () {
+
+            Id = $(this).attr("id");
+            if ($("#" + Id).is(':checked')) {
+                var Descripcion = $("#des_" + Id).val();
+                Interface_strList +=  Descripcion + ','
+            }
+
+        });
+
+        var params = +CodPais + "-" + CodTda + "-" + Interface_strList;
+        alert(params)
+
+
+        waitingDialog.show('Descargando Archivo');
+        $.ajax({
+            type: 'get',
+            data: { strInterface_Tienda: Interface_strList },url: '@Url.Action("Download")',
+            success: function () {
+
+                waitingDialog.hide();
+                window.location = '@Url.Action("Download")?strInterface_Tienda=' + params;
+            }
+        });
 
     }
 

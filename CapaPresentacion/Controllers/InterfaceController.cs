@@ -102,6 +102,32 @@ namespace CapaPresentacion.Controllers
             return Json(oJRespuesta, JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult GenerearArchivoInterface(string Cod_Pais, string Cod_Tda, List<string> listInterface)
+        {
+            var oJRespuesta = new JsonResponse();
+            var oJRpta= new JsonRespuesta();
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+
+            oJRpta = datInterface.GenerearArchivoInterface(Cod_Pais, Cod_Tda, listInterface);
+
+            oJRespuesta.Message = oJRpta.Message;
+            oJRespuesta.Success = oJRpta.Success;
+         
+
+            return Json(oJRespuesta, JsonRequestBehavior.AllowGet);
+        }
+
+        public FileResult Download(string strInterface_Tienda)
+        {
+            string codTienda = "";
+
+
+            string directorio = System.Web.HttpContext.Current.Server.MapPath(Ent_Conexion.strDirectorio);
+            byte[] fileBytes = System.IO.File.ReadAllBytes(directorio + codTienda + ".zip");
+            string fileName = "Bata_" + codTienda + ".zip";
+            return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
+        }
+
 
 
     }

@@ -35,8 +35,14 @@ namespace CapaEntidad.Util
         {
             get
             {
-
-                return "~/Cupones/Bata_"; ;
+                return "~/Cupones/Bata_"; 
+            }
+        }
+        public static string strDirectorio_Interface
+        {
+            get
+            {
+                return "C:/Users/Junior/Source/Repos/SLBATA2/CapaPresentacion/Interface";
 
             }
         }
