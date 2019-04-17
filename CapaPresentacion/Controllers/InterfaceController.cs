@@ -109,9 +109,9 @@ namespace CapaPresentacion.Controllers
             Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
 
             foreach (string Cod_Tda in listTienda)
-            {           
-
-                oJRpta = datInterface.GenerarArchivoInterface(Cod_Pais, Cod_Tda, listInterface);
+            {
+                string ruta = System.Web.HttpContext.Current.Server.MapPath(Ent_Conexion.strDirectorio_Interface);
+                oJRpta = datInterface.GenerarArchivoInterface(Cod_Pais, Cod_Tda, listInterface, ruta);
                 //if (oJRpta.Success) {
 
                 //    string strDirectorio = oJRpta.Message;
@@ -155,7 +155,7 @@ namespace CapaPresentacion.Controllers
 
         public FileResult Download()
         {
-            string directorio = System.Web.HttpContext.Current.Server.MapPath(Ent_Conexion.strDirectorio_Interface_v);
+            string directorio = System.Web.HttpContext.Current.Server.MapPath(Ent_Conexion.strDirectorio_Interface);
             directorio = directorio.Remove(directorio.Length - 1);
             byte[] fileBytes = System.IO.File.ReadAllBytes(directorio  + ".zip");
             if (System.IO.File.Exists(directorio + ".zip"))

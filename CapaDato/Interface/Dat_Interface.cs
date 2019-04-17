@@ -155,7 +155,7 @@ namespace CapaDato.Interface
         }
 
 
-        public JsonRespuesta GenerarArchivoInterface(string Cod_Pais, string Cod_Tda, List<string> listInterface)
+        public JsonRespuesta GenerarArchivoInterface(string Cod_Pais, string Cod_Tda, List<string> listInterface, string ruta)
         {
 
             JsonRespuesta jsRpta = new JsonRespuesta();
@@ -163,7 +163,8 @@ namespace CapaDato.Interface
             string in_maestros = "";
             Cod_Tda = Cod_Tda=="-1" ? "TODOS" : Cod_Tda;
             string _entorno = "XOFICCE";
-            string _gen_ruta = Ent_Conexion.strDirectorio_Interface;
+           
+            string _gen_ruta = ruta;
             string Tienda_Carpeta = _gen_ruta + Cod_Tda;
             string str_procedimiento = "";
             string str_procedimiento2 = "";
