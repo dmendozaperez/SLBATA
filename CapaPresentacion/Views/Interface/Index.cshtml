@@ -39,7 +39,8 @@
             <label for="disponible">Tienda</label>
         </div>
         <div id="divtda" class="col-sm-3" style="margin-top:2px;margin-bottom:2px;">
-            @Html.DropDownList("dwTienda", new SelectList(ViewBag.listPais, "cbo_codigo", "cbo_descripcion", "-1"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwTienda", @name = "dwTienda" })
+           @*Html.DropDownList("dwTienda", new SelectList(ViewBag.listPais, "cbo_codigo", "cbo_descripcion", "-1"), new { class = "selectpicker", data_live_search = "true", id = "dwTienda", name = "dwTienda" })*@
+            @Html.DropDownList("dwTienda", new SelectList(ViewBag.listPais, "cbo_codigo", "cbo_descripcion", "-1"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwTienda", @name = "dwTienda", style = "width:270px;max-width:270px;" })
         </div>
 
     </div>  
@@ -106,12 +107,12 @@
        
         combo = GenerarLista('1', CodPais);
         //llenarComboTda("dwTienda", combo);
-        llenarCombo("divtda", "dwTienda", combo, '', '', "");
+        llenarCombo("divtda", "dwTienda", combo, '-1', 'TODOS X-STORE', "");
         
     }
     function llenarCombo(DivId, IdControl, Data, codDefecto, desDefecto, onchangeFuncion) {
 
-        var str = '<select class="selectpicker" data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '">';
+        var str = '<select class="selectpicker"  multiple = "multiple"  data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '">';
         var ItemNormal = '<option value="codItem">desItem</option>';
         var colectItemNormal = '';
 
@@ -178,7 +179,6 @@
 
         return Data
     }
-
     
 
     function ListarInterface() {
@@ -194,11 +194,12 @@
              ConstHtmlrow += 'listDetalle'
              ConstHtmlrow += '</div>';
 
-             var buttonDescarga = '<button title="Descargar archivo" class="btneditar btn btn-success" onclick="javascript:descargarInterface(CodInterface)" data-modal="" data-toggle="modal"><span class="glyphicon glyphicon-save"></span></button>'
-             var buttonVerStock = '<button title="Consultar Stock" class="btneditar btn btn-primary" onclick="javascript:verificarStock()" data-modal="" data-toggle="modal"><span class="glyphicon glyphicon-eye-open"></span></button>'
-             var iconoProgramado = '<span class="glyphicon glyphicon-time"></span>'
-             var iconoRapido = '<span class="glyphicon glyphicon-flash"></span>'
-             var constControl = '<div class="col-sm-4" style="margin-top:2px;margin-bottom:2px;">'
+        var buttonDescarga = '<button title="Descargar archivo" class="btneditar btn btn-success" onclick="javascript:descargarInterface(CodInterface)" data-modal="" data-toggle="modal"><span class="glyphicon glyphicon-save"></span></button>'
+        buttonDescarga=''
+        var buttonVerStock = '<button title="Consultar Stock" class="btneditar btn btn-primary" onclick="javascript:verificarStock()" data-modal="" data-toggle="modal"><span class="glyphicon glyphicon-eye-open"></span></button>'
+        var iconoProgramado = '<span class="glyphicon glyphicon-time"></span>'
+        var iconoRapido = '<span class="glyphicon glyphicon-flash"></span>'
+        var constControl = '<div class="col-sm-4" style="margin-top:2px;margin-bottom:2px;">'
         constControl = constControl + '<input id="grup_gxx" type="hidden" value="desgrupo"/>'
         constControl = constControl + '<input id="des_remm" type="hidden" value="descrip"/>'
         constControl = constControl + 'tipoIcono' + '&nbsp;&nbsp;'
@@ -475,6 +476,7 @@
         var tienda = combo.options[combo.selectedIndex].text;
         tienda = tienda.replace("-------", "");
         tienda = tienda.replace("-------", "");
+        var CodTda = $("#dwTienda").val();
 
         $('input[name="Interface"]').each(function () {
 
@@ -504,12 +506,26 @@
             ListOrce = '<br/>' + inidiv + '<b>Orce<b>' + findiv + '<br/>' + ListOrce;
         }
 
-        if (ListOrce == '' && ListXoficce == '') {
-            toastr.error("Debe seleccionar al menos un interface.", "Mensaje");
+        if ((ListOrce == '' && ListXoficce == '') || (CodTda == '-1')) {
+
+            if (ListOrce == '' && ListXoficce == '')
+                toastr.error("Debe seleccionar al menos una tienda.", "Mensaje");
+
+            if (ListOrce == '' && ListXoficce == '')
+                toastr.error("Debe seleccionar al menos un interface.", "Mensaje");
         } else {
 
+            var CodTda = $("#dwTienda").val();
+            var listTda = '';
+           
+            CodTda.forEach(function (element) {
+               
+                listTda += '<b>* ' + element + '</b><br/>';               
+                
+            });
+
             bootbox.confirm({
-                message: "<b>Esta seguro de descargar de la tienda " + tienda + ",las siguientes interfaces ?   :</b><br/>" + ListXoficce + ListOrce,
+                message: "<b>Esta seguro de descargar las interfaces de las siguientes Tiendas ?   :</b><br/> " + listTda + ListXoficce + ListOrce,
                 buttons: {
                     confirm: {
                         label: 'Si',
@@ -530,17 +546,24 @@
 
 
     }
+    
 
     function GenerarArchivoInterface() {
 
         var listInterface = [];
+        var listTienda = [];
+
+        var CodTda = $("#dwTienda").val();
+
+        CodTda.forEach(function (element) {
+              listTienda.push(element);
+        });
 
         waitingDialog.show('Espere un momento por favor');
         var Id = '';
         var Interface_strList = '';
         var msg_titulo = 'Mensaje ';
-        var CodPais = $("#dwPais").val();
-        var CodTda = $("#dwTienda").val();
+        var CodPais = $("#dwPais").val();       
 
         $('input[name="Interface"]').each(function () {
 
@@ -557,22 +580,22 @@
 
         var objInterface = {
             Cod_Pais: CodPais,
-            Cod_Tda: CodTda,
+            listTienda: listTienda,
             listInterface: listInterface
         }
 
         $.ajax
          ({
-             url: '../Interface/GenerearArchivoInterface',
+             url: '../Interface/GenerarArchivoInterface',
              dataType: "json",
              type: "POST",
              data: objInterface,
              success: function (data, textStatus, XMLHttpRequest) {
-                 var strId = data.Message;
-
+                 var strId = data.Message;                
+                 waitingDialog.hide();                 
+                 toastr.success("Las interfaces se descargo Para la tienda: " + CodTda, msg_titulo);
+                 DescargarArchivos()
                  waitingDialog.hide();
-                 toastr.success("Las interface fueron guardardo para su generación.", msg_titulo);
-
 
              },
              error: function (xhr) {
@@ -581,50 +604,14 @@
              }
          })
 
+    }  
+
+    function DescargarArchivos(strTienda) {      
+        window.location = '@Url.Action("Download")';
+        waitingDialog.hide();
+     
     }
-
-    function DescargarArchivoInterface_() {
-
-
-        waitingDialog.show('Espere un momento por favor');
-        var Id = '';
-
-        var msg_titulo = 'Mensaje ';
-        var CodPais = $("#dwPais").val();
-        var CodTda = $("#dwTienda").val();
-        var Interface_strList = '';
-        alert('pais')
-        alert(CodPais);
-        alert('dwTienda')
-        alert(CodTda);
-
-
-        $('input[name="Interface"]').each(function () {
-
-            Id = $(this).attr("id");
-            if ($("#" + Id).is(':checked')) {
-                var Descripcion = $("#des_" + Id).val();
-                Interface_strList +=  Descripcion + ','
-            }
-
-        });
-
-        var params = +CodPais + "-" + CodTda + "-" + Interface_strList;
-        alert(params)
-
-
-        waitingDialog.show('Descargando Archivo');
-        $.ajax({
-            type: 'get',
-            data: { strInterface_Tienda: Interface_strList },url: '@Url.Action("Download")',
-            success: function () {
-
-                waitingDialog.hide();
-                window.location = '@Url.Action("Download")?strInterface_Tienda=' + params;
-            }
-        });
-
-    }
+  
 
 </script>
 

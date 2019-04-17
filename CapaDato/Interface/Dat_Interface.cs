@@ -155,7 +155,7 @@ namespace CapaDato.Interface
         }
 
 
-        public JsonRespuesta GenerearArchivoInterface(string Cod_Pais, string Cod_Tda, List<string> listInterface)
+        public JsonRespuesta GenerarArchivoInterface(string Cod_Pais, string Cod_Tda, List<string> listInterface)
         {
 
             JsonRespuesta jsRpta = new JsonRespuesta();
@@ -164,9 +164,10 @@ namespace CapaDato.Interface
             Cod_Tda = Cod_Tda=="-1" ? "TODOS" : Cod_Tda;
             string _entorno = "XOFICCE";
             string _gen_ruta = Ent_Conexion.strDirectorio_Interface;
-            string Tienda_Carpeta = _gen_ruta + "\\" + Cod_Tda;
+            string Tienda_Carpeta = _gen_ruta + Cod_Tda;
             string str_procedimiento = "";
             string str_procedimiento2 = "";
+            string nombreBK = "";
            
 
             try
@@ -183,6 +184,8 @@ namespace CapaDato.Interface
                     str_procedimiento = "";
                     str_procedimiento2 = "";
                     string rutaInterface = "";
+
+                    nombreBK = _gen_inter_name;
 
                     switch (_entorno)
                     {
@@ -354,8 +357,7 @@ namespace CapaDato.Interface
 
                                         if (File.Exists(@in_maestros)) File.Delete(@in_maestros);
                                           File.WriteAllText(@in_maestros, str_cadena);
-                                      
-                                    }
+                                     }
                                 }
                                 break;
                             #endregion
@@ -668,6 +670,7 @@ namespace CapaDato.Interface
                                         }
                                         str_cadena = str.ToString();
                                         name_file = "INV_LOCATION_PROPERTY_" + sufijoNombre + DateTime.Today.ToString("yyyyMMdd") + ".MNT";
+                                        rutaInterface = Tienda_Carpeta + "\\" + _gen_inter_name;
                                         if (!(Directory.Exists(rutaInterface)))
                                         {
                                             Directory.CreateDirectory(rutaInterface);
@@ -704,8 +707,10 @@ namespace CapaDato.Interface
                                         str_cadena = str.ToString();
 
                                         name_file = "STOCK_LEDGER_" + sufijoNombre + "_" + DateTime.Today.ToString("yyyyMMdd") + ".MNT";
-                                        in_stock_ledger = rutaInterface + "\\" + name_file;
 
+                                        rutaInterface = Tienda_Carpeta + "\\" + _gen_inter_name;
+                                        in_stock_ledger = rutaInterface + "\\" + name_file;
+                                       
                                         if (!(Directory.Exists(rutaInterface)))
                                         {
                                             Directory.CreateDirectory(rutaInterface);
@@ -1109,8 +1114,8 @@ namespace CapaDato.Interface
                 }
 
                 jsRpta.Success = true;
-                jsRpta.Message = in_maestros;
-                jsRpta.Data = in_maestros;
+                jsRpta.Message = Tienda_Carpeta;
+                jsRpta.Data = Tienda_Carpeta;
 
 
             }

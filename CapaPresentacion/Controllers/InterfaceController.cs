@@ -102,13 +102,49 @@ namespace CapaPresentacion.Controllers
             return Json(oJRespuesta, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult GenerearArchivoInterface(string Cod_Pais, string Cod_Tda, List<string> listInterface)
+        public JsonResult GenerarArchivoInterface(string Cod_Pais, List<string> listTienda, List<string> listInterface)
         {
             var oJRespuesta = new JsonResponse();
             var oJRpta= new JsonRespuesta();
             Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
 
-            oJRpta = datInterface.GenerearArchivoInterface(Cod_Pais, Cod_Tda, listInterface);
+            foreach (string Cod_Tda in listTienda)
+            {           
+
+                oJRpta = datInterface.GenerarArchivoInterface(Cod_Pais, Cod_Tda, listInterface);
+                //if (oJRpta.Success) {
+
+                //    string strDirectorio = oJRpta.Message;
+                //    string startPath = strDirectorio ;
+                //    string zipPath = strDirectorio + ".zip";
+
+                //    if (System.IO.File.Exists(zipPath))
+                //    {
+                //        System.IO.File.Delete(zipPath);
+                //    }
+
+                //    ZipFile.CreateFromDirectory(startPath, zipPath);           
+                //    System.IO.Directory.Delete(startPath, true);
+                //}
+            }
+
+
+            string strDirectorio = Ent_Conexion.strDirectorio_Interface;          
+            string startPath = strDirectorio.Remove(strDirectorio.Length - 1);
+            string zipPath = startPath + ".zip";
+
+            if (System.IO.File.Exists(zipPath))
+            {
+                System.IO.File.Delete(zipPath);
+            }
+
+            ZipFile.CreateFromDirectory(startPath, zipPath);   
+
+            foreach (string Cod_Tda in listTienda)
+            {
+                string startPathAux = Ent_Conexion.strDirectorio_Interface + Cod_Tda;
+                System.IO.Directory.Delete(startPathAux, true);
+            }
 
             oJRespuesta.Message = oJRpta.Message;
             oJRespuesta.Success = oJRpta.Success;
@@ -117,14 +153,20 @@ namespace CapaPresentacion.Controllers
             return Json(oJRespuesta, JsonRequestBehavior.AllowGet);
         }
 
-        public FileResult Download(string strInterface_Tienda)
+        public FileResult Download()
         {
-            string codTienda = "";
+            string directorio = System.Web.HttpContext.Current.Server.MapPath(Ent_Conexion.strDirectorio_Interface_v);
+            directorio = directorio.Remove(directorio.Length - 1);
+            byte[] fileBytes = System.IO.File.ReadAllBytes(directorio  + ".zip");
+            if (System.IO.File.Exists(directorio + ".zip"))
+            {
+                System.IO.File.Delete(directorio + ".zip");
+            }
+            DateTime thisDay = DateTime.Today;
+            var fecha = thisDay.ToString("d");
+            var hora = DateTime.Now.ToString("hhmmss");
 
-
-            string directorio = System.Web.HttpContext.Current.Server.MapPath(Ent_Conexion.strDirectorio);
-            byte[] fileBytes = System.IO.File.ReadAllBytes(directorio + codTienda + ".zip");
-            string fileName = "Bata_" + codTienda + ".zip";
+            string fileName = "xstore_" + "Interface_"+ fecha+"_"+ hora + "_.zip";
             return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
         }
 
