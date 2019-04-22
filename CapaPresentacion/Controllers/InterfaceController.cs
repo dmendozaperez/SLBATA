@@ -109,9 +109,9 @@ namespace CapaPresentacion.Controllers
             Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
 
             foreach (string Cod_Tda in listTienda)
-            {           
-
-                oJRpta = datInterface.GenerarArchivoInterface(Cod_Pais, Cod_Tda, listInterface);
+            {
+                string ruta1 = System.Web.HttpContext.Current.Server.MapPath(Ent_Conexion.strDirectorio_Interface);
+                oJRpta = datInterface.GenerarArchivoInterface(Cod_Pais, Cod_Tda, listInterface, ruta1);
                 //if (oJRpta.Success) {
 
                 //    string strDirectorio = oJRpta.Message;
@@ -130,8 +130,9 @@ namespace CapaPresentacion.Controllers
 
 
             string strDirectorio = Ent_Conexion.strDirectorio_Interface;          
-            string startPath = strDirectorio.Remove(strDirectorio.Length - 1);
+            string startPath = System.Web.HttpContext.Current.Server.MapPath(strDirectorio.Remove(strDirectorio.Length - 1));
             string zipPath = startPath + ".zip";
+            string ruta =zipPath;
 
             if (System.IO.File.Exists(zipPath))
             {
@@ -142,7 +143,7 @@ namespace CapaPresentacion.Controllers
 
             foreach (string Cod_Tda in listTienda)
             {
-                string startPathAux = Ent_Conexion.strDirectorio_Interface + Cod_Tda;
+                string startPathAux = System.Web.HttpContext.Current.Server.MapPath(Ent_Conexion.strDirectorio_Interface + Cod_Tda);
                 System.IO.Directory.Delete(startPathAux, true);
             }
 
@@ -155,10 +156,10 @@ namespace CapaPresentacion.Controllers
 
         public FileResult Download()
         {
-            string directorio = System.Web.HttpContext.Current.Server.MapPath(Ent_Conexion.strDirectorio_Interface_v);
-            directorio = directorio.Remove(directorio.Length - 1);
-            byte[] fileBytes = System.IO.File.ReadAllBytes(directorio  + ".zip");
-            if (System.IO.File.Exists(directorio + ".zip"))
+            string directorio = (Ent_Conexion.strDirectorio_Interface);
+            directorio = System.Web.HttpContext.Current.Server.MapPath(directorio.Remove(directorio.Length - 1) + ".zip");
+            byte[] fileBytes = System.IO.File.ReadAllBytes(directorio);
+            if (System.IO.File.Exists(directorio))
             {
                 System.IO.File.Delete(directorio + ".zip");
             }

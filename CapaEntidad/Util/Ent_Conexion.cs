@@ -47,14 +47,6 @@ namespace CapaEntidad.Util
             }
         }
 
-        public static string strDirectorio_Interface_v
-        {
-            get
-            {
-                return "~/Interface/";
-
-            }
-        }
         public static string strDirectorio_StkLedger
         {
             get
