@@ -924,7 +924,7 @@ namespace CapaPresentacion.Controllers
                 entCombocbo.cbo_descripcion = "STANDAR";
                 listcbo.Add(entCombocbo);
                 entCombocbo = new Ent_Combo();
-                entCombocbo.cbo_codigo = "S";
+                entCombocbo.cbo_codigo = "R";
                 entCombocbo.cbo_descripcion = "RIMS";
                 listcbo.Add(entCombocbo);
                 ViewBag.Tipo = listcbo;

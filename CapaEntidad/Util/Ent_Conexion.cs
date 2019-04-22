@@ -42,7 +42,7 @@ namespace CapaEntidad.Util
         {
             get
             {
-                return "C:/Users/Junior/Source/Repos/SLBATA2/CapaPresentacion/Interface/";
+                return "~/Interface/";
 
             }
         }

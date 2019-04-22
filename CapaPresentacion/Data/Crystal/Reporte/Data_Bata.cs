@@ -304,8 +304,10 @@ namespace Data.Crystal.Reporte
                                 lista = (from DataRow dr in dt.Rows
                                          select new Models_Rendimiento_Categ()
                                          {
+                                             semana= dr["SEMANA"].ToString(),
                                              distrito = dr["DISTRITO"].ToString(),
                                              tienda = dr["TIENDA"].ToString(),
+                                             tipo = dr["TIPO"].ToString(),
                                              linea = dr["LINEA"].ToString(),
                                              categoria = dr["CATEGORIA"].ToString(),
                                              stk_ant = Convert.ToInt32(dr["STK_ANT"]),

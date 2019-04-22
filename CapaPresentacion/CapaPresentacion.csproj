@@ -1371,6 +1371,7 @@
     <Folder Include="Files\Comunicado\Tiendas Especializadas\" />
     <Folder Include="Files\Comunicado\Tropicalza\" />
     <Folder Include="Files\Documento\" />
+    <Folder Include="Interface\" />
     <Folder Include="StkLedger\" />
     <Folder Include="Views\Shared\Menu\" />
     <Folder Include="Views\Usuario\" />

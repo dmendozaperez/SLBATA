@@ -7,8 +7,10 @@ namespace Models.Crystal.Reporte
 {
     public class Models_Rendimiento_Categ
     {
+        public string semana { get; set; }
         public string distrito { get; set; }
         public string tienda { get; set; }
+        public string tipo { get; set; }
         public string linea { get; set; }
         public string categoria { get; set; }
         public Int32 stk_ant { get; set; }
