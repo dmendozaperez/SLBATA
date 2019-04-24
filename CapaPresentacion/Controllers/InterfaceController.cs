@@ -21,6 +21,7 @@ using System.IO.Compression;
 using System.Text;
 using System.Web.Script.Serialization;
 using CapaDato.Menu;
+using System.Data;
 
 namespace CapaPresentacion.Controllers
 {
@@ -107,11 +108,13 @@ namespace CapaPresentacion.Controllers
             var oJRespuesta = new JsonResponse();
             var oJRpta= new JsonRespuesta();
             Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
-
+            DataTable dt_item = null;
+            DataTable dt_price_item = null;
+            DataTable dt_item_images = null;
             foreach (string Cod_Tda in listTienda)
             {
                 string ruta1 = System.Web.HttpContext.Current.Server.MapPath(Ent_Conexion.strDirectorio_Interface);
-                oJRpta = datInterface.GenerarArchivoInterface(Cod_Pais, Cod_Tda, listInterface, ruta1);
+                oJRpta = datInterface.GenerarArchivoInterface(Cod_Pais, Cod_Tda, listInterface, ruta1,ref dt_item,ref dt_price_item,ref dt_item_images);
                 //if (oJRpta.Success) {
 
                 //    string strDirectorio = oJRpta.Message;
@@ -164,11 +167,13 @@ namespace CapaPresentacion.Controllers
                 System.IO.File.Delete(directorio + ".zip");
             }
             DateTime thisDay = DateTime.Today;
-            var fecha = thisDay.ToString("d");
+            var fecha = thisDay.ToString("yyyyMMdd");
             var hora = DateTime.Now.ToString("hhmmss");
 
-            string fileName = "xstore_" + "Interface_"+ fecha+"_"+ hora + "_.zip";
+            string fileName = "xstore_" + "Interface_"+ fecha+"_"+ hora + ".zip";
             return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
+
+
         }
 
 

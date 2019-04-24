@@ -154,8 +154,8 @@ namespace CapaDato.Interface
 
         }
 
-
-        public JsonRespuesta GenerarArchivoInterface(string Cod_Pais, string Cod_Tda, List<string> listInterface, string ruta)
+        //DataTable dt_item = null;
+        public JsonRespuesta GenerarArchivoInterface(string Cod_Pais, string Cod_Tda, List<string> listInterface, string ruta,ref DataTable dt_item,ref DataTable dt_price_item,ref DataTable dt_item_images)
         {
 
             JsonRespuesta jsRpta = new JsonRespuesta();
@@ -282,7 +282,39 @@ namespace CapaDato.Interface
                         using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                         {
                             ds = new DataSet();
-                            da.Fill(ds);
+                            
+                            if (_gen_inter_name=="ITEM" || _gen_inter_name == "PRICE_UPDATE" || _gen_inter_name=="ITEM_IMAGES")
+                            {
+                                    switch(_gen_inter_name)
+                                    {
+                                        case "ITEM":
+                                            if (dt_item == null)
+                                            {
+                                                da.Fill(ds);
+                                                dt_item = ds.Tables[0];
+                                            }
+                                            break;
+                                        case "PRICE_UPDATE":
+                                            if (dt_price_item == null)
+                                            {
+                                                da.Fill(ds);
+                                                dt_price_item = ds.Tables[0];
+                                            }
+                                            break;
+                                        case "ITEM_IMAGES":
+                                            if (dt_item_images == null)
+                                            {
+                                                da.Fill(ds);
+                                                dt_item_images = ds.Tables[0];
+                                            }
+                                            break;
+                                    }                                                                        
+                            }
+                            else                         
+                            { 
+
+                                    da.Fill(ds);
+                            }
                         }
 
                     }
@@ -325,7 +357,7 @@ namespace CapaDato.Interface
                             case "ITEM":
                                #region<ITEM> 
                                 dt = new DataTable();
-                                dt = ds.Tables[0];                                                           
+                                dt = dt_item;// ds.Tables[0];                                                           
 
                                 if (dt != null)
                                 {                                  
@@ -346,7 +378,7 @@ namespace CapaDato.Interface
                                         }
 
                                         str_cadena = str.ToString();
-                                        name_file = "ITEM_" + sufijoNombre + DateTime.Today.ToString("yyyyMMdd") + ".MNT";
+                                        name_file = "ITEM_" + sufijoNombre + "_" + DateTime.Today.ToString("yyyyMMdd") + ".MNT";
                                         rutaInterface = Tienda_Carpeta + "\\" + _gen_inter_name;
 
                                         if (!(Directory.Exists(rutaInterface)))
@@ -365,10 +397,11 @@ namespace CapaDato.Interface
                             case "PRICE_UPDATE":
                                 #region<PRICE_UPDATE> 
                                 dt = new DataTable();
-                                dt = ds.Tables[0];
+                                dt = dt_price_item; //ds.Tables[0];
                                 if (dt != null)
                                 {
-                                    if (dt.Rows.Count > 0)
+                                        dt = dt_replace_tda(dt, Cod_Tda);
+                                        if (dt.Rows.Count > 0)
                                     {
                                         str = new StringBuilder();
                                         for (Int32 i = 0; i < dt.Rows.Count; ++i)
@@ -389,7 +422,7 @@ namespace CapaDato.Interface
                                             Directory.CreateDirectory(rutaInterface);
                                         }
 
-                                        name_file = "PRICE_UPDATE_2_" + sufijoNombre + DateTime.Today.ToString("yyyyMMdd")  + ".MNT";
+                                        name_file = "PRICE_UPDATE_2_" + sufijoNombre + "_" + DateTime.Today.ToString("yyyyMMdd")  + ".MNT";
                                         in_maestros = rutaInterface + "\\" + name_file;
 
                                         if (File.Exists(@in_maestros)) File.Delete(@in_maestros);
@@ -431,7 +464,7 @@ namespace CapaDato.Interface
                                             Directory.CreateDirectory(rutaInterface);
                                         }
 
-                                        name_file = "MERCH_HIER_" + sufijoNombre + DateTime.Today.ToString("yyyyMMdd") + ".MNT";
+                                        name_file = "MERCH_HIER_" + sufijoNombre + "_" + DateTime.Today.ToString("yyyyMMdd") + ".MNT";
                                         in_maestros = rutaInterface + "\\" + name_file;
                                            
                                         if (File.Exists(@in_maestros)) File.Delete(@in_maestros);
@@ -444,11 +477,12 @@ namespace CapaDato.Interface
                             case "ITEM_IMAGES":
                                 #region<ITEM_IMAGES>    
                                 dt = new DataTable();
-                                dt = ds.Tables[0];
+                                dt = dt_item_images;// ds.Tables[0];
 
                                 if (dt != null)
                                 {
-                                    if (dt.Rows.Count > 0)
+                                        dt = dt_replace_tda(dt, Cod_Tda);
+                                        if (dt.Rows.Count > 0)
                                     {
                                         str = new StringBuilder();
                                         for (Int32 i = 0; i < dt.Rows.Count; ++i)
@@ -470,7 +504,7 @@ namespace CapaDato.Interface
                                             Directory.CreateDirectory(rutaInterface);
                                         }
 
-                                        name_file = "ITEM_IMAGES_" + sufijoNombre + DateTime.Today.ToString("yyyyMMdd")  + ".MNT";
+                                        name_file = "ITEM_IMAGES_" + sufijoNombre + "_" + DateTime.Today.ToString("yyyyMMdd")  + ".MNT";
                                         in_maestros = rutaInterface + "\\" + name_file;
 
                                         if (File.Exists(@in_maestros)) File.Delete(@in_maestros);
@@ -510,7 +544,7 @@ namespace CapaDato.Interface
                                             }
                                             str_cadena = str.ToString();
 
-                                            name_file = "RETAIL_LOCATION_" + sufijoNombre + DateTime.Today.ToString("yyyyMMdd")+ ".MNT";
+                                            name_file = "RETAIL_LOCATION_" + sufijoNombre + "_" + DateTime.Today.ToString("yyyyMMdd")+ ".MNT";
                                             in_maestros = rutaInterface + "\\" + name_file;
 
                                             if (File.Exists(@in_maestros)) File.Delete(@in_maestros);
@@ -531,7 +565,7 @@ namespace CapaDato.Interface
                                             }
                                             str_cadena = str.ToString();
 
-                                            name_file = "RETAIL_LOCATION_PROPERTY_" + sufijoNombre + DateTime.Today.ToString("yyyyMMdd")+ ".MNT";
+                                            name_file = "RETAIL_LOCATION_PROPERTY_" + sufijoNombre + "_" + DateTime.Today.ToString("yyyyMMdd")+ ".MNT";
                                             in_maestros = rutaInterface + "\\" + name_file;
 
                                             if (File.Exists(@in_maestros)) File.Delete(@in_maestros);
@@ -569,7 +603,7 @@ namespace CapaDato.Interface
                                         }
                                         str_cadena = str.ToString();
 
-                                        name_file = "ITEM_DIMENSION_TYPE_" + sufijoNombre + DateTime.Today.ToString("yyyyMMdd") + ".MNT";
+                                        name_file = "ITEM_DIMENSION_TYPE_" + sufijoNombre + "_" + DateTime.Today.ToString("yyyyMMdd") + ".MNT";
                                         in_maestros = rutaInterface + "\\" + name_file;
 
                                         if (File.Exists(@in_maestros)) File.Delete(@in_maestros);
@@ -597,7 +631,7 @@ namespace CapaDato.Interface
                                         }
                                         str_cadena = str.ToString();
 
-                                        name_file = "ITEM_DIMENSION_VALUE_" + sufijoNombre + DateTime.Today.ToString("yyyyMMdd") + ".MNT";
+                                        name_file = "ITEM_DIMENSION_VALUE_" + sufijoNombre + "_" + DateTime.Today.ToString("yyyyMMdd") + ".MNT";
                                         in_maestros = rutaInterface + "\\" + name_file;
 
                                         if (File.Exists(@in_maestros)) File.Delete(@in_maestros);
@@ -637,7 +671,7 @@ namespace CapaDato.Interface
                                                 Directory.CreateDirectory(rutaInterface);
                                             }
 
-                                            name_file = "PARTY_" + sufijoNombre + DateTime.Today.ToString("yyyyMMdd") + ".MNT";
+                                            name_file = "PARTY_" + sufijoNombre + "_" + DateTime.Today.ToString("yyyyMMdd") + ".MNT";
                                             in_maestros = rutaInterface + "\\" + name_file;
 
                                             if (File.Exists(@in_maestros)) File.Delete(@in_maestros);
@@ -670,7 +704,7 @@ namespace CapaDato.Interface
                                             i += 1;
                                         }
                                         str_cadena = str.ToString();
-                                        name_file = "INV_LOCATION_PROPERTY_" + sufijoNombre + DateTime.Today.ToString("yyyyMMdd") + ".MNT";
+                                        name_file = "INV_LOCATION_PROPERTY_" + sufijoNombre + "_" + DateTime.Today.ToString("yyyyMMdd") + ".MNT";
                                         rutaInterface = Tienda_Carpeta + "\\" + _gen_inter_name;
                                         if (!(Directory.Exists(rutaInterface)))
                                         {
