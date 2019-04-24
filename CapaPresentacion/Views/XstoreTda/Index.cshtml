@@ -12,6 +12,7 @@
         OnFailure = "waitingDialog.hide();"
     };
 }
+
 <link href="~/ContentSelect/bootstrap-select.css" rel="stylesheet" />
 
 <p class="text-danger">Consulta de tiendas para que puedan ser activadas o desactivadas</p>
@@ -134,7 +135,7 @@
                                 return '<div> <a title="Generar correlativos"  onclick="PopupGenerarCorrelativo(' + envio + ')" target="_blank" class="btn btn-primary btn-sm"> <span class="fa fa-cogs"></span></a></div>';
                             }
 
-                            
+
                         }
                     }
 
@@ -383,7 +384,120 @@
 
     }
 
-    function PopupDetalle(codTienda, descTienda,Direccion,Jefe,Concesion) {
+    function PopupDetalle(codTienda, descTienda, Direccion, Jefe, Concesion) {
+
+        waitingDialog.show('Espere un momento por favor');
+        
+        var ControllerUrl = "@Url.Action("listarStr_DatosTienda", "XstoreTda")";
+       
+        $.ajax({
+            type: "GET",
+            url: ControllerUrl,
+            contentType: "application/json; charset=utf-8",
+            data: { codTienda: codTienda },
+            datatype: "json",
+            cache: true,
+            success: function (data) {
+
+                if (data != '' && data != '[]') {
+
+                    var valors = JSON.parse(data);
+                  
+                    var strStock = '';
+                    var strCorrelativo = '';
+
+                    var molde = '<tr>'
+                    molde += '<td colspan="1" valign="middle"><label>etiqueta</label></td>'
+                    molde += '<td colspan="2">'
+                    molde += '&nbsp;&nbsp;Valor'
+                    molde += '</td>'
+                    molde += '</tr>'
+                   
+                    $.each(valors, function (index, item) {
+                        var tipo = item.TIPO;
+                        var etiqueta = item.DESCRIPCION;
+                        var des1 = item.DES1;
+                        var des2 = item.DES2;
+                        var tmpMolde = molde;                     
+                       
+                        if (tipo == 'C') {
+                            tmpMolde = tmpMolde.replace("etiqueta", etiqueta);
+                            tmpMolde = tmpMolde.replace("Valor", des1 + '-' + des2);
+                            strCorrelativo += tmpMolde;
+                        }
+                        if (tipo == 'S') {
+                            tmpMolde = tmpMolde.replace("etiqueta", etiqueta);
+                            tmpMolde = tmpMolde.replace("Valor", des1 +''+ des2);
+                            strStock += tmpMolde;
+                        }                        
+                    });                  
+
+                    var strhtml = ''
+                    strhtml += '<div class="modal-header modal-header-danger" style="margin-top:0px;margin-bottom:0px;padding-top:2px;padding-bottom:2px;">'
+                    strhtml += '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
+                    strhtml += '<h5 class="modal-title" id="myModalLabel">'
+                    strhtml += '<table style="border-bottom:0px;font-size:14px;width:50%;">'
+                    strhtml += '<tr>'
+                    strhtml += '<td style="font-size:14px;width:100%;text-align:left;">' + descTienda + '</td>'
+                    strhtml += '</tr>'
+                    strhtml += '</table>'
+                    strhtml += '</h5>'
+                    strhtml += '</div>'
+                    strhtml += '<div class="modal-body">'
+                    strhtml += '<table class="table table-striped" RULES="none">'
+                    strhtml += '<tr>'
+                    strhtml += '<td colspan="1" valign="middle"><label>Jefe</label></td>'
+                    strhtml += '<td colspan="2">'
+                    strhtml += '<i class="fa fa-briefcase"></i>&nbsp;&nbsp;' + Jefe
+                    strhtml += '</td>'
+                    strhtml += '</tr>'
+                    strhtml += '<tr>'
+                    strhtml += '<td colspan="1" valign="middle"><label>Consecionaria</label></td>'
+                    strhtml += '<td colspan="2">'
+                    strhtml += '<i class="fa fa-university"></i>&nbsp;&nbsp;' + Concesion
+                    strhtml += '</td>'
+                    strhtml += '</tr>'
+                    strhtml += '<tr>'
+                    strhtml += '<td colspan="1" valign="middle"><label>Dirección</label></td>'
+                    strhtml += '<td colspan="2">'
+                    strhtml += '<i class="fa fa-map-marker"></i>&nbsp;&nbsp;' + Direccion
+                    strhtml += '</td>'
+                    strhtml += '</tr>'
+                    strhtml += '<tr  id="tr1">'
+                    strhtml += '<td colspan="3" valign="middle"  bgcolor="#9A9897" style="color:#ffffff;font-size:14px;padding:3px;padding-left:3px;font-weight:bold">&nbsp;&nbsp;Correlativos</td>'
+                    strhtml += '</tr>'
+                    strhtml += strCorrelativo
+                    strhtml += '<tr  id="tr1">'
+                    strhtml += '<td colspan="3" valign="middle"  bgcolor="#9A9897" style="color:#ffffff;font-size:14px;padding:3px;padding-left:3px;font-weight:bold">&nbsp;&nbsp;Stock</td>'
+                    strhtml += '</tr>'
+                    strhtml += strStock
+                    strhtml += '</table>'
+                    strhtml += '</div>'
+                    strhtml += '<div class="modal-footer" style="margin-top:-30px">'
+                    strhtml += '<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>'
+
+                    strhtml += '</div>'
+                    var options = { "backdrop": "static", keyboard: true };
+
+                    $('#myModalContent').html(strhtml);
+                    $('#myModal').modal(options);
+                    $('#myModal').modal('show');
+                                    
+
+                } 
+                waitingDialog.hide();
+
+            },
+            error: function () {
+                waitingDialog.hide();
+                alert('Error')
+            }
+
+        });
+
+    }
+
+    function PopupDetalle_bk(codTienda, descTienda,Direccion,Jefe,Concesion) {
 
         var strhtml = ''
         strhtml += '<div class="modal-header modal-header-danger" style="margin-top:0px;margin-bottom:0px;padding-top:2px;padding-bottom:2px;">'
@@ -415,6 +529,12 @@
         strhtml += '<td colspan="2">'
         strhtml += '<i class="fa fa-map-marker"></i>&nbsp;&nbsp;'+Direccion
         strhtml += '</td>'
+        strhtml += '</tr>'
+        strhtml += '<tr  id="tr1">'
+        strhtml += '<td colspan="3" valign="middle"  bgcolor="#9A9897" style="color:#ffffff;font-size:14px;padding:3px;padding-left:3px;font-weight:bold">&nbsp;&nbsp;Correlativos</td>'
+        strhtml += '</tr>'
+        strhtml += '<tr  id="tr1">'
+        strhtml += '<td colspan="3" valign="middle"  bgcolor="#9A9897" style="color:#ffffff;font-size:14px;padding:3px;padding-left:3px;font-weight:bold">&nbsp;&nbsp;Stock</td>'
         strhtml += '</tr>'
         strhtml += '</table>'
         strhtml += '</div>'
@@ -470,7 +590,7 @@
         }
 
         var msj = 'Se genero los correlativos para la tienda Nro: ' + codEntid
-               
+
 
         $.ajax
           ({
@@ -514,7 +634,7 @@
 
         waitingDialog.show('Espere un momento por favor');
 
-        var objTienda = {          
+        var objTienda = {
         }
 
         $.ajax
@@ -530,8 +650,8 @@
 
                       document.getElementById("TotalXstore").innerHTML = '<label for="segape">' + data.Message + '</label>'
                       document.getElementById("TotalNXstore").innerHTML = '<label for="segape">' + data.Data + '</label>'
-                    
-                  } 
+
+                  }
 
               },
               error: function (xhr) {

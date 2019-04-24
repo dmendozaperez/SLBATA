@@ -12,6 +12,7 @@ using CapaEntidad.Util;
 using CapaEntidad.Control;
 using CapaEntidad.XstoreTda;
 using CapaEntidad.ValeCompra;
+using System.Web.Script.Serialization;
 
 namespace CapaPresentacion.Controllers
 {
@@ -216,6 +217,18 @@ namespace CapaPresentacion.Controllers
             }
 
             return Json(oJRespuesta, JsonRequestBehavior.AllowGet);
+        }
+
+        public string listarStr_DatosTienda(string codTienda)
+        {
+            string strJson = "";
+            JsonResult jRespuesta = null;        
+            
+            strJson = dat_storeTda.listarStr_DatosTienda(codTienda);
+            var serializer = new JavaScriptSerializer();
+            jRespuesta = Json(serializer.Deserialize<List<Ent_DatosTienda>>(strJson), JsonRequestBehavior.AllowGet);
+
+            return strJson;
         }
 
 

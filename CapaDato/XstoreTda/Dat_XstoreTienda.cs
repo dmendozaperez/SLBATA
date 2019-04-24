@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace CapaDato.Maestros
 {
@@ -132,6 +133,39 @@ namespace CapaDato.Maestros
             return intRespuesta;
         }
 
+
+        public string listarStr_DatosTienda(string cod_tda)
+        {
+            string strJson = "";
+            try
+            {
+                SqlConnection cn = new SqlConnection(Ent_Conexion.conexionPosPeru);
+                cn.Open();
+                SqlCommand oComando = new SqlCommand("USP_OBTENER_DATOS_TIENDA", cn);
+                oComando.CommandType = CommandType.StoredProcedure;                
+
+                SqlParameter ocod_tda = oComando.Parameters.Add("@TIENDA", SqlDbType.VarChar);
+                ocod_tda.Direction = ParameterDirection.Input;
+                ocod_tda.Value = cod_tda;
+
+                SqlDataReader oReader = oComando.ExecuteReader(CommandBehavior.SingleResult);
+                DataTable dataTable = new DataTable("row");
+                dataTable.Load(oReader);
+
+                strJson = JsonConvert.SerializeObject(dataTable, Newtonsoft.Json.Formatting.Indented);
+                strJson = strJson.Replace(Environment.NewLine, "");
+                //strJson = strJson.Replace(" ", "");
+                cn.Close();
+            }
+            catch (Exception ex)
+            {
+
+                return strJson;
+            }
+
+            //return oLista;
+            return strJson;
+        }
     }
 
 
