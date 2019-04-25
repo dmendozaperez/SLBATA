@@ -133,7 +133,6 @@ namespace CapaDato.Maestros
             return intRespuesta;
         }
 
-
         public string listarStr_DatosTienda(string cod_tda)
         {
             string strJson = "";
@@ -147,6 +146,35 @@ namespace CapaDato.Maestros
                 SqlParameter ocod_tda = oComando.Parameters.Add("@TIENDA", SqlDbType.VarChar);
                 ocod_tda.Direction = ParameterDirection.Input;
                 ocod_tda.Value = cod_tda;
+
+                SqlDataReader oReader = oComando.ExecuteReader(CommandBehavior.SingleResult);
+                DataTable dataTable = new DataTable("row");
+                dataTable.Load(oReader);
+
+                strJson = JsonConvert.SerializeObject(dataTable, Newtonsoft.Json.Formatting.Indented);
+                strJson = strJson.Replace(Environment.NewLine, "");
+                //strJson = strJson.Replace(" ", "");
+                cn.Close();
+            }
+            catch (Exception ex)
+            {
+
+                return strJson;
+            }
+
+            //return oLista;
+            return strJson;
+        }
+
+        public string listarStr_InterfacexDefecto()
+        {
+            string strJson = "";
+            try
+            {
+                SqlConnection cn = new SqlConnection(Ent_Conexion.conexionPosPeru);
+                cn.Open();
+                SqlCommand oComando = new SqlCommand("USP_OBTENER_INTERFACE_XDEFECTO", cn);
+                oComando.CommandType = CommandType.StoredProcedure;
 
                 SqlDataReader oReader = oComando.ExecuteReader(CommandBehavior.SingleResult);
                 DataTable dataTable = new DataTable("row");

@@ -97,7 +97,7 @@ namespace CapaPresentacion.Controllers
             if (!string.IsNullOrEmpty(param.sSearch))
             {
                 filteredMembers = membercol
-                    .Where(m => m.cod_Entid.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    .Where(m => m.des_Entid.ToUpper().Contains(param.sSearch.ToUpper()) ||
                      m.des_Entid.ToUpper().Contains(param.sSearch.ToUpper()));
             }
             //Manejador de orden
@@ -227,6 +227,15 @@ namespace CapaPresentacion.Controllers
             strJson = dat_storeTda.listarStr_DatosTienda(codTienda);
             var serializer = new JavaScriptSerializer();
             jRespuesta = Json(serializer.Deserialize<List<Ent_DatosTienda>>(strJson), JsonRequestBehavior.AllowGet);
+
+            return strJson;
+        }
+
+        public string listarStr_InterfacexDefecto()
+        {
+            string strJson = "";
+            JsonResult jRespuesta = null;
+            strJson = dat_storeTda.listarStr_InterfacexDefecto();
 
             return strJson;
         }

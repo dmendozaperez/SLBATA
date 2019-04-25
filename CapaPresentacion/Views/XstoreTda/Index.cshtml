@@ -45,28 +45,28 @@
         <table id="example" class="table table-hover dataTable  table-striped table-responsive">
             <thead>
                 <tr style="background-color:#3d566e; color:#ecf0f1">
-                    <th>Cod Tienda</th>
+                    @*<th>Cod Tienda</th>*@
                     <th>Des tienda</th>
-                    <th>Cod Empresa</th>
+                    @*<th>Cod Empresa</th>*@
                     <th>Des Empresa</th>
                     <th>Cadena</th>
                     <th>Xstore</th>
                     <th>Detalle</th>
-                    <th>G. Corr.</th>
+                    <th>G. Correlativo</th>
                     
                 </tr>
             </thead>
             <tbody data-bind="foreach:"></tbody>
             <tfoot>
                 <tr>
-                    <th>Cod Tienda</th>
+                    @*<th>Cod Tienda</th>*@
                     <th>Des tienda</th>
-                    <th>Cod Empresa</th>
+                    @*<th>Cod Empresa</th>*@
                     <th>Des Empresa</th>
                     <th>Cadena</th>
                     <th>Xstore</th>
                     <th>Detalle</th>
-                    <th>G. Corr.</th>
+                    <th>G. Correlativo</th>
 
                 </tr>
             </tfoot>
@@ -99,10 +99,10 @@
             "order": [0, "asc"],
             "bDeferRender": true,
             "aoColumns": [
-                 { "sName": "cod_Entid", "mData": "cod_Entid" },
+                 //{ "sName": "cod_Entid", "mData": "cod_Entid" },
                    { "sName": "des_Entid", "mData": "des_Entid" },
 
-                   { "sName": "cod_Emp", "mData": "cod_Emp", "sClass": "center" },
+                   //{ "sName": "cod_Emp", "mData": "cod_Emp", "sClass": "center" },
                    { "sName": "des_Emp", "mData": "des_Emp", "sClass": "right" },
                    { "sName": "des_Cadena", "mData": "des_Cadena", "sClass": "right" },
                    {
@@ -168,27 +168,27 @@
         var strCadena=' <table id="example" class="table table-hover dataTable  table-striped table-responsive">'+
                             '<thead>'+
                             '<tr style="background-color:#3d566e; color:#ecf0f1">'+
-                            '<th>Cod Tienda</th>'+
+                            //'<th>Cod Tienda</th>'+
                             '<th>Des tienda</th>'+
-                            '<th>Cod Empresa</th>'+
+                            //'<th>Cod Empresa</th>'+
                             '<th>Des Empresa</th>'+
                             '<th>Cadena</th>'+
                             '<th>Xstore</th>'+
                             '<th>Detalle</th>' +
-                               '<th>G. Corr.</th>'+
+                            '<th>G. Correlativo</th>' +
                             '</tr>'+
                             ' </thead>'+
                             '<tbody data-bind="foreach:"></tbody>'+
                             '<tfoot>'+
                             '<tr>'+
-                            '<th>Cod Tienda</th>'+
+                            //'<th>Cod Tienda</th>'+
                             '<th>Des tienda</th>'+
-                            '<th>Cod Empresa</th>'+
+                            //'<th>Cod Empresa</th>'+
                             '<th>Des Empresa</th>'+
                             ' <th>Cadena</th>'+
                             ' <th>Xstore</th>'+
                             ' <th>Detalle</th>' +
-                            '<th>G. Corr.</th>' +
+                            '<th>G. Correlativo</th>' +
 
                             '</tr>'+
                             ' </tfoot>'+
@@ -207,10 +207,10 @@
             "order": [0, "asc"],
             "bDeferRender": true,
             "aoColumns": [
-                 { "sName": "cod_Entid", "mData": "cod_Entid" },
+                 //{ "sName": "cod_Entid", "mData": "cod_Entid" },
                    { "sName": "des_Entid", "mData": "des_Entid" },
 
-                   { "sName": "cod_Emp", "mData": "cod_Emp", "sClass": "center" },
+                   //{ "sName": "cod_Emp", "mData": "cod_Emp", "sClass": "center" },
                    { "sName": "des_Emp", "mData": "des_Emp", "sClass": "right" },
                    { "sName": "des_Cadena", "mData": "des_Cadena", "sClass": "right" },
                    {
@@ -387,9 +387,9 @@
     function PopupDetalle(codTienda, descTienda, Direccion, Jefe, Concesion) {
 
         waitingDialog.show('Espere un momento por favor');
-        
+
         var ControllerUrl = "@Url.Action("listarStr_DatosTienda", "XstoreTda")";
-       
+
         $.ajax({
             type: "GET",
             url: ControllerUrl,
@@ -402,37 +402,55 @@
                 if (data != '' && data != '[]') {
 
                     var valors = JSON.parse(data);
-                  
+
                     var strStock = '';
                     var strCorrelativo = '';
 
-                    var molde = '<tr>'
-                    molde += '<td colspan="1" valign="middle"><label>etiqueta</label></td>'
-                    molde += '<td colspan="2">'
-                    molde += '&nbsp;&nbsp;Valor'
-                    molde += '</td>'
-                    molde += '</tr>'
-                   
+                    var molde = '<tr id="IdTr"  >'
+                        molde += '<td colspan="1" valign="middle"><label  id="lblId" name="nombre">etiqueta</label></td>'
+                        molde += '<td colspan="2">'
+                        molde += '&nbsp;&nbsp;Valor'
+                        molde += '</td>'
+                        molde += '</tr>'
+                        var i = 0;
+                        var j = 0;
+
                     $.each(valors, function (index, item) {
+
                         var tipo = item.TIPO;
                         var etiqueta = item.DESCRIPCION;
                         var des1 = item.DES1;
                         var des2 = item.DES2;
-                        var tmpMolde = molde;                     
-                       
+                        var tmpMolde = molde;
+
                         if (tipo == 'C') {
+                            i++;
+                            tmpMolde = tmpMolde.replace("IdTr", "trC" + i);
+                            tmpMolde = tmpMolde.replace("lblId",  i);
+                            tmpMolde = tmpMolde.replace("nombre", "trC");
                             tmpMolde = tmpMolde.replace("etiqueta", etiqueta);
                             tmpMolde = tmpMolde.replace("Valor", des1 + '-' + des2);
                             strCorrelativo += tmpMolde;
                         }
                         if (tipo == 'S') {
+                            j++;
+                            tmpMolde = tmpMolde.replace("IdTr", "trS" + j);
+                            tmpMolde = tmpMolde.replace("lblId", i);
+                            tmpMolde = tmpMolde.replace("nombre", "trS");
                             tmpMolde = tmpMolde.replace("etiqueta", etiqueta);
                             tmpMolde = tmpMolde.replace("Valor", des1 +''+ des2);
                             strStock += tmpMolde;
-                        }                        
-                    });                  
+                        }
+                    });
 
                     var strhtml = ''
+
+                    var pOcu = "ocultarFilas('trC',"+i+");mostrarDivFast('bverC'); ocultarDivFast('bocuC')"
+                    var pVer = "mostrarFilas('trC',"+i+");ocultarDivFast('bverC'); mostrarDivFast('bocuC')"
+
+                    var pOcuS = "ocultarFilas('trS',"+j+");mostrarDivFast('bverS'); ocultarDivFast('bocuS')"
+                    var pVerS = "mostrarFilas('trS',"+j+");ocultarDivFast('bverS'); mostrarDivFast('bocuS')"
+
                     strhtml += '<div class="modal-header modal-header-danger" style="margin-top:0px;margin-bottom:0px;padding-top:2px;padding-bottom:2px;">'
                     strhtml += '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
                     strhtml += '<h5 class="modal-title" id="myModalLabel">'
@@ -464,11 +482,33 @@
                     strhtml += '</td>'
                     strhtml += '</tr>'
                     strhtml += '<tr  id="tr1">'
-                    strhtml += '<td colspan="3" valign="middle"  bgcolor="#9A9897" style="color:#ffffff;font-size:14px;padding:3px;padding-left:3px;font-weight:bold">&nbsp;&nbsp;Correlativos</td>'
+                    //strhtml += '<td colspan="3" valign="middle"  bgcolor="#9A9897" style="color:#ffffff;font-size:14px;padding:3px;padding-left:3px;font-weight:bold">&nbsp;&nbsp;Correlativos</td>'
+                    strhtml += '<td colspan="3" valign="middle"  bgcolor="#9A9897" style="color:#ffffff;font-size:15px;padding:3px;padding-left:3px;">'
+                    strhtml += '<table style="border-bottom:0px;font-size:14px;width:100%;">'
+                    strhtml += '<tr>'
+                    strhtml += '<td style="color:#ffffff;font-size:15px;width:90%;text-align:left;padding-left:1px;">Correlativos</td>'
+                    strhtml += '<td style="width:5%;text-align:right;">'
+                    strhtml += '<span id="bocuC" onclick ="' + pOcu + '"  class="glyphicon glyphicon-eye-close"></span>'
+                    strhtml += '<span id="bverC" onclick ="' + pVer + '" style="display:none" class="glyphicon glyphicon-eye-open""></span>'
+                    strhtml += '&nbsp;</td>'
+                    strhtml += '</tr>'
+                    strhtml += '</table>'
+                    strhtml += '</td>'
                     strhtml += '</tr>'
                     strhtml += strCorrelativo
                     strhtml += '<tr  id="tr1">'
-                    strhtml += '<td colspan="3" valign="middle"  bgcolor="#9A9897" style="color:#ffffff;font-size:14px;padding:3px;padding-left:3px;font-weight:bold">&nbsp;&nbsp;Stock</td>'
+                    //strhtml += '<td colspan="3" valign="middle"  bgcolor="#9A9897" style="color:#ffffff;font-size:14px;padding:3px;padding-left:3px;font-weight:bold">&nbsp;&nbsp;Stock</td>'
+                    strhtml += '<td colspan="3" valign="middle"  bgcolor="#9A9897" style="color:#ffffff;font-size:15px;padding:3px;padding-left:3px;">'
+                    strhtml += '<table style="border-bottom:0px;font-size:14px;width:100%;">'
+                    strhtml += '<tr>'
+                    strhtml += '<td style="color:#ffffff;font-size:15px;width:90%;text-align:left;padding-left:1px;">Stock</td>'
+                    strhtml += '<td style="width:5%;text-align:right;">'
+                    strhtml += '<span id="bocuS" onclick ="' + pOcuS + '"  class="glyphicon glyphicon-eye-close"></span>'
+                    strhtml += '<span id="bverS" onclick ="' + pVerS + '" style="display:none" class="glyphicon glyphicon-eye-open"></span>'
+                    strhtml += '&nbsp;</td>'
+                    strhtml += '</tr>'
+                    strhtml += '</table>'
+                    strhtml += '</td>'
                     strhtml += '</tr>'
                     strhtml += strStock
                     strhtml += '</table>'
@@ -482,9 +522,162 @@
                     $('#myModalContent').html(strhtml);
                     $('#myModal').modal(options);
                     $('#myModal').modal('show');
-                                    
 
-                } 
+
+                }
+                waitingDialog.hide();
+
+            },
+            error: function () {
+                waitingDialog.hide();
+                alert('Error')
+            }
+
+        });
+
+    }
+
+    function PopupInterfacexDefecto(codTienda, descTienda, Direccion, Jefe, Concesion) {
+
+        waitingDialog.show('Espere un momento por favor');
+
+        var ControllerUrl = "@Url.Action("listarStr_InterfacexDefecto", "Interface")"
+
+        $.ajax({
+            type: "GET",
+            url: ControllerUrl,
+            contentType: "application/json; charset=utf-8",
+            data: {},
+            datatype: "json",
+            cache: true,
+            success: function (data) {
+
+                if (data != '' && data != '[]') {
+
+                    var valors = JSON.parse(data);
+
+                    var strStock = '';
+                    var strCorrelativo = '';
+
+                    var molde = '<tr id="IdTr"  >'
+                    molde += '<td colspan="1" valign="middle"><label  id="lblId" name="nombre">etiqueta</label></td>'
+                    molde += '<td colspan="2">'
+                    molde += '&nbsp;&nbsp;Valor'
+                    molde += '</td>'
+                    molde += '</tr>'
+                    var i = 0;
+                    var j = 0;
+
+                    $.each(valors, function (index, item) {
+
+                        var tipo = item.TIPO;
+                        var etiqueta = item.DESCRIPCION;
+                        var des1 = item.DES1;
+                        var des2 = item.DES2;
+                        var tmpMolde = molde;
+
+                        if (tipo == 'C') {
+                            i++;
+                            tmpMolde = tmpMolde.replace("IdTr", "trC" + i);
+                            tmpMolde = tmpMolde.replace("lblId",  i);
+                            tmpMolde = tmpMolde.replace("nombre", "trC");
+                            tmpMolde = tmpMolde.replace("etiqueta", etiqueta);
+                            tmpMolde = tmpMolde.replace("Valor", des1 + '-' + des2);
+                            strCorrelativo += tmpMolde;
+                        }
+                        if (tipo == 'S') {
+                            j++;
+                            tmpMolde = tmpMolde.replace("IdTr", "trS" + j);
+                            tmpMolde = tmpMolde.replace("lblId", i);
+                            tmpMolde = tmpMolde.replace("nombre", "trS");
+                            tmpMolde = tmpMolde.replace("etiqueta", etiqueta);
+                            tmpMolde = tmpMolde.replace("Valor", des1 +''+ des2);
+                            strStock += tmpMolde;
+                        }
+                    });
+
+                    var strhtml = ''
+
+                    var pOcu = "ocultarFilas('trC',"+i+");mostrarDivFast('bverC'); ocultarDivFast('bocuC')"
+                    var pVer = "mostrarFilas('trC',"+i+");ocultarDivFast('bverC'); mostrarDivFast('bocuC')"
+
+                    var pOcuS = "ocultarFilas('trS',"+j+");mostrarDivFast('bverS'); ocultarDivFast('bocuS')"
+                    var pVerS = "mostrarFilas('trS',"+j+");ocultarDivFast('bverS'); mostrarDivFast('bocuS')"
+
+                    strhtml += '<div class="modal-header modal-header-danger" style="margin-top:0px;margin-bottom:0px;padding-top:2px;padding-bottom:2px;">'
+                    strhtml += '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
+                    strhtml += '<h5 class="modal-title" id="myModalLabel">'
+                    strhtml += '<table style="border-bottom:0px;font-size:14px;width:50%;">'
+                    strhtml += '<tr>'
+                    strhtml += '<td style="font-size:14px;width:100%;text-align:left;">' + descTienda + '</td>'
+                    strhtml += '</tr>'
+                    strhtml += '</table>'
+                    strhtml += '</h5>'
+                    strhtml += '</div>'
+                    strhtml += '<div class="modal-body">'
+                    strhtml += '<table class="table table-striped" RULES="none">'
+                    strhtml += '<tr>'
+                    strhtml += '<td colspan="1" valign="middle"><label>Jefe</label></td>'
+                    strhtml += '<td colspan="2">'
+                    strhtml += '<i class="fa fa-briefcase"></i>&nbsp;&nbsp;' + Jefe
+                    strhtml += '</td>'
+                    strhtml += '</tr>'
+                    strhtml += '<tr>'
+                    strhtml += '<td colspan="1" valign="middle"><label>Consecionaria</label></td>'
+                    strhtml += '<td colspan="2">'
+                    strhtml += '<i class="fa fa-university"></i>&nbsp;&nbsp;' + Concesion
+                    strhtml += '</td>'
+                    strhtml += '</tr>'
+                    strhtml += '<tr>'
+                    strhtml += '<td colspan="1" valign="middle"><label>Dirección</label></td>'
+                    strhtml += '<td colspan="2">'
+                    strhtml += '<i class="fa fa-map-marker"></i>&nbsp;&nbsp;' + Direccion
+                    strhtml += '</td>'
+                    strhtml += '</tr>'
+                    strhtml += '<tr  id="tr1">'
+                    //strhtml += '<td colspan="3" valign="middle"  bgcolor="#9A9897" style="color:#ffffff;font-size:14px;padding:3px;padding-left:3px;font-weight:bold">&nbsp;&nbsp;Correlativos</td>'
+                    strhtml += '<td colspan="3" valign="middle"  bgcolor="#9A9897" style="color:#ffffff;font-size:15px;padding:3px;padding-left:3px;">'
+                    strhtml += '<table style="border-bottom:0px;font-size:14px;width:100%;">'
+                    strhtml += '<tr>'
+                    strhtml += '<td style="color:#ffffff;font-size:15px;width:90%;text-align:left;padding-left:1px;">Correlativos</td>'
+                    strhtml += '<td style="width:5%;text-align:right;">'
+                    strhtml += '<span id="bocuC" onclick ="' + pOcu + '"  class="glyphicon glyphicon-eye-close"></span>'
+                    strhtml += '<span id="bverC" onclick ="' + pVer + '" style="display:none" class="glyphicon glyphicon-eye-open""></span>'
+                    strhtml += '&nbsp;</td>'
+                    strhtml += '</tr>'
+                    strhtml += '</table>'
+                    strhtml += '</td>'
+                    strhtml += '</tr>'
+                    strhtml += strCorrelativo
+                    strhtml += '<tr  id="tr1">'
+                    //strhtml += '<td colspan="3" valign="middle"  bgcolor="#9A9897" style="color:#ffffff;font-size:14px;padding:3px;padding-left:3px;font-weight:bold">&nbsp;&nbsp;Stock</td>'
+                    strhtml += '<td colspan="3" valign="middle"  bgcolor="#9A9897" style="color:#ffffff;font-size:15px;padding:3px;padding-left:3px;">'
+                    strhtml += '<table style="border-bottom:0px;font-size:14px;width:100%;">'
+                    strhtml += '<tr>'
+                    strhtml += '<td style="color:#ffffff;font-size:15px;width:90%;text-align:left;padding-left:1px;">Stock</td>'
+                    strhtml += '<td style="width:5%;text-align:right;">'
+                    strhtml += '<span id="bocuS" onclick ="' + pOcuS + '"  class="glyphicon glyphicon-eye-close"></span>'
+                    strhtml += '<span id="bverS" onclick ="' + pVerS + '" style="display:none" class="glyphicon glyphicon-eye-open"></span>'
+                    strhtml += '&nbsp;</td>'
+                    strhtml += '</tr>'
+                    strhtml += '</table>'
+                    strhtml += '</td>'
+                    strhtml += '</tr>'
+                    strhtml += strStock
+                    strhtml += '</table>'
+                    strhtml += '</div>'
+                    strhtml += '<div class="modal-footer" style="margin-top:-30px">'
+                    strhtml += '<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>'
+
+                    strhtml += '</div>'
+                    var options = { "backdrop": "static", keyboard: true };
+
+                    $('#myModalContent').html(strhtml);
+                    $('#myModal').modal(options);
+                    $('#myModal').modal('show');
+
+
+                }
                 waitingDialog.hide();
 
             },
@@ -652,7 +845,6 @@
                       document.getElementById("TotalNXstore").innerHTML = '<label for="segape">' + data.Data + '</label>'
 
                   }
-
               },
               error: function (xhr) {
                   waitingDialog.hide();
@@ -660,7 +852,30 @@
                   waitingDialog.hide();
               }
           })
+    }
 
+    function ocultarFilas(nombre, cantidad) {
+
+        for (var i = 1; i <= cantidad; i++) {
+            ocultarDivFast(nombre + i)
+        }
+    }
+
+    function mostrarFilas(nombre, cantidad) {
+
+        for (var i = 1; i <= cantidad; i++) {
+            mostrarDivFast(nombre + i)
+        }
+    }
+
+    function ocultarDivFast(divId) {
+
+        $("#" + divId).hide();
+    }
+
+    function mostrarDivFast(divId) {
+
+        $("#" + divId).show();
     }
 </script>
 
