@@ -33,11 +33,8 @@
             <div class="col-sm-2">
                 <label for="segape">Tiendas no Xstore :</label>
             </div>
-            <div class="col-sm-2" id="TotalNXstore">
-               
-            </div>
-
-    
+            <div class="col-sm-2" id="TotalNXstore">               
+            </div>   
 
     </div>
       
@@ -76,7 +73,6 @@
     </div>
     <br />
 
-
 </div>
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" ng-app>
     <div class="modal-dialog">
@@ -101,18 +97,14 @@
             "order": [0, "asc"],
             "bDeferRender": true,
             "aoColumns": [
-                 //{ "sName": "cod_Entid", "mData": "cod_Entid" },
-                   { "sName": "des_Entid", "mData": "des_Entid" },
-
-                   //{ "sName": "cod_Emp", "mData": "cod_Emp", "sClass": "center" },
-                   { "sName": "des_Emp", "mData": "des_Emp", "sClass": "right" },
-                   { "sName": "des_Cadena", "mData": "des_Cadena", "sClass": "right" },
+                  { "sName": "des_Entid", "mData": "des_Entid" },
+                  { "sName": "des_Emp", "mData": "des_Emp", "sClass": "right" },
+                  { "sName": "des_Cadena", "mData": "des_Cadena", "sClass": "right" },
                    {
                        "render": function (data, type, full) {
                            var envio = "'" + full.cod_Entid + "','" + full.des_Entid + "'"
 
                            if (full.bol_xstore == 'True') {
-
                                return '<div> <a title="Xstore Activado"  onclick="PopupDesactivarTienda(' + envio + ')" target="_blank" class="btn btn-success btn-sm"> <span class="glyphicon glyphicon-off"></span></a></div>';
                            } else {
                                return '<div> <a title="Xstore Desactivo"  onclick="PopupActivarTienda(' + envio + ')" target="_blank" class="btn btn-default btn-sm"> <span class="glyphicon glyphicon-off"></span></a></div>';
@@ -132,8 +124,7 @@
 
                            return '<div> <a title="Ver Detalle"  onclick="PopupDetalle(' + envio + ')" target="_blank" class="btn btn-primary btn-sm"> <span class="	glyphicon glyphicon-th-list"></span></a></div>';
                        }
-                   },
-                    
+                   },                    
                     {
                         "render": function (data, type, full) {
                                 var envio = "'" + full.cod_Entid + "','" + full.des_Entid + "'"
@@ -144,13 +135,8 @@
                             } else {
                                 return '<div> <a title="Generar correlativos"  onclick="PopupGenerarCorrelativo(' + envio + ')" target="_blank" class="btn btn-primary btn-sm"> <span class="fa fa-cogs"></span></a></div>';
                             }
-
-
                         }
                     }
-
-
-
             ],
             dom: 'Bfrtip',
             buttons: [
@@ -169,7 +155,6 @@
            'copyHtml5',
             ]
         });
-
 
         Obtenertotales();
     });
@@ -262,13 +247,8 @@
                             } else {
                                 return '<div> <a title="Generar correlativos"  onclick="PopupGenerarCorrelativo(' + envio + ')" target="_blank" class="btn btn-primary btn-sm"> <span class="fa fa-cogs"></span></a></div>';
                             }
-
-
                         }
                     }
-
-
-
             ],
             dom: 'Bfrtip',
             buttons: [
@@ -431,41 +411,65 @@
                         molde += '<td colspan="1">'
                         molde += '&nbsp;&nbsp;Valor'
                         molde += '</td>'
-                        molde += '<td colspan="1" valign="middle"><label  id="lblId" name="nombre">etiqueta1</label></td>'
+                        molde += '<td colspan="1" valign="middle"><label  id="lblId" name="nombre1">etiqueta1</label></td>'
                         molde += '<td colspan="1">'
                         molde += '&nbsp;&nbsp;Valor1'
                         molde += '</td>'
                         molde += '</tr>'
                         var i = 0;
+                        var Ci = 0
+                        var tmpMoldeC = ''
+
                         var j = 0;
+                        var Cj = 0;
+                        var tmpMoldeS = ''
 
                     $.each(valors, function (index, item) {
 
                         var tipo = item.TIPO;
                         var etiqueta = item.DESCRIPCION;
                         var des1 = item.DES1;
-                        var des2 = item.DES2;
-                        var tmpMolde = molde;
+                        var des2 = item.DES2;                      
 
-                        if (tipo == 'C') {
-                            i++;
-                            tmpMolde = tmpMolde.replace("IdTr", "trC" + i);
-                            tmpMolde = tmpMolde.replace("lblId",  i);
-                            tmpMolde = tmpMolde.replace("nombre", "trC");
-                            tmpMolde = tmpMolde.replace("etiqueta", etiqueta);
-                            tmpMolde = tmpMolde.replace("Valor", des1 + '-' + des2);
-                            strCorrelativo += tmpMolde;
+                        if (tipo == 'C') {                            
+                            Ci++;
+                            var sub = '';
+                            if (Ci == 1) { i++; strCorrelativo += molde; }
+                            if (Ci == 2) { sub = '1'; Ci = 0 }
+                            
+                            strCorrelativo = strCorrelativo.replace("IdTr" + sub, "trC" + i);
+                            strCorrelativo = strCorrelativo.replace("lblId" + sub, i);
+                            strCorrelativo = strCorrelativo.replace("nombre" + sub, "trC");
+                            strCorrelativo = strCorrelativo.replace("etiqueta" + sub, etiqueta);
+                            strCorrelativo = strCorrelativo.replace("Valor" + sub, des1 + '-' + des2);
+                            
                         }
                         if (tipo == 'S') {
-                            j++;
-                            tmpMolde = tmpMolde.replace("IdTr", "trS" + j);
-                            tmpMolde = tmpMolde.replace("lblId", i);
-                            tmpMolde = tmpMolde.replace("nombre", "trS");
-                            tmpMolde = tmpMolde.replace("etiqueta", etiqueta);
-                            tmpMolde = tmpMolde.replace("Valor", des1 +''+ des2);
-                            strStock += tmpMolde;
+
+                            Cj++;
+                            var sub = '';
+                            if (Cj == 1) { j++; strStock += molde; }
+                            if (Cj == 2) { sub = '1'; Cj=0 }
+                            if (Ci > 0) {
+                                strStock = strStock.replace("etiqueta1", "");
+                                strStock = strStock.replace("Valor1", "");
+                            }
+
+                            strStock = strStock.replace("IdTr" + sub, "trS" + j);
+                            strStock = strStock.replace("lblId" + sub, j);
+                            strStock = strStock.replace("nombre" + sub, "trS");
+                            strStock = strStock.replace("etiqueta" + sub, etiqueta);
+                            strStock = strStock.replace("Valor" + sub, des2);
+
                         }
                     });
+
+                    strCorrelativo = strCorrelativo.replace("etiqueta1", "");
+                    strCorrelativo = strCorrelativo.replace("Valor1", "");
+
+                    strStock = strStock.replace("etiqueta1", "");
+                    strStock = strStock.replace("Valor1", "");
+                    
 
                     var strhtml = ''
 
@@ -489,25 +493,25 @@
                     strhtml += '<table class="table table-striped" RULES="none">'
                     strhtml += '<tr>'
                     strhtml += '<td colspan="1" valign="middle"><label>Jefe</label></td>'
-                    strhtml += '<td colspan="2">'
+                    strhtml += '<td colspan="3">'
                     strhtml += '<i class="fa fa-briefcase"></i>&nbsp;&nbsp;' + Jefe
                     strhtml += '</td>'
                     strhtml += '</tr>'
                     strhtml += '<tr>'
                     strhtml += '<td colspan="1" valign="middle"><label>Consecionaria</label></td>'
-                    strhtml += '<td colspan="2">'
+                    strhtml += '<td colspan="3">'
                     strhtml += '<i class="fa fa-university"></i>&nbsp;&nbsp;' + Concesion
                     strhtml += '</td>'
                     strhtml += '</tr>'
                     strhtml += '<tr>'
                     strhtml += '<td colspan="1" valign="middle"><label>Dirección</label></td>'
-                    strhtml += '<td colspan="2">'
+                    strhtml += '<td colspan="3">'
                     strhtml += '<i class="fa fa-map-marker"></i>&nbsp;&nbsp;' + Direccion
                     strhtml += '</td>'
                     strhtml += '</tr>'
                     strhtml += '<tr  id="tr1">'
                     //strhtml += '<td colspan="3" valign="middle"  bgcolor="#9A9897" style="color:#ffffff;font-size:14px;padding:3px;padding-left:3px;font-weight:bold">&nbsp;&nbsp;Correlativos</td>'
-                    strhtml += '<td colspan="3" valign="middle"  bgcolor="#9A9897" style="color:#ffffff;font-size:15px;padding:3px;padding-left:3px;">'
+                    strhtml += '<td colspan="4" valign="middle"  bgcolor="#9A9897" style="color:#ffffff;font-size:15px;padding:3px;padding-left:3px;">'
                     strhtml += '<table style="border-bottom:0px;font-size:14px;width:100%;">'
                     strhtml += '<tr>'
                     strhtml += '<td style="color:#ffffff;font-size:15px;width:90%;text-align:left;padding-left:1px;">Correlativos</td>'
@@ -522,7 +526,7 @@
                     strhtml += strCorrelativo
                     strhtml += '<tr  id="tr1">'
                     //strhtml += '<td colspan="3" valign="middle"  bgcolor="#9A9897" style="color:#ffffff;font-size:14px;padding:3px;padding-left:3px;font-weight:bold">&nbsp;&nbsp;Stock</td>'
-                    strhtml += '<td colspan="3" valign="middle"  bgcolor="#9A9897" style="color:#ffffff;font-size:15px;padding:3px;padding-left:3px;">'
+                    strhtml += '<td colspan="4" valign="middle"  bgcolor="#9A9897" style="color:#ffffff;font-size:15px;padding:3px;padding-left:3px;">'
                     strhtml += '<table style="border-bottom:0px;font-size:14px;width:100%;">'
                     strhtml += '<tr>'
                     strhtml += '<td style="color:#ffffff;font-size:15px;width:90%;text-align:left;padding-left:1px;">Stock</td>'
@@ -534,7 +538,7 @@
                     strhtml += '</table>'
                     strhtml += '</td>'
                     strhtml += '</tr>'
-                    strhtml += strStock
+                    strhtml +=  strStock
                     strhtml += '</table>'
                     strhtml += '</div>'
                     strhtml += '<div class="modal-footer" style="margin-top:-30px">'
