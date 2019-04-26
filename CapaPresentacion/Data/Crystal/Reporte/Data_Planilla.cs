@@ -207,5 +207,44 @@ namespace Data.Crystal.Reporte
             }
             return lista;
         }
+
+        public DataTable get_reportePromociones(string cadena, string fecIni, string fecFin)
+        {
+            string sqlquery = "USP_REPORTE_PROMOCIONES";
+            DataTable dt = new DataTable(); ;
+            try
+            {           
+
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexionPosPeru))
+                {
+                    try
+                    {
+                        using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                        {
+                            cmd.CommandTimeout = 0;
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.AddWithValue("@cadena", cadena);
+                            cmd.Parameters.AddWithValue("@fec_ini", fecIni);
+                            cmd.Parameters.AddWithValue("@fec_fin", fecFin);
+                           
+                            using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                            {
+                                da.Fill(dt);                                
+                            }
+                        }
+                    }
+                    catch (Exception exc)
+                    {
+
+
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            return dt;
+        }
     }
 }

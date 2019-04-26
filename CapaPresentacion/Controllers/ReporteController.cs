@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using CapaEntidad.Util;
 using System.Linq;
+using ClosedXML;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
@@ -16,6 +17,10 @@ using CapaEntidad.General;
 using CapaDato.ReportsValeCompra;
 using CapaDato.Maestros;
 using CapaEntidad.Maestros;
+using System.Data;
+using System.IO;
+using ClosedXML.Excel;
+using CapaEntidad.ValeCompra;
 
 namespace CapaPresentacion.Controllers
 {
@@ -26,6 +31,7 @@ namespace CapaPresentacion.Controllers
         public ReportCredentials reportCredential = new ReportCredentials(Ent_Conexion.usuarioReporte, Ent_Conexion.passwordReporte, Ent_Conexion.dominioReporte);
         public string reportFolder = Ent_Conexion.CarpetaPlanillaReporte;
         private string gcodTda = "";
+        private DataTable dtPromociones = new DataTable();
         private string _session_listcomparativo_private = "_session_listcomparativo_private";
         private string _session_listguia_private = "_session_listguia_private";
         private Dat_Combo datCbo = new Dat_Combo();
@@ -467,6 +473,7 @@ namespace CapaPresentacion.Controllers
             }
            
         }
+      
 
         [HttpPost]
         public ActionResult ShowGenericReportVendedorInNewWin(string coddis,string cod_tda, string fecIni, string FecFin, string calidad)
@@ -958,6 +965,74 @@ namespace CapaPresentacion.Controllers
             {
                 estado = _estado
             });
+        }
+
+        public ActionResult ReportePromociones()
+        {
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
+
+            if (_usuario == null)
+            {
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+            }
+            else
+            {
+
+                ViewBag.Title = "Reporte Promociones";
+                List<Ent_ListaTienda> list = new List<Ent_ListaTienda>();
+                Ent_ListaTienda entCombo = new Ent_ListaTienda();
+                entCombo.cod_entid = "BA";
+                entCombo.des_entid = "BA";
+                list.Add(entCombo);
+                entCombo = new Ent_ListaTienda();
+                entCombo.cod_entid = "BG";
+                entCombo.des_entid = "BG";
+                list.Add(entCombo);
+                entCombo = new Ent_ListaTienda();
+                entCombo.cod_entid = "WB";
+                entCombo.des_entid = "WB";
+                list.Add(entCombo);
+
+                ViewBag.Cadena = list;
+                return View();
+            }
+
+        }
+
+        public ActionResult ExportDataPromociones(string cod_cadena, string fecIni, string FecFin)
+        {
+            var oJRespuesta = new JsonResponse();
+            DataTable dt = new DataTable();
+            Data_Planilla pl = new Data_Planilla();
+            dt = pl.get_reportePromociones(cod_cadena, fecIni, FecFin);
+            dt.TableName = "Promociones";
+            Session["Promociones"] = dt;
+       
+            oJRespuesta.Success = true;
+            oJRespuesta.Message = "1";
+
+            return Json(oJRespuesta, JsonRequestBehavior.AllowGet);
+        }
+    
+        public FileResult DescargarPromociones()
+        {
+            DataTable dt = new DataTable();
+           
+
+            var oJRespuesta = new JsonResponse();
+            dt = Session["Promociones"] as DataTable;
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(dt);
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    wb.SaveAs(stream);
+                    return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Promociones.xlsx");
+                }
+            }
         }
 
     }

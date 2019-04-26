@@ -51,7 +51,8 @@
                     <th>Des Empresa</th>
                     <th>Cadena</th>
                     <th>Xstore</th>
-                    <th>Detalle</th>
+                    <th>Interface</th>
+                    <th>Detalle</th>                  
                     <th>G. Correlativo</th>
                     
                 </tr>
@@ -65,7 +66,8 @@
                     <th>Des Empresa</th>
                     <th>Cadena</th>
                     <th>Xstore</th>
-                    <th>Detalle</th>
+                    <th>Interface</th>
+                    <th>Detalle</th>                   
                     <th>G. Correlativo</th>
 
                 </tr>
@@ -121,9 +123,17 @@
                        "render": function (data, type, full) {
                            var envio = "'" + full.cod_Entid + "','" + full.des_Entid + "','" + full.direccion + "','" + full.cod_Jefe + "','" + full.consecionario + "'"
 
+                           return '<div> <a title="enviar Interface"  onclick="PopupInterfacexDefecto(' + envio + ')" target="_blank" class="btn btn-warning btn-sm"> <span class="glyphicon glyphicon-send"></span></a></div>';
+                       }
+                   },
+                   {
+                       "render": function (data, type, full) {
+                           var envio = "'" + full.cod_Entid + "','" + full.des_Entid + "','" + full.direccion + "','" + full.cod_Jefe + "','" + full.consecionario + "'"
+
                            return '<div> <a title="Ver Detalle"  onclick="PopupDetalle(' + envio + ')" target="_blank" class="btn btn-primary btn-sm"> <span class="	glyphicon glyphicon-th-list"></span></a></div>';
                        }
                    },
+                    
                     {
                         "render": function (data, type, full) {
                                 var envio = "'" + full.cod_Entid + "','" + full.des_Entid + "'"
@@ -175,6 +185,7 @@
                             '<th>Cadena</th>'+
                             '<th>Xstore</th>'+
                             '<th>Detalle</th>' +
+                             '<th>Interf. Defec</th>' +
                             '<th>G. Correlativo</th>' +
                             '</tr>'+
                             ' </thead>'+
@@ -188,6 +199,7 @@
                             ' <th>Cadena</th>'+
                             ' <th>Xstore</th>'+
                             ' <th>Detalle</th>' +
+                            ' <th>Interf. Defec</th>' +
                             '<th>G. Correlativo</th>' +
 
                             '</tr>'+
@@ -225,6 +237,13 @@
                            }
                        }
                    },
+                    {
+                        "render": function (data, type, full) {
+                            var envio = "'" + full.cod_Entid + "','" + full.des_Entid + "','" + full.direccion + "','" + full.cod_Jefe + "','" + full.consecionario + "'"
+
+                            return '<div> <a title="enviar Interface"  onclick="PopupInterfacexDefecto(' + envio + ')" target="_blank" class="btn btn-warning btn-sm"> <span class="glyphicon glyphicon-send"></span></a></div>';
+                        }
+                    },
                    {
                        "render": function (data, type, full) {
                            var envio = "'" + full.cod_Entid + "','" + full.des_Entid + "','" + full.direccion + "','" + full.cod_Jefe + "','" + full.consecionario + "'"
@@ -232,6 +251,7 @@
                            return '<div> <a title="Ver Detalle"  onclick="PopupDetalle(' + envio + ')" target="_blank" class="btn btn-primary btn-sm"> <span class="	glyphicon glyphicon-th-list"></span></a></div>';
                        }
                    },
+                   
                     {
                         "render": function (data, type, full) {
                             var envio = "'" + full.cod_Entid + "','" + full.des_Entid + "'"
@@ -408,8 +428,12 @@
 
                     var molde = '<tr id="IdTr"  >'
                         molde += '<td colspan="1" valign="middle"><label  id="lblId" name="nombre">etiqueta</label></td>'
-                        molde += '<td colspan="2">'
+                        molde += '<td colspan="1">'
                         molde += '&nbsp;&nbsp;Valor'
+                        molde += '</td>'
+                        molde += '<td colspan="1" valign="middle"><label  id="lblId" name="nombre">etiqueta1</label></td>'
+                        molde += '<td colspan="1">'
+                        molde += '&nbsp;&nbsp;Valor1'
                         molde += '</td>'
                         molde += '</tr>'
                         var i = 0;
@@ -540,8 +564,23 @@
     function PopupInterfacexDefecto(codTienda, descTienda, Direccion, Jefe, Concesion) {
 
         waitingDialog.show('Espere un momento por favor');
+        var gTemRowOrce
+        var gTemRow       
+        var ConstHtmlrow = '<div class="row" style="margin-top:10px;margin-left:1px;margin-right:1px;margin-bottom:10px;border-radius:5px;padding-top:10px;padding-bottom:10px;">';
+            ConstHtmlrow += 'listDetalle</div>'
+        var iconoProgramado = '<span class="glyphicon glyphicon-time"></span>'
+        var iconoRapido = '<span class="glyphicon glyphicon-flash"></span>'
+        var constControl = '<div class="col-sm-5" style="margin-top:2px;margin-bottom:2px;">'
+            constControl += '<input id="grup_gxx" type="hidden" value="desgrupo"/>'
+            constControl += '<input id="des_remm" type="hidden" value="descrip"/>'
+            constControl += 'tipoIcono' + '&nbsp;'
+            constControl += '<label for="disponible">descripcionDetalle</label>';
+            constControl += '</div>';
+            constControl += '<div class="col-sm-1" style="margin-top:2px;margin-bottom:2px;">';
+            constControl += '<input type="checkbox" id="IdCheck" checked name="Interface" class="regular-checkbox" /> ';
+            constControl += '</div>'
 
-        var ControllerUrl = "@Url.Action("listarStr_InterfacexDefecto", "Interface")"
+        var ControllerUrl = "@Url.Action("listarStr_InterfacexDefecto", "XstoreTda")"
 
         $.ajax({
             type: "GET",
@@ -555,55 +594,82 @@
                 if (data != '' && data != '[]') {
 
                     var valors = JSON.parse(data);
-
-                    var strStock = '';
-                    var strCorrelativo = '';
-
-                    var molde = '<tr id="IdTr"  >'
-                    molde += '<td colspan="1" valign="middle"><label  id="lblId" name="nombre">etiqueta</label></td>'
-                    molde += '<td colspan="2">'
-                    molde += '&nbsp;&nbsp;Valor'
-                    molde += '</td>'
-                    molde += '</tr>'
-                    var i = 0;
-                    var j = 0;
+                    var DescripcionInterface = '';
+                    var nroColum = 2;
+                    var contColum = 0;
+                    var contColumOrce = 0;
+                    var gListRow = '';
+                    var gTemRow = '';
+                    var gListRowOrce = '';
+                    var gTemRowOrce = '';
 
                     $.each(valors, function (index, item) {
 
-                        var tipo = item.TIPO;
-                        var etiqueta = item.DESCRIPCION;
-                        var des1 = item.DES1;
-                        var des2 = item.DES2;
-                        var tmpMolde = molde;
+                        var codEnt = item.Cod_Ent;
+                        var codInterf = item.Cod_Interface;
+                        var desInterf = item.Descripcion_Interface;
 
-                        if (tipo == 'C') {
-                            i++;
-                            tmpMolde = tmpMolde.replace("IdTr", "trC" + i);
-                            tmpMolde = tmpMolde.replace("lblId",  i);
-                            tmpMolde = tmpMolde.replace("nombre", "trC");
-                            tmpMolde = tmpMolde.replace("etiqueta", etiqueta);
-                            tmpMolde = tmpMolde.replace("Valor", des1 + '-' + des2);
-                            strCorrelativo += tmpMolde;
+                        var strView = item.V_View
+                        var strAuto = item.Cod_Auto
+
+                        if (codEnt == '02') {
+
+                            contColum++;
+
+                            if (contColum > nroColum) {
+
+                                gListRow += ConstHtmlrow.replace("listDetalle", gTemRow);
+                                gTemRow = '';
+                                contColum = 1
+                            }
+
+                            var StrControl = constControl;
+                            var htmlbotontipo = strAuto == '1' ? iconoProgramado : iconoRapido;
+
+                            StrControl = StrControl.replace("descripcionDetalle", desInterf);
+                            StrControl = StrControl.replace("IdCheck", codInterf);
+                            StrControl = StrControl.replace("tipoIcono", htmlbotontipo);
+                            StrControl = StrControl.replace("descrip", desInterf);
+                            StrControl = StrControl.replace("remm", codInterf);
+                            StrControl = StrControl.replace("desgrupo", codEnt);
+                            StrControl = StrControl.replace("gxx", codInterf);
+                            StrControl = StrControl.replace("CodInterface", "'" + desInterf + "'");
+
+                            gTemRow += StrControl
+
+                        } else {
+                            contColumOrce++;
+
+                            if (contColumOrce > nroColum) {
+                                gListRowOrce += ConstHtmlrow.replace("listDetalle", gTemRowOrce);
+                                gTemRowOrce = '';
+                                contColumOrce = 1
+                            }
+
+                            var StrControl = constControl;
+                            var htmlbotontipo = strAuto == '1' ? iconoProgramado : iconoRapido;
+
+                            StrControl = StrControl.replace("descripcionDetalle", desInterf);
+                            StrControl = StrControl.replace("IdCheck", codInterf);
+                            StrControl = StrControl.replace("tipoIcono", htmlbotontipo);
+                            StrControl = StrControl.replace("descrip", desInterf);
+                            StrControl = StrControl.replace("remm", codInterf);
+                            StrControl = StrControl.replace("desgrupo", codEnt);
+                            StrControl = StrControl.replace("gxx", codInterf);
+                            StrControl = StrControl.replace("CodInterface", "'" + codInterf + "'");
+
+                            gTemRowOrce += StrControl
                         }
-                        if (tipo == 'S') {
-                            j++;
-                            tmpMolde = tmpMolde.replace("IdTr", "trS" + j);
-                            tmpMolde = tmpMolde.replace("lblId", i);
-                            tmpMolde = tmpMolde.replace("nombre", "trS");
-                            tmpMolde = tmpMolde.replace("etiqueta", etiqueta);
-                            tmpMolde = tmpMolde.replace("Valor", des1 +''+ des2);
-                            strStock += tmpMolde;
-                        }
+
                     });
 
-                    var strhtml = ''
+                    if (gTemRow != '')
+                        gListRow += ConstHtmlrow.replace("listDetalle", gTemRow);
 
-                    var pOcu = "ocultarFilas('trC',"+i+");mostrarDivFast('bverC'); ocultarDivFast('bocuC')"
-                    var pVer = "mostrarFilas('trC',"+i+");ocultarDivFast('bverC'); mostrarDivFast('bocuC')"
+                    if (gTemRowOrce != '')
+                        gListRowOrce += ConstHtmlrow.replace("listDetalle", gTemRowOrce);
 
-                    var pOcuS = "ocultarFilas('trS',"+j+");mostrarDivFast('bverS'); ocultarDivFast('bocuS')"
-                    var pVerS = "mostrarFilas('trS',"+j+");ocultarDivFast('bverS'); mostrarDivFast('bocuS')"
-
+                    var strhtml =''
                     strhtml += '<div class="modal-header modal-header-danger" style="margin-top:0px;margin-bottom:0px;padding-top:2px;padding-bottom:2px;">'
                     strhtml += '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
                     strhtml += '<h5 class="modal-title" id="myModalLabel">'
@@ -615,79 +681,29 @@
                     strhtml += '</h5>'
                     strhtml += '</div>'
                     strhtml += '<div class="modal-body">'
-                    strhtml += '<table class="table table-striped" RULES="none">'
-                    strhtml += '<tr>'
-                    strhtml += '<td colspan="1" valign="middle"><label>Jefe</label></td>'
-                    strhtml += '<td colspan="2">'
-                    strhtml += '<i class="fa fa-briefcase"></i>&nbsp;&nbsp;' + Jefe
-                    strhtml += '</td>'
-                    strhtml += '</tr>'
-                    strhtml += '<tr>'
-                    strhtml += '<td colspan="1" valign="middle"><label>Consecionaria</label></td>'
-                    strhtml += '<td colspan="2">'
-                    strhtml += '<i class="fa fa-university"></i>&nbsp;&nbsp;' + Concesion
-                    strhtml += '</td>'
-                    strhtml += '</tr>'
-                    strhtml += '<tr>'
-                    strhtml += '<td colspan="1" valign="middle"><label>Dirección</label></td>'
-                    strhtml += '<td colspan="2">'
-                    strhtml += '<i class="fa fa-map-marker"></i>&nbsp;&nbsp;' + Direccion
-                    strhtml += '</td>'
-                    strhtml += '</tr>'
-                    strhtml += '<tr  id="tr1">'
-                    //strhtml += '<td colspan="3" valign="middle"  bgcolor="#9A9897" style="color:#ffffff;font-size:14px;padding:3px;padding-left:3px;font-weight:bold">&nbsp;&nbsp;Correlativos</td>'
-                    strhtml += '<td colspan="3" valign="middle"  bgcolor="#9A9897" style="color:#ffffff;font-size:15px;padding:3px;padding-left:3px;">'
-                    strhtml += '<table style="border-bottom:0px;font-size:14px;width:100%;">'
-                    strhtml += '<tr>'
-                    strhtml += '<td style="color:#ffffff;font-size:15px;width:90%;text-align:left;padding-left:1px;">Correlativos</td>'
-                    strhtml += '<td style="width:5%;text-align:right;">'
-                    strhtml += '<span id="bocuC" onclick ="' + pOcu + '"  class="glyphicon glyphicon-eye-close"></span>'
-                    strhtml += '<span id="bverC" onclick ="' + pVer + '" style="display:none" class="glyphicon glyphicon-eye-open""></span>'
-                    strhtml += '&nbsp;</td>'
-                    strhtml += '</tr>'
-                    strhtml += '</table>'
-                    strhtml += '</td>'
-                    strhtml += '</tr>'
-                    strhtml += strCorrelativo
-                    strhtml += '<tr  id="tr1">'
-                    //strhtml += '<td colspan="3" valign="middle"  bgcolor="#9A9897" style="color:#ffffff;font-size:14px;padding:3px;padding-left:3px;font-weight:bold">&nbsp;&nbsp;Stock</td>'
-                    strhtml += '<td colspan="3" valign="middle"  bgcolor="#9A9897" style="color:#ffffff;font-size:15px;padding:3px;padding-left:3px;">'
-                    strhtml += '<table style="border-bottom:0px;font-size:14px;width:100%;">'
-                    strhtml += '<tr>'
-                    strhtml += '<td style="color:#ffffff;font-size:15px;width:90%;text-align:left;padding-left:1px;">Stock</td>'
-                    strhtml += '<td style="width:5%;text-align:right;">'
-                    strhtml += '<span id="bocuS" onclick ="' + pOcuS + '"  class="glyphicon glyphicon-eye-close"></span>'
-                    strhtml += '<span id="bverS" onclick ="' + pVerS + '" style="display:none" class="glyphicon glyphicon-eye-open"></span>'
-                    strhtml += '&nbsp;</td>'
-                    strhtml += '</tr>'
-                    strhtml += '</table>'
-                    strhtml += '</td>'
-                    strhtml += '</tr>'
-                    strhtml += strStock
-                    strhtml += '</table>'
+                    strhtml += '&nbsp;&nbsp;<b>Esta seguro de enviar a la tienda ' + descTienda + ', las siguientes interfaces ?   :</b><br/>'
+                    strhtml += gListRow
                     strhtml += '</div>'
                     strhtml += '<div class="modal-footer" style="margin-top:-30px">'
+                    strhtml += '<div id="divtienda" style="display:none">' + codTienda + '</div>'
+                    
                     strhtml += '<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>'
-
+                    strhtml += '<button type="button" class="btn btn-primary"  onclick="GuardarInterface()"  >Enviar Interface</button>'
                     strhtml += '</div>'
-                    var options = { "backdrop": "static", keyboard: true };
+
+                    var options = { "backdrop": "static", keyboard: true };                   
 
                     $('#myModalContent').html(strhtml);
                     $('#myModal').modal(options);
                     $('#myModal').modal('show');
-
-
                 }
                 waitingDialog.hide();
-
             },
             error: function () {
                 waitingDialog.hide();
                 alert('Error')
             }
-
         });
-
     }
 
     function PopupDetalle_bk(codTienda, descTienda,Direccion,Jefe,Concesion) {
@@ -876,6 +892,56 @@
     function mostrarDivFast(divId) {
 
         $("#" + divId).show();
+    }
+
+    function GuardarInterface() {
+       
+        var Id = '';
+        var Interface_strList = '';
+        var msg_titulo = 'Mensaje ';
+        var CodTda = $("#divtienda").html();
+  
+        $('input[name="Interface"]').each(function () {
+
+            Id = $(this).attr("id");
+            if ($("#" + Id).is(':checked')) {
+                Interface_strList += 'row1 cod_interf="' + Id + '" row2'
+            }
+
+        });
+
+        if (Interface_strList != '') {
+            $('#myModal').modal('hide');
+            waitingDialog.show('Espere un momento por favor');
+
+            var objInterface = {
+                Cod_Tda: CodTda,
+                List_strListDetalle: Interface_strList
+            }
+
+            $.ajax
+             ({
+                 url: '../Interface/GuardarInterface',
+                 dataType: "json",
+                 type: "POST",
+                 data: objInterface,
+                 success: function (data, textStatus, XMLHttpRequest) {
+                     var strId = data.Message;
+
+                     waitingDialog.hide();
+                     toastr.success("Las interface fueron guardardo para su generación.", msg_titulo);
+
+
+                 },
+                 error: function (xhr) {
+                     waitingDialog.hide();
+                     toastr.error(xhr, msg_titulo);
+                 }
+             })
+        } else {
+            toastr.error('Debe seleccionar al menos un Interface.', msg_titulo);
+
+        }
     }
 </script>
 

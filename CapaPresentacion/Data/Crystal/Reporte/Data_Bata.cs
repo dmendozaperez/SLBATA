@@ -274,7 +274,6 @@ namespace Data.Crystal.Reporte
             return content;
         }
 
-
         public List<Models_Rendimiento_Categ> list_RendimientoxCategoria(string tip_Categ, string cod_Dis, string codEntid, string cod_Semana)
         {
             string sqlquery = "USP_XSTORE_REPORTE_RENDIMIENTO_CATEGORIA";

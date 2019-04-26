@@ -30,6 +30,7 @@ namespace CapaPresentacion.Controllers
      
     
         private Dat_Interface datInterface = new Dat_Interface();
+        
      
         private string _session_listInterface = "_session_listInterface";
        
@@ -93,8 +94,7 @@ namespace CapaPresentacion.Controllers
             var oJRespuesta = new JsonResponse();
             Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
 
-            _InterfaceTienda.IdUsu = _usuario.usu_id;
-             Ent_ValeCompra _compra = new Ent_ValeCompra();
+            _InterfaceTienda.IdUsu = _usuario.usu_id;            
 
             Boolean respuesta = datInterface.InsertarInterfaceTienda(_InterfaceTienda);
             
