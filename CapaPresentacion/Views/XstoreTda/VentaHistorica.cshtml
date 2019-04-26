@@ -1,0 +1,74 @@
+﻿@model CapaEntidad.Util.Ent_Combo
+@{
+    Layout = null;
+}
+
+
+
+<div class="modal-content">
+    <div class="modal-header modal-header-danger" style="margin-top:0px;margin-bottom:0px;padding-top:2px;padding-bottom:2px;font-size:14px;">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Interface de Ventas</h4>
+    </div>
+    <div class="modal-body">
+
+        <table class="table table-striped" RULES="none">
+            <tr>
+                <td colspan="4" vertical-align="middle">
+                    <label for="segape">&nbsp;Desea generar interface de ventas Historicas de la tienda @Model.cbo_descripcion ?</label>
+
+                </td>                
+            </tr>
+            <tr>
+                <td width="15%" vertical-align="middle">
+                    <label for="segape">&nbsp;Fec. Ini</label>
+
+                </td>
+                <td width="35%">
+                    <div id="datepickerini" class="input-group date" data-date-format="dd-mm-yyyy">
+                        <input id="fecini" name="fecini" value="" class="form-control custom-input" placeholder="dd-mm-yyyy" type="text" />
+                        <span class="input-group-addon  bg-white"><img src="~/Content/images/wall-calendar-with-lines.svg" height="20" width="20"></span>
+                    </div>
+                </td>
+                <td width="15%">
+                    <label for="fecnac" valign="middle">&nbsp;Fec. Fin</label>
+                </td>
+                <td width="35%">
+                    <div id="datepickerfin" class="input-group date" data-date-format="dd-mm-yyyy">
+                        <input id="fecfin" name="fecfin" value="" class="form-control" placeholder="dd-mm-yyyy" type="text" />
+                        <span class="input-group-addon  bg-white"><img src="~/Content/images/wall-calendar-with-lines.svg" height="20" width="20"></span>
+                    </div>
+                </td>
+
+            </tr>
+        </table>      
+     
+    </div>
+    <div class="modal-footer" style="margin-top:0px">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary"  onclick="generarInterfaceVenta(@Model.cbo_codigo)" >Generar Interface venta</button>
+    </div>
+</div>
+@Html.Hidden("lblIdLote", "")
+
+<script>
+    $(document).ready(function () {
+       
+    });
+
+    
+</script>   
+<script type="text/javascript">
+    $(function () {
+        $("#datepickerini").datepicker({
+            autoclose: true,
+            todayHighlight: true
+        }).datepicker("setDate", "0");;
+    });
+    $(function () {
+        $("#datepickerfin").datepicker({
+            autoclose: true,
+            todayHighlight: true
+        }).datepicker("setDate", "0");;
+    });
+</script>

@@ -99,6 +99,7 @@ namespace CapaPresentacion.Controllers
             Boolean respuesta = datInterface.InsertarInterfaceTienda(_InterfaceTienda);
             
             oJRespuesta.Message = respuesta.ToString();
+            oJRespuesta.Success = respuesta;
 
             return Json(oJRespuesta, JsonRequestBehavior.AllowGet);
         }

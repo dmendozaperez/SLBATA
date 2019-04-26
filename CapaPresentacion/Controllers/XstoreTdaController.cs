@@ -234,10 +234,20 @@ namespace CapaPresentacion.Controllers
         public string listarStr_InterfacexDefecto()
         {
             string strJson = "";
-            JsonResult jRespuesta = null;
+          
             strJson = dat_storeTda.listarStr_InterfacexDefecto();
-
             return strJson;
+        }
+
+        public ActionResult VentaHistorica(string cod_Tda,string descTienda)
+        {
+
+            Ent_Combo cbo = new Ent_Combo();
+            cbo.cbo_codigo = cod_Tda;
+            cbo.cbo_descripcion = descTienda;
+
+            return View(cbo);
+
         }
 
 

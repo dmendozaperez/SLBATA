@@ -14,6 +14,7 @@
 }
 
 <link href="~/ContentSelect/bootstrap-select.css" rel="stylesheet" />
+<link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />
 
 <p class="text-danger">Consulta de tiendas para que puedan ser activadas o desactivadas</p>
 <div class="box box-body box-primary">
@@ -22,7 +23,7 @@
 
         
         <div class="col-sm-2">
-            
+           
         </div>        
             <div class="col-sm-2">
                 <label for="segape">Tiendas Xstore:</label>
@@ -51,6 +52,7 @@
                     <th>Interface</th>
                     <th>Detalle</th>                  
                     <th>G. Correlativo</th>
+                    <th>Venta Hist.</th>
                     
                 </tr>
             </thead>
@@ -66,7 +68,8 @@
                     <th>Interface</th>
                     <th>Detalle</th>                   
                     <th>G. Correlativo</th>
-
+                    <th>Venta Hist.</th>
+                  
                 </tr>
             </tfoot>
         </table>
@@ -81,8 +84,8 @@
         </div>
     </div>
 </div>
-<script src="~/Scripts/bootstrap.min.js"></script>
-<script src="~/ScriptsSelect/bootstrap-select.js"></script>
+<script src="~/Scripts/bootstrap-select.min.js"></script>
+<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
 <script>
     $(document).ready(function () {
         $('.table').dataTable({
@@ -124,7 +127,7 @@
 
                            return '<div> <a title="Ver Detalle"  onclick="PopupDetalle(' + envio + ')" target="_blank" class="btn btn-primary btn-sm"> <span class="	glyphicon glyphicon-th-list"></span></a></div>';
                        }
-                   },                    
+                   },
                     {
                         "render": function (data, type, full) {
                                 var envio = "'" + full.cod_Entid + "','" + full.des_Entid + "'"
@@ -136,7 +139,14 @@
                                 return '<div> <a title="Generar correlativos"  onclick="PopupGenerarCorrelativo(' + envio + ')" target="_blank" class="btn btn-primary btn-sm"> <span class="fa fa-cogs"></span></a></div>';
                             }
                         }
-                    }
+                    },
+                   {
+                       "render": function (data, type, full) {
+                           var envio = "'" + full.cod_Entid + "','" + full.des_Entid + "','" + full.direccion + "','" + full.cod_Jefe + "','" + full.consecionario + "'"
+
+                           return '<div> <a title="enviar Ventas Historicas"  onclick="PopupVentasHistoricas(' + envio + ')" target="_blank" class="btn btn-warning btn-sm"> <span class="glyphicon glyphicon-list-alt"></span></a></div>';
+                       }
+                   }
             ],
             dom: 'Bfrtip',
             buttons: [
@@ -172,6 +182,7 @@
                             '<th>Detalle</th>' +
                              '<th>Interf. Defec</th>' +
                             '<th>G. Correlativo</th>' +
+                             '<th>Venta Hist.</th>' +
                             '</tr>'+
                             ' </thead>'+
                             '<tbody data-bind="foreach:"></tbody>'+
@@ -186,7 +197,7 @@
                             ' <th>Detalle</th>' +
                             ' <th>Interf. Defec</th>' +
                             '<th>G. Correlativo</th>' +
-
+                            '<th>Venta Hist.</th>'+
                             '</tr>'+
                             ' </tfoot>'+
                         '</table>'
@@ -236,7 +247,7 @@
                            return '<div> <a title="Ver Detalle"  onclick="PopupDetalle(' + envio + ')" target="_blank" class="btn btn-primary btn-sm"> <span class="	glyphicon glyphicon-th-list"></span></a></div>';
                        }
                    },
-                   
+
                     {
                         "render": function (data, type, full) {
                             var envio = "'" + full.cod_Entid + "','" + full.des_Entid + "'"
@@ -248,7 +259,14 @@
                                 return '<div> <a title="Generar correlativos"  onclick="PopupGenerarCorrelativo(' + envio + ')" target="_blank" class="btn btn-primary btn-sm"> <span class="fa fa-cogs"></span></a></div>';
                             }
                         }
-                    }
+                    },
+                   {
+                       "render": function (data, type, full) {
+                           var envio = "'" + full.cod_Entid + "','" + full.des_Entid + "','" + full.direccion + "','" + full.cod_Jefe + "','" + full.consecionario + "'"
+
+                           return '<div> <a title="enviar Ventas Historicas"  onclick="PopupVentasHistoricas(' + envio + ')" target="_blank" class="btn btn-warning btn-sm"> <span class="glyphicon glyphicon-list-alt"></span></a></div>';
+                       }
+                   }
             ],
             dom: 'Bfrtip',
             buttons: [
@@ -429,20 +447,20 @@
                         var tipo = item.TIPO;
                         var etiqueta = item.DESCRIPCION;
                         var des1 = item.DES1;
-                        var des2 = item.DES2;                      
+                        var des2 = item.DES2;
 
-                        if (tipo == 'C') {                            
+                        if (tipo == 'C') {
                             Ci++;
                             var sub = '';
                             if (Ci == 1) { i++; strCorrelativo += molde; }
                             if (Ci == 2) { sub = '1'; Ci = 0 }
-                            
+
                             strCorrelativo = strCorrelativo.replace("IdTr" + sub, "trC" + i);
                             strCorrelativo = strCorrelativo.replace("lblId" + sub, i);
                             strCorrelativo = strCorrelativo.replace("nombre" + sub, "trC");
                             strCorrelativo = strCorrelativo.replace("etiqueta" + sub, etiqueta);
                             strCorrelativo = strCorrelativo.replace("Valor" + sub, des1 + '-' + des2);
-                            
+
                         }
                         if (tipo == 'S') {
 
@@ -469,7 +487,7 @@
 
                     strStock = strStock.replace("etiqueta1", "");
                     strStock = strStock.replace("Valor1", "");
-                    
+
 
                     var strhtml = ''
 
@@ -569,7 +587,7 @@
 
         waitingDialog.show('Espere un momento por favor');
         var gTemRowOrce
-        var gTemRow       
+        var gTemRow
         var ConstHtmlrow = '<div class="row" style="margin-top:10px;margin-left:1px;margin-right:1px;margin-bottom:10px;border-radius:5px;padding-top:10px;padding-bottom:10px;">';
             ConstHtmlrow += 'listDetalle</div>'
         var iconoProgramado = '<span class="glyphicon glyphicon-time"></span>'
@@ -685,17 +703,17 @@
                     strhtml += '</h5>'
                     strhtml += '</div>'
                     strhtml += '<div class="modal-body">'
-                    strhtml += '&nbsp;&nbsp;<b>Esta seguro de enviar a la tienda ' + descTienda + ', las siguientes interfaces ?   :</b><br/>'
+                    strhtml += '&nbsp;&nbsp;<b>Esta seguro de enviar a la tienda ' + descTienda + ' las siguientes interfaces ?   :</b><br/>'
                     strhtml += gListRow
                     strhtml += '</div>'
                     strhtml += '<div class="modal-footer" style="margin-top:-30px">'
                     strhtml += '<div id="divtienda" style="display:none">' + codTienda + '</div>'
-                    
+
                     strhtml += '<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>'
                     strhtml += '<button type="button" class="btn btn-primary"  onclick="GuardarInterface()"  >Enviar Interface</button>'
                     strhtml += '</div>'
 
-                    var options = { "backdrop": "static", keyboard: true };                   
+                    var options = { "backdrop": "static", keyboard: true };
 
                     $('#myModalContent').html(strhtml);
                     $('#myModal').modal(options);
@@ -899,12 +917,188 @@
     }
 
     function GuardarInterface() {
-       
+
         var Id = '';
         var Interface_strList = '';
         var msg_titulo = 'Mensaje ';
         var CodTda = $("#divtienda").html();
-  
+
+        $('input[name="Interface"]').each(function () {
+
+            Id = $(this).attr("id");
+            if ($("#" + Id).is(':checked')) {
+                Interface_strList += 'row1 cod_interf="' + Id + '" row2'
+            }
+
+        });
+
+        if (Interface_strList != '') {
+            $('#myModal').modal('hide');
+            waitingDialog.show('Espere un momento por favor');
+
+            var objInterface = {
+                Cod_Tda: CodTda,
+                List_strListDetalle: Interface_strList
+            }
+
+            $.ajax
+             ({
+                 url: '../Interface/GuardarInterface',
+                 dataType: "json",
+                 type: "POST",
+                 data: objInterface,
+                 success: function (data, textStatus, XMLHttpRequest) {
+                     var strId = data.Message;
+
+                     waitingDialog.hide();
+                     toastr.success("Las interface fueron guardardo para su generación.", msg_titulo);
+
+
+                 },
+                 error: function (xhr) {
+                     waitingDialog.hide();
+                     toastr.error(xhr, msg_titulo);
+                 }
+             })
+        } else {
+            toastr.error('Debe seleccionar al menos un Interface.', msg_titulo);
+
+        }
+    }
+
+    function PopupVentasHistoricas(codTienda, descTienda, Direccion, Jefe, Concesion) {
+
+        var TeamDetailPostBackURL ="@Url.Action("VentaHistorica", "XstoreTda")";
+     
+        waitingDialog.show('Espere un momento por favor');
+
+        var obj = {
+            cod_Tda: codTienda,
+            descTienda: descTienda
+        }
+
+      
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: TeamDetailPostBackURL,
+            contentType: "application/json; charset=utf-8",
+            data: obj,
+            datatype: "json",
+            cache: true,
+            success: function (data) {
+               
+                waitingDialog.hide();
+                $('#myModalContent').html(data);
+                $('#myModal').modal(options);
+                $('#myModal').modal('show');
+
+            },
+            error: function () {
+                waitingDialog.hide();
+                alert("Dynamic content load failed.");
+            }
+        });
+
+    }
+
+    function generarInterfaceVenta(codTienda) {
+
+        if (validarfecha()) {
+           
+            var Id = '19';//codigo de interface de historico de ventas
+            var fecIni = ($("#fecini").val()).split('-');
+            var fecFin = ($("#fecfin").val()).split('-');
+            var strIni = fecIni[2] + fecIni[1] + fecIni[0];
+            var strFin = fecFin[2] + fecFin[1] + fecFin[0];
+
+            var Interface_strList = '';
+            var msg_titulo = 'Mensaje ';
+            var CodTda = codTienda;
+
+            Interface_strList += 'row1 cod_interf="' + Id + '"  fec_ini="' + strIni + '"  fec_fin="' + strFin + '"      row2'
+
+            if (Interface_strList != '') {
+                $('#myModal').modal('hide');
+                waitingDialog.show('Espere un momento por favor');
+
+                var objInterface = {
+                    Cod_Tda: CodTda,
+                    List_strListDetalle: Interface_strList
+                }
+
+                $.ajax
+                 ({
+                     url: '../Interface/GuardarInterface',
+                     dataType: "json",
+                     type: "POST",
+                     data: objInterface,
+                     success: function (data, textStatus, XMLHttpRequest) {
+                         var strId = data.Message;
+
+                         waitingDialog.hide();
+                         toastr.success("Las interface de venta fue guardardo para su generación.", msg_titulo);
+
+
+                     },
+                     error: function (xhr) {
+                         waitingDialog.hide();
+                         toastr.error(xhr, msg_titulo);
+                     }
+                 })
+            } else {
+                toastr.error('Debe seleccionar al menos un Interface.', msg_titulo);
+
+            }
+
+        }
+        
+    }
+
+    function validarfecha() {
+
+        var validacion = true
+
+        var strMensaje = '';
+
+        var valCompra_fecVigenIni = $("#fecini").val();
+        var valCompra_fecVigenFin = $("#fecfin").val();
+
+        var partsini = valCompra_fecVigenIni.split('-');
+        var partsfin = valCompra_fecVigenFin.split('-');
+
+        var mydateIni = new Date(partsini[2], partsini[1] - 1, partsini[0]);
+        var mydateFin = new Date(partsfin[2], partsfin[1] - 1, partsfin[0]);
+        var mydatehoy = new Date();
+
+
+        if (mydatehoy < mydateIni)
+            strMensaje += '* la fecha inicio debe ser menor o igual al actual.  <br/>'
+
+        if (mydatehoy < mydateFin)
+            strMensaje += '* la fecha fin debe ser menor o igual al actual.  <br/>'
+
+        if (mydateIni > mydateFin)
+            strMensaje += '* la fecha fin debe ser mayor o igual a la fecha inicial.  <br/>'
+
+
+
+        if (strMensaje != '') {
+            validacion = false;
+            toastr.error(strMensaje, "Mensaje");
+            validacion= false
+        }
+
+        return validacion;
+    }
+
+    function GuardarInterface() {
+
+        var Id = '';
+        var Interface_strList = '';
+        var msg_titulo = 'Mensaje ';
+        var CodTda = $("#divtienda").html();
+
         $('input[name="Interface"]').each(function () {
 
             Id = $(this).attr("id");
