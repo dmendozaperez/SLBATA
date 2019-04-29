@@ -53,17 +53,26 @@
 
 <script>
     $(document).ready(function () {
-        $("#fecfin").val('10-10-10')
+        
     });
 
     
 </script>   
 <script type="text/javascript">
     $(function () {
+        //$("#fecini").val('10-10-2019');
         $("#datepickerini").datepicker({
             autoclose: true,
             todayHighlight: true
         }).datepicker("setDate", "0");;
+
+        var fecha = new Date();
+            fecha.setMonth(fecha.getMonth() -3);
+        
+        var mes = ((fecha.getMonth() +1).toString()).length == 1 ? '0'+(fecha.getMonth() +1).toString()  : (fecha.getMonth() +1).toString();
+        var dia = ((fecha.getDate()).toString()).length == 1 ? '0'+(fecha.getDate()).toString()  : (fecha.getDate()).toString();
+        var iniFecha= dia + "-" + mes + "-" + fecha.getFullYear();
+        $("#fecini").val(iniFecha);
     });
     $(function () {
         $("#datepickerfin").datepicker({
