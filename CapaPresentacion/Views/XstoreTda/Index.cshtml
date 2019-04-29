@@ -53,6 +53,7 @@
                     <th>Detalle</th>                  
                     <th>G. Correlativo</th>
                     <th>Venta Hist.</th>
+                    <th>Enviar Stock</th>
                     
                 </tr>
             </thead>
@@ -69,7 +70,7 @@
                     <th>Detalle</th>                   
                     <th>G. Correlativo</th>
                     <th>Venta Hist.</th>
-                  
+                    <th>Enviar Stock</th>
                 </tr>
             </tfoot>
         </table>
@@ -145,8 +146,31 @@
                    {
                        "render": function (data, type, full) {
                            var envio = "'" + full.cod_Entid + "','" + full.des_Entid + "','" + full.direccion + "','" + full.cod_Jefe + "','" + full.consecionario + "'"
+                            
 
-                           return '<div> <a title="enviar Ventas Historicas"  onclick="PopupVentasHistoricas(' + envio + ')" target="_blank" class="btn btn-warning btn-sm"> <span class="glyphicon glyphicon-list-alt"></span></a></div>';
+                           if (full.bol_xstore == 'True') {
+                               return '<div> <a title="enviar Ventas Historicas"  onclick="PopupVentasHistoricas(' + envio + ')" target="_blank" class="btn btn-warning btn-sm"> <span class="glyphicon glyphicon-list-alt"></span></a></div>';
+                               
+                           } else {
+                               return '<div> <a title="Debe activar la tienda"  target="_blank" class="btn btn-default btn-sm"> <span class="glyphicon glyphicon-list-alt"></span></a></div>';
+                           }
+                            
+                           
+                       }
+                   },
+                   {
+                       "render": function (data, type, full) {
+                           var envio = "'" + full.cod_Entid + "','" + full.des_Entid + "','" + full.direccion + "','" + full.cod_Jefe + "','" + full.consecionario + "'"
+
+
+                           if (full.bol_xstore == 'True') {
+                               return '<div> <a title="enviar stock"  onclick="PopupGenerarStock(' + envio + ')" target="_blank" class="btn btn-info btn-sm"> <span class="glyphicon glyphicon-barcode"></span></a></div>';
+
+                           } else {
+                               return '<div> <a title="Debe activar la tienda"  target="_blank" class="btn btn-default btn-sm"> <span class="glyphicon glyphicon-barcode"></span></a></div>';
+                           }
+
+
                        }
                    }
             ],
@@ -185,6 +209,7 @@
                              '<th>Interf. Defec</th>' +
                             '<th>G. Correlativo</th>' +
                              '<th>Venta Hist.</th>' +
+                            '<th>Enviar Stock</th>'+
                             '</tr>'+
                             ' </thead>'+
                             '<tbody data-bind="foreach:"></tbody>'+
@@ -199,7 +224,8 @@
                             ' <th>Detalle</th>' +
                             ' <th>Interf. Defec</th>' +
                             '<th>G. Correlativo</th>' +
-                            '<th>Venta Hist.</th>'+
+                            '<th>Venta Hist.</th>' +
+                            '<th>Enviar Stock</th>' +
                             '</tr>'+
                             ' </tfoot>'+
                         '</table>'
@@ -262,11 +288,34 @@
                             }
                         }
                     },
+                     {
+                         "render": function (data, type, full) {
+                             var envio = "'" + full.cod_Entid + "','" + full.des_Entid + "','" + full.direccion + "','" + full.cod_Jefe + "','" + full.consecionario + "'"
+
+
+                             if (full.bol_xstore == 'True') {
+                                 return '<div> <a title="enviar Ventas Historicas"  onclick="PopupVentasHistoricas(' + envio + ')" target="_blank" class="btn btn-warning btn-sm"> <span class="glyphicon glyphicon-list-alt"></span></a></div>';
+
+                             } else {
+                                 return '<div> <a title="Debe activar la tienda"  target="_blank" class="btn btn-default btn-sm"> <span class="glyphicon glyphicon-list-alt"></span></a></div>';
+                             }
+
+
+                         }
+                     },
                    {
                        "render": function (data, type, full) {
                            var envio = "'" + full.cod_Entid + "','" + full.des_Entid + "','" + full.direccion + "','" + full.cod_Jefe + "','" + full.consecionario + "'"
 
-                           return '<div> <a title="enviar Ventas Historicas"  onclick="PopupVentasHistoricas(' + envio + ')" target="_blank" class="btn btn-warning btn-sm"> <span class="glyphicon glyphicon-list-alt"></span></a></div>';
+
+                           if (full.bol_xstore == 'True') {
+                               return '<div> <a title="enviar stock"  onclick="PopupGenerarStock(' + envio + ')" target="_blank" class="btn btn-warning btn-sm"> <span class="fas fa-industry"></span></a></div>';
+
+                           } else {
+                               return '<div> <a title="Debe activar la tienda"  target="_blank" class="btn btn-default btn-sm"> <span class="fas fa-industry"></span></a></div>';
+                           }
+
+
                        }
                    }
             ],
@@ -1089,6 +1138,81 @@
 
         return validacion;
     }
+
+    function PopupGenerarStock(codTienda, descTienda, Direccion, Jefe, Concesion) {
+
+        var strhtml = ''
+        strhtml += '<div class="modal-header modal-header-danger" style="margin-top:0px;margin-bottom:0px;padding-top:2px;padding-bottom:2px;">'
+        strhtml += '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
+        strhtml += '<h5 class="modal-title" id="myModalLabel">'
+        strhtml += '<table style="border-bottom:0px;font-size:14px;width:50%;">'
+        strhtml += '<tr>'
+        strhtml += '<td style="font-size:14px;width:100%;text-align:left;">Confirmar envio de Stock</td>'
+        strhtml += '</tr>'
+        strhtml += '</table>'
+        strhtml += '</h5>'
+        strhtml += '</div>'
+        strhtml += '<div class="modal-body">'
+        strhtml += 'Desea enviar la interface de stock de la tienda : <b>' + descTienda + '</b> ?.'
+        strhtml += '</div>'
+        strhtml += '<div class="modal-footer" style="margin-top:-30px">'
+        strhtml += '<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>'
+        strhtml += '<button type="button" class="btn btn-primary"  onclick="generarInterfaceStock(' + codTienda + ')"   data-dismiss="modal">Enviar stock</button>'
+        //strhtml += ' <button type="button"  title="Eliminar class="btn btn-danger" data-dismiss="modal" detalle" onclick="EliminarDetalle(this)"  data-id="' + codArticulo + '" data-modal="" data-toggle="modal">Elimninar</button>';
+        //strhtml += '<input type="submit" class="btn btn-primary" onclick="agregarLista()"  id="btnSubmit" value="Agregar" />'
+        strhtml += '</div>'
+        var options = { "backdrop": "static", keyboard: true };
+
+        $('#myModalContent').html(strhtml);
+        $('#myModal').modal(options);
+        $('#myModal').modal('show');
+    }
+
+    function generarInterfaceStock(codTienda) {
+
+            var Id = '10';//codigo de interface de STOCK          
+            var Interface_strList = '';
+            var msg_titulo = 'Mensaje ';
+            var CodTda = codTienda;
+
+            Interface_strList += 'row1 cod_interf="' + Id + '"      row2'
+
+            if (Interface_strList != '') {
+                $('#myModal').modal('hide');
+                waitingDialog.show('Espere un momento por favor');
+
+                var objInterface = {
+                    Cod_Tda: CodTda,
+                    List_strListDetalle: Interface_strList
+                }
+
+                $.ajax
+                 ({
+                     url: '../Interface/GuardarInterface',
+                     dataType: "json",
+                     type: "POST",
+                     data: objInterface,
+                     success: function (data, textStatus, XMLHttpRequest) {
+                         var strId = data.Message;
+
+                         waitingDialog.hide();
+                         toastr.success("Las interface de stock fue guardardo para su generación.", msg_titulo);
+
+                     },
+                     error: function (xhr) {
+                         waitingDialog.hide();
+                         toastr.error(xhr, msg_titulo);
+                     }
+                 })
+            } else {
+                toastr.error('Debe seleccionar al menos un Interface.', msg_titulo);
+
+            }
+
+        
+
+    }
+
 
     function GuardarInterface() {
 
