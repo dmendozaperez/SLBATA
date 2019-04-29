@@ -468,11 +468,7 @@
                             var sub = '';
                             if (Cj == 1) { j++; strStock += molde; }
                             if (Cj == 2) { sub = '1'; Cj=0 }
-                            if (Ci > 0) {
-                                strStock = strStock.replace("etiqueta1", "");
-                                strStock = strStock.replace("Valor1", "");
-                            }
-
+                           
                             strStock = strStock.replace("IdTr" + sub, "trS" + j);
                             strStock = strStock.replace("lblId" + sub, j);
                             strStock = strStock.replace("nombre" + sub, "trS");
