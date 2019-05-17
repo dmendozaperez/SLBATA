@@ -50,8 +50,11 @@
     <Compile Include="Control\Ent_Tienda.cs" />
     <Compile Include="Interface\Ent_TiendaInterface.cs" />
     <Compile Include="Interface\Ent_Interface.cs" />
+    <Compile Include="Maestros\Ent_Cadena.cs" />
     <Compile Include="Maestros\Ent_Concepto_Suna.cs" />
     <Compile Include="Maestros\Ent_ListaTienda.cs" />
+    <Compile Include="Maestros\Ent_Tienda_CadTip.cs" />
+    <Compile Include="Maestros\Ent_TipoTienda.cs" />
     <Compile Include="ReportsValeCompra\Reporte_Resultado.cs" />
     <Compile Include="ReportsValeCompra\Reporte_Filtro.cs" />
     <Compile Include="Soporte\Ent_Tienda_Config.cs" />
@@ -77,6 +80,7 @@
     <Compile Include="ValeCompra\Ent_ValeCompraDetalle.cs" />
     <Compile Include="ValeCompra\JsonResponse.cs" />
     <Compile Include="XstoreTda\Ent_DatosTienda.cs" />
+    <Compile Include="XstoreTda\Ent_DatosTienda_Xstore.cs" />
     <Compile Include="XstoreTda\Ent_TiendaConf.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

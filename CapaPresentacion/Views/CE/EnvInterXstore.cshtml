@@ -1,0 +1,134 @@
+﻿@{
+    ViewBag.Title = "Envio de Interface al Xstore - EXCLUDE y PROMO PRICE";
+   
+}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+@*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">*@
+@*<link rel="stylesheet" href="bootstrap-multiselect.css" type="text/css" />*@
+<link href="~/ContentSelect/bootstrap-multiselect.css" rel="stylesheet" />
+
+<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="~/ScriptsSelect/bootstrap-multiselect.js"></script>
+
+@*<link href="~/ContentSelect/bootstrap-select.css" rel="stylesheet" />
+<link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />*@
+
+<p class="text-danger">Carga de datos de tipo EXCLUDE Y PROMO PRICE, para el envio de interfaces a la tiendas seleccionada</p>
+<div class="box box-body box-primary">
+    <div class="row">
+        <div class="col-sm-2">
+            <div id="cadena" class="form-group">
+                <label for="dwcadena">Cadena.</label>
+            </div>              
+        </div>
+        
+        <div class="col-sm-2">            
+                <div id="cadena" class="form-group">
+                    @Html.DropDownList("dwcadena", new SelectList(ViewBag.cadena, "codigo", "descrip", "0"), new { @class = "multiselect",  @id = "dwcadena", @name = "dwcadena", @onchange = "ListarTienda()" })
+                </div>           
+        </div>   
+        @*<div class="col-sm-1">
+            <div id="cadena" class="form-group">
+                <label for="dwtienda">Tienda.</label>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div id="tipotda" class="form-group">
+                @Html.DropDownList("dwtienda", new SelectList(ViewBag.tienda, "cod_entid", "des_entid", "0"), new { @multiple = "multiple", @class = "multiselect", @id = "dwtienda", @name = "dwtienda" })
+            </div>
+        </div>*@  
+    </div>
+    <div class="row">
+        <div class="col-sm-2">
+            <div id="cadena" class="form-group">
+                <label for="dwcadena">Tipo Tda.</label>
+            </div>
+        </div>
+        <div class="col-sm-3">            
+                <div id="tipotda" class="form-group">
+                    @Html.DropDownList("dwtipotda", new SelectList(ViewBag.tipotda, "tip_cod", "tip_des", "0"), new { @class = "multiselect", @id = "dwtipotda", @name = "dwtipotda" })
+                </div>            
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-sm-2">
+            <div id="cadena" class="form-group">
+                <label for="dwtienda">Tienda.</label>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div id="tipotda" class="form-group">
+                @Html.DropDownList("dwtienda", new SelectList(ViewBag.tienda, "cod_entid", "des_entid", "0"), new { @multiple="multiple",@class = "multiselect", @id = "dwtienda", @name = "dwtienda" })
+            </div>
+        </div>
+
+    </div>
+    @*<select name="multiselect" id="multiselect" multiple="multiple">
+        <option value="India">India</option>
+        <option value="Australia">Australia</option>
+        <option value="United State">United State</option>
+        <option value="Canada">Canada</option>
+        <option value="Taiwan">Taiwan</option>
+        <option value="Romania">Romania</option>
+    </select>*@
+    @*<div class="row">
+        <button type="button" class="btn btn-success" onclick="javascript: ConfirmarDescarga()">
+            <span class="glyphicon glyphicon-download-alt"></span>&nbsp;&nbsp;Descargar
+        </button>
+    </div>*@
+</div>
+@*<script src="~/Scripts/bootstrap-select.min.js"></script>
+<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>*@
+    <script>
+
+        $(function () {
+            $('#dwtienda').multiselect({
+                includeSelectAllOption: true,
+                enableFiltering: true,
+                enableCaseInsensitiveFiltering: true,
+                filterPlaceholder: 'Buscar Tienda...'
+            });
+        });
+
+        $(function () {
+            $('#dwcadena').multiselect({
+                includeSelectAllOption: false,
+                enableFiltering: false,
+                enableCaseInsensitiveFiltering: false,
+                filterPlaceholder: 'Buscar Cadena...'
+            });
+        });
+
+        $(function () {
+            $('#dwtipotda').multiselect({
+                includeSelectAllOption: false,
+                enableFiltering: false,
+                enableCaseInsensitiveFiltering: false,
+                filterPlaceholder: 'Buscar Tipo...'
+            });
+        });
+
+        function ConfirmarDescarga() {
+            alert('ok')
+            var CodTda = $("#multiselect").val();
+        }
+
+    </script>
+<script>
+    $(document).ready(function () {
+        ListarTienda();
+    });
+    function ListarTienda() {
+        var data = function () { return @Html.Raw(Json.Encode(ViewBag.tienda)); }();
+        //var dataArray = data.Data;
+        var strcadena = $('#dwcadena').val();
+
+        if (strcadena!=null)
+        {
+            var lista_filter = data.filter(obj => obj.cod_cadena == strcadena);
+        }
+
+    }
+</script>

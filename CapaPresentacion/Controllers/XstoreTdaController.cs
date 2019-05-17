@@ -13,6 +13,7 @@ using CapaEntidad.Control;
 using CapaEntidad.XstoreTda;
 using CapaEntidad.ValeCompra;
 using System.Web.Script.Serialization;
+using CapaDato.XstoreTda;
 
 namespace CapaPresentacion.Controllers
 {
@@ -127,7 +128,8 @@ namespace CapaPresentacion.Controllers
                              a.cod_Jefe,
                              a.consecionario,
                              a.bol_gcorrelativo,
-                             a.bol_xstore                        
+                             a.bol_xstore  ,
+                             a.outlet                      
                          };
             //Se devuelven los resultados por json
             return Json(new
@@ -231,11 +233,11 @@ namespace CapaPresentacion.Controllers
             return strJson;
         }
 
-        public string listarStr_InterfacexDefecto()
+        public string listarStr_InterfacexDefecto(string cod_tda)
         {
             string strJson = "";
           
-            strJson = dat_storeTda.listarStr_InterfacexDefecto();
+            strJson = dat_storeTda.listarStr_InterfacexDefecto(cod_tda);
             return strJson;
         }
 
@@ -250,6 +252,15 @@ namespace CapaPresentacion.Controllers
 
         }
 
+        #region<Vista Data XCenter>
+        public ActionResult ListaTienda_XCenter()
+        {
+            Dat_XCenter dat_xcenter = new Dat_XCenter();
+            dat_xcenter.get_tienda_xcenter("50254");
+            //Ent_DatosTienda_Xstore tda_xstore=
 
+            return View();
+        }
+        #endregion
     }
 }

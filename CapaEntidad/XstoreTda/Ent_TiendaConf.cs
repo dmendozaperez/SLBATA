@@ -18,5 +18,6 @@ namespace CapaEntidad.XstoreTda
         public string consecionario { get; set; }
         public string bol_xstore { get; set; }
         public string bol_gcorrelativo { get; set; }
+        public string outlet { get; set; }
     }
 }

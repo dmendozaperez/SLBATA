@@ -288,6 +288,7 @@
     <Compile Include="Controllers\AdminLteController.cs" />
     <Compile Include="Controllers\AnalisisMovController.cs" />
     <Compile Include="Controllers\AplicacionController.cs" />
+    <Compile Include="Controllers\CEController.cs" />
     <Compile Include="Controllers\ComunicadoController.cs" />
     <Compile Include="Controllers\DocumentoController.cs" />
     <Compile Include="Controllers\InterfaceController.cs" />
@@ -385,6 +386,7 @@
     <Content Include="AspNetForms\RendimientoxCateg.aspx" />
     <Content Include="AspNetForms\Vendedor.aspx" />
     <Content Include="AspNetForms\Planilla.aspx" />
+    <Content Include="ContentSelect\bootstrap-multiselect.css" />
     <Content Include="ContentSelect\bootstrap-select.css" />
     <Content Include="Content\AdminLTE\AdminLTE.css" />
     <Content Include="Content\AdminLTE\AdminLTE.min.css" />
@@ -463,6 +465,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Models\data\saveAsExcel.js" />
     <Content Include="ReportViewerWebForm.aspx" />
+    <Content Include="ScriptsSelect\bootstrap-multiselect.js" />
     <Content Include="ScriptsSelect\bootstrap-select.js" />
     <Content Include="Scripts\AdminLTE\app.js" />
     <Content Include="Scripts\AdminLTE\app.min.js" />
@@ -965,6 +968,7 @@
     <Content Include="Scripts\bootbox.js" />
     <Content Include="Scripts\bootbox.min.js" />
     <Content Include="Scripts\bootstrap-datepicker.min.js" />
+    <Content Include="Scripts\bootstrap-multiselect.js" />
     <Content Include="Scripts\bootstrap-select.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -1380,6 +1384,8 @@
     <Content Include="Views\Reporte\ReporteRendCateg.cshtml" />
     <Content Include="Views\Reporte\ReportePromociones.cshtml" />
     <Content Include="Views\XstoreTda\VentaHistorica.cshtml" />
+    <Content Include="Views\XstoreTda\ListaTienda_XCenter.cshtml" />
+    <Content Include="Views\CE\EnvInterXstore.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

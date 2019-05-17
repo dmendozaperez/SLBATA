@@ -52,6 +52,7 @@
     <Compile Include="Control\Dat_Roles.cs" />
     <Compile Include="Control\Dat_Usuario.cs" />
     <Compile Include="Interface\Dat_Interface.cs" />
+    <Compile Include="Maestros\Dat_Orce.cs" />
     <Compile Include="Maestros\Dat_Concepto_Suna.cs" />
     <Compile Include="Maestros\Dat_Estado.cs" />
     <Compile Include="Maestros\Dat_ListaTienda.cs" />
@@ -66,6 +67,7 @@
     <Compile Include="Transac\Dat_Documentos_Tda.cs" />
     <Compile Include="ValeCompra\Dat_Cliente.cs" />
     <Compile Include="ValeCompra\Dat_ValeCompra.cs" />
+    <Compile Include="XstoreTda\Dat_XCenter.cs" />
     <Compile Include="XstoreTda\Dat_XstoreTienda.cs" />
   </ItemGroup>
   <ItemGroup>

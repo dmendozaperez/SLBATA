@@ -332,13 +332,16 @@
 
     function GuardarInterface() {
 
-
+        var listTienda = [];
         waitingDialog.show('Espere un momento por favor');
         var Id = '';
         var Interface_strList = '';
         var msg_titulo = 'Mensaje ';
         var CodPais = $("#dwPais").val();
         var CodTda = $("#dwTienda").val();
+        CodTda.forEach(function (element) {
+            listTienda.push(element);
+        });
 
         $('input[name="Interface"]').each(function () {
 
@@ -351,7 +354,7 @@
         
         var objInterface = {
             Cod_Pais: CodPais,
-            Cod_Tda: CodTda,
+            listTienda: listTienda,
             List_strListDetalle: Interface_strList
         }
 
@@ -439,9 +442,16 @@
         if (ListOrce == '' && ListXoficce=='') {
              toastr.error("Debe seleccionar al menos un interface.", "Mensaje");
         }else{
+            var CodTda = $("#dwTienda").val();
+            var listTda = '';
 
+            CodTda.forEach(function (element) {
+
+                listTda += '<b>* ' + element + '</b><br/>';
+
+            });
             bootbox.confirm({
-                message: "<b>Esta seguro de enviar a la tienda "+tienda+",las siguientes interfaces ?   :</b><br/>" + ListXoficce + ListOrce,
+                message: "<b>Esta seguro de descargar las interfaces de las siguientes Tiendas ?   :</b><br/> " + listTda + ListXoficce + ListOrce,
                 buttons: {
                     confirm: {
                         label: 'Si',

@@ -48,6 +48,7 @@ namespace CapaDato.Maestros
                                             consecionario = dr["CONSECIONARIO"].ToString(),
                                             bol_xstore = dr["XSTORE"].ToString(),
                                             bol_gcorrelativo = dr["CORRE_GENERADO"].ToString(),
+                                            outlet= dr["OUTLET"].ToString(),
 
                                         }).ToList();
 
@@ -166,7 +167,7 @@ namespace CapaDato.Maestros
             return strJson;
         }
 
-        public string listarStr_InterfacexDefecto()
+        public string listarStr_InterfacexDefecto(String cod_tda)
         {
             string strJson = "";
             try
@@ -175,7 +176,7 @@ namespace CapaDato.Maestros
                 cn.Open();
                 SqlCommand oComando = new SqlCommand("USP_OBTENER_INTERFACE_XDEFECTO", cn);
                 oComando.CommandType = CommandType.StoredProcedure;
-
+                oComando.Parameters.AddWithValue("@cod_tda", cod_tda);
                 SqlDataReader oReader = oComando.ExecuteReader(CommandBehavior.SingleResult);
                 DataTable dataTable = new DataTable("row");
                 dataTable.Load(oReader);

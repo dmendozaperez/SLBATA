@@ -119,14 +119,14 @@
                    },
                    {
                        "render": function (data, type, full) {
-                           var envio = "'" + full.cod_Entid + "','" + full.des_Entid + "','" + full.direccion + "','" + full.cod_Jefe + "','" + full.consecionario + "'"
+                           var envio = "'" + full.cod_Entid + "','" + full.des_Entid + "','" + full.direccion + "','" + full.cod_Jefe + "','" + full.consecionario + "','" + full.outlet + "'"
 
                            return '<div> <a title="enviar Interface"  onclick="PopupInterfacexDefecto(' + envio + ')" target="_blank" class="btn btn-warning btn-sm"> <span class="glyphicon glyphicon-send"></span></a></div>';
                        }
                    },
                    {
                        "render": function (data, type, full) {
-                           var envio = "'" + full.cod_Entid + "','" + full.des_Entid + "','" + full.direccion + "','" + full.cod_Jefe + "','" + full.consecionario + "'"
+                           var envio = "'" + full.cod_Entid + "','" + full.des_Entid + "','" + full.direccion + "','" + full.cod_Jefe + "','" + full.consecionario + "','" + full.outlet + "'"
 
                            return '<div> <a title="Ver Detalle"  onclick="PopupDetalle(' + envio + ')" target="_blank" class="btn btn-primary btn-sm"> <span class="	glyphicon glyphicon-th-list"></span></a></div>';
                        }
@@ -196,6 +196,10 @@
     });
 
     function MostrarListado() {
+
+        var table = $('.table').dataTable();
+        var value = $('.dataTables_filter input').val();
+
         var strCadena=' <table id="example" class="table table-hover dataTable  table-striped table-responsive">'+
                             '<thead>'+
                             '<tr style="background-color:#3d566e; color:#ecf0f1">'+
@@ -204,9 +208,9 @@
                             //'<th>Cod Empresa</th>'+
                             '<th>Des Empresa</th>'+
                             '<th>Cadena</th>'+
-                            '<th>Xstore</th>'+
-                            '<th>Detalle</th>' +
-                             '<th>Interf. Defec</th>' +
+                            '<th>Xstore</th>' +
+                            '<th>Interface</th>' +
+                            '<th>Detalle</th>' +                           
                             '<th>G. Correlativo</th>' +
                              '<th>Venta Hist.</th>' +
                             '<th>Enviar Stock</th>'+
@@ -220,9 +224,9 @@
                             //'<th>Cod Empresa</th>'+
                             '<th>Des Empresa</th>'+
                             ' <th>Cadena</th>'+
-                            ' <th>Xstore</th>'+
-                            ' <th>Detalle</th>' +
-                            ' <th>Interf. Defec</th>' +
+                            ' <th>Xstore</th>' +
+                            ' <th>Interface</th>' +
+                            ' <th>Detalle</th>' +                            
                             '<th>G. Correlativo</th>' +
                             '<th>Venta Hist.</th>' +
                             '<th>Enviar Stock</th>' +
@@ -230,6 +234,7 @@
                             ' </tfoot>'+
                         '</table>'
         document.getElementById("lista").innerHTML = strCadena;
+                     
 
         $('.table').dataTable({
             "language": {
@@ -240,6 +245,7 @@
             "sAjaxSource": '@Url.Action("getTienda", "XstoreTda")',
             "bdestroy": true,
             "start": 0,
+            "oSearch": { "sSearch": value },
             "order": [0, "asc"],
             "bDeferRender": true,
             "aoColumns": [
@@ -453,7 +459,7 @@
 
     }
 
-    function PopupDetalle(codTienda, descTienda, Direccion, Jefe, Concesion) {
+    function PopupDetalle(codTienda, descTienda, Direccion, Jefe, Concesion,outlet) {
 
         waitingDialog.show('Espere un momento por favor');
 
@@ -574,6 +580,12 @@
                     strhtml += '<i class="fa fa-map-marker"></i>&nbsp;&nbsp;' + Direccion
                     strhtml += '</td>'
                     strhtml += '</tr>'
+                    strhtml += '<tr>'
+                    strhtml += '<td colspan="1" valign="middle"><label>Outlet</label></td>'
+                    strhtml += '<td colspan="3">'
+                    strhtml += '<i class="fa fa fa-bars"></i>&nbsp;&nbsp;' + outlet
+                    strhtml += '</td>'
+                    strhtml += '</tr>'
                     strhtml += '<tr  id="tr1">'
                     //strhtml += '<td colspan="3" valign="middle"  bgcolor="#9A9897" style="color:#ffffff;font-size:14px;padding:3px;padding-left:3px;font-weight:bold">&nbsp;&nbsp;Correlativos</td>'
                     strhtml += '<td colspan="4" valign="middle"  bgcolor="#9A9897" style="color:#ffffff;font-size:15px;padding:3px;padding-left:3px;">'
@@ -630,7 +642,7 @@
 
     }
 
-    function PopupInterfacexDefecto(codTienda, descTienda, Direccion, Jefe, Concesion) {
+    function PopupInterfacexDefecto(codTienda, descTienda, Direccion, Jefe, Concesion,outlet) {
 
         waitingDialog.show('Espere un momento por favor');
         var gTemRowOrce
@@ -655,7 +667,7 @@
             type: "GET",
             url: ControllerUrl,
             contentType: "application/json; charset=utf-8",
-            data: {},
+            data: { cod_tda: codTienda },
             datatype: "json",
             cache: true,
             success: function (data) {
