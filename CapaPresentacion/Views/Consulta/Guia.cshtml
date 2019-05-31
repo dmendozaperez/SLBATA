@@ -1,0 +1,68 @@
+﻿@using CapaEntidad.Transac
+@model IEnumerable<Ent_Documentos_Tda>
+@{
+    ViewBag.Title = "Consulta de Guías";
+    AjaxOptions options = new AjaxOptions
+    {
+        HttpMethod = "GET",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "lista",
+        OnComplete = "waitingDialog.hide();",
+        OnBegin = "waitingDialog.show('Espere un momento por favor');",
+        OnFailure = "waitingDialog.hide();"
+    };
+}
+@*<link href="~/Content/bootstrap-select.css" rel="stylesheet" />*@
+<link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />
+
+<p class="text-danger">¡Consulta de guías de traspaso de almacen o tienda para el reenvio, filtro por tienda y número de guia!</p>
+<div class="box box-body box-primary">
+    @using (Ajax.BeginForm("ListaDocumento", options))
+    {
+        <div class="row">
+
+            <form id="form1">
+                <div class="col-sm-3">
+                    <label for="txtTda">Cod Tda.</label>
+                    <div class="form-group">
+                        <div id="tipodoc" class="form-group">
+                            @Html.DropDownList("txtTda", new SelectList(ViewBag.tienda, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", @data_live_search = "true", @id = "txtTda", @name = "txtTda" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-2">
+                    <label for="segape">Número Guía.</label>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div id="numguiagroup" class="input-group">
+                                <input id="numguia" name="numguia" value="" class="form-control custom-input" type="text" />
+                                @*<span class="input-group-addon  bg-white"><img src="~/Content/images/wall-calendar-with-lines.svg" height="20" width="20"></span>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-2">
+                    <label></label><br />
+                    <button id="btnSearch" type="submit" title="Consultar" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-search"> Buscar</span>
+                    </button>
+                    @*<a href="@Url.Action("ExportToExcel")" title="Exportar a excel" class="btn btn-primary">Exportar</a>*@
+                </div>
+            </form>
+
+        </div>
+    }
+    <div class="box-body" id="lista">
+        @{Html.RenderPartial("_guiaTable", Model);}
+    </div>
+    <br />
+
+
+</div>
+<script src="~/Scripts/bootstrap-select.min.js"></script>
+<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+@*<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/bootstrap-select.js"></script>*@
+

@@ -10,6 +10,8 @@ using System.Web.Mvc;
 using System.Xml.Linq;
 using CapaEntidad.Util;
 using CapaEntidad.Control;
+using CapaDato.Reporte;
+using System.Web.Script.Serialization;
 
 namespace CapaPresentacion.Controllers
 {
@@ -18,6 +20,8 @@ namespace CapaPresentacion.Controllers
         private Dat_Concepto_Suna dat_concepto_suna = new Dat_Concepto_Suna();
         private Dat_Documentos_Tda dat_doc = new Dat_Documentos_Tda();
         private string _session_listdocumentoDetalle_private = "_session_listdocumentoDetalle_private";
+        private Dat_Combo datCbo = new Dat_Combo();
+        private Dat_Consultar_Guia datGuia = new Dat_Consultar_Guia();
         // GET: Consulta
         public ActionResult ConDocTienda()
         {
@@ -42,7 +46,7 @@ namespace CapaPresentacion.Controllers
             return PartialView(lista(dwtipodoc, numdoc, fecini, fecfinc));
         }
 
-        public List<Ent_Documentos_Tda> lista(string tipo_doc,string num_doc,string fec_ini,string fec_fin)
+        public List<Ent_Documentos_Tda> lista(string tipo_doc, string num_doc, string fec_ini, string fec_fin)
         {
             string gcodTda = (String)Session["Tienda"];
             string strParams = "";
@@ -51,7 +55,7 @@ namespace CapaPresentacion.Controllers
                 strParams = gcodTda;
             }
 
-            List<Ent_Documentos_Tda> listdoc = dat_doc.get_lista(strParams, tipo_doc, num_doc,fec_ini,fec_fin);
+            List<Ent_Documentos_Tda> listdoc = dat_doc.get_lista(strParams, tipo_doc, num_doc, fec_ini, fec_fin);
             Session[_session_listdocumentoDetalle_private] = listdoc;
             return listdoc;
         }
@@ -83,7 +87,7 @@ namespace CapaPresentacion.Controllers
             Func<Ent_Documentos_Tda, string> orderingFunction =
             (
             m => sortIdx == 0 ? m.tipo_doc :
-             m.num_doc           
+             m.num_doc
             );
             var sortDirection = Request["sSortDir_0"];
             if (sortDirection == "asc")
@@ -107,8 +111,8 @@ namespace CapaPresentacion.Controllers
                              a.pass_ws,
                              a.ruc_ws,
                              a.tipodoc_ws,
-                             a.num_doc_ws,  
-                             a.tcantidad                           
+                             a.num_doc_ws,
+                             a.tcantidad
                          };
             //Se devuelven los resultados por json
             return Json(new
@@ -125,8 +129,8 @@ namespace CapaPresentacion.Controllers
         {
             string url_pdf = "";
             string consulta = "";
-            if (tipodoc_ws=="9")
-            { 
+            if (tipodoc_ws == "9")
+            {
                 /*web servive backoficce*/
                 FEBataBack.OnlinePortTypeClient gen_fe = new FEBataBack.OnlinePortTypeClient();
                 consulta = gen_fe.OnlineRecovery(ruc_ws, user_ws, pass_ws, Convert.ToInt32(tipodoc_ws), num_doc_ws, 2);
@@ -151,9 +155,122 @@ namespace CapaPresentacion.Controllers
             }
 
             JsonResult result = new JsonResult();
-            result.Data= url_pdf;
+            result.Data = url_pdf;
             return result;
             //return  url_pdf;
+        }
+
+        public ActionResult Guia()
+        {
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
+
+            if (_usuario == null)
+            {
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+            }
+            else
+            {
+                if (Session["Tienda"] != null)
+                {
+                    ViewBag.Tienda = datCbo.get_ListaTiendaXstore().Where(t => t.cbo_codigo == Session["Tienda"].ToString()).ToList();
+                }
+                else
+                {
+                    ViewBag.Tienda = datCbo.get_ListaTiendaXstore();
+                }
+
+                return View();
+            }
+        }
+
+        public string listarStr_DatosGuia(string tda_destino, string num_guia)
+        {
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            string jsonData = js.Serialize(datGuia.get_lista(tda_destino, num_guia));
+
+            return jsonData;
+        }
+
+        public List<Ent_Consultar_Guia> listaGuia(string tda_destino, string num_guia)
+        {
+            List<Ent_Consultar_Guia> listdoc = datGuia.get_lista(tda_destino, num_guia);
+            return listdoc;
+        }
+
+
+        public ActionResult getGuiaAjax(Ent_jQueryDataTableParams param)
+        {
+            //Traer registros
+            string tda_destino = Request["tda_destino"];
+            string num_guia = Request["num_guia"];
+
+            List<Ent_Consultar_Guia> mGuia = datGuia.get_lista(tda_destino, num_guia);
+
+            IQueryable<Ent_Consultar_Guia> membercol = ((List<Ent_Consultar_Guia>)(mGuia)).AsQueryable();  //lista().AsQueryable();
+
+            //Manejador de filtros
+            int totalCount = membercol.Count();
+
+            IEnumerable<Ent_Consultar_Guia> filteredMembers = membercol;
+
+            //Manejador de orden
+            var sortIdx = Convert.ToInt32(Request["iSortCol_0"]);
+
+            var displayMembers = filteredMembers
+                .Skip(param.iDisplayStart)
+                .Take(param.iDisplayLength);
+
+            var result = from a in displayMembers
+                         select new
+                         {
+                             a.desc_almac,
+                             a.num_gudis,
+                             a.num_guia,
+                             a.tienda_origen,
+                             a.tienda_destino,
+                             a.fecha_des,
+                             a.desc_send_tda,
+                             a.fec_env
+                         };
+
+            //Se devuelven los resultados por json
+            return Json(new
+            {
+                sEcho = param.sEcho,
+                iTotalRecords = totalCount,
+                iTotalDisplayRecords = filteredMembers.Count(),
+                aaData = result
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        //ajax (envio de guia)
+        public ActionResult SendGuide(string desc_almac, string num_gudis)
+        {
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            Int32 respuesta = 0;
+            respuesta = datGuia.send_guide(desc_almac, num_gudis, _usuario.usu_id);
+
+            //var oJRespuesta = new JsonResponse();
+            var oJRespuesta = new CapaEntidad.ValeCompra.JsonResponse();
+
+            if (respuesta == 1)
+            {
+                oJRespuesta.Message = (respuesta).ToString();
+                oJRespuesta.Data = true;
+                oJRespuesta.Success = true;
+            }
+            else
+            {
+
+                oJRespuesta.Message = (respuesta).ToString();
+                oJRespuesta.Data = false;
+                oJRespuesta.Success = false;
+            }
+
+            return Json(oJRespuesta, JsonRequestBehavior.AllowGet);
         }
     }
 }

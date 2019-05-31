@@ -1386,6 +1386,8 @@
     <Content Include="Views\XstoreTda\VentaHistorica.cshtml" />
     <Content Include="Views\XstoreTda\ListaTienda_XCenter.cshtml" />
     <Content Include="Views\CE\EnvInterXstore.cshtml" />
+    <Content Include="Views\Consulta\Guia.cshtml" />
+    <Content Include="Views\Consulta\_guiaTable.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

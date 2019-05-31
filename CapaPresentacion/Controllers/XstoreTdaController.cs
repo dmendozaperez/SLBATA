@@ -232,7 +232,17 @@ namespace CapaPresentacion.Controllers
 
             return strJson;
         }
+        public string listarStr_DatosXcenterTienda(string codTienda)
+        {
+            string strJson = "";
+            JsonResult jRespuesta = null;
 
+            strJson = dat_storeTda.listarStr_DatosXcenterTienda(codTienda);
+            var serializer = new JavaScriptSerializer();
+            jRespuesta = Json(serializer.Deserialize<List<Ent_DatosTienda>>(strJson), JsonRequestBehavior.AllowGet);
+
+            return strJson;
+        }
         public string listarStr_InterfacexDefecto(string cod_tda)
         {
             string strJson = "";

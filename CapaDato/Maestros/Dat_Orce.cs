@@ -149,5 +149,51 @@ namespace CapaDato.Maestros
             }
             return listar;
         }
+        public List<Ent_TipoInterface> lista_tipo_interface()
+        {
+            List<Ent_TipoInterface> listar = null;
+            string sqlquery = "USP_XSTORE_TIPO_INTERFACE";
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+                    try
+                    {
+                        if (cn.State == 0) cn.Open();
+                        using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                        {
+                            cmd.CommandTimeout = 0;
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            SqlDataReader dr = cmd.ExecuteReader();
+
+                            if (dr.HasRows)
+                            {
+                                listar = new List<Ent_TipoInterface>();
+                                while (dr.Read())
+                                {
+                                    Ent_TipoInterface tip_inter = new Ent_TipoInterface();
+                                    tip_inter.cod_tip_int = dr["cod_tip_int"].ToString();
+                                    tip_inter.des_tip_int= dr["des_tip_int"].ToString();
+                                    
+                                    listar.Add(tip_inter);
+                                }
+                            }
+
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        listar = null;
+                    }
+                    if (cn != null)
+                        if (cn.State == ConnectionState.Open) cn.Close();
+                }
+            }
+            catch (Exception)
+            {
+                listar = null;
+            }
+            return listar;
+        }
     }
 }

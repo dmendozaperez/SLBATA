@@ -64,6 +64,7 @@
     <Compile Include="Reports\Dat_Bataclub.cs" />
     <Compile Include="Soporte\Dat_Tienda_Config.cs" />
     <Compile Include="Transac\Dat_Analisis_Mov.cs" />
+    <Compile Include="Transac\Dat_Consultar_Guia.cs" />
     <Compile Include="Transac\Dat_Documentos_Tda.cs" />
     <Compile Include="ValeCompra\Dat_Cliente.cs" />
     <Compile Include="ValeCompra\Dat_ValeCompra.cs" />

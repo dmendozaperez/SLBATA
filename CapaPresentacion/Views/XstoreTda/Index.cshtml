@@ -50,7 +50,8 @@
                     <th>Cadena</th>
                     <th>Xstore</th>
                     <th>Interface</th>
-                    <th>Detalle</th>                  
+                    <th>Detalle</th>
+                    <th>XCenter</th>                    
                     <th>G. Correlativo</th>
                     <th>Venta Hist.</th>
                     <th>Enviar Stock</th>
@@ -67,7 +68,8 @@
                     <th>Cadena</th>
                     <th>Xstore</th>
                     <th>Interface</th>
-                    <th>Detalle</th>                   
+                    <th>Detalle</th> 
+                    <th>XCenter</th>                    
                     <th>G. Correlativo</th>
                     <th>Venta Hist.</th>
                     <th>Enviar Stock</th>
@@ -131,6 +133,17 @@
                            return '<div> <a title="Ver Detalle"  onclick="PopupDetalle(' + envio + ')" target="_blank" class="btn btn-primary btn-sm"> <span class="	glyphicon glyphicon-th-list"></span></a></div>';
                        }
                    },
+                    {
+                        "render": function (data, type, full) {
+                            var envio = "'" + full.cod_Entid + "','" + full.des_Entid + "'";
+
+                            if (full.bol_xstore == 'True') {
+                                return '<div> <a title="XCenter Detalle"  onclick="PopupDetalleXcenter(' + envio + ')" target="_blank" class="btn btn-danger btn-sm"> <span class="glyphicon glyphicon-briefcase"></span></a></div>';
+                            } else {
+                                return '<div> <a title="XCenter Detalle"  class="btn btn-default btn-sm"> <span class="glyphicon glyphicon-list-alt"></span></a></div>';
+                            }
+                        }
+                    },
                     {
                         "render": function (data, type, full) {
                                 var envio = "'" + full.cod_Entid + "','" + full.des_Entid + "'"
@@ -210,7 +223,8 @@
                             '<th>Cadena</th>'+
                             '<th>Xstore</th>' +
                             '<th>Interface</th>' +
-                            '<th>Detalle</th>' +                           
+                            '<th>Detalle</th>' +
+                            '<th>XCenter</th>' +  
                             '<th>G. Correlativo</th>' +
                              '<th>Venta Hist.</th>' +
                             '<th>Enviar Stock</th>'+
@@ -226,7 +240,8 @@
                             ' <th>Cadena</th>'+
                             ' <th>Xstore</th>' +
                             ' <th>Interface</th>' +
-                            ' <th>Detalle</th>' +                            
+                            ' <th>Detalle</th>' +
+                            '<th>XCenter</th>' +
                             '<th>G. Correlativo</th>' +
                             '<th>Venta Hist.</th>' +
                             '<th>Enviar Stock</th>' +
@@ -281,7 +296,17 @@
                            return '<div> <a title="Ver Detalle"  onclick="PopupDetalle(' + envio + ')" target="_blank" class="btn btn-primary btn-sm"> <span class="	glyphicon glyphicon-th-list"></span></a></div>';
                        }
                    },
+                     {
+                         "render": function (data, type, full) {
+                             var envio = "'" + full.cod_Entid + "','" + full.des_Entid + "'";
 
+                             if (full.bol_xstore == 'True') {
+                                 return '<div> <a title="Xcenter Detalle"  onclick="PopupDetalleXcenter(' + envio + ')" target="_blank" class="btn btn-danger btn-sm"> <span class="glyphicon glyphicon-briefcase"></span></a></div>';
+                             } else {
+                                 return '<div> <a title="Xcenter Detalle"  class="btn btn-default btn-sm"> <span class="glyphicon glyphicon-list-alt"></span></a></div>';
+                             }
+                         }
+                     },
                     {
                         "render": function (data, type, full) {
                             var envio = "'" + full.cod_Entid + "','" + full.des_Entid + "'"
@@ -315,10 +340,10 @@
 
 
                            if (full.bol_xstore == 'True') {
-                               return '<div> <a title="enviar stock"  onclick="PopupGenerarStock(' + envio + ')" target="_blank" class="btn btn-warning btn-sm"> <span class="fas fa-industry"></span></a></div>';
+                               return '<div> <a title="enviar stock"  onclick="PopupGenerarStock(' + envio + ')" target="_blank" class="btn btn-info btn-sm"> <span class="glyphicon glyphicon-barcode"></span></a></div>';
 
                            } else {
-                               return '<div> <a title="Debe activar la tienda"  target="_blank" class="btn btn-default btn-sm"> <span class="fas fa-industry"></span></a></div>';
+                               return '<div> <a title="Debe activar la tienda"  target="_blank" class="btn btn-default btn-sm"> <span class="glyphicon glyphicon-barcode"></span></a></div>';
                            }
 
 
@@ -641,7 +666,213 @@
         });
 
     }
+    function PopupDetalleXcenter(codTienda, descTienda) {
+        waitingDialog.show('Consultando XCENTER,Espere un momento por favor');
+        
+        var ControllerUrl = "@Url.Action("listarStr_DatosXcenterTienda", "XstoreTda")";
 
+        $.ajax({
+            type: "GET",
+            url: ControllerUrl,
+            contentType: "application/json; charset=utf-8",
+            data: { codTienda: codTienda },
+            datatype: "json",
+            cache: true,
+            success: function (data) {
+                if (data != '' && data != '[]') {
+                    var gData = JSON.parse(data);
+                   
+                    var strhtml = ''
+                    strhtml += '<div class="modal-header modal-header-danger" style="margin-top:0px;margin-bottom:0px;padding-top:2px;padding-bottom:2px;">'
+                    strhtml += '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
+                    strhtml += '<h5 class="modal-title" id="myModalLabel">'
+                    strhtml += '<table style="border-bottom:0px;font-size:14px;width:50%;">'
+                    strhtml += '<tr>'
+                    strhtml += '<td style="font-size:14px;width:100%;text-align:left;">' + descTienda + '</td>'
+                    strhtml += '</tr>'
+                    strhtml += '</table>'
+                    strhtml += '</h5>'
+                    strhtml += '</div>'
+                    strhtml += '<div class="modal-body">'
+                    strhtml += '<table class="table table-striped" RULES="none">'
+
+                    strhtml += '<tr>'
+                    strhtml += '<td colspan="1" valign="middle"><label>rtl_loc_id</label></td>'
+                    strhtml += '<td colspan="5">'
+                    strhtml += '<i class="glyphicon glyphicon-asterisk"></i>&nbsp;&nbsp;' + gData.tienda[0].rtl_loc_id
+                    strhtml += '</td>'
+                    strhtml += '</tr>'
+                  
+                    strhtml += '<tr>'
+                    strhtml += '<td colspan="1" valign="middle"><label>Descripción</label></td>'
+                    strhtml += '<td colspan="5">'
+                    strhtml += '<i class="glyphicon glyphicon-file"></i>&nbsp;&nbsp;' + gData.tienda[0].description
+                    strhtml += '</td>'
+                    strhtml += '</tr>'
+                    strhtml += '<tr>'
+                    strhtml += '<td colspan="1" valign="middle"><label>Dirección</label></td>'
+                    strhtml += '<td colspan="5">'
+                    strhtml += '<i class="fa fa-map-marker"></i>&nbsp;&nbsp;' + gData.tienda[0].address1
+                    strhtml += '</td>'
+                    strhtml += '</tr>'
+
+                    strhtml += '<tr>'
+                    strhtml += '<td colspan="1" valign="middle"><label>Consecionaria</label></td>'
+                    strhtml += '<td colspan="5">'
+                    strhtml += '<i class="fa fa-university"></i>&nbsp;&nbsp;' + gData.tienda[0].store_name
+                    strhtml += '</td>'
+                    strhtml += '</tr>'
+
+                    strhtml += '<tr>'
+                    strhtml += '<td colspan="1" valign="middle"><label>Jefe</label></td>'
+                    strhtml += '<td colspan="5">'
+                    strhtml += '<i class="fa fa-briefcase"></i>&nbsp;&nbsp;' + gData.tienda[0].store_manager
+                    strhtml += '</td>'
+                    strhtml += '</tr>'
+
+                    strhtml += '<tr>'
+                    strhtml += '<td colspan="1" valign="middle"><label>Calzado</label></td>'
+                    strhtml += '<td colspan="1">'
+                    strhtml += '<i class="glyphicon glyphicon-ok"></i>&nbsp;&nbsp;' + gData.tienda[0].xs_calzado
+                    strhtml += '</td>'
+                    strhtml += '<td colspan="1" valign="middle"><label>No Calzado</label></td>'
+                    strhtml += '<td colspan="1">'
+                    strhtml += '<i class="glyphicon glyphicon-ok"></i>&nbsp;&nbsp;' + gData.tienda[0].xs_no_calzado
+                    strhtml += '</td>'
+                    strhtml += '<td colspan="1" valign="middle"><label>Total</label></td>'
+                    strhtml += '<td colspan="1">'
+                    strhtml += '<i class="glyphicon glyphicon-ok"></i>&nbsp;&nbsp;' + gData.tienda[0].xs_total
+                    strhtml += '</td>'
+                    strhtml += '</tr>'
+
+                    strhtml += '<tr  id="tr1" class="js-section">'
+                    strhtml += '<td colspan="6" valign="middle"  bgcolor="#9A9897" style="color:#ffffff;font-size:15px;padding:3px;padding-left:3px;">'
+                    strhtml += '<table style="border-bottom:0px;font-size:14px;width:100%;">'
+                    strhtml += '<tr>'
+                    strhtml += '<td style="color:#ffffff;font-size:15px;width:90%;text-align:left;padding-left:1px;">Xstore</td>'
+                    strhtml += '<td style="width:5%;text-align:right;">'
+
+                    strhtml += '<span id="bocuC" onclick =""  class="js-accordion glyphicon glyphicon-eye-close" data-section="0"></span>'
+                    strhtml += '<span id="bverC" onclick ="" style="display:none" class="glyphicon glyphicon-eye-open""></span>'
+
+                    strhtml += '&nbsp;</td>'
+                    strhtml += '</tr>'
+                    strhtml += '</table>'
+                    strhtml += '</td>'
+                    strhtml += '</tr>'
+
+                    strhtml += '<tr id="IdTr">'
+                    strhtml += '<td colspan="6" valign="middle" style="padding:0px;">'
+                    strhtml += '<div class="content-id">'
+                    strhtml += '<table style="border-bottom:0px;font-size:14px;width:100%;">'
+
+                    //cabecera
+                    if (gData.xstore.length) {
+                        strhtml += '<tr id="IdTr" class="bg-dark" >'
+                        strhtml += '<td colspan="2" valign="middle"><label  id="lblId" name="nombre">wkstn_id</label></td>'
+                        strhtml += '<td colspan="2" valign="middle"><label  id="lblId" name="nombre1">ip_address</label></td>'
+                        strhtml += '<td colspan="2" valign="middle"><label  id="lblId" name="nombre1">xstore_version</label></td>'
+                        strhtml += '</tr>'
+                    }
+
+                    gData.xstore.map(function (item) {
+                        strhtml += '<tr id="IdTr"  >'
+                        
+                        strhtml += '<td colspan="2">'
+                        strhtml += item.wkstn_id
+                        strhtml += '&nbsp;&nbsp;'
+                        strhtml += '</td>'
+                        
+                        strhtml += '<td colspan="2">'
+                        strhtml += item.ip_address
+                        strhtml += '</td>'
+                        
+                        strhtml += '<td colspan="2">'
+                        strhtml += item.xstore_version
+                        strhtml += '</td>'
+                        strhtml += '</tr>'
+                    })
+
+                    strhtml += '</table>'
+                    strhtml += '</div>'
+                    strhtml += '</td>'
+                    strhtml += '</tr>'
+
+                    strhtml += '<tr><td colspan="6"></td></tr>'
+                    
+                    strhtml += '<tr  id="tr1" class="js-section">'
+                    strhtml += '<td colspan="6" valign="middle"  bgcolor="#9A9897" style="color:#ffffff;font-size:15px;padding:3px;padding-left:3px;">'
+                    strhtml += '<table style="border-bottom:0px;font-size:14px;width:100%;">'
+                    strhtml += '<tr >'
+                    strhtml += '<td style="color:#ffffff;font-size:15px;width:90%;text-align:left;padding-left:1px;">Documentos</td>'
+                    strhtml += '<td style="width:5%;text-align:right;">'
+
+                    strhtml += '<span id="bocuS" onclick =""  class="js-accordion glyphicon glyphicon-eye-close" data-section="0"></span>'
+                    strhtml += '<span id="bverS" onclick ="" style="display:none" class="glyphicon glyphicon-eye-open"></span>'
+
+                    strhtml += '&nbsp;</td>'
+                    strhtml += '</tr>'
+                    strhtml += '</table>'
+                    strhtml += '</td>'
+                    strhtml += '</tr>'
+                    
+                    strhtml += '<tr id="IdTr"  >'
+                    strhtml += '<td colspan="6" valign="middle" style="padding:0px;">'
+                    strhtml += '<div class="content-id">'
+                    strhtml += '<table style="border-bottom:0px;font-size:14px;width:100%;">'
+
+                    //cabecera
+                    if (gData.documento.length) {
+                        strhtml += '<tr id="IdTr" class="bg-dark" >'
+                        strhtml += '<td colspan="2" valign="middle"><label  id="lblId" name="nombre">Tipo</label></td>'
+                        strhtml += '<td colspan="2" valign="middle"><label  id="lblId" name="nombre1">Serie</label></td>'
+                        strhtml += '<td colspan="2" valign="middle"><label  id="lblId" name="nombre1">Correlativo</label></td>'
+                        strhtml += '</tr>'
+                    }
+
+                    gData.documento.map(function (item) {
+                        strhtml += '<tr id="IdTr">'
+                        strhtml += '<td colspan="2">'
+                        strhtml += item.tipo_doc
+                        strhtml += '</td>'
+                        strhtml += '<td colspan="2">'
+                        strhtml += item.serie
+                        strhtml += '</td>'
+                        strhtml += '<td colspan="2">'
+                        strhtml += item.correlativo
+                        strhtml += '</td>'
+                        strhtml += '</tr>'
+
+                    })
+
+                    strhtml += '</table>'
+                    strhtml += '</div>'
+                    strhtml += '</td>'
+                    strhtml += '</tr>'
+                    
+                    strhtml += '</table>'
+                    strhtml += '</div>'
+                    strhtml += '<div class="modal-footer" style="margin-top:-30px">'
+                    strhtml += '<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>'
+
+                    strhtml += '</div>'
+                    var options = { "backdrop": "static", keyboard: true };
+
+                    $('#myModalContent').html(strhtml);
+                    $('#myModal').modal(options);
+                    $('#myModal').modal('show');
+                }
+                waitingDialog.hide();
+
+            },
+            error: function () {
+                waitingDialog.hide();
+                alert('Error')
+            }
+
+        });
+
+    }
     function PopupInterfacexDefecto(codTienda, descTienda, Direccion, Jefe, Concesion,outlet) {
 
         waitingDialog.show('Espere un momento por favor');

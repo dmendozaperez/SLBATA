@@ -28,7 +28,7 @@ namespace CapaDato.Maestros
                         {
                             cmd.CommandTimeout = 0;
                             cmd.CommandType = CommandType.StoredProcedure;
-                         
+
                             using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                             {
                                 DataTable dt = new DataTable();
@@ -48,12 +48,12 @@ namespace CapaDato.Maestros
                                             consecionario = dr["CONSECIONARIO"].ToString(),
                                             bol_xstore = dr["XSTORE"].ToString(),
                                             bol_gcorrelativo = dr["CORRE_GENERADO"].ToString(),
-                                            outlet= dr["OUTLET"].ToString(),
+                                            outlet = dr["OUTLET"].ToString(),
 
                                         }).ToList();
 
                             }
-                        
+
 
                         }
                     }
@@ -72,14 +72,16 @@ namespace CapaDato.Maestros
             return list;
         }
 
-        public int ActualizarTiendaXstore(string codTienda, Int32 Estado, decimal usuario) {
+        public int ActualizarTiendaXstore(string codTienda, Int32 Estado, decimal usuario)
+        {
 
             Int32 intRespuesta = 0;
 
             string sqlquery = "USP_ACTIVAR_TIENDA_XSTORE";
             SqlConnection cn = null;
             SqlCommand cmd = null;
-            try { 
+            try
+            {
 
                 cn = new SqlConnection(Ent_Conexion.conexion);
                 if (cn.State == 0) cn.Open();
@@ -93,7 +95,8 @@ namespace CapaDato.Maestros
                 intRespuesta = 1;
 
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
 
                 intRespuesta = -1;
 
@@ -142,7 +145,7 @@ namespace CapaDato.Maestros
                 SqlConnection cn = new SqlConnection(Ent_Conexion.conexionPosPeru);
                 cn.Open();
                 SqlCommand oComando = new SqlCommand("USP_OBTENER_DATOS_TIENDA", cn);
-                oComando.CommandType = CommandType.StoredProcedure;                
+                oComando.CommandType = CommandType.StoredProcedure;
 
                 SqlParameter ocod_tda = oComando.Parameters.Add("@TIENDA", SqlDbType.VarChar);
                 ocod_tda.Direction = ParameterDirection.Input;
@@ -195,7 +198,93 @@ namespace CapaDato.Maestros
             //return oLista;
             return strJson;
         }
-    }
+        public string listarStr_DatosXcenterTienda(string cod_tda)
+        {
+            string sqlquery = "USP_XSTORE_XCENTER_TIENDA";
 
+            List<Ent_XcenterDocumento> documento = null;
+            List<Ent_XcenterTienda> tienda = null;
+            List<Ent_XcenterXstore> store = null;
+            Ent_XcenterMaestro maestro = new Ent_XcenterMaestro();
+
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+                    try
+                    {
+                        if (cn.State == 0) cn.Open();
+                        using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                        {
+                            cmd.CommandTimeout = 0;
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.AddWithValue("@COD_TDA", cod_tda);
+
+                            DataSet dsReturn = new DataSet();
+
+                            using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                            {
+                                da.Fill(dsReturn);
+
+                                tienda = new List<Ent_XcenterTienda>();
+                                tienda = (from DataRow dr in dsReturn.Tables[0].Rows
+                                          select new Ent_XcenterTienda()
+                                          {
+                                              rtl_loc_id = dr["RTL_LOC_ID"].ToString(),
+                                              description = dr["DESCRIPTION"].ToString(),
+                                              address1 = dr["ADDRESS1"].ToString(),
+                                              store_name = dr["STORE_NAME"].ToString(),
+                                              store_manager = dr["STORE_MANAGER"].ToString(),
+                                              xs_calzado = dr["XS_CALZADO"].ToString(),
+                                              xs_no_calzado = dr["XS_NO_CALZADO"].ToString(),
+                                              xs_total = dr["XS_TOTAL"].ToString()
+                                          }).ToList();
+
+                                store = new List<Ent_XcenterXstore>();
+                                store = (from DataRow dr in dsReturn.Tables[1].Rows
+                                         select new Ent_XcenterXstore()
+                                         {
+                                             rtl_loc_id = dr["RTL_LOC_ID"].ToString(),
+                                             wkstn_id = dr["WKSTN_ID"].ToString(),
+                                             ip_address = dr["IP_ADDRESS"].ToString(),
+                                             xstore_version = dr["XSTORE_VERSION"].ToString()
+                                         }).ToList();
+
+                                documento = new List<Ent_XcenterDocumento>();
+                                documento = (from DataRow dr in dsReturn.Tables[2].Rows
+                                             select new Ent_XcenterDocumento()
+                                             {
+                                                 rtl_loc_id = dr["RTL_LOC_ID"].ToString(),
+                                                 tipo_doc = dr["TIPO_DOC"].ToString(),
+                                                 serie = dr["SERIE"].ToString(),
+                                                 correlativo = dr["CORRELATIVO"].ToString()
+                                             }).ToList();
+                            }
+
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        maestro = null;
+                    }
+                    if (cn != null)
+                        if (cn.State == ConnectionState.Open) cn.Close();
+                }
+
+                maestro.tienda = tienda;
+                maestro.xstore = store;
+                maestro.documento = documento;
+
+            }
+            catch (Exception)
+            {
+                maestro = null;
+            }
+
+            string strJson = JsonConvert.SerializeObject(maestro);
+
+            return strJson;
+        }
+    }
 
 }

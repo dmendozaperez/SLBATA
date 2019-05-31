@@ -54,11 +54,13 @@
     <Compile Include="Maestros\Ent_Concepto_Suna.cs" />
     <Compile Include="Maestros\Ent_ListaTienda.cs" />
     <Compile Include="Maestros\Ent_Tienda_CadTip.cs" />
+    <Compile Include="Maestros\Ent_TipoInterface.cs" />
     <Compile Include="Maestros\Ent_TipoTienda.cs" />
     <Compile Include="ReportsValeCompra\Reporte_Resultado.cs" />
     <Compile Include="ReportsValeCompra\Reporte_Filtro.cs" />
     <Compile Include="Soporte\Ent_Tienda_Config.cs" />
     <Compile Include="Transac\Ent_Analisis_Mov.cs" />
+    <Compile Include="Transac\Ent_Consultar_Guia.cs" />
     <Compile Include="Transac\Ent_Documentos_Tda.cs" />
     <Compile Include="Util\Ent_ComboList.cs" />
     <Compile Include="Util\Ent_Combo.cs" />
@@ -82,6 +84,7 @@
     <Compile Include="XstoreTda\Ent_DatosTienda.cs" />
     <Compile Include="XstoreTda\Ent_DatosTienda_Xstore.cs" />
     <Compile Include="XstoreTda\Ent_TiendaConf.cs" />
+    <Compile Include="XstoreTda\Ent_Xcenter.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
