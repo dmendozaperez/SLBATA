@@ -46,6 +46,7 @@
     <Compile Include="ArticuloStock\Departamento.cs" />
     <Compile Include="ArticuloStock\Articulo_Tienda.cs" />
     <Compile Include="ArticuloSustituto\Articulo_Sustituto_Tienda.cs" />
+    <Compile Include="CanalVenta\Ent_VentaCanal.cs" />
     <Compile Include="Control\Ent_Aplicacion.cs" />
     <Compile Include="Control\Ent_Tienda.cs" />
     <Compile Include="Interface\Ent_TiendaInterface.cs" />

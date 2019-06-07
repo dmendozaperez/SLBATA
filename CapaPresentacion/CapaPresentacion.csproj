@@ -288,6 +288,7 @@
     <Compile Include="Controllers\AdminLteController.cs" />
     <Compile Include="Controllers\AnalisisMovController.cs" />
     <Compile Include="Controllers\AplicacionController.cs" />
+    <Compile Include="Controllers\CanalVentaController.cs" />
     <Compile Include="Controllers\CEController.cs" />
     <Compile Include="Controllers\ComunicadoController.cs" />
     <Compile Include="Controllers\DocumentoController.cs" />
@@ -315,6 +316,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\CanalVenta\CanalVenta.cs" />
+    <Compile Include="Models\CanalVenta\Urbano.cs" />
     <Compile Include="Models\Control\LoginViewModel.cs" />
     <Compile Include="Models\Crystal\Reporte\Models_Rendimiento_Categ.cs" />
     <Compile Include="Models\Crystal\Reporte\Models_Guia.cs" />
@@ -330,6 +333,18 @@
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="RptsCrystal\CanalVenta.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CanalVenta.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RptsCrystal\GuiaElectronica.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GuiaElectronica.rpt</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="RptsCrystal\PlanillaDet.cs">
       <AutoGen>True</AutoGen>
@@ -366,6 +381,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ReportArtSinMov.rpt</DependentUpon>
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Service References\cxpress\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="Service References\FEBataBack\Reference.cs">
       <AutoGen>True</AutoGen>
@@ -1198,6 +1218,18 @@
     <Content Include="Scripts\toastr.min.js" />
     <Content Include="Scripts\waitingfor.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Service References\cxpress\CapaPresentacion.cxpress.registrarResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\cxpress\CapaPresentacion.cxpress.response.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <None Include="Service References\cxpress\configuration91.svcinfo" />
+    <None Include="Service References\cxpress\configuration.svcinfo" />
+    <None Include="Service References\cxpress\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
     <Content Include="Service References\FEBataBack\CapaPresentacion.FEBataBack.AddDocInfoResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
@@ -1237,6 +1269,7 @@
     <Content Include="Service References\FEBataBack\CapaPresentacion.FEBataBack.OnlineRecoveryResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
+    <None Include="Service References\cxpress\WSOrdenServicio.wsdl" />
     <None Include="Service References\FEBataBack\configuration91.svcinfo" />
     <None Include="Service References\FEBataBack\configuration.svcinfo" />
     <None Include="Service References\FEBataBack\Reference.svcmap">
@@ -1388,6 +1421,8 @@
     <Content Include="Views\CE\EnvInterXstore.cshtml" />
     <Content Include="Views\Consulta\Guia.cshtml" />
     <Content Include="Views\Consulta\_guiaTable.cshtml" />
+    <Content Include="Views\CanalVenta\Index.cshtml" />
+    <Content Include="Views\CanalVenta\Ver.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1425,10 +1460,19 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <WCFMetadataStorage Include="Service References\cxpress\" />
     <WCFMetadataStorage Include="Service References\FEBataBack\" />
     <WCFMetadataStorage Include="Service References\FEBataEpos\" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="RptsCrystal\CanalVenta.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>CanalVenta.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RptsCrystal\GuiaElectronica.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>GuiaElectronica.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="RptsCrystal\PlanillaDet.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>PlanillaDet.cs</LastGenOutput>

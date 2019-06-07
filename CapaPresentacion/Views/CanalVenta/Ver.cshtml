@@ -1,0 +1,295 @@
+﻿@model CapaPresentacion.Models.CanalVenta.CanalVenta   
+@{
+    ViewBag.Title =Model.nombreTipoCV + " -  " +  @ViewBag.id;
+}
+@{AjaxOptions options = new AjaxOptions
+    {
+        HttpMethod = "GET",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "lista",
+        OnComplete = "waitingDialog.hide();",
+        OnBegin = "waitingDialog.show('Espere un momento por favor');",
+        OnFailure = "waitingDialog.hide();"
+    };
+}
+<br />
+<script>
+    function setEstado(estado) {
+        var tienda = "@(Session["Tienda"] == null ? null : Session["Tienda"].ToString())";
+        console.log(tienda);
+        var vendedor = $("#vendedor").children("option:selected").val();
+        swal({
+            title: "Cambiar estado",
+            text: "¿Desea cambiar el estado de la venta?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((cambiar) => {
+            if (cambiar) {
+                var descripcion = $('#descripcion').val();
+                if (descripcion == null || descripcion === '') {
+                    swal("Ingrese el campo descripción por favor.", {
+                        icon: "info",
+                    });
+                } else if (tienda != '' && (vendedor == null || vendedor === '') ) {
+                    swal("Seleccione vendedor por favor.", {
+                        icon: "info",
+                    });
+                }
+
+                else {
+                    waitingDialog.show('Espere un momento por favor');
+                    if (estado == 'aceptado') {
+                        var form = $("#frmActualizarEstado");
+                        form.attr("action", "@Url.Action("ActualizarAcepado", "CanalVenta")");
+                        form.submit();
+                    } else if(estado == 'rechazado') {
+                        var form = $("#frmActualizarEstado");
+                        form.attr("action", "@Url.Action("ActualizarRechazado", "CanalVenta")");
+                        form.submit();
+                    } else if (estado == 'delivery') {
+                        var form = $("#frmActualizarEstado");
+                        form.attr("action", "@Url.Action("ActualizarDelivery", "CanalVenta")");
+                        form.submit();
+                    } else if (estado == 'recepcionado') {
+                        var form = $("#frmActualizarEstado");
+                        form.attr("action", "@Url.Action("ActualizarRecepcionado", "CanalVenta")");
+                        form.submit();
+                    }
+                }
+            }
+        });        
+    }
+</script>
+<div class="row">
+    <div class="col-md-4">
+        <div class="box box-body box-primary">
+            <h4>Datos generales de la venta:</h4>
+            <ul>
+                <li>
+                    <label>Tienda Origen(A):</label>
+                    <ul>
+                        <li><label>Tienda: </label> @Model.tiendaOrigen</li>
+                        <li><label>Direccion: </label> @Model.direccionA</li>
+                        <!--li><label>Telefono: </label>689787-988 </!--li-->
+                    </ul>
+                </li>
+                <li>
+                    <label>Comprobante:</label>
+                    <ul>
+                        <li><label>Serie - Numero: </label> @Model.serieNumero </li>
+                        @if (Model.tipoComprobante == "01")
+                        {
+                            <li><label>Tipo: </label>Factura</li>
+                        }
+                        else if (Model.tipoComprobante == "03")
+                        {
+                            <li><label>Tipo: </label>Boleta</li>
+                        }
+                        else
+                        {
+                            <li><label>Tipo: </label> @Model.tipoComprobante</li>
+                        }
+                        <li><label>Fecha y Hora: </label> @Model.fechaVenta.ToString("dd/MM/yyyy")  @Model.hora</li>
+                    </ul>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="box box-body box-primary">
+            <h4>Datos del canal de venta:</h4>
+            <ul>
+                <li>
+                    <label>Tipo: <b>@Model.nombreTipoCV</b></label>
+                </li>
+                <li>
+                    <label>Tienda Destino (B): </label>
+                    <ul>
+                        <li><label>Tienda: </label> @Model.tiendaDestino</li>
+                        <li><label>Direccion: </label> @Model.direccionB</li>
+                        <!--li><label>Telefono: </label> Telefono de la tienda B</!--li-->
+                    </ul>
+                </li>
+                <li>
+                    <label>Cliente: </label>
+                    <ul>
+                        <li><label>No. Documento: </label> @Model.noDocCli</li>
+                        <li><label>Cliente: </label> @Model.nombreCompletoCliente</li>
+                        <li><label>Telefono: </label> @Model.telefonoCliente</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+    @if (@Model.tipo != "2")
+    {
+        <div class="col-md-4">
+            <div class="box box-body box-primary">
+                <h4>Datos de la entrega del producto:</h4>
+                <ul>
+                    <li>
+                        <label>Servicio: <b>Comercio XPress</b></label>
+                    </li>
+                    <li>
+                        <label>Codigo Guia Electronica :&nbsp;&nbsp;</label><a title="Imprimir codigo de barras." onclick="" href="@Url.Action("ImprimirCodigo", new { id = Model.serieNumero, fc_nint = Model.fc_nint, tienda = Model.cod_entid })"><b>@Model.guia_electronica</b></a>
+                    </li>
+                    <li>
+                        <label>Cliente: </label>
+                        <ul>
+                            <li><label>No. Documento: </label> @Model.noDocCli</li>
+                            <li><label>Destino: </label> @(Model.tipo == "1" ? Model.tiendaOrigen : Model.cliente)</li>
+                            <li><label>Direccion: </label> @(Model.tipo == "1" ? Model.direccionA : Model.direccionCliente)</li>
+                            <li><label>Referencia: </label> @(Model.tipo == "1" ? "Sin Referencia" : Model.referenciaCliente)</li>
+                            <li><label>Ubigeo: </label> @(Model.tipo == "1" ? Model.ubigeoTienda : Model.ubigeoCliente)</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    }
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-body box-primary">
+            <h4>Detalle de productos</h4>
+            <table class="table table-hover table-striped table-responsive">
+                <thead>
+                    <tr style="background-color:#3d566e; color:#ecf0f1">
+                        <th>Producto</th>
+                        <th>Talla</th>
+                        <th>Cantidad</th>
+                        <th>Pre. Uni</th>
+                        <th>Descuento</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody data-bind="foreach:">
+                    @foreach (var item in Model.detalles)
+                    {
+                        <tr>
+                            <td>@item.codigoProducto - @item.nombreProducto</td>
+                            <td>@item.talla</td>
+                            <td>@item.cantidad</td>
+                            <td>@item.precioUnitario</td>
+                            <td>@item.descuento</td>
+                            <td>@item.total</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <div class="box box-body box-primary">
+            <h4>Informacion del estado</h4>
+            @using (Html.BeginForm("", "CanalVenta", FormMethod.Post, new { @id = "frmActualizarEstado" }))
+            {
+                @Html.Hidden("cod_entid", Model.cod_entid);
+                @Html.Hidden("fc_nint", Model.fc_nint);
+                @Html.Hidden("id", Model.serieNumero);
+
+
+                <ul class="list-group">
+                    <li class="list-group-item list-group-item-@Model.colorEstado">
+                        <span class="float-left">Estado Actual:</span>&nbsp;&nbsp;<span class="label label-@Model.colorEstado">@Model.nombreEstado</span>
+                    </li>
+
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label>Cambiar estado: </label>
+                                </div>
+                                <div class="col-md-12">
+                                    @if ((Model.estado == "004" || Model.estado == "005") && ((Session["Tienda"] == null || (Session["Tienda"] != null && Session["Tienda"].ToString() == Model.cod_entid_b && Model.tipo == "2" )) || (Session["Tienda"] == null || (Session["Tienda"] != null && Session["Tienda"].ToString() == Model.cod_entid && Model.tipo == "1"))))
+                                    {
+                                        <button type="button" class="btn btn-sm btn-success" onclick="setEstado('aceptado');"><span class="glyphicon glyphicon-ok-sign"></span> Entregado</button>
+                                        <button type="button" class="btn btn-sm btn-danger" onclick="setEstado('rechazado');"><span class="glyphicon glyphicon-exclamation-sign"></span> Rechazado</button>
+
+                                    }
+                                    @if (Model.estado == "004" && Model.tipo != "2")
+                                    {
+                                        <button type="button" class="btn btn-sm btn-info" onclick="setEstado('delivery');"><span class="glyphicon glyphicon-send"></span> Delivery</button>
+                                    }
+                                    <!--validar si la venta compete a la tienda de destino-->
+                                    @if (Model.estado == "001" && (Session["Tienda"] == null || (Session["Tienda"] != null && Session["Tienda"].ToString() == Model.cod_entid_b )))
+                                    {
+                                        <button type="button" class="btn btn-sm btn-warning" onclick="setEstado('recepcionado');"><span class="glyphicon glyphicon-check"></span> Recepcionado</button>
+                                    }
+                                </div>
+                                <div class="col-md-12">
+                                    Descripcion o comentario:
+                                    @Html.TextArea("descripcion", new { @class = "form-control", @id = "descripcion" })
+                                </div>
+                            </div>
+                        </li>
+                        @if (Session["Tienda"] != null )
+                        {
+                            <li class="list-group-item">
+                                Vendedor:
+                                @Html.DropDownList("vendedor", (List<SelectListItem>)ViewBag._SelectVendedor, new { @class = "form-control select2", @id = "vendedor" })
+                            </li>
+                        }
+                    
+                </ul>
+            }
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="box box-body box-primary">
+            <h4>Historial de cambios de estado:</h4>
+            <table class="table table-hover table-striped table-responsive">
+                <thead>
+                    <tr style="background-color:#3d566e; color:#ecf0f1">
+                        <th>Estado</th>
+                        <th>Fec Hor</th>
+                        <th>Usuario</th>
+                        <th>Vendedor</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody data-bind="foreach:">
+                    <tr>
+                        <td><span class="label label-primary">FACTURADO</span></td>
+                        <td>@Model.fechaVenta.ToString("dd/MM/yyyy") @Model.hora</td>
+                        <td>@Model.tiendaOrigen</td>
+                        <td>@Model.idVendedor - @Model.nomVendedor</td>
+                        <td>Facturado desde la tienda de origen.</td>
+                    </tr>
+                    @if (Model.historialEstados != null)
+                    {
+                        foreach (var item in Model.historialEstados)
+                        {
+                            <tr>
+                                <td><span class="label label-@item.colorEstado">@item.nombreEstado</span>
+                                <td>@item.fecha</td>
+                                <td>@item.usu_nombre</td>
+                                <td>@item.cod_vendedor - @item.nomVendedor</td>
+                                <td>@item.descripcion</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <a href="@Url.Action("Index", "CanalVenta")" class="btn btn-primary"><span class="glyphicon glyphicon-step-backward"></span>&nbsp;Atras</a>
+    </div>
+
+</div>    
+    @if (TempData["Success"] != null)
+    {
+        <script>toastr.success("@TempData["Success"]");</script>
+    }
+    else if ((TempData["Error"] != null))
+    {
+        <script>toastr.error("@TempData["Error"]");</script>
+    }
+    
