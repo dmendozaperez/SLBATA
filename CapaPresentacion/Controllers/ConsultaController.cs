@@ -20,6 +20,9 @@ namespace CapaPresentacion.Controllers
         private Dat_Concepto_Suna dat_concepto_suna = new Dat_Concepto_Suna();
         private Dat_Documentos_Tda dat_doc = new Dat_Documentos_Tda();
         private string _session_listdocumentoDetalle_private = "_session_listdocumentoDetalle_private";
+
+        private string _session_listguia_private = "_session_listguia_private";
+
         private Dat_Combo datCbo = new Dat_Combo();
         private Dat_Consultar_Guia datGuia = new Dat_Consultar_Guia();
         // GET: Consulta
@@ -185,6 +188,11 @@ namespace CapaPresentacion.Controllers
                 return View();
             }
         }
+        public PartialViewResult _guiaTable(string dwtda, string numguia)
+        {
+            return PartialView(listaGuia(dwtda, numguia));
+        }
+
 
         public string listarStr_DatosGuia(string tda_destino, string num_guia)
         {
@@ -196,8 +204,9 @@ namespace CapaPresentacion.Controllers
 
         public List<Ent_Consultar_Guia> listaGuia(string tda_destino, string num_guia)
         {
-            List<Ent_Consultar_Guia> listdoc = datGuia.get_lista(tda_destino, num_guia);
-            return listdoc;
+            List<Ent_Consultar_Guia> listguia = datGuia.get_lista(tda_destino, num_guia);
+            Session[_session_listguia_private] = listguia;
+            return listguia;
         }
 
 
@@ -233,7 +242,9 @@ namespace CapaPresentacion.Controllers
                              a.tienda_destino,
                              a.fecha_des,
                              a.desc_send_tda,
-                             a.fec_env
+                             a.fec_env,
+                             a.mc_id,
+                             a.fec_recep
                          };
 
             //Se devuelven los resultados por json

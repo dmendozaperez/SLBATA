@@ -47,7 +47,9 @@ namespace CapaDato.Transac
                                               fecha_des         = dr["fecha_des"].ToString(),
                                               desc_send_tda     = dr["desc_send_tda"].ToString(),
                                               fec_env           = dr["fec_env"].ToString(),
-                                             
+                                              mc_id = Convert.ToDecimal(dr["mc_id"]),
+                                              fec_recep= dr["fec_recep"].ToString(),
+
                                           }).ToList();
                             }
 

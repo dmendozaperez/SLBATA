@@ -17,16 +17,16 @@
 
 <p class="text-danger">¡Consulta de guías de traspaso de almacen o tienda para el reenvio, filtro por tienda y número de guia!</p>
 <div class="box box-body box-primary">
-    @using (Ajax.BeginForm("ListaDocumento", options))
+    @using (Ajax.BeginForm("_guiaTable", options))
     {
         <div class="row">
 
             <form id="form1">
                 <div class="col-sm-3">
-                    <label for="txtTda">Cod Tda.</label>
+                    <label for="dwtda">Cod Tda.</label>
                     <div class="form-group">
-                        <div id="tipodoc" class="form-group">
-                            @Html.DropDownList("txtTda", new SelectList(ViewBag.tienda, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", @data_live_search = "true", @id = "txtTda", @name = "txtTda" })
+                        <div id="dwtda" class="form-group">
+                            @Html.DropDownList("dwtda", new SelectList(ViewBag.tienda, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwtda", @name = "dwtda" })
                         </div>
                     </div>
                 </div>
