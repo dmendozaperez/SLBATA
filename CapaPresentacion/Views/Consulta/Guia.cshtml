@@ -1,18 +1,21 @@
 ﻿@using CapaEntidad.Transac
-@model IEnumerable<Ent_Documentos_Tda>
+@model IEnumerable<Ent_Consultar_Guia>
 @{
     ViewBag.Title = "Consulta de Guías";
     AjaxOptions options = new AjaxOptions
     {
         HttpMethod = "GET",
         InsertionMode = InsertionMode.Replace,
-        UpdateTargetId = "lista",
+        UpdateTargetId = "listaGuia",
         OnComplete = "waitingDialog.hide();",
         OnBegin = "waitingDialog.show('Espere un momento por favor');",
         OnFailure = "waitingDialog.hide();"
     };
 }
 @*<link href="~/Content/bootstrap-select.css" rel="stylesheet" />*@
+@*<link href="~/ContentSelect/bootstrap-select.css" rel="stylesheet" />*@
+
+
 <link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />
 
 <p class="text-danger">¡Consulta de guías de traspaso de almacen o tienda para el reenvio, filtro por tienda y número de guia!</p>
@@ -23,11 +26,15 @@
 
             <form id="form1">
                 <div class="col-sm-3">
-                    <label for="dwtda">Cod Tda.</label>
+                    <label for="segape">Cod Tda.</label>
                     <div class="form-group">
-                        <div id="dwtda" class="form-group">
-                            @Html.DropDownList("dwtda", new SelectList(ViewBag.tienda, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwtda", @name = "dwtda" })
+                        @*<div id="dwtda" class="form-group">*@
+                        <div class="input-group">
+                            <div id="tda" class="input-group autofocus">
+                                @Html.DropDownList("dwtda", new SelectList(ViewBag.Tienda, "cbo_codigo", "cbo_descripcion", "-1"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwtda", @name = "dwtda" })
+                            </div>
                         </div>
+                        @*</div>*@
                     </div>
                 </div>
 
@@ -54,7 +61,7 @@
 
         </div>
     }
-    <div class="box-body" id="lista">
+    <div class="box-body" id="listaGuia">
         @{Html.RenderPartial("_guiaTable", Model);}
     </div>
     <br />
@@ -62,7 +69,50 @@
 
 </div>
 <script src="~/Scripts/bootstrap-select.min.js"></script>
-<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+
+
 @*<script src="~/Scripts/bootstrap.min.js"></script>
-<script src="~/Scripts/bootstrap-select.js"></script>*@
+<script src="~/ScriptsSelect/bootstrap-select.js"></script>*@
+<script>
+    //$(document).ready(function () {
+
+    //    $('#dwtda').on('keyup change', function () {
+    //        selectedValue = $(this).val();
+
+    //        $.each($('#btnSearch'), function () {
+    //            $(this).val(selectedValue);
+    //        })
+    //    });
+
+    //    //MostrarListado()
+    //});
+
+    function MostrarListado() {
+
+        var TeamDetailPostBackURL = "@Url.Action("_guiaTable", "Consulta")";
+
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: TeamDetailPostBackURL,
+            contentType: "application/json; charset=utf-8",
+            data: {},
+            datatype: "json",
+            cache: true,
+            success: function (data) {
+                document.getElementById("listaGuia").innerHTML = data;
+
+            },
+            error: function () {
+
+            }
+        });
+
+    }
+
+</script>
+
+@*<script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/bootstrap-select.js"></script>*@
 

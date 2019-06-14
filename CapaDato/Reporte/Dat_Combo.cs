@@ -192,7 +192,7 @@ namespace CapaDato.Reporte
         public List<Ent_Combo> get_ListaTiendaXstore()
         {
             List<Ent_Combo> list = null;
-            string sqlquery = "USP_LISTAR_TIENDA_XSTORE";
+            string sqlquery = "USP_LISTAR_TIENDA_XSTORE_PRUEBA";
             try
             {
                 using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
@@ -210,8 +210,8 @@ namespace CapaDato.Reporte
                             while (dr.Read())
                             {
                                 Ent_Combo combo = new Ent_Combo();
-                                combo.cbo_codigo = dr["CODIGO"].ToString();
-                                combo.cbo_descripcion = dr["DESCRIP"].ToString();
+                                combo.cbo_codigo = dr["cbo_codigo"].ToString();
+                                combo.cbo_descripcion = dr["cbo_descripcion"].ToString();
 
                                 list.Add(combo);
 

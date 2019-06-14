@@ -22,8 +22,10 @@ namespace CapaPresentacion.Controllers
         private string _session_listdocumentoDetalle_private = "_session_listdocumentoDetalle_private";
 
         private string _session_listguia_private = "_session_listguia_private";
+        //tienda
+            private Dat_Combo tienda = new Dat_Combo();
+        // private Dat_Combo datCbo = new Dat_Combo();
 
-        private Dat_Combo datCbo = new Dat_Combo();
         private Dat_Consultar_Guia datGuia = new Dat_Consultar_Guia();
         // GET: Consulta
         public ActionResult ConDocTienda()
@@ -178,11 +180,11 @@ namespace CapaPresentacion.Controllers
             {
                 if (Session["Tienda"] != null)
                 {
-                    ViewBag.Tienda = datCbo.get_ListaTiendaXstore().Where(t => t.cbo_codigo == Session["Tienda"].ToString()).ToList();
+                    ViewBag.Tienda = tienda.get_ListaTiendaXstore().Where(t => t.cbo_codigo == Session["Tienda"].ToString()).ToList();
                 }
                 else
                 {
-                    ViewBag.Tienda = datCbo.get_ListaTiendaXstore();
+                    ViewBag.Tienda = tienda.get_ListaTiendaXstore();
                 }
 
                 return View();
@@ -212,13 +214,23 @@ namespace CapaPresentacion.Controllers
 
         public ActionResult getGuiaAjax(Ent_jQueryDataTableParams param)
         {
+
+            /*verificar si esta null*/
+            if (Session[_session_listguia_private] == null)
+            {
+                List<Ent_Consultar_Guia> listdoc = new List<Ent_Consultar_Guia>();
+                Session[_session_listguia_private] = listdoc;
+            }
+
             //Traer registros
-            string tda_destino = Request["tda_destino"];
-            string num_guia = Request["num_guia"];
+           // string tda_destino = Request["tda_destino"];
+           // string num_guia = Request["num_guia"];
 
-            List<Ent_Consultar_Guia> mGuia = datGuia.get_lista(tda_destino, num_guia);
+          //  List<Ent_Consultar_Guia> mGuia = datGuia.get_lista(tda_destino, num_guia);
 
-            IQueryable<Ent_Consultar_Guia> membercol = ((List<Ent_Consultar_Guia>)(mGuia)).AsQueryable();  //lista().AsQueryable();
+          //  IQueryable<Ent_Consultar_Guia> membercol = ((List<Ent_Consultar_Guia>)(mGuia)).AsQueryable();  //lista().AsQueryable();
+            IQueryable<Ent_Consultar_Guia> membercol = ((List<Ent_Consultar_Guia>)(Session[_session_listguia_private])).AsQueryable();  //lista().AsQueryable();
+
 
             //Manejador de filtros
             int totalCount = membercol.Count();
