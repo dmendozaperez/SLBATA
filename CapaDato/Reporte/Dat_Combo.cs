@@ -189,10 +189,10 @@ namespace CapaDato.Reporte
             }
             return list;
         }
-        public List<Ent_Combo> get_ListaTiendaXstore()
+        public List<Ent_Combo> get_ListaTiendaXstore(Boolean _selecciona=false)
         {
             List<Ent_Combo> list = null;
-            string sqlquery = "USP_LISTAR_TIENDA_XSTORE_PRUEBA";
+            string sqlquery = "USP_LISTAR_TIENDA_XSTORE";
             try
             {
                 using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
@@ -206,12 +206,19 @@ namespace CapaDato.Reporte
                         if (dr.HasRows)
                         {
                             list = new List<Ent_Combo>();
+                            Ent_Combo combo = new Ent_Combo();
+                            //if (_selecciona)
+                            //{
+                            //    combo.cbo_codigo = "-1";
+                            //    combo.cbo_descripcion = "--SELECCIONAR--";
+                            //    list.Add(combo);
+                            //}
 
                             while (dr.Read())
                             {
-                                Ent_Combo combo = new Ent_Combo();
-                                combo.cbo_codigo = dr["cbo_codigo"].ToString();
-                                combo.cbo_descripcion = dr["cbo_descripcion"].ToString();
+                                combo = new Ent_Combo();
+                                combo.cbo_codigo = dr["codigo"].ToString();
+                                combo.cbo_descripcion = dr["descrip"].ToString();
 
                                 list.Add(combo);
 

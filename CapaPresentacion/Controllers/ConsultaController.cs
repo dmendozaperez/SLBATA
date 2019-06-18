@@ -184,7 +184,7 @@ namespace CapaPresentacion.Controllers
                 }
                 else
                 {
-                    ViewBag.Tienda = tienda.get_ListaTiendaXstore();
+                    ViewBag.Tienda = tienda.get_ListaTiendaXstore(true);
                 }
 
                 return View();
