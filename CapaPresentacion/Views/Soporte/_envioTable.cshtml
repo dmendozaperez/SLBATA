@@ -1,0 +1,344 @@
+﻿
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.min.css" />
+<style type="text/css">
+    .dt-buttons {
+        display: none;
+    }
+
+    #example_filter {
+        display: none;
+    }
+
+    /*#TableDeta_filter {
+        display: none;
+    }*/
+</style>
+
+<table id="example" class="table table-hover dataTable  table-striped table-responsive">
+    <thead>
+        <tr style="background-color:#3d566e; color:#ecf0f1">
+            <th>Enviar paquete</th>
+            <th>Identificador</th>
+            <th>Tienda</th>
+            <th>Fecha de venta</th>
+            <th>Novel estado</th>
+            <th>Fecha de envío</th>
+            <th>Detalle</th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach:"></tbody>
+    <tfoot>
+        <tr>
+            <th>Enviar paquete</th>
+            <th>Identificador</th>
+            <th>Tienda</th>
+            <th>Fecha de venta</th>
+            <th>Novel estado</th>
+            <th>Fecha de envío</th>
+            <th>Detalle</th>
+        </tr>
+    </tfoot>
+</table>
+
+<!-- Modal -->
+@*<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
+            <div id="myModalContent" class="modal-content">
+
+                    <div id="TableCont" name="TableCont"></div>
+
+            </div>
+        </div>
+    </div>*@
+
+<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog">
+        <div id="myModalContent1" class="modal-content" style="/*height: -webkit-fill-available; min-height: 605px;*/ height:605px; min-height: -webkit-fill-available;">
+            <div style="background-color:#c0392b; color:white;" class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h5 class="modal-title" id="myModalLabel" style="font: icon; font-weight: 600;"></h5>
+            </div>
+            <div id="modalBody1" class="modal-body">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src='https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js'></script>
+<script src='//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js'></script>
+<script src='//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js'></script>
+<script src='//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js'></script>
+<script src='//cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js'></script>
+
+<script>
+
+    //TEXTBOX DE BUSQUEDA FILTRO POPUP DETALLE
+    //$('.dataTables_filter input').on('keyup', function () {
+    //    console.log("hi ho");
+    //    alert(hi);
+    //  //  $('#TableDeta').DataTable().search(this.value).draw();
+    //});
+
+
+
+    $(document).ready(function () {
+        $('.table').dataTable({
+            "language": {
+                "url": "../Scripts/DataTables/Spanish.json"
+            },
+            "bProcessing": true, // se agrego para probar
+            "bServerSide": true,
+            "bAutoWidth": false,
+            "sAjaxSource": '@Url.Action("getGuiaAjax", "Soporte")',
+            "fnServerParams": function (aoData) {
+                aoData.push({ "name": "dwtda", "value": $.trim($('#dwtda').val()) });
+                aoData.push({ "name": "fec_ini", "value": $.trim($('#fec_ini').val()) });
+                aoData.push({ "name": "fec_fin", "value": $.trim($('#fec_fin').val()) });
+            },
+            "bdestroy": true,
+            "start": 0,
+            "order": [0, "asc"],
+            "bDeferRender": true,
+            "aoColumns": [
+                    {
+                        "render": function (data, type, full) {
+                            return ' <div id="checkboxes"> <input type="checkbox" name="rGroup" value="0" id="' + full.tran_id + '" /> </div>'
+                        }
+                    },
+                    { "sName": "tran_id", "mData": "tran_id" },
+                    { "sName": "tienda_origen", "mData": "tienda_origen" },
+                    { "sName": "fecha_des", "mData": "fecha_des" },
+                    { //Label de Enviado o No enviado ->flg_novell
+                        "render": function (data, type, full) {
+                            if (full.flg_novell == 1) {
+                                return '<div style="display: block;background-color: #41b341;" class="badge badge-pill badge-success disabled"><a class="badge badge-success disabled" style=" background-color: #41b341;"  >Enviado</a></div>';
+                            } else {
+                                return '<div style="display: block;background-color: #3d566e;" class="badge badge-pill badge-default disabled"><a class="badge badge-default disabled" style=" background-color: #3d566e;"  >No enviado</a></div>';
+                            }
+                        }
+                    },
+                    { "sName": "fec_env", "mData": "fec_env" },
+                    {      //Botón de detalle - PopUp
+                        "render": function (data, type, full) {
+                            var envio = "'" + full.cod_entid + "','" + full.fecha_des + "','" + full.tienda_origen + "'"
+                            return '<div> <a title="Ver Detalle"  onclick="PopupDetalle(' + envio + ')" target="_blank" class="btn btn-primary btn-sm"> <span class="	glyphicon glyphicon-th-list"></span></a></div>';
+                        }
+                    }
+            ],
+            dom: 'Bfrtip',
+            buttons: [
+            {
+                extend: 'excelHtml5',
+                title: 'Bataclub_xls'
+            },
+            {
+                extend: 'csvHtml5',
+                title: 'BataClub_csv'
+            },
+            {
+                extend: 'pdfHtml5',
+                title: 'BataClub_pdf'
+            },
+            'copyHtml5',
+            ]
+        });
+
+    });
+
+     //TEXTBOX DE BUSQUEDA FILTRO POPUP DETALLE
+    //$(document).ready(function () {
+    //      var value = $('.dataTables_filter input').val();
+    //    $('#TableDeta').dataTable({
+    //        "oSearch": {
+    //            "sSearch": value,
+    //            "bRegex": true,
+    //            "bSmart": true,
+    //            "bCaseInsensitive": false
+    //        }
+    //    });
+    //})
+
+    $(document).ready(function () {
+        //TEXTBOX DE BUSQUEDA FILTRO POPUP DETALLE
+        //   $('.dataTables_filter input').on('keypress, click', function () {
+
+        //$("#TableDeta input[type=search]").keypress(function () {
+        //    alert("hi there");
+        //});
+
+
+     //   $('#TableDeta_filter input').keypress(function () {
+      //$('.dataTables_filter input').on('keyup', function () {
+      //     console.log("hi");
+      //     alert(hi);
+      //      var value = $('.dataTables_filter input').val();
+      //      $('#TableDeta').dataTable({
+      //          "oSearch": {
+      //              "sSearch": value,
+      //              "bRegex": true,
+      //              "bSmart": true,
+      //              "bCaseInsensitive": false
+      //          }
+      //      });
+      // });
+
+
+     //  var table = $('#TableDeta').DataTable();
+
+       //$('.dataTables_filter input').on('keyup', function () {
+       //    console.log("hi ho");
+       //    alert(hi);
+       //    $('#TableDeta').DataTable().search(this.value).draw();
+       //});
+
+     
+    })
+
+
+    $('#form1').on('keypress, click', function () {
+        return false;
+    });
+</script>
+
+<script>
+    function PopupDetalle(codTienda, fecha_des, tienda_origen) {
+        waitingDialog.show('Espere un momento por favor');
+       // var value = $('.dataTables_filter input').val();
+      //  console.log(value);
+        var ControllerUrl = "@Url.Action("_popUpDetalle", "Soporte")";
+        $.ajax({
+            type: "GET",
+            url: ControllerUrl,
+            contentType: "application/json; charset=utf-8",
+            data: { codTienda: codTienda, fecha_des: fecha_des },
+            datatype: "json",
+            cache: true,
+            success: function (data) {
+                var options = { "backdrop": "static", keyboard: true };
+                var descfecha = ' - ' + fecha_des + ''
+                var descTienda = 'Detalle Tienda: ' + tienda_origen.substring(2, tienda_origen.length) + '' + descfecha
+
+                $('#myModalLabel').html(descTienda);
+                $('#modalBody1').html(data);
+                $('#myModal1').modal(options);
+                $('#myModal1').modal('show');
+
+                $('#TableDeta').dataTable({
+                    "language": {
+                        "url": "../Scripts/DataTables/Spanish.json"
+                    },
+                    "bProcessing": true,
+                    "bServerSide": true,
+                    "bAutoWidth": false,
+                    "sAjaxSource": '@Url.Action("getDetalleAjax", "Soporte")',
+                    "fnServerParams": function (aoData) {
+                        // console.log("entró a getdetalle ajax");
+                        //aoData.push({ "name": "dwtda", "value": $.trim($('#dwtda').val()) });
+                        //aoData.push({ "name": "fec_ini", "value": $.trim($('#fec_ini').val()) });
+                        //aoData.push({ "name": "fec_fin", "value": $.trim($('#fec_fin').val()) });
+                    },
+                    "bdestroy": true,
+                    "start": 0,
+                   // "oSearch": {"sSearch": value},
+                    "order": [0, "asc"],
+                    "bDeferRender": true,
+                    "aoColumns": [
+                            { "sName": "TIPO_DOC", "mData": "TIPO_DOC" },
+                            { "sName": "SERIE", "mData": "SERIE" },
+                            { "sName": "NUM_FAC", "mData": "NUM_FAC" },
+                            { "sName": "TOTAL", "mData": "TOTAL" }
+                    ],
+                    dom: 'Bfrtip',
+                    buttons: [
+                    {
+                        extend: 'excelHtml5',
+                        title: 'Bataclub_xls'
+                    },
+                    {
+                        extend: 'csvHtml5',
+                        title: 'BataClub_csv'
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        title: 'BataClub_pdf'
+                    },
+                    'copyHtml5',
+                    ]
+                });
+
+                waitingDialog.hide();
+
+                /***************************************************/
+                //if (data != '' && data != '[]') {
+                //    var valors = JSON.parse(data);
+                //    console.log(valors);
+
+                //    $.makeTable = function (mydata) {
+                //        var table = $('<table border="1" rules="all" cellspacing="1" class="table table-hover dataTable  table-striped table-responsive" style="border-collapse: collapse;" >');
+                //        var tblHeader = "<tr style='background-color:#3d566e; color:#ecf0f1'>";
+                //        for (var k in mydata[0]) tblHeader += "<th '>" + k + "</th>";
+                //        console.log(tblHeader);
+                //        tblHeader += "</tr>";
+                //        $(tblHeader).appendTo(table);
+                //        $.each(mydata, function (index, value) {
+                //            var TableRow = "<tr>";
+                //            $.each(value, function (key, val) {
+                //                TableRow += "<td >" + val + "</td>";
+                //            });
+                //            TableRow += "</tr>";
+                //            $(table).append(TableRow);
+                //        });
+                //        console.log($(table)[0].outerHTML);
+                //        return ($(table)[0].outerHTML);
+                //        //  return ($(table));
+                //    };
+
+                //    //nuevo
+                //    var mydata = eval(valors);
+                //    var tableDet = $.makeTable(mydata);
+                //    //  $(table).appendTo("#TableCont");
+                //    var descfecha = '<br>' + 'Fecha: ' + fecha_des + ''
+                //    var descTienda = 'Detalle Tienda: ' + tienda_origen.substring(2, tienda_origen.length) + '' + descfecha
+
+                //    var strhtml = ''
+                //    strhtml += '<div class="modal-header modal-header-primary" style="margin-top:0px;margin-bottom:0px;padding-top:2px;padding-bottom:2px;">'
+                //    strhtml += '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
+                //    strhtml += '<h5 class="modal-title" id="myModalLabel">'
+                //    strhtml += '<table style="border-bottom:0px;font-size:14px;width:50%;">'
+                //    strhtml += '<tr>'
+                //    strhtml += '<td style="font-weight: bold;font-size:14px;width:100%;text-align:left;">' + descTienda + '</td>'
+                //    strhtml += '</tr>'
+                //    strhtml += '</table id="tableModal">'
+                //    strhtml += '</h5>'
+                //    strhtml += '</div>'
+                //    strhtml += '<div class="modal-body">'
+                //    strhtml += '<div class="" style="margin-bottom: 30px;">' + tableDet + '</div>'
+                //    strhtml += '</div>'
+                //    strhtml += '<div class="modal-footer" style="margin-top:-30px">'
+                //    strhtml += '<button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>'
+                //    strhtml += '</div>'
+                //    var options = { "backdrop": "static", keyboard: true };
+
+                //    $('#myModalContent').html(strhtml);
+                //    $('#myModal').modal(options);
+                //    $('#myModal').modal('show');
+                //}
+                //else {
+                //    alert("No hay datos que mostrar.");
+                //}
+                //waitingDialog.hide();
+
+            },
+            error: function () {
+                waitingDialog.hide();
+                alert('Error')
+            }
+
+        });
+
+    }
+
+</script>

@@ -59,6 +59,7 @@
     <Compile Include="Maestros\Ent_TipoTienda.cs" />
     <Compile Include="ReportsValeCompra\Reporte_Resultado.cs" />
     <Compile Include="ReportsValeCompra\Reporte_Filtro.cs" />
+    <Compile Include="Soporte\Ent_Documento_Transac.cs" />
     <Compile Include="Soporte\Ent_Tienda_Config.cs" />
     <Compile Include="Transac\Ent_Analisis_Mov.cs" />
     <Compile Include="Transac\Ent_Consultar_Guia.cs" />
