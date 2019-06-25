@@ -212,10 +212,29 @@ namespace CapaPresentacion.Controllers
 
             //Manejador de orden
             var sortIdx = Convert.ToInt32(Request["iSortCol_0"]);
-
+            Func<Ent_Documento_TransacDoc, string> orderingFunction =
+          (
+          m => sortIdx == 0 ? m.NUM_FAC :
+           m.NUM_FAC
+          );
+            if (!string.IsNullOrEmpty(param.sSearch))
+            {
+                filteredMembers = membercol
+                    .Where(m => m.NUM_FAC.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                     m.TIPO_DOC.ToUpper().Contains(param.sSearch.ToUpper()));
+            }
+            var sortDirection = Request["sSortDir_0"];
+            if (sortDirection == "desc")
+                filteredMembers = filteredMembers.OrderBy(orderingFunction);
+            else
+                filteredMembers = filteredMembers.OrderByDescending(orderingFunction);
             var displayMembers = filteredMembers
                 .Skip(param.iDisplayStart)
                 .Take(param.iDisplayLength);
+
+            //var displayMembers = filteredMembers
+            //    .Skip(param.iDisplayStart)
+            //    .Take(param.iDisplayLength);
 
             var result = from a in displayMembers
                          select new
