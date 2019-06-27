@@ -146,13 +146,15 @@
                 message += "<br>";
             cadena += $(this).attr("id") + ",";
         });
-
-        if (cadena = null || cadena == "") {
+        console.log(cadena);
+        if (cadena == null || cadena == "") {
             toastr.error("Por favor seleccione al menos un paquete para su envío.", msg_titulo);
             return false;
         }
+        else
+         {
         document.getElementById("hidden_chk").value = cadena;
-
+       // e.preventDefault();
         bootbox.confirm({
             message: message,
             buttons: {
@@ -166,38 +168,42 @@
                 }
             },
             callback: function (result) {
-                console.log(result);
+               console.log(result);
                 if (result) {
-                    Guardar(cadena)
+                    Guardar(cadena)        
                 }
             }
         });
+
+         }
+
     }
 
     function Guardar(cadena) {
-       // waitingDialog.show('Espere un momento por favor');
+        //waitingDialog.show('Espere un momento por favor');
         var ControllerUrl = "@Url.Action("Envio_chk", "Soporte")";
-        var msg_titulo = 'Mensaje ';
+        var msg_titulo = 'Mensaje';
         $.ajax({
             type: "POST",
             url: ControllerUrl,
           //  contentType: "application/json; charset=utf-8",
             data: { cadena: cadena },
             datatype: "json",
-            success: function (data,textStatus, XMLHttpRequest) {
+            success: function (data) {
+                console.log(data);
                 if (data = "1") {
-                    toastr.success("Se realizó exitosamente el envío de paquetes.", msg_titulo);
+                    toastr.success("Se realizó exitosamente el envío de paquetes.", msg_titulo);           
                 }
                 else {
                     toastr.error("No se pudo realizar el envío de paquetes. " + data, msg_titulo);
                 }
-              //  waitingDialog.hide();
+               
             },
             error: function (xhr) {
-             //   waitingDialog.hide();
                 toastr.error(xhr, msg_titulo);
             }
         });
+
     }
 
     function MostrarListado() {

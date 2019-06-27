@@ -259,14 +259,14 @@ namespace CapaPresentacion.Controllers
         //Envío de paquetes
         public string Envio_chk(string cadena)
         {
-            string strJson = "";
+            string str = "";
             //  JsonResult jRespuesta = null;
             Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
-            strJson = datGuia.Envio_chk(cadena, _usuario.usu_id);
-            var serializer = new JavaScriptSerializer();
+            str = datGuia.Envio_chk(cadena, _usuario.usu_id);
+           // var serializer = new JavaScriptSerializer();
             //jRespuesta = Json(serializer.Deserialize<List<Ent_Documento_TransacDoc>>(strJson), JsonRequestBehavior.AllowGet);
 
-            return strJson;
+            return str;
         }
 
         #endregion
