@@ -21,7 +21,7 @@ namespace CapaDato.CanalVenta
                 //Ent_Conexion.conexion = "Server=192.168.1.242;Database=BDPOS;User ID=sa;Password=1;Trusted_Connection=False;";
                 using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
                 {
-                   // if (cn.State == 0) cn.Open();
+                   if (cn.State == 0) cn.Open();
                     using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
                     {
                         cmd.CommandTimeout = 0;
@@ -37,6 +37,33 @@ namespace CapaDato.CanalVenta
             }
             return origenes;
         }
+
+        public DataTable get_estados_cv()
+        {
+            string sqlquery = "[usp_get_estados_cv]";
+            DataTable origenes = new DataTable();
+            try
+            {
+                //Ent_Conexion.conexion = "Server=192.168.1.242;Database=BDPOS;User ID=sa;Password=1;Trusted_Connection=False;";
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+                    if (cn.State == 0) cn.Open();
+                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        SqlDataAdapter da = new SqlDataAdapter(cmd);
+                        da.Fill(origenes);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                origenes = null;
+            }
+            return origenes;
+        }
+
 
         public int insertar_historial_estados_cv(Ent_HistorialEstadosCV historial)
         {
@@ -57,9 +84,10 @@ namespace CapaDato.CanalVenta
                         cmd.Parameters.AddWithValue("@descripcion", historial.descripcion );
                         cmd.Parameters.AddWithValue("@cod_usuario", historial.cod_usuario );
                         cmd.Parameters.AddWithValue("@cod_vendedor", historial.cod_vendedor);
+                        cmd.Parameters.AddWithValue("@cod_tda", historial.cod_tda);
+                        cmd.Parameters.AddWithValue("@serie_numero", historial.serieNumero);
                         f = cmd.ExecuteNonQuery();
                     }
-
                 }
             }catch (Exception ex)
             {
@@ -180,6 +208,8 @@ namespace CapaDato.CanalVenta
                             DataTable dtC = ds.Tables[0];
                             DataTable dtD = ds.Tables[1];
                             DataTable dtH = ds.Tables[2];
+                            DataTable dtIC = ds.Tables[3];
+                            DataTable dtID = ds.Tables[4];
                             ven = new Ent_VentaCanal();
                             ven.cod_entid = dtC.Rows[0]["COD_ENTID"].ToString();
                             ven.serieNumero = dtC.Rows[0]["FC_SFAC"].ToString() + "-" + dtC.Rows[0]["FC_NFAC"].ToString();
@@ -245,6 +275,36 @@ namespace CapaDato.CanalVenta
                                 _hist.nomVendedor = item["v_nomb"].ToString();
                                 listHist.Add(_hist);
                             }
+                            if (dtIC.Rows.Count > 0)
+                            {
+                                Ent_Informacion_Tienda_envio ic = new Ent_Informacion_Tienda_envio();
+                                ic.id = Convert.ToInt32(dtIC.Rows[0]["id"]);
+                                ic.cod_entid = dtIC.Rows[0]["cod_entid"].ToString();
+                                ic.courier = dtIC.Rows[0]["courier"].ToString();
+                                ic.cx_nroDocProveedor = dtIC.Rows[0]["cx_nroDocProveedor"].ToString();
+                                ic.cx_codTipoDocProveedor = dtIC.Rows[0]["cx_codTipoDocProveedor"].ToString();
+                                ic.cx_codDireccionProveedor = dtIC.Rows[0]["cx_codDireccionProveedor"].ToString();
+                                ic.cx_codCliente = dtIC.Rows[0]["cx_codCliente"].ToString();
+                                ic.cx_codCtaCliente = dtIC.Rows[0]["cx_codCtaCliente"].ToString();
+                                ic.id_usuario = dtIC.Rows[0]["id_usuario"].ToString();
+                                ic.de_terminal = dtIC.Rows[0]["de_terminal"].ToString();
+                                ven.informacionTiendaEnvio = ic;
+                            }
+
+                            if (dtID.Rows.Count > 0)
+                            {
+                                Ent_Informacion_Tienda_Destinatario id = new Ent_Informacion_Tienda_Destinatario();
+                                id.id = Convert.ToInt32(dtID.Rows[0]["id"]);
+                                id.nroDocumento = dtID.Rows[0]["nroDocumento"].ToString();
+                                id.email = dtID.Rows[0]["email"].ToString();
+                                id.referencia = dtID.Rows[0]["referencia"].ToString();
+                                id.telefono = dtID.Rows[0]["telefono"].ToString();
+                                id.direccion_entrega = dtID.Rows[0]["direccion_entrega"].ToString();
+                                id.cod_entid = dtID.Rows[0]["cod_entid"].ToString();
+                                ven.informacionTiendaDestinatario = id;
+                            }
+
+
                             ven.historialEstados = listHist;
                         }
                     }

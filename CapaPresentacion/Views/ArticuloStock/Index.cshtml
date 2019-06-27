@@ -99,6 +99,14 @@
 
                 </div>
             </div>
+            @*sostic 06/2019*@
+            <div class="col-sm-3">
+                <label for="">Multicanalidad</label>
+                <div class="form-group">
+                    <input type="checkbox" value="1" name="multicanalidad" id="multicanalidad" />
+                </div>
+            </div>
+            @*sostic 06/2019*@
             <div class="col-sm-2">
                 <label></label><br />
                 <button  type="submit" title="Consultar" class="btn btn-primary">
@@ -367,6 +375,13 @@
         var codtalla = $('#txtTalla').val();
         var coddist_b = $("#dwDistri").val();
 
+        /*sostic 06/2019*/
+        var multicanalidad = 0;
+        if ($('#multicanalidad').is(":checked")) {
+            multicanalidad = 1;
+        }
+        /*sostic 06/2019*/
+
         codArticulo = codArticulo.replace(/^\s+|\s+$/g, "")
         codtalla = codtalla.replace(/^\s+|\s+$/g, "")
 
@@ -387,7 +402,7 @@
             type: "GET",
             url: ControllerUrl,
             contentType: "application/json; charset=utf-8",
-            data: { codArticulo: codArticulo, CodDpto: CodDepartamento, CodPrv: Codprovincia, CodDist: CodDistrito, codTalla: codtalla, coddist_b: coddist_b },
+            data: { codArticulo: codArticulo, CodDpto: CodDepartamento, CodPrv: Codprovincia, CodDist: CodDistrito, codTalla: codtalla, coddist_b: coddist_b,/*sostic 06/2019*/ multicanalidad: multicanalidad },
             datatype: "json",
             cache: true,
             success: function (data) {

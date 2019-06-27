@@ -254,6 +254,13 @@
     <Compile Include="AspNetForms\ArticuloSinMov.aspx.designer.cs">
       <DependentUpon>ArticuloSinMov.aspx</DependentUpon>
     </Compile>
+    <Compile Include="AspNetForms\CanalVenta.aspx.cs">
+      <DependentUpon>CanalVenta.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AspNetForms\CanalVenta.aspx.designer.cs">
+      <DependentUpon>CanalVenta.aspx</DependentUpon>
+    </Compile>
     <Compile Include="AspNetForms\ReporteObs.aspx.cs">
       <DependentUpon>ReporteObs.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -402,6 +409,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AspNetForms\ArticuloSinMov.aspx" />
+    <Content Include="AspNetForms\CanalVenta.aspx" />
     <Content Include="AspNetForms\ReporteObs.aspx" />
     <Content Include="AspNetForms\RendimientoxCateg.aspx" />
     <Content Include="AspNetForms\Vendedor.aspx" />
@@ -1426,6 +1434,7 @@
     <Content Include="Views\Soporte\Envio.cshtml" />
     <Content Include="Views\Soporte\_envioTable.cshtml" />
     <Content Include="Views\Soporte\_popUpDetalle.cshtml" />
+    <Content Include="Views\CanalVenta\ListaVentas.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

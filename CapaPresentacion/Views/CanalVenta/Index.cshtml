@@ -1,7 +1,261 @@
-﻿
-@{
-    ViewBag.Title = "Index";
+﻿@using CapaEntidad.Util;
+
+@{AjaxOptions options = new AjaxOptions
+    {
+        HttpMethod = "GET",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "lista",
+        OnComplete = "waitingDialog.hide();",
+        OnBegin = "waitingDialog.show('Espere un momento por favor');",
+        OnFailure = "waitingDialog.hide();"
+    };
 }
 
-<h2>Index</h2>
+<link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />
 
+@model IEnumerable<CapaPresentacion.Models.CanalVenta.CanalVenta>
+@{
+    ViewBag.Title = "Consulta de canal de ventas";
+}
+
+<style>
+    iframe {
+        border: none;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        height: 800px;
+    }
+</style>
+<div class="box box-body box-primary">
+    @using (Ajax.BeginForm("ListaVentas", options))
+    {  
+        <div class="row">
+            <div class="col-md-12">
+                <button name="buscar" class="btn btn-primary" onclick="SetearParametros();" type="submit"><span class="glyphicon glyphicon-search"></span>&nbsp;Buscar</button>
+                <button type="button" class="btn btn-info" onclick="javascript: MostrarReporte()"><span class="glyphicon glyphicon-th-list"></span>&nbsp;Ver Reporte</button>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="tiendaOrigen">Tienda Origen:</label>
+                            @Html.DropDownList("tiendaOrigen", (List<SelectListItem>)ViewBag._SelectOrigen, new { @class = "form-control selectpicker", @id = "tiendaOrigen", @data_live_search = "true" , @name = "tiendaOrigen", @onchange = "cargarDestinos();" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="tiendaDestino">Tienda Destino:</label>
+                            @Html.DropDownList("tiendaDestino", (List<SelectListItem>)ViewBag._SelectDestino, new { @class = "form-control selectpicker", @data_live_search = "true", @id = "tiendaDestino" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="fdesde">Desde:</label>
+                            <input type="text" name="fdesde" class="form-control datepicker" value="@ViewBag._fdesde" id="fdesde">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="fhasta">Hasta:</label>
+                            <input type="text" name="fhasta" class="form-control datepicker" value="@ViewBag._fhasta" id="fhasta">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="tipo">Tipo:</label>
+                            @Html.DropDownList("tipo", (List<SelectListItem>)ViewBag._selectTipos, new { @class = "form-control selectpicker tipo", @data_live_search = "true", @id = "tipo", @multiple = "" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="estado">Estado</label>
+                            @Html.DropDownList("estado", (List<SelectListItem>)ViewBag._selectEstados, new { @class = "form-control selectpicker estado", @data_live_search = "true", @id = "estado", @multiple = "" })
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group ">
+                    <label>Cliente:</label>
+                    <input type="text" placeholder="No. Documento : 12345678" name="noDocCli" id="noDocCli" class="form-control" value="@ViewBag._noDocCli" />
+                    <!--input type="text" placeholder="Raz. Social o Nombres y Apellidos" name="noDocumento" id="noDocumento" class="form-control" /-->
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label>No Documento:</label>
+                <input type="text" placeholder="Serie-Número:  B123-87654321" name="noDoc" id="noDoc" class="form-control" value="@ViewBag._noDoc" />
+            </div>
+        </div>
+
+    }
+    <div class="row">
+        <div class="col-md-12" id="lista">
+            @{Html.RenderPartial("ListaVentas", Model);}
+        </div>
+    </div>
+</div>
+<!-- Modal reporte -->
+<div class="modal fade" id="modalReporte" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Reporte de canal de Ventas</h4>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <div id="ifrReporte" class="well" style="width: 100%; height: 800px;">
+                        <iframe id="load" src="" frameborder="0" marginheight="1" marginwidth="1" scrolling="auto" onload="javascript: waitingDialog.hide();" style="zoom:90%"></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/bootstrap-select.min.js"></script>
+<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+<script>
+
+    $(document).ready(function () {
+        $('.datepicker').datepicker({
+            format: "dd/mm/yyyy",
+            startDate: "01/04/2019",
+            autoclose: true
+        });
+        $('.select2').select2();
+    });
+    function cargarDestinos() {
+        var tiendaOrigen = $("#tiendaOrigen option:selected").val();
+        $.ajax({
+            type: "POST",                                              // tipo de request que estamos generando
+            url: 'GetDestinosJson',                    // URL al que vamos a hacer el pedido
+            data: '{ "tiendaOrigen": "' + tiendaOrigen + '" }',                                                // data es un arreglo JSON que contiene los parámetros que
+            // van a ser recibidos por la función del servidor
+            contentType: "application/json; charset=utf-8",            // tipo de contenido
+            dataType: "json",                                          // formato de transmición de datos
+            async: true,                                               // si es asincrónico o no
+            success: function (resultado) {                            // función que va a ejecutar si el pedido fue exitoso
+                console.log(resultado);
+                $('#tiendaDestino').html(ParseJSONSelectList(resultado));
+                //var num = resultado.d;
+                //$('#lblResultado').text('Número aleatorio es ' + num);
+                //alert(num)
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) { // función que va a ejecutar si hubo algún tipo de error en el pedido
+                var error = eval("(" + XMLHttpRequest.responseText + ")");
+                alert(error.Message);
+            }
+        });
+    }
+    function ParseJSONSelectList(JSONData) {
+        var html = ''; //'<option value="-1" Selected>TODOS</option>';
+        var len = JSONData.length;
+        for (var i = 0; i < len; i++) {
+            html += '<option value="' + JSONData[i].Value + '"' + (JSONData[i].Selected == true ? ' Selected ' : '') + '>' + JSONData[i].Text + '</option>';
+        }
+        return html;
+    }
+    function MostrarReporte(e) {
+        var fdesde = $("#fdesde").val();
+        var fhasta = $("#fhasta").val();
+        var noDocCli = $("#noDocCli").val();
+        var noDoc = $("#noDoc").val();
+        var tiendaOrigen = $("#tiendaOrigen").val();
+        var tiendaDestino = $("#tiendaDestino").val();
+        var estado = [];
+        var tipo = [];
+
+        $("#estado option:selected").each(function () {
+            estado.push($(this).val());
+        });
+        $("#tipo option:selected").each(function () {
+            tipo.push($(this).val());
+        });
+        waitingDialog.show('Espere un momento por favor');
+        $.ajax({
+            //url: GLB_RUT_APP_REPVENR + "?tda=" + tda + "&grupo=" + grupo + "&cate=" + cate + "&subcate=" + sbCate + "&estado=" + Estado,
+            url: '@Url.Action("ReporteView", "CanalVenta")',// '../ReporteCrystal/ShowGenericReportInNewWin',
+            dataType: 'json',
+            type: 'POST',
+            //dataType: "html",
+            data: {
+                fdesde: fdesde,
+                fhasta: fhasta,
+                noDocCli: noDocCli,
+                noDoc: noDoc,
+                tiendaOrigen: tiendaOrigen,
+                tiendaDestino: tiendaDestino,
+                estado: estado,
+                tipo: tipo
+            },
+            //cache: false,
+            //async: false,
+            //dataType: "html",
+            success: function (data) {
+                //alert('ok');
+                if (data.estado == "1") {                    
+                    $('#load').show();
+                    $("#load").attr("src", "../AspNetForms/CanalVenta.aspx");                    
+                    $("#modalReporte").modal();
+                }
+                else {
+                    $('#load').hide();
+                    waitingDialog.hide();
+                    toastr.error('Hubo un error en el reporte', "Alerta")
+                }
+                //document.getElementById("ifrReporte").innerHTML = data;
+                //waitingDialog.hide();
+                return false;
+            },
+            error: function (request, status, error) {
+                waitingDialog.hide();
+            }
+        }).done(function () {
+            
+        });
+    }
+    function SetearParametros(e) {
+        var _vtA = $('select[name="tiendaOrigen"] option:selected').text();
+        var _vtB = $('select[name="tiendaDestino"] option:selected').text();
+
+        var _A_vtEstados = [];
+        $("#estado option:selected").each(function () {
+            console.log("each. " + $(this).text());
+            _A_vtEstados.push($(this).text());
+        });
+        console.log(_A_vtEstados);
+        var _vtEstados = _A_vtEstados.join();
+
+        var _A_tipos = [];
+        $("#tipo option:selected").each(function () {
+            _A_tipos.push($(this).text());
+        });
+        var _vtTipos = _A_tipos.join();
+
+        $("#vtA").val(_vtA);
+        $("#vtB").val(_vtB);
+        $("#vtEstados").val(_vtEstados);
+        $("#vtTipos").val(_vtTipos);
+
+
+    }
+</script>

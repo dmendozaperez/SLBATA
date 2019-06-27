@@ -12,7 +12,7 @@ namespace CapaPresentacion.Models.CanalVenta
         public string serieNumero { get; set; }
         public string tiendaOrigen { get; set; }
         public string tiendaDestino { get; set; }
-        public DateTime fechaVenta { get; set; }
+        public string fechaVenta { get; set; }
         public string tipo { get; set; }
         public string estado { get; set; }
         public string cliente { get; set; }
@@ -43,6 +43,8 @@ namespace CapaPresentacion.Models.CanalVenta
         public string telefonoCliente { get; set; }
         public List<DetallesCanalVenta> detalles { get; set; }
         public List<HistorialEstadosCV> historialEstados { get; set; }
+        public Informacion_Tienda_envio informacionTiendaEnvio { get; set; }
+        public Informacion_Tienda_Destinatario informacionTiendaDestinatario { get; set; }
     }
     public class DetallesCanalVenta
     {
@@ -79,4 +81,29 @@ namespace CapaPresentacion.Models.CanalVenta
         public string referencia { get; set; }
         public string ubigeo { get; set; }        
     }
+    public class Informacion_Tienda_envio
+    {
+        public int id { get; set; }
+        public string cod_entid { get; set; }
+        public string courier { get; set; } = "";
+        public string cx_nroDocProveedor { get; set; }
+        public string cx_codTipoDocProveedor { get; set; }
+        public string cx_codDireccionProveedor { get; set; }
+        public string cx_codCliente { get; set; }
+        public string cx_codCtaCliente { get; set; }
+        public string id_usuario { get; set; }
+        public string de_terminal { get; set; }
+    }
+
+    public class Informacion_Tienda_Destinatario
+    {
+        public int id { get; set; }
+        public string cod_entid { get; set; }
+        public string direccion_entrega { get; set; }
+        public string referencia { get; set; }
+        public string telefono { get; set; }
+        public string email { get; set; }
+        public string nroDocumento { get; set; }
+    }
+
 }
