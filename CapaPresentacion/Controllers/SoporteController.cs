@@ -20,8 +20,8 @@ namespace CapaPresentacion.Controllers
         Dat_Tienda_Config tiendaconfig = new Dat_Tienda_Config();
 
         private Dat_Documento_Transac datGuia = new Dat_Documento_Transac(); //gft
-        private string _session_listguia_private = "_session_listguia_private"; //gft
-        private string _session_detalle_private = "_session_detalle_private"; //gft
+        private string _session_doc_transac_private = "_session_doc_transac_private"; //gft
+        private string _session_doc_transac_doc_private = "_session_doc_transac_doc_private"; //gft
         private Dat_Combo tienda = new Dat_Combo();//gft
 
         // GET: Soporte
@@ -124,7 +124,7 @@ namespace CapaPresentacion.Controllers
         public List<Ent_Documento_Transac> listaGuia(string cod_entid, DateTime fec_ini, DateTime fec_fin)
         {
             List<Ent_Documento_Transac> listguia = datGuia.get_lista(cod_entid, fec_ini, fec_fin);
-            Session[_session_listguia_private] = listguia;
+            Session[_session_doc_transac_private] = listguia;
             return listguia;
         }
 
@@ -137,14 +137,14 @@ namespace CapaPresentacion.Controllers
         public ActionResult getGuiaAjax(Ent_jQueryDataTableParams param)
         {
             /*verificar si esta null*/
-            if (Session[_session_listguia_private] == null)
+            if (Session[_session_doc_transac_private] == null)
             {
                 List<Ent_Documento_Transac> listdoc = new List<Ent_Documento_Transac>();
-                Session[_session_listguia_private] = listdoc;
+                Session[_session_doc_transac_private] = listdoc;
             }
 
             //Traer registros
-            IQueryable<Ent_Documento_Transac> membercol = ((List<Ent_Documento_Transac>)(Session[_session_listguia_private])).AsQueryable();  
+            IQueryable<Ent_Documento_Transac> membercol = ((List<Ent_Documento_Transac>)(Session[_session_doc_transac_private])).AsQueryable();  
 
             //Manejador de filtros
             int totalCount = membercol.Count();
@@ -184,7 +184,7 @@ namespace CapaPresentacion.Controllers
         public List<Ent_Documento_TransacDoc> listarStr_Detalle(string codTienda, string fecha_des)
         {
             List<Ent_Documento_TransacDoc> listguia = datGuia.listarStr_Detalle_Pop(codTienda, Convert.ToDateTime(fecha_des));
-            Session[_session_detalle_private] = listguia;
+            Session[_session_doc_transac_doc_private] = listguia;
             return listguia;
         }
 
@@ -196,14 +196,14 @@ namespace CapaPresentacion.Controllers
         public ActionResult getDetalleAjax(Ent_jQueryDataTableParams param)
         {
             /*verificar si esta null*/
-            if (Session[_session_detalle_private] == null)
+            if (Session[_session_doc_transac_doc_private] == null)
             {
                 List<Ent_Documento_TransacDoc> listdoc = new List<Ent_Documento_TransacDoc>();
-                Session[_session_detalle_private] = listdoc;
+                Session[_session_doc_transac_doc_private] = listdoc;
             }
 
             //Traer registros
-            IQueryable<Ent_Documento_TransacDoc> membercol = ((List<Ent_Documento_TransacDoc>)(Session[_session_detalle_private])).AsQueryable();
+            IQueryable<Ent_Documento_TransacDoc> membercol = ((List<Ent_Documento_TransacDoc>)(Session[_session_doc_transac_doc_private])).AsQueryable();
 
             //Manejador de filtros
             int totalCount = membercol.Count();
@@ -242,7 +242,8 @@ namespace CapaPresentacion.Controllers
                              a.TIPO_DOC,
                              a.NUM_FAC,
                              a.SERIE,
-                             a.TOTAL
+                             a.TOTAL,
+                             a.ESTADO
                          };
 
             //Se devuelven los resultados por json
