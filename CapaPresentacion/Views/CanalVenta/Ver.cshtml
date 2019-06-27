@@ -32,34 +32,19 @@
                     swal("Ingrese el campo descripción por favor.", {
                         icon: "info",
                     });
-                } else if (tienda != '' && (vendedor == null || vendedor === '') ) {
+                } else if ( (vendedor == null || vendedor === '') ) {
                     swal("Seleccione vendedor por favor.", {
                         icon: "info",
                     });
                 }
-
                 else {
                     waitingDialog.show('Espere un momento por favor');
-                    if (estado == 'aceptado') {
-                        var form = $("#frmActualizarEstado");
-                        form.attr("action", "@Url.Action("ActualizarAcepado", "CanalVenta")");
-                        form.submit();
-                    } else if(estado == 'rechazado') {
-                        var form = $("#frmActualizarEstado");
-                        form.attr("action", "@Url.Action("ActualizarRechazado", "CanalVenta")");
-                        form.submit();
-                    } else if (estado == 'delivery') {
-                        var form = $("#frmActualizarEstado");
-                        form.attr("action", "@Url.Action("ActualizarDelivery", "CanalVenta")");
-                        form.submit();
-                    } else if (estado == 'recepcionado') {
-                        var form = $("#frmActualizarEstado");
-                        form.attr("action", "@Url.Action("ActualizarRecepcionado", "CanalVenta")");
-                        form.submit();
-                    }
+                    $("#estado").val(estado);
+                    var form = $("#frmActualizarEstado");
+                    form.submit();
                 }
             }
-        });        
+        });
     }
 </script>
 <div class="row">
@@ -91,7 +76,7 @@
                         {
                             <li><label>Tipo: </label> @Model.tipoComprobante</li>
                         }
-                        <li><label>Fecha y Hora: </label> @Model.fechaVenta.ToString("dd/MM/yyyy")  @Model.hora</li>
+                        <li><label>Fecha y Hora: </label> @Model.fechaVenta  @Model.hora</li>
                     </ul>
                 </li>
             </ul>
@@ -131,7 +116,7 @@
                 <h4>Datos de la entrega del producto:</h4>
                 <ul>
                     <li>
-                        <label>Servicio: <b>Comercio XPress</b></label>
+                        <label>Servicio: <b>@(Model.informacionTiendaEnvio == null ? "" : Model.informacionTiendaEnvio.courier ) </b></label>
                     </li>
                     <li>
                         <label>Codigo Guia Electronica :&nbsp;&nbsp;</label><a title="Imprimir codigo de barras." onclick="" href="@Url.Action("ImprimirCodigo", new { id = Model.serieNumero, fc_nint = Model.fc_nint, tienda = Model.cod_entid })"><b>@Model.guia_electronica</b></a>
@@ -187,13 +172,11 @@
     <div class="col-md-4">
         <div class="box box-body box-primary">
             <h4>Informacion del estado</h4>
-            @using (Html.BeginForm("", "CanalVenta", FormMethod.Post, new { @id = "frmActualizarEstado" }))
+            @using (Html.BeginForm("ActualizarEstado", "CanalVenta", FormMethod.Post, new { @id = "frmActualizarEstado" }))
             {
                 @Html.Hidden("cod_entid", Model.cod_entid);
                 @Html.Hidden("fc_nint", Model.fc_nint);
-                @Html.Hidden("id", Model.serieNumero);
-
-
+                @Html.Hidden("serie_numero", Model.serieNumero);
                 <ul class="list-group">
                     <li class="list-group-item list-group-item-@Model.colorEstado">
                         <span class="float-left">Estado Actual:</span>&nbsp;&nbsp;<span class="label label-@Model.colorEstado">@Model.nombreEstado</span>
@@ -205,20 +188,26 @@
                                     <label>Cambiar estado: </label>
                                 </div>
                                 <div class="col-md-12">
-                                    @if ((Model.estado == "004" || Model.estado == "005") && ((Session["Tienda"] == null || (Session["Tienda"] != null && Session["Tienda"].ToString() == Model.cod_entid_b && Model.tipo == "2" )) || (Session["Tienda"] == null || (Session["Tienda"] != null && Session["Tienda"].ToString() == Model.cod_entid && Model.tipo == "1"))))
+                                    @if ((Model.estado == "004" || Model.estado == "005" || Model.estado == "006" ) && ((Session["Tienda"] == null || (Session["Tienda"] != null && Session["Tienda"].ToString() == Model.cod_entid_b && (Model.tipo == "2" || Model.tipo == "3") )) || (Session["Tienda"] == null || (Session["Tienda"] != null && Session["Tienda"].ToString() == Model.cod_entid && (Model.tipo == "1" || Model.tipo == "3")))))
                                     {
-                                        <button type="button" class="btn btn-sm btn-success" onclick="setEstado('aceptado');"><span class="glyphicon glyphicon-ok-sign"></span> Entregado</button>
-                                        <button type="button" class="btn btn-sm btn-danger" onclick="setEstado('rechazado');"><span class="glyphicon glyphicon-exclamation-sign"></span> Rechazado</button>
-
+                                        <button style="margin-bottom: 5px;" type="button" class="btn btn-sm btn-danger" onclick="setEstado('003');"><span class="glyphicon glyphicon-exclamation-sign"></span>&nbsp;Rechazado</button>
                                     }
-                                    @if (Model.estado == "004" && Model.tipo != "2")
+                                    @if (((Model.estado == "004" && Model.tipo == "2") || (Model.estado == "006" && Model.tipo == "1") || (Model.estado == "005" && Model.tipo == "3")) && ((Session["Tienda"] == null || (Session["Tienda"] != null && Session["Tienda"].ToString() == Model.cod_entid_b && (Model.tipo == "2"))) || (Session["Tienda"] == null || (Session["Tienda"] != null && Session["Tienda"].ToString() == Model.cod_entid && (Model.tipo == "1" || Model.tipo == "3")))))
                                     {
-                                        <button type="button" class="btn btn-sm btn-info" onclick="setEstado('delivery');"><span class="glyphicon glyphicon-send"></span> Delivery</button>
+                                        <button style="margin-bottom: 5px;" type="button" class="btn btn-sm btn-success" onclick="setEstado('002');"><span class="glyphicon glyphicon-ok-sign"></span>&nbsp;Entregado</button>
+                                    }
+                                    @if (Model.estado == "005" && Model.tipo == "1" && (((Session["Tienda"] == null || (Session["Tienda"] != null && Session["Tienda"].ToString() == Model.cod_entid)))))
+                                    {
+                                        <button style="margin-bottom: 5px;" type="button" class="btn btn-sm btn-primary" onclick="setEstado('006');"><span class="glyphicon glyphicon-send"></span>&nbsp;Delivery Entregado</button>
+                                    }
+                                    @if (Model.estado == "004" && Model.tipo != "2" && (Session["Tienda"] == null || (Session["Tienda"] != null && Session["Tienda"].ToString() == Model.cod_entid_b)))
+                                    {
+                                        <button style="margin-bottom: 5px;" type="button" class="btn btn-sm btn-info" onclick="setEstado('005');"><span class="glyphicon glyphicon-send"></span>&nbsp;Delivery Despachado</button>
                                     }
                                     <!--validar si la venta compete a la tienda de destino-->
                                     @if (Model.estado == "001" && (Session["Tienda"] == null || (Session["Tienda"] != null && Session["Tienda"].ToString() == Model.cod_entid_b )))
                                     {
-                                        <button type="button" class="btn btn-sm btn-warning" onclick="setEstado('recepcionado');"><span class="glyphicon glyphicon-check"></span> Recepcionado</button>
+                                        <button style="margin-bottom: 5px;" type="button" class="btn btn-sm btn-warning" onclick="setEstado('004');"><span class="glyphicon glyphicon-check"></span>&nbsp;Recepcionado</button>
                                     }
                                 </div>
                                 <div class="col-md-12">
@@ -226,15 +215,12 @@
                                     @Html.TextArea("descripcion", new { @class = "form-control", @id = "descripcion" })
                                 </div>
                             </div>
-                        </li>
-                        @if (Session["Tienda"] != null )
-                        {
+                        </li>                        
                             <li class="list-group-item">
                                 Vendedor:
                                 @Html.DropDownList("vendedor", (List<SelectListItem>)ViewBag._SelectVendedor, new { @class = "form-control select2", @id = "vendedor" })
-                            </li>
-                        }
-                    
+                                @Html.Hidden("estado",null,new { @id = "estado" })
+                            </li>                    
                 </ul>
             }
         </div>
@@ -254,8 +240,8 @@
                 </thead>
                 <tbody data-bind="foreach:">
                     <tr>
-                        <td><span class="label label-primary">FACTURADO</span></td>
-                        <td>@Model.fechaVenta.ToString("dd/MM/yyyy") @Model.hora</td>
+                        <td><span class="label label-default">FACTURADO</span></td>
+                        <td>@Model.fechaVenta @Model.hora</td>
                         <td>@Model.tiendaOrigen</td>
                         <td>@Model.idVendedor - @Model.nomVendedor</td>
                         <td>Facturado desde la tienda de origen.</td>

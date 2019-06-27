@@ -1,0 +1,106 @@
+﻿<link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+<style type="text/css">
+    .dt-buttons {
+        display: none;
+    }
+</style>
+<table class="table table-hover table-striped table-responsive">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Fecha</th>
+            <th>Origen(A)</th>
+            <th>Destino(B)</th>
+            <th>Tipo</th>
+            <th>Estado</th>
+            <th>Cliente</th>
+            <th>Total</th>
+            <th>Detalles</th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach:"></tbody>
+    <tfoot>
+        <tr>
+            <th>Id</th>
+            <th>Fecha</th>
+            <th>Origen(A)</th>
+            <th>Destino(B)</th>
+            <th>Tipo</th>
+            <th>Estado</th>
+            <th>Cliente</th>
+            <th>Total</th>
+            <th>Detalles</th>
+        </tr>
+    </tfoot>
+</table>
+
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('.table').DataTable({
+            "language": {
+                "url": "../Scripts/DataTables/Spanish.json"
+            },
+            "bServerSide": true,
+            "bAutoWidth": false,
+            "sAjaxSource": '@Url.Action("ListarVentasCV", "CanalVenta")',
+            "bdestroy": true,
+            "start": 0,
+            "order": [0, "desc"],
+            "bDeferRender": true,
+            "aoColumns": [
+                @*
+                    serieNumero,
+                    fechaVenta,
+                    tiendaOrigen,
+                    tiendaDestino,
+                    tipo,
+                    estado,
+                    cliente,
+                    importeTotal,
+                    cod_entid,
+                    fc_nint,
+                    nombreTipoCV,
+                    nombreEstado,
+                    colorEstado
+                    *@
+                  { "sName": "serieNumero", "mData": "serieNumero" },
+                  { "sName": "fechaVenta", "mData": "fechaVenta", "sClass": "right", "type": "date-dd-MM-yyyy" },                  
+                  { "sName": "tiendaOrigen", "mData": "tiendaOrigen", "sClass": "right" },
+                  { "sName": "tiendaDestino", "mData": "tiendaDestino", "sClass": "right" },
+                  { "sName": "nombreTipoCV", "mData": "nombreTipoCV", "sClass": "right" },
+                  {
+                      "render": function (data,type,full){
+                          return "<span class='label label-"+ full.colorEstado+"'>"+full.nombreEstado+"</span>"
+                      }
+                  },
+                  { "sName": "cliente", "mData": "cliente", "sClass": "right" },
+                  { "sName": "importeTotal", "mData": "importeTotal", "sClass": "right" },
+                  {
+                      "render": function (data, type, full) {
+                          var url = "/CanalVenta/Ver?serie_numero=" + full.serieNumero + "&fc_nint=" + full.fc_nint + "&cod_entid=" + full.cod_entid;
+                          return '<div><a title="Ver Detalles" class="btn btn-primary btn-sm" href=' + url + ' ><span class="glyphicon glyphicon-list"></span></a></div>';
+                      }
+                  }
+            ],
+            dom: 'Bfrtip',
+            buttons: [
+           {
+               extend: 'excelHtml5',
+               title: 'Bataclub_xls'
+           },
+           {
+               extend: 'csvHtml5',
+               title: 'BataClub_csv'
+           },
+           {
+               extend: 'pdfHtml5',
+               title: 'BataClub_pdf'
+           },
+           'copyHtml5',
+            ]
+        });
+    });
+</script>

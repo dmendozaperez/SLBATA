@@ -313,7 +313,7 @@ namespace CapaPresentacion.Controllers
             return list;
         }
 
-        public string listarStr_ArticuloStock(string codArticulo, string CodDpto, string CodPrv, string CodDist, string codTalla,string coddist_b)
+        public string listarStr_ArticuloStock(string codArticulo, string CodDpto, string CodPrv, string CodDist, string codTalla,string coddist_b, /*sostic 06/2019*/ string multicanalidad)
         {
             string strJson = "";
             JsonResult jRespuesta = null;
@@ -325,7 +325,7 @@ namespace CapaPresentacion.Controllers
             
           
 
-            strJson = datArticuloStock.listarStr_ArticuloStock(codArticulo, CodDpto, CodPrv, CodDist, codTalla, coddist_b, cod_tda);
+            strJson = datArticuloStock.listarStr_ArticuloStock(codArticulo, CodDpto, CodPrv, CodDist, codTalla, coddist_b, cod_tda,/*sostic 06/2019*/ multicanalidad);
             var serializer = new JavaScriptSerializer();
             jRespuesta = Json(serializer.Deserialize<List<Articulo_Stock_Tienda>>(strJson), JsonRequestBehavior.AllowGet);
 

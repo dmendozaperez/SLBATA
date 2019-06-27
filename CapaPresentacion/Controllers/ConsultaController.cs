@@ -64,6 +64,7 @@ namespace CapaPresentacion.Controllers
             Session[_session_listdocumentoDetalle_private] = listdoc;
             return listdoc;
         }
+
         public ActionResult getDocumento(Ent_jQueryDataTableParams param)
         {
 

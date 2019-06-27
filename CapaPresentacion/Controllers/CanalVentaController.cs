@@ -14,6 +14,7 @@ using System.Net.Http.Headers;
 using Newtonsoft.Json;
 using CrystalDecisions.CrystalReports.Engine;
 using System.IO;
+using CapaEntidad.General;
 
 namespace CapaPresentacion.Controllers
 {
@@ -21,60 +22,59 @@ namespace CapaPresentacion.Controllers
     {
         Dat_CanalVenta datos = new Dat_CanalVenta();
         // GET: Cnvta
-        public ActionResult Index()
+        public PartialViewResult ListaVentas(string fdesde, string fhasta, string noDocCli, string noDoc, string tiendaOrigen, string tiendaDestino, string[] tipo, string[] estado)
         {
-            //_Urbano("F254-00000293" , "50254" , "D0431409");
-            bool _reporte;
-            string fdesde = (Request.HttpMethod == "POST" ? Request.Params["fdesde"].ToString() : DateTime.Now.ToString("dd/MM/yyyy"));
+            return PartialView(selectVentas(Convert.ToDateTime(fdesde), Convert.ToDateTime(fhasta), noDocCli, noDoc, tiendaOrigen, tiendaDestino, tipo, estado));
+        }
+        [HttpPost]
+        public ActionResult ReporteView(string fdesde, string fhasta, string noDocCli, string noDoc, string tiendaOrigen, string tiendaDestino, string[] tipo, string[] estado)
+        {
+            List<CanalVenta> cv = selectVentas(Convert.ToDateTime(fdesde), Convert.ToDateTime(fhasta), noDocCli, noDoc, tiendaOrigen, tiendaDestino, tipo, estado);
+            this.HttpContext.Session["rptSource"] = cv;
+            string _estado = (cv == null) ? "0" : "1";
+            return Json(new { estado = _estado });
+        }
+        public ActionResult Index()
+        {            
+
+
+
+            string fdesde = (Request.HttpMethod == "POST" ? Request.Params["fdesde"].ToString() : DateTime.Now.AddDays(-30).ToString("dd/MM/yyyy"));
             string fhasta = (Request.HttpMethod == "POST" ? Request.Params["fhasta"].ToString() : DateTime.Now.ToString("dd/MM/yyyy"));
             string noDocCli = (Request.HttpMethod == "POST" ? Request.Params["noDocCli"].ToString() : null);
             string noDoc = (Request.HttpMethod == "POST" ? Request.Params["noDoc"].ToString() : null);
-            string tiendaOrigen = (Request.HttpMethod == "POST" ? Request.Params["tiendaOrigen"].ToString() : (Session["Tienda"] != null ? Session["Tienda"].ToString() : null));
-            string tiendaDestino = (Request.HttpMethod == "POST" ? Request.Params["tiendaDestino"].ToString() : null);
-            string estado = (Request.HttpMethod == "POST" ? Request.Params["estado"] : "001,002,003,004,005");
+            string tiendaOrigen = (Request.HttpMethod == "POST" ? Request.Params["tiendaOrigen"].ToString() :null);
+            string tiendaDestino = (Request.HttpMethod == "POST" ? Request.Params["tiendaDestino"].ToString() : (Session["Tienda"] != null ? Session["Tienda"].ToString() : null));
+            string estado = (Request.HttpMethod == "POST" ? Request.Params["estado"] : "001,004,005,006");
             string tipo = (Request.HttpMethod == "POST" ? Request.Params["tipo"] : "1,2,3");
 
-            ViewBag._selectOrigen = SelectOrigen(tiendaOrigen);
-            ViewBag._selectDestino = SelectDestino((tiendaOrigen == null ? "" : tiendaOrigen), (tiendaDestino == null ? "" : tiendaDestino));
-            ViewBag._fdesde = fdesde;
-            ViewBag._fhasta = fhasta;
-            ViewBag._noDocCli = noDocCli;
-            ViewBag._noDoc = noDoc;
-            ViewBag._tiendaOrigen = tiendaOrigen;
-            ViewBag._tiendaDestino = tiendaDestino;
-            ViewBag._selectTipos = SelectTipos((tipo == null ? "1,2,3" : tipo));
-            ViewBag._selectEstados = SelectEstados((estado == null ? "001,002,003,004,005" : estado));
 
-            List<CanalVenta> listCV = new List<CanalVenta>();
-            listCV = selectVentas(Convert.ToDateTime(fdesde), Convert.ToDateTime(fhasta), noDocCli, noDoc, tiendaOrigen, tiendaDestino, tipo, estado);
-            /*Parametros para el reporte*/
-            _reporte = false;
-            if (Request.HttpMethod == "POST")
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
+
+            if (_usuario == null)
             {
-                _reporte = true;
-                this.HttpContext.Session["rptSource"] = listCV;
-                this.HttpContext.Session["pA"] = Request.Params["vtA"];
-                this.HttpContext.Session["pB"] = Request.Params["vtB"];
-                this.HttpContext.Session["pDesde"] = fdesde;
-                this.HttpContext.Session["pHasta"] = fhasta;
-                this.HttpContext.Session["pTipos"] = Request.Params["vtTipos"];
-                this.HttpContext.Session["pEstado"] = Request.Params["vtEstados"];
-                this.HttpContext.Session["pCliente"] = noDocCli;
-                this.HttpContext.Session["pNoDocumento"] = noDoc;
-                //this.HttpContext.Session[""] = ;
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
             }
-            ViewBag._reporte = _reporte;
-            return View(listCV);
-            //if (Request.HttpMethod == "POST")
-            //{               
+            else
+            {
+                ViewBag._selectOrigen = SelectOrigen(tiendaOrigen);
+                ViewBag._selectDestino = SelectDestino((tiendaOrigen == null ? "" : tiendaOrigen), (tiendaDestino == null ? "" : tiendaDestino));
+                ViewBag._fdesde = fdesde;
+                ViewBag._fhasta = fhasta;
+                ViewBag._noDocCli = noDocCli;
+                ViewBag._noDoc = noDoc;
+                ViewBag._tiendaOrigen = tiendaOrigen;
+                ViewBag._tiendaDestino = tiendaDestino;
+                ViewBag._selectTipos = SelectTipos((tipo == null ? "1,2,3" : tipo));
+                ViewBag._selectEstados = SelectEstados((estado == null ? "001,002,003,004,005,006" : estado));
 
-            //}
-            //else
-            //{
-            //    ViewBag.selectOrigen = SelectOrigen();
-            //    //ViewBag.ventas = selectVentas();
-            //    return View(selectVentas());
-            //}
+                List<CanalVenta> listCV = new List<CanalVenta>();
+                Session["_cv"] = null;
+            }           
+            return View();
         }
         [HttpPost]
         public JsonResult BuscarNumAleatorio()    // el método debe ser de static
@@ -98,38 +98,104 @@ namespace CapaPresentacion.Controllers
         }
         private List<SelectListItem> SelectEstados(string value = null)
         {
+            DataTable dt = datos.get_estados_cv();
             string[] _values = value.Split(',');
             List<SelectListItem> list = new List<SelectListItem>();
-            list.Add(new SelectListItem() { Text = "FACTURADO", Value = "001", Selected = _existe_en_array(_values, "001") });
-            list.Add(new SelectListItem() { Text = "ENTREGADO", Value = "002", Selected = _existe_en_array(_values, "002") });
-            list.Add(new SelectListItem() { Text = "RECHAZADO", Value = "003", Selected = _existe_en_array(_values, "003") });
-            list.Add(new SelectListItem() { Text = "RECEPCIONADO", Value = "004", Selected = _existe_en_array(_values, "004") });
-            list.Add(new SelectListItem() { Text = "DELIVERY", Value = "005", Selected = _existe_en_array(_values, "005") });
+            foreach (DataRow item in dt.Rows)
+            {
+                list.Add(new SelectListItem() {
+                    Text = item["nombreEstado"].ToString(),
+                    Value = item["codigoEstado"].ToString(),
+                    Selected = _existe_en_array(_values, item["codigoEstado"].ToString())
+                });
+            }
             return list;
         }
-        public ActionResult Ver(string id, string cod_entid, string fc_nint, string ge = null)
+        public ActionResult Ver(string serie_numero, string cod_entid, string fc_nint, string ge = null)
         {
-            ViewBag.id = id;
-            ViewBag._SelectVendedor = SelectVendedor(cod_entid);
-             return View(selectVenta(id, cod_entid, fc_nint));
-        }
-        public ActionResult ActualizarAcepado(string descripcion, string id, string cod_entid, string fc_nint, string vendedor)
+            ViewBag.id = serie_numero;
+            CanalVenta cv = selectVenta(serie_numero, cod_entid, fc_nint);
+            ViewBag._SelectVendedor = SelectVendedor((Session["Tienda"] == null ? cv.cod_entid + "," + cv.cod_entid_b : Session["Tienda"].ToString()));
+            return View(cv);
+        }       
+        public ActionResult ActualizarEstado(string descripcion, string serie_numero, string cod_entid, string fc_nint, string estado, string vendedor)
         {
-            ActualizarEstado("002", descripcion, id, cod_entid, fc_nint, vendedor);
-            return RedirectToAction("Ver", "CanalVenta", new { id = id, fc_nint = fc_nint, cod_entid = cod_entid });
-        }
+            vendedor = vendedor.Trim();
+            string cod_vendedor = vendedor.Substring(0,vendedor.IndexOf('-'));
+            string cod_tda = vendedor.Substring(vendedor.IndexOf('-')+1);
 
-        public ActionResult ActualizarRecepcionado(string descripcion, string id, string cod_entid, string fc_nint, string vendedor)
+            if (estado == "005")
+            {
+                ActualizarDeliveryDespachado(descripcion, serie_numero, cod_entid, fc_nint, cod_vendedor, cod_tda);
+            }
+            else
+            {
+                insertar_historial_estados_cv(cod_entid, fc_nint, descripcion, estado, cod_vendedor, cod_tda, serie_numero);
+            }           
+            return RedirectToAction("Ver", "CanalVenta", new { serie_numero = serie_numero, fc_nint = fc_nint, cod_entid = cod_entid });
+        }        
+        public ActionResult ListarVentasCV(Ent_jQueryDataTableParams param)
         {
-            ActualizarEstado("004", descripcion, id, cod_entid, fc_nint, vendedor);
-            return RedirectToAction("Ver", "CanalVenta", new { id = id, fc_nint = fc_nint, cod_entid = cod_entid });
-        }
-        public ActionResult ActualizarRechazado(string descripcion, string id, string cod_entid, string fc_nint, string vendedor)
-        {
-            ActualizarEstado("003", descripcion, id, cod_entid, fc_nint, vendedor);
-            return RedirectToAction("Ver", "CanalVenta", new { id = id, fc_nint = fc_nint, cod_entid = cod_entid });
-        }
+            if (Session["_cv"] == null)
+            {
+                List<CanalVenta> liststoreConf = selectVentas(DateTime.Now.AddDays(-30), DateTime.Now, null, null, null, (Session["Tienda"] != null ? Session["Tienda"].ToString() : null), new string[] {"1","2","3"} , new string[] { "001", "004", "005", "006" });
+                Session["_cv"] = liststoreConf;
+            }
+            IQueryable<CanalVenta> membercol = ((List<CanalVenta>)(Session["_cv"])).AsQueryable();  //lista().AsQueryable();
 
+            //Manejador de filtros
+            int totalCount = membercol.Count();
+            IEnumerable<CanalVenta> filteredMembers = membercol;
+
+
+            if (!string.IsNullOrEmpty(param.sSearch))
+            {
+                filteredMembers = membercol
+                    .Where(m => m.tiendaOrigen.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                     m.tiendaOrigen.ToUpper().Contains(param.sSearch.ToUpper()));
+            }
+
+            //Manejador de orden
+            var sortIdx = Convert.ToInt32(Request["iSortCol_0"]);
+            Func<CanalVenta, string> orderingFunction =
+            (
+            m => m.serieNumero);
+            var sortDirection = Request["sSortDir_0"];
+            if (sortDirection == "desc")
+                filteredMembers = filteredMembers.OrderBy(orderingFunction);
+            else
+                filteredMembers = filteredMembers.OrderByDescending(orderingFunction);
+
+            var displayMembers = filteredMembers
+                .Skip(param.iDisplayStart)
+                .Take(param.iDisplayLength);
+
+
+            var result = from a in displayMembers
+                         select new
+                         {
+                             a.serieNumero,
+                             a.fechaVenta,
+                             a.tiendaOrigen,
+                             a.tiendaDestino,
+                             a.tipo,
+                             a.estado,
+                             a.cliente,
+                             a.importeTotal,
+                             a.cod_entid,
+                             a.fc_nint,
+                             a.nombreTipoCV,
+                             a.nombreEstado,
+                             a.colorEstado
+                         };
+            return Json(new
+            {
+                sEcho = param.sEcho,
+                iTotalRecords = membercol.Count(),
+                iTotalDisplayRecords = filteredMembers.Count(),
+                aaData = result
+            }, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult ImprimirCodigo(string id, string tienda, string fc_nint)
         {
             List<GuiaElectronica> _ge = new List<GuiaElectronica>();
@@ -156,9 +222,7 @@ namespace CapaPresentacion.Controllers
 
             return File(stream, "application/pdf", "GuiaElectronica_" + ge.guia + ".pdf");
         }
-
-
-        public ActionResult ActualizarDelivery(string descripcion, string id, string cod_entid, string fc_nint, string vendedor)
+        public void ActualizarDeliveryDespachado(string descripcion, string serieNumero, string cod_entid, string fc_nint, string vendedor,string cod_tda)
         {
             cxpress.WSOrdenServicioClient obj1 = new cxpress.WSOrdenServicioClient();
             cxpress.OrdenServicioReqParm objcla = new cxpress.OrdenServicioReqParm();
@@ -169,69 +233,82 @@ namespace CapaPresentacion.Controllers
              <nroDocProveedor>20145556666</nroDocProveedor>
              <codDireccionProveedor>900055</codDireccionProveedor>
              */
-            CanalVenta cvU = selectVenta(id, cod_entid, fc_nint);
-            objcla.nroPedido = new String[] { cvU.serieNumero };// nroPedido;
-            List<cxpress.item> lista = new List<cxpress.item>();
+            CanalVenta cvU = selectVenta(serieNumero, cod_entid, fc_nint);
 
-            foreach (var item in cvU.detalles)
+            if (cvU.informacionTiendaEnvio != null)
             {
-                cxpress.item objdet = new cxpress.item();
-                objdet.descItem = new String[] { item.nombreProducto };
-                objdet.cantItem = new int[] { item.cantidad };
-                objdet.pesoMasa = new float[] { 1 };
-                objdet.altoItem = new float[] { 1 };
-                objdet.largoItem = new float[] { 1 };
-                objdet.anchoItem = new float[] { 1 };
-                objdet.valorItem = new float[] { 1 };
-                lista.Add(objdet);
-            }
+                if (cvU.informacionTiendaEnvio.courier == "cxpress")
+                {
+                    objcla.nroPedido = new String[] { cvU.serieNumero };// nroPedido;
+                    List<cxpress.item> lista = new List<cxpress.item>();
 
-            objcla.listaItems = lista.ToArray();
+                    foreach (var item in cvU.detalles)
+                    {
+                        cxpress.item objdet = new cxpress.item();
+                        objdet.descItem = new String[] { item.nombreProducto };
+                        objdet.cantItem = new int[] { item.cantidad };
+                        objdet.pesoMasa = new float[] { 1 };
+                        objdet.altoItem = new float[] { 1 };
+                        objdet.largoItem = new float[] { 1 };
+                        objdet.anchoItem = new float[] { 1 };
+                        objdet.valorItem = new float[] { 1 };
+                        lista.Add(objdet);
+                    }
 
-            objcla.volumen = new double[] { 10 };           //No hay 
-            objcla.tipoServicio = new long[] { 101 };       // 
-                                                            /*Codigos para prueba 141 y  142*/
-            objcla.codCliente = new long[] { 141 };         //entregado por CX
-            objcla.codCtaCliente = new long[] { 142 };      //entregado por CX
-            objcla.cantPiezas = new int[] { cvU.detalles.Sum(cant => cant.cantidad) };
-            objcla.codRef1 = new String[] { "0012071801" }; //opcional
-            objcla.codRef2 = new String[] { "0012071801" }; //opcional
-            objcla.valorProducto = new double[] { 1 };
-            objcla.tipoOrigenRecojo = new int[] { 1 };
-            objcla.codTipoDocProveedor = new long[] { 112 };    //entregado por CX
-                                                                /*Para nroDocProveedor 20145556666*/
-            objcla.nroDocProveedor = new String[] { "20145556666" };
-            /*Para codDireccionProveedor 900055*/
-            objcla.codDireccionProveedor = new long[] { 0900055 };  //entregado por CX
-            objcla.indicadorGeneraRecojo = new int[] { 1 };
-            objcla.tipoDestino = new int[] { 1 };
-            objcla.direccEntrega = new String[] { (cvU.tipo == "3" ? cvU.direccionCliente : cvU.direccionA) };  // Dirección de entrega
-                                                                                                                //Ubigeo dirección entrega  key.ubi_direc
-            objcla.refDireccEntrega = new String[] { (cvU.tipo == "3" ? cvU.referenciaCliente : "sin referencia") }; //Referencia dirección entrega
-            objcla.codDepartEntrega = new String[] { "15" }; //Departamento = Lima
-            objcla.codProvEntrega = new String[] { "01" }; //Provincia = Lima
-            objcla.codDistEntrega = new String[] { (cvU.tipo == "3" ? (cvU.ubigeoCliente.ToString() == "" ? cvU.ubigeoTienda.Substring(4) : cvU.ubigeoCliente.Substring(4)) : cvU.ubigeoTienda.Substring(4)) };
-            objcla.nomDestEntrega = new String[] { (cvU.tipo == "3" ? cvU.nombreCliente : cvU.tiendaOrigen) };
-            objcla.apellDestEntrega = new String[] { (cvU.tipo == "3" ? cvU.apePatCliente + ' ' + cvU.apeMatCliente : "BATA") };  //"Perez Luna"
-            objcla.codTipoDocDestEntrega = new String[] { (cvU.noDocCli.Length == 11 ?  "112" : "109") };
-            objcla.nroDocDestEntrega = new String[] { (cvU.tipo == "3" ? cvU.noDocCli: "20603000472") }; //supongo que si es para tienda debe ir el ruc de bata    //"12345678"
-            objcla.telefDestEntrega = new String[] { (cvU.tipo == "3" ? cvU.telefonoCliente : "01777888") }; // telefono del cliente         //"991276768"
-            objcla.emailDestEntrega = new String[] { "enriqueheredia.e@gmail.com" };     //"juanperez@gmail.com"
-            objcla.idUsuario = new String[] { "EMPRESA  S.A.C." };
-            objcla.deTerminal = new String[] { "LIMA" };
-            
-            var e= obj1.registrar(objcla);            
+                    objcla.listaItems = lista.ToArray();
 
-            if (e.nroOrdenServicio != null)
-            {
-                ActualizarEstado("005", descripcion, id, cod_entid, fc_nint, vendedor);
-                datos.insertar_ge_cv(cod_entid, fc_nint, id, e.nroOrdenServicio);
-                TempData["Success"] = "Guia generada correctamente.";
+                    objcla.volumen = new double[] { 10 };           //No hay 
+                    objcla.tipoServicio = new long[] { 101 };       // 
+
+                                                                    /*Codigos para prueba 141 y  142*/
+                    objcla.codCliente = new long[] { Convert.ToInt32( cvU.informacionTiendaEnvio.cx_codCliente) };         //entregado por CX
+                    objcla.codCtaCliente = new long[] { Convert.ToInt32(cvU.informacionTiendaEnvio.cx_codCtaCliente) };      //entregado por CX
+
+                    objcla.cantPiezas = new int[] { cvU.detalles.Sum(cant => cant.cantidad) };
+                    objcla.codRef1 = new String[] { "0012071801" }; //opcional
+                    objcla.codRef2 = new String[] { "0012071801" }; //opcional
+                    objcla.valorProducto = new double[] { 1 };
+                    objcla.tipoOrigenRecojo = new int[] { 1 };
+                    objcla.nroDocProveedor = new String[] { cvU.informacionTiendaEnvio.cx_nroDocProveedor };/*Para nroDocProveedor 20145556666*/
+
+                    objcla.codTipoDocProveedor = new long[] { Convert.ToInt32(cvU.informacionTiendaEnvio.cx_codTipoDocProveedor) };    //entregado por CX
+                    objcla.codDireccionProveedor = new long[] { Convert.ToInt32(cvU.informacionTiendaEnvio.cx_codDireccionProveedor) };  //entregado por CX //prueba:0900055
+
+                    objcla.indicadorGeneraRecojo = new int[] { 1 };
+                    objcla.tipoDestino = new int[] { 1 };
+                    objcla.direccEntrega = new String[] { (cvU.tipo == "3" ? cvU.direccionCliente : cvU.informacionTiendaDestinatario.direccion_entrega) };  // Dirección de entrega
+                                                                                                                        //Ubigeo dirección entrega  key.ubi_direc
+                    objcla.refDireccEntrega = new String[] { (cvU.tipo == "3" ? (String.IsNullOrEmpty( cvU.referenciaCliente) ? "Sin Referencia" : cvU.referenciaCliente)  : cvU.informacionTiendaDestinatario.referencia) }; //Referencia dirección entrega
+                    objcla.codDepartEntrega = new String[] { (cvU.tipo == "3" ? (cvU.ubigeoCliente.ToString() == "" ? cvU.ubigeoTienda.Substring(0,2) : cvU.ubigeoCliente.Substring(0,2)) : cvU.ubigeoTienda.Substring(0,2)) }; //Departamento = Lima
+                    objcla.codProvEntrega = new String[] { (cvU.tipo == "3" ? (cvU.ubigeoCliente.ToString() == "" ? cvU.ubigeoTienda.Substring(2, 2) : cvU.ubigeoCliente.Substring(2, 2)) : cvU.ubigeoTienda.Substring(2,2)) }; //Provincia = Lima
+                    objcla.codDistEntrega = new String[] { (cvU.tipo == "3" ? (cvU.ubigeoCliente.ToString() == "" ? cvU.ubigeoTienda.Substring(4) : cvU.ubigeoCliente.Substring(4)) : cvU.ubigeoTienda.Substring(4)) };
+                    objcla.nomDestEntrega = new String[] { (cvU.tipo == "3" ? cvU.nombreCliente : cvU.tiendaOrigen) };
+                    objcla.apellDestEntrega = new String[] { (cvU.tipo == "3" ? cvU.apePatCliente + ' ' + cvU.apeMatCliente : "BATA") };  //"Perez Luna"
+                    objcla.codTipoDocDestEntrega = new String[] { (cvU.tipo == "3" ? (cvU.noDocCli.Length == 11 ? "112" : "109") : "112") };
+                    objcla.nroDocDestEntrega = new String[] { (cvU.tipo == "3" ? cvU.noDocCli : cvU.informacionTiendaDestinatario.nroDocumento) }; //supongo que si es para tienda debe ir el ruc de bata    //"12345678"
+                    objcla.telefDestEntrega = new String[] { (cvU.tipo == "3" ?  (String.IsNullOrEmpty(cvU.telefonoCliente) ? "488-8300" : cvU.telefonoCliente)   : cvU.informacionTiendaDestinatario.telefono) }; // telefono del cliente         //"991276768"
+                    objcla.emailDestEntrega = new String[] { (cvU.tipo == "3" ? "servicio.clientes.peru@bata.com" : cvU.informacionTiendaDestinatario.email)    };     //"juanperez@gmail.com"
+                    objcla.idUsuario = new String[] { cvU.informacionTiendaEnvio.id_usuario };
+                    objcla.deTerminal = new String[] { cvU.informacionTiendaEnvio.de_terminal };
+
+                    var e = obj1.registrar(objcla);
+
+                    if (e.nroOrdenServicio != null)
+                    {
+                        insertar_historial_estados_cv(cod_entid, fc_nint, descripcion, "005" ,  vendedor, cod_tda ,serieNumero);
+                        datos.insertar_ge_cv(cod_entid, fc_nint, serieNumero, e.nroOrdenServicio);
+                        TempData["Success"] = "Guia generada correctamente.";
+                    }
+                    else
+                    {
+                        TempData["Error"] = "Error al generar guia. " + e.msg;
+                    }
+                }               
             }else
             {
-                TempData["Error"] = "Errro al generar guia. " + e.msg; ;
+                TempData["Error"] = "Error al generar guia. No existe informacion de recogo para la tienda." ;
             }
-            return RedirectToAction("Ver", "CanalVenta", new { id = id, fc_nint = fc_nint, cod_entid = cod_entid });
+            //return RedirectToAction("Ver", "CanalVenta", new { serie_numero = id, fc_nint = fc_nint, cod_entid = cod_entid });
             
             // Console.Write(e.ToString());
             
@@ -319,34 +396,21 @@ namespace CapaPresentacion.Controllers
             #endregion
 
         }
-
-
-        public void ActualizarEstado(string estado, string descripcion, string id, string cod_entid, string fc_nint, string vendedor)
+        public void insertar_historial_estados_cv(string cod_entid, string fc_nint,string descripcion , string id_estado , string cod_vendedor, string cod_tda ,string serieNumero)
         {
             Ent_Usuario user = null;
             user = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
             string _usu_id = user.usu_id.ToString();
-            HistorialEstadosCV _historial = new HistorialEstadosCV();
-            _historial.cod_usuario = _usu_id;
-            _historial.cod_entid = cod_entid;
-            _historial.fc_nint = fc_nint;
-            _historial.descripcion = descripcion;
-            _historial.id_estado = estado;
-            _historial.cod_vendedor = vendedor;
-            _historial.serieNumero = id;
-            insertar_historial_estados_cv(_historial);
-        }
 
-        public void insertar_historial_estados_cv(HistorialEstadosCV historial)
-        {
             Ent_HistorialEstadosCV _historial = new Ent_HistorialEstadosCV();
-            _historial.cod_entid = historial.cod_entid;
-            _historial.cod_usuario = historial.cod_usuario;
-            _historial.fc_nint = historial.fc_nint;
-            _historial.descripcion = historial.descripcion;
-            _historial.id_estado = historial.id_estado;
-            _historial.cod_vendedor = historial.cod_vendedor;
-            _historial.serieNumero = historial.serieNumero;
+            _historial.cod_entid =cod_entid;
+            _historial.cod_usuario = _usu_id;
+            _historial.fc_nint =fc_nint;
+            _historial.descripcion =descripcion;
+            _historial.id_estado =id_estado;
+            _historial.cod_vendedor =cod_vendedor;
+            _historial.serieNumero =serieNumero;
+            _historial.cod_tda = cod_tda;
             int f = datos.insertar_historial_estados_cv(_historial);
             if (f > 0)
             {
@@ -357,7 +421,6 @@ namespace CapaPresentacion.Controllers
                 TempData["Error"] = "Error al actualizar el estado.";
             }
         }
-
         private bool _existe_en_array (string[] array , string match)
         {
             bool b = false;
@@ -375,7 +438,7 @@ namespace CapaPresentacion.Controllers
             List<SelectListItem> list = new List<SelectListItem>();
             if (dt.Rows.Count > 0)
             {
-                
+                if (Session["Tienda"] ==null || (Session["Tienda"] != null && ( tiendaOrigen == Session["Tienda"].ToString())))
                 list.Add(new SelectListItem() { Text = "TODOS", Value = "" });
                 foreach (DataRow row in dt.Rows)
                 {
@@ -455,18 +518,18 @@ namespace CapaPresentacion.Controllers
             {
                 list.Add(new SelectListItem()
                 {
-                    Text = row["v_codi"].ToString() + " - "+  row["v_nomb"].ToString(),
-                    Value = row["v_codi"].ToString(),
+                    Text = row["v_codi"].ToString() + " - " + row["v_nomb"].ToString(),
+                    Value = row["v_codi"].ToString().Trim()+ "-" + row["cod_tda"].ToString().Trim(),
                     Selected = row["v_codi"].ToString() == value
 
                 });
             }
             return list;
         }
-        private List<CanalVenta> selectVentas(DateTime fdesde , DateTime fhasta, string noDocCli,string noDoc, string tiendaOrigen , string tiendaDestino, string tipo , string estado)
+        private List<CanalVenta> selectVentas(DateTime fdesde , DateTime fhasta, string noDocCli,string noDoc, string tiendaOrigen , string tiendaDestino, string[] tipo , string[] estado)
         {
             List<CanalVenta> ventas = new List<CanalVenta>();
-            List<Ent_VentaCanal> ent_ventas =  datos.get_Ventas(fdesde,fhasta,noDocCli, noDoc , tiendaOrigen , tiendaDestino ,  tipo, estado);
+            List<Ent_VentaCanal> ent_ventas =  datos.get_Ventas(fdesde,fhasta,noDocCli, noDoc , tiendaOrigen , tiendaDestino ,  String.Join(",",tipo), String.Join(",", estado));
             if (ent_ventas != null)
             {
                 foreach (var item in ent_ventas)
@@ -478,7 +541,7 @@ namespace CapaPresentacion.Controllers
                     _cnvta.serieNumero = item.serieNumero;
                     _cnvta.tiendaDestino = item.tiendaDestino;
                     _cnvta.tiendaOrigen = item.tiendaOrigen;
-                    _cnvta.fechaVenta = item.fechaVenta;
+                    _cnvta.fechaVenta = item.fechaVenta.ToString("dd/MM/yyyy");
                     _cnvta.fc_nint = item.fc_nint;
                     _cnvta.cod_entid = item.cod_entid;
                     _cnvta.nombreEstado = item.nombreEstado;
@@ -489,6 +552,7 @@ namespace CapaPresentacion.Controllers
                     ventas.Add(_cnvta);
                 }
             }
+            Session["_cv"] = ventas;
             return ventas;
         }
         private CanalVenta selectVenta(string noDoc , string cod_entid, string fc_nint)
@@ -505,7 +569,7 @@ namespace CapaPresentacion.Controllers
                 _cnvta.serieNumero = ent_ventas.serieNumero;
                 _cnvta.tiendaDestino = ent_ventas.tiendaDestino;
                 _cnvta.tiendaOrigen = ent_ventas.tiendaOrigen;
-                _cnvta.fechaVenta = ent_ventas.fechaVenta;
+                _cnvta.fechaVenta = ent_ventas.fechaVenta.ToString("dd/MM/yyyy");
                 _cnvta.direccionA = ent_ventas.direccionA;
                 _cnvta.direccionB = ent_ventas.direccionB;
                 _cnvta.direccionCliente = ent_ventas.direccionCliente;
@@ -562,8 +626,38 @@ namespace CapaPresentacion.Controllers
                         list_hist.Add(_cnvtaH);
                     }
                     _cnvta.historialEstados = list_hist;
-                }                               
-                ventas = _cnvta;         
+                }
+                Informacion_Tienda_envio _ic = null;
+                if (ent_ventas.informacionTiendaEnvio != null)
+                {
+                    _ic = new Informacion_Tienda_envio();
+                    _ic.id = ent_ventas.informacionTiendaEnvio.id;
+                    _ic.cod_entid = ent_ventas.informacionTiendaEnvio.cod_entid;
+                    _ic.courier = ent_ventas.informacionTiendaEnvio.courier;
+                    _ic.cx_codTipoDocProveedor = ent_ventas.informacionTiendaEnvio.cx_codTipoDocProveedor;
+                    _ic.cx_nroDocProveedor = ent_ventas.informacionTiendaEnvio.cx_nroDocProveedor;
+                    _ic.cx_codDireccionProveedor = ent_ventas.informacionTiendaEnvio.cx_codDireccionProveedor;
+                    _ic.cx_codCliente = ent_ventas.informacionTiendaEnvio.cx_codCliente;
+                    _ic.cx_codCtaCliente = ent_ventas.informacionTiendaEnvio.cx_codCtaCliente;
+                    _ic.id_usuario = ent_ventas.informacionTiendaEnvio.id_usuario;
+                    _ic.de_terminal = ent_ventas.informacionTiendaEnvio.de_terminal;
+                }
+                _cnvta.informacionTiendaEnvio = _ic;
+                ventas = _cnvta;
+
+                Informacion_Tienda_Destinatario _id = null;
+                if (ent_ventas.informacionTiendaDestinatario != null)
+                {
+                    _id = new Informacion_Tienda_Destinatario();
+                    _id.id = ent_ventas.informacionTiendaDestinatario.id;
+                    _id.nroDocumento = ent_ventas.informacionTiendaDestinatario.nroDocumento;
+                    _id.email = ent_ventas.informacionTiendaDestinatario.email;
+                    _id.referencia = ent_ventas.informacionTiendaDestinatario.referencia;
+                    _id.telefono = ent_ventas.informacionTiendaDestinatario.telefono;
+                    _id.direccion_entrega = ent_ventas.informacionTiendaDestinatario.direccion_entrega;
+                    _id.cod_entid = ent_ventas.informacionTiendaDestinatario.cod_entid;
+                }
+                _cnvta.informacionTiendaDestinatario = _id;
             }
             return ventas;
         }

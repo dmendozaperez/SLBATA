@@ -287,7 +287,7 @@ namespace CapaDato.ReportsValeCompra
         }
 
         public string listarStr_ArticuloStock(string Cod_Articulo, string Cod_Dpto, string Cod_Prv, string Cod_Dist, 
-                                              string codTalla,String coddist_b,string cod_tda)
+                                              string codTalla,String coddist_b,string cod_tda,/*sostic 06/2019*/ string multicanalidad)
         {
             string strJson = "";
             try
@@ -324,6 +324,12 @@ namespace CapaDato.ReportsValeCompra
                 SqlParameter ocod_tda = oComando.Parameters.Add("@cod_tda", SqlDbType.VarChar);
                 ocod_tda.Direction = ParameterDirection.Input;
                 ocod_tda.Value = cod_tda;
+
+                /*sostic 06/2019*/
+                SqlParameter omulticanalidad = oComando.Parameters.Add("@multicanalidad", SqlDbType.Bit);
+                omulticanalidad.Direction = ParameterDirection.Input;
+                omulticanalidad.Value = Convert.ToInt16(multicanalidad);// ( == null ? 0 :1);
+                /*sostic 06/2019*/
 
                 SqlDataReader oReader = oComando.ExecuteReader(CommandBehavior.SingleResult);
                 DataTable dataTable = new DataTable("row");
