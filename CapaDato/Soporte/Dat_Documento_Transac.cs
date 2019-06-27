@@ -97,7 +97,8 @@ namespace CapaDato.Soporte
                                               TIPO_DOC = dr["TIPO_DOC"].ToString(),
                                               NUM_FAC = dr["NUM_FAC"].ToString(),
                                               SERIE = dr["SERIE"].ToString(),
-                                              TOTAL = dr["TOTAL"].ToString()
+                                              TOTAL = dr["TOTAL"].ToString(),
+                                              ESTADO = dr["ESTADO"].ToString()
                                           }).ToList();
                             }
 
@@ -121,7 +122,7 @@ namespace CapaDato.Soporte
         //Envío de paquetes de checkbox seleccionados
         public string Envio_chk(string cadena, decimal usu_id)
         {
-            string strJson = "";
+            string rpta = "";
             try
             {
                 SqlConnection cn = new SqlConnection(Ent_Conexion.conexion);
@@ -131,14 +132,14 @@ namespace CapaDato.Soporte
                 oComando.Parameters.AddWithValue("@TRAN_ID", cadena);
                 oComando.Parameters.AddWithValue("@USU", usu_id);
                 SqlDataReader oReader = oComando.ExecuteReader(CommandBehavior.SingleResult);
-                strJson = "1";
+                rpta = "1";
                 cn.Close();
             }
             catch (Exception ex)
             {
-                return strJson= ex.Message;
+                return rpta = ex.Message;
             }
-            return strJson;
+            return rpta;
         }
 
         ///Listado de tabla detalle anterior

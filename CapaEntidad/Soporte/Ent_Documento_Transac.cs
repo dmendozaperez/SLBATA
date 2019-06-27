@@ -21,6 +21,7 @@ namespace CapaEntidad.Soporte
     public class Ent_Documento_TransacDoc
     {
         public string TIPO_DOC { get; set; }
+        public string ESTADO { get; set; }
         public string NUM_FAC { get; set; }
         public string SERIE { get; set; }
         public string TOTAL { get; set; }
