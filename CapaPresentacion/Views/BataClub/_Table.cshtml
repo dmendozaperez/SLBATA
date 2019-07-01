@@ -1,0 +1,115 @@
+﻿
+@*<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.min.css" />*@
+<style type="text/css">
+    .dt-buttons {
+        display: none;
+    }
+
+    #example_filter {
+        display: none;
+    }
+
+</style>
+
+
+<table id="example" class="table table-hover dataTable  table-striped table-responsive">
+    <thead>
+        <tr style="background-color:#3d566e; color:#ecf0f1">
+            <th>Nombres</th>
+            <th>Apellidos</th>
+            <th>DNI</th>
+            <th>Correo</th>
+            <th>Cupon</th>
+            <th>Tienda</th>
+            <th>Dni venta</th>
+            <th>Nombres venta</th>
+            <th>Correo venta</th>
+            <th>Teléfono venta</th>
+            <th>Tickets</th>
+            <th>Soles</th>
+            <th>Grupo</th>
+            <th>Descuento (%)</th>
+            <th>Fecha Doc.</th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach:"></tbody>
+    <tfoot>
+        <tr>
+            <th>Nombres</th>
+            <th>Apellidos</th>
+            <th>DNI</th>
+            <th>Correo</th>
+            <th>Cupon</th>
+            <th>Tienda</th>
+            <th>Dni venta</th>
+            <th>Nombres venta</th>
+            <th>Correo venta</th>
+            <th>Teléfono venta</th>
+            <th>Tickets</th>
+            <th>Soles</th>
+            <th>Grupo</th>
+            <th>Descuento (%)</th>
+            <th>Fecha Doc.</th>
+        </tr>
+    </tfoot>
+</table>
+
+
+<script>
+
+    $(document).ready(function () {
+        $('.table').dataTable({
+            "language": {
+                "url": "../Scripts/DataTables/Spanish.json"
+            },
+            "bProcessing": true, // se agrego para probar
+            "bServerSide": true,
+            "bAutoWidth": false,
+            "sAjaxSource": '@Url.Action("getTablePromoAjax", "BataClub")',
+            "fnServerParams": function (aoData) {
+                //aoData.push({ "name": "dwtda", "value": $.trim($('#dwtda').val()) });
+                //aoData.push({ "name": "fec_ini", "value": $.trim($('#fec_ini').val()) });
+                //aoData.push({ "name": "fec_fin", "value": $.trim($('#fec_fin').val()) });
+            },
+            "bdestroy": true,
+            "start": 0,
+            "order": [0, "asc"],
+            "bDeferRender": true,
+            "aoColumns": [
+                    { "sName": "Nombres", "mData": "Nombres" },
+                    { "sName": "Apellidos", "mData": "Apellidos" },
+                    { "sName": "dni", "mData": "dni" },
+                    { "sName": "correo", "mData": "correo" },
+                    { "sName": "cupon", "mData": "cupon" },
+                    { "sName": "tienda", "mData": "tienda" },
+                    { "sName": "dni_venta", "mData": "dni_venta" },
+                    { "sName": "nombres_venta", "mData": "nombres_venta" },
+                    { "sName": "correo_venta", "mData": "correo_venta" },
+                    { "sName": "telefono_venta", "mData": "telefono_venta" },
+                    { "sName": "tickets", "mData": "tickets" },
+                    { "sName": "soles", "mData": "soles" },
+                    { "sName": "grupo", "mData": "grupo" },
+                    { "sName": "porc_desc", "mData": "porc_desc" },
+                    { "sName": "fec_doc", "mData": "fec_doc" }
+            ],
+            dom: 'Bfrtip',
+            buttons: [
+            {
+                extend: 'excelHtml5',
+                title: 'Bataclub_xls'
+            },
+            {
+                extend: 'csvHtml5',
+                title: 'BataClub_csv'
+            },
+            {
+                extend: 'pdfHtml5',
+                title: 'BataClub_pdf'
+            },
+            'copyHtml5',
+            ]
+        });
+
+    });
+</script>
+

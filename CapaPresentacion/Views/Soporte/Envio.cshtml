@@ -43,7 +43,6 @@
                     </div>
                 </div>
                 <div class="row">
-
                     <div class="col-sm-2" style="padding-left: 25px; margin-right: inherit;">
                         <label for="segape">Fecha Inicio</label>
                         <div class="form-group">
@@ -83,7 +82,7 @@
                     </div>
                     <div class="col-sm-2" style="padding-left: 25px; height: 40px; margin-top: -30px;">
                         <label></label><br />
-                        <button id="btnEnviar" type="submit" title="Enviar" class="btn btn-success btn-sm" style="float: right;margin-right: 15px;">
+                        <button id="btnEnviar" type="button" title="Enviar" class="btn btn-success btn-sm" style="float: right;margin-right: 15px;">
                             <span class="glyphicon glyphicon-send"> Enviar</span>
                         </button>
                     </div>
@@ -92,7 +91,7 @@
             </form>
      
     }
-    <div class="box-body" id="listaGuia" style="padding-bottom: 40px;">
+    <div class="box-body" id="listaGuia" style="padding-bottom: 40px; overflow-x: auto;">
         @{Html.RenderPartial("_envioTable", Model);}
     </div>
 
@@ -170,7 +169,8 @@
             callback: function (result) {
                console.log(result);
                 if (result) {
-                    Guardar(cadena)        
+                    Guardar(cadena)
+
                 }
             }
         });
@@ -184,7 +184,7 @@
         var ControllerUrl = "@Url.Action("Envio_chk", "Soporte")";
         var msg_titulo = 'Mensaje';
         $.ajax({
-            type: "POST",
+            type: "GET",
             url: ControllerUrl,
             contentType: "application/json; charset=utf-8",
             data: { cadena: cadena },

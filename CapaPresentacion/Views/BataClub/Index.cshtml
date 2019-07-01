@@ -1,0 +1,126 @@
+﻿@using CapaEntidad.BataClub
+@model IEnumerable<Ent_BataClub_CuponesCO>
+@{
+    ViewBag.Title = "Consulta ....";
+    AjaxOptions options = new AjaxOptions
+    {
+        HttpMethod = "GET",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "listaGuia",
+        OnComplete = "waitingDialog.hide();",
+        OnBegin = "waitingDialog.show('Espere un momento por favor');",
+        OnFailure = "waitingDialog.hide();"
+    };
+}
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+<link href="~/ContentSelect/bootstrap-multiselect.css" rel="stylesheet" />
+
+<p class="text-danger">Consulta de .............</p>
+<div class="box box-body box-primary">
+    @using (Ajax.BeginForm("_Table", options))
+    {
+        <form id="form1">
+            <div class="row">
+                <div class="col-sm-pull-6" style="padding-left: 25px;">
+                    <label for="segape" style="color: #3d566e;">Promoción</label>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div id="tda" class="input-group autofocus">
+                                @Html.DropDownList("dwprom", new SelectList(ViewBag.Promocion, "prom_id", "prom_des", "-1"), new { @multiple = "multiple", @class = "multiselect", @data_live_search = "true", @id = "dwprom", @name = "dwprom" })
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="hidden" name="hidden" value="">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3" style="padding-left: 25px; margin-right: inherit;">
+                    <label for="segape" style="color: #3d566e;">DNI</label>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon" style="color: #3d566e;"><i class="glyphicon glyphicon-user"></i></span>
+                            <input id="dni" type="text" class="form-control" name="dni" placeholder="Ingresar DNI">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3" style="padding-left: 25px; margin-right: inherit;">
+                    <label for="segape" style="color: #3d566e;">Cupón</label>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-barcode"></i></span>
+                            <input id="cupon" type="text" class="form-control" name="cupon" placeholder="Ingresar cupon">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2" style="padding-left: 25px; width: 105px; margin-top: 5px; margin-bottom: 10px;">
+                    <label></label><br />
+                    <button id="btnSearch" type="submit" title="Consultar" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-search"> Buscar</span>
+                    </button>
+                </div>
+            </div>
+        </form>
+
+    }
+    <div class="box-body"  id="listaGuia" style="padding-bottom: 40px;overflow-x: auto;">
+        @{Html.RenderPartial("_Table", Model);}
+    </div>
+
+</div>
+@*<script src="~/Scripts/bootstrap-select.min.js"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>*@
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="~/ScriptsSelect/bootstrap-multiselect.js"></script>
+
+<script>
+    $(function () {
+        $('#dwprom').multiselect({
+            includeSelectAllOption: true,
+            enableFiltering: true,
+            enableCaseInsensitiveFiltering: true,
+            filterPlaceholder: 'Buscar Promoción...'
+        });
+    });
+
+    $(document).ready(function () {
+        $("#btnSearch").click(function () {
+            ListaPromocionesSelect();
+        });
+    });
+    function ListaPromocionesSelect() {
+        var strcadena = $.trim($('#dwprom').val());
+        if (strcadena != null ) {
+              console.log(strcadena);
+            //document.getElementById("hidden").innerHTML = strcadena;
+              document.getElementById("hidden").value = strcadena;
+
+          
+
+        }
+    }
+
+    @*function MostrarListado() {
+        var TeamDetailPostBackURL = "@Url.Action("_Table", "Soporte")";
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: TeamDetailPostBackURL,
+            contentType: "application/json; charset=utf-8",
+            data: {},
+            datatype: "json",
+            cache: true,
+            success: function (data) {
+                document.getElementById("listaGuia").innerHTML = data;
+            },
+            error: function () {
+            }
+        });
+    }*@
+
+</script>
+
+

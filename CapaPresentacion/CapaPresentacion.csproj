@@ -295,6 +295,7 @@
     <Compile Include="Controllers\AdminLteController.cs" />
     <Compile Include="Controllers\AnalisisMovController.cs" />
     <Compile Include="Controllers\AplicacionController.cs" />
+    <Compile Include="Controllers\BataClubController.cs" />
     <Compile Include="Controllers\CanalVentaController.cs" />
     <Compile Include="Controllers\CEController.cs" />
     <Compile Include="Controllers\ComunicadoController.cs" />
@@ -1435,6 +1436,8 @@
     <Content Include="Views\Soporte\_envioTable.cshtml" />
     <Content Include="Views\Soporte\_popUpDetalle.cshtml" />
     <Content Include="Views\CanalVenta\ListaVentas.cshtml" />
+    <Content Include="Views\BataClub\Index.cshtml" />
+    <Content Include="Views\BataClub\_Table.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
