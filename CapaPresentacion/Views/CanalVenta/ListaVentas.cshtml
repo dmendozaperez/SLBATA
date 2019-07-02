@@ -1,9 +1,6 @@
-﻿<link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css" rel="stylesheet" />
-<style type="text/css">
-    .dt-buttons {
-        display: none;
-    }
-</style>
+﻿@{
+    Layout = null;
+}
 <table class="table table-hover table-striped table-responsive">
     <thead>
         <tr>
@@ -34,11 +31,9 @@
     </tfoot>
 </table>
 
-<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
-
 <script>
     $(document).ready(function () {
+        //waitingDialog.show('Espere un momento por favor');
         $('.table').DataTable({
             "language": {
                 "url": "../Scripts/DataTables/Spanish.json"
@@ -84,23 +79,25 @@
                           return '<div><a title="Ver Detalles" class="btn btn-primary btn-sm" href=' + url + ' ><span class="glyphicon glyphicon-list"></span></a></div>';
                       }
                   }
-            ],
-            dom: 'Bfrtip',
-            buttons: [
-           {
-               extend: 'excelHtml5',
-               title: 'Bataclub_xls'
-           },
-           {
-               extend: 'csvHtml5',
-               title: 'BataClub_csv'
-           },
-           {
-               extend: 'pdfHtml5',
-               title: 'BataClub_pdf'
-           },
-           'copyHtml5',
             ]
+           // ,
+           // dom: 'Bfrtip',
+           // buttons: [
+           //{
+           //    extend: 'excelHtml5',
+           //    title: 'Bataclub_xls'
+           //},
+           //{
+           //    extend: 'csvHtml5',
+           //    title: 'BataClub_csv'
+           //},
+           //{
+           //    extend: 'pdfHtml5',
+           //    title: 'BataClub_pdf'
+           //},
+           //'copyHtml5',
+           // ]
         });
+        //waitingDialog.hide();
     });
 </script>
