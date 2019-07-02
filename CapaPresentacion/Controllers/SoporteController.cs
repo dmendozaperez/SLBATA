@@ -87,40 +87,29 @@ namespace CapaPresentacion.Controllers
 
         public ActionResult Envio()
         {
-            //Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
-            //string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
-            //string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
-            //string return_view = actionName + "|" + controllerName;
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
 
-            //if (_usuario == null)
-            //{
-            //    return RedirectToAction("Login", "Control", new { returnUrl = return_view });
-            //}
-            //else
-            //{
-            //    if (Session["Tienda"] != null)  //ejemplo : Session["Tienda"]
-            //    {
-            //        ViewBag.Tienda = tienda.get_ListaTiendaXstore().Where(t => t.cbo_codigo == Session["Tienda"].ToString()).ToList();
-            //    }
-            //    else
-            //    {
-            //        ViewBag.Tienda = tienda.get_ListaTiendaXstore(true);
-            //    }
-
-            //    return View();
-            //}
-            if (Session["Tienda"] != null)
+            if (_usuario == null)
             {
-                ViewBag.Tienda = tienda.get_ListaTiendaXstore().Where(t => t.cbo_codigo == Session["Tienda"].ToString()).ToList();
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
             }
             else
             {
-                ViewBag.Tienda = tienda.get_ListaTiendaXstore(true);
+                if (Session["Tienda"] != null)
+                {
+                    ViewBag.Tienda = tienda.get_ListaTiendaXstore().Where(t => t.cbo_codigo == Session["Tienda"].ToString()).ToList();
+                }
+                else
+                {
+                    ViewBag.Tienda = tienda.get_ListaTiendaXstore(true);
+                }
+                return View();
+
             }
-            return View();
-
         }
-
         public List<Ent_Documento_Transac> listaGuia(string cod_entid, DateTime fec_ini, DateTime fec_fin)
         {
             List<Ent_Documento_Transac> listguia = datGuia.get_lista(cod_entid, fec_ini, fec_fin);
