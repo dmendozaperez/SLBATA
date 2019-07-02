@@ -120,19 +120,32 @@ namespace CapaPresentacion.Controllers
         }       
         public ActionResult ActualizarEstado(string descripcion, string serie_numero, string cod_entid, string fc_nint, string estado, string vendedor)
         {
-            vendedor = vendedor.Trim();
-            string cod_vendedor = vendedor.Substring(0,vendedor.IndexOf('-'));
-            string cod_tda = vendedor.Substring(vendedor.IndexOf('-')+1);
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
 
-            if (estado == "005")
+            if (_usuario == null)
             {
-                ActualizarDeliveryDespachado(descripcion, serie_numero, cod_entid, fc_nint, cod_vendedor, cod_tda);
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
             }
             else
             {
-                insertar_historial_estados_cv(cod_entid, fc_nint, descripcion, estado, cod_vendedor, cod_tda, serie_numero);
-            }           
-            return RedirectToAction("Ver", "CanalVenta", new { serie_numero = serie_numero, fc_nint = fc_nint, cod_entid = cod_entid });
+                vendedor = vendedor.Trim();
+                string cod_vendedor = vendedor.Substring(0, vendedor.IndexOf('-'));
+                string cod_tda = vendedor.Substring(vendedor.IndexOf('-') + 1);
+
+                if (estado == "005")
+                {
+                    ActualizarDeliveryDespachado(descripcion, serie_numero, cod_entid, fc_nint, cod_vendedor, cod_tda);
+                }
+                else
+                {
+                    insertar_historial_estados_cv(cod_entid, fc_nint, descripcion, estado, cod_vendedor, cod_tda, serie_numero);
+                }
+                return RedirectToAction("Ver", "CanalVenta", new { serie_numero = serie_numero, fc_nint = fc_nint, cod_entid = cod_entid });
+            }
+            
         }        
         public ActionResult ListarVentasCV(Ent_jQueryDataTableParams param)
         {
@@ -244,15 +257,18 @@ namespace CapaPresentacion.Controllers
 
                     foreach (var item in cvU.detalles)
                     {
-                        cxpress.item objdet = new cxpress.item();
-                        objdet.descItem = new String[] { item.nombreProducto };
-                        objdet.cantItem = new int[] { item.cantidad };
-                        objdet.pesoMasa = new float[] { 1 };
-                        objdet.altoItem = new float[] { 1 };
-                        objdet.largoItem = new float[] { 1 };
-                        objdet.anchoItem = new float[] { 1 };
-                        objdet.valorItem = new float[] { 1 };
-                        lista.Add(objdet);
+                        if (item.codigoProducto != "9999997")
+                        {
+                            cxpress.item objdet = new cxpress.item();
+                            objdet.descItem = new String[] { item.nombreProducto };
+                            objdet.cantItem = new int[] { item.cantidad };
+                            objdet.pesoMasa = new float[] { 1 };
+                            objdet.altoItem = new float[] { 1 };
+                            objdet.largoItem = new float[] { 1 };
+                            objdet.anchoItem = new float[] { 1 };
+                            objdet.valorItem = new float[] { 1 };
+                            lista.Add(objdet);
+                        }                        
                     }
 
                     objcla.listaItems = lista.ToArray();
