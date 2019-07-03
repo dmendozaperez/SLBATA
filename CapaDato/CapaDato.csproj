@@ -30,12 +30,19 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MySql.Data, Version=6.9.12.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.6.9.12\lib\net45\MySql.Data.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -53,6 +60,14 @@
     <Compile Include="Control\Dat_Funcion.cs" />
     <Compile Include="Control\Dat_Roles.cs" />
     <Compile Include="Control\Dat_Usuario.cs" />
+    <Compile Include="ECommerce\ActTracking.cs" />
+    <Compile Include="ECommerce\comercioxpress\EnviaPedidoCxpress.cs" />
+    <Compile Include="ECommerce\Conexion.cs" />
+    <Compile Include="ECommerce\Dat_Cexpress.cs" />
+    <Compile Include="ECommerce\Dat_ECommerce.cs" />
+    <Compile Include="ECommerce\Dat_PrestaShop.cs" />
+    <Compile Include="ECommerce\Dat_Urbano.cs" />
+    <Compile Include="ECommerce\Urbano\EnviaPedido.cs" />
     <Compile Include="Interface\Dat_Interface.cs" />
     <Compile Include="Maestros\Dat_Orce.cs" />
     <Compile Include="Maestros\Dat_Concepto_Suna.cs" />
@@ -64,6 +79,11 @@
     <Compile Include="Reporte\Dat_Combo.cs" />
     <Compile Include="ReportsValeCompra\Dat_ReportValeCompra.cs" />
     <Compile Include="Reports\Dat_Bataclub.cs" />
+    <Compile Include="Service References\comercioxpress\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Soporte\Dat_Documento_Transac.cs" />
     <Compile Include="Soporte\Dat_Tienda_Config.cs" />
     <Compile Include="Transac\Dat_Analisis_Mov.cs" />
@@ -81,9 +101,34 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="Service References\comercioxpress\CapaDato.comercioxpress.registrarResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\comercioxpress\CapaDato.comercioxpress.response.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\comercioxpress\WSOrdenServicio.wsdl" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\comercioxpress\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\comercioxpress\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\comercioxpress\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\comercioxpress\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

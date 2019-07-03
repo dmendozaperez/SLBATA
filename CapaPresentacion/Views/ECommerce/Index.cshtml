@@ -1,0 +1,297 @@
+﻿@using CapaEntidad.Util;
+@{AjaxOptions options = new AjaxOptions
+    {
+        HttpMethod = "GET",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "lista",
+        OnComplete = "waitingDialog.hide();",
+        OnBegin = "waitingDialog.show('Espere un momento por favor');",
+        OnFailure = "waitingDialog.hide();"
+    };
+}
+@model IEnumerable<CapaPresentacion.Models.ECommerce.ECommerce>
+@{
+    ViewBag.Title = "Consulta de Pedidos E-Commerce";
+}
+<script>
+
+    function EnviaCourier(codigo, seguimiento) {
+        @*swal({
+            title: "Enviar Courier",
+            text: "¿Desea enviar la Solicitud de recojo a la Courier?",
+            icon: "warning",
+            showCancelButton: true,
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((cambiar) => {
+            alert(cambiar.value.tostring());
+            if (cambiar) {
+                if (codigo == null || codigo === '') {
+                    swal({
+                        text: "Ingrese el campo codigo por favor.",
+                        icon: "info",
+                    });
+                } else if (seguimiento != null && (seguimiento == null || seguimiento === '')) {
+                    swal({
+                        text: "El pedido ya ha sido enviado anteriormente.",
+                        icon: "info",
+                    });
+                }
+
+                else {
+                        // Ejecuta el envío
+                        var form = $("#Formulario");
+                        document.getElementById("ven_id").value = codigo;
+                        form.attr("action", "@Url.Action("Envia_Courier", "Ecommerce")");
+                        form.submit();
+                }
+            }
+        });*@
+    if (codigo == null || codigo === '') {
+        //swal("Ingrese el campo codigo por favor.", {
+        //    icon: "info",
+        //});
+        alert("Ingrese el campo codigo por favor.");
+    } else if (seguimiento != null && seguimiento != '') {
+        //swal("El pedido ya ha sido enviado anteriormente.", {
+        //    icon: "info",
+        //});
+        alert("El pedido ya ha sido enviado anteriormente.");
+    }
+    else {
+        // Ejecuta el envío
+        alert("Procesando.");
+        var form = $("#Formulario");
+        document.getElementById("ven_id").value = codigo;
+        form.attr("action", "@Url.Action("Envia_Courier", "Ecommerce")");
+        form.submit();
+    }
+    }
+
+    $(document).ready(function () {
+        $('.dataTable').DataTable();
+
+
+        $('.datepicker').datepicker({
+            format: "dd/mm/yyyy",
+            startDate : "01/04/2019",
+            autoclose : true
+        });
+        $('.select2').select2();
+    });
+    //function cargarDestinos() {
+    //    var tiendaOrigen = $("#tiendaOrigen option:selected").val();
+    //    $.ajax({
+    //        type: "POST",                                              // tipo de request que estamos generando
+    //        url: 'GetDestinosJson',                    // URL al que vamos a hacer el pedido
+    //        data: '{ "tiendaOrigen": "'+ tiendaOrigen+'" }',                                                // data es un arreglo JSON que contiene los parámetros que
+    //        // van a ser recibidos por la función del servidor
+    //        contentType: "application/json; charset=utf-8",            // tipo de contenido
+    //        dataType: "json",                                          // formato de transmición de datos
+    //        async: true,                                               // si es asincrónico o no
+    //        success: function (resultado) {                            // función que va a ejecutar si el pedido fue exitoso
+    //            console.log(resultado);
+    //            $('#tiendaDestino').html(ParseJSONSelectList(resultado));
+    //            //var num = resultado.d;
+    //            //$('#lblResultado').text('Número aleatorio es ' + num);
+    //            //alert(num)
+    //        },
+    //        error: function (XMLHttpRequest, textStatus, errorThrown) { // función que va a ejecutar si hubo algún tipo de error en el pedido
+    //            var error = eval("(" + XMLHttpRequest.responseText + ")");
+    //            alert(error.Message);
+    //        }
+    //    });
+    //}
+    //function ParseJSONSelectList(JSONData) {
+    //    var html = ''; //'<option value="-1" Selected>TODOS</option>';
+    //    var len = JSONData.length;
+    //    for (var i = 0; i < len; i++) {
+    //        html += '<option value="' + JSONData[i].Value +  '"' + (JSONData[i].Selected == true ? ' Selected ' : '') + '>' + JSONData[i].Text + '</option>';
+    //    }
+    //    return html;
+    //}
+    function MostrarReporte(e) {
+        $('#load').show();
+        $("#load").attr("src", "../AspNetForms/Planilla.aspx");
+    }
+    function SetearParametros(e) {
+        //    var _vtA = $('select[name="tiendaOrigen"] option:selected').text();
+        //    var _vtB = $('select[name="tiendaDestino"] option:selected').text();
+
+        //    var _A_vtEstados = [];
+        //    $("#estado option:selected").each(function () {
+        //        console.log("each. " + $(this).text());
+        //        _A_vtEstados.push($(this).text());
+        //    });
+        //    console.log(_A_vtEstados);
+        //    var _vtEstados = _A_vtEstados.join();
+
+        //    var _A_tipos = [];
+        //    $("#tipo option:selected").each(function () {
+        //        _A_tipos.push($(this).text());
+        //    });
+        //    var _vtTipos = _A_tipos.join();
+
+        //    $("#vtA").val(_vtA);
+        //    $("#vtB").val(_vtB);
+        //    $("#vtEstados").val(_vtEstados);
+        //    $("#vtTipos").val(_vtTipos);
+    }
+
+</script>
+<style>
+    iframe {
+        border: none;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        height: 800px;
+    }
+</style>
+
+
+
+@using (Html.BeginForm("Index", "ECommerce", FormMethod.Post, new { @id = "Formulario" }))
+{
+    @Html.Hidden("ven_id", null, new { @id = "ven_id" })
+    @*@Html.Hidden("vtA", null,new { @id= "vtA" })
+    @Html.Hidden("vtB", null, new { @id = "vtB" })
+    @Html.Hidden("vtEstados", null, new { @id = "vtEstados" })
+    @Html.Hidden("vtTipos", null, new { @id = "vtTipos" })*@
+    <asp:HiddenField ID="id_asd" />
+    <div class="box box-body box-primary">
+        <div class="row">
+            <div class="col-md-12">
+                <button name="buscar" class="btn btn-primary" onclick="SetearParametros();" type="submit"><span class="glyphicon glyphicon-search"></span>&nbsp;Buscar</button>
+                @*<button type="button" class="btn btn-info" onclick="javascript: MostrarReporte()"><span class="glyphicon glyphicon-th-list"></span>&nbsp;Ver Reporte</button>*@
+            </div>                        
+        </div>        
+        <br />
+        <div class="row">
+
+            <div class="col-md-6">
+                @*<div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="tiendaOrigen">Tienda Origen:</label>
+                            @Html.DropDownList("tiendaOrigen", (List<SelectListItem>)ViewBag._SelectOrigen, new { @class = "form-control select2", @id = "tiendaOrigen" ,@name = "tiendaOrigen", @onchange = "cargarDestinos();" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="tiendaDestino">Tienda Destino:</label>
+                            @Html.DropDownList("tiendaDestino", (List<SelectListItem>)ViewBag._SelectDestino, new { @class = "form-control select2", @id = "tiendaDestino" })                                                     
+                        </div>
+                    </div>
+                </div>*@
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="fdesde">Desde:</label>
+                            <input type="text" name="fdesde" class="form-control datepicker" value="@ViewBag._fdesde" id="fdesde">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="fhasta">Hasta:</label>
+                            <input type="text" name="fhasta" class="form-control datepicker" value="@ViewBag._fhasta" id="fhasta">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*<div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="tipo">Tipo:</label>
+                            @Html.DropDownList("tipo", (List<SelectListItem>)ViewBag._selectTipos, new { @class = "form-control select2 tipo", @id = "tipo" , @multiple="" })                            
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="estado">Estado</label>
+                            @Html.DropDownList("estado", (List<SelectListItem>)ViewBag._selectEstados, new { @class = "form-control select2 estado", @id = "estado", @multiple = "" })
+                        </div>
+                    </div>
+                  
+                </div>
+
+            </div>*@
+
+        </div>
+        <div class="row">  
+            <div class="col-md-4">
+                <div class="form-group ">
+                    <label>Cliente:</label>
+                    <input type="text" placeholder="No. Documento : 12345678" name="noDocCli" id="noDocCli" class="form-control" value="@ViewBag._noDocCli" />
+                    <!--input type="text" placeholder="Raz. Social o Nombres y Apellidos" name="noDocumento" id="noDocumento" class="form-control" /-->
+                </div>     
+            </div> 
+            <div class="col-md-4">
+                <label>No Documento:</label>
+                <input type="text" placeholder="Serie-Número:  B123-87654321" name="noDoc" id="noDoc" class="form-control" value="@ViewBag._noDoc" />
+            </div>                      
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-hover table-striped table-responsive dataTable">
+                    <thead>
+                        <tr style="background-color:#3d566e; color:#ecf0f1">
+                            <th>Id</th>
+                            <th>Referencia</th>
+                            <th>Fecha</th>
+                            <th>Documento</th>
+                            <th>Doc. Cliente</th>
+                            <th>Cliente</th>
+                            <th>Courier</th>
+                            <th>Seguimiento Courier</th>
+                            <th>Llamdo a Courier</th>
+                            <th>Ver Guía Interna</th>
+                        </tr>
+                    </thead>
+                    <tbody data-bind="foreach:">
+                        @foreach (var row in Model)
+                        {
+                            <tr>
+                                <td width="88px">@row.idPedido</td>
+                                <td>@row.Referencia</td>
+                                <td>@row.fechaPedido.ToString("dd/MM/yyyy")</td>
+                                <td>@row.SerieDoc - @row.NroDoc</td>
+                                <td>@row.noDocCli</td>
+                                <td>@row.nombreCompletoCliente</td>
+                                <td>@row.nom_courier</td>
+                                @if (row.nom_courier == "Comercio Xpress")
+                                {   <td><a href="https://bata.pe/tracking-ce/?norder=@row.codSeguimiento" target="_blank">@row.codSeguimiento</a></td>       }
+                                else
+                                {   <td><a href="http://app.urbano.com.pe/plugin/etracking/etracking/?guia=@row.codSeguimiento" target="_blank">@row.codSeguimiento</a></td>       }
+                                <td width="70px" class="p-0">
+                                    <ul class="list-inline" style="margin-bottom: 0px;">
+                                        <li>
+                                            <a class="btn btn-sm btn-primary"  onclick="EnviaCourier('@row.SerieDoc@row.NroDoc', '@row.codSeguimiento');"><span class="glyphicon glyphicon-list"></span></a>
+                                        </li>                                       
+                                    </ul>
+                                </td>
+                                <td width="70px" class="p-0">
+                                    <ul class="list-inline" style="margin-bottom: 0px;">
+                                        <li>
+                                            <a class="btn btn-sm btn-primary" href="/ECommerce/GuiaEC" target="popup" onClick="window.open(this.href, this.target, 'width=800,height=500'); return false;"><span class="glyphicon glyphicon-list"></span></a>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div id="ifrReporte" class="well" style="width: 100%; height: 800px;">
+                    <iframe id="load" src="" frameborder="0" marginheight="1" marginwidth="1" scrolling="auto" onload="javascript: waitingDialog.hide();"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.cxpress.com/WSOrdenServicio/" name="WSOrdenServicio" targetNamespace="http://www.cxpress.com/WSOrdenServicio/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://www.cxpress.com/WSOrdenServicio/">
+      <xsd:complexType name="OrdenServicioReqParm">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="nroPedido" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="listaItems" type="tns:item" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="volumen" type="xsd:double" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="tipoServicio" type="xsd:long" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="horaInicioEntrega" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="horaFinEntrega" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="codCliente" type="xsd:long" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="codCtaCliente" type="xsd:long" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="cantPiezas" type="xsd:int" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="codRef1" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="codRef2" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="valorProducto" type="xsd:double" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="cobroAdicional" type="xsd:double" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="codTipoMoneda" type="xsd:long" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="codTipoPago" type="xsd:long" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="devDoc1" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="devDoc2" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="devDoc3" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="devDoc4" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="devDoc5" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="devDoc6" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="devDoc7" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="devDoc8" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="obsDestinatariosCopia" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="tipoOrigenRecojo" type="xsd:int" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="codTipoDocProveedor" type="xsd:long" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="nroDocProveedor" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="codPudoRecojo" type="xsd:long" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="codDireccionProveedor" type="xsd:long" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="indicadorGeneraRecojo" type="xsd:int" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="direccRecojo" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="refDireccRecojo" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="codDepartRecojo" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="codProvRecojo" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="codDistRecojo" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="latitudRecojo" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="longitudRecojo" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="nomDestinatarioRecojo" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="apellDestinatarioRecojo" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="codTipoDocDestRecojo" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="nroDocDestRecojo" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="telefDestinatarioRecojo" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="emailDestinatarioRecojo" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="horaIniRecojo" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="horaFinRecojo" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="tipoDestino" type="xsd:int" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="codPudoEntrega" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="codReservaPudo" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="direccEntrega" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="refDireccEntrega" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="codDepartEntrega" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="codProvEntrega" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="codDistEntrega" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="latitudEntrega" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="longitudEntrega" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="nomDestEntrega" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="apellDestEntrega" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="codTipoDocDestEntrega" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="nroDocDestEntrega" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="telefDestEntrega" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="emailDestEntrega" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="nomDestEntrega1" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="apellDestEntrega1" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="codTipoDocDestEntrega1" type="xsd:long" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="nroDocDestEntrega1" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="telefDestEntrega1" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="emailDestEntrega1" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="nomDestEntrega2" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="apellDestEntrega2" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="codTipoDocDestEntrega2" type="xsd:long" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="nroDocDestEntrega2" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="telefDestEntrega2" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="emailDestEntrega2" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="idUsuario" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="deTerminal" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="response">
+        <xsd:sequence>
+          <xsd:element name="indicadorExito" type="xsd:int" />
+          <xsd:element name="msg" type="xsd:string" />
+          <xsd:element name="nroOrdenServicio" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="listaPiezas" type="tns:pieza" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="item">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="descItem" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="cantItem" type="xsd:int" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="pesoMasa" type="xsd:float" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="altoItem" type="xsd:float" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="largoItem" type="xsd:float" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="anchoItem" type="xsd:float" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="valorItem" type="xsd:float" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="pieza">
+        <xsd:sequence>
+          <xsd:element name="nuPieza" type="xsd:string" />
+          <xsd:element name="descCorta" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="registrarResponse">
+    <wsdl:part name="salida" type="tns:response" />
+  </wsdl:message>
+  <wsdl:message name="registrarRequest">
+    <wsdl:part name="entrada" type="tns:OrdenServicioReqParm" />
+  </wsdl:message>
+  <wsdl:portType name="WSOrdenServicio">
+    <wsdl:operation name="registrar">
+      <wsdl:input message="tns:registrarRequest" />
+      <wsdl:output message="tns:registrarResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="WSOrdenServicioSOAP" type="tns:WSOrdenServicio">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="registrar">
+      <soap:operation soapAction="http://www.cxpress.com/WSOrdenServicio/registrar" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="WSOrdenServicioService">
+    <wsdl:port name="WSOrdenServicioSOAP" binding="tns:WSOrdenServicioSOAP">
+      <soap:address location="http://www.comercioxpress.com/cxpress-soap-web/services/WSOrdenServicio" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

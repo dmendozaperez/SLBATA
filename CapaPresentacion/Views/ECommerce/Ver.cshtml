@@ -1,0 +1,254 @@
+﻿@model CapaPresentacion.Models.ECommerce.ECommerce
+@{
+    ViewBag.Title = "Ver : " + @ViewBag.id;
+}
+<br />
+<script>
+    function EnviaCourier() {
+        var tienda = @Session["Tienda"];
+        var vendedor = $("#vendedor").children("option:selected").val();
+        swal({
+            title: "Enviar a Courier",
+            text: "¿Desea enviar la Solicitud de recojo a la Courier?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((cambiar) => {
+            if (cambiar) {
+                //var descripcion = $('#descripcion').val();
+                //if (descripcion == null || descripcion === '') {
+                //    swal("Ingrese el campo descripción por favor.", {
+                //        icon: "info",
+                //    });
+                //} else if (tienda != null && (vendedor == null || vendedor === '') ) {
+                //    swal("Seleccione vendedor por favor.", {
+                //        icon: "info",
+                //    });
+                //}
+
+                //else {
+                    //if (estado == 'aceptado') {
+                var form = $("#frmEnviaCourier");
+                form.attr("action", "@Url.Action("EnviaCourier", "ECommerce")");
+                form.submit();
+                    @*} else if(estado == 'rechazado') {
+                       var form = $("#frmActualizarEstado");
+                            form.attr("action", "@Url.Action("ActualizarRechazado", "ECommerce")");
+                            form.submit();
+                    }*@
+                //}
+            }
+        });
+    }
+    
+    
+</script>
+<div class="">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="box box-body box-success">
+                <h4>Daatos generales de la venta:</h4>
+                <ul>
+                    <li>
+                        <label>Cliente: </label>
+                        <ul>
+                            <li><label>No. Documento: </label> @Model.noDocCli</li>
+                            <li><label>Cliente: </label> @Model.nombreCompletoCliente</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <label>Comprobante:</label>
+                        <ul>
+                            <li><label>Serie - Numero: </label> SerieDoc + "-"+@Model.NroDoc </li>
+                            @if (Model.tipoComprobante == "01")
+                            {
+                                <li><label>Tipo: </label>Factura</li>
+                            }
+                            else if (Model.tipoComprobante == "03")
+                            {
+                                <li><label>Tipo: </label>Boleta</li>
+                            }
+                            else
+                            {
+                                <li><label>Tipo: </label> Model.tipoComprobante</li>
+                            }
+                            <li><label>Fecha : </label> @Model.fechaPedido.ToString("dd/MM/yyyy") </li>
+                        </ul>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+        @*<div class="col-md-6">
+            <div class="box box-body box-info">
+                <h4>Datos del canal de venta:</h4>
+                <ul>
+                    <li>
+                        <label>Tipo: 
+                        @if (Model.tipo == "1")
+                        {
+                            <b>Recogo en esta tienda.</b>
+                        }
+                        else if (Model.tipo == "2")
+                        {
+                            <b>Recogo en otra tienda.</b>
+                        }
+                        else
+                        {
+                            <b>Delivery al cliente.</b>
+                        }
+                        </label>
+                    </li>
+                    <li>
+                        <label>Tienda Destino (B): </label>
+                        <ul>
+                            <li><label>Tienda: </label> @Model.tiendaDestino</li>
+                            <li><label>Direccion: </label> @Model.direccionB</li>
+                            <!--li><label>Telefono: </label> Telefono de la tienda B</!--li-->
+                        </ul>
+                    </li>
+                    <li>
+                        <label>Cliente: </label>
+                        <ul>
+                            <li><label>No. Documento: </label> @Model.noDocCli</li>
+                            <li><label>Cliente: </label> @Model.nombreCompletoCliente</li>
+                            <li><label>Direccion: </label> @Model.direccionCliente</li>
+                            <li><label>Referencia: </label> @Model.referenciaCliente</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>*@
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-body box-info">
+                <h4>Detalle de productos</h4>
+                <table class="table table-hover table-striped table-responsive">
+                    <thead>
+                        <tr style="background-color:#3d566e; color:#ecf0f1">
+                            <th>Producto</th>
+                            <th>Talla</th>
+                            <th>Cantidad</th>
+                            <th>Pre. Uni</th>
+                            <th>Descuento</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody data-bind="foreach:">
+                        @foreach (var item in Model.detalles)
+                        {
+                            <tr>
+                                <td>@item.codigoProducto - @item.nombreProducto</td>
+                                <td>@item.talla</td>
+                                <td>@item.cantidad</td>
+                                <td>@item.precioUnitario</td>
+                                <td>@item.descuento</td>
+                                <td>@item.total</td>
+                            </tr>
+                        }                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-5">
+            <div class="box box-body box-info">
+                <h4>Informacion del estado</h4>                
+               @using (Html.BeginForm("", "ECommerce", FormMethod.Post, new { @id = "frmEnviaCourier" }))
+               {
+                   @Html.Hidden("cod_entid", Model.cod_entid);
+                <ul>
+                    <li>
+                        <label>Estado Actual: </label> 
+                                @if (Model.codSeguimiento == null || Model.codSeguimiento == "")
+                                {
+                                    <label>Sin Enviar</label >
+                                }
+                                else
+                                {
+                                    <label>Enviado</label>
+                                }
+                    </li>
+
+                    @*@if (Model.estado == "001")
+                    {*@
+
+                        <li>
+                            <label>Envío a Courier: </label>
+                            <ul class="list-inline" style="margin-bottom: 0px;">
+                            @if (Model.codSeguimiento == null || Model.codSeguimiento == "")
+                            {
+                                <li>
+                                    <button type="button" class="btn btn-sm btn-success" onclick="EnviaCourier('');"><span class="glyphicon glyphicon-ok-sign"></span> Aceptado</button>
+                                </li>
+                            }
+                            else
+                            {
+                                <li>
+                                    <label>Ya fue procesado</label>
+                                    @*<button type="button" class="btn btn-sm btn-danger" onclick="setEstado('rechazado');"><span class="glyphicon glyphicon-exclamation-sign"></span> Rechazado</button>*@
+                                </li>
+                            }
+                            </ul>
+
+                        </li>
+                        @*<li>
+                            Descripcion:
+                            @Html.TextArea("descripcion", new { @class = "form-control", @id = "descripcion" })
+                        </li>
+                        if (Session["Tienda"] != null)
+                        {
+                            <li>
+                                Vendedor:
+                                @Html.DropDownList("vendedor", (List<SelectListItem>)ViewBag._SelectVendedor, new { @class = "form-control select2", @id = "vendedor" })
+                            </li>
+                        }*@
+                    @*}*@
+
+                </ul>
+                            }
+            </div>
+        </div>
+        @*<div class="col-md-7">
+            <div class="box box-body box-info">
+                <h4>Historial de cambios de estado:</h4>
+                <table class="table table-hover table-striped table-responsive">
+                    <thead>
+                        <tr style="background-color:#3d566e; color:#ecf0f1">
+                            <th>Estado</th>
+                            <th>Fec Hor</th>
+                            <th>Usuario</th>
+                            <th>Vendedor</th>
+                            <th>Descripción</th>
+                        </tr>
+                    </thead>
+                    <tbody data-bind="foreach:">
+                        <tr>
+                            <td><span class="label label-primary">FACTURADO</span></td>
+                            <td>@Model.fechaVenta.ToString("dd/MM/yyyy") @Model.hora</td>
+                            <td>@Model.tiendaOrigen</td>
+                            <td>@Model.idVendedor - @Model.nomVendedor</td>
+                            <td>Facturado desde la tienda de origen.</td>
+                        </tr>
+                        @if (Model.historialEstados != null)
+                        {
+                            foreach (var item in Model.historialEstados)
+                            {
+                                <tr>
+                                    <td><span class="label label-@item.colorEstado">@item.nombreEstado</span>                                       
+                                    <td>@item.fecha</td>
+                                    <td>@item.usu_nombre</td>
+                                    <td>@item.cod_vendedor - @item.nomVendedor</td>
+                                    <td>@item.descripcion</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>*@
+    </div>
+</div>
