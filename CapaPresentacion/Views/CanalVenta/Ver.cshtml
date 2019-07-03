@@ -2,6 +2,7 @@
 @{
     ViewBag.Title =Model.nombreTipoCV + " -  " +  @ViewBag.id;
 }
+
 <br />
 <div class="row">
     <div class="col-md-4">
@@ -75,7 +76,7 @@
                         <label>Servicio: <b>@(Model.informacionTiendaEnvio == null ? "" : Model.informacionTiendaEnvio.courier ) </b></label>
                     </li>
                     <li>
-                        <label>Codigo Guia Electronica :&nbsp;&nbsp;</label><a title="Imprimir codigo de barras." href="@Url.Action("ImprimirCodigo", new { id = Model.serieNumero, fc_nint = Model.fc_nint, tienda = Model.cod_entid })"><b>@Model.guia_electronica</b></a>
+                        <label>Codigo Guia Electronica :&nbsp;&nbsp;</label><a title="Imprimir codigo de barras." style="cursor:pointer" id="guiaE"><b>@Model.guia_electronica</b></a>
                     </li>
                     <li>
                         <a title="Sigue tu pedido." href="https://www.comercioxpress.com/" target="_blank" ><b>Sigue tu pedido en comercio xpress...</b></a>
@@ -133,9 +134,9 @@
             <h4>Informacion del estado</h4>
             @using (Html.BeginForm("ActualizarEstado", "CanalVenta", FormMethod.Post, new { @id = "frmActualizarEstado" }))
             {
-                @Html.Hidden("cod_entid", Model.cod_entid);
-                @Html.Hidden("fc_nint", Model.fc_nint);
-                @Html.Hidden("serie_numero", Model.serieNumero);
+                @Html.Hidden("cod_entid", Model.cod_entid,new {id = "cod_entid" });
+                @Html.Hidden("fc_nint", Model.fc_nint, new { id = "fc_nint" });
+                @Html.Hidden("serie_numero", Model.serieNumero, new { id = "serie_numero" });
                 <ul class="list-group">
                     <li class="list-group-item list-group-item-@Model.colorEstado">
                         <span class="float-left">Estado Actual:</span>&nbsp;&nbsp;<span class="label label-@Model.colorEstado">@Model.nombreEstado</span>
@@ -227,13 +228,117 @@
     <div class="col-md-12">
         <a href="@Url.Action("Index", "CanalVenta")" class="btn btn-primary"><span class="glyphicon glyphicon-step-backward"></span>&nbsp;Atras</a>
     </div>
-
+    <img id="itf" class="hidden"/>
 </div>    
 
 
 <script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js"></script>
+<script src="@Url.Content("~/Scripts/JsBarcode.all.js")"></script>
+
 <script>
+    $("#guiaE").click(function () {
+        var cod_entid = $("#cod_entid").val();
+        var fc_nint = $("#fc_nint").val();
+        var serie_numero = $("#serie_numero").val();
+        waitingDialog.show('Espere un momento por favor');
+        $.ajax({
+            type: "POST",                                              // tipo de request que estamos generando
+            url: '@Url.Action("ImprimirCodigo", "CanalVenta")',                    // URL al que vamos a hacer el pedido
+            data: {cod_entid:cod_entid , fc_nint : fc_nint , serie_numero:serie_numero},    // data es un arreglo JSON que contiene los parámetros que
+            // van a ser recibidos por la función del servidor           // tipo de contenido
+            //dataType: "json",                                              // si es asincrónico o no
+            success: function (data) {
+                validadoBataClub = true;
+                waitingDialog.hide();
+                if (data.estado == 1) {
+                    var guia = data.guia
+                    var cliente = data.cliente
+                    var _direccion = data.direccion
+                    var _referencia = data.referencia
+                    var ubigeo = data.ubigeo
+
+                    /**/
+                    JsBarcode("#itf", guia);
+                    const img = document.querySelector('img#itf');
+                    var doc = new jsPDF();
+                    var fsT = 11;
+                    var fsD = 12;
+
+                    doc.setFont('courier');
+                    doc.setFontType('bold');
+                    doc.addImage(img.src, 'png', 67, 10, 0, 0);
+
+
+                    doc.setFontSize(fsT);
+                    doc.text(20, 60, 'Destinatario: ');
+                    doc.setFontSize(fsD);
+                    doc.text(55, 60, cliente);
+
+                    doc.setFontSize(fsT);
+                    doc.text(20, 70, 'Direccion: ');
+                    doc.setFontSize(fsD);
+                    var direccion = _direccion;
+                    var lineaDireccion = doc.splitTextToSize(direccion, 150)
+                    doc.text(55, 70, lineaDireccion);
+
+                    doc.setFontSize(fsT);
+                    doc.text(20, 85, 'Referencia: ');
+                    doc.setFontSize(fsD);
+                    var referencia = _referencia;
+                    var lineaReferencia = doc.splitTextToSize(referencia, 150)
+                    doc.text(55, 85, lineaReferencia);
+
+                    doc.setFontSize(fsT);
+                    doc.text(20, 100, 'Ubigeo: ');
+                    doc.setFontSize(fsD);
+                    doc.text(55, 100, ubigeo);
+                    /****/
+                    var mt2 = 150;
+
+                    doc.addImage(img.src, 'png', 67, 10 + mt2, 0, 0);
+
+                    doc.setFontSize(fsT);
+                    doc.text(20, 60 + mt2, 'Destinatario: ');
+                    doc.setFontSize(fsD);
+                    doc.text(55, 60 + mt2, cliente);
+
+                    doc.setFontSize(fsT);
+                    doc.text(20, 70 + mt2, 'Direccion: ');
+                    doc.setFontSize(fsD);
+                    doc.text(55, 70 + mt2, lineaDireccion);
+
+                    doc.setFontSize(fsT);
+                    doc.text(20, 85 + mt2, 'Referencia: ');
+                    doc.setFontSize(fsD);
+                    doc.text(55, 85 + mt2, lineaReferencia);
+
+                    doc.setFontSize(fsT);
+                    doc.text(20, 100 + mt2, 'Ubigeo: ');
+                    doc.setFontSize(fsD);
+                    doc.text(55, 100 + mt2, ubigeo);
+
+                    doc.save('GuiaElectronica_'+ guia +'.pdf');
+                    waitingDialog.hide();
+                } else {
+                    waitingDialog.hide();
+                    swal({
+                        title: "Error",
+                        text: "Error al descargar codigo de barras.",
+                        icon: "error",
+                        dangerMode: true,
+                    });
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) { // función que va a ejecutar si hubo algún tipo de error en el pedido
+                var error = eval("(" + XMLHttpRequest.responseText + ")");
+                waitingDialog.hide();
+                toastr.error('Hubo un error en el registro : ' + error, "Alerta");
+            }
+        });
+    });
+
     function setEstado(estado) {
         var tienda = "@(Session["Tienda"] == null ? null : Session["Tienda"].ToString())";
         console.log(tienda);
@@ -266,6 +371,7 @@
             }
         });
     }
+
 </script>
     @if (TempData["Success"] != null)
     {
