@@ -299,6 +299,7 @@
     <Compile Include="Controllers\CanalVentaController.cs" />
     <Compile Include="Controllers\CEController.cs" />
     <Compile Include="Controllers\ComunicadoController.cs" />
+    <Compile Include="Controllers\ContabilidadController.cs" />
     <Compile Include="Controllers\DocumentoController.cs" />
     <Compile Include="Controllers\InterfaceController.cs" />
     <Compile Include="Controllers\ArticuloSustitutoController.cs" />
@@ -1438,6 +1439,8 @@
     <Content Include="Views\CanalVenta\ListaVentas.cshtml" />
     <Content Include="Views\BataClub\Index.cshtml" />
     <Content Include="Views\BataClub\_Table.cshtml" />
+    <Content Include="Views\Contabilidad\Estado_Documento.cshtml" />
+    <Content Include="Views\Contabilidad\_Table.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

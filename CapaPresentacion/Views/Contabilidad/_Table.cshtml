@@ -1,0 +1,97 @@
+﻿@*<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.min.css" />*@
+<style type="text/css">
+    .dt-buttons {
+        display: none;
+    }
+
+    #example_filter {
+        display: none;
+    }
+</style>
+
+
+<table id="example" class="table table-hover dataTable table-striped table-responsive">
+    <thead>
+        <tr style="background-color:#3d566e; color:#ecf0f1">
+            <th>Tienda</th>
+            <th>Fecha</th>
+            <th>Tipo de documento</th>
+            <th>Serie</th>
+            <th>Número</th>
+            <th>Total</th>
+            <th>Estado</th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach:"></tbody>
+    <tfoot>
+        <tr>
+            <th>Tienda</th>
+            <th>Fecha</th>
+            <th>Tipo de documento</th>
+            <th>Serie</th>
+            <th>Número</th>
+            <th>Total</th>
+            <th>Estado</th>
+        </tr>
+    </tfoot>
+</table>
+
+<script>
+
+    $(document).ready(function () {
+        $('.table').dataTable({
+            "language": {
+                "url": "../Scripts/DataTables/Spanish.json"
+            },
+            "bProcessing": true, // se agrego para probar
+            "bServerSide": true,
+            "bAutoWidth": false,
+            "sAjaxSource": '@Url.Action("getDetAjax","Contabilidad")',
+            "fnServerParams": function (aoData) {
+                //aoData.push({ "name": "dwtda", "value": $.trim($('#dwtda').val()) });
+                //aoData.push({ "name": "fec_ini", "value": $.trim($('#fec_ini').val()) });
+                //aoData.push({ "name": "fec_fin", "value": $.trim($('#fec_fin').val()) });
+            },
+            "bdestroy": true,
+            "start": 0,
+            "order": [0, "asc"],
+            "bDeferRender": true,
+            "aoColumns": [
+                    { "sName": "tienda", "mData": "tienda" },
+                    { "sName": "fecha", "mData": "fecha" },
+                    { "sName": "tipo_doc", "mData": "tipo_doc" },
+                    { "sName": "serie", "mData": "serie" },
+                    { "sName": "numero", "mData": "numero" },
+                    { "sName": "total", "mData": "total" },
+                    //{ "sName": "estado", "mData": "estado" }
+                    { 
+                        //Label del estado de los documentos ->estado
+                        "render": function (data, type, full) {
+                            if (full.estado == 'FINALIZADO') {
+                                return '<div style="display: block;background-color: #41b341;" class="badge badge-pill badge-success disabled"><a class="badge badge-success disabled" style=" background-color: #41b341;"  >FINALIZADO</a></div>';
+                            } else {
+                                return '<div style="display: block;background-color:  #d9534f;" class="badge badge-pill badge-danger disabled"><a class="badge badge-danger disabled" style=" background-color: #d9534f;"  >CANCELADO</a></div>';
+                            }
+                        }
+                    }
+            ],
+            dom: 'Bfrtip',
+            buttons: [
+            {
+                extend: 'excelHtml5',
+                title: 'Bataclub_xls'
+            },
+            {
+                extend: 'csvHtml5',
+                title: 'BataClub_csv'
+            },
+            {
+                extend: 'pdfHtml5',
+                title: 'BataClub_pdf'
+            },
+            'copyHtml5',
+            ]
+        });
+
+    });
+</script>
