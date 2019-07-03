@@ -56,41 +56,7 @@ namespace CapaPresentacion.Controllers
             //    return View(selectVentas());
             //}
         }
-        //[HttpPost]
-        public JsonResult  BuscarNumAleatorio()    // el método debe ser de static
-        {
-            Random aleatorio = new Random();
-            return Json("'num':" + "'"+aleatorio.Next(0, 1000).ToString()+"'");
-        }
-        [HttpPost]
-        public JsonResult GetDestinosJson(string tiendaOrigen)
-        {           
-            return Json(SelectDestino(tiendaOrigen));
-        }
-        private List<SelectListItem> SelectTipos(string value = null)
-        {
-            string[] _values = value.Split(',');
-            List<SelectListItem> list = new List<SelectListItem>();
-            list.Add(new SelectListItem() { Text = "1.RECOGO EN ESTA TIENDA", Value = "1" , Selected = _existe_en_array(_values , "1") });
-            list.Add(new SelectListItem() { Text = "2.RECOGO EN OTRA TIENDA", Value = "2", Selected = _existe_en_array(_values, "2") });
-            list.Add(new SelectListItem() { Text = "3.DELIVERY AL CLIENTE", Value = "3", Selected = _existe_en_array(_values, "3") });
-            return list;           
-        }
-        private List<SelectListItem> SelectEstados(string value = null)
-        {
-            string[] _values = value.Split(',');
-            List<SelectListItem> list = new List<SelectListItem>();
-            list.Add(new SelectListItem() { Text = "FACTURADO", Value = "001", Selected = _existe_en_array(_values, "001") });
-            list.Add(new SelectListItem() { Text = "TERMINADO", Value = "002", Selected = _existe_en_array(_values, "002") });
-            list.Add(new SelectListItem() { Text = "RECHAZADO", Value = "003", Selected = _existe_en_array(_values, "003") });
-            return list;
-        }
-        public ActionResult Ver(string id,string cod_entid,string fc_nint)
-        {
-            ViewBag.id = id;
-            ViewBag._SelectVendedor = SelectVendedor(cod_entid);
-            return View(selectVenta( cod_entid , fc_nint));
-        }
+
         public ActionResult Envia_Courier(string ven_id)
         {
             //Basico.act_presta_urbano(grabar_numerodoc, ref _error, ref _cod_urbano)
@@ -152,7 +118,7 @@ namespace CapaPresentacion.Controllers
                                         guia_urb = ent_urbano.guia;
                                         break;
                                     }
-                                }
+                               }
                             }
                         }
 
