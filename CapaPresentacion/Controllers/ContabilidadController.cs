@@ -1,8 +1,10 @@
 ﻿using CapaDato.Contabilidad;
+using CapaDato.Maestros;
 using CapaDato.Reporte;
 using CapaEntidad.Contabilidad;
 using CapaEntidad.Control;
 using CapaEntidad.General;
+using CapaEntidad.Maestros;
 using CapaEntidad.Util;
 using System;
 using System.Collections.Generic;
@@ -14,11 +16,14 @@ namespace CapaPresentacion.Controllers
 {
     public class ContabilidadController : Controller
     {
+        private Dat_ListaTienda dat_lista_tienda = new Dat_ListaTienda();
+        private Dat_Contabilidad_EstadoDocumento datConta = new Dat_Contabilidad_EstadoDocumento();
+        private string _session_contabilidad_num_private = "_session_contabilidad_num_private"; 
+        private string _session_contb_tienda_peru = "_session_contb_tienda_peru";
 
-        private Dat_Contabilidad_EstadoDocumento datConta = new Dat_Contabilidad_EstadoDocumento(); //gft
-        private string _session_contabilidad_num_private = "_session_contabilidad_num_private"; //gft
-        private Dat_Combo tienda = new Dat_Combo();//gft
         // GET: Contabilidad
+
+        #region Contabilidad_Estado_Documento   
         //INDEX
         public ActionResult Estado_Documento()
         {
@@ -33,18 +38,20 @@ namespace CapaPresentacion.Controllers
             //}
             //else
             //{
-                if (Session["Tienda"] != null)
-                {
-                    ViewBag.Tienda = tienda.get_ListaTiendaXstore().Where(t => t.cbo_codigo == Session["Tienda"].ToString()).ToList();
-                }
-                else
-                {
-                    ViewBag.Tienda = tienda.get_ListaTiendaXstore(true);
-                }
-                return View();
+            if (Session[_session_contb_tienda_peru] != null)
+            {
+                ViewBag.Tienda = Session["_session_contb_tienda_peru"];
+            }
+            else
+            {
+                ViewBag.Tienda = dat_lista_tienda.get_tienda("PE", "1");
+                List<Ent_ListaTienda> listienda = ViewBag.Tienda;
+                Session[_session_contb_tienda_peru] = listienda;
+            }
+
+            return View();
           //  }
         }
-
 
         public List<Ent_Contabilidad_EstadoDocumento> listaTable(string cod_entid, DateTime fec_ini, DateTime fec_fin)
         {
@@ -79,7 +86,27 @@ namespace CapaPresentacion.Controllers
 
             //Manejador de orden
             var sortIdx = Convert.ToInt32(Request["iSortCol_0"]);
-
+            Func<Ent_Contabilidad_EstadoDocumento, string> orderingFunction =
+                   (
+                   m => sortIdx == 0 ? m.fecha :
+                    m.fecha
+                   );
+            if (!string.IsNullOrEmpty(param.sSearch))
+            {
+                filteredMembers = membercol
+                    .Where(m => m.estado.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    m.fecha.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    m.numero.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    m.serie.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    m.tienda.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    m.tipo_doc.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    m.total.ToUpper().Contains(param.sSearch.ToUpper()));
+            }
+            var sortDirection = Request["sSortDir_0"];
+            if (sortDirection == "desc")
+                filteredMembers = filteredMembers.OrderBy(orderingFunction);
+            else
+                filteredMembers = filteredMembers.OrderByDescending(orderingFunction);
             var displayMembers = filteredMembers
                 .Skip(param.iDisplayStart)
                 .Take(param.iDisplayLength);
@@ -106,7 +133,7 @@ namespace CapaPresentacion.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
 
-
+        #endregion
 
     }
 }

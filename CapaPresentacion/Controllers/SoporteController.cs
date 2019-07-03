@@ -3,6 +3,7 @@ using CapaDato.Reporte;
 using CapaDato.Soporte;
 using CapaEntidad.Control;
 using CapaEntidad.General;
+using CapaEntidad.Maestros;
 using CapaEntidad.Soporte;
 using CapaEntidad.Util;
 using System;
@@ -22,7 +23,9 @@ namespace CapaPresentacion.Controllers
         private Dat_Documento_Transac datGuia = new Dat_Documento_Transac(); //gft
         private string _session_doc_transac_private = "_session_doc_transac_private"; //gft
         private string _session_doc_transac_doc_private = "_session_doc_transac_doc_private"; //gft
-        private Dat_Combo tienda = new Dat_Combo();//gft
+        private string _session_soporte_tienda_peru = "_session_soporte_tienda_peru";//gft
+        private Dat_ListaTienda dat_lista_tienda = new Dat_ListaTienda();
+        // private Dat_Combo tienda = new Dat_Combo();//gft
 
         // GET: Soporte
         public ActionResult Index()
@@ -98,18 +101,21 @@ namespace CapaPresentacion.Controllers
             }
             else
             {
-                if (Session["Tienda"] != null)
+                if (Session[_session_soporte_tienda_peru] != null)
                 {
-                    ViewBag.Tienda = tienda.get_ListaTiendaXstore().Where(t => t.cbo_codigo == Session["Tienda"].ToString()).ToList();
+                    ViewBag.Tienda = Session["_session_soporte_tienda_peru"];
                 }
                 else
                 {
-                    ViewBag.Tienda = tienda.get_ListaTiendaXstore(true);
+                    ViewBag.Tienda = dat_lista_tienda.get_tienda("PE", "1");
+                    List<Ent_ListaTienda> listienda = ViewBag.Tienda;
+                    Session[_session_soporte_tienda_peru] = listienda;
                 }
                 return View();
 
             }
         }
+
         public List<Ent_Documento_Transac> listaGuia(string cod_entid, DateTime fec_ini, DateTime fec_fin)
         {
             List<Ent_Documento_Transac> listguia = datGuia.get_lista(cod_entid, fec_ini, fec_fin);

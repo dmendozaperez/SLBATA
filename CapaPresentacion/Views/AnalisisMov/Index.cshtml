@@ -162,19 +162,15 @@
         //MostrarListado()
         var codTienda = '@ViewBag.codTienda'
 
-        if (codTienda != '') {
-           
+        if (codTienda != '') {          
             $("#dwtienda").val(codTienda);
             document.getElementById("dwtienda").disabled = true;
-        }
-       
+        }       
        
     });
 
     function MostrarListado() {
-
         var TeamDetailPostBackURL = "@Url.Action("ListaAnalisisMov", "AnalisisMov")";
-
         var options = { "backdrop": "static", keyboard: true };
         $.ajax({
             type: "GET",
@@ -185,10 +181,8 @@
             cache: true,
             success: function (data) {
                 document.getElementById("lista").innerHTML = data;
-
             },
             error: function () {
-
             }
         });
 
@@ -208,5 +202,4 @@
             todayHighlight: true
         }).datepicker("setDate", "0");;
     });
-
 </script>
