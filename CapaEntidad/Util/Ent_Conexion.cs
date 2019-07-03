@@ -11,6 +11,7 @@ namespace CapaEntidad.Util
 
         public static string conexion { get; set; }
         public static string conexionPosPeru { get; set; }
+        public static string conexionEcommerce { get; set; }
 
         //public static string conexion
         //{

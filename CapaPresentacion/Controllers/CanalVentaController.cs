@@ -35,10 +35,10 @@ namespace CapaPresentacion.Controllers
             return Json(new { estado = _estado });
         }
         public ActionResult Index()
-        {            
+        {
 
 
-
+            Session["_cv"] = null;
             string fdesde = (Request.HttpMethod == "POST" ? Request.Params["fdesde"].ToString() : DateTime.Now.AddDays(-30).ToString("dd/MM/yyyy"));
             string fhasta = (Request.HttpMethod == "POST" ? Request.Params["fhasta"].ToString() : DateTime.Now.ToString("dd/MM/yyyy"));
             string noDocCli = (Request.HttpMethod == "POST" ? Request.Params["noDocCli"].ToString() : null);
@@ -72,7 +72,7 @@ namespace CapaPresentacion.Controllers
                 ViewBag._selectEstados = SelectEstados((estado == null ? "001,002,003,004,005,006" : estado));
 
                 List<CanalVenta> listCV = new List<CanalVenta>();
-                Session["_cv"] = null;
+                
             }           
             return View();
         }
@@ -120,25 +120,38 @@ namespace CapaPresentacion.Controllers
         }       
         public ActionResult ActualizarEstado(string descripcion, string serie_numero, string cod_entid, string fc_nint, string estado, string vendedor)
         {
-            vendedor = vendedor.Trim();
-            string cod_vendedor = vendedor.Substring(0,vendedor.IndexOf('-'));
-            string cod_tda = vendedor.Substring(vendedor.IndexOf('-')+1);
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
 
-            if (estado == "005")
+            if (_usuario == null)
             {
-                ActualizarDeliveryDespachado(descripcion, serie_numero, cod_entid, fc_nint, cod_vendedor, cod_tda);
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
             }
             else
             {
-                insertar_historial_estados_cv(cod_entid, fc_nint, descripcion, estado, cod_vendedor, cod_tda, serie_numero);
-            }           
-            return RedirectToAction("Ver", "CanalVenta", new { serie_numero = serie_numero, fc_nint = fc_nint, cod_entid = cod_entid });
+                vendedor = vendedor.Trim();
+                string cod_vendedor = vendedor.Substring(0, vendedor.IndexOf('-'));
+                string cod_tda = vendedor.Substring(vendedor.IndexOf('-') + 1);
+
+                if (estado == "005")
+                {
+                    ActualizarDeliveryDespachado(descripcion, serie_numero, cod_entid, fc_nint, cod_vendedor, cod_tda);
+                }
+                else
+                {
+                    insertar_historial_estados_cv(cod_entid, fc_nint, descripcion, estado, cod_vendedor, cod_tda, serie_numero);
+                }
+                return RedirectToAction("Ver", "CanalVenta", new { serie_numero = serie_numero, fc_nint = fc_nint, cod_entid = cod_entid });
+            }
+            
         }        
         public ActionResult ListarVentasCV(Ent_jQueryDataTableParams param)
         {
             if (Session["_cv"] == null)
             {
-                List<CanalVenta> liststoreConf = selectVentas(DateTime.Now.AddDays(-30), DateTime.Now, null, null, null, (Session["Tienda"] != null ? Session["Tienda"].ToString() : null), new string[] {"1","2","3"} , new string[] { "001", "004", "005", "006" });
+                List<CanalVenta> liststoreConf = new List<CanalVenta>();
                 Session["_cv"] = liststoreConf;
             }
             IQueryable<CanalVenta> membercol = ((List<CanalVenta>)(Session["_cv"])).AsQueryable();  //lista().AsQueryable();
@@ -244,15 +257,18 @@ namespace CapaPresentacion.Controllers
 
                     foreach (var item in cvU.detalles)
                     {
-                        cxpress.item objdet = new cxpress.item();
-                        objdet.descItem = new String[] { item.nombreProducto };
-                        objdet.cantItem = new int[] { item.cantidad };
-                        objdet.pesoMasa = new float[] { 1 };
-                        objdet.altoItem = new float[] { 1 };
-                        objdet.largoItem = new float[] { 1 };
-                        objdet.anchoItem = new float[] { 1 };
-                        objdet.valorItem = new float[] { 1 };
-                        lista.Add(objdet);
+                        if (item.codigoProducto != "9999997")
+                        {
+                            cxpress.item objdet = new cxpress.item();
+                            objdet.descItem = new String[] { item.nombreProducto };
+                            objdet.cantItem = new int[] { item.cantidad };
+                            objdet.pesoMasa = new float[] { 1 };
+                            objdet.altoItem = new float[] { 1 };
+                            objdet.largoItem = new float[] { 1 };
+                            objdet.anchoItem = new float[] { 1 };
+                            objdet.valorItem = new float[] { 1 };
+                            lista.Add(objdet);
+                        }                        
                     }
 
                     objcla.listaItems = lista.ToArray();
@@ -445,7 +461,7 @@ namespace CapaPresentacion.Controllers
 
                     if (Session["Tienda"] != null)
                     {
-                        if (row["cod_entid"].ToString() == Session["Tienda"].ToString())
+                        if ( (row["cod_entid"].ToString() == Session["Tienda"].ToString()) || (tiendaOrigen != "" && (row["cod_entid"].ToString() != Session["Tienda"].ToString())))
                         {
                             list.Add(new SelectListItem()
                             {
@@ -529,28 +545,28 @@ namespace CapaPresentacion.Controllers
         private List<CanalVenta> selectVentas(DateTime fdesde , DateTime fhasta, string noDocCli,string noDoc, string tiendaOrigen , string tiendaDestino, string[] tipo , string[] estado)
         {
             List<CanalVenta> ventas = new List<CanalVenta>();
-            List<Ent_VentaCanal> ent_ventas =  datos.get_Ventas(fdesde,fhasta,noDocCli, noDoc , tiendaOrigen , tiendaDestino ,  String.Join(",",tipo), String.Join(",", estado));
-            if (ent_ventas != null)
+
+            DataTable dt = datos.get_Ventas(fdesde, fhasta, noDocCli, noDoc, tiendaOrigen, tiendaDestino, String.Join(",", tipo), String.Join(",", estado));
+            if (dt != null)
             {
-                foreach (var item in ent_ventas)
-                {
-                    CanalVenta _cnvta = new CanalVenta();
-                    _cnvta.cliente = item.cliente;
-                    _cnvta.estado = item.estado;
-                    _cnvta.tipo = item.tipo;
-                    _cnvta.serieNumero = item.serieNumero;
-                    _cnvta.tiendaDestino = item.tiendaDestino;
-                    _cnvta.tiendaOrigen = item.tiendaOrigen;
-                    _cnvta.fechaVenta = item.fechaVenta.ToString("dd/MM/yyyy");
-                    _cnvta.fc_nint = item.fc_nint;
-                    _cnvta.cod_entid = item.cod_entid;
-                    _cnvta.nombreEstado = item.nombreEstado;
-                    _cnvta.descripcionEstado = item.descripcionEstado;
-                    _cnvta.colorEstado = item.colorEstado;
-                    _cnvta.nombreTipoCV = item.nombreTipoCV;
-                    _cnvta.importeTotal = item.importeTotal;
-                    ventas.Add(_cnvta);
-                }
+                ventas = (from DataRow dr in dt.Rows
+                          select new CanalVenta()
+                          {
+                              serieNumero = dr["FC_SFAC"].ToString() + "-" + dr["FC_NFAC"].ToString(),
+                              tiendaOrigen = dr["COD_ENTID"].ToString() + " - " + dr["des_entida"].ToString(),
+                              tiendaDestino = dr["FC_ID_TDACVTA"].ToString() + " - " + dr["des_entidb"].ToString(),
+                              tipo = dr["FC_ID_TIP_CVTA"].ToString(),
+                              estado = dr["FC_ID_ESTADO_CVTA"].ToString(),
+                              cliente = (dr["FC_RUC"].ToString() + " - " + dr["FC_NOMB"].ToString() + " " + dr["FC_APEP"].ToString() + " " + dr["FC_APEM"].ToString()).Trim(),
+                              fechaVenta = Convert.ToDateTime(dr["FC_FFAC"]).ToString("dd-MM-yyyy"),
+                              fc_nint = dr["FC_NINT"].ToString(),
+                              cod_entid = dr["COD_ENTID"].ToString(),
+                              nombreEstado = dr["nombreEstado"].ToString(),
+                              descripcionEstado = dr["descripcionEstado"].ToString(),
+                              colorEstado = dr["colorEstado"].ToString(),
+                              importeTotal = Convert.ToDecimal(dr["FC_TOTAL"].ToString()),
+                              nombreTipoCV = dr["nombre_tipo_cv"].ToString()
+                          }).ToList();
             }
             Session["_cv"] = ventas;
             return ventas;

@@ -165,7 +165,7 @@
     </Reference>
     <Reference Include="NReco.PdfGenerator, Version=1.1.12.0, Culture=neutral, PublicKeyToken=231663d50a41b451, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\SLBATA\CapaPresentacion\bin\NReco.PdfGenerator.dll</HintPath>
+      <HintPath>bin\NReco.PdfGenerator.dll</HintPath>
     </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
@@ -261,6 +261,13 @@
     <Compile Include="AspNetForms\CanalVenta.aspx.designer.cs">
       <DependentUpon>CanalVenta.aspx</DependentUpon>
     </Compile>
+    <Compile Include="AspNetForms\GuiaEcommerce.aspx.cs">
+      <DependentUpon>GuiaEcommerce.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AspNetForms\GuiaEcommerce.aspx.designer.cs">
+      <DependentUpon>GuiaEcommerce.aspx</DependentUpon>
+    </Compile>
     <Compile Include="AspNetForms\ReporteObs.aspx.cs">
       <DependentUpon>ReporteObs.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -301,6 +308,8 @@
     <Compile Include="Controllers\ComunicadoController.cs" />
     <Compile Include="Controllers\ContabilidadController.cs" />
     <Compile Include="Controllers\DocumentoController.cs" />
+    <Compile Include="Controllers\ECommerceController.cs" />
+    <Compile Include="Controllers\GuiaECController.cs" />
     <Compile Include="Controllers\InterfaceController.cs" />
     <Compile Include="Controllers\ArticuloSustitutoController.cs" />
     <Compile Include="Controllers\ConsultaController.cs" />
@@ -320,6 +329,7 @@
     <Compile Include="Controllers\UsuariosController.cs" />
     <Compile Include="Controllers\ValeCompraController.cs" />
     <Compile Include="Controllers\XstoreTdaController.cs" />
+    <Compile Include="Data\Crystal\Reporte\Data_ECommerce.cs" />
     <Compile Include="Data\Crystal\Reporte\Data_Bata.cs" />
     <Compile Include="Data\Crystal\Reporte\Data_Planilla.cs" />
     <Compile Include="Global.asax.cs">
@@ -335,6 +345,7 @@
     <Compile Include="Models\Crystal\Reporte\Models_Vendedor.cs" />
     <Compile Include="Models\Crystal\Reporte\Models_Art_Sin_Mov.cs" />
     <Compile Include="Models\Crystal\Reporte\Models_Planilla.cs" />
+    <Compile Include="Models\ECommerce\ECommerce.cs" />
     <Compile Include="Models\FileManager\DataProvider.cs" />
     <Compile Include="Models\FileManager\FileSystemProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -342,6 +353,12 @@
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="RptsCrystal\GuiaECommerce.cs">
+      <DependentUpon>GuiaECommerce.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="RptsCrystal\CanalVenta.cs">
       <AutoGen>True</AutoGen>
@@ -412,6 +429,7 @@
   <ItemGroup>
     <Content Include="AspNetForms\ArticuloSinMov.aspx" />
     <Content Include="AspNetForms\CanalVenta.aspx" />
+    <Content Include="AspNetForms\GuiaEcommerce.aspx" />
     <Content Include="AspNetForms\ReporteObs.aspx" />
     <Content Include="AspNetForms\RendimientoxCateg.aspx" />
     <Content Include="AspNetForms\Vendedor.aspx" />
@@ -1441,6 +1459,9 @@
     <Content Include="Views\BataClub\_Table.cshtml" />
     <Content Include="Views\Contabilidad\Estado_Documento.cshtml" />
     <Content Include="Views\Contabilidad\_Table.cshtml" />
+    <Content Include="Views\ECommerce\GuiaEC.cshtml" />
+    <Content Include="Views\ECommerce\Index.cshtml" />
+    <Content Include="Views\ECommerce\Ver.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1483,6 +1504,10 @@
     <WCFMetadataStorage Include="Service References\FEBataEpos\" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="RptsCrystal\GuiaECommerce.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>GuiaECommerce.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="RptsCrystal\CanalVenta.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>CanalVenta.cs</LastGenOutput>

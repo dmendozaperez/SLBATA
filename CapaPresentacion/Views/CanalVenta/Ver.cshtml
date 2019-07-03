@@ -2,52 +2,7 @@
 @{
     ViewBag.Title =Model.nombreTipoCV + " -  " +  @ViewBag.id;
 }
-@{AjaxOptions options = new AjaxOptions
-    {
-        HttpMethod = "GET",
-        InsertionMode = InsertionMode.Replace,
-        UpdateTargetId = "lista",
-        OnComplete = "waitingDialog.hide();",
-        OnBegin = "waitingDialog.show('Espere un momento por favor');",
-        OnFailure = "waitingDialog.hide();"
-    };
-}
 <br />
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-<script>
-    function setEstado(estado) {
-        var tienda = "@(Session["Tienda"] == null ? null : Session["Tienda"].ToString())";
-        console.log(tienda);
-        var vendedor = $("#vendedor").children("option:selected").val();
-        swal({
-            title: "Cambiar estado",
-            text: "¿Desea cambiar el estado de la venta?",
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-        })
-        .then((cambiar) => {
-            if (cambiar) {
-                var descripcion = $('#descripcion').val();
-                if (descripcion == null || descripcion === '') {
-                    swal("Ingrese el campo descripción por favor.", {
-                        icon: "info",
-                    });
-                } else if ( (vendedor == null || vendedor === '') ) {
-                    swal("Seleccione vendedor por favor.", {
-                        icon: "info",
-                    });
-                }
-                else {
-                    waitingDialog.show('Espere un momento por favor');
-                    $("#estado").val(estado);
-                    var form = $("#frmActualizarEstado");
-                    form.submit();
-                }
-            }
-        });
-    }
-</script>
 <div class="row">
     <div class="col-md-4">
         <div class="box box-body box-primary">
@@ -120,7 +75,10 @@
                         <label>Servicio: <b>@(Model.informacionTiendaEnvio == null ? "" : Model.informacionTiendaEnvio.courier ) </b></label>
                     </li>
                     <li>
-                        <label>Codigo Guia Electronica :&nbsp;&nbsp;</label><a title="Imprimir codigo de barras." onclick="" href="@Url.Action("ImprimirCodigo", new { id = Model.serieNumero, fc_nint = Model.fc_nint, tienda = Model.cod_entid })"><b>@Model.guia_electronica</b></a>
+                        <label>Codigo Guia Electronica :&nbsp;&nbsp;</label><a title="Imprimir codigo de barras." href="@Url.Action("ImprimirCodigo", new { id = Model.serieNumero, fc_nint = Model.fc_nint, tienda = Model.cod_entid })"><b>@Model.guia_electronica</b></a>
+                    </li>
+                    <li>
+                        <a title="Sigue tu pedido." href="https://www.comercioxpress.com/" target="_blank" ><b>Sigue tu pedido en comercio xpress...</b></a>
                     </li>
                     <li>
                         <label>Cliente: </label>
@@ -271,6 +229,44 @@
     </div>
 
 </div>    
+
+
+<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+    function setEstado(estado) {
+        var tienda = "@(Session["Tienda"] == null ? null : Session["Tienda"].ToString())";
+        console.log(tienda);
+        var vendedor = $("#vendedor").children("option:selected").val();
+        swal({
+            title: "Cambiar estado",
+            text: "¿Desea cambiar el estado de la venta?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((cambiar) => {
+            if (cambiar) {
+                var descripcion = $('#descripcion').val();
+                if (descripcion == null || descripcion === '') {
+                    swal("Ingrese el campo descripción por favor.", {
+                        icon: "info",
+                    });
+                } else if ( (vendedor == null || vendedor === '') ) {
+                    swal("Seleccione vendedor por favor.", {
+                        icon: "info",
+                    });
+                }
+                else {
+                    waitingDialog.show('Espere un momento por favor');
+                    $("#estado").val(estado);
+                    var form = $("#frmActualizarEstado");
+                    form.submit();
+                }
+            }
+        });
+    }
+</script>
     @if (TempData["Success"] != null)
     {
         <script>toastr.success("@TempData["Success"]");</script>

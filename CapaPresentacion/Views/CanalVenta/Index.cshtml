@@ -2,7 +2,7 @@
 
 @{AjaxOptions options = new AjaxOptions
     {
-        HttpMethod = "GET",
+        HttpMethod = "POST",
         InsertionMode = InsertionMode.Replace,
         UpdateTargetId = "lista",
         OnComplete = "waitingDialog.hide();",
@@ -136,6 +136,7 @@
 <script>
 
     $(document).ready(function () {
+        //waitingDialog.show('Espere un momento por favor');
         $('.datepicker').datepicker({
             format: "dd/mm/yyyy",
             startDate: "01/04/2019",
@@ -145,17 +146,19 @@
     });
     function cargarDestinos() {
         var tiendaOrigen = $("#tiendaOrigen option:selected").val();
+        $('#tiendaDestino').html("Cargando...");
         $.ajax({
             type: "POST",                                              // tipo de request que estamos generando
-            url: 'GetDestinosJson',                    // URL al que vamos a hacer el pedido
+            url: '@Url.Action("GetDestinosJson", "CanalVenta")',                    // URL al que vamos a hacer el pedido
             data: '{ "tiendaOrigen": "' + tiendaOrigen + '" }',                                                // data es un arreglo JSON que contiene los parámetros que
             // van a ser recibidos por la función del servidor
             contentType: "application/json; charset=utf-8",            // tipo de contenido
             dataType: "json",                                          // formato de transmición de datos
             async: true,                                               // si es asincrónico o no
             success: function (resultado) {                            // función que va a ejecutar si el pedido fue exitoso
-                console.log(resultado);
+                //console.log(resultado);
                 $('#tiendaDestino').html(ParseJSONSelectList(resultado));
+                $('#tiendaDestino').selectpicker('refresh');
                 //var num = resultado.d;
                 //$('#lblResultado').text('Número aleatorio es ' + num);
                 //alert(num)
@@ -212,9 +215,9 @@
             //dataType: "html",
             success: function (data) {
                 //alert('ok');
-                if (data.estado == "1") {                    
+                if (data.estado == "1") {
                     $('#load').show();
-                    $("#load").attr("src", "../AspNetForms/CanalVenta.aspx");                    
+                    $("#load").attr("src", "../AspNetForms/CanalVenta.aspx");
                     $("#modalReporte").modal();
                 }
                 else {
@@ -230,7 +233,7 @@
                 waitingDialog.hide();
             }
         }).done(function () {
-            
+
         });
     }
     function SetearParametros(e) {
@@ -239,10 +242,10 @@
 
         var _A_vtEstados = [];
         $("#estado option:selected").each(function () {
-            console.log("each. " + $(this).text());
+            //console.log("each. " + $(this).text());
             _A_vtEstados.push($(this).text());
         });
-        console.log(_A_vtEstados);
+        //console.log(_A_vtEstados);
         var _vtEstados = _A_vtEstados.join();
 
         var _A_tipos = [];

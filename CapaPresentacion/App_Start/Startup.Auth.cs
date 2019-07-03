@@ -19,6 +19,7 @@ namespace CapaPresentacion
 
             Ent_Conexion.conexion = Encripta.encryption.RijndaelDecryptString(ConfigurationManager.ConnectionStrings["SQL_PE"].ConnectionString); //ConfigurationManager.ConnectionStrings["SQL_PE"].ConnectionString;
             Ent_Conexion.conexionPosPeru = Encripta.encryption.RijndaelDecryptString(ConfigurationManager.ConnectionStrings["SQL_PE"].ConnectionString); //ConfigurationManager.ConnectionStrings["SQL_PE"].ConnectionString;
+            Ent_Conexion.conexionEcommerce = /*Encripta.encryption.RijndaelDecryptString(ConfigurationManager.ConnectionStrings["SQL_ECOM"].ConnectionString);*/ ConfigurationManager.ConnectionStrings["SQL_ECOM"].ConnectionString;
             #endregion
 
             app.UseCookieAuthentication(new CookieAuthenticationOptions

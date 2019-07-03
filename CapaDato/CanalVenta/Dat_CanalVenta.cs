@@ -123,10 +123,10 @@ namespace CapaDato.CanalVenta
             }
         }
 
-        public List<Ent_VentaCanal> get_Ventas(DateTime fdesde , DateTime fhasta, string noDocCli , string noDoc, string tiendaOrigen , string tiendaDestino, string tipo, string estado)
+        public DataTable get_Ventas(DateTime fdesde, DateTime fhasta, string noDocCli, string noDoc, string tiendaOrigen, string tiendaDestino, string tipo, string estado)
         {
-            List<Ent_VentaCanal> list = null;
-            string sqlquery = "usp_select_canal_ventas";
+            string sqlquery = "[usp_select_canal_ventas]";
+            DataTable dt = new DataTable();
             try
             {
                 //Ent_Conexion.conexion = "Server=192.168.1.242;Database=BDPOS;User ID=sa;Password=1;Trusted_Connection=False;";
@@ -137,52 +137,25 @@ namespace CapaDato.CanalVenta
                     {
                         cmd.CommandTimeout = 0;
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@fdesde", fdesde);
-                        cmd.Parameters.AddWithValue("@fhasta", fhasta);
+                        cmd.Parameters.AddWithValue("@fdesde", fdesde.ToShortDateString());
+                        cmd.Parameters.AddWithValue("@fhasta", fhasta.ToShortDateString());
                         cmd.Parameters.AddWithValue("@noDocCli", noDocCli);
                         cmd.Parameters.AddWithValue("@noDoc", noDoc);
                         cmd.Parameters.AddWithValue("@tiendaOrigen", tiendaOrigen);
                         cmd.Parameters.AddWithValue("@tiendaDestino", tiendaDestino);
                         cmd.Parameters.AddWithValue("@tipo", tipo);
                         cmd.Parameters.AddWithValue("@estado", estado);
-                        SqlDataReader dr = cmd.ExecuteReader();
-                        if (dr.HasRows)
-                        {
-                            list = new List<Ent_VentaCanal>();
-
-                            while (dr.Read())
-                            {
-                                Ent_VentaCanal ven = new Ent_VentaCanal();
-                                // rol.rol_id = dr["rol_id"].ToString();
-                                ven.serieNumero = dr["FC_SFAC"].ToString() + "-" + dr["FC_NFAC"].ToString();
-                                ven.tiendaOrigen = dr["COD_ENTID"].ToString() + " - " + dr["des_entida"].ToString();
-                                ven.tiendaDestino = dr["FC_ID_TDACVTA"].ToString() + " - " + dr["des_entidb"].ToString(); ;
-                                ven.tipo = dr["FC_ID_TIP_CVTA"].ToString();
-                                ven.estado = dr["FC_ID_ESTADO_CVTA"].ToString();
-                                ven.cliente = (dr["FC_RUC"].ToString() + " - " + dr["FC_NOMB"].ToString() + " " + dr["FC_APEP"].ToString() + " " + dr["FC_APEM"].ToString()).Trim() ;
-                                ven.fechaVenta = Convert.ToDateTime(dr["FC_FFAC"]);
-                                ven.fc_nint = dr["FC_NINT"].ToString();
-                                ven.cod_entid = dr["COD_ENTID"].ToString();
-                                ven.nombreEstado = dr["nombreEstado"].ToString();
-                                ven.descripcionEstado = dr["descripcionEstado"].ToString();
-                                ven.colorEstado = dr["colorEstado"].ToString();
-                                ven.importeTotal = Convert.ToDecimal( dr["FC_TOTAL"].ToString());
-                                ven.nombreTipoCV = dr["nombre_tipo_cv"].ToString();
-                                list.Add(ven);
-                            }
-                        }
+                        SqlDataAdapter da = new SqlDataAdapter(cmd);
+                        da.Fill(dt);
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                list = null;
+                dt = null;
             }
-            return list;
+            return dt;
         }
-
-
         public Ent_VentaCanal get_Ventas_por_sn(string noDoc , string cod_entid , string fc_nint)
         {
             Ent_VentaCanal ven = null;
