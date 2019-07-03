@@ -36,10 +36,8 @@ namespace CapaPresentacion.Controllers
         }
         public ActionResult Index()
         {
-
-
             Session["_cv"] = null;
-            string fdesde = (Request.HttpMethod == "POST" ? Request.Params["fdesde"].ToString() : DateTime.Now.AddDays(-30).ToString("dd/MM/yyyy"));
+            string fdesde = (Request.HttpMethod == "POST" ? Request.Params["fdesde"].ToString() : DateTime.Now.AddDays(-3).ToString("dd/MM/yyyy"));
             string fhasta = (Request.HttpMethod == "POST" ? Request.Params["fhasta"].ToString() : DateTime.Now.ToString("dd/MM/yyyy"));
             string noDocCli = (Request.HttpMethod == "POST" ? Request.Params["noDocCli"].ToString() : null);
             string noDoc = (Request.HttpMethod == "POST" ? Request.Params["noDoc"].ToString() : null);
@@ -56,7 +54,7 @@ namespace CapaPresentacion.Controllers
 
             if (_usuario == null)
             {
-                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+                return RedirectToAction("Login", "Control");
             }
             else
             {

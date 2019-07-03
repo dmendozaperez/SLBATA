@@ -137,8 +137,8 @@ namespace CapaDato.CanalVenta
                     {
                         cmd.CommandTimeout = 0;
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@fdesde", fdesde.ToShortDateString());
-                        cmd.Parameters.AddWithValue("@fhasta", fhasta.ToShortDateString());
+                        cmd.Parameters.AddWithValue("@fdesde", fdesde);
+                        cmd.Parameters.AddWithValue("@fhasta", fhasta);
                         cmd.Parameters.AddWithValue("@noDocCli", noDocCli);
                         cmd.Parameters.AddWithValue("@noDoc", noDoc);
                         cmd.Parameters.AddWithValue("@tiendaOrigen", tiendaOrigen);
