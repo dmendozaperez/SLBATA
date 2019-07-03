@@ -1,0 +1,123 @@
+﻿@using CapaEntidad.Util;
+@{
+    ViewBag.Title = "Reporte de Guia ECommerce";
+    AjaxOptions options = new AjaxOptions
+    {
+        HttpMethod = "GET",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "lista",
+        OnComplete = "waitingDialog.hide();",
+        OnBegin = "waitingDialog.show('Espere un momento por favor');",
+        OnFailure = "waitingDialog.hide();"
+    };
+
+}
+
+@*@Scripts.Render("~/bundles/bootstrap-select_Select")*@
+<link href="~/ContentSelect/bootstrap-select.css" rel="stylesheet" />
+<link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />
+@*<link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />*@
+<style>
+    iframe {
+        border: none;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        height: 800px;
+    }
+
+      #lugar {
+  /*border-top-color:  lightsteelblue;*/
+  border-top-color:  #E7E5E5;
+  border-right-color:  #E7E5E5;
+  border-bottom-color: #E7E5E5;
+  border-left-color: #E7E5E5;
+
+  /*border-top-width: 5px;
+  border-left-width: 5px;
+  border-bottom-width: 5px;
+  border-right-width: 5px;*/
+  border-style: solid;
+   border-radius: 10px 10px 10px 10px;
+    -moz-border-radius: 10px 10px 10px 10px;
+    -webkit-border-radius: 10px 10px 10px 10px;
+    margin-left:0px;
+    margin-right:0px;
+ 
+   
+    }
+</style>
+<p class="text-danger">Guía Interna E-Commerce.</p>
+        
+    <div class="row">
+        <div class="col-md-12">
+            <div id="ifrReporte" class="well" style="width: 100%; height: 800px;">
+                <iframe id="load" src="" frameborder="0" marginheight="1"
+                        marginwidth="1" scrolling="auto" onload="javascript: waitingDialog.hide(); MostrarReporte();"></iframe>
+            </div>
+
+
+        </div>
+    </div>
+  
+    @*<script src="~/Scripts/bootstrap.min.js"></script>
+        <script src="~/ScriptsSelect/bootstrap-select.js"></script>*@
+    <script src="~/Scripts/bootstrap-select.min.js"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+
+    <script src="~/Scripts/BI.js"></script>
+    <script>
+
+        function loadedFrame() {
+            $('#loading').hide();
+        }
+
+        function MostrarReporte() {
+
+            var venta = $('#ven_id').val();
+
+            venta = venta.toString();
+
+            var TeamDetailPostBackURL = "@Url.Action("ShowGenericReport", "GuiaEC")";
+            if (venta != '' || venta == null) {
+                waitingDialog.show('Espere un momento por favor');
+                $.ajax({
+                    //url: GLB_RUT_APP_REPVENR + "?tda=" + tda + "&grupo=" + grupo + "&cate=" + cate + "&subcate=" + sbCate + "&estado=" + Estado,
+                    url: TeamDetailPostBackURL,// '../ReporteCrystal/ShowGenericReportInNewWin',
+                    dataType: 'json',
+                    type: 'POST',
+                    //dataType: "html",
+                    data: { cod_venta: venta },
+                    //cache: false,
+                    //async: false,
+                    //dataType: "html",
+                    success: function (data) {
+                        //alert('ok');
+                        if (data.estado == "1") {
+                            $('#load').show();
+                            $("#load").attr("src", "../AspNetForms/GuiaEcommerce.aspx");
+                        }
+                        else {
+                            $('#load').hide();
+                            waitingDialog.hide();
+                            toastr.error('Hubo un error en el reporte', "Alerta");
+
+                        }
+                        //document.getElementById("ifrReporte").innerHTML = data;
+                        //waitingDialog.hide();
+                        return false;
+                    },
+                    error: function (request, status, error) {
+                        waitingDialog.hide();
+                    }
+                }).done(function () {
+
+                });
+            } else {
+
+                toastr.error('Debe Seleccionar una Venta.', "Alerta");
+            }
+        }
+
+
+    </script>
