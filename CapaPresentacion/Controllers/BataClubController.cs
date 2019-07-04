@@ -2,17 +2,24 @@
 using CapaDato.Reporte;
 using CapaEntidad.BataClub;
 using CapaEntidad.General;
+using CapaPresentacion.Bll;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
 
 namespace CapaPresentacion.Controllers
 {
     public class BataClubController : Controller
     {
-       // private Dat_Combo promocion = new Dat_Combo();//gft
+
         private Dat_BataClub_CuponesCO datProm = new Dat_BataClub_CuponesCO(); //gft
         private string _session_tabla_prom_private = "_session_tabla_prom_private"; //gft
         private string _BataClub_Promociones_Combo = "_BataClub_Promociones_Combo"; //gft
@@ -203,6 +210,23 @@ namespace CapaPresentacion.Controllers
                 aaData = result
             }, JsonRequestBehavior.AllowGet);
         }
+        /***/
+
+        [HttpGet]
+        public FileContentResult ExportToExcel()
+        {
+            List<Ent_BataClub_CuponesCO> listbataclub = (List<Ent_BataClub_CuponesCO>)Session[_session_tabla_prom_private];
+            string[] columns = { "Nombres", "Apellidos", "dni", "correo", "cupon", "tienda", "dni_venta", "nombres_venta", "correo_venta", "telefono_venta", "tickets", "soles"
+            , "grupo", "porc_desc", "fec_doc"};
+            byte[] filecontent = ExcelExportHelper.ExportExcel(listbataclub, "BATACLUB_Promociones", true, columns);
+            return File(filecontent, ExcelExportHelper.ExcelContentType, "BATACLUB_Promociones.xlsx");
+        }
+
+
+
+
+
+
 
     }
 }

@@ -1,9 +1,9 @@
 ﻿
 @*<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.min.css" />*@
 <style type="text/css">
-    .dt-buttons {
+    /*.dt-buttons {
         display: none;
-    }
+    }*/
 
     /*#example_filter {
         display: none;
@@ -65,7 +65,7 @@
             "sAjaxSource": '@Url.Action("getTablePromoAjax", "BataClub")',
             "fnServerParams": function (aoData) {
                 //aoData.push({ "name": "dwtda", "value": $.trim($('#dwtda').val()) });
-                //aoData.push({ "name": "fec_ini", "value": $.trim($('#fec_ini').val()) });
+              //  aoData.push({ "name": "dni", "value": $.trim($('#dni').val()) });
                 //aoData.push({ "name": "fec_fin", "value": $.trim($('#fec_fin').val()) });
             },
             "bdestroy": true,
@@ -106,7 +106,5 @@
             'copyHtml5',
             ]
         });
-
-    });
 </script>
 

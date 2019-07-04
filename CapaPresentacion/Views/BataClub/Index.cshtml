@@ -13,7 +13,6 @@
     };
 }
 
-
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 <link href="~/ContentSelect/bootstrap-multiselect.css" rel="stylesheet" />
@@ -64,21 +63,22 @@
                 <div class="col-sm-2">
 
                 </div>
-                <div class="col-md-2" style="width: 105px;margin-top: 23px;float: right;margin-right: 20px;">
-                    @*<button class="btn btn-success" id="export-btn">Exportar</button>*@
-                </div>
+                <div class="col-md-2" style="width: 105px;margin-top: 23px;float: right;margin-right: 25px;">
+                    @*<a href="@Url.Action("ExportToExcel")" title="Exportar a excel" class="btn btn-success">Exportar Excel</a>*@
+                       @*<span class="glyphicon glyphicon-save-file"  href="@Url.Action("ExportToExcel")"> Excel</span>*@  
+                        <a class="btn btn-success glyphicon glyphicon-save-file" href="@Url.Action("ExportToExcel")" title="Exportar a excel" > Excel</a>                     
+         
 
+                </div>
             </div>
         </form>
-
+     
     }
     <div class="box-body"  id="listaGuia" style="padding-bottom: 40px;overflow-x: auto;">
         @{Html.RenderPartial("_Table", Model);}
     </div>
 
 </div>
-@*<script src="~/Scripts/bootstrap-select.min.js"></script>
-    <script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>*@
 
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 <script src="~/ScriptsSelect/bootstrap-multiselect.js"></script>
@@ -103,33 +103,9 @@
     function ListaPromocionesSelect() {
         var strcadena = $.trim($('#dwprom').val());
         if (strcadena != null ) {
-              console.log(strcadena);
-            //document.getElementById("hidden").innerHTML = strcadena;
+             // console.log(strcadena);
               document.getElementById("hidden").value = strcadena;
-
-          
-
         }
     }
 
-    @*function MostrarListado() {
-        var TeamDetailPostBackURL = "@Url.Action("_Table", "Soporte")";
-        var options = { "backdrop": "static", keyboard: true };
-        $.ajax({
-            type: "GET",
-            url: TeamDetailPostBackURL,
-            contentType: "application/json; charset=utf-8",
-            data: {},
-            datatype: "json",
-            cache: true,
-            success: function (data) {
-                document.getElementById("listaGuia").innerHTML = data;
-            },
-            error: function () {
-            }
-        });
-    }*@
-
 </script>
-
-
