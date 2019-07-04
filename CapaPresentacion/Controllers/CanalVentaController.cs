@@ -207,31 +207,29 @@ namespace CapaPresentacion.Controllers
                 aaData = result
             }, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult ImprimirCodigo(string id, string tienda, string fc_nint)
+
+        [HttpPost]
+        public ActionResult ImprimirCodigo(string cod_entid, string fc_nint, string serie_numero)
         {
-            List<GuiaElectronica> _ge = new List<GuiaElectronica>();
-            GuiaElectronica ge = new GuiaElectronica();
+            try
+            {
+                List<GuiaElectronica> _ge = new List<GuiaElectronica>();
+                GuiaElectronica ge = new GuiaElectronica();
 
-            CanalVenta _cv = selectVenta(id, tienda, fc_nint);
-            ge.guia = _cv.guia_electronica;
-            ge.cliente = (_cv.tipo == "3" ? _cv.cliente : _cv.tiendaOrigen);
-            ge.direccion = (_cv.tipo == "3" ? _cv.direccionCliente : _cv.direccionA);
-            ge.referencia = (_cv.tipo == "3" ? _cv.referenciaCliente : "Sin Referencia");
-            ge.ubigeo = (_cv.tipo == "3" ? _cv.ubigeoCliente : _cv.ubigeoTienda);
-            _ge.Add(ge);
+                CanalVenta _cv = selectVenta(serie_numero, cod_entid, fc_nint);
+                ge.guia = _cv.guia_electronica;
+                ge.cliente = (_cv.tipo == "3" ? _cv.cliente : _cv.tiendaOrigen);
+                ge.direccion = (_cv.tipo == "3" ? _cv.direccionCliente : _cv.direccionA);
+                ge.referencia = (_cv.tipo == "3" ? _cv.referenciaCliente : "Sin Referencia");
+                ge.ubigeo = (_cv.tipo == "3" ? _cv.ubigeoCliente : _cv.ubigeoTienda);
+                _ge.Add(ge);
 
-            string strReportName = "GuiaElectronica.rpt";
-            ReportDocument rd = new ReportDocument();
-            string strRptPath = Server.MapPath("~/") + @"RptsCrystal\" + strReportName;
-            rd.Load(strRptPath);
-            rd.SetDataSource(_ge);
-            Response.Buffer = false;
-            Response.ClearContent();
-            Response.ClearHeaders();
-            Stream stream = rd.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
-            stream.Seek(0, SeekOrigin.Begin);
-
-            return File(stream, "application/pdf", "GuiaElectronica_" + ge.guia + ".pdf");
+                return Json(new { estado = 1, guia = ge.guia, cliente = ge.cliente, direccion = ge.direccion, referencia = ge.referencia, ubigeo = ge.ubigeo });
+            }
+            catch  (Exception ex)
+            {
+                return Json(new { estado = 0 });
+            }
         }
         public void ActualizarDeliveryDespachado(string descripcion, string serieNumero, string cod_entid, string fc_nint, string vendedor,string cod_tda)
         {
