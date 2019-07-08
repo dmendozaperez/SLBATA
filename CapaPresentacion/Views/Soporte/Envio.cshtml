@@ -1,7 +1,7 @@
 ﻿@using CapaEntidad.Soporte
 @model IEnumerable<Ent_Documento_Transac>
 @{
-    ViewBag.Title = "Consulta ....";
+    ViewBag.Title = "Consulta de Documentos y Reenvia Paquetes de Tiendas";
     AjaxOptions options = new AjaxOptions
     {
         HttpMethod = "GET",
@@ -19,7 +19,7 @@
 @*<link rel="stylesheet" href="bootstrap-multiselect.css" type="text/css" />*@
 <link href="~/ContentSelect/bootstrap-multiselect.css" rel="stylesheet" />
 
-<p class="text-danger">Consulta de ......................</p>
+<p class="text-danger">Consulta de Documentos Ingresado y reenvio de paquetes, filtro por tiendas y rango de fecha</p>
 <div class="box box-body box-primary">
     @using (Ajax.BeginForm("_envioTable", options))
     {
