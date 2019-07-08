@@ -20,6 +20,7 @@ namespace CapaPresentacion.Controllers
         private Dat_Contabilidad_EstadoDocumento datConta = new Dat_Contabilidad_EstadoDocumento();
         private string _session_contabilidad_num_private = "_session_contabilidad_num_private"; 
         private string _session_contb_tienda_peru = "_session_contb_tienda_peru";
+        private string _session_contb_popup = "_session_contb_popup";
 
         // GET: Contabilidad
 
@@ -100,6 +101,11 @@ namespace CapaPresentacion.Controllers
                     m.serie.ToUpper().Contains(param.sSearch.ToUpper()) ||
                     m.tienda.ToUpper().Contains(param.sSearch.ToUpper()) ||
                     m.tipo_doc.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    m.ruc.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    m.login_ws.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    m.clave_ws.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    m.tipodoc.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    m.folio.ToUpper().Contains(param.sSearch.ToUpper()) ||
                     m.total.ToUpper().Contains(param.sSearch.ToUpper()));
             }
             var sortDirection = Request["sSortDir_0"];
@@ -120,7 +126,12 @@ namespace CapaPresentacion.Controllers
                              a.serie,
                              a.tienda,
                              a.tipo_doc,
-                             a.total
+                             a.total,
+                             a.ruc,
+                             a.login_ws,
+                             a.clave_ws,
+                             a.tipodoc,
+                             a.folio
                          };
 
             //Se devuelven los resultados por json
@@ -132,7 +143,77 @@ namespace CapaPresentacion.Controllers
                 aaData = result
             }, JsonRequestBehavior.AllowGet);
         }
+        //POP UP - DETALLE
 
+
+        public List<Ent_Contabilidad_EstadoDocumento_Det> listarStr_Detalle_PopUp(string ruc, string login_ws, string clave_ws, string tipodoc, string folio)
+        {
+            List<Ent_Contabilidad_EstadoDocumento_Det> listguia = datConta.listarStr_Detalle_PopUp(ruc, login_ws, clave_ws, tipodoc, folio);
+            Session[_session_contb_popup] = listguia;
+            return listguia;
+        }
+
+        public PartialViewResult _popUpDetalle(string ruc, string login_ws, string clave_ws, string tipodoc, string folio)
+        {
+            return PartialView(listarStr_Detalle_PopUp(ruc, login_ws, clave_ws, tipodoc, folio));
+        }
+
+        public ActionResult getDetalleAjax(Ent_jQueryDataTableParams param)
+        {
+            /*verificar si esta null*/
+            if (Session[_session_contb_popup] == null)
+            {
+                List<Ent_Contabilidad_EstadoDocumento_Det> listdoc = new List<Ent_Contabilidad_EstadoDocumento_Det>();
+                Session[_session_contb_popup] = listdoc;
+            }
+
+            //Traer registros
+            IQueryable<Ent_Contabilidad_EstadoDocumento_Det> membercol = ((List<Ent_Contabilidad_EstadoDocumento_Det>)(Session[_session_contb_popup])).AsQueryable();
+
+            //Manejador de filtros
+            int totalCount = membercol.Count();
+
+            IEnumerable<Ent_Contabilidad_EstadoDocumento_Det> filteredMembers = membercol;
+
+            //Manejador de orden
+            var sortIdx = Convert.ToInt32(Request["iSortCol_0"]);
+            Func<Ent_Contabilidad_EstadoDocumento_Det, string> orderingFunction =
+          (
+          m => sortIdx == 0 ? m.ESTADO :
+           m.ESTADO
+          );
+            if (!string.IsNullOrEmpty(param.sSearch))
+            {
+                filteredMembers = membercol
+                    .Where(m => m.PDF.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                     m.ESTADO.ToUpper().Contains(param.sSearch.ToUpper()));
+            }
+            var sortDirection = Request["sSortDir_0"];
+            if (sortDirection == "desc")
+                filteredMembers = filteredMembers.OrderBy(orderingFunction);
+            else
+                filteredMembers = filteredMembers.OrderByDescending(orderingFunction);
+            var displayMembers = filteredMembers
+                .Skip(param.iDisplayStart)
+                .Take(param.iDisplayLength);
+
+
+            var result = from a in displayMembers
+                         select new
+                         {
+                             a.PDF,
+                             a.ESTADO
+                         };
+
+            //Se devuelven los resultados por json
+            return Json(new
+            {
+                sEcho = param.sEcho,
+                iTotalRecords = totalCount,
+                iTotalDisplayRecords = filteredMembers.Count(),
+                aaData = result
+            }, JsonRequestBehavior.AllowGet);
+        }
         #endregion
 
     }

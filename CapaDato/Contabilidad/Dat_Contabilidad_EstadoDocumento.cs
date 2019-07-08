@@ -28,7 +28,6 @@ namespace CapaDato.Contabilidad
                         {
                             cmd.CommandTimeout = 0;
                             cmd.CommandType = CommandType.StoredProcedure;
-
                             cmd.Parameters.AddWithValue("@TIENDA", cod_entid);
                             cmd.Parameters.AddWithValue("@FECHA_INI", fec_ini);
                             cmd.Parameters.AddWithValue("@FECHA_FIN", fec_fin);
@@ -46,16 +45,19 @@ namespace CapaDato.Contabilidad
                                               serie = dr["SERIE"].ToString(),
                                               numero = dr["NUMERO"].ToString(),
                                               total = dr["TOTAL"].ToString(),
-                                              estado = dr["ESTADO"].ToString()
-                                          }).ToList();
+                                              estado = dr["ESTADO"].ToString(),
+                                              ruc = dr["RUC"].ToString(),
+                                              login_ws = dr["LOGIN_WS"].ToString(),
+                                              clave_ws = dr["CLAVE_WS"].ToString(),
+                                              tipodoc = dr["TIPODOC"].ToString(),
+                                              folio = dr["FOLIO"].ToString()
+                                        }).ToList();
                             }
-
                         }
                     }
                     catch (Exception ex)
                     {
-                        listar = null;
-                      
+                        listar = null;                     
                     }
                     if (cn != null)
                         if (cn.State == ConnectionState.Open) cn.Close();
@@ -68,6 +70,56 @@ namespace CapaDato.Contabilidad
             return listar;
         }
 
+        ///Listado Tabla de Detalle - PopUp
+        public List<Ent_Contabilidad_EstadoDocumento_Det> listarStr_Detalle_PopUp(string ruc, string login_ws, string clave_ws, string tipodoc, string folio)
+        {
+            string sqlquery = "USP_PAPERLESS_ESTADO_DOC";
+            List<Ent_Contabilidad_EstadoDocumento_Det> listar = null;
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+                    try
+                    {
+                        if (cn.State == 0) cn.Open();
+                        using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                        {
+                            cmd.CommandTimeout = 0;
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.AddWithValue("@ruc", ruc);
+                            cmd.Parameters.AddWithValue("@login", login_ws);
+                            cmd.Parameters.AddWithValue("@clave", clave_ws);
+                            cmd.Parameters.AddWithValue("@tipoDoc", tipodoc);
+                            cmd.Parameters.AddWithValue("@folio", folio);
+                            using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                            {
+                                DataTable dt = new DataTable();
+                                da.Fill(dt);
+                                listar = new List<Ent_Contabilidad_EstadoDocumento_Det>();
+                                listar = (from DataRow dr in dt.Rows
+                                          select new Ent_Contabilidad_EstadoDocumento_Det()
+                                          {
+                                              PDF = dr["PDF"].ToString(),
+                                              ESTADO = dr["ESTADO"].ToString()
+                                          }).ToList();
+                            }
+
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        listar = null;
+                    }
+                    if (cn != null)
+                        if (cn.State == ConnectionState.Open) cn.Close();
+                }
+            }
+            catch (Exception)
+            {
+                listar = null;
+            }
+            return listar;
+        }
 
     }
 }

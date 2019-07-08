@@ -15,8 +15,21 @@ namespace CapaEntidad.Contabilidad
         public string numero { get; set; }
         public string total { get; set; }
         public string estado { get; set; }
- 
+        public string ruc { get; set; }
+        public string login_ws { get; set; }
+        public string clave_ws { get; set; }
+        public string tipodoc { get; set; }
+        public string folio { get; set; }
+
     }
+
+    public class Ent_Contabilidad_EstadoDocumento_Det
+    {
+        public string PDF { get; set; }
+        public string ESTADO { get; set; }
+    }
+
+
 }
 
 
