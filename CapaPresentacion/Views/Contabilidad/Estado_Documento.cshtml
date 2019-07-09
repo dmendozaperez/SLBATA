@@ -4,11 +4,11 @@
     ViewBag.Title = "Consulta ....";
     AjaxOptions options = new AjaxOptions
     {
-        HttpMethod = "GET",
+        HttpMethod = "POST",
         InsertionMode = InsertionMode.Replace,
         UpdateTargetId = "listaTable",
         OnComplete = "waitingDialog.hide();",
-        OnBegin = "waitingDialog.show('Espere un momento por favor');",
+        OnBegin = " ListaTiendasSelect(); waitingDialog.show('Espere un momento por favor');",
         OnFailure = "waitingDialog.hide();"
     };
 }
@@ -28,7 +28,7 @@
                     <label for="segape">Cod Tda.</label>
                     <div class="form-group">
                         <div class="input-group">
-                            <div id="tda" class="input-group autofocus">
+                            <div id="tda" class="input-group autofocus" required>
                                 @Html.DropDownList("dwtda", new SelectList(ViewBag.Tienda, "cod_entid", "des_entid", "-1"), new { @multiple = "multiple", @class = "multiselect", @data_live_search = "true", @id = "dwtda", @name = "dwtda" })
                             </div>
                         </div>
@@ -76,6 +76,7 @@
 
 </div>
 
+
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 <script src="~/ScriptsSelect/bootstrap-multiselect.js"></script>
 
@@ -89,19 +90,16 @@
         });
     });
 
-    $(document).ready(function () {
-        $("#btnSearch").click(function () {
-            ListaTiendasSelect();
-        });
-    });
-
     function ListaTiendasSelect() {
         var strcadena = $.trim($('#dwtda').val());
-        if (strcadena != null) {
-            //  console.log(strcadena);
-            document.getElementById("hidden").value = strcadena;
+        if (strcadena == null || strcadena=="") {
+            toastr.error("Debe seleccionar al menos una tienda.", "Mensaje");
+            return false;
         }
+        else
+        {document.getElementById("hidden").value = strcadena; }
     }
+
 </script>
 
 <script>

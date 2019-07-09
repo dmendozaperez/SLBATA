@@ -61,11 +61,14 @@ namespace CapaPresentacion.Controllers
             return listaTable;
         }
 
-        public PartialViewResult _Table(string hidden, string fec_ini, string fec_fin)
+        public PartialViewResult _Table(string hidden, string fec_ini, string fec_fin, string dwtda)
         {
-            //string dwtda--> se reemplaza por hidden - para agarrar varios id de tiendas por el combo multiselect
-            return PartialView(listaTable(hidden, Convert.ToDateTime(fec_ini), Convert.ToDateTime(fec_fin)));
-            //return PartialView(listaTable(hidden,fec_ini, fec_fin));
+            if (dwtda == null )
+            {   return PartialView(); }
+            else
+            {   //string dwtda--> se reemplaza por hidden - para agarrar varios id de tiendas por el combo multiselect
+                return PartialView(listaTable(hidden, Convert.ToDateTime(fec_ini), Convert.ToDateTime(fec_fin)));
+            }  
         }
 
         public ActionResult getDetAjax(Ent_jQueryDataTableParams param)
@@ -145,7 +148,6 @@ namespace CapaPresentacion.Controllers
         }
         //POP UP - DETALLE
 
-
         public List<Ent_Contabilidad_EstadoDocumento_Det> listarStr_Detalle_PopUp(string ruc, string login_ws, string clave_ws, string tipodoc, string folio)
         {
             List<Ent_Contabilidad_EstadoDocumento_Det> listguia = datConta.listarStr_Detalle_PopUp(ruc, login_ws, clave_ws, tipodoc, folio);
@@ -214,6 +216,7 @@ namespace CapaPresentacion.Controllers
                 aaData = result
             }, JsonRequestBehavior.AllowGet);
         }
+
         #endregion
 
     }
