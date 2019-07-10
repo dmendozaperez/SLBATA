@@ -10,6 +10,14 @@
     }*/
 </style>
 
+
+
+@*<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/data.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>*@
+
+
 <table id="example" class="table table-hover dataTable  table-striped table-responsive">
     <thead>
         <tr style="background-color:#3d566e; color:#ecf0f1">
@@ -19,14 +27,14 @@
             <th>Correo</th>
             <th>Cupon</th>
             <th>Tienda</th>
-            <th>Dni venta</th>
+            <th>DNI venta</th>
             <th>Nombres venta</th>
             <th>Correo venta</th>
             <th>Teléfono venta</th>
             <th>Tickets</th>
             <th>Soles</th>
             <th>Grupo</th>
-            <th>Descuento (%)</th>
+            <th>Desc (%)</th>
             <th>Fecha Doc.</th>
         </tr>
     </thead>
@@ -39,18 +47,59 @@
             <th>Correo</th>
             <th>Cupon</th>
             <th>Tienda</th>
-            <th>Dni venta</th>
+            <th>DNI venta</th>
             <th>Nombres venta</th>
             <th>Correo venta</th>
             <th>Teléfono venta</th>
             <th>Tickets</th>
             <th>Soles</th>
             <th>Grupo</th>
-            <th>Descuento (%)</th>
+            <th>Desc (%)</th>
             <th>Fecha Doc.</th>
         </tr>
     </tfoot>
 </table>
+
+
+@*<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>*@
+
+
+@*<table id="datatable">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Promo A</th>
+            <th>Promo B</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>Enero</th>
+            <td>3</td>
+            <td>4</td>
+        </tr>
+        <tr>
+            <th>Febrero</th>
+            <td>2</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <th>Marzo</th>
+            <td>5</td>
+            <td>11</td>
+        </tr>
+        <tr>
+            <th>Mayo</th>
+            <td>1</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <th>Junio</th>
+            <td>2</td>
+            <td>4</td>
+        </tr>
+    </tbody>
+</table>*@
 
 
 <script>
@@ -108,3 +157,31 @@
         });
 </script>
 
+<script>
+
+
+    //Highcharts.chart('container', {
+    //    data: {
+    //        table: 'datatable'
+    //    },
+    //    chart: {
+    //        type: 'column'
+    //    },
+    //    title: {
+    //        text: 'Cupones usados en el año actual por mes'
+    //    },
+    //    yAxis: {
+    //        allowDecimals: false,
+    //        title: {
+    //            text: 'Cantidad'
+    //        }
+    //    },
+    //    tooltip: {
+    //        formatter: function () {
+    //            return '<b>' + this.series.name + '</b><br/>' +
+    //                this.point.y + ' ' + this.point.name.toLowerCase();
+    //        }
+    //    }
+    //});
+
+</script>

@@ -1490,6 +1490,7 @@
     <Content Include="Views\ECommerce\GuiaEC.cshtml" />
     <Content Include="Views\ECommerce\Index.cshtml" />
     <Content Include="Views\ECommerce\Ver.cshtml" />
+    <Content Include="Views\Contabilidad\_popUpDetalle.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
