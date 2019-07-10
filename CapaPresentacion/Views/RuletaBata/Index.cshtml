@@ -1,0 +1,534 @@
+﻿@{
+    //ViewBag.Title = "RULETA BATA";
+}
+@{AjaxOptions options = new AjaxOptions
+    {
+        HttpMethod = "GET",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "lista",
+        OnComplete = "waitingDialog.hide();",
+        OnBegin = "waitingDialog.show('Espere un momento por favor');",
+        OnFailure = "waitingDialog.hide();"
+    };
+}
+@{
+    CapaEntidad.RuletaBata.Premios ganador = (CapaEntidad.RuletaBata.Premios)Session["PremioGanador"];
+}
+<style>
+    .btn-girar{
+        position:absolute;
+        z-index: 2;
+        width:190px;
+        height:67px;
+        margin-top: 350px;
+        margin-left: 800px;
+        cursor:pointer;
+    }
+    .indicador{
+      position:absolute;
+      height: 160px;
+      width: 132px;
+      z-index: 1;
+      margin-left: 11.428em;
+      margin-top: 9em;
+    }
+    .ruleta_bata{
+      position:absolute;
+      z-index: 1;
+      top: -2px;
+      left: 0px;
+      background-image:url(../../Files/RuletaBata/FONDO_RULETA.png);
+      background-size:cover;
+      background-repeat: no-repeat;
+      background-position: center; 
+      height:591px; 
+      width:591px;
+      padding-top: 71px;
+
+    }
+    /* Other misc styles */
+    .margin_bottom {
+        margin-bottom: 5px;
+    }
+</style>
+@model CapaEntidad.RuletaBata.Ent_RuletaBata
+<div class="box box-body box-primary">
+    <div style="padding-top: 50px;padding-bottom: 50px;">
+        <img alt="Girar" onclick="ValidarParticipacion();" id="spin_button" class="btn-girar" src="~/Files/RuletaBata/girar.png" />
+        <div class="ruleta_bata" align="center">
+            <img src="~/Files/RuletaBata/indicador.png" class='indicador' />
+            <canvas id="canvas" width="450" height="450">
+                <p style="{color: white}" align="center">Nope</p>
+            </canvas>
+        </div>
+        <img style="width:1300px ; height:467px" src="~/Files/RuletaBata/fondo.png"/>        
+    </div>  
+</div>
+<div class="modal fade" id="modalRegistrarGanador" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+             <div class="modal-header">
+                @*<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>*@
+                 <p class="text-bold" style="font-size:16px">Has Ganado: <small id="segPremio"></small></p>
+                 <div class="text-center">
+                     <h3 style="margin-top: 10px;"><span class="label label-danger text-center" id="nombre_premio"></span></h3>
+                 </div>
+                 <p class="" style="font-size:11px" id="descripcion_premio"></p>
+            </div>
+            <div class="modal-body">
+                <form id="frmRegistroGanador">
+                    <div class="row">
+                        <div class="col-sm-6 form-group form-group-sm">
+                            <label for="dni">Nro Documento</label>
+                            <div class="input-group">
+                                <input type="text" value="" maxlength="8" placeholder="DNI : 12345678" required class="form-control" name="dni" id="dni" />
+                                <span class="input-group-btn">
+                                    <button onclick="validarConsultarDNI();" id="buscar_dni" class="btn btn-default btn-sm" type="button">
+                                        <span class="glyphicon glyphicon-search" aria-hidden="true">
+                                        </span>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 form-group form-group-sm">
+                            <label for="nombre">Nombres</label>
+                            <input type="text" value="" required class="form-control" name="nombre" id="nombre" />
+                        </div>
+                        <div class="col-sm-6 form-group form-group-sm">
+                            <label for="ape_pat">Apellido Paterno</label>
+                            <input type="text" value="" required class="form-control" name="ape_pat" id="ape_pat" />
+                        </div>
+                        <div class="col-sm-6 form-group form-group-sm">
+                            <label for="ape_mat">Apellido Materno</label>
+                            <input type="text" value="" required class="form-control" name="ape_mat" id="ape_mat" />
+                        </div>
+                        <div class="col-sm-6 form-group form-group-sm">
+                            <label for="telefono">Telefono</label>
+                            <input type="text" value="" class="form-control" name="telefono" id="telefono" />
+                        </div>
+                        <div class="col-sm-6 form-group form-group-sm">
+                            <label for="email">E-Mail</label>
+                            <input type="email" value="" class="form-control" name="email" id="email" />
+                        </div>
+                        <div class="col-sm-6 checkbox text-primary" id="afil_bataclub">
+                            <label>
+                                <input type="checkbox" name="afiliarse" /> Afiliarse a Bata Club
+                            </label>
+                        </div>
+                        @Html.Hidden("w01")
+                        @Html.Hidden("bataclub", 0, new { id = "bataclub" })
+                    </div>
+                    <div class="row">                        
+                        <div class="col-md-12">
+                            <div class="text-center" id="cupones"></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div id="botones">
+                    <button type="button" onclick="RegistrarGanador();" title="Generar cupón de descuento" class="btn btn-success">Registrar y Generar cupón <i class='glyphicon glyphicon-floppy-save'></i></button>                            
+                </div>                
+            </div>           
+        </div>
+    </div>
+</div>
+<img id="code1" class="hidden" />
+<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="~/Scripts/Winwheel.js"></script>
+<script src="~/Scripts/TweenMax.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js"></script>
+<script src="@Url.Content("~/Scripts/JsBarcode.all.js")"></script>
+
+<script>
+
+    var y = 10;
+    var gSite = '';
+    var procesadoBlur = false;
+    var participar = true;
+    var jugando = false;
+    
+
+
+    (function(API){
+
+        API.myText = function( x, _y ,txt, options) {
+            options = options ||{};
+            for	(i = 0 ; i < txt.length ; i++)
+            {
+                if( options.align == "center" ){
+                    var fontSize = this.internal.getFontSize();
+                    var pageWidth = this.internal.pageSize.width;
+                    txtWidth = this.getStringUnitWidth(txt[i])*fontSize/this.internal.scaleFactor;
+                    x = ( pageWidth - txtWidth ) / 2;
+                }
+                this.text(x,y,txt[i]);
+                y = y+_y;
+            }
+        }
+    })(jsPDF.API);
+
+    $(document).ready(function () {
+        $("body").toggleClass('sidebar-collapse');
+        var pathname = window.location.pathname;
+        var res = pathname.split("/");
+        $("#nombre").focus(function(){
+            if (procesadoBlur === false) {
+                consultarDNI();
+            }
+            
+            //if (procesar === false){
+            //    if (validadoBataClub === false){
+                    
+            //        validadoBataClub = true;
+            //    }
+            //}
+        });
+    });
+    function descargar_cupones() {
+
+        var frmRegistroGanador = $("#frmRegistroGanador");
+        var img ;
+            waitingDialog.show('Espere un momento por favor');
+            $.ajax({
+                type: "POST",                                              
+                url: '@Url.Action("ImprimirCodigo", "RuletaBata")',            
+                data: frmRegistroGanador.serialize(),    
+                success: function (data) {
+                    waitingDialog.hide();
+                    if (data.estado == 1) {
+                        var nombre = "";
+                        var doc = new jsPDF('p', 'mm', [297, 75]);
+                        for (var i = 0; i < data.premios.length; i++) {
+                            /**/    
+                            
+                            if ( data.premios[i]['prom_id'] == ""){
+                                JsBarcode("#code1", data.premios[i]['codigo_cupon']);
+                                img = document.querySelector('img#code1');
+                            }    
+                            doc.setFont('Arial');
+                            doc.setFontType('bold');
+                            doc.setFontSize(12);
+                            doc.myText(10, 6 ,doc.splitTextToSize( '¡EL ROJO NOS UNE!',70),{align : 'center'} )
+                            doc.setFontType('normal');
+                            doc.setFontSize(10);
+                            doc.myText(0, 6 ,doc.splitTextToSize( 'CELEBREMOS FIESTAS PATRIAS EN',70),{align : 'center'} )
+                            doc.setFontType('bold');
+                            doc.setFontSize(12);
+                            doc.myText(10, 5 ,doc.splitTextToSize( 'BATA',70),{align : 'center'} )
+                            doc.setFontType('bold');
+                            doc.setFontSize(12);
+                            doc.setFont('courier');
+                            doc.myText(10, 5 ,doc.splitTextToSize( '---------------------------',70),{align : 'center'} )
+                            doc.setFont('Arial');
+                            doc.setFontType('normal');
+                            doc.setFontSize(10);
+                            doc.myText(0, 6 ,doc.splitTextToSize( 'GRACIAS POR PARTICIPAR. GANASTE:',70),{align : 'center'} )
+                            doc.setFontType('bold');
+                            doc.setFontSize(12);
+                            doc.myText(10, 6 ,doc.splitTextToSize( data.premios[i]['nombre'],70),{align : 'center'} )
+                            if (data.premios[i]['prom_id'] == ""){
+                                doc.addImage(img.src, 'png', 13, y, 0, 25);
+                                y=y+30;
+                            }
+                            else{
+                                y=y+4;
+                                doc.setFont('Arial');
+                                doc.setFontType('normal');
+                                doc.setFontSize(15);
+                                doc.myText(0, 7 , doc.splitTextToSize ( "CODIGO" ),{align : 'center'} )
+                                doc.setFont('Arial');
+                                doc.setFontType('bold');
+                                doc.setFontSize(20);
+                                doc.myText(0, 7 , doc.splitTextToSize (data.premios[i]['prom_id']),{align : 'center'} )
+                            }                            
+                            
+                            doc.setFontType('bold');
+                            doc.setFontSize(12);
+                            doc.setFont('courier');
+                            doc.myText(10, 5 ,doc.splitTextToSize( '---------------------------',70),{align : 'center'} )
+                            doc.setFontType('normal');
+                            doc.setFontSize(6);
+                            doc.setFont('Arial');
+                            doc.myText(4, 3 ,doc.splitTextToSize( data.premios[i]['descripcion'] ,67),{align : 'justify'} )
+
+                            y = y+15;
+
+                            nombre = nombre + data.premios[i]['codigo_cupon'] + "_";
+
+                            /**/
+                        }
+                        doc.save(nombre + '.pdf');
+
+                    } else {
+                        waitingDialog.hide();
+                        swal({
+                            title: "Error",
+                            text: "Error al descargar codigo de barras.",
+                            icon: "error",
+                            dangerMode: true,
+                        });
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) { 
+                    var error = eval("(" + XMLHttpRequest.responseText + ")");
+                    waitingDialog.hide();
+                    toastr.error('Hubo un error en el registro : ' + error, "Alerta");
+                }
+            });
+        y = 10;
+    }
+    
+    function validarConsultarDNI() {
+        //if (procesadoBlur === true){
+            consultarDNI();
+        //}
+    }
+
+
+    function consultarDNI(){
+            waitingDialog.show('Espere un momento por favor');
+            frmRegistroGanador = $("#frmRegistroGanador");
+            $.ajax({
+                type: "POST",                                              
+                url:  '@Url.Action("ValidarMiembroBataClub", "RuletaBata")' ,  
+                data: frmRegistroGanador.serialize(), 
+                
+                success: function (data) {
+                    waitingDialog.hide();
+
+
+                    if (data.estado == 1){
+                        if (data.nuevo_bataclub == false){
+                            $("#dni").val(data._dni);
+                            $("#nombre").val(data.nombre);
+                            $("#ape_pat").val(data.ape_pat);
+                            $("#ape_mat").val(data.ape_mat);
+                            $("#telefono").val(data.telefono);
+                            $("#email").val(data.email);
+                            $("#bataclub").val(1);
+                            $("#afil_bataclub").addClass("hidden");
+                            swal("Eres miembro BATACLUB", "Por ser miembro BATACLUB vuelves a participar...");
+                        }
+                        else{
+                            swal("No es miembro BATACLUB");
+                            $("#nombre").val("");
+                            $("#ape_pat").val("");
+                            $("#ape_mat").val("");
+                            $("#telefono").val("");
+                            $("#email").val("");
+                            $("#bataclub").val(0);
+                            $("#afil_bataclub").removeClass("hidden");
+                        }
+                    }else{
+                        waitingDialog.hide();
+                        swal({
+                            title: "Error",
+                            text: data.resultados,
+                            icon: "error",
+                            dangerMode: true,
+                        });
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) { 
+                    var error = eval("(" + XMLHttpRequest.responseText + ")");
+                    waitingDialog.hide();
+                    toastr.error('Hubo un error en el registro : ' + error, "Alerta");
+                }
+            });
+            procesadoBlur = true
+    }
+
+    function ValidarParticipacion(){
+        if (participar === true){
+            participar = false;
+            //waitingDialog.show('Espere un momento por favor');
+            $.ajax({
+                type: "POST",                                              
+                url:  '@Url.Action("ValidarParticipacion", "RuletaBata")' ,    
+                data: null,                                               
+                success: function (data) {                            
+                    if (data.estado == 1){
+                        jugando = true;
+                        //waitingDialog.hide();
+                        resetWheel();
+                        startSpin(data.w01);
+                    }else{
+                        //waitingDialog.hide();
+                        swal({
+                            title: "Error",
+                            text: data.resultados,
+                            icon: "error",
+                            dangerMode: true,
+                        });
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) { 
+                    var error = eval("(" + XMLHttpRequest.responseText + ")");
+                    waitingDialog.hide();
+                    toastr.error('Hubo un error en el registro : ' + error, "Alerta");
+                }
+            });
+        }
+        //$("#spin_button").prop('disabled', false);
+    }
+    function RegistrarGanador(){
+        frmRegistroGanador = $("#frmRegistroGanador");
+        var bataclub = $("#bataclub").val();
+        waitingDialog.show('Espere un momento por favor');
+        $.ajax({
+            type: "POST",                                              
+            url:  '@Url.Action("RegistrarGanador", "RuletaBata")' ,        
+            data: frmRegistroGanador.serialize(),                      
+            success: function (data) {                          
+                if (data.estado == 1){
+                    waitingDialog.hide();
+                    $("#cupones").append("<h3><div class='label label-success text-center'>"  +  data.premio + " : " +  (data.prom_id == "" ? data.codigo : data.prom_id) + "</div></h3><input type='hidden' name='codigos[]' id='codigo-"+data.codigo+"' value='"+ data.codigo +"' />");
+
+                    if (bataclub == 1)
+                    {
+                        swal(data.resultados  , "Vuelve a participar.").then((value) => {
+                            $("#modalRegistrarGanador").modal('hide');
+                            resetWheel();
+                            participar = true;
+                        });
+                    }
+                    else
+                    {
+                        jugando = false;
+                        swal(data.resultados);
+                        $("#dni").attr('readonly', true);
+                        $("#buscar_dni").attr('disabled', true);
+                        $("#nombre").attr('readonly', true);
+                        $("#ape_pat").attr('readonly', true);
+                        $("#ape_mat").attr('readonly', true);
+                        $("#telefono").attr('readonly', true);
+                        $("#email").attr('readonly', true);
+                        $("#botones").html("<button id='descargar_cupones' onclick='descargar_cupones();' class='btn btn-primary'>Descargar cupones  <i class='glyphicon glyphicon-barcode'></i></button><a href='@Url.Action("Index" , "RuletaBata")' class='btn btn-warning'>Terminar <i class='glyphicon glyphicon-ok'></i></a>");
+                    }
+                }
+                else
+                {
+                    waitingDialog.hide();
+                    swal({
+                        title: "Error",
+                        text: data.resultados,
+                        icon: "error",
+                        dangerMode: true,
+                    });
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) { 
+                var error = eval("(" + XMLHttpRequest.responseText + ")");
+                waitingDialog.hide();
+                toastr.error('Hubo un error en el registro : ' + error, "Alerta");
+            }
+        });
+    }
+    
+    let theWheel = new Winwheel({
+        'numSegments': @Model.listPremios.Count,    
+        'outerRadius': 225,   
+        //'innerRadius'     : 75,
+        'textFontSize' : 13,   
+        'drawMode' : 'segmentImage',
+        'responsive' : true,
+        'segments':      
+        [
+            @foreach (var item in Model.listPremios)
+            {
+                @:{  'image' : '../../Files/RuletaBata/@item.imagen' , 'index' : '@item.indice',  'texto': '@item.nombre' , 'id' : '@item.id' , 'tipo' : '@item.tipo', 'descripcion' : '@item.descripcion'},
+            }
+        ],
+        'animation':          
+        {
+            'type': 'spinToStop',
+            'duration': 3,
+            //'spins'    : 8,
+            'callbackFinished': alertPrize
+            //'callbackSound'    : playSound,   // Function to call when the tick sound is to be triggered.
+            //'soundTrigger': 'pin'        // Specify pins are to trigger the sound, the other option is 'segment'.
+        },
+        'pins':
+        {
+            'number': 0  // Number of pins. They space evenly around the wheel.
+        }
+    });
+    function playSound() {
+        // Stop and rewind the sound if it already happens to be playing.
+        audio.pause();
+        audio.currentTime = 0;
+
+        // Play the sound.
+        audio.play();
+    }
+    function alertPrize(indicatedSegment) {
+        var titulo = (indicatedSegment.tipo == '0' ? "Gracias por participar." : "HAS GANADO :)");
+            swal(titulo, indicatedSegment.texto)
+            .then((value) => {
+                if (indicatedSegment.tipo != '0') {
+                    $("#w01").val(indicatedSegment.index)
+                    $("#nombre_premio").html(indicatedSegment.texto+ " " + "<i class='glyphicon glyphicon-gift'></i>");
+                    $("#descripcion_premio").html(indicatedSegment.descripcion);
+                    var bataclub = $("#bataclub").val();
+                    if (bataclub == 1)
+                    {
+                        $("#dni").attr('readonly', true);
+                        $("#buscar_dni").attr('disabled', true);
+                        $("#nombre").attr('readonly', true);
+                        $("#ape_pat").attr('readonly', true);
+                        $("#ape_mat").attr('readonly', true);
+                        $("#telefono").attr('readonly', true);
+                        $("#email").attr('readonly', true);
+                        $("#bataclub").val(0);
+                        $("#segPremio").html("(Segundo premio por ser miembro de Bata Club)");
+                    }
+                    $("#modalRegistrarGanador").modal({ backdrop: 'static', keyboard: false });
+                }
+            });
+        //resetWheel();
+    }
+     let wheelPower = 0;
+    let wheelSpinning = false;
+   
+    function startSpin(w01) {
+         
+        theWheel.rotationAngle = 0;
+        
+        var w01 = w01;
+        if (w01 == null || w01 == "") {
+            w01 = 0;
+        }
+        if (w01 != 0) {
+            w01 = Number.parseFloat(w01) - 1;
+            theWheel.animation.stopAngle = aleatorio(w01 + 0.05, w01 + 1 - 0.05, 2) * (360 / @Model.listPremios.Count);
+        }
+          theWheel.animation.spins = 8
+         theWheel.startAnimation();
+        wheelSpinning = true;
+        // }
+    }
+    function aleatorio(minimo, maximo, decimales) {
+        var precision = Math.pow(10, decimales);
+        minimo = minimo * precision;
+        maximo = maximo * precision;
+        return Math.floor(Math.random() * (maximo - minimo + 1) + minimo) / precision;
+    }
+    function resetWheel() {
+        theWheel.stopAnimation(false);  
+        theWheel.rotationAngle = 0;     
+        theWheel.draw();                
+        $( "#pw1" ).removeClass( "pw1" );
+        $( "#pw2" ).removeClass( "pw2" );
+        $( "#pw3" ).removeClass( "pw3" );
+        wheelSpinning = false;                  
+    }
+</script>
+<script>
+    window.onbeforeunload = function() {
+        if (jugando === true){
+            return "Está seguro(a) que desea salir? Hay procesos pendientes...";    
+        }        
+    }
+</script>
