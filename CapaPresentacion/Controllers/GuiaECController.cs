@@ -47,12 +47,14 @@ namespace CapaPresentacion.Controllers
 
             //string tipo_rep = "1";
 
-            ECommerce model_planilla = pl.getGuia_EC(cod_venta);
+            List<ECommerce> model_guia = pl.getGuia_EC(cod_venta);
+            List<DetallesECommerce> model_detguia = pl.get_DetGuia_EC(cod_venta);
 
-            this.HttpContext.Session["rptSource"] = model_planilla;
+            this.HttpContext.Session["rptSource"] = model_guia;
+            this.HttpContext.Session["rptSource_sub"] = model_detguia;
 
             /*error=0;exito=1*/
-            string _estado = (model_planilla == null) ? "0" : "1";
+            string _estado = (model_guia == null) ? "0" : "1";
 
             //if (model_planilla==null)
 

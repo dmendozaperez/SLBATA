@@ -49,16 +49,26 @@
 </style>
 <p class="text-danger">Guía Interna E-Commerce.</p>
         
+<div style="width:25%" class="col-sm-3">
+    <label for="txtTda"></label>
+    <div class="form-group">
+        <div id="divButton" class="form-group">
+            <button type="button" class="btn btn-primary" onclick="javascript: MostrarReporte()">
+                <span class="glyphicon glyphicon-th-list"></span>&nbsp;Ver Reporte
+            </button>
+
+        </div>
+    </div>
+</div> 
     <div class="row">
         <div class="col-md-12">
             <div id="ifrReporte" class="well" style="width: 100%; height: 800px;">
                 <iframe id="load" src="" frameborder="0" marginheight="1"
-                        marginwidth="1" scrolling="auto" onload="javascript: waitingDialog.hide(); MostrarReporte();"></iframe>
+                        marginwidth="1" scrolling="auto" onload="javascript: waitingDialog.hide();"></iframe>
             </div>
 
-
         </div>
-    </div>
+    </div>                     
   
     @*<script src="~/Scripts/bootstrap.min.js"></script>
         <script src="~/ScriptsSelect/bootstrap-select.js"></script>*@
@@ -72,9 +82,16 @@
             $('#loading').hide();
         }
 
-        function MostrarReporte() {
+        function getParameterByName(name) {
+            name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+            var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+            results = regex.exec(location.search);
+            return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+        }
 
-            var venta = $('#ven_id').val();
+        function MostrarReporte(e) {
+
+            var venta = getParameterByName("ven_id");
 
             venta = venta.toString();
 

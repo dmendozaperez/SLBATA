@@ -57,6 +57,12 @@ namespace CapaPresentacion.Controllers
             //}
         }
 
+        public ActionResult GuiaEC(string ven_id)
+        {
+            return View();
+            ; //RedirectToAction("GuiaEC", "ECommerce");
+        }
+
         public ActionResult Envia_Courier(string ven_id)
         {
             //Basico.act_presta_urbano(grabar_numerodoc, ref _error, ref _cod_urbano)
@@ -77,7 +83,7 @@ namespace CapaPresentacion.Controllers
                 if (guia_presta.Trim().Length > 0)
                 {
                     UpdaEstado updateestado = new UpdaEstado();
-                    Boolean valida = true;//updateestado.ActualizarReference(guia_presta);
+                    Boolean valida = updateestado.ActualizarReference(guia_presta);
 
                     if (valida)
                     {
@@ -101,7 +107,7 @@ namespace CapaPresentacion.Controllers
                             if (name_carrier == "Comercio Xpress")
                             {
                                 //Ent_Cexpress ent_Cexpress = envia2.sendCexpress(ven_id, ref nroserv);
-                                //action_presta.updestafac_prestashop(guia_presta);
+                                action_presta.updestafac_prestashop(guia_presta);
                                 data_Cexpress.update_guia(guia_presta, nroserv);
                                 guia_urb = nroserv;
 

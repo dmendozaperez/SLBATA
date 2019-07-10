@@ -346,6 +346,7 @@
     <Compile Include="Models\CanalVenta\CanalVenta.cs" />
     <Compile Include="Models\CanalVenta\Urbano.cs" />
     <Compile Include="Models\Control\LoginViewModel.cs" />
+    <Compile Include="Models\Crystal\Reporte\Models_GuiaEC.cs" />
     <Compile Include="Models\Crystal\Reporte\Models_Rendimiento_Categ.cs" />
     <Compile Include="Models\Crystal\Reporte\Models_Guia.cs" />
     <Compile Include="Models\Crystal\Reporte\Models_Comparativo_Venta.cs" />
@@ -415,6 +416,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ReportArtSinMov.rpt</DependentUpon>
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Service References\comercioxpress\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="Service References\cxpress\Reference.cs">
       <AutoGen>True</AutoGen>
@@ -1255,12 +1261,25 @@
     <Content Include="Scripts\toastr.min.js" />
     <Content Include="Scripts\waitingfor.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Service References\comercioxpress\CapaPresentacion.comercioxpress.registrarResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\comercioxpress\CapaPresentacion.comercioxpress.response.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <None Include="Service References\comercioxpress\configuration91.svcinfo" />
+    <None Include="Service References\comercioxpress\configuration.svcinfo" />
+    <None Include="Service References\comercioxpress\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
     <Content Include="Service References\cxpress\CapaPresentacion.cxpress.registrarResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
     <Content Include="Service References\cxpress\CapaPresentacion.cxpress.response.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
+    <None Include="Service References\comercioxpress\WSOrdenServicio.wsdl" />
     <None Include="Service References\cxpress\configuration91.svcinfo" />
     <None Include="Service References\cxpress\configuration.svcinfo" />
     <None Include="Service References\cxpress\Reference.svcmap">
@@ -1508,6 +1527,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <WCFMetadataStorage Include="Service References\comercioxpress\" />
     <WCFMetadataStorage Include="Service References\cxpress\" />
     <WCFMetadataStorage Include="Service References\FEBataBack\" />
     <WCFMetadataStorage Include="Service References\FEBataEpos\" />

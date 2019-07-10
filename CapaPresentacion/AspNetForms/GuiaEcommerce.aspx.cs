@@ -16,9 +16,9 @@ namespace CapaPresentacion.AspNetForms
         {
             try
             {
-                string strReportName = "GuiaEcommerce";                 //System.Web.HttpContext.Current.Session["ReportName"].ToString();
+                string strReportName = "GuiaECommerce.rpt";                 //System.Web.HttpContext.Current.Session["ReportName"].ToString();
                 var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
-                //var rptSource_sub= System.Web.HttpContext.Current.Session["rptSource_sub"];
+                var rptSource_sub= System.Web.HttpContext.Current.Session["rptSource_sub"];
 
                 rd = new ReportDocument();
                 
@@ -29,7 +29,7 @@ namespace CapaPresentacion.AspNetForms
                 // Setting report data source
                 if (rptSource != null && rptSource.GetType().ToString() != "System.String")
                     rd.SetDataSource(rptSource);
-                //rd.OpenSubreport("rmedida").SetDataSource(rptSource_sub);
+                    rd.OpenSubreport("GuiaECDet").SetDataSource(rptSource_sub);
 
                 crv_guiaEC.ReportSource = rd;
                 crv_guiaEC.ToolPanelView = CrystalDecisions.Web.ToolPanelViewType.None;
