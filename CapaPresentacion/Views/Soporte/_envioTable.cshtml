@@ -19,7 +19,9 @@
 <table id="example" class="table table-hover dataTable  table-striped table-responsive">
     <thead>
         <tr style="background-color:#3d566e; color:#ecf0f1">
-            <th>Enviar paquete</th>
+            <th> 
+               <div id="all"><input type="checkbox" name="rGroupPrinc" value="0" class="seleccionado" id="check_all" /></div>      
+            </th>
             <th>Identificador</th>
             <th>Tienda</th>
             <th>Fecha de venta</th>
@@ -70,7 +72,7 @@
             "language": {
                 "url": "../Scripts/DataTables/Spanish.json"
             },
-            "bProcessing": true, // se agrego para probar
+            "bProcessing": false, // se agrego para probar
             "bServerSide": true,
             "bAutoWidth": false,
             "sAjaxSource": '@Url.Action("getGuiaAjax", "Soporte")',
@@ -81,12 +83,15 @@
             },
             "bdestroy": true,
             "start": 0,
-            "order": [0, "asc"],
+            //"order": [0, "asc"],
+            //"order": false,
+            "bSort": false,
+            //"aaSorting" : [[]],
             "bDeferRender": true,
             "aoColumns": [
                     {
                         "render": function (data, type, full) {
-                            return ' <div id="checkboxes"> <input type="checkbox" name="rGroup" value="0" id="' + full.tran_id + '" /> </div>'
+                            return ' <div id="checkboxes"> <input type="checkbox" class="minicheck" name="rGroup" value="0" id="' + full.tran_id + '" /> </div>'
                         }
                     },
                     { "sName": "tran_id", "mData": "tran_id" },
@@ -111,19 +116,6 @@
             ],
             dom: 'Bfrtip',
             buttons: [
-            {
-                extend: 'excelHtml5',
-                title: 'Bataclub_xls'
-            },
-            {
-                extend: 'csvHtml5',
-                title: 'BataClub_csv'
-            },
-            {
-                extend: 'pdfHtml5',
-                title: 'BataClub_pdf'
-            },
-            'copyHtml5',
             ]
         });
 
@@ -131,12 +123,17 @@
 </script>
 
 <script>
+    $('.seleccionado').click(function (e) {
+        var table = $(e.target).closest('table');
+        $('td input:checkbox', table).prop('checked', this.checked);
+        console.log("dafdsa"); 
+    }); 
+</script>
+
+<script>
     function PopupDetalle(codTienda, fecha_des, tienda_origen) {
 
-        // var value = $('.dataTables_filter input').val();
-        // var value = $('.dataTables_filter input')[1].value;
         var ControllerUrl = "@Url.Action("_popUpDetalle", "Soporte")";
-       // waitingDialog.show('Espere un momento por favor');
         $.ajax({
             type: "GET",
             url: ControllerUrl,
@@ -145,7 +142,6 @@
             datatype: "json",
             cache: true,
             success: function (data) {
-            //    waitingDialog.hide();
 
                 var options = { "backdrop": "static", keyboard: true };
                 var descfecha = ' - ' + fecha_des + ''
@@ -165,10 +161,6 @@
                     "bAutoWidth": false,
                     "sAjaxSource": '@Url.Action("getDetalleAjax", "Soporte")',
                     "fnServerParams": function (aoData) {
-                    //    // console.log("entró a getdetalle ajax");
-                    //    //aoData.push({ "name": "dwtda", "value": $.trim($('#dwtda').val()) });
-                    //    //aoData.push({ "name": "fec_ini", "value": $.trim($('#fec_ini').val()) });
-                    //    //aoData.push({ "name": "fec_fin", "value": $.trim($('#fec_fin').val()) });
                     },
                     "bdestroy": true,
                     "start": 0,
@@ -184,29 +176,13 @@
                     ],
                     dom: 'Bfrtip',
                     buttons: [
-                    {
-                        extend: 'excelHtml5',
-                        title: 'Bataclub_xls'
-                    },
-                    {
-                        extend: 'csvHtml5',
-                        title: 'BataClub_csv'
-                    },
-                    {
-                        extend: 'pdfHtml5',
-                        title: 'BataClub_pdf'
-                    },
-                    'copyHtml5',
                     ]
                 });
-                //'#myModal1').modal('show');
-              //  waitingDialog.hide();
             },
             error: function (xhr) {
-           //     waitingDialog.hide();
                 toastr.error(xhr, 'Mensaje');
             }
         });
-     //   waitingDialog.hide();
+
     }
 </script>

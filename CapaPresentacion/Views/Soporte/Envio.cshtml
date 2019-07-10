@@ -103,6 +103,7 @@
 <script src="~/ScriptsSelect/bootstrap-multiselect.js"></script>
 
 <script>
+
     $(function () {
         $('#dwtda').multiselect({
             includeSelectAllOption: true,
@@ -121,7 +122,7 @@
         var strcadena = $.trim($('#dwtda').val());
         if (strcadena != null) {
             //  console.log(strcadena);
-            document.getElementById("hidden").innerHTML = strcadena;
+            //document.getElementById("hidden").innerHTML = strcadena;
             document.getElementById("hidden").value = strcadena;
         }
     }
@@ -137,13 +138,14 @@
         var cadena = "";
        // var message = "¿Está seguro de enviar los siguientes paquetes?\n";
         var message = "¿Está seguro de enviar los siguientes paquetes?<br>";
-        $("#example input[type=checkbox]:checked").each(function () {
+      //  $("#example input[type=checkbox]:checked").each(function () {
+            $("#example .minicheck:checked").each(function () {         
                 var row = $(this).closest("tr")[0];
                 message += "ID: " + row.cells[1].innerHTML;
                 message += " de la tienda " + row.cells[2].innerHTML;
                 message += " con fecha de " + row.cells[3].innerHTML;
                 message += "<br>";
-            cadena += $(this).attr("id") + ",";
+                cadena += $(this).attr("id") + ",";          
         });
         console.log(cadena);
         if (cadena == null || cadena == "") {
@@ -180,7 +182,6 @@
     }
 
     function Guardar(cadena) {
-        //waitingDialog.show('Espere un momento por favor');
         var ControllerUrl = "@Url.Action("Envio_chk", "Soporte")";
         var msg_titulo = 'Mensaje';
         $.ajax({
