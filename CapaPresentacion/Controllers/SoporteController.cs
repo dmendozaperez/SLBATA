@@ -123,10 +123,14 @@ namespace CapaPresentacion.Controllers
             return listguia;
         }
 
-        public PartialViewResult _envioTable(string hidden, string fec_ini,string fec_fin)
+        public PartialViewResult _envioTable(string hidden, string fec_ini,string fec_fin, string dwtda)
         {
-            //string dwtda--> se reemplaza por hidden - para agarrar varios id de tiendas por el combo multiselect
-            return PartialView(listaGuia(hidden, Convert.ToDateTime(fec_ini), Convert.ToDateTime(fec_fin)));
+            if (dwtda == null)
+            { return PartialView(); }
+            else
+            {    //string dwtda--> se reemplaza por hidden - para agarrar varios id de tiendas por el combo multiselect
+                return PartialView(listaGuia(hidden, Convert.ToDateTime(fec_ini), Convert.ToDateTime(fec_fin)));
+            }
         }
 
         public ActionResult getGuiaAjax(Ent_jQueryDataTableParams param)

@@ -50,7 +50,7 @@ namespace CapaDato.BataClub
         }
 
         //Listado Tabla principal
-        public List<Ent_BataClub_CuponesCO> get_lista_prom(string dni, string cupon, string id_grupo)
+        public List<Ent_BataClub_CuponesCO> get_lista_prom(string dni, string cupon, string id_grupo, string correo)
         {
             string sqlquery = "USP_Report_CuponBataClub_GFT";
             List<Ent_BataClub_CuponesCO> listar = null;
@@ -68,6 +68,7 @@ namespace CapaDato.BataClub
                             cmd.Parameters.AddWithValue("@grupo", id_grupo);
                             cmd.Parameters.AddWithValue("@dni", dni);
                             cmd.Parameters.AddWithValue("@cupon", cupon);
+                            cmd.Parameters.AddWithValue("@correo", correo);
                             using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                             {
                                 DataTable dt = new DataTable();
