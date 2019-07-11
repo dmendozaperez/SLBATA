@@ -48,10 +48,10 @@ namespace CapaPresentacion.Models.ECommerce
     {
         public string codigoProducto { get; set; }
         public string nombreProducto { get; set; }
-        public string cantidad { get; set; }
-        public string precioUnitario { get; set; }
-        public string descuento { get; set; }
-        public string total { get; set; }
+        public int cantidad { get; set; }
+        public decimal precioUnitario { get; set; }
+        public decimal descuento { get; set; }
+        public decimal total { get; set; }
         public string talla { get; set; }
     }
     /*public class HistorialEstadosCV
