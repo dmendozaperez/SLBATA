@@ -61,15 +61,19 @@ namespace CapaPresentacion.Controllers
             return View();
         }
 
-        public PartialViewResult _Table(string dni, string cupon, string hidden)
+        public PartialViewResult _Table(string dni, string cupon, string hidden, string correo,string dwprom)
         {
-            //string dwprom--> se reemplaza por hidden - para agarrar varios id de promociones con el combo multiselect
-            return PartialView(listaTablaPromociones(dni, cupon, hidden));
+            if (dwprom == null)
+            { return PartialView(); }
+            else
+            { //string dwprom--> se reemplaza por hidden - para agarrar varios id de promociones con el combo multiselect
+                return PartialView(listaTablaPromociones(dni, cupon, hidden, correo));
+            }
         }
 
-        public List<Ent_BataClub_CuponesCO> listaTablaPromociones(string dni, string cupon, string id_grupo)
+        public List<Ent_BataClub_CuponesCO> listaTablaPromociones(string dni, string cupon, string id_grupo, string correo)
         {
-            List<Ent_BataClub_CuponesCO> listguia = datProm.get_lista_prom(dni, cupon, id_grupo);
+            List<Ent_BataClub_CuponesCO> listguia = datProm.get_lista_prom(dni, cupon, id_grupo, correo);
             Session[_session_tabla_prom_private] = listguia;
             return listguia;
         }
@@ -221,12 +225,6 @@ namespace CapaPresentacion.Controllers
             byte[] filecontent = ExcelExportHelper.ExportExcel(listbataclub, "BATACLUB_Promociones", true, columns);
             return File(filecontent, ExcelExportHelper.ExcelContentType, "BATACLUB_Promociones.xlsx");
         }
-
-
-
-
-
-
 
     }
 }
