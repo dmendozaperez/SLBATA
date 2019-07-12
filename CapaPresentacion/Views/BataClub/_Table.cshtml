@@ -1,22 +1,4 @@
 ﻿
-@*<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.min.css" />*@
-<style type="text/css">
-    /*.dt-buttons {
-        display: none;
-    }*/
-
-    /*#example_filter {
-        display: none;
-    }*/
-</style>
-
-
-
-@*<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/data.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
-<script src="https://code.highcharts.com/modules/export-data.js"></script>*@
-
 
 <table id="example" class="table table-hover dataTable  table-striped table-responsive">
     <thead>
@@ -61,46 +43,6 @@
 </table>
 
 
-@*<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>*@
-
-
-@*<table id="datatable">
-    <thead>
-        <tr>
-            <th></th>
-            <th>Promo A</th>
-            <th>Promo B</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <th>Enero</th>
-            <td>3</td>
-            <td>4</td>
-        </tr>
-        <tr>
-            <th>Febrero</th>
-            <td>2</td>
-            <td>0</td>
-        </tr>
-        <tr>
-            <th>Marzo</th>
-            <td>5</td>
-            <td>11</td>
-        </tr>
-        <tr>
-            <th>Mayo</th>
-            <td>1</td>
-            <td>1</td>
-        </tr>
-        <tr>
-            <th>Junio</th>
-            <td>2</td>
-            <td>4</td>
-        </tr>
-    </tbody>
-</table>*@
-
 
 <script>
 
@@ -113,9 +55,6 @@
             "bAutoWidth": false,
             "sAjaxSource": '@Url.Action("getTablePromoAjax", "BataClub")',
             "fnServerParams": function (aoData) {
-                //aoData.push({ "name": "dwtda", "value": $.trim($('#dwtda').val()) });
-              //  aoData.push({ "name": "dni", "value": $.trim($('#dni').val()) });
-                //aoData.push({ "name": "fec_fin", "value": $.trim($('#fec_fin').val()) });
             },
             "bdestroy": true,
             "start": 0,
@@ -157,31 +96,3 @@
         });
 </script>
 
-<script>
-
-
-    //Highcharts.chart('container', {
-    //    data: {
-    //        table: 'datatable'
-    //    },
-    //    chart: {
-    //        type: 'column'
-    //    },
-    //    title: {
-    //        text: 'Cupones usados en el año actual por mes'
-    //    },
-    //    yAxis: {
-    //        allowDecimals: false,
-    //        title: {
-    //            text: 'Cantidad'
-    //        }
-    //    },
-    //    tooltip: {
-    //        formatter: function () {
-    //            return '<b>' + this.series.name + '</b><br/>' +
-    //                this.point.y + ' ' + this.point.name.toLowerCase();
-    //        }
-    //    }
-    //});
-
-</script>

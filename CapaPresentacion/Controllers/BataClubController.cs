@@ -13,6 +13,7 @@ using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 using System.Web.UI.WebControls;
 
 namespace CapaPresentacion.Controllers
@@ -77,60 +78,6 @@ namespace CapaPresentacion.Controllers
             Session[_session_tabla_prom_private] = listguia;
             return listguia;
         }
-
-        //public ActionResult getTablePromoAjax(Ent_jQueryDataTableParams param)
-        //{
-        //    /*verificar si esta null*/
-        //    if (Session[_session_tabla_prom_private] == null)
-        //    {
-        //        List<Ent_BataClub_CuponesCO> listdoc = new List<Ent_BataClub_CuponesCO>();
-        //        Session[_session_tabla_prom_private] = listdoc;
-        //    }
-
-        //    //Traer registros
-        //    IQueryable<Ent_BataClub_CuponesCO> membercol = ((List<Ent_BataClub_CuponesCO>)(Session[_session_tabla_prom_private])).AsQueryable();
-
-        //    //Manejador de filtros
-        //    int totalCount = membercol.Count();
-
-        //    IEnumerable<Ent_BataClub_CuponesCO> filteredMembers = membercol;
-
-        //    //Manejador de orden
-        //    var sortIdx = Convert.ToInt32(Request["iSortCol_0"]);
-
-        //    var displayMembers = filteredMembers
-        //        .Skip(param.iDisplayStart)
-        //        .Take(param.iDisplayLength);
-
-        //    var result = from a in displayMembers
-        //                 select new
-        //                 {
-        //                     a.Nombres,
-        //                     a.Apellidos,
-        //                     a.dni,
-        //                     a.correo,
-        //                     a.cupon,
-        //                     a.tienda,
-        //                     a.dni_venta,
-        //                     a.nombres_venta,
-        //                     a.correo_venta,
-        //                     a.telefono_venta,
-        //                     a.tickets,
-        //                     a.soles,
-        //                     a.grupo,
-        //                     a.porc_desc,
-        //                     a.fec_doc
-        //                 };
-
-        //    //Se devuelven los resultados por json
-        //    return Json(new
-        //    {
-        //        sEcho = param.sEcho,
-        //        iTotalRecords = totalCount,
-        //        iTotalDisplayRecords = filteredMembers.Count(),
-        //        aaData = result
-        //    }, JsonRequestBehavior.AllowGet);
-        //}
 
         public ActionResult getTablePromoAjax(Ent_jQueryDataTableParams param)
         {
@@ -215,7 +162,23 @@ namespace CapaPresentacion.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
         /***/
+        //Gráfica
+        public string listarStr_graph()
+        {
+            string strJson = "";
+          //  JsonResult jRespuesta = null;
+            strJson = datProm.listarStr_graph();
+           // var serializer = new JavaScriptSerializer();
+           // jRespuesta = Json(serializer.Deserialize<List<Articulo_Stock_Tienda>>(strJson), JsonRequestBehavior.AllowGet);
+            return strJson;
+        }
 
+        public PartialViewResult _popUpGrafica()
+        {
+            return PartialView(/*listarStr_graph()*/);
+        }
+
+        //Exportar Excel
         [HttpGet]
         public FileContentResult ExportToExcel()
         {

@@ -1491,6 +1491,7 @@
     <Content Include="Views\ECommerce\Index.cshtml" />
     <Content Include="Views\ECommerce\Ver.cshtml" />
     <Content Include="Views\Contabilidad\_popUpDetalle.cshtml" />
+    <Content Include="Views\BataClub\_popUpGrafica.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

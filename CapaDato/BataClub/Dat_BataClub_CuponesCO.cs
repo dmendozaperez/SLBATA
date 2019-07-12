@@ -1,5 +1,6 @@
 ﻿using CapaEntidad.BataClub;
 using CapaEntidad.Util;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -113,5 +114,45 @@ namespace CapaDato.BataClub
             return listar;
         }
 
-    }
+        //Graph
+
+        public string listarStr_graph()
+        {
+            string strJson = "";
+            try
+            {
+                SqlConnection cn = new SqlConnection(Ent_Conexion.conexion);
+                cn.Open();
+                SqlCommand oComando = new SqlCommand("USP_BataClub_Cupones_Grafica", cn);
+                oComando.CommandType = CommandType.StoredProcedure;
+
+                //SqlParameter oArticulo = oComando.Parameters.Add("@codArticulo", SqlDbType.VarChar);
+                //oArticulo.Direction = ParameterDirection.Input;
+                //oArticulo.Value = Cod_Articulo;
+
+                SqlDataReader oReader = oComando.ExecuteReader(CommandBehavior.SingleResult);
+                DataTable dataTable = new DataTable("row");
+                dataTable.Load(oReader);
+
+                strJson = JsonConvert.SerializeObject(dataTable, Newtonsoft.Json.Formatting.Indented);
+                strJson = strJson.Replace(Environment.NewLine, "");
+                //strJson = strJson.Replace(" ", "");
+                cn.Close();
+            }
+            catch (Exception ex)
+            {
+                return strJson;
+            }
+
+            //return oLista;
+            return strJson;
+        }
+
+    
+
+
+
+
+
+}
 }
