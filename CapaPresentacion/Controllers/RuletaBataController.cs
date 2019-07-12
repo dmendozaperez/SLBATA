@@ -78,8 +78,9 @@ namespace CapaPresentacion.Controllers
                     /*generar codigo real y registrar al ganador.*/
                     codigo += ganador.dni.ToString().Substring(4);
                     codigo += premio.id.ToString();
-                    codigo += DateTime.Now.ToLongTimeString();
+                    codigo += DateTime.Now.ToString("HHmmss");
                     codigo = codigo.Replace(":", "");
+
                     codigo = codigo.PadLeft(15, '0');
 
                     int result_insert = _datos.insertar_ganador_ruleta(codigo, Session["Tienda"].ToString(), ganador.dni, ganador.nombre, ganador.ape_pat,ganador.ape_mat, ganador.telefono, ganador.email, premio.id);
