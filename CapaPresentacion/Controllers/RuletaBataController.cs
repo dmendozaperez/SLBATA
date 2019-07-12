@@ -19,6 +19,7 @@ namespace CapaPresentacion.Controllers
         Dat_RuletaBata _datos = new Dat_RuletaBata();        
         public ActionResult Index()
         {
+            //Session["Tienda"] = "50143";
             if (Session["Tienda"] == null)
             {
                 return RedirectToAction("Login", "Control");

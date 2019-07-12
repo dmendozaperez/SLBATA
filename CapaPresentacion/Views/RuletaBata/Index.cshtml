@@ -37,7 +37,7 @@
       z-index: 1;
       top: -2px;
       left: 0px;
-      background-image:url(../../Files/RuletaBata/FONDO_RULETA.png);
+      background-image:url(../Files/RuletaBata/FONDO_RULETA.png);
       background-size:cover;
       background-repeat: no-repeat;
       background-position: center; 
@@ -438,7 +438,7 @@
         [
             @foreach (var item in Model.listPremios)
             {
-                @:{  'image' : '../../Files/RuletaBata/@item.imagen' , 'index' : '@item.indice',  'texto': '@item.nombre' , 'id' : '@item.id' , 'tipo' : '@item.tipo', 'descripcion' : '@item.descripcion'},
+                @:{  'image' : '../Files/RuletaBata/@item.imagen' , 'index' : '@item.indice',  'texto': '@item.nombre' , 'id' : '@item.id' , 'tipo' : '@item.tipo', 'descripcion' : '@item.descripcion'},
             }
         ],
         'animation':          

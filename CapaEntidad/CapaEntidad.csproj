@@ -73,6 +73,7 @@
     <Compile Include="Oracle\Ent_Ora_Conexion.cs" />
     <Compile Include="ReportsValeCompra\Reporte_Resultado.cs" />
     <Compile Include="ReportsValeCompra\Reporte_Filtro.cs" />
+    <Compile Include="RuletaBata\Ent_RuletaBata.cs" />
     <Compile Include="Soporte\Ent_Documento_Transac.cs" />
     <Compile Include="Soporte\Ent_Tienda_Config.cs" />
     <Compile Include="Transac\Ent_Analisis_Mov.cs" />

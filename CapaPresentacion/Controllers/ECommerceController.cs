@@ -44,7 +44,19 @@ namespace CapaPresentacion.Controllers
                 //this.HttpContext.Session[""] = ;
             }
 
-            return View(listPed);
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
+            if (_usuario == null)
+            {
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+            }
+            else
+            { 
+                return View(listPed);
+            }
             //if (Request.HttpMethod == "POST")
             //{               
 
