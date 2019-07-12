@@ -111,10 +111,12 @@
     //    }
     //    return html;
     //}
-    function MostrarReporte(e) {
-        $('#load').show();
-        $("#load").attr("src", "../AspNetForms/Planilla.aspx");
-    }
+
+    //function MostrarReporte(e) {
+    //    $('#load').show();
+    //    $("#load").attr("src", "../AspNetForms/Planilla.aspx");
+    //}
+
     function SetearParametros(e) {
         //    var _vtA = $('select[name="tiendaOrigen"] option:selected').text();
         //    var _vtB = $('select[name="tiendaDestino"] option:selected').text();
@@ -140,6 +142,10 @@
     }
 
 </script>
+<script src="~/Scripts/bootstrap-select.min.js"></script>
+<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+
+<script src="~/Scripts/BI.js"></script>
 <style>
     iframe {
         border: none;
@@ -150,8 +156,6 @@
     }
 </style>
 
-
-
 @using (Html.BeginForm("Index", "ECommerce", FormMethod.Post, new { @id = "Formulario" }))
 {
     @Html.Hidden("ven_id", null, new { @id = "ven_id" })
@@ -159,7 +163,7 @@
     @Html.Hidden("vtB", null, new { @id = "vtB" })
     @Html.Hidden("vtEstados", null, new { @id = "vtEstados" })
     @Html.Hidden("vtTipos", null, new { @id = "vtTipos" })*@
-    <asp:HiddenField ID="id_asd" />
+    
     <div class="box box-body box-primary">
         <div class="row">
             <div class="col-md-12">
@@ -275,7 +279,7 @@
                                 <td width="70px" class="p-0">
                                     <ul class="list-inline" style="margin-bottom: 0px;">
                                         <li>
-                                            <a class="btn btn-sm btn-primary" href="/ECommerce/GuiaEC?ven_id=@row.SerieDoc@row.NroDoc" target="popup" onClick="window.open(this.href, this.target, 'width=800,height=500'); return false;"><span class="glyphicon glyphicon-list"></span></a>
+                                            <a class="btn btn-sm btn-primary" href="~/ECommerce/GuiaEC?ven_id=@row.SerieDoc@row.NroDoc" target="popup" onClick="window.open(this.href, this.target); return false;"><span class="glyphicon glyphicon-list"></span></a>
                                         </li>
                                     </ul>
                                 </td>

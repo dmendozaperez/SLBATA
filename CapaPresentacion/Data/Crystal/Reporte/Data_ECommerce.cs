@@ -42,10 +42,10 @@ namespace Data.Crystal.Reporte
                                          {
                                              codigoProducto = dr["codigoProducto"].ToString(),
                                              nombreProducto = dr["nombreProducto"].ToString(),
-                                             cantidad = dr["cantidad"].ToString(),
-                                             precioUnitario = dr["precioUnitario"].ToString(),
-                                             descuento = dr["descuento"].ToString(),
-                                             total = dr["total"].ToString(),
+                                             cantidad = Convert.ToInt32(dr["cantidad"]),
+                                             precioUnitario = Convert.ToDecimal(dr["precioUnitario"]),
+                                             descuento = Convert.ToDecimal(dr["descuento"]),
+                                             total = Convert.ToDecimal(dr["total"]),
                                              talla = dr["talla"].ToString(),
                                          }).ToList();
 
@@ -120,10 +120,10 @@ namespace Data.Crystal.Reporte
                                          {
                                              codigoProducto = dr["codigoProducto"].ToString(),
                                              nombreProducto = dr["nombreProducto"].ToString(),
-                                             cantidad = dr["cantidad"].ToString(),
-                                             precioUnitario = dr["precioUnitario"].ToString(),
-                                             descuento = dr["descuento"].ToString(),
-                                             total = dr["total"].ToString(),
+                                             cantidad = Convert.ToInt32(dr["cantidad"]),
+                                             precioUnitario = Convert.ToDecimal(dr["precioUnitario"]),
+                                             descuento = Convert.ToDecimal(dr["descuento"]),
+                                             total = Convert.ToDecimal(dr["total"]),
                                              talla = dr["talla"].ToString(),
                                          }).ToList();
 
