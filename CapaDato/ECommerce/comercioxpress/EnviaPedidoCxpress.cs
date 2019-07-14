@@ -197,8 +197,8 @@ namespace CapaDato.comercioxpress
                             objcla.volumen = new double[] { 10 };           //No hay 
                             objcla.tipoServicio = new long[] { 101 };       // 
                             /*Codigos para prueba 141 y  142*/
-                            objcla.codCliente = new long[] { 141/*467*/ };         //entregado por CX 141
-                            objcla.codCtaCliente = new long[] { 142/*493*/ };      //entregado por CX 142
+                            objcla.codCliente = new long[] { 467 };         //entregado por CX 141
+                            objcla.codCtaCliente = new long[] { 493 };      //entregado por CX 142
                             objcla.cantPiezas = new int[] { key.cant_total };
                             objcla.codRef1 = new String[] { "0012071801" }; //opsional
                             objcla.codRef2 = new String[] { "0012071801" }; //opsional
@@ -223,8 +223,8 @@ namespace CapaDato.comercioxpress
                             objcla.nroDocDestEntrega = new String[] { key.cod_cliente };    //"12345678"
                             objcla.telefDestEntrega = new String[] { key.nro_telf_mobil };        //"991276768"
                             objcla.emailDestEntrega = new String[] { key.correo_elec };     //"juanperez@gmail.com"
-                            objcla.idUsuario = new String[] { "EMPRESA INTEGRADA SAC"/*"EMPRESA  S.A.C."*/ };
-                            objcla.deTerminal = new String[] { "LOS OLIVOS"/*"LIMA"*/ };
+                            objcla.idUsuario = new String[] { "EMPRESA  S.A.C." };
+                            objcla.deTerminal = new String[] { "LIMA" };
 
                         }
                         /*fin*/
