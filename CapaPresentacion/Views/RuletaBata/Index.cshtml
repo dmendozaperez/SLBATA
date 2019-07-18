@@ -300,16 +300,27 @@
 
 
                     if (data.estado == 1){
-                        if (data.nuevo_bataclub == false){
+                        if (data.existe == true){
                             $("#dni").val(data._dni);
                             $("#nombre").val(data.nombre);
                             $("#ape_pat").val(data.ape_pat);
                             $("#ape_mat").val(data.ape_mat);
                             $("#telefono").val(data.telefono);
                             $("#email").val(data.email);
-                            $("#bataclub").val(1);
-                            $("#afil_bataclub").addClass("hidden");
-                            swal("Eres miembro BATACLUB", "Por ser miembro BATACLUB vuelves a participar...");
+                            if (data.nuevo_bataclub == false)
+                            {
+                                $("#bataclub").val(1);
+                                $("#miembro_bata_club").val(1);
+                                $("#afil_bataclub").addClass("hidden");
+                                swal("Eres miembro BATACLUB", "Por ser miembro BATACLUB vuelves a participar...");
+                            }
+                            else
+                            {
+                                swal("No es miembro BataClub", "Falta completar el registro. Le hemos enviado un e-mail en el cual encontrará un enlace para poder actualizar sus datos.");
+                                $("#bataclub").val(0);
+                                $("#miembro_bata_club").val(0);
+                                $("#afil_bataclub").removeClass("hidden");
+                            }                            
                         }
                         else{
                             swal("No es miembro BATACLUB");
@@ -444,7 +455,7 @@
         'animation':          
         {
             'type': 'spinToStop',
-            'duration': 3,
+            'duration': 10,
             //'spins'    : 8,
             'callbackFinished': alertPrize
             //'callbackSound'    : playSound,   // Function to call when the tick sound is to be triggered.
