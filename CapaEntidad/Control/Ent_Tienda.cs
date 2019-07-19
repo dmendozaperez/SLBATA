@@ -10,6 +10,7 @@ namespace CapaEntidad.Control
     {
         public string tda_codigo { get; set; }
         public Boolean tda_xstore { get; set; }
+        public string cadena { get; set; }
 
     }
 }

@@ -62,7 +62,19 @@ namespace CapaPresentacion.Controllers
 
             if (_data_tda != null)
             {
-                string UserTienda = (_data_tda.tda_xstore) ? "Tienda" : "TiendaPOS";
+                string UserTienda = "";
+                if (_data_tda.tda_xstore)
+                {
+                    UserTienda = (_data_tda.cadena == "NS") ? "Tienda NS" : "Tienda";
+                }
+                else
+                {
+                    UserTienda = "TiendaPOS";
+                }
+
+                //string UserTienda = (_data_tda.tda_xstore) ? "Tienda" : "TiendaPOS";
+
+
                 Session["Tienda"] = _data_tda.tda_codigo;
                 Ent_Usuario _data_user = _usuario.get_login(UserTienda);
                 view.Usuario = _data_user.usu_login;
