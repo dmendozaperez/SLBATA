@@ -1,0 +1,105 @@
+﻿@using CapaEntidad.BataClub
+@model IEnumerable<Ent_BataClub_CuponesCO>
+@{
+    ViewBag.Title = "Consulta ....";
+    AjaxOptions options = new AjaxOptions
+    {
+        HttpMethod = "GET",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "lista",
+        OnComplete = "waitingDialog.hide();",
+        OnBegin = "waitingDialog.show('Espere un momento por favor');",
+        OnFailure = "waitingDialog.hide();"
+    };
+}
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+<link href="~/ContentSelect/bootstrap-multiselect.css" rel="stylesheet" />
+
+<p class="text-danger">Consulta de .............</p>
+<div class="box box-body box-primary">
+    @using (Ajax.BeginForm("_TableCupon", options))
+    {
+        <form id="form1">
+            <div class="row">
+                <div class="col-sm-4" style="padding-left: 25px;">
+                    <label for="segape" style="color: #3d566e;">Promoción</label>
+                    <div class="form-group">
+                        <div id="tda" class="form-group">
+                            @Html.DropDownList("dwprom", new SelectList(ViewBag.Promocion, "prom_id", "prom_des", "-1"), new { @class = "selectpicker dropdown-toggle btn btn-default", @data_live_search = "true", @id = "dwprom", @name = "dwprom", @enable = "false" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2" style="padding-left: 25px; margin-right: inherit;">
+                    <label for="segape" style="color: #3d566e;">Descuento</label>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-tag"></i></span>
+                            <input id="cupon" type="text" class="form-control" name="cupon" placeholder="Descuento">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2" style="padding-left: 25px;">
+                    <label for="fecnac">Fecha Final</label>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div id="datepickerfin" class="input-group date" data-date-format="dd-mm-yyyy">
+                                <input id="fec_fin" name="fec_fin" value="" class="form-control custom-input" placeholder="dd-mm-yyyy" type="text" oninvalid="InvalidMsg(this,'Ingrese la fecha final')" required="required" />
+                                <span class="input-group-addon  bg-white"><img src="~/Content/images/wall-calendar-with-lines.svg" height="20" width="20"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    }
+    <div class="box-body">
+        <div class="row">
+            <div class="col-sm-2" style="padding-left: 25px; margin-right: inherit;">
+            </div>
+
+            <div class="col-sm-2" style="padding-left: 25px; margin-right: inherit;">
+                <label for="segape" style="color: #3d566e;">Identificación</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+                        <input id="cupon" type="text" class="form-control" name="identificacion" placeholder="Ingrese DNI o Email completos">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-2" style="padding-left: 25px; width: 105px; margin-top: 23px; margin-bottom: 10px;">            
+                <button id="btnSearch" type="submit" title="Consultar" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-search"> Buscar</span>
+                </button>
+            </div>
+        </div>
+        <div class="row" id="lista" style="padding-bottom: 20px;overflow-x: auto;">
+            @{Html.RenderPartial("_TableCupon", Model);}
+        </div>
+    </div>
+</div>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="~/ScriptsSelect/bootstrap-multiselect.js"></script>
+
+<script>
+
+    $(function () {
+        $('#dwprom').multiselect({
+            includeSelectAllOption: false,
+            enableFiltering: true,
+            enableCaseInsensitiveFiltering: true,
+            filterPlaceholder: 'Buscar Promoción...',
+            onDropdownShown: function (even) {
+                this.$filter.find('.multiselect-search').focus()
+            }
+        });
+    });
+
+</script>
