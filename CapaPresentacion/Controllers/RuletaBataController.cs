@@ -28,7 +28,12 @@ namespace CapaPresentacion.Controllers
             List<Premios> _prem = _datos.get_premios();            
             ruleta.listPremios = _prem;
             return View(ruleta);
-        }       
+        }
+
+        public bool IsNumeric(string value)
+        {
+            return value.All(char.IsNumber);
+        }
         [HttpPost]
         public ActionResult RegistrarGanador(GanadorRuleta ganador, string w01 , string[] codigos , string afiliarse)
         {
@@ -40,7 +45,7 @@ namespace CapaPresentacion.Controllers
                 {
                     return RedirectToAction("Login", "Control");
                 }
-                if (ganador.dni == null || ganador.dni == "" || ganador.dni.Length != 8)
+                if (ganador.dni == null || ganador.dni == "" || ganador.dni.Length != 8 || !IsNumeric(ganador.dni))
                 {
                     men_validacion_campos += "Ingrese un número de documento válido." + Environment.NewLine;
                 }
@@ -52,10 +57,10 @@ namespace CapaPresentacion.Controllers
                 {
                     men_validacion_campos += "Ingrese el apellido paterno del participante." + Environment.NewLine;
                 }
-                if (ganador.ape_mat == null || ganador.ape_mat == "")
-                {
-                    men_validacion_campos += "Ingrese el apellido materno del participante." + Environment.NewLine;
-                }
+                //if (ganador.ape_mat == null || ganador.ape_mat == "")
+                //{
+                //    men_validacion_campos += "Ingrese el apellido materno del participante." + Environment.NewLine;
+                //}
                 if ((ganador.telefono == null || ganador.telefono == "") && (ganador.email == null || ganador.email == ""))
                 {
                     men_validacion_campos += "Ingrese un numero de telefono o email válido del participante." + Environment.NewLine;
@@ -115,7 +120,6 @@ namespace CapaPresentacion.Controllers
         public ActionResult ValidarMiembroBataClub(GanadorRuleta ganador)
         {
             //bool nuevo_bataclub = false;
-
             try
             {
                 BataClub.BataEcommerceSoapClient cliente_bataclub = new BataClub.BataEcommerceSoapClient();
@@ -133,38 +137,32 @@ namespace CapaPresentacion.Controllers
                 if (datacliente != null)
                 {
                     if (datacliente.existe_cliente)
-                    {                   
-                        if (datacliente.miembro_bataclub)
-                        {
-                            string _fc_ruc = datacliente.dni.ToString();//  datosCliente.DNI_String.ToString();
-                            string _fc_nomb = datacliente.primerNombre;//(datosCliente.Nombres != null) ? datosCliente.Nombres.ToString() : "";
-                            string _fc_apep = datacliente.apellidoPater;// (datosCliente.Apellidos != null) ? datosCliente.Apellidos.ToString() : "";
-                            string _fc_apem = datacliente.apellidoMater;// (datosCliente.ApellidoMaterno != null) ? datosCliente.ApellidoMaterno.ToString() : "";
-                            string _fc_tele = datacliente.telefono;// (datosCliente.Celular != null) ? datosCliente.Celular : "";
-                                                                   //if (fc_tele.Length == 0) fc_tele = (datosCliente.Fono != null) ? datosCliente.Fono.ToString() : "";
-                            string _fc_mail = datacliente.correo;// (datosCliente.eMail != null) ? datosCliente.eMail.ToString() : "";
-                            string _fc_dcli = "";//(datosCliente.Localidad != null) ? datosCliente.Localidad.ToString() : "";
-                                                 //dt.Rows.Add(_fc_ruc, fc_nomb.ToUpper(), fc_apep.ToUpper(), fc_apem, fc_tele, fc_mail, fc_dcli.ToUpper(), "");
-                            bool flujo_metri = datacliente.miembro_bataclub;// datosCliente.RegistradoEnFlujosBataClub;                    
-                            return Json(new { estado = 1, nuevo_bataclub = false, _dni = _fc_ruc, nombre = _fc_nomb, ape_pat = _fc_apep , ape_mat =  _fc_apem, telefono = _fc_tele, email = _fc_mail });
-                        }else
-                        {
-                            return Json(new { estado = 1, nuevo_bataclub = true });
-                        }                               
+                    {
+                        string _fc_ruc = datacliente.dni.ToString();//  datosCliente.DNI_String.ToString();
+                        string _fc_nomb = datacliente.primerNombre;//(datosCliente.Nombres != null) ? datosCliente.Nombres.ToString() : "";
+                        string _fc_apep = datacliente.apellidoPater;// (datosCliente.Apellidos != null) ? datosCliente.Apellidos.ToString() : "";
+                        string _fc_apem = datacliente.apellidoMater;// (datosCliente.ApellidoMaterno != null) ? datosCliente.ApellidoMaterno.ToString() : "";
+                        string _fc_tele = datacliente.telefono;// (datosCliente.Celular != null) ? datosCliente.Celular : "";
+                                                               //if (fc_tele.Length == 0) fc_tele = (datosCliente.Fono != null) ? datosCliente.Fono.ToString() : "";
+                        string _fc_mail = datacliente.correo;// (datosCliente.eMail != null) ? datosCliente.eMail.ToString() : "";
+                        string _fc_dcli = "";//(datosCliente.Localidad != null) ? datosCliente.Localidad.ToString() : "";
+                                             //dt.Rows.Add(_fc_ruc, fc_nomb.ToUpper(), fc_apep.ToUpper(), fc_apem, fc_tele, fc_mail, fc_dcli.ToUpper(), "");
+                        bool flujo_metri = datacliente.miembro_bataclub;// datosCliente.RegistradoEnFlujosBataClub;                    
+                        return Json(new { estado = 1, existe = datacliente.existe_cliente, nuevo_bataclub = !datacliente.miembro_bataclub, _dni = _fc_ruc, nombre = _fc_nomb, ape_pat = _fc_apep, ape_mat = _fc_apem, telefono = _fc_tele, email = _fc_mail });
                     }
                     else
                     {
-                        return Json(new { estado = 1, nuevo_bataclub = true });
+                        return Json(new { estado = 1, existe = false, nuevo_bataclub = true });
                     }
                 }
                 else
                 {
-                    return Json(new { estado = 1, nuevo_bataclub = true });
+                    return Json(new { estado = 1, existe = false, nuevo_bataclub = true });
                 }                
             }
             catch (Exception ex)
             {
-                return Json(new { estado = 0, nuevo_bataclub = true , resultados = "Error al validar miembro BATACLUB" });
+                return Json(new { estado = 0, existe = false, nuevo_bataclub = true , resultados = "Error al validar miembro BATACLUB" });
             }           
         }
 

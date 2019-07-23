@@ -23,7 +23,7 @@ namespace CapaDato.Contabilidad
                 {
                     try
                     {
-                        if (cn.State == 0) cn.Open();
+                        //if (cn.State == 0) cn.Open();
                         using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
                         {
                             cmd.CommandTimeout = 0;
@@ -59,8 +59,8 @@ namespace CapaDato.Contabilidad
                     {
                         listar = null;                     
                     }
-                    if (cn != null)
-                        if (cn.State == ConnectionState.Open) cn.Close();
+                    //if (cn != null)
+                    //    if (cn.State == ConnectionState.Open) cn.Close();
                 }
             }
             catch (Exception)
