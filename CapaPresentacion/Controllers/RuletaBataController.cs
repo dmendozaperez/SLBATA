@@ -152,7 +152,29 @@ namespace CapaPresentacion.Controllers
                     }
                     else
                     {
-                        return Json(new { estado = 1, existe = false, nuevo_bataclub = true });
+                        SunatReniec.Sunat_Reniec_PESoapClient clienteSunatReniec = new SunatReniec.Sunat_Reniec_PESoapClient();
+                        SunatReniec.validateLogin la = new SunatReniec.validateLogin();
+                        la.Username = "BataPeru";
+                        la.Password = "Bata2018**.";
+
+                        var dataClienteReniec = clienteSunatReniec.ws_persona_reniec(la, ganador.dni);
+                        if (dataClienteReniec.Valida_Reniec.Estado == "0")
+                        {
+                            return Json(new { estado = 1, existe = false, nuevo_bataclub = true, _dni = dataClienteReniec.Dni, nombre = dataClienteReniec.Nombres, ape_pat = dataClienteReniec.ApePat, ape_mat = dataClienteReniec.ApeMat });
+                        }
+                        else
+                        {
+                            return Json(new
+                            {
+                                estado = 1,
+                                existe = false,
+                                nuevo_bataclub = true,
+                                _dni = "",
+                                nombre = "",
+                                ape_pat = "",
+                                ape_mat = ""
+                            });
+                        }
                     }
                 }
                 else

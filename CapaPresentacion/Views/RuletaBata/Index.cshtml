@@ -324,9 +324,12 @@
                         }
                         else{
                             swal("No es miembro BATACLUB");
-                            $("#nombre").val("");
-                            $("#ape_pat").val("");
-                            $("#ape_mat").val("");
+                            if (data.nombre == ""){
+                                swal("El DNI no existe o vuelva a intentarlo.");
+                            }
+                            $("#nombre").val(data.nombre);
+                            $("#ape_pat").val(data.ape_pat);
+                            $("#ape_mat").val(data.ape_mat);
                             $("#telefono").val("");
                             $("#email").val("");
                             $("#bataclub").val(0);

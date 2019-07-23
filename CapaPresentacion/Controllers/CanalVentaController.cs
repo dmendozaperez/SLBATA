@@ -58,6 +58,7 @@ namespace CapaPresentacion.Controllers
             }
             else
             {
+                //Session["Tienda"] = null;
                 ViewBag._selectOrigen = SelectOrigen(tiendaOrigen);
                 ViewBag._selectDestino = SelectDestino((tiendaOrigen == null ? "" : tiendaOrigen), (tiendaDestino == null ? "" : tiendaDestino));
                 ViewBag._fdesde = fdesde;
@@ -70,8 +71,8 @@ namespace CapaPresentacion.Controllers
                 ViewBag._selectEstados = SelectEstados((estado == null ? "001,002,003,004,005,006" : estado));
 
                 List<CanalVenta> listCV = new List<CanalVenta>();
-                
-            }           
+
+            }
             return View();
         }
         [HttpPost]
@@ -168,9 +169,9 @@ namespace CapaPresentacion.Controllers
 
             //Manejador de orden
             var sortIdx = Convert.ToInt32(Request["iSortCol_0"]);
-            Func<CanalVenta, string> orderingFunction =
+            Func<CanalVenta, DateTime> orderingFunction =
             (
-            m => m.serieNumero);
+            m => Convert.ToDateTime(m.fechaVenta));
             var sortDirection = Request["sSortDir_0"];
             if (sortDirection == "desc")
                 filteredMembers = filteredMembers.OrderBy(orderingFunction);
