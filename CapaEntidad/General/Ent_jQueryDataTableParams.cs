@@ -8,6 +8,9 @@ namespace CapaEntidad.General
 {
     public class Ent_jQueryDataTableParams
     {
+        public string variable1 { get; set; }
+        public string variable2 { get; set; }
+        public string variable3 { get; set; }
         /// <summary>  
         /// Request sequence number sent by DataTable,  
         /// same value must be returned in response  

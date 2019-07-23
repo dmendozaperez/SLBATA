@@ -63,7 +63,7 @@ namespace CapaPresentacion.Controllers
 
         public PartialViewResult _Table(string hidden, string fec_ini, string fec_fin, string dwtda)
         {
-            if (dwtda == null )
+            if (hidden == null || hidden == "")
             {   return PartialView(); }
             else
             {   //string dwtda--> se reemplaza por hidden - para agarrar varios id de tiendas por el combo multiselect

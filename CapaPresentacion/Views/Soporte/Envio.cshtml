@@ -97,7 +97,10 @@
             includeSelectAllOption: true,
             enableFiltering: true,
             enableCaseInsensitiveFiltering: true,
-            filterPlaceholder: 'Buscar Tienda...'
+            filterPlaceholder: 'Buscar Tienda...',
+            onDropdownShown: function (even) {
+                this.$filter.find('.multiselect-search').focus()
+            }
         });
     });
 

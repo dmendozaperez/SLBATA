@@ -28,6 +28,14 @@
     {
         <form id="form1">
             <div class="row">
+                <div class="col-sm-2" style="padding-left: 25px;">
+                    <label for="segape" style="color: #3d566e;">Estado cupón</label>
+                    <div class="form-group">
+                        <div id="estado" class="form-group">
+                            @Html.DropDownList("dwest", new SelectList(ViewBag.Estado, "est_id", "est_des", "-1"), new { @class = "selectpicker dropdown-toggle btn btn-default", @data_live_search = "true", @id = "dwest", @name = "dwest", @enable = "false" })
+                        </div>
+                    </div>
+                </div>
                 <div class="col-sm-6" style="padding-left: 25px;">
                     <label for="segape" style="color: #3d566e;">Promoción</label>
                     <div class="form-group">
@@ -39,15 +47,21 @@
                     </div>
                     <input type="hidden" id="hidden" name="hidden" value="">
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-1">
                 </div>
-                <div class="col-sm-2" style="padding-left: 25px; width: 105px; margin-top: 24px; margin-bottom: 10px; float: right; margin-right: inherit;">
-                    <button id="btnGrafica" type="button" title="Gráfica" class="btn btn-warning">
-                        <span class="glyphicon glyphicon-stats"> </span>
+
+                <div class="col-sm-2" style="padding-left: 25px; width: 105px; margin-top: 24px;  margin-bottom: 10px; ">
+                    <button id="btnAgregar" type="submit" title="Agregar" class="btn btn-warning">
+                        <span class="glyphicon glyphicon-plus-sign"> Cupón</span>
                     </button>
                 </div>
 
-           </div>
+                <div class="col-sm-1" style="padding-left: 25px; width: 105px; margin-top: 24px; margin-bottom: 10px; ">
+                    <button id="btnGrafica" type="button" title="Gráfica" class="btn btn-info">
+                        <span class="glyphicon glyphicon-stats"> Gráfica</span>
+                    </button>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-sm-2" style="padding-left: 25px; margin-right: inherit;">
                     <label for="segape" style="color: #3d566e;">DNI</label>
@@ -76,27 +90,31 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-2" style="padding-left: 25px; width: 105px; margin-top: 5px; margin-bottom: 10px;">
-                    <label></label><br />
+                <div class="col-sm-2" style="padding-left: 25px; width: 105px; margin-top: 23px; margin-bottom: 10px;">
+                    @*<label></label><br />*@
                     <button id="btnSearch" type="submit" title="Consultar" class="btn btn-primary">
                         <span class="glyphicon glyphicon-search"> Buscar</span>
                     </button>
                 </div>
-
                 <div class="col-md-2" style="width: 105px;margin-top: 23px;float: right;margin-right: 25px;">
-                        <a class="btn btn-success glyphicon glyphicon-save-file" href="@Url.Action("ExportToExcel")" title="Exportar a excel" > Excel</a>                     
+                    <a class="btn btn-success glyphicon glyphicon-save-file" href="@Url.Action("ExportToExcel")" title="Exportar a excel"> Excel</a>
 
                 </div>
             </div>
+            <div class="row">
+                <div class="col-sm-4" style="padding-left: 25px; ">
+                    <label id="lblConsumidos"  name="lblConsumidos">Valor consumidos</label><br />
+                    <label id="lblDisponibles" name="lblDisponibles">Valor disponibles</label><br />
+                    <label id="lblCaducados" name="lblCaducados">Valor caducados</label>
+                </div>
+            </div>
         </form>
-     
     }
-    <div class="box-body"  id="listaGuia" style="padding-bottom: 40px;overflow-x: auto;">
+    <div class="box-body" id="listaGuia" style="padding-bottom: 20px;overflow-x: auto;">
         @{Html.RenderPartial("_Table", Model);}
     </div>
 
 </div>
-
 
 <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -124,7 +142,10 @@
             includeSelectAllOption: true,
             enableFiltering: true,
             enableCaseInsensitiveFiltering: true,
-            filterPlaceholder: 'Buscar Promoción...'
+            filterPlaceholder: 'Buscar Promoción...',
+            onDropdownShown: function (even) {
+                this.$filter.find('.multiselect-search').focus()
+            }
         });
     });
 
@@ -147,7 +168,6 @@
         }
         else { document.getElementById("hidden").value = strcadena; }
     }
-
 
     function PopupDetalle() {
         var ControllerUrl = "@Url.Action("_popUpGrafica", "BataClub")";
@@ -176,10 +196,7 @@
                 toastr.error(xhr, 'Mensaje');
             }
         });
-
     }
-
-
 
     function MostrarGrafico() {
         //waitingDialog.show('Espere un momento por favor');
@@ -274,11 +291,7 @@
             var index = arr.indexOf("viewData");
             if (index !== -1) arr.splice(index, 1);
         }
-
-
         );
     }
-
-
 
 </script>

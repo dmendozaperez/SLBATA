@@ -1,0 +1,76 @@
+﻿
+
+<table id="example" class="table table-hover dataTable  table-striped table-responsive">
+    <thead>
+        <tr style="background-color:#3d566e; color:#ecf0f1">
+            <th>Tienda</th>
+            <th>Artículo</th>
+            <th>Calidad</th>
+            <th>Talla</th>
+            <th>Teórico</th>
+            <th>Físico</th>
+            <th>Diferencia</th>
+            <th>Fecha inventario</th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach:"></tbody>
+    <tfoot>
+        <tr>
+            <th>Tienda</th>
+            <th>Artículo</th>
+            <th>Calidad</th>
+            <th>Talla</th>
+            <th>Teórico</th>
+            <th>Físico</th>
+            <th>Diferencia</th>
+            <th>Fecha inventario</th>
+        </tr>
+    </tfoot>
+</table>
+
+<script>
+        $('.table').dataTable({
+            "language": {
+                "url": "../Scripts/DataTables/Spanish.json"
+            },
+            "bProcessing": true,
+            "bServerSide": true,
+            "bAutoWidth": false,
+            "sAjaxSource": '@Url.Action("getTableInventAjax", "Inventario")',
+            "fnServerParams": function (aoData) {
+            },
+            "bdestroy": true,
+            "start": 0,
+            "order": [0, "asc"],
+            "bDeferRender": true,
+            "aoColumns": [
+                    { "sName": "des_entid", "mData": "des_entid" },
+                    { "sName": "articulo", "mData": "articulo" },
+                    { "sName": "calidad", "mData": "calidad" },
+                    { "sName": "talla", "mData": "talla" },
+                    { "sName": "teorico", "mData": "teorico" },
+                    { "sName": "fisico", "mData": "fisico" },
+                    { "sName": "diferencia", "mData": "diferencia" },
+                    { "sName": "fecha_inv", "mData": "fecha_inv" },
+            ],
+            dom: 'Bfrtip',
+            buttons: [
+            {
+                extend: 'excelHtml5',
+                title: 'Bataclub_xls'
+            },
+            {
+                extend: 'csvHtml5',
+                title: 'BataClub_csv'
+            },
+            {
+                extend: 'pdfHtml5',
+                title: 'BataClub_pdf'
+            },
+            'copyHtml5',
+            ]
+        });
+</script>
+
+
+
