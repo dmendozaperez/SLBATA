@@ -325,6 +325,7 @@
     <Compile Include="Controllers\ControlController.cs" />
     <Compile Include="Controllers\FuncionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\InventarioController.cs" />
     <Compile Include="Controllers\LoginIntermedioController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\ReporteController.cs" />
@@ -1281,6 +1282,7 @@
     <Content Include="Scripts\toastr.min.js" />
     <Content Include="Scripts\waitingfor.js" />
     <Content Include="Scripts\_references.js" />
+    <None Include="Service References\BataClub\BataEcommerce.wsdl" />
     <None Include="Service References\BataClub\BataEcommerce.disco" />
     <Content Include="Service References\BataClub\CapaPresentacion.BataClub.Ent_Cliente_BataClub.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -1309,7 +1311,6 @@
     <Content Include="Service References\comercioxpress\CapaPresentacion.comercioxpress.response.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <None Include="Service References\BataClub\BataEcommerce.wsdl" />
     <None Include="Service References\comercioxpress\configuration91.svcinfo" />
     <None Include="Service References\comercioxpress\configuration.svcinfo" />
     <None Include="Service References\comercioxpress\Reference.svcmap">
@@ -1536,6 +1537,10 @@
     <Content Include="Views\Contabilidad\_popUpDetalle.cshtml" />
     <Content Include="Views\BataClub\_popUpGrafica.cshtml" />
     <Content Include="Views\RuletaBata\Index.cshtml" />
+    <Content Include="Views\BataClub\Cupon.cshtml" />
+    <Content Include="Views\BataClub\_TableCupon.cshtml" />
+    <Content Include="Views\Inventario\Consulta_Inv.cshtml" />
+    <Content Include="Views\Inventario\_TableConsInv.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

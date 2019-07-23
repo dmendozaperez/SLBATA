@@ -85,7 +85,7 @@ namespace CapaDato.Control
 
                                 tienda.tda_codigo = dr["cod_entid"].ToString();
                                 tienda.tda_xstore = Boolean.Parse(dr["xstore"].ToString());
-
+                                tienda.cadena = dr["cadena"].ToString();
                             }
                         }
 

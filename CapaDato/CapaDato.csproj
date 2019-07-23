@@ -78,6 +78,7 @@
     <Compile Include="ECommerce\Dat_Urbano.cs" />
     <Compile Include="ECommerce\Urbano\EnviaPedido.cs" />
     <Compile Include="Interface\Dat_Interface.cs" />
+    <Compile Include="Inventario\Dat_Inventario_Consulta.cs" />
     <Compile Include="Maestros\Dat_Orce.cs" />
     <Compile Include="Maestros\Dat_Concepto_Suna.cs" />
     <Compile Include="Maestros\Dat_Estado.cs" />
@@ -139,6 +140,7 @@
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

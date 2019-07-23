@@ -28,20 +28,14 @@ namespace CapaPresentacion.Controllers
         //INDEX
         public ActionResult Estado_Documento()
         {
-            //Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
-            //string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
-            //string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
-            //string return_view = actionName + "|" + controllerName;
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
 
-            //if (_usuario == null)
-            //{
-            //    return RedirectToAction("Login", "Control", new { returnUrl = return_view });
-            //}
-            //else
-            //{
-            if (Session[_session_contb_tienda_peru] != null)
+            if (_usuario == null)
             {
-                ViewBag.Tienda = Session["_session_contb_tienda_peru"];
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
             }
             else
             {
@@ -49,8 +43,21 @@ namespace CapaPresentacion.Controllers
                 List<Ent_ListaTienda> listienda = ViewBag.Tienda;
                 Session[_session_contb_tienda_peru] = listienda;
             }
-
             return View();
+            //else
+            //{
+            //if (Session[_session_contb_tienda_peru] != null)
+            //{
+            //    ViewBag.Tienda = Session["_session_contb_tienda_peru"];
+            //}
+            //else
+            //{
+            //    ViewBag.Tienda = dat_lista_tienda.get_tienda("PE", "1");
+            //    List<Ent_ListaTienda> listienda = ViewBag.Tienda;
+            //    Session[_session_contb_tienda_peru] = listienda;
+            //}
+
+            //return View();
           //  }
         }
 
@@ -63,7 +70,7 @@ namespace CapaPresentacion.Controllers
 
         public PartialViewResult _Table(string hidden, string fec_ini, string fec_fin, string dwtda)
         {
-            if (dwtda == null )
+            if (hidden == null || hidden == "")
             {   return PartialView(); }
             else
             {   //string dwtda--> se reemplaza por hidden - para agarrar varios id de tiendas por el combo multiselect

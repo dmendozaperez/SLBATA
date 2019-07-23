@@ -15,7 +15,7 @@
             @*<th>DNI (venta)</th>*@
             <th>Nombres (venta)</th>
             @*<th>Correo (venta)</th>
-            <th>Teléf. (venta)</th>*@
+                <th>Teléf. (venta)</th>*@
             <th>Tickets</th>
             <th>Soles</th>
             @*<th>Grupo</th>*@
@@ -38,7 +38,7 @@
             @*<th>DNI (venta)</th>*@
             <th>Nombres (venta)</th>
             @*<th>Correo (venta)</th>
-        <th>Teléf. (venta)</th>*@
+                <th>Teléf. (venta)</th>*@
             <th>Tickets</th>
             <th>Soles</th>
             @*<th>Grupo</th>*@
@@ -53,7 +53,7 @@
             "language": {
                 "url": "../Scripts/DataTables/Spanish.json"
             },
-            "bProcessing": true, // se agrego para probar
+            "bProcessing": true, 
             "bServerSide": true,
             "bAutoWidth": false,
             "sAjaxSource": '@Url.Action("getTablePromoAjax", "BataClub")',
@@ -69,7 +69,7 @@
             },
 
             "fnServerData": function ( sSource, aoData, fnCallback ) {
-                $.getJSON( sSource, aoData, function (json) { 
+                $.getJSON( sSource, aoData, function (json) {
                     /* Do whatever additional processing you want on the callback, then tell DataTables */
                   //  console.log("entró a fnServerData");
                     //console.log(sSource);
@@ -77,9 +77,7 @@
                     //console.log(fnCallback);
                     //debugger;
                   //  console.log(json.variable1);
-                    $('#lblConsumidos')[0].textContent = "Consumidos: " + json.variable1;
-                    $('#lblDisponibles')[0].textContent = "Disponibles: " + json.variable2;
-                    $('#lblCaducados')[0].textContent = "Caducados: " + json.variable3;
+                    $('#lblIndicador')[0].textContent = "Data encontrada: " + json.variable1;
                  //   console.log(json);
                     fnCallback(json)
                 } );
@@ -93,19 +91,10 @@
                     { "sName": "prom_des", "mData": "prom_des" },
                     { "sName": "est_des", "mData": "est_des" },
                     { "sName": "cup_fecha_fin", "mData": "cup_fecha_fin" },
-                    { "sName": "Nombres", "mData": "Nombres" },
-                    //{ "sName": "Apellidos", "mData": "Apellidos" },
                     { "sName": "dni", "mData": "dni" },
                     { "sName": "correo", "mData": "correo" },
                     { "sName": "cupon", "mData": "cupon" },
                     { "sName": "tienda", "mData": "tienda" },
-                    //{ "sName": "dni_venta", "mData": "dni_venta" },
-                    { "sName": "nombres_venta", "mData": "nombres_venta" },
-                    //{ "sName": "correo_venta", "mData": "correo_venta" },
-                    //{ "sName": "telefono_venta", "mData": "telefono_venta" },
-                    { "sName": "tickets", "mData": "tickets" },
-                    { "sName": "soles", "mData": "soles" },
-                    //{ "sName": "grupo", "mData": "grupo" },
                     { "sName": "porc_desc", "mData": "porc_desc" },
                     { "sName": "fec_doc", "mData": "fec_doc" }
             ],
@@ -127,4 +116,5 @@
             ]
         });
 </script>
+
 

@@ -1,0 +1,172 @@
+﻿@using CapaEntidad.Inventario
+@model IEnumerable<Ent_Inventario_Consulta>
+@{
+    ViewBag.Title = "Consulta de Documentos y Reenvia Paquetes de Tiendas";
+    AjaxOptions options = new AjaxOptions
+    {
+        HttpMethod = "GET",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "lista",
+        OnComplete = "waitingDialog.hide();",
+        OnBegin = "waitingDialog.show('Espere un momento por favor');",
+        OnFailure = "waitingDialog.hide();"
+    };
+}
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+<link href="~/ContentSelect/bootstrap-multiselect.css" rel="stylesheet" />
+
+<p class="text-danger">Consulta de Documentos Ingresado y reenvio de paquetes, filtro por tiendas y rango de fecha</p>
+<div class="box box-body box-primary">
+    @using (Ajax.BeginForm("_TableConsInv", options))
+    {
+        <form id="form1">
+            <div class="row">
+                <div class="col-sm-pull-6" style="padding-left: 25px;">
+                    <label for="segape">Cod Tda.</label>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div id="tda" class="input-group autofocus">
+                                @Html.DropDownList("dwtda", new SelectList(ViewBag.Tienda, "cod_entid", "des_entid", "-1"), new { @class = "selectpicker dropdown-toggle btn btn-default", @data_live_search = "true", @id = "dwtda", @name = "dwtda", @enable = "false", @onchange = "ListaFecha()" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-pull-2" style="padding-left: 25px; ">
+                        <label for="segape" style="color: #3d566e;">Fecha por tienda</label>
+                        <div class="form-group">
+                            <div id="fec" class="form-group">
+                                @Html.DropDownList("dwfec", new SelectList(ViewBag.Fecha, "id", "xst_inv_fec_aud", "-1"), new { @class = "selectpicker dropdown-toggle btn btn-default", @data_live_search = "true", @id = "dwfec", @name = "dwfec", @enable = "false" })
+                            </div>
+                        </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2" style="padding-left: 25px; margin-right: inherit;">
+                    <label for="segape" style="color: #3d566e;">Artículo</label>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon" style="color: #3d566e;"><i class="glyphicon glyphicon-user"></i></span>
+                            <input id="articulo" type="text" class="form-control" name="articulo" placeholder="Ingresar artículo">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3" style="padding-left: 25px; margin-right: inherit;">
+                    <label for="segape" style="color: #3d566e;">Talla</label>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-barcode"></i></span>
+                            <input id="talla" type="text" class="form-control" name="talla" placeholder="Ingresar talla">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2" style="padding-left: 25px; width: 105px; margin-top: 5px; margin-bottom: 10px;">
+                    <button id="btnSearch" type="submit" title="Consultar" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-search"> Buscar</span>
+                    </button>
+                </div>
+            </div>
+
+        </form>
+
+    }
+    <div class="box-body" id="lista" style="padding-bottom: 40px; overflow-x: auto;">
+        @{Html.RenderPartial("_TableConsInv", Model);}
+    </div>
+
+</div>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="~/ScriptsSelect/bootstrap-multiselect.js"></script>
+
+<script>
+
+    $(function () {
+        $('#dwtda').multiselect({
+            includeSelectAllOption: true,
+            enableFiltering: true,
+            enableCaseInsensitiveFiltering: true,
+            filterPlaceholder: 'Buscar Tienda...',
+            onDropdownShown: function(even) {
+                this.$filter.find('.multiselect-search').focus()}
+        });
+    });
+
+    $(document).ready(function () {
+        $("#btnSearch").click(function () {
+            // ListaTiendasSelect();
+        });
+    });
+
+    //$("#dwtda").change(function () {
+    //    // alert("Handler for .change() called.");
+
+    //});
+
+    //function ListaTiendasSelect() {
+    //    var strcadena = $.trim($('#dwtda').val());
+    //    if (strcadena == null || strcadena == "") {
+    //        toastr.error("Debe seleccionar al menos una tienda.", "Mensaje");
+    //        return false;
+    //    }
+    //    else { document.getElementById("hidden").value = strcadena; }
+    //}
+
+
+    //ListaFecha
+    function ListaFecha() {
+        var valor_tienda=$("#dwtda").val();
+            //waitingDialog.show('Espere un momento por favor');
+            //  console.log("entro a Mostrar grafico");
+            var ControllerUrl_c = "@Url.Action("getDropdrowlistFecha", "Inventario")";
+            $.ajax({
+                type: "GET",
+                url: ControllerUrl_c,
+                contentType: "application/json; charset=utf-8",
+                data: { valor_tienda: valor_tienda },
+                datatype: "json",
+                cache: true,
+                success: function (data) {
+                    // waitingDialog.hide();
+                    console.log("entro a Mostrar combo 2");
+                    console.log(data);
+                   // $("#dwfec").val('@ViewBag.Fecha');
+                  //  $("#dwfec").val(data);
+                },
+                //timeout: 10000,
+                //async: false,
+                error: function () {
+                    // waitingDialog.hide();
+                    alert('Error')
+                }
+            });
+    }
+
+
+
+    //$("#btnUpdateList").click(function () {
+    //    $.getJSON('/home/Update_DropDownList', function (result) {
+    //        var ddl = $('#ddl');
+    //        ddl.empty();
+    //        $(result).each(function () {
+    //            $(document.createElement('option'))
+    //                .attr('value', this.Id)
+    //                .text(this.Name)
+    //                .appendTo(ddl);
+    //        });
+    //    });
+    //});
+
+</script>
+
+
+<script>
+    $(function () {
+        $("#datepickerini").datepicker({
+            autoclose: true,
+            todayHighlight: true
+        }).datepicker("setDate", "0");;
+    });
+</script>
