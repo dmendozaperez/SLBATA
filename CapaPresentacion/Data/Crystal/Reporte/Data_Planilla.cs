@@ -208,7 +208,7 @@ namespace Data.Crystal.Reporte
             return lista;
         }
 
-        public DataTable get_reportePromociones(string cadena, string fecIni, string fecFin)
+        public DataTable get_reportePromociones(string cadena, string fecIni, string fecFin,string filtro)
         {
             string sqlquery = "USP_REPORTE_PROMOCIONES";
             DataTable dt = new DataTable(); ;
@@ -226,7 +226,8 @@ namespace Data.Crystal.Reporte
                             cmd.Parameters.AddWithValue("@cadena", cadena);
                             cmd.Parameters.AddWithValue("@fec_ini", fecIni);
                             cmd.Parameters.AddWithValue("@fec_fin", fecFin);
-                           
+                            cmd.Parameters.AddWithValue("@filtro", filtro);
+
                             using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                             {
                                 da.Fill(dt);                                
