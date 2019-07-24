@@ -1,5 +1,6 @@
 ﻿using CapaEntidad.Inventario;
 using CapaEntidad.Util;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -145,6 +146,52 @@ namespace CapaDato.Inventario
             return listar;
         }
 
-      
+        public List<Ent_Consulta_Movimiento> get_Lista_Movimiento_Fecha(string fec, string dwtda)
+        {
+            string sqlquery = "USP_XSTORE_INV_MOV_XFECHA";
+            DataTable dt = null;
+            List<Ent_Consulta_Movimiento> listar = null;
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {                                           
+                        using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                        {
+                            cmd.CommandTimeout = 0;
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.AddWithValue("@COD_TDA", dwtda);
+                            cmd.Parameters.AddWithValue("@FECHA_INV", Convert.ToDateTime(fec));
+                            //cmd.Parameters.AddWithValue("@estado", dwest);
+                            using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                            {
+                                dt= new DataTable();
+                                da.Fill(dt);
+                                listar = new List<Ent_Consulta_Movimiento>();
+                                listar = (from DataRow dr in dt.Rows
+                                          select new Ent_Consulta_Movimiento()
+                                          {
+                                              TIENDA = dr["TIENDA"].ToString(),
+                                              FECHA = String.Format("{0:dd/MM/yyyy}", Convert.ToDateTime(dr["FECHA"])),
+                                              INI_CALZADO = dr["INI_CALZADO"].ToString(),
+                                              INI_NO_CALZADO = dr["INI_NO_CALZADO"].ToString(),
+                                              VEN_CALZADO = dr["VEN_CALZADO"].ToString(),
+                                              VEN_NO_CALZADO = dr["VEN_NO_CALZADO"].ToString(),
+                                              ING_CALZADO = dr["ING_CALZADO"].ToString(),
+                                              ING_NO_CALZADO = dr["ING_NO_CALZADO"].ToString(),
+                                              SAL_CALZADO = dr["SAL_CALZADO"].ToString(),
+                                              SAL_NO_CALZADO = dr["SAL_NO_CALZADO"].ToString(),
+                                              SALDO_CALZADO = dr["SALDO_CALZADO"].ToString(),
+                                              SALDO_NO_CALZADO = dr["SALDO_NO_CALZADO"].ToString(),
+                                          }).ToList();
+                            }
+                    }       
+                }
+            }
+            catch (Exception)
+            {
+                listar = null;
+            }
+            return listar ;
+        }
     }
 }
