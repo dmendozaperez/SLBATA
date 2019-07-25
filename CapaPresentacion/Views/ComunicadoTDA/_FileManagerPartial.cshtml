@@ -1,18 +1,15 @@
 @model string
 @using CapaPresentacion.Controllers;
 
-
-@Html.DevExpress().FileManager(settings =>
-{
+@Html.DevExpress().FileManager(settings => {
     settings.Name = "FileManager";
-    settings.CallbackRouteValues = new { Controller = "Comunicado", Action = "FileManagerPartial" };
+    settings.CallbackRouteValues = new { Controller = "ComunicadoTDA", Action = "FileManagerPartial" };
 
-    settings.DownloadRouteValues = new { Controller = "Comunicado", Action = "FileManagerPartialDownload" };
+    settings.DownloadRouteValues = new { Controller = "ComunicadoTDA", Action = "FileManagerPartialDownload" };
     settings.SettingsEditing.AllowDownload = true;
-
-
     settings.SettingsFileList.DetailsViewSettings.AllowColumnResize = true;
     settings.SettingsFileList.DetailsViewSettings.AllowColumnDragDrop = true;
+
     settings.SettingsFileList.DetailsViewSettings.AllowColumnSort = true;
     settings.SettingsFileList.DetailsViewSettings.ShowHeaderFilterButton = false;
     settings.SettingsFileList.View = DevExpress.Web.FileListView.Details;
@@ -27,7 +24,6 @@
 
 
     settings.SettingsFileList.DetailsViewSettings.Columns.Add(new FileManagerDetailsColumn(FileInfoType.Size));
-
 
     settings.CustomThumbnail = (s, e) =>
     {
@@ -57,7 +53,21 @@
     };
     settings.ClientSideEvents.SelectedFileOpened = "function(s, e) {e.file.Download();e.processOnServer = false;}";
 
-    if (ViewBag.opcion_admin == "1")
+
+
+
+    if (ViewBag.opcion_admin == "0")
+    {
+
+        settings.SettingsUpload.Enabled = true;
+        settings.SettingsUpload.UseAdvancedUploadMode = true;
+        settings.SettingsUpload.AdvancedModeSettings.EnableMultiSelect = true;
+        settings.SettingsEditing.AllowCreate = true;
+        settings.SettingsEditing.AllowRename = true;
+        settings.SettingsEditing.AllowMove = true;
+        settings.SettingsEditing.AllowDelete = true;
+    }
+    else
     {
         settings.SettingsUpload.Enabled = false;
         settings.SettingsUpload.UseAdvancedUploadMode = false;
@@ -66,24 +76,5 @@
         settings.SettingsEditing.AllowRename = false;
         settings.SettingsEditing.AllowMove = false;
         settings.SettingsEditing.AllowDelete = false;
-        if (@ViewBag.tipo_tda == "BATA")
-        {
-            settings.SettingsPermissions.AccessRules.Add(new FileManagerFolderAccessRule { Path = (@ViewBag.estado_acceso == "0") ? "Tiendas Calientes" : "Tiendas Frias", Browse = Rights.Deny });
-        }
-        else
-        {
-            settings.SettingsPermissions.AccessRules.Add(new FileManagerFolderAccessRule { Path = (@ViewBag.cadena == "BG") ? "WB" : "BG", Browse = Rights.Deny });
-        }
-    }
-    else
-    {
-        settings.SettingsUpload.Enabled = true;
-        settings.SettingsUpload.UseAdvancedUploadMode = true;
-        settings.SettingsUpload.AdvancedModeSettings.EnableMultiSelect = true;
-        settings.SettingsEditing.AllowCreate = true;
-        settings.SettingsEditing.AllowRename = true;
-        settings.SettingsEditing.AllowMove = true;
-        settings.SettingsEditing.AllowDelete = true;
-
     }
 }).BindToFolder(Model).GetHtml()

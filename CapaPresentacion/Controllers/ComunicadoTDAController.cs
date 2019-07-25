@@ -9,9 +9,9 @@ using System.Web.Mvc;
 
 namespace CapaPresentacion.Controllers
 {
-    public class DocumentoController : Controller
+    public class ComunicadoTDAController : Controller
     {
-        // GET: Documento
+        // GET: ComunicadoTDA
         public ActionResult Index()
         {
             Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
@@ -33,7 +33,6 @@ namespace CapaPresentacion.Controllers
         [ValidateInput(false)]
         public ActionResult FileManagerPartial()
         {
-
             /*string _emp = "Emcomer"*/
             ;// "Emcomer";//(string)Session["empresa"];//"Emcomer";//(string)Session["empresa"];//this.Request.Params["Opcion"].ToString() ;
             string _tda = "";
@@ -42,9 +41,9 @@ namespace CapaPresentacion.Controllers
 
 
             //string _tda = "143";            
-            string _folder_root_d = @"~\Files\Documento\";          
+            string _folder_root_d = @"~\Files\ComunicadoTDA\";
             string opcion_admin = "0";
-            
+
             if (_tda.Trim().Length > 0) opcion_admin = "1";
             ViewBag.opcion_admin = opcion_admin;
 
@@ -56,26 +55,26 @@ namespace CapaPresentacion.Controllers
 
                 bool exists = System.IO.Directory.Exists(Server.MapPath(_folder_root_d));
 
-                bool exists_form = System.IO.Directory.Exists(Server.MapPath(_path_Formularios));
+               // bool exists_form = System.IO.Directory.Exists(Server.MapPath(_path_Formularios));
 
                 if (!exists)
                     System.IO.Directory.CreateDirectory(Server.MapPath(_folder_root_d));
 
-                if (!exists_form)
-                    System.IO.Directory.CreateDirectory(Server.MapPath(_path_Formularios));              
+                //if (!exists_form)
+                 //   System.IO.Directory.CreateDirectory(Server.MapPath(_path_Formularios));
             }
 
             Session["_folder_root_d"] = _folder_root_d;
 
-            return PartialView("_FileManagerPartial", _folder_root_d);           
+            return PartialView("_FileManagerPartial", _folder_root_d);
         }
 
         public FileStreamResult FileManagerPartialDownload()
         {
-            return FileManagerExtension.DownloadFiles(DocumentoControllerFileManagerSettings.CreateFileManagerDownloadSettings(), (string)Session["_folder_root_d"].ToString());
+            return FileManagerExtension.DownloadFiles(ComunicadoTDAControllerFileManagerSettings.CreateFileManagerDownloadSettings(), (string)Session["_folder_root_d"].ToString());
         }
     }
-    public class DocumentoControllerFileManagerSettings
+    public class ComunicadoTDAControllerFileManagerSettings
     {
         public static DevExpress.Web.Mvc.FileManagerSettings CreateFileManagerDownloadSettings()
         {

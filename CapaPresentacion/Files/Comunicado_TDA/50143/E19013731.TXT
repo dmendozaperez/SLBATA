@@ -1,0 +1,37 @@
+6E
+                              CIRCULAR DE TRASPASO: 2019137_0031             -1- F
+PARA         : SR. JEFE DE TIENDA  (143) B5 MIRAFLORES
+DE           : DPTO.DE MERCADERIA
+ASUNTO       : TRASPASOS/DEVOLUCIONES DE MERCADERIA 
+FECHA        : 04/07/19
+==========================================================================================
+
+Efectuar el traspaso o devoluci¢n seg£n corresponda, de los siguientes art¡culos: F
+
+                          A:16  17  18  19  20  21  22  23  24  25  26    
+                          B:26  27  28  29  30  31  32  33  34  35  36  37
+                          C:32  33  34  35  36  37  38  39  40            
+                          D:37  38  39  40  41  42  43  44  45  46        
+                          E:00  01  02  03  04  05  06  07  08  09  10  11
+                          F:XC  XS   S   M   L  XL  XG                    
+                          G:    01  02  03  04  05  06  07  08  09  10  11
+                          H:26  28  30  32  34  36  38  40  42  44  46  48
+                          I:00  03  06  09  12      18  24  36            
+Categ  Art¡culo Cal   Cant                                                   Destinatario:
+20-10  044-5822 1ra      7       1   1   2   2   1                           525 B JAEN            
+25-02  281-5919 1ra      6   2   2   1   1                                   525 B JAEN            
+22-03  356-6824 1ra      4                   1   1   1   1                   525 B JAEN            
+25-04  481-1311 1ra      3                                   1   1   1       525 B JAEN            
+           TOTAL =>    20 ===============================================
+E
+
+CALIDADES:  1ra=[1]  ;  2da=[2]  ;  Det=[3]  ;  Det.Leve=[9]
+
+IMPORTANTE: - Debe traspasar/devolver solo la mercaderia con las calidades indicadas.
+            - Debe anotar el Nro.de Circular en la parte inferior de la guia de remision (visible).
+F
+
+
+    -------------------------
+      DPTO.DE MERCADERIA    
+
