@@ -70,6 +70,7 @@
     <Compile Include="Maestros\Ent_Cadena.cs" />
     <Compile Include="Maestros\Ent_Concepto_Suna.cs" />
     <Compile Include="Maestros\Ent_ListaTienda.cs" />
+    <Compile Include="Maestros\Ent_Prom_Filtro.cs" />
     <Compile Include="Maestros\Ent_Tienda_CadTip.cs" />
     <Compile Include="Maestros\Ent_TipoInterface.cs" />
     <Compile Include="Maestros\Ent_TipoTienda.cs" />

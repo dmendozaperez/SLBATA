@@ -445,13 +445,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="Service References\SunatReniec2\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="Service References\SunatReniec\Reference.cs" />
-    <Compile Include="Service References\SunatReniec\Reference1.cs">
+    <Compile Include="Service References\SunatReniec\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -1432,30 +1426,22 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
-    <Content Include="Service References\SunatReniec2\CapaPresentacion.SunatReniec2.DataReniec.datasource">
+    <Content Include="Service References\SunatReniec\CapaPresentacion.SunatReniec.DataReniec.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Service References\SunatReniec2\CapaPresentacion.SunatReniec2.DataSunat.datasource">
+    <Content Include="Service References\SunatReniec\CapaPresentacion.SunatReniec.DataSunat.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Service References\SunatReniec2\CapaPresentacion.SunatReniec2.ws_persona_reniecResponse.datasource">
+    <Content Include="Service References\SunatReniec\CapaPresentacion.SunatReniec.ws_persona_reniecResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Service References\SunatReniec2\CapaPresentacion.SunatReniec2.ws_persona_sunatResponse.datasource">
+    <Content Include="Service References\SunatReniec\CapaPresentacion.SunatReniec.ws_persona_sunatResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <None Include="Service References\SunatReniec2\Sunat_Reniec_PE.wsdl" />
-    <None Include="Service References\SunatReniec\configuration.svcinfo" />
-    <None Include="Service References\SunatReniec\configuration91.svcinfo" />
-    <None Include="Service References\SunatReniec\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference1.cs</LastGenOutput>
-    </None>
     <None Include="Service References\SunatReniec\Sunat_Reniec_PE.disco" />
-    <None Include="Service References\SunatReniec2\Sunat_Reniec_PE.disco" />
-    <None Include="Service References\SunatReniec2\configuration91.svcinfo" />
-    <None Include="Service References\SunatReniec2\configuration.svcinfo" />
-    <None Include="Service References\SunatReniec2\Reference.svcmap">
+    <None Include="Service References\SunatReniec\configuration91.svcinfo" />
+    <None Include="Service References\SunatReniec\configuration.svcinfo" />
+    <None Include="Service References\SunatReniec\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
@@ -1579,13 +1565,7 @@
     <Content Include="Views\BataClub\_TableCupon.cshtml" />
     <Content Include="Views\Inventario\Consulta_Inv.cshtml" />
     <Content Include="Views\Inventario\_TableConsInv.cshtml" />
-    <Content Include="Service References\SunatReniec\CapaPresentacion.SunatReniec.DataReniec.datasource" />
-    <Content Include="Service References\SunatReniec\CapaPresentacion.SunatReniec.DataSunat.datasource" />
-    <Content Include="Service References\SunatReniec\CapaPresentacion.SunatReniec.ws_persona_reniecResponse.datasource" />
-    <Content Include="Service References\SunatReniec\CapaPresentacion.SunatReniec.ws_persona_sunatResponse.datasource" />
     <None Include="Service References\SunatReniec\Sunat_Reniec_PE.wsdl" />
-    <Content Include="Views\Inventario\ConsultaMovimiento.cshtml" />
-    <Content Include="Views\Inventario\MostrarResultados.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1621,10 +1601,6 @@
       <Project>{d766eb68-5a6b-4719-b604-60e1a87a999c}</Project>
       <Name>CapaEntidad</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CapaOraDato\CapaOraDato.csproj">
-      <Project>{218a9618-c092-4cdf-868a-8d2f2058def9}</Project>
-      <Name>CapaOraDato</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\BataClub\" />
@@ -1632,7 +1608,7 @@
     <WCFMetadataStorage Include="Service References\cxpress\" />
     <WCFMetadataStorage Include="Service References\FEBataBack\" />
     <WCFMetadataStorage Include="Service References\FEBataEpos\" />
-    <WCFMetadataStorage Include="Service References\SunatReniec2\" />
+    <WCFMetadataStorage Include="Service References\SunatReniec\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="RptsCrystal\GuiaECommerce.rpt">
