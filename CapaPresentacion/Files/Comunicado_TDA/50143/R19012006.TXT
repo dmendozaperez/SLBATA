@@ -1,0 +1,28 @@
+
+M
+
+ARTICULOS A RECEPCIONAR POR LA TIENDA: (143) B5 MIRAFLORES                   -1- F
+
+                         A:16  17  18  19  20  21  22  23  24  25  26    
+                         B:26  27  28  29  30  31  32  33  34  35  36  37
+                         C:32  33  34  35  36  37  38  39  40            
+                         D:37  38  39  40  41  42  43  44  45  46        
+                         E:00  01  02  03  04  05  06  07  08  09  10  11
+                         F:XC  XS   S   M   L  XL  XG                    
+                         G:    01  02  03  04  05  06  07  08  09  10  11
+                         H:26  28  30  32  34  36  38  40  42  44  46  48
+                         I:00  03  06  09  12      18  24  36            
+Categ  Art¡culo Cal  Cant                                                   De la tienda:
+14-04  663-3800 1ra      2                   2                               147 B4 MIRAFLORES     
+14-07  666-1900 1ra      1                   1                               147 B4 MIRAFLORES     
+14-07  666-8903 1ra      6               2   2   2                           147 B4 MIRAFLORES     
+           TOTAL =>     9 ===============================================
+
+CALIDADES:  1ra=[1]  ;  2da=[2]  ;  Det=[3]  ;  Det.Leve=[9]
+
+
+
+
+    -------------------------
+      DPTO.DE MERCADERIA    
+

@@ -314,6 +314,7 @@
     <Compile Include="Controllers\CanalVentaController.cs" />
     <Compile Include="Controllers\CEController.cs" />
     <Compile Include="Controllers\ComunicadoController.cs" />
+    <Compile Include="Controllers\ComunicadoTDAController.cs" />
     <Compile Include="Controllers\ContabilidadController.cs" />
     <Compile Include="Controllers\DocumentoController.cs" />
     <Compile Include="Controllers\ECommerceController.cs" />
@@ -521,11 +522,17 @@
     <Content Include="Content\font-awesome-4.5.0\css\font-awesome.css" />
     <Content Include="Content\font-awesome-4.5.0\css\font-awesome.min.css" />
     <Content Include="Content\font-awesome-4.5.0\fonts\fontawesome-webfont.svg" />
+    <Content Include="Content\images\doc.jpg" />
     <Content Include="Content\images\glyphicons-halflings-white.png" />
     <Content Include="Content\images\glyphicons-halflings.png" />
     <Content Include="Content\images\lupa.jpg" />
+    <Content Include="Content\images\otro.jpg" />
     <Content Include="Content\images\pdf-viewer.png" />
+    <Content Include="Content\images\pdf.jpg" />
+    <Content Include="Content\images\ppt.jpg" />
+    <Content Include="Content\images\txt.jpg" />
     <Content Include="Content\images\wall-calendar-with-lines.svg" />
+    <Content Include="Content\images\xls.jpg" />
     <Content Include="Content\sweetalert.css" />
     <Content Include="Content\toastr.css" />
     <Content Include="Content\toastr.min.css" />
@@ -1566,8 +1573,8 @@
     <Content Include="Views\Inventario\Consulta_Inv.cshtml" />
     <Content Include="Views\Inventario\_TableConsInv.cshtml" />
     <None Include="Service References\SunatReniec\Sunat_Reniec_PE.wsdl" />
-    <Content Include="Views\Inventario\ConsultaMovimiento.cshtml" />
-    <Content Include="Views\Inventario\MostrarResultados.cshtml" />
+    <Content Include="Views\ComunicadoTDA\Index.cshtml" />
+    <Content Include="Views\ComunicadoTDA\_FileManagerPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1577,6 +1584,7 @@
     <Folder Include="Files\Comunicado\Emcomer\" />
     <Folder Include="Files\Comunicado\Tiendas Especializadas\" />
     <Folder Include="Files\Comunicado\Tropicalza\" />
+    <Folder Include="Files\Comunicado_TDA\" />
     <Folder Include="Files\Documento\" />
     <Folder Include="Interface\" />
     <Folder Include="StkLedger\" />

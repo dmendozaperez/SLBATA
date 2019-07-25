@@ -28,26 +28,29 @@
     {
         switch (((FileManagerFile)e.Item).Extension)
         {
-            case ".pdf":
-                e.ThumbnailImage.Url = @"~/Content/images/pdf-viewer.png";
+            case ".txt":
+                e.ThumbnailImage.Url = @"~/Content/images/txt.jpg";
                 break;
-                //case ".zip":
-                //    e.ThumbnailImage.Url = @"~/Images/archive.png";
-                //    break;
-                //case ".txt":
-                //    e.ThumbnailImage.Url = @"~/Images/txt.png";
-                //    break;
-                //case ".rtf":
-                //    e.ThumbnailImage.Url = @"~/Images/richtxt.png";
-                //    break;
-                //case ".mp3":
-                //    e.ThumbnailImage.Url = @"~/Images/music.png";
-                //    break;
-                //case ".xml":
-                //    e.ThumbnailImage.Url = @"~/Images/code.png";
-                //    break;
+            case ".rtf":
+            case ".doc":
+            case ".docx":
+            case ".odt":
+                e.ThumbnailImage.Url = @"~/Content/images/doc.jpg";
+                break;
+            case ".ppt":
+            case ".pptx":
+            case ".odp":
+                e.ThumbnailImage.Url = @"~/Content/images/ppt.jpg";
+                break;
+            case ".pdf":
+                e.ThumbnailImage.Url = @"~/Content/images/pdf.jpg";
+                break;
+            default:
+                e.ThumbnailImage.Url = @"~/Content/images/otro.jpg";
+                break;
         }
     };
+    settings.ClientSideEvents.SelectedFileOpened = "function(s, e) {e.file.Download();e.processOnServer = false;}";
 
 
 
