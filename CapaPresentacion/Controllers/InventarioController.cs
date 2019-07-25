@@ -303,7 +303,20 @@ namespace CapaPresentacion.Controllers
                 aaData = result
             }, JsonRequestBehavior.AllowGet);
         }
-
+        [HttpGet]
+        public FileContentResult ConsultaMovimientoExcel()
+        {
+            if (Session["Lista_Consulta_Movimiento"] == null)
+            {
+                List<Ent_Consulta_Movimiento> liststoreConf = new List<Ent_Consulta_Movimiento>();
+                Session["Lista_Consulta_Movimiento"] = liststoreConf;
+            }
+            List<Ent_Consulta_Movimiento> lista = (List<Ent_Consulta_Movimiento>)Session["Lista_Consulta_Movimiento"];
+            string[] columns = { "FECHA", "INI_CALZADO", "INI_NO_CALZADO", "VEN_CALZADO", "VEN_NO_CALZADO", "ING_CALZADO", "ING_NO_CALZADO", "SAL_CALZADO", "SAL_NO_CALZADO", "SALDO_CALZADO", "SALDO_NO_CALZADO" };
+            string[] headers = { "FECHA", "INICIAL", "VENTA", "INGRESO", "SALIDA", "SALDO"};
+            byte[] filecontent = ExcelExportHelper.ExportExcel2(headers, lista, "Inventario: Consulta de Movimientos por Fecha" + Environment.NewLine + "Tienda: " + lista[0].TIENDA ,false,columns);
+            return File(filecontent, ExcelExportHelper.ExcelContentType, "Inventario_Consulta_Movimientos_Fecha.xlsx");
+        }
         #endregion
     }
 }

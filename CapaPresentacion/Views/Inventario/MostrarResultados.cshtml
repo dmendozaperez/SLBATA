@@ -8,6 +8,9 @@
 <div class="row">
     <div class="col-md-12" id="lista">
         <h4 class="text-bold">Resultados</h4>
+        
+        <a id="EXCEL" name="excel" class="btn btn-success btn-sm"   href="@Url.Action("ConsultaMovimientoExcel","Inventario")" style="margin-bottom:10px" ><span class="glyphicon glyphicon-export"></span>&nbsp;Excel</a>
+        
         <table class="table table-bordered table-condensed table-responsive">
             <thead>
                 <tr style="background-color:#c1c1c1">
@@ -133,8 +136,10 @@
                                '<div class="panel-body">' +
                                '<h5 class="text-bold text-info">Ultimo Saldo</h5>' +
                                '<p><b>Fecha:</b><small class="text-right">&nbsp;' + resultado.fecha + '</small></p>' +
-                               '<p><b>Total Calzado:</b><small class="text-right">&nbsp; ' + resultado.saldo_calzado + '</small></p>' +
-                               '<p><b>Total No Calzado:</b><small class="text-right">&nbsp;' + resultado.saldo_no_calzado + '</small></p></div></div>';
+                               '<p><b>Saldo Calzado:</b><small class="text-right">&nbsp; ' + resultado.saldo_calzado + '</small></p>' +
+                               '<p><b>Saldo No Calzado:</b><small class="text-right">&nbsp;' + resultado.saldo_no_calzado + '</small></p>' +
+                               '<p><b>TOTAL:</b><small class="text-right">&nbsp;' +  (parseFloat(resultado.saldo_calzado) +parseFloat(resultado.saldo_no_calzado))  + '</small></p>' +
+                    '</div></div>';
                 }
                 $("#ultimo_registro").html(ultimo_resultado)
             },

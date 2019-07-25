@@ -47,7 +47,7 @@ namespace CapaEntidad.CanalVenta
         public string name { get; set; }
         public string reference { get; set; }
         public string alias { get; set; }
-        public Ent_ItemSold position { get; set; }
+        public Ent_Position position { get; set; }
     }
     public class Ent_Position
     {
