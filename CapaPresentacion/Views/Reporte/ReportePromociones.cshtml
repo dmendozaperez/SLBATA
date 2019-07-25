@@ -52,6 +52,11 @@
                 </div>
             </div>
         </div>
+        
+        
+          
+    </div>
+    <div class="row">
         <div class="col-sm-3">
             <label for="txtTda">Cadena</label>
             <div class="form-group">
@@ -59,8 +64,15 @@
                     @Html.DropDownList("dwCna", new SelectList(ViewBag.Cadena, "cod_entid", "des_entid", "0"), new { @class = "selectpicker", @id = "dwCna", @name = "dwCna" })
                 </div>
             </div>
+        </div>
+        <div class="col-sm-3">
+            <label for="txtTda">Filtro</label>
+            <div class="form-group">
+                <div id="div_tda" class="form-group">
+                    @Html.DropDownList("dwFil", new SelectList(ViewBag.Filtro, "cod", "descripcion", "0"), new { @class = "selectpicker", @id = "dwFil", @name = "dwFil" })
+                </div>
+            </div>
         </div> 
-        
         <div class="col-sm-3">
             <label for="fecfin"></label>
             <div class="form-group">
@@ -71,7 +83,7 @@
                     </button>
                 </div>
             </div>
-        </div>  
+        </div>
     </div>
 
 @* } *@
@@ -120,12 +132,15 @@
             var fecIni = ($("#fecini").val()).split('-');
             var fecFin = ($("#fecfin").val()).split('-');
             var strIni = fecIni[2] + fecIni[1] + fecIni[0];
-            var strFin = fecFin[2] + fecFin[1] + fecFin[0];           
+            var strFin = fecFin[2] + fecFin[1] + fecFin[0];
+
+            var cfiltro = $('#dwFil').val();
 
             var objPromocion = {
                 cod_cadena: cdna,
                 fecIni: strIni,
-                FecFin: strFin
+                FecFin: strFin,
+                filtro: cfiltro
             }
 
             waitingDialog.show('Espere un momento por favor');

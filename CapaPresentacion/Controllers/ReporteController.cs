@@ -997,17 +997,24 @@ namespace CapaPresentacion.Controllers
                 list.Add(entCombo);
 
                 ViewBag.Cadena = list;
+
+                /*filtro de busqueda*/
+                Dat_Prom_Filtro prom_filtro = new Dat_Prom_Filtro();
+
+                ViewBag.Filtro = prom_filtro.lista_prom_fltro();
+
+
                 return View();
             }
 
         }
 
-        public ActionResult ExportDataPromociones(string cod_cadena, string fecIni, string FecFin)
+        public ActionResult ExportDataPromociones(string cod_cadena, string fecIni, string FecFin,string filtro)
         {
             var oJRespuesta = new JsonResponse();
             DataTable dt = new DataTable();
             Data_Planilla pl = new Data_Planilla();
-            dt = pl.get_reportePromociones(cod_cadena, fecIni, FecFin);
+            dt = pl.get_reportePromociones(cod_cadena, fecIni, FecFin,filtro);
             dt.TableName = "Promociones";
             Session["Promociones"] = dt;
        
