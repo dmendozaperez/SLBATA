@@ -78,6 +78,13 @@
             <div class="modal-body">
                 <form id="frmRegistroGanador">
                     <div class="row">
+                        <div class="col-sm-12 checkbox text-info" id="div_sinDNI">
+                            <label>
+                                <input type="checkbox" name="sinDNI" id="sinDNI" /> Otro tipo de documento de Indentidad (para clientes extranjeros)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="col-sm-6 form-group form-group-sm">
                             <label for="dni">Nro Documento</label>
                             <div class="input-group">
@@ -112,7 +119,7 @@
                         </div>
                         <div class="col-sm-6 checkbox text-primary" id="afil_bataclub">
                             <label>
-                                <input type="checkbox" name="afiliarse" /> Afiliarse a Bata Club
+                                <input type="checkbox" name="afiliarse" id="afiliarse" /> Afiliarse a Bata Club
                             </label>
                         </div>
                         @Html.Hidden("w01")
@@ -148,7 +155,7 @@
     var procesadoBlur = false;
     var participar = true;
     var jugando = false;
-    
+    var sinDNI = false;
 
 
     (function(API){
@@ -184,6 +191,20 @@
             //        validadoBataClub = true;
             //    }
             //}
+        });
+        $("#sinDNI").change(function(){
+            if(this.checked){
+                $("#dni").attr("maxlength",15);
+                $("#dni").attr("placeholder","número de documento");
+                sinDNI = true;
+                $("#afil_bataclub").addClass("hidden");
+                $("#afiliarse").prop('checked', false);
+            }else{
+                $("#dni").attr("maxlength",8);
+                $("#dni").attr("placeholder","Dni: 12345678");
+                sinDNI = false;
+                $("#afil_bataclub").removeClass("hidden");
+            }
         });
     });
     function descargar_cupones() {
@@ -288,6 +309,9 @@
 
 
     function consultarDNI(){
+        if (sinDNI){
+            return;
+        }
             waitingDialog.show('Espere un momento por favor');
             frmRegistroGanador = $("#frmRegistroGanador");
             $.ajax({
@@ -297,8 +321,6 @@
                 
                 success: function (data) {
                     waitingDialog.hide();
-
-
                     if (data.estado == 1){
                         if (data.existe == true){
                             $("#dni").val(data._dni);
@@ -402,6 +424,7 @@
 
                     if (bataclub == 1)
                     {
+                        $("#div_sinDNI").addClass("hidden");
                         swal(data.resultados  , "Vuelve a participar.").then((value) => {
                             $("#modalRegistrarGanador").modal('hide');
                             resetWheel();
@@ -420,6 +443,7 @@
                         $("#telefono").attr('readonly', true);
                         $("#email").attr('readonly', true);
                         $("#afil_bataclub").addClass("hidden");
+                        $("#div_sinDNI").addClass("hidden");
                         $("#botones").html("<button id='descargar_cupones' onclick='descargar_cupones();' class='btn btn-primary'>Descargar cupones  <i class='glyphicon glyphicon-barcode'></i></button><a href='@Url.Action("Index" , "RuletaBata")' class='btn btn-warning'>Terminar <i class='glyphicon glyphicon-ok'></i></a>");
                     }
                 }

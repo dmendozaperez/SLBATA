@@ -35,7 +35,7 @@ namespace CapaPresentacion.Controllers
             return value.All(char.IsNumber);
         }
         [HttpPost]
-        public ActionResult RegistrarGanador(GanadorRuleta ganador, string w01 , string[] codigos , string afiliarse)
+        public ActionResult RegistrarGanador(GanadorRuleta ganador, string w01 , string[] codigos , string afiliarse, string sinDNI)
         {
             string men_validacion_campos = "";
             var regex = "\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*";
@@ -45,10 +45,20 @@ namespace CapaPresentacion.Controllers
                 {
                     return RedirectToAction("Login", "Control");
                 }
-                if (ganador.dni == null || ganador.dni == "" || ganador.dni.Length != 8 || !IsNumeric(ganador.dni))
+                if (sinDNI != "on")
                 {
-                    men_validacion_campos += "Ingrese un número de documento válido." + Environment.NewLine;
+                    if (ganador.dni == null || ganador.dni == "" || ganador.dni.Length != 8 || !IsNumeric(ganador.dni))
+                    {
+                        men_validacion_campos += "Ingrese un número de documento válido." + Environment.NewLine;
+                    }
+                }else
+                {
+                    if (ganador.dni == null || ganador.dni == "" || ganador.dni.Length < 6)
+                    {
+                        men_validacion_campos += "Ingrese un número de documento válido." + Environment.NewLine;
+                    }
                 }
+                    
                 if (ganador.nombre == null || ganador.nombre == "")
                 {
                     men_validacion_campos += "Ingrese el nombre del participante." + Environment.NewLine;
@@ -92,7 +102,7 @@ namespace CapaPresentacion.Controllers
                     int result_insert = _datos.insertar_ganador_ruleta(codigo, Session["Tienda"].ToString(), ganador.dni, ganador.nombre, ganador.ape_pat,ganador.ape_mat, ganador.telefono, ganador.email, premio.id);
                     if (result_insert > 0)
                     {
-                        if (afiliarse == "on")
+                        if (afiliarse == "on" && sinDNI != "on")
                         {
                             actualiza_cliente(ganador.dni, ganador.nombre, ganador.ape_pat, ganador.ape_mat, ganador.telefono, ganador.email, Session["Tienda"].ToString(), ref corre_envio, ref telef_envia);
                         }
