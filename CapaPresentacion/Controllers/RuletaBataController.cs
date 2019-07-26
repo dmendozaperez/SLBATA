@@ -51,6 +51,12 @@ namespace CapaPresentacion.Controllers
                     {
                         men_validacion_campos += "Ingrese un número de documento válido." + Environment.NewLine;
                     }
+                }else
+                {
+                    if (ganador.dni == null || ganador.dni == "" || ganador.dni.Length < 6)
+                    {
+                        men_validacion_campos += "Ingrese un número de documento válido." + Environment.NewLine;
+                    }
                 }
                     
                 if (ganador.nombre == null || ganador.nombre == "")
