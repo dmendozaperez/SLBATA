@@ -1,4 +1,5 @@
 ﻿using CapaDato.Inventario;
+using CapaDato.Maestros;
 using CapaEntidad.General;
 using CapaEntidad.Inventario;
 using CapaPresentacion.Bll;
@@ -14,6 +15,7 @@ namespace CapaPresentacion.Controllers
     public class InventarioController : Controller
     {
         private Dat_Inventario_Consulta datInv = new Dat_Inventario_Consulta(); //gft
+        private Dat_ListaTienda dat_lista_tienda = new Dat_ListaTienda(); 
         private string _session_tabla_inventCons_private = "_session_tabla_inventCons_private"; //gft
         private string _Inventario_Tienda_Combo = "_Inventario_Tienda_Combo"; 
         private string _Inventario_TiendaFecha_Combo = "_Inventario_TiendaFecha_Combo";
@@ -72,6 +74,7 @@ namespace CapaPresentacion.Controllers
 
             return View();
         }
+       
 
         //Table
         public PartialViewResult _TableConsInv( string articulo, string talla, string dwtda, string dwfec)
@@ -89,7 +92,7 @@ namespace CapaPresentacion.Controllers
             Session[_session_tabla_inventCons_private] = list;
             return list;
         }
-
+        
         public ActionResult getTableInventAjax(Ent_jQueryDataTableParams param)
         {
             /*verificar si esta null*/
@@ -188,5 +191,132 @@ namespace CapaPresentacion.Controllers
             return File(filecontent, ExcelExportHelper.ExcelContentType, "Inventario_Consulta.xlsx");
         }
 
+
+        #region ****Movimientos por Fecha*****
+
+        public ActionResult ConsultaMovimiento()
+        {
+            ViewBag.Tienda = dat_lista_tienda.get_tienda("PE", "1");
+            Session["Lista_Consulta_Movimiento"] = null;
+            return View();
+        }
+
+        public PartialViewResult MostrarResultados(string fec, string dwtda)
+        {
+            return PartialView(ListarConsultaMovimiento(fec, dwtda));
+        }
+        public List<Ent_Consulta_Movimiento> ListarConsultaMovimiento(string fec, string dwtda)
+        {
+            List<Ent_Consulta_Movimiento> lista = datInv.get_Lista_Movimiento_Fecha(fec, dwtda);
+            Session["Lista_Consulta_Movimiento"] = lista;
+            return lista;
+        }
+
+        [HttpPost]
+        public ActionResult GetUltimoMovimiento()
+        {
+            try
+            {
+                if (Session["Lista_Consulta_Movimiento"] == null)
+                {
+                    List<Ent_Consulta_Movimiento> liststoreConf = new List<Ent_Consulta_Movimiento>();
+                    Session["Lista_Consulta_Movimiento"] = liststoreConf;
+                }
+                List<Ent_Consulta_Movimiento> lista = (List<Ent_Consulta_Movimiento>)Session["Lista_Consulta_Movimiento"];
+                Ent_Consulta_Movimiento ultimo = (Ent_Consulta_Movimiento)lista.OrderByDescending(p => Convert.ToDateTime( p.FECHA)).First();
+
+
+                if (ultimo != null)
+                {                    
+                    return Json(new { estado = 1, fecha = ultimo.FECHA, saldo_calzado = ultimo.SALDO_CALZADO, saldo_no_calzado = ultimo.SALDO_NO_CALZADO});
+                }
+                else
+                {
+                    return Json(new { estado = 0, resultados = "Sin Resultados" });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { estado = 0,  resultados = "Sin Resultados" });
+            }
+        }
+
+        public ActionResult ListarConsultaMovimiento_DataTable(Ent_jQueryDataTableParams param)
+        {
+            if (Session["Lista_Consulta_Movimiento"] == null)
+            {
+                List<Ent_Consulta_Movimiento> liststoreConf = new List<Ent_Consulta_Movimiento>();
+                Session["Lista_Consulta_Movimiento"] = liststoreConf;
+            }
+            IQueryable<Ent_Consulta_Movimiento> membercol = ((List<Ent_Consulta_Movimiento>)(Session["Lista_Consulta_Movimiento"])).AsQueryable();  //lista().AsQueryable();
+
+            //Manejador de filtros
+            int totalCount = membercol.Count();
+            IEnumerable<Ent_Consulta_Movimiento> filteredMembers = membercol;
+
+
+            if (!string.IsNullOrEmpty(param.sSearch))
+            {
+                filteredMembers = membercol
+                    .Where(m => m.FECHA.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                     m.FECHA.ToUpper().Contains(param.sSearch.ToUpper()));
+            }
+
+            //Manejador de orden
+            var sortIdx = Convert.ToInt32(Request["iSortCol_0"]);
+            Func<Ent_Consulta_Movimiento, DateTime> orderingFunction =
+            (
+            m => Convert.ToDateTime(m.FECHA));
+            filteredMembers = filteredMembers.OrderBy(orderingFunction);
+            //var sortDirection = Request["sSortDir_0"];
+            //if (sortDirection == "asc")
+            //    filteredMembers = filteredMembers.OrderBy(orderingFunction);
+            //else
+            //    filteredMembers = filteredMembers.OrderByDescending(orderingFunction);
+
+            var displayMembers = filteredMembers
+                .Skip(param.iDisplayStart)
+                .Take(param.iDisplayLength);
+
+
+            var result = from a in displayMembers
+                         select new
+                         {
+                             a.TIENDA,
+                             a.FECHA,
+                             a.INI_CALZADO,
+                             a.INI_NO_CALZADO,
+                             a.VEN_CALZADO,
+                             a.VEN_NO_CALZADO,
+                             a.ING_CALZADO,
+                             a.ING_NO_CALZADO,
+                             a.SAL_CALZADO,
+                             a.SAL_NO_CALZADO,
+                             a.SALDO_CALZADO,
+                             a.SALDO_NO_CALZADO
+                         };
+            return Json(new
+            {
+                sEcho = param.sEcho,
+                iTotalRecords = membercol.Count(),
+                iTotalDisplayRecords = filteredMembers.Count(),
+                aaData = result
+            }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public FileContentResult ConsultaMovimientoExcel()
+        {
+            if (Session["Lista_Consulta_Movimiento"] == null)
+            {
+                List<Ent_Consulta_Movimiento> liststoreConf = new List<Ent_Consulta_Movimiento>();
+                Session["Lista_Consulta_Movimiento"] = liststoreConf;
+            }
+            List<Ent_Consulta_Movimiento> lista = (List<Ent_Consulta_Movimiento>)Session["Lista_Consulta_Movimiento"];
+            string[] columns = { "FECHA", "INI_CALZADO", "INI_NO_CALZADO", "VEN_CALZADO", "VEN_NO_CALZADO", "ING_CALZADO", "ING_NO_CALZADO", "SAL_CALZADO", "SAL_NO_CALZADO", "SALDO_CALZADO", "SALDO_NO_CALZADO" };
+            string[] headers = { "FECHA", "INICIAL", "VENTA", "INGRESO", "SALIDA", "SALDO"};
+            byte[] filecontent = ExcelExportHelper.ExportExcel2(headers, lista, "Inventario: Consulta de Movimientos por Fecha" + Environment.NewLine + "Tienda: " + lista[0].TIENDA ,false,columns);
+            return File(filecontent, ExcelExportHelper.ExcelContentType, "Inventario_Consulta_Movimientos_Fecha.xlsx");
+        }
+        #endregion
     }
 }

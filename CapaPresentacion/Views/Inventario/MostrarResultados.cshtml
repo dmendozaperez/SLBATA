@@ -1,0 +1,155 @@
+﻿@{
+    Layout = null;
+}
+<div class="row">
+    <div class="col-md-3" id="ultimo_registro">        
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12" id="lista">
+        <h4 class="text-bold">Resultados</h4>
+        
+        <a id="EXCEL" name="excel" class="btn btn-success btn-sm"   href="@Url.Action("ConsultaMovimientoExcel","Inventario")" style="margin-bottom:10px" ><span class="glyphicon glyphicon-export"></span>&nbsp;Excel</a>
+        
+        <table class="table table-bordered table-condensed table-responsive">
+            <thead>
+                <tr style="background-color:#c1c1c1">
+                    <th colspan="1" style="text-align:center">FECHA</th>
+                    <th colspan="2" style="text-align:center">INCIAL</th>
+                    <th colspan="2" style="text-align:center">VENTA</th>
+                    <th colspan="2" style="text-align:center">INGRESO</th>
+                    <th colspan="2" style="text-align:center">SALIDA</th>
+                    <th colspan="2" style="text-align:center">SALDO</th>
+                </tr>
+                <tr style="background-color:#dcdcdc">
+                    <th style="text-align:center">FECHA</th>
+                    <th style="text-align:center">INI_C</th>
+                    <th style="text-align:center">INI_NC</th>
+                    <th style="text-align:center">VEN_C</th>
+                    <th style="text-align:center">VEN_NC</th>
+                    <th style="text-align:center">ING_C</th>
+                    <th style="text-align:center">ING_NC</th>
+                    <th style="text-align:center">SAL_C</th>
+                    <th style="text-align:center">SAL_NC</th>
+                    <th style="text-align:center">SALDO_C</th>
+                    <th style="text-align:center">SALDO_NC</th>
+                </tr>
+            </thead>
+            <tbody data-bind="foreach:"></tbody>
+            @*<tfoot>
+                <tr class="bg-blue-gradient">
+                    <th style="text-align:center">FECHA</th>
+                    <th style="text-align:center">INI_C</th>
+                    <th style="text-align:center">INI_NC</th>
+                    <th style="text-align:center">VEN_C</th>
+                    <th style="text-align:center">VEN_NC</th>
+                    <th style="text-align:center">ING_C</th>
+                    <th style="text-align:center">ING_NC</th>
+                    <th style="text-align:center">SAL_C</th>
+                    <th style="text-align:center">SAL_NC</th>
+                    <th style="text-align:center">SALDO_C</th>
+                    <th style="text-align:center">SALDO_NC</th>
+                </tr>
+            </tfoot>*@
+        </table>
+    </div>
+</div>
+
+
+<script>
+
+    $(document).ready(function () {
+       
+
+        //waitingDialog.show('Espere un momento por favor');
+        $('.table').DataTable({
+            "language": {
+                "url": "../Scripts/DataTables/Spanish.json"
+            },
+            "bServerSide": true,
+            "bAutoWidth": false,
+            "sAjaxSource": '@Url.Action("ListarConsultaMovimiento_DataTable", "Inventario")',
+            "bdestroy": true,
+            "start": 0,
+            "order": [0, "desc"],
+            "bDeferRender": true,
+            "searching": false,
+            "ordering": false,
+            "aoColumns": [
+                @*
+                   FECHA
+            INI_NO_CALZADO
+            VEN_CALZADO
+            VEN_NO_CALZADO
+            ING_CALZADO
+            ING_NO_CALZADO
+            SAL_CALZADO
+            SAL_NO_CALZADO
+            SALDO_CALZADO
+            SALDO_NO_CALZADO
+                    *@
+                  { "sName": "FECHA", "mData": "FECHA", "className": "content-center-text", "type": "date-dd-MM-yyyy" },
+                  { "sName": "INI_CALZADO", "mData": "INI_CALZADO", "className": "content-center-text" },
+                  { "sName": "INI_NO_CALZADO", "mData": "INI_NO_CALZADO", "className": "content-center-text"  },
+                  { "sName": "VEN_CALZADO", "mData": "VEN_CALZADO", "className": "content-center-text"  },
+                  { "sName": "VEN_NO_CALZADO", "mData": "VEN_NO_CALZADO", "className": "content-center-text"  },
+                  { "sName": "ING_CALZADO", "mData": "ING_CALZADO", "className": "content-center-text"  },
+                  { "sName": "ING_NO_CALZADO", "mData": "ING_NO_CALZADO", "className": "content-center-text"  },
+                  { "sName": "SAL_CALZADO", "mData": "SAL_CALZADO", "className": "content-center-text"  },
+                  { "sName": "SAL_NO_CALZADO", "mData": "SAL_NO_CALZADO", "className": "content-center-text"  },
+                  { "sName": "SALDO_CALZADO", "mData": "SALDO_CALZADO", "className": "content-center-text"  },
+                  { "sName": "SALDO_NO_CALZADO", "mData": "SALDO_NO_CALZADO", "className": "content-center-text"  }
+                 
+            ]           
+            // ,
+            // dom: 'Bfrtip',
+            // buttons: [
+            //{
+            //    extend: 'excelHtml5',
+            //    title: 'Bataclub_xls'
+            //},
+            //{
+            //    extend: 'csvHtml5',
+            //    title: 'BataClub_csv'
+            //},
+            //{
+            //    extend: 'pdfHtml5',
+            //    title: 'BataClub_pdf'
+            //},
+            //'copyHtml5',
+            // ]
+        });
+
+        var ultimo_resultado = "";
+        $("#ultimo_registro").html("");
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetUltimoMovimiento", "Inventario")',
+            data: null,
+            contentType: "application/json; charset=utf-8",            // tipo de contenido
+            dataType: "json",                                          // formato de transmición de datos
+            async: true,                                               // si es asincrónico o no
+            success: function (resultado) {
+
+                if (resultado.estado == 1) {
+                    ultimo_resultado = '<div class="panel panel-primary p-10">' +
+                               '<div class="panel-body">' +
+                               '<h5 class="text-bold text-info">Ultimo Saldo</h5>' +
+                               '<p><b>Fecha:</b><small class="text-right">&nbsp;' + resultado.fecha + '</small></p>' +
+                               '<p><b>Saldo Calzado:</b><small class="text-right">&nbsp; ' + resultado.saldo_calzado + '</small></p>' +
+                               '<p><b>Saldo No Calzado:</b><small class="text-right">&nbsp;' + resultado.saldo_no_calzado + '</small></p>' +
+                               '<p><b>TOTAL:</b><small class="text-right">&nbsp;' +  (parseFloat(resultado.saldo_calzado) +parseFloat(resultado.saldo_no_calzado))  + '</small></p>' +
+                    '</div></div>';
+                }
+                $("#ultimo_registro").html(ultimo_resultado)
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) { // función que va a ejecutar si hubo algún tipo de error en el pedido
+                var error = eval("(" + XMLHttpRequest.responseText + ")");
+                alert(error.Message);
+            }
+        });
+
+        //waitingDialog.hide();
+    });
+</script>
+

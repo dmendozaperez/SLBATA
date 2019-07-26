@@ -1,4 +1,6 @@
-﻿using DevExpress.Web.Mvc;
+﻿using CapaEntidad.Control;
+using CapaEntidad.Util;
+using DevExpress.Web.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +14,20 @@ namespace CapaPresentacion.Controllers
         // GET: Documento
         public ActionResult Index()
         {
-            return View();
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
+
+            if (_usuario == null)
+            {
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+            }
+            else
+            {
+                return View();
+            }
         }
 
         [ValidateInput(false)]
@@ -57,14 +72,19 @@ namespace CapaPresentacion.Controllers
 
         public FileStreamResult FileManagerPartialDownload()
         {
-            return FileManagerExtension.DownloadFiles(ComunicadoControllerFileManagerSettings.CreateFileManagerDownloadSettings(), (string)Session["_folder_root_d"].ToString());
+            return FileManagerExtension.DownloadFiles(DocumentoControllerFileManagerSettings.CreateFileManagerDownloadSettings(), (string)Session["_folder_root_d"].ToString());
         }
     }
     public class DocumentoControllerFileManagerSettings
     {
-        public const string RootFolder = @"~\Files\Documento";
+        public static DevExpress.Web.Mvc.FileManagerSettings CreateFileManagerDownloadSettings()
+        {
+            var settings = new DevExpress.Web.Mvc.FileManagerSettings();
 
-        public static string Model { get { return RootFolder; } }
+            settings.SettingsEditing.AllowDownload = true;
+            settings.Name = "FileManager";
+            return settings;
+        }
     }
 
 }

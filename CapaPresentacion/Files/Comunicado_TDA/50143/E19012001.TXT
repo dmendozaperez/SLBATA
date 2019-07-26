@@ -1,0 +1,58 @@
+6E
+                              CIRCULAR DE TRASPASO: 2019120_0001             -1- F
+PARA         : SR. JEFE DE TIENDA  (143) B5 MIRAFLORES
+DE           : DPTO.DE MERCADERIA
+ASUNTO       : TRASPASOS/DEVOLUCIONES DE MERCADERIA 
+FECHA        : 04/07/19
+==========================================================================================
+
+Efectuar el traspaso o devoluci¢n seg£n corresponda, de los siguientes art¡culos: F
+
+                          A:16  17  18  19  20  21  22  23  24  25  26    
+                          B:26  27  28  29  30  31  32  33  34  35  36  37
+                          C:32  33  34  35  36  37  38  39  40            
+                          D:37  38  39  40  41  42  43  44  45  46        
+                          E:00  01  02  03  04  05  06  07  08  09  10  11
+                          F:XC  XS   S   M   L  XL  XG                    
+                          G:    01  02  03  04  05  06  07  08  09  10  11
+                          H:26  28  30  32  34  36  38  40  42  44  46  48
+                          I:00  03  06  09  12      18  24  36            
+Categ  Art¡culo Cal   Cant                                                   Destinatario:
+47-01  256-3806 1ra      6       2   2   2                                   001 ALMACEN-CENTRAL
+47-04  326-3804 1ra      7                   2   2   2   1                   001 ALMACEN-CENTRAL
+47-04  326-6801 1ra      7                   2   2   2   1                   001 ALMACEN-CENTRAL
+47-04  326-6820 1ra      7                   2   1   2   2                   001 ALMACEN-CENTRAL
+47-02  344-6816 1ra      6                   1   2   2   1                   001 ALMACEN-CENTRAL
+47-02  356-3806 1ra      7                   1   2   2   2                   001 ALMACEN-CENTRAL
+47-04  356-6800 1ra      4                   1   1   1   1                   001 ALMACEN-CENTRAL
+47-04  356-6825 1ra      5                       1   2   2                   001 ALMACEN-CENTRAL
+47-04  356-6826 1ra      5                   1   1       3                   001 ALMACEN-CENTRAL
+47-02  356-6904 1ra      6                   2   2   1   1                   001 ALMACEN-CENTRAL
+47-02  356-6905 1ra      8                   3   2   2   1                   001 ALMACEN-CENTRAL
+47-05  426-3804 1ra     10                                   2   2   3   3   001 ALMACEN-CENTRAL
+47-05  426-6801 1ra      7                                   1   2   4       001 ALMACEN-CENTRAL
+46-01  554-6804 1ra      9               2   2   2   2   1                   001 ALMACEN-CENTRAL
+46-01  554-6809 1ra      7               1   2   1   2   1                   001 ALMACEN-CENTRAL
+46-01  554-6875 1ra      6                   2   2   1   1                   001 ALMACEN-CENTRAL
+46-01  556-3806 1ra      2                               2                   001 ALMACEN-CENTRAL
+46-01  556-6808 1ra     23           3   2  13       2   3                   001 ALMACEN-CENTRAL
+46-01  556-6903 1ra     14           4   3   5   2                           001 ALMACEN-CENTRAL
+46-01  556-6904 1ra     11           1   2   2   2   2   2                   001 ALMACEN-CENTRAL
+45-01  826-6820 1ra     14       6   1   2   2   1   2                       001 ALMACEN-CENTRAL
+45-01  853-6804 1ra      4           1   1       1   1                       001 ALMACEN-CENTRAL
+45-01  854-6802 1ra      4       1       1   1   1                           001 ALMACEN-CENTRAL
+45-01  854-6872 1ra      3       1   1           1                           001 ALMACEN-CENTRAL
+45-01  884-6872 1ra      4       1   1           1   1                       001 ALMACEN-CENTRAL
+           TOTAL =>   186 ===============================================
+E
+
+CALIDADES:  1ra=[1]  ;  2da=[2]  ;  Det=[3]  ;  Det.Leve=[9]
+
+IMPORTANTE: - Debe traspasar/devolver solo la mercaderia con las calidades indicadas.
+            - Debe anotar el Nro.de Circular en la parte inferior de la guia de remision (visible).
+F
+
+
+    -------------------------
+      DPTO.DE MERCADERIA    
+

@@ -115,6 +115,66 @@ namespace CapaPresentacion.Controllers
             ViewBag.id = serie_numero;
             CanalVenta cv = selectVenta(serie_numero, cod_entid, fc_nint);
             ViewBag._SelectVendedor = SelectVendedor((Session["Tienda"] == null ? cv.cod_entid + "," + cv.cod_entid_b : Session["Tienda"].ToString()));
+
+
+            #region DELIVERY CON CHASKI
+            //CanalVenta cvCzk = selectVenta(serie_numero, cod_entid, fc_nint);
+
+            //Ent_Chaski chazki = new Ent_Chaski();
+            //chazki.storeId = "storeId"; // proporcionado por chazki
+            //chazki.branchId = "branchId"; // proporcionado por chazki
+            //chazki.deliveryTrackCode = cvCzk.serieNumero;
+            //chazki.proofPayment = "Ninguna"; // por definir la evindencia que será entregada al cliente
+            //chazki.deliveryCost = 0;
+            //chazki.mode = "Regular"; //pendiente definir el modo con el que se va a trabajar el canal de venta.
+            //chazki.time = "";
+            //chazki.paymentMethod = "Pagado";
+            //chazki.country = "PE";
+
+            //List<Ent_ItemSold> listItemSold = new List<Ent_ItemSold>();
+            //foreach (var producto in cvCzk.detalles)
+            //{
+            //    Ent_ItemSold _item = new Ent_ItemSold();
+            //    _item.name = producto.nombreProducto;
+            //    _item.currency = "PEN";
+            //    _item.price = Convert.ToDouble(producto.total);
+            //    _item.weight = 0.3;
+            //    _item.volumen = 0;
+            //    _item.quantity = producto.cantidad;
+            //    _item.unity = "Caja";
+            //    _item.size = "M";
+            //    listItemSold.Add(_item);
+            //}
+            //chazki.listItemSold = listItemSold;
+            //chazki.notes = (cvCzk.tipo == "3" ? "" : "Entregar en Tienda BATA");
+            //chazki.documentNumber = (cvCzk.tipo == "3" ? cvCzk.noDocCli : cvCzk.informacionTiendaDestinatario.nroDocumento);
+            //chazki.name_tmp = (cvCzk.tipo == "3" ? cvCzk.nombreCliente : "");
+            //chazki.lastName = cvCzk.tipo == "3" ? cvCzk.apePatCliente + " " + cvCzk.apeMatCliente : "";
+            //chazki.companyName = cvCzk.tipo == "3" ? "" : cvCzk.tiendaOrigen;
+            //chazki.email = (cvCzk.tipo == "3" ? "servicio.clientes.peru@bata.com" : cvCzk.informacionTiendaDestinatario.email);
+            //chazki.phone = (cvCzk.tipo == "3" ? (String.IsNullOrEmpty(cvCzk.telefonoCliente) ? "488-8300" : cvCzk.telefonoCliente) : cvCzk.informacionTiendaDestinatario.telefono);
+            //chazki.documentType = (cvCzk.tipo == "3" ? (cvCzk.noDocCli.Length == 11 ? "RUC" : "DNI") : "RUC");
+
+            //List<Ent_AddressClient> listAdressClient = new List<Ent_AddressClient>();
+            //Ent_AddressClient addressClient = new Ent_AddressClient();
+            //addressClient.nivel_2 = (cvCzk.tipo == "3" ? (cvCzk.ubigeoCliente.ToString() == "" ? cvCzk.ubigeoTienda.Substring(0, 2) : cvCzk.ubigeoCliente.Substring(0, 2)) : cvCzk.ubigeoTienda.Substring(0, 2));
+            //addressClient.nivel_3 = (cvCzk.tipo == "3" ? (cvCzk.ubigeoCliente.ToString() == "" ? cvCzk.ubigeoTienda.Substring(2, 2) : cvCzk.ubigeoCliente.Substring(2, 2)) : cvCzk.ubigeoTienda.Substring(2, 2));
+            //addressClient.nivel_4 = (cvCzk.tipo == "3" ? (cvCzk.ubigeoCliente.ToString() == "" ? cvCzk.ubigeoTienda.Substring(4) : cvCzk.ubigeoCliente.Substring(4)) : cvCzk.ubigeoTienda.Substring(4));
+            //addressClient.name = (cvCzk.tipo == "3" ? cvCzk.direccionCliente : cvCzk.informacionTiendaDestinatario.direccion_entrega);
+            //addressClient.reference = (cvCzk.tipo == "3" ? (String.IsNullOrEmpty(cvCzk.referenciaCliente) ? "Sin Referencia" : cvCzk.referenciaCliente) : cvCzk.informacionTiendaDestinatario.referencia);
+            //addressClient.alias = "No Alias";
+            //Ent_Position position = new Ent_Position();
+            //position.latitude = 0;
+            //position.longitude = 0;
+            //addressClient.position = position;
+            //listAdressClient.Add(addressClient);
+            //chazki.addressClient = listAdressClient;
+
+            //string jsonChazki = JsonConvert.SerializeObject(chazki);
+
+            //Console.WriteLine(jsonChazki);
+
+            #endregion
             return View(cv);
         }       
         public ActionResult ActualizarEstado(string descripcion, string serie_numero, string cod_entid, string fc_nint, string estado, string vendedor)
@@ -232,8 +292,13 @@ namespace CapaPresentacion.Controllers
                 return Json(new { estado = 0 });
             }
         }
-        public void ActualizarDeliveryDespachado(string descripcion, string serieNumero, string cod_entid, string fc_nint, string vendedor,string cod_tda)
+        public void ActualizarDeliveryDespachado(string descripcion, string serieNumero, string cod_entid, string fc_nint, string vendedor, string cod_tda)
         {
+           
+            #region DELIVERY CON COMERCIO XPRESS
+
+            #endregion
+
             cxpress.WSOrdenServicioClient obj1 = new cxpress.WSOrdenServicioClient();
             cxpress.OrdenServicioReqParm objcla = new cxpress.OrdenServicioReqParm();
             cxpress.WSOrdenServicioClient dd = new cxpress.WSOrdenServicioClient();

@@ -1,0 +1,63 @@
+﻿
+@{
+    ViewBag.Title = "Consulta Movimiento por Fecha";
+}
+@{AjaxOptions options = new AjaxOptions
+    {
+        HttpMethod = "POST",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "lista",
+        OnComplete = "waitingDialog.hide();",
+        OnBegin = "waitingDialog.show('Espere un momento por favor');",
+        OnFailure = "waitingDialog.hide();"
+    };
+}
+@model IEnumerable<CapaEntidad.Inventario.Ent_Consulta_Movimiento>
+
+<link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />
+<style>
+    .content-center-text{
+        text-align: center;
+    }
+</style>
+<div class="box box-body box-primary">
+    @using (Ajax.BeginForm("MostrarResultados", options))
+    {
+        <div class="row">
+            <div class="col-md-3">               
+                <div class="form-group">
+                    <label for="dwtda">Tienda</label>
+                    @Html.DropDownList("dwtda", new SelectList(ViewBag.Tienda, "cod_entid", "des_entid", "-1"), new { @class = "form-control selectpicker", @id = "dwtda", @data_live_search = "true", @name = "dwtda" })                 
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label for="fec">Fecha</label>
+                <div class="input-group date" id="datepicker" data-date-format="dd-mm-yyyy">
+                    <input id="fec" name="fec" class="form-control " placeholder="dd-mm-yyyy" type="text" oninvalid="InvalidMsg(this,'Ingrese la fecha')" required="required" />
+                    <div class="input-group-addon">
+                        <i class="fa fa-calendar"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label for="buscar" style="color:transparent">Buscar</label>
+                    <button id="buscar" name="buscar" class="btn btn-primary" onclick="" type="submit"><span class="glyphicon glyphicon-search"></span>&nbsp;Buscar</button>
+                </div>
+            </div>
+        </div>
+        {Html.RenderPartial("MostrarResultados", Model);}
+      }
+</div>
+<script src="~/Scripts/bootstrap-select.min.js"></script>
+<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+<script>
+
+
+    $(function () {
+        $("#datepicker").datepicker({
+            autoclose: true,
+            todayHighlight: true
+        }).datepicker("setDate", "0");;
+    });
+</script>

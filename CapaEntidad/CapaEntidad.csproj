@@ -48,6 +48,7 @@
     <Compile Include="ArticuloSustituto\Articulo_Sustituto_Tienda.cs" />
     <Compile Include="BataClub\Ent_BataClub_CuponesCO.cs" />
     <Compile Include="BataClub\Ent_BataClub_ComboProm.cs" />
+    <Compile Include="CanalVenta\Ent_Chaski.cs" />
     <Compile Include="CanalVenta\Ent_VentaCanal.cs" />
     <Compile Include="Contabilidad\Ent_Contabilidad_EstadoDocumento.cs" />
     <Compile Include="Control\Ent_Aplicacion.cs" />
