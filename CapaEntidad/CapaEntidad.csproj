@@ -63,6 +63,7 @@
     <Compile Include="ECommerce\Ent_Urbano.cs" />
     <Compile Include="ECommerce\Order_Dtl.cs" />
     <Compile Include="ECommerce\Pagos.cs" />
+    <Compile Include="GestionInterno\Ent_Comunicado.cs" />
     <Compile Include="Interface\Ent_TiendaInterface.cs" />
     <Compile Include="Interface\Ent_Interface.cs" />
     <Compile Include="Inventario\Ent_Inventario_Consulta.cs" />

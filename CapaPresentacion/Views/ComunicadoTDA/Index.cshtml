@@ -1,28 +1,125 @@
-﻿@{
-    Layout = "~/Views/Shared/_Layout_FileManager.cshtml";
-    ViewBag.Title = "COMUNICADOS";
-}
-
-@Scripts.Render("~/bundles/bootstrap")
-<div class="box box-body box-primary">
-    @using (Html.BeginForm())
+﻿@using CapaEntidad.GestionInterno
+@model IEnumerable<Ent_Comunicado>
+@{
+    ViewBag.Title = "Consulta de Comunicados";
+    AjaxOptions options = new AjaxOptions
     {
-        @Html.Action("FileManagerPartial")
-    }
-</div>
-<script>
-    var gSite = ''
-    var gVisible = 'F'
-    var gVisibleS = 'F'
-    $(document).ready(function () {
-        $("body").toggleClass('sidebar-collapse');
-        var pathname = window.location.pathname;
-        var res = pathname.split("/")
+        HttpMethod = "GET",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "listaCom",
+        OnComplete = "waitingDialog.hide();",
+        OnBegin = "waitingDialog.show('Espere un momento por favor');",
+        OnFailure = "waitingDialog.hide();"
+    };
+}
+@*<link href="~/Content/bootstrap-select.css" rel="stylesheet" />*@
+@*<link href="~/ContentSelect/bootstrap-select.css" rel="stylesheet" />*@
 
-        if (res[1].toString() != "Comunicado_TDA") {
-            gSite = "/" + res[1].toString();
-        }
-        //if ($("#NombreUsuario").val() == 'Invitado')
-        //    setInterval('ContinuarConexion()', 5000);
-    });
+
+<link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />
+
+<p class="text-danger">¡Consulta de comunicado para tienda</p>
+<div class="box box-body box-primary">
+        @using (Ajax.BeginForm("_comTable", options))
+        {
+            <form id="form1">
+               
+                    <div class="row">
+                        <div class="col-sm-pull-6" style="padding-left: 25px;">
+                            <label for="segape">Tienda.</label>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div id="tda" class="input-group autofocus" required>
+                                        @Html.DropDownList("dwtda", new SelectList(ViewBag.Tienda, "cbo_codigo", "cbo_descripcion", "-1"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwtda", @name = "dwtda" })
+                                    </div>
+                                </div>
+                            </div>                            
+                        </div>
+
+                        <div class="col-sm-2" style="padding-left: 25px; width: 105px; margin-top: 5px; margin-bottom: 10px;">
+                            <label></label><br />
+                            <button id="btnSearch" type="submit" title="Consultar" class="btn btn-primary">
+                                <span class="glyphicon glyphicon-search"> Buscar</span>
+                            </button>
+                        </div>
+                    </div>
+               
+            </form>
+
+                @*<div class="col-sm-3">
+                            <label for="segape">TIENDA</label>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div id="tda" class="input-group autofocus">
+                                        @Html.DropDownList("dwtda", new SelectList(ViewBag.Tienda, "cbo_codigo", "cbo_descripcion", "-1"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwtda", @name = "dwtda" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-2">
+                            <label></label><br />
+                            <button id="btnSearch" type="submit" title="Consultar" class="btn btn-primary">
+                                <span class="glyphicon glyphicon-search"> Buscar</span>
+                            </button>
+                        </div>
+
+
+                    </div>*@
+
+                }
+                <div class="box-body" id="listaCom" style="overflow-x: auto;">
+                    @{Html.RenderPartial("_comTable", Model);}
+                </div>
+                <br />
+
+
+</div>
+<script src="~/Scripts/bootstrap-select.min.js"></script>
+<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+
+
+@*<script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/ScriptsSelect/bootstrap-select.js"></script>*@
+<script>
+    //$(document).ready(function () {
+
+    //    $('#dwtda').on('keyup change', function () {
+    //        selectedValue = $(this).val();
+
+    //        $.each($('#btnSearch'), function () {
+    //            $(this).val(selectedValue);
+    //        })
+    //    });
+
+    //    //MostrarListado()
+    //});
+
+    @*function MostrarListado() {
+
+        var TeamDetailPostBackURL = "@Url.Action("_guiaTable", "Consulta")";
+
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: TeamDetailPostBackURL,
+            contentType: "application/json; charset=utf-8",
+            data: {},
+            datatype: "json",
+            cache: true,
+            success: function (data) {
+                document.getElementById("listaGuia").innerHTML = data;
+
+            },
+            error: function () {
+
+            }
+        });
+
+    }*@
+
 </script>
+
+@*<script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/bootstrap-select.js"></script>*@
+
