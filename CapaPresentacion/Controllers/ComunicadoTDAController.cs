@@ -6,6 +6,7 @@ using CapaEntidad.GestionInterno;
 using CapaEntidad.Util;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -29,23 +30,23 @@ namespace CapaPresentacion.Controllers
             string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
             string return_view = actionName + "|" + controllerName;
 
-            //if (_usuario == null)
-            //{
-            //    return RedirectToAction("Login", "Control", new { returnUrl = return_view });
-            //}
-            //else
-            //{
-            //    if (Session["Tienda"] != null)
-            //    {
-            //        ViewBag.Tienda = tienda.get_ListaTiendaXstore().Where(t => t.cbo_codigo == Session["Tienda"].ToString()).ToList();
-            //    }
-            //    else
-            //    {
-            ViewBag.Tienda = tienda.get_ListaTiendaXstore(true);
-            //    }
+            if (_usuario == null)
+            {
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+            }
+            else
+            {
+                if (Session["Tienda"] != null)
+                {
+                    ViewBag.Tienda = tienda.get_ListaTiendaXstore().Where(t => t.cbo_codigo == Session["Tienda"].ToString()).ToList();
+                }
+                else
+                {
+                    ViewBag.Tienda = tienda.get_ListaTiendaXstore(true);
+                }
 
-            return View();
-            //}
+                return View();
+            }
         }
         public PartialViewResult _comTable(string dwtda)
         {
@@ -59,11 +60,16 @@ namespace CapaPresentacion.Controllers
         }
         public ActionResult getComAjax(Ent_jQueryDataTableParams param)
         {
-
+            
             /*verificar si esta null*/
             if (Session[_session_listcom_private] == null)
             {
                 List<Ent_Comunicado> listcom = new List<Ent_Comunicado>();
+                if (Session["Tienda"] != null)
+                {
+                    listcom = listaCom(Session["Tienda"].ToString());
+                }
+                
                 Session[_session_listcom_private] = listcom;
             }
 
@@ -85,10 +91,8 @@ namespace CapaPresentacion.Controllers
             //Manejador de orden
             var sortIdx = Convert.ToInt32(Request["iSortCol_0"]);
 
-            Func<Ent_Comunicado,decimal> orderingFunction =
-                  (
-                  m => sortIdx == 0 ? m.id :
-                   m.id
+            Func<Ent_Comunicado,Boolean> orderingFunction =
+                  (m => sortIdx == 0 ? m.file_leido : m.file_leido
                   );
             if (!string.IsNullOrEmpty(param.sSearch))
             {
@@ -98,7 +102,7 @@ namespace CapaPresentacion.Controllers
                     m.descripcion.ToUpper().Contains(param.sSearch.ToUpper()));                                     
             }
             var sortDirection = Request["sSortDir_0"];
-            if (sortDirection == "desc")
+            if (sortDirection == "asc")
                 filteredMembers = filteredMembers.OrderBy(orderingFunction);
             else
                 filteredMembers = filteredMembers.OrderByDescending(orderingFunction);
@@ -128,6 +132,40 @@ namespace CapaPresentacion.Controllers
                 iTotalDisplayRecords = filteredMembers.Count(),
                 aaData = result
             }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult LeerComunicado(string id_comunicado)
+        {
+            try
+            {
+                Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+                if (_usuario == null)
+                {
+                    return RedirectToAction("Login", "Control");
+                }
+                 datCom.leer_comunicado(id_comunicado, _usuario.usu_id);
+                return Json(new { estado = 1, resultados = "Leido" });
+            }
+            catch (Exception)
+            {
+                return Json(new { estado = 0,  resultados = "Error al marcar como leido el comunicado." });
+            }
+        }
+        public ActionResult NotificacionesComunicados(string id_comunicado)
+        {
+            int no_noti = 0;
+            try
+            {                
+                if (Session["Tienda"] != null)
+                {
+                    no_noti = datCom.NotificacionesComunicado(Session["Tienda"].ToString());
+                }               
+                return Json(new { estado = 1, resultados = "correcto" , no_noti = no_noti });
+            }
+            catch (Exception)
+            {
+                return Json(new { estado = 0, resultados = "Error al obtener comunicados pendientes.", no_noti = no_noti });
+            }
         }
     }
 }

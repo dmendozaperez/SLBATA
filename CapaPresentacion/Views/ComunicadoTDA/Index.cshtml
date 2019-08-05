@@ -15,10 +15,19 @@
 @*<link href="~/Content/bootstrap-select.css" rel="stylesheet" />*@
 @*<link href="~/ContentSelect/bootstrap-select.css" rel="stylesheet" />*@
 
+<style>
+    .content-center-text{
+        text-align: center;
+    }
+    .pad-url{        
+    padding-top: 2px;
+    padding-bottom: 3px;
+    }
+</style>
 
 <link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />
 
-<p class="text-danger">¡Consulta de comunicado para tienda</p>
+<p class="text-danger">Consulta de comunicado para tienda</p>
 <div class="box box-body box-primary">
         @using (Ajax.BeginForm("_comTable", options))
         {

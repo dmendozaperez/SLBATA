@@ -32,6 +32,15 @@
                 @{Ent_Usuario user = (Ent_Usuario)HttpContext.Current.Session[Ent_Constantes.NameSessionUser];}
                 @if (Request.IsAuthenticated && user != null)
                 {
+
+                    <li class="dropdown notifications-menu">
+                        <a href="@Url.Action("Index", "ComunicadoTDA")">
+                            <i class="fa fa-bell-o"></i>
+                            <span class="label label-warning" id="noNoti"></span>
+                        </a>
+                    </li>
+
+
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <img src="~/Content/AdminLTE/img/user2-160x160.jpg" class="user-image" alt="User Image" />
