@@ -21,6 +21,8 @@ namespace CapaPresentacion.Controllers
         private string _Inventario_TiendaFecha_Combo = "_Inventario_TiendaFecha_Combo";
 
         // GET: Inventario
+
+        #region Consulta inventario
         //Index
         public ActionResult Consulta_Inv( )
         {
@@ -38,44 +40,17 @@ namespace CapaPresentacion.Controllers
                 Session["_Inventario_Tienda_Combo"] = ViewBag.Tienda;
                 cod_entid = ViewBag.Tienda[0].cod_entid.ToString();
                 ViewBag.Fecha = datInv.get_ListaFecha(cod_entid);
+                Session["_Inventario_TiendaFecha_Combo"] = ViewBag.Fecha;
             }
             else
             { ViewBag.Tienda = Session["_Inventario_Tienda_Combo"];
-                cod_entid = ViewBag.Tienda[0].cod_entid.ToString();
-                ViewBag.Fecha = datInv.get_ListaFecha(cod_entid);
+               // cod_entid = ViewBag.Tienda[0].cod_entid.ToString();
+              //  ViewBag.Fecha = datInv.get_ListaFecha(cod_entid);
+                ViewBag.Fecha = Session["_Inventario_TiendaFecha_Combo"];
             }
-
-            ////Combo Fechas según selección de tienda
-            //if (Session["_Inventario_TiendaFecha_Combo"] == null)
-            //{
-            //    //List<Ent_Inventario_Fecha> listc= List;
-            //    // listc.Insert(0, new SelectListItem { Text = "--Select Customer--", Value = "" });
-            //  //  cod_entid = (ViewBag.Tienda).Items[0].cod_entid;
-            //    // List<Ent_Inventario_Tienda> listi =(ViewBag.Tienda).Items[0].cod_entid;
-            //    //cod_entid = listi.ToString();
-            //    //----------------------------------------------
-            //    cod_entid = ViewBag.Tienda[0].cod_entid.ToString();
-            //   ViewBag.Fecha = datInv.get_ListaFecha(cod_entid);
-            //    /*------------------------*/
-            //    //List<Ent_Inventario_Fecha> list1 = new List<Ent_Inventario_Fecha>()
-            //    //{
-            //    //    new Ent_Inventario_Fecha(){ xst_inv_fec_aud = "Seleccione tienda" },
-            //    //};
-            //    //ViewBag.Fecha = list1;
-            //    /*------------------------*/
-            //    // ViewBag.Fecha = datInv.get_ListaFecha( cod_entid);
-            //    // Session["_Inventario_TiendaFecha_Combo"] = ViewBag.Fecha;
-            //}
-            //else
-            //{ //ViewBag.Fecha = Session["_Inventario_TiendaFecha_Combo"];
-            //    ViewBag.Fecha = datInv.get_ListaFecha(cod_entid);
-            //    Session["_Inventario_TiendaFecha_Combo"] = ViewBag.Fecha;
-            //}
-
             return View();
         }
        
-
         //Table
         public PartialViewResult _TableConsInv( string articulo, string talla, string dwtda, string dwfec)
         {
@@ -170,15 +145,17 @@ namespace CapaPresentacion.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
 
-
+        //Dropdownlist - cambio de fechas
         public ActionResult getDropdrowlistFecha(Ent_jQueryDataTableParams param, string valor_tienda)
         {
-
             ViewBag.Fecha = datInv.get_ListaFecha(valor_tienda);
 
-            return Json(new[] {
+            //return Json(new[] {
+            //    ViewBag.Fecha
+            //}, JsonRequestBehavior.AllowGet);
+            return Json(
                 ViewBag.Fecha
-            }, JsonRequestBehavior.AllowGet);
+            , JsonRequestBehavior.AllowGet);
         }
 
         //Exportar Excel
@@ -191,6 +168,7 @@ namespace CapaPresentacion.Controllers
             return File(filecontent, ExcelExportHelper.ExcelContentType, "Inventario_Consulta.xlsx");
         }
 
+    #endregion
 
         #region ****Movimientos por Fecha*****
 

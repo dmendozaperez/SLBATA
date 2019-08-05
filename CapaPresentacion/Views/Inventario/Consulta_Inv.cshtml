@@ -23,7 +23,7 @@
     {
         <form id="form1">
             <div class="row">
-                <div class="col-sm-pull-6" style="padding-left: 25px;">
+                <div class="col-sm-6" style="padding-left: 25px;">
                     <label for="segape">Cod Tda.</label>
                     <div class="form-group">
                         <div class="input-group">
@@ -33,18 +33,19 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-pull-2" style="padding-left: 25px; ">
-                        <label for="segape" style="color: #3d566e;">Fecha por tienda</label>
-                        <div class="form-group">
-                            <div id="fec" class="form-group">
-                                @Html.DropDownList("dwfec", new SelectList(ViewBag.Fecha, "id", "xst_inv_fec_aud", "-1"), new { @class = "selectpicker dropdown-toggle btn btn-default", @data_live_search = "true", @id = "dwfec", @name = "dwfec", @enable = "false" })
-                            </div>
-                        </div>
+                <div class="col-md-2" style="width: 105px;margin-top: 23px;float: right;margin-right: 25px;">
+                    <a class="btn btn-success glyphicon glyphicon-save-file" href="@Url.Action("ExportToExcel")" title="Exportar a excel"> Excel</a>
                 </div>
             </div>
             <div class="row">
+                <div class="col-sm-2" style="padding-left: 25px; margin-right: inherit; ">
+                    <label for="segape" style="color: #3d566e;">Fecha por tienda</label>
+                    <div class="form-group">
+                        <div id="fec" class="form-group">
+                            @Html.DropDownList("dwfec", new SelectList(ViewBag.Fecha, "id", "xst_inv_fec_aud", "-1"), new { @class = "selectpicker dropdown-toggle btn btn-default", @data_live_search = "true", @id = "dwfec", @name = "dwfec", @enable = "false" })
+                        </div>
+                    </div>
+                </div>
                 <div class="col-sm-2" style="padding-left: 25px; margin-right: inherit;">
                     <label for="segape" style="color: #3d566e;">Artículo</label>
                     <div class="form-group">
@@ -63,20 +64,17 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-2" style="padding-left: 25px; width: 105px; margin-top: 5px; margin-bottom: 10px;">
+                <div class="col-sm-2" style="padding-left: 25px; width: 105px; margin-top: 25px; margin-bottom: 10px;">
                     <button id="btnSearch" type="submit" title="Consultar" class="btn btn-primary">
                         <span class="glyphicon glyphicon-search"> Buscar</span>
                     </button>
                 </div>
             </div>
-
         </form>
-
     }
     <div class="box-body" id="lista" style="padding-bottom: 40px; overflow-x: auto;">
         @{Html.RenderPartial("_TableConsInv", Model);}
     </div>
-
 </div>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 <script src="~/ScriptsSelect/bootstrap-multiselect.js"></script>
@@ -94,32 +92,10 @@
         });
     });
 
-    $(document).ready(function () {
-        $("#btnSearch").click(function () {
-            // ListaTiendasSelect();
-        });
-    });
-
-    //$("#dwtda").change(function () {
-    //    // alert("Handler for .change() called.");
-
-    //});
-
-    //function ListaTiendasSelect() {
-    //    var strcadena = $.trim($('#dwtda').val());
-    //    if (strcadena == null || strcadena == "") {
-    //        toastr.error("Debe seleccionar al menos una tienda.", "Mensaje");
-    //        return false;
-    //    }
-    //    else { document.getElementById("hidden").value = strcadena; }
-    //}
-
-
-    //ListaFecha
+    //Lista dropdownlist de Fechas por tienda
     function ListaFecha() {
         var valor_tienda=$("#dwtda").val();
-            //waitingDialog.show('Espere un momento por favor');
-            //  console.log("entro a Mostrar grafico");
+             waitingDialog.show('Espere un momento por favor');
             var ControllerUrl_c = "@Url.Action("getDropdrowlistFecha", "Inventario")";
             $.ajax({
                 type: "GET",
@@ -129,21 +105,24 @@
                 datatype: "json",
                 cache: true,
                 success: function (data) {
-                    // waitingDialog.hide();
-                    console.log("entro a Mostrar combo 2");
+                  //  debugger;
+                     waitingDialog.hide();
                     console.log(data);
-                   // $("#dwfec").val('@ViewBag.Fecha');
-                  //  $("#dwfec").val(data);
+                    $("#dwfec").empty();
+                    $.each(data, function (i, numeral) {
+                        $("#dwfec").append('<option value="'
+                            + numeral.id + '">'
+                            + numeral.xst_inv_fec_aud + '</option>');
+                    });
                 },
                 //timeout: 10000,
                 //async: false,
                 error: function () {
-                    // waitingDialog.hide();
+                     waitingDialog.hide();
                     alert('Error')
                 }
             });
     }
-
 
 
     //$("#btnUpdateList").click(function () {
@@ -159,14 +138,4 @@
     //    });
     //});
 
-</script>
-
-
-<script>
-    $(function () {
-        $("#datepickerini").datepicker({
-            autoclose: true,
-            todayHighlight: true
-        }).datepicker("setDate", "0");;
-    });
 </script>
