@@ -114,67 +114,9 @@ namespace CapaPresentacion.Controllers
         {
             ViewBag.id = serie_numero;
             CanalVenta cv = selectVenta(serie_numero, cod_entid, fc_nint);
-            ViewBag._SelectVendedor = SelectVendedor((Session["Tienda"] == null ? cv.cod_entid + "," + cv.cod_entid_b : Session["Tienda"].ToString()));
+            ViewBag._SelectVendedor = SelectVendedor((Session["Tienda"] == null ? cv.cod_entid + "," + cv.cod_entid_b : Session["Tienda"].ToString()));           
 
-
-            #region DELIVERY CON CHASKI
-            //CanalVenta cvCzk = selectVenta(serie_numero, cod_entid, fc_nint);
-
-            //Ent_Chaski chazki = new Ent_Chaski();
-            //chazki.storeId = "storeId"; // proporcionado por chazki
-            //chazki.branchId = "branchId"; // proporcionado por chazki
-            //chazki.deliveryTrackCode = cvCzk.serieNumero;
-            //chazki.proofPayment = "Ninguna"; // por definir la evindencia que será entregada al cliente
-            //chazki.deliveryCost = 0;
-            //chazki.mode = "Regular"; //pendiente definir el modo con el que se va a trabajar el canal de venta.
-            //chazki.time = "";
-            //chazki.paymentMethod = "Pagado";
-            //chazki.country = "PE";
-
-            //List<Ent_ItemSold> listItemSold = new List<Ent_ItemSold>();
-            //foreach (var producto in cvCzk.detalles)
-            //{
-            //    Ent_ItemSold _item = new Ent_ItemSold();
-            //    _item.name = producto.nombreProducto;
-            //    _item.currency = "PEN";
-            //    _item.price = Convert.ToDouble(producto.total);
-            //    _item.weight = 0.3;
-            //    _item.volumen = 0;
-            //    _item.quantity = producto.cantidad;
-            //    _item.unity = "Caja";
-            //    _item.size = "M";
-            //    listItemSold.Add(_item);
-            //}
-            //chazki.listItemSold = listItemSold;
-            //chazki.notes = (cvCzk.tipo == "3" ? "" : "Entregar en Tienda BATA");
-            //chazki.documentNumber = (cvCzk.tipo == "3" ? cvCzk.noDocCli : cvCzk.informacionTiendaDestinatario.nroDocumento);
-            //chazki.name_tmp = (cvCzk.tipo == "3" ? cvCzk.nombreCliente : "");
-            //chazki.lastName = cvCzk.tipo == "3" ? cvCzk.apePatCliente + " " + cvCzk.apeMatCliente : "";
-            //chazki.companyName = cvCzk.tipo == "3" ? "" : cvCzk.tiendaOrigen;
-            //chazki.email = (cvCzk.tipo == "3" ? "servicio.clientes.peru@bata.com" : cvCzk.informacionTiendaDestinatario.email);
-            //chazki.phone = (cvCzk.tipo == "3" ? (String.IsNullOrEmpty(cvCzk.telefonoCliente) ? "488-8300" : cvCzk.telefonoCliente) : cvCzk.informacionTiendaDestinatario.telefono);
-            //chazki.documentType = (cvCzk.tipo == "3" ? (cvCzk.noDocCli.Length == 11 ? "RUC" : "DNI") : "RUC");
-
-            //List<Ent_AddressClient> listAdressClient = new List<Ent_AddressClient>();
-            //Ent_AddressClient addressClient = new Ent_AddressClient();
-            //addressClient.nivel_2 = (cvCzk.tipo == "3" ? (cvCzk.ubigeoCliente.ToString() == "" ? cvCzk.ubigeoTienda.Substring(0, 2) : cvCzk.ubigeoCliente.Substring(0, 2)) : cvCzk.ubigeoTienda.Substring(0, 2));
-            //addressClient.nivel_3 = (cvCzk.tipo == "3" ? (cvCzk.ubigeoCliente.ToString() == "" ? cvCzk.ubigeoTienda.Substring(2, 2) : cvCzk.ubigeoCliente.Substring(2, 2)) : cvCzk.ubigeoTienda.Substring(2, 2));
-            //addressClient.nivel_4 = (cvCzk.tipo == "3" ? (cvCzk.ubigeoCliente.ToString() == "" ? cvCzk.ubigeoTienda.Substring(4) : cvCzk.ubigeoCliente.Substring(4)) : cvCzk.ubigeoTienda.Substring(4));
-            //addressClient.name = (cvCzk.tipo == "3" ? cvCzk.direccionCliente : cvCzk.informacionTiendaDestinatario.direccion_entrega);
-            //addressClient.reference = (cvCzk.tipo == "3" ? (String.IsNullOrEmpty(cvCzk.referenciaCliente) ? "Sin Referencia" : cvCzk.referenciaCliente) : cvCzk.informacionTiendaDestinatario.referencia);
-            //addressClient.alias = "No Alias";
-            //Ent_Position position = new Ent_Position();
-            //position.latitude = 0;
-            //position.longitude = 0;
-            //addressClient.position = position;
-            //listAdressClient.Add(addressClient);
-            //chazki.addressClient = listAdressClient;
-
-            //string jsonChazki = JsonConvert.SerializeObject(chazki);
-
-            //Console.WriteLine(jsonChazki);
-
-            #endregion
+            
             return View(cv);
         }       
         public ActionResult ActualizarEstado(string descripcion, string serie_numero, string cod_entid, string fc_nint, string estado, string vendedor)
@@ -294,11 +236,8 @@ namespace CapaPresentacion.Controllers
         }
         public void ActualizarDeliveryDespachado(string descripcion, string serieNumero, string cod_entid, string fc_nint, string vendedor, string cod_tda)
         {
-           
+
             #region DELIVERY CON COMERCIO XPRESS
-
-            #endregion
-
             cxpress.WSOrdenServicioClient obj1 = new cxpress.WSOrdenServicioClient();
             cxpress.OrdenServicioReqParm objcla = new cxpress.OrdenServicioReqParm();
             cxpress.WSOrdenServicioClient dd = new cxpress.WSOrdenServicioClient();
@@ -330,7 +269,7 @@ namespace CapaPresentacion.Controllers
                             objdet.anchoItem = new float[] { 1 };
                             objdet.valorItem = new float[] { 1 };
                             lista.Add(objdet);
-                        }                        
+                        }
                     }
 
                     objcla.listaItems = lista.ToArray();
@@ -338,8 +277,8 @@ namespace CapaPresentacion.Controllers
                     objcla.volumen = new double[] { 10 };           //No hay 
                     objcla.tipoServicio = new long[] { 101 };       // 
 
-                                                                    /*Codigos para prueba 141 y  142*/
-                    objcla.codCliente = new long[] { Convert.ToInt32( cvU.informacionTiendaEnvio.cx_codCliente) };         //entregado por CX
+                    /*Codigos para prueba 141 y  142*/
+                    objcla.codCliente = new long[] { Convert.ToInt32(cvU.informacionTiendaEnvio.cx_codCliente) };         //entregado por CX
                     objcla.codCtaCliente = new long[] { Convert.ToInt32(cvU.informacionTiendaEnvio.cx_codCtaCliente) };      //entregado por CX
 
                     objcla.cantPiezas = new int[] { cvU.detalles.Sum(cant => cant.cantidad) };
@@ -355,17 +294,17 @@ namespace CapaPresentacion.Controllers
                     objcla.indicadorGeneraRecojo = new int[] { 1 };
                     objcla.tipoDestino = new int[] { 1 };
                     objcla.direccEntrega = new String[] { (cvU.tipo == "3" ? cvU.direccionCliente : cvU.informacionTiendaDestinatario.direccion_entrega) };  // Dirección de entrega
-                                                                                                                        //Ubigeo dirección entrega  key.ubi_direc
-                    objcla.refDireccEntrega = new String[] { (cvU.tipo == "3" ? (String.IsNullOrEmpty( cvU.referenciaCliente) ? "Sin Referencia" : cvU.referenciaCliente)  : cvU.informacionTiendaDestinatario.referencia) }; //Referencia dirección entrega
-                    objcla.codDepartEntrega = new String[] { (cvU.tipo == "3" ? (cvU.ubigeoCliente.ToString() == "" ? cvU.ubigeoTienda.Substring(0,2) : cvU.ubigeoCliente.Substring(0,2)) : cvU.ubigeoTienda.Substring(0,2)) }; //Departamento = Lima
-                    objcla.codProvEntrega = new String[] { (cvU.tipo == "3" ? (cvU.ubigeoCliente.ToString() == "" ? cvU.ubigeoTienda.Substring(2, 2) : cvU.ubigeoCliente.Substring(2, 2)) : cvU.ubigeoTienda.Substring(2,2)) }; //Provincia = Lima
+                    //Ubigeo dirección entrega key.ubi_direc
+                    objcla.refDireccEntrega = new String[] { (cvU.tipo == "3" ? (String.IsNullOrEmpty(cvU.referenciaCliente) ? "Sin Referencia" : cvU.referenciaCliente) : cvU.informacionTiendaDestinatario.referencia) }; //Referencia dirección entrega
+                    objcla.codDepartEntrega = new String[] { (cvU.tipo == "3" ? (cvU.ubigeoCliente.ToString() == "" ? cvU.ubigeoTienda.Substring(0, 2) : cvU.ubigeoCliente.Substring(0, 2)) : cvU.ubigeoTienda.Substring(0, 2)) }; //Departamento = Lima
+                    objcla.codProvEntrega = new String[] { (cvU.tipo == "3" ? (cvU.ubigeoCliente.ToString() == "" ? cvU.ubigeoTienda.Substring(2, 2) : cvU.ubigeoCliente.Substring(2, 2)) : cvU.ubigeoTienda.Substring(2, 2)) }; //Provincia = Lima
                     objcla.codDistEntrega = new String[] { (cvU.tipo == "3" ? (cvU.ubigeoCliente.ToString() == "" ? cvU.ubigeoTienda.Substring(4) : cvU.ubigeoCliente.Substring(4)) : cvU.ubigeoTienda.Substring(4)) };
                     objcla.nomDestEntrega = new String[] { (cvU.tipo == "3" ? cvU.nombreCliente : cvU.tiendaOrigen) };
                     objcla.apellDestEntrega = new String[] { (cvU.tipo == "3" ? cvU.apePatCliente + ' ' + cvU.apeMatCliente : "BATA") };  //"Perez Luna"
                     objcla.codTipoDocDestEntrega = new String[] { (cvU.tipo == "3" ? (cvU.noDocCli.Length == 11 ? "112" : "109") : "112") };
                     objcla.nroDocDestEntrega = new String[] { (cvU.tipo == "3" ? cvU.noDocCli : cvU.informacionTiendaDestinatario.nroDocumento) }; //supongo que si es para tienda debe ir el ruc de bata    //"12345678"
-                    objcla.telefDestEntrega = new String[] { (cvU.tipo == "3" ?  (String.IsNullOrEmpty(cvU.telefonoCliente) ? "488-8300" : cvU.telefonoCliente)   : cvU.informacionTiendaDestinatario.telefono) }; // telefono del cliente         //"991276768"
-                    objcla.emailDestEntrega = new String[] { (cvU.tipo == "3" ? "servicio.clientes.peru@bata.com" : cvU.informacionTiendaDestinatario.email)    };     //"juanperez@gmail.com"
+                    objcla.telefDestEntrega = new String[] { (cvU.tipo == "3" ? (String.IsNullOrEmpty(cvU.telefonoCliente) ? "488-8300" : cvU.telefonoCliente) : cvU.informacionTiendaDestinatario.telefono) }; // telefono del cliente         //"991276768"
+                    objcla.emailDestEntrega = new String[] { (cvU.tipo == "3" ? "servicio.clientes.peru@bata.com" : cvU.informacionTiendaDestinatario.email) };     //"juanperez@gmail.com"
                     objcla.idUsuario = new String[] { cvU.informacionTiendaEnvio.id_usuario };
                     objcla.deTerminal = new String[] { cvU.informacionTiendaEnvio.de_terminal };
 
@@ -373,7 +312,7 @@ namespace CapaPresentacion.Controllers
 
                     if (e.nroOrdenServicio != null)
                     {
-                        insertar_historial_estados_cv(cod_entid, fc_nint, descripcion, "005" ,  vendedor, cod_tda ,serieNumero);
+                        insertar_historial_estados_cv(cod_entid, fc_nint, descripcion, "005", vendedor, cod_tda, serieNumero);
                         datos.insertar_ge_cv(cod_entid, fc_nint, serieNumero, e.nroOrdenServicio);
                         TempData["Success"] = "Guia generada correctamente.";
                     }
@@ -381,16 +320,15 @@ namespace CapaPresentacion.Controllers
                     {
                         TempData["Error"] = "Error al generar guia. " + e.msg;
                     }
-                }               
-            }else
-            {
-                TempData["Error"] = "Error al generar guia. No existe informacion de recogo para la tienda." ;
+                }
             }
-            //return RedirectToAction("Ver", "CanalVenta", new { serie_numero = id, fc_nint = fc_nint, cod_entid = cod_entid });
-            
-            // Console.Write(e.ToString());
-            
-            #region
+            else
+            {
+                TempData["Error"] = "Error al generar guia. No existe informacion de recogo para la tienda.";
+            }
+            #endregion
+
+            #region DELIVERY CON URBANO
             //Urbano urbano = new Urbano();
             ////CanalVenta cvU = selectVenta(id, cod_entid, fc_nint);
             //urbano.linea = "3";
@@ -473,6 +411,101 @@ namespace CapaPresentacion.Controllers
 
             #endregion
 
+            #region DELIVERY CON CHASKI
+            //CanalVenta cvCzk = selectVenta(serieNumero, cod_entid, fc_nint);
+            //List<Ent_Chaski> list_chazki = new List<Ent_Chaski>();
+            //string[] desUbigeo = null;
+            //if (cvCzk.informacionTiendaEnvio != null)
+            //{
+            //    desUbigeo = datos.get_des_ubigeo(cvCzk.tipo == "3" ? cvCzk.ubigeoCliente : cvCzk.ubigeoTienda);
+            //    if (desUbigeo == null)
+            //    {
+            //        TempData["Error"] = "Error al solicitar el pedido de envio: No se encontró ubigeo.";
+            //        return;
+            //    }
+            //    Ent_Chaski chazki = new Ent_Chaski();
+            //    chazki.storeId = cvCzk.informacionTiendaEnvio.chaski_storeId; // "10411"; // proporcionado por chazki
+            //    chazki.branchId = cvCzk.informacionTiendaEnvio.chaski_branchId; // proporcionado por chazki
+            //    chazki.deliveryTrackCode = cvCzk.serieNumero;
+            //    chazki.proofPayment = "Ninguna"; // por definir la evindencia que será entregada al cliente
+            //    chazki.deliveryCost = 0;
+            //    chazki.mode = "Regular"; //pendiente definir el modo con el que se va a trabajar el canal de venta.
+            //    chazki.time = "";
+            //    chazki.paymentMethod = "Pagado";
+            //    chazki.country = "PE";
+
+            //    List<Ent_ItemSold> listItemSold = new List<Ent_ItemSold>();
+            //    foreach (var producto in cvCzk.detalles)
+            //    {
+            //        Ent_ItemSold _item = new Ent_ItemSold();
+            //        _item.name = producto.nombreProducto;
+            //        _item.currency = "PEN";
+            //        _item.price = Convert.ToDouble(producto.total);
+            //        _item.weight = 0.3;
+            //        _item.volumen = 0;
+            //        _item.quantity = producto.cantidad;
+            //        _item.unity = "Caja";
+            //        _item.size = "M";
+            //        listItemSold.Add(_item);
+            //    }
+            //    chazki.listItemSold = listItemSold;
+            //    chazki.notes = (cvCzk.tipo == "3" ? "" : "Entregar en Tienda BATA");
+            //    chazki.documentNumber = (cvCzk.tipo == "3" ? cvCzk.noDocCli : cvCzk.informacionTiendaDestinatario.nroDocumento);
+            //    chazki.name_tmp = (cvCzk.tipo == "3" ? cvCzk.nombreCliente : "");
+            //    chazki.lastName = cvCzk.tipo == "3" ? cvCzk.apePatCliente + " " + cvCzk.apeMatCliente : "";
+            //    chazki.companyName = cvCzk.tipo == "3" ? "" : cvCzk.tiendaOrigen;
+            //    chazki.email = (cvCzk.tipo == "3" ? "servicio.clientes.peru@bata.com" : cvCzk.informacionTiendaDestinatario.email);
+            //    chazki.phone = (cvCzk.tipo == "3" ? (String.IsNullOrEmpty(cvCzk.telefonoCliente) ? "488-8300" : cvCzk.telefonoCliente) : cvCzk.informacionTiendaDestinatario.telefono);
+            //    chazki.documentType = (cvCzk.tipo == "3" ? (cvCzk.noDocCli.Length == 11 ? "RUC" : "DNI") : "RUC");
+
+            //    List<Ent_AddressClient> listAdressClient = new List<Ent_AddressClient>();
+            //    Ent_AddressClient addressClient = new Ent_AddressClient();
+            //    addressClient.nivel_2 = desUbigeo[0]; //(cvCzk.tipo == "3" ? (cvCzk.ubigeoCliente.ToString() == "" ? cvCzk.ubigeoTienda.Substring(0, 2) : cvCzk.ubigeoCliente.Substring(0, 2)) : cvCzk.ubigeoTienda.Substring(0, 2));
+            //    addressClient.nivel_3 = desUbigeo[1]; //(cvCzk.tipo == "3" ? (cvCzk.ubigeoCliente.ToString() == "" ? cvCzk.ubigeoTienda.Substring(2, 2) : cvCzk.ubigeoCliente.Substring(2, 2)) : cvCzk.ubigeoTienda.Substring(2, 2));
+            //    addressClient.nivel_4 = desUbigeo[2]; //(cvCzk.tipo == "3" ? (cvCzk.ubigeoCliente.ToString() == "" ? cvCzk.ubigeoTienda.Substring(4) : cvCzk.ubigeoCliente.Substring(4)) : cvCzk.ubigeoTienda.Substring(4));
+            //    addressClient.name = (cvCzk.tipo == "3" ? cvCzk.direccionCliente : cvCzk.informacionTiendaDestinatario.direccion_entrega);
+            //    addressClient.reference = (cvCzk.tipo == "3" ? (String.IsNullOrEmpty(cvCzk.referenciaCliente) ? "Sin Referencia" : cvCzk.referenciaCliente) : cvCzk.informacionTiendaDestinatario.referencia);
+            //    addressClient.alias = "No Alias";
+            //    Ent_Position position = new Ent_Position();
+            //    position.latitude = 0;
+            //    position.longitude = 0;
+            //    addressClient.position = position;
+            //    listAdressClient.Add(addressClient);
+            //    chazki.addressClient = listAdressClient;
+
+            //    list_chazki.Add(chazki);
+
+            //    string jsonChazki = JsonConvert.SerializeObject(list_chazki);
+            //    Response_Registro rpta = new Response_Registro();
+            //    using (var http = new HttpClient())
+            //    {
+            //        http.DefaultRequestHeaders.Add("chazki-api-key", cvCzk.informacionTiendaEnvio.chaski_api_key);
+            //        HttpContent content = new StringContent(jsonChazki);
+            //        content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            //        var request = http.PostAsync("https://sandboxintegracion.chazki.com:8443/chazkiServices/delivery/create/deliveryService", content);
+            //        var response = request.Result.Content.ReadAsStringAsync().Result;
+            //        rpta = JsonConvert.DeserializeObject<Response_Registro>(response);
+            //    }
+            //   if (rpta.response == 1)
+            //    {
+            //        insertar_historial_estados_cv(cod_entid, fc_nint, descripcion, "005", vendedor, cod_tda, serieNumero);
+            //        datos.insertar_ge_cv(cod_entid, fc_nint, serieNumero, rpta.codeDelivery);
+            //        TempData["Success"] = "Pedido generado correctamente: " + rpta.codeDelivery;
+            //    }
+            //   else if(rpta.response == 99)
+            //    {
+            //        TempData["Error"] = "Error al generar pedido. Error en el servidor" + " | " + rpta.descriptionResponse + " | " + rpta.codeDelivery + " | "+ "Intentelo mas tarde.";
+            //    }
+            //    else
+            //    {
+            //        TempData["Error"] = "Error al generar pedido. " + rpta.descriptionResponse + "|" + rpta.codeDelivery;
+            //    }
+            //}
+            //else
+            //{
+            //    TempData["Error"] = "Error al generar guia. No existe informacion de recogo para la tienda.";
+            //}            
+            #endregion
         }
         public void insertar_historial_estados_cv(string cod_entid, string fc_nint,string descripcion , string id_estado , string cod_vendedor, string cod_tda ,string serieNumero)
         {
@@ -719,6 +752,9 @@ namespace CapaPresentacion.Controllers
                     _ic.cx_codCtaCliente = ent_ventas.informacionTiendaEnvio.cx_codCtaCliente;
                     _ic.id_usuario = ent_ventas.informacionTiendaEnvio.id_usuario;
                     _ic.de_terminal = ent_ventas.informacionTiendaEnvio.de_terminal;
+                    //_ic.chaski_storeId = ent_ventas.informacionTiendaEnvio.chaski_storeId;
+                    //_ic.chaski_branchId = ent_ventas.informacionTiendaEnvio.chaski_branchId;
+                    //_ic.chaski_api_key = ent_ventas.informacionTiendaEnvio.chaski_api_key;
                 }
                 _cnvta.informacionTiendaEnvio = _ic;
                 ventas = _cnvta;

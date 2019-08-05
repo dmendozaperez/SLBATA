@@ -156,6 +156,53 @@ namespace CapaDato.CanalVenta
             }
             return dt;
         }
+
+        public string[] get_des_ubigeo(string ubigeo)
+        {
+            string sqlquery = "[usp_get_des_ubigeo]";
+            string[] desUbigeo = null;
+            try
+            {
+                //Ent_Conexion.conexion = "Server=192.168.1.242;Database=BDPOS;User ID=sa;Password=1;Trusted_Connection=False;";
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+                    DataTable dt = new DataTable();
+                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@ubigeo", ubigeo);
+                        SqlDataAdapter da = new SqlDataAdapter(cmd);
+                        da.Fill(dt);
+                        if (dt.Rows.Count == 3)
+                        {
+                            string distrito = "";
+                            if (dt.Rows[2]["des_ubigeo"].ToString() == "CERCADO")
+                            {
+                                distrito = "LIMA";
+                            }else if (dt.Rows[2]["des_ubigeo"].ToString() == "BREÑA")
+                            {
+                                distrito = "BRENA";
+                            }
+                            else {
+                                distrito = dt.Rows[2]["des_ubigeo"].ToString();
+                            }   
+                            desUbigeo = new string[]{ dt.Rows[0]["des_ubigeo"].ToString(), dt.Rows[1]["des_ubigeo"].ToString(),distrito};
+                        }
+                        else
+                        {
+                            desUbigeo = null;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                desUbigeo = null;
+            }
+            return desUbigeo;
+        }
+
         public Ent_VentaCanal get_Ventas_por_sn(string noDoc , string cod_entid , string fc_nint)
         {
             Ent_VentaCanal ven = null;
@@ -261,6 +308,9 @@ namespace CapaDato.CanalVenta
                                 ic.cx_codCtaCliente = dtIC.Rows[0]["cx_codCtaCliente"].ToString();
                                 ic.id_usuario = dtIC.Rows[0]["id_usuario"].ToString();
                                 ic.de_terminal = dtIC.Rows[0]["de_terminal"].ToString();
+                                //ic.chaski_storeId = dtIC.Rows[0]["chaski_storeId"].ToString();
+                                //ic.chaski_branchId = dtIC.Rows[0]["chaski_branchId"].ToString();
+                                //ic.chaski_api_key = dtIC.Rows[0]["chaski_api_key"].ToString();
                                 ven.informacionTiendaEnvio = ic;
                             }
 
@@ -274,6 +324,7 @@ namespace CapaDato.CanalVenta
                                 id.telefono = dtID.Rows[0]["telefono"].ToString();
                                 id.direccion_entrega = dtID.Rows[0]["direccion_entrega"].ToString();
                                 id.cod_entid = dtID.Rows[0]["cod_entid"].ToString();
+                                
                                 ven.informacionTiendaDestinatario = id;
                             }
 

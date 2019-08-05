@@ -55,4 +55,11 @@ namespace CapaEntidad.CanalVenta
         public double longitude { get; set; }
     }
 
+    public class Response_Registro
+    {
+        public int response { get; set; }
+        public string descriptionResponse { get; set; }
+        public string codeDelivery { get; set; }
+    }
+
 }

@@ -93,6 +93,9 @@ namespace CapaPresentacion.Models.CanalVenta
         public string cx_codCtaCliente { get; set; }
         public string id_usuario { get; set; }
         public string de_terminal { get; set; }
+        public string chaski_storeId { get; set; }
+        public string chaski_branchId { get; set; }
+        public string chaski_api_key { get; set; }
     }
 
     public class Informacion_Tienda_Destinatario
@@ -104,6 +107,7 @@ namespace CapaPresentacion.Models.CanalVenta
         public string telefono { get; set; }
         public string email { get; set; }
         public string nroDocumento { get; set; }
+       
     }
 
 }
