@@ -169,9 +169,15 @@
     $(document).ready(function () {
         cargarDatatable();
         $("#noLeidos").change(function () {
-            waitingDialog.show('Espere un momento por favor');
-            $('.table').DataTable().ajax.reload();
-            waitingDialog.hide();
+            if (this.checked) {
+                //waitingDialog.show('Espere un momento por favor');
+                $('.table').DataTable().ajax.reload();
+                //waitingDialog.hide();
+            } else {
+                //waitingDialog.show('Espere un momento por favor');
+                $('.table').DataTable().ajax.reload();
+                //waitingDialog.hide();
+            }
         });
 
     //    alert("entro a _guiatable.cshmtl - document ready");
