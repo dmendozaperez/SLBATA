@@ -87,17 +87,26 @@ namespace CapaPresentacion.Controllers
 
             IEnumerable<Ent_Comunicado> filteredMembers = membercol;
 
+            if (!string.IsNullOrEmpty(param.sSearch))
+            {
+                filteredMembers = membercol
+                    .Where(m => m.descripcion.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                     m.archivo.ToUpper().Contains(param.sSearch.ToUpper()));
+            }
             //Manejador de orden
 
             var sortIdx = Convert.ToInt32(Request["iSortCol_0"]);
             Func<Ent_Comunicado, Boolean> orderingFunction =
             (
             m => m.file_leido);
+            Func<Ent_Comunicado, decimal> orderingFunction2 =
+            (
+            m => m.id);
             var sortDirection = Request["sSortDir_0"];
             if (sortDirection == "asc")
-                filteredMembers = filteredMembers.OrderBy(orderingFunction);
+                filteredMembers = filteredMembers.OrderBy(orderingFunction).ThenBy(orderingFunction2);
             else
-                filteredMembers = filteredMembers.OrderByDescending(orderingFunction);
+                filteredMembers = filteredMembers.OrderByDescending(orderingFunction).ThenByDescending(orderingFunction2);
 
             if (Convert.ToBoolean(noLeidos)){
                 filteredMembers = filteredMembers.Where(m => m.file_leido == false);

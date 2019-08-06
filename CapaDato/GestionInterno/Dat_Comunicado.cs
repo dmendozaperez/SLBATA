@@ -42,6 +42,7 @@ namespace CapaDato.GestionInterno
                                               url = dr["URL"].ToString(),
                                               fecha_hora_crea = dr["FECHA_HORA_CREA"].ToString(),
                                               fecha_hora_mod = dr["FECHA_HORA_MOD"].ToString(),
+                                              file_leido_fecha = dr["FILE_LEIDO_FECHA"].ToString(),
                                               file_leido =Convert.ToBoolean(dr["FILE_LEIDO"]),                                              
                                               id= Convert.ToDecimal(dr["ID"]),
                                           }).ToList();
