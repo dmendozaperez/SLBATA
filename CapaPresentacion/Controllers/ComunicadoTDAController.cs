@@ -24,12 +24,12 @@ namespace CapaPresentacion.Controllers
         private Dat_Comunicado datCom = new Dat_Comunicado();
 
         public ActionResult Index()
-        {
+        {            
             Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
             string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
             string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
             string return_view = actionName + "|" + controllerName;
-
+            Session[_session_listcom_private] = null;
             if (_usuario == null)
             {
                 return RedirectToAction("Login", "Control", new { returnUrl = return_view });
@@ -58,7 +58,7 @@ namespace CapaPresentacion.Controllers
             Session[_session_listcom_private] = listcom;
             return listcom;
         }
-        public ActionResult getComAjax(Ent_jQueryDataTableParams param)
+        public ActionResult getComAjax(Ent_jQueryDataTableParams param , string noLeidos)
         {
             
             /*verificar si esta null*/
@@ -68,8 +68,7 @@ namespace CapaPresentacion.Controllers
                 if (Session["Tienda"] != null)
                 {
                     listcom = listaCom(Session["Tienda"].ToString());
-                }
-                
+                }                
                 Session[_session_listcom_private] = listcom;
             }
 
@@ -89,23 +88,22 @@ namespace CapaPresentacion.Controllers
             IEnumerable<Ent_Comunicado> filteredMembers = membercol;
 
             //Manejador de orden
-            var sortIdx = Convert.ToInt32(Request["iSortCol_0"]);
 
-            Func<Ent_Comunicado,Boolean> orderingFunction =
-                  (m => sortIdx == 0 ? m.file_leido : m.file_leido
-                  );
-            if (!string.IsNullOrEmpty(param.sSearch))
-            {
-                filteredMembers = membercol
-                    .Where(m => m.tienda.ToUpper().Contains(param.sSearch.ToUpper()) ||
-                    m.archivo.ToUpper().Contains(param.sSearch.ToUpper()) ||
-                    m.descripcion.ToUpper().Contains(param.sSearch.ToUpper()));                                     
-            }
+            var sortIdx = Convert.ToInt32(Request["iSortCol_0"]);
+            Func<Ent_Comunicado, Boolean> orderingFunction =
+            (
+            m => m.file_leido);
             var sortDirection = Request["sSortDir_0"];
             if (sortDirection == "asc")
                 filteredMembers = filteredMembers.OrderBy(orderingFunction);
             else
                 filteredMembers = filteredMembers.OrderByDescending(orderingFunction);
+
+            if (Convert.ToBoolean(noLeidos)){
+                filteredMembers = filteredMembers.Where(m => m.file_leido == false);
+            }
+                   
+
             var displayMembers = filteredMembers
                 .Skip(param.iDisplayStart)
                 .Take(param.iDisplayLength);
@@ -134,7 +132,7 @@ namespace CapaPresentacion.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult LeerComunicado(string id_comunicado)
+        public ActionResult LeerComunicado(string id_comunicado , string leido)
         {
             try
             {
@@ -143,7 +141,11 @@ namespace CapaPresentacion.Controllers
                 {
                     return RedirectToAction("Login", "Control");
                 }
-                 datCom.leer_comunicado(id_comunicado, _usuario.usu_id);
+                if (!Convert.ToBoolean(leido))
+                {
+                    datCom.leer_comunicado(id_comunicado, _usuario.usu_id);
+                    Session[_session_listcom_private] = null;
+                }
                 return Json(new { estado = 1, resultados = "Leido" });
             }
             catch (Exception)

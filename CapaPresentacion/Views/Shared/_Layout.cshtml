@@ -171,6 +171,8 @@
                 //alert(data.no_noti);
                 if (data.no_noti > 0)
                     $("#noNoti").html(data.no_noti);
+                else 
+                    $("#noNoti").html("");
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 var error = eval("(" + XMLHttpRequest.responseText + ")");
@@ -185,7 +187,7 @@
 
     setInterval(function () {
         comunicadosPendiente()
-    }, 3000);
+    }, 10000);
     </script>
 
 </body>
