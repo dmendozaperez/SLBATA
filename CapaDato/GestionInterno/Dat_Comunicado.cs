@@ -45,6 +45,7 @@ namespace CapaDato.GestionInterno
                                               file_leido_fecha = dr["FILE_LEIDO_FECHA"].ToString(),
                                               file_leido =Convert.ToBoolean(dr["FILE_LEIDO"]),                                              
                                               id= Convert.ToDecimal(dr["ID"]),
+                                              fecha=Convert.ToDateTime(dr["FECHA"]),
                                           }).ToList();
                             }
                         }

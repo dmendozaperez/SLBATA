@@ -28,8 +28,8 @@
             <th>Archivo</th>
             <th>Descripcion</th>
             <th>URL</th>
-            <th>F/H Creacion</th>
-            <th>F/H Modificacion</th>
+            @*<th>F/H Creacion</th>*@
+            <th>F.Envio</th>
             <th>F/H Leido</th>
             <th>Leido</th>            
         </tr>
@@ -42,8 +42,8 @@
             <th>Archivo</th>
             <th>Descripcion</th>
             <th>URL</th>
-            <th>F/H Creacion</th>
-            <th>F/H Modificacion</th>
+            @*<th>F/H Creacion</th>*@
+            <th>F.Envio</th>
             <th>F/H Leido</th>
             <th>Leido</th>         
         </tr>
@@ -75,7 +75,7 @@
             },
             "bdestroy": true,
             "start": 0,
-            "order": [0, "asc"],
+            "order": [5, "desc"],
             "bDeferRender": true,
             "aoColumns": [
                     { "sName": "id", "mData": "id" },
@@ -92,7 +92,7 @@
                             }
                         }
                     },
-                    { "sName": "fecha_hora_crea", "mData": "fecha_hora_crea" },
+                    //{ "sName": "fecha", "mData": "fecha" },
                     { "sName": "fecha_hora_mod", "mData": "fecha_hora_mod" },
                     { "sName": "file_leido_fecha", "mData": "file_leido_fecha" },
                     {
