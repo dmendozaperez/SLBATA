@@ -104,7 +104,7 @@ namespace CapaDato.GestionInterno
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@COD_TDA", tienda);
-                        cmd.Parameters.AddWithValue("@N_MENSAJE", mensaje).Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add("@N_MENSAJE", SqlDbType.Int).Direction = ParameterDirection.Output;
                         cmd.ExecuteNonQuery();
                         nroNoti = Convert.ToInt32(cmd.Parameters["@N_MENSAJE"].Value);
                     }
