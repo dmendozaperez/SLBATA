@@ -145,6 +145,10 @@ namespace CapaPresentacion.Controllers
         {
             try
             {
+                if (Session["Tienda"] == null)
+                {
+                    return Json(new { estado = 1, resultados = "No Leido" });
+                }
                 Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
                 if (_usuario == null)
                 {
