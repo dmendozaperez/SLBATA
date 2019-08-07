@@ -16,6 +16,7 @@ namespace CapaEntidad.GestionInterno
         public string fecha_hora_crea { get; set; }
         public string fecha_hora_mod { get; set; }
         public string file_leido_fecha { get; set; }
-        public Boolean file_leido { get; set; }        
+        public Boolean file_leido { get; set; }    
+        public DateTime fecha { get; set; }    
     }
 }

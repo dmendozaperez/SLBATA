@@ -103,10 +103,19 @@ namespace CapaPresentacion.Controllers
             (
             m => m.id);
             var sortDirection = Request["sSortDir_0"];
-            if (sortDirection == "asc")
-                filteredMembers = filteredMembers.OrderBy(orderingFunction).ThenBy(orderingFunction2);
-            else
-                filteredMembers = filteredMembers.OrderByDescending(orderingFunction).ThenByDescending(orderingFunction2);
+            Boolean order_colum = false;
+            if (param!=null)
+            {
+                if (param.sEcho != "1") order_colum = true;
+            }
+
+            if (order_colum)
+            { 
+                if (sortDirection == "asc")
+                    filteredMembers = filteredMembers.OrderBy(orderingFunction).ThenBy(orderingFunction2);
+                else
+                    filteredMembers = filteredMembers.OrderByDescending(orderingFunction).ThenByDescending(orderingFunction2);
+            }
 
             if (Convert.ToBoolean(noLeidos)){
                 filteredMembers = filteredMembers.Where(m => m.file_leido == false);
@@ -125,7 +134,7 @@ namespace CapaPresentacion.Controllers
                              a.archivo,
                              a.descripcion,
                              a.url,
-                             a.fecha_hora_crea,
+                             a.fecha,
                              a.fecha_hora_mod,
                              a.file_leido_fecha,
                              a.file_leido,                             
