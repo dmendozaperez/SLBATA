@@ -103,10 +103,10 @@ namespace CapaPresentacion.Controllers
             (
             m => m.id);
             var sortDirection = Request["sSortDir_0"];
-            if (sortDirection == "asc")
-                filteredMembers = filteredMembers.OrderBy(orderingFunction).ThenBy(orderingFunction2);
-            else
-                filteredMembers = filteredMembers.OrderByDescending(orderingFunction).ThenByDescending(orderingFunction2);
+            //if (sortDirection == "asc")
+            //    filteredMembers = filteredMembers.OrderBy(orderingFunction).ThenBy(orderingFunction2);
+            //else
+            //    filteredMembers = filteredMembers.OrderByDescending(orderingFunction).ThenByDescending(orderingFunction2);
 
             if (Convert.ToBoolean(noLeidos)){
                 filteredMembers = filteredMembers.Where(m => m.file_leido == false);
