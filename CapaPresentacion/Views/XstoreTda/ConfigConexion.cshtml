@@ -1,0 +1,47 @@
+﻿@using CapaEntidad.XstoreTda
+@model Ent_ConfigConexion
+@{
+    ViewBag.Title = "Config Conexion";
+    AjaxOptions options = new AjaxOptions
+    {
+        HttpMethod = "POST",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "listaCajasXst",
+        OnComplete = "waitingDialog.hide();",
+        OnBegin = "waitingDialog.show('Espere un momento por favor');",
+        OnFailure = "waitingDialog.hide();"
+    };
+}
+<style>
+    .content-center-text {
+        text-align: center;
+    }
+
+     #loader {
+      border: 16px solid #f3f3f3;
+      border-radius: 50%;
+      border-top: 16px solid #3498db;
+      width: 120px;
+      height: 120px;
+      -webkit-animation: spin 2s linear infinite;
+      animation: spin 2s linear infinite;
+      margin-left:250px;
+      margin-top:250px;
+    }   
+</style>
+<div class="box box-body box-primary">
+    @using (Ajax.BeginForm("_listaCajasXst", options))
+    {
+        <div class="row">
+            <div class="col-md-12">
+                <button type="submit" class="btn btn-primary central_xst"><i class="glyphicon glyphicon-refresh"></i>&nbsp;&nbsp;Refrescar</button>
+            </div>
+        </div>
+        <div class="box-body" id="listaCajasXst" >
+            @{Html.RenderPartial("_listaCajasXst", Model);}
+        </div>
+     }
+</div>
+<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+<script>
+</script>

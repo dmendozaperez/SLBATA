@@ -1,0 +1,101 @@
+﻿@{
+    Layout = null;
+}
+<div class="row">
+    <div class="col-md-4">
+        <h4 class="text-primary text-bold">Central - Conexiones</h4>
+        <ul class="list-group lista_central_xst"></ul>
+    </div>
+</div>
+<table id="example" class="table table-bordered dataTable">
+    <thead>
+        <tr style="background-color:#3d566e ;color: #ffffff;">
+            
+            <th>Tienda</th>
+            <th>No Caja</th>
+            <th>IP</th>
+            <th>Versión XST</th>
+            <th>Conexion</th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach:"></tbody>
+    <tfoot>
+        <tr @*style="background-color:#3c8dbc ;color: #ffffff;"*@>            
+            <th>Tienda</th>
+            <th>No Caja</th>
+            <th>IP</th>
+            <th>Versión XST</th>
+            <th>Conexion</th>
+        </tr>
+    </tfoot>
+</table>
+<script>
+    $(document).ready(function () {
+        $('.table').dataTable({
+            "language": {
+                "url": "../Scripts/DataTables/Spanish.json"
+            },
+            "bProcessing": true, // se agrego para probar
+            "bServerSide": true,
+            "bAutoWidth": false,
+            "sAjaxSource": '@Url.Action("getCajasXstAjax", "XstoreTda")',
+            //"fnServerParams": function (aoData) {
+            //    aoData.push({ "name": "noLeidos", "value": $('#noLeidos').is(':checked') });
+            //},
+            "bdestroy": true,
+            "start": 0,
+            //"order": [5, "desc"],
+            "bDeferRender": true,
+            "aoColumns": [
+                    //{ "sName": "COD_ENTID", "mData": "COD_ENTID" },
+                    { "sName": "TIENDA", "mData": "TIENDA" },
+                    { "sName": "NCAJA", "mData": "NCAJA" },
+                    { "sName": "IP", "mData": "IP" },
+                    { "sName": "VERSION_XST", "mData": "VERSION_XST" },
+                    {
+                        "render": function (data, type, full) {
+                            if (full.ESTADO_CONEXION_CAJA_XST == 1)
+                                badge = '<span class="badge label-success" title="OK"><i class="glyphicon glyphicon-ok"></i></span>';
+                            else
+                                badge = '<span class="badge label-danger" title="Sin Conexión"><i class="glyphicon glyphicon-remove"></i></span>';
+
+                            return badge;
+                        }, "className": "content-center-text"
+                    }
+            ]
+        });
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("central_conexion", "XstoreTda")',
+            data: null,
+            success: function (data) {                
+                if (data.estado == 1) {
+                    var items = '';
+                    for (var i = 0; i < data.central_xst.length; i++) {
+                        var badge = "";
+                        if (data.central_xst[i]['ESTADO_CONEXION_CENTRAL_XST'] == 1)
+                            badge = '<span class="badge label-success" title="OK"><i class="glyphicon glyphicon-ok"></i></span>';
+                        else
+                            badge = '<span class="badge label-danger" title="Sin Conexión"><i class="glyphicon glyphicon-remove"></i></span>';
+
+                        items += '<li class="list-group-item">' + badge + '</span><b>' + data.central_xst[i]['DES_CENTRAL'] + '</b>&nbsp-&nbsp<small>' + data.central_xst[i]['IP_CENTRAL'] + '</small> </li>'
+                    }
+                    $(".lista_central_xst").html(items);
+                } else {
+                    //waitingDialog.hide();
+                    swal({
+                        title: "Error",
+                        text: data.resultados,
+                        icon: "error",
+                        dangerMode: true,
+                    });
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                var error = eval("(" + XMLHttpRequest.responseText + ")");
+                waitingDialog.hide();
+                toastr.error('Hubo un error en el registro : ' + error, "Alerta");
+            }
+        });
+    })
+</script>

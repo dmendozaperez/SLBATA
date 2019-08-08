@@ -103,6 +103,7 @@
     <Compile Include="ValeCompra\Ent_ValeCompra.cs" />
     <Compile Include="ValeCompra\Ent_ValeCompraDetalle.cs" />
     <Compile Include="ValeCompra\JsonResponse.cs" />
+    <Compile Include="XstoreTda\Ent_ConfigConexion.cs" />
     <Compile Include="XstoreTda\Ent_DatosTienda.cs" />
     <Compile Include="XstoreTda\Ent_DatosTienda_Xstore.cs" />
     <Compile Include="XstoreTda\Ent_TiendaConf.cs" />

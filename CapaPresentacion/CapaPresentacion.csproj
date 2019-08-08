@@ -1577,6 +1577,8 @@
     <Content Include="Views\ComunicadoTDA\Index.cshtml" />
     <Content Include="Views\ComunicadoTDA\_comTable.cshtml" />
     <None Include="Service References\SunatReniec\Sunat_Reniec_PE.wsdl" />
+    <Content Include="Views\XstoreTda\ConfigConexion.cshtml" />
+    <Content Include="Views\XstoreTda\_listaCajasXst.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
