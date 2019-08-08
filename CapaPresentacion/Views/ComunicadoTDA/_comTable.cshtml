@@ -9,11 +9,12 @@
 
 </style>
 
-<h4>Resultados:</h4>
+
+
 <table id="example" class="table table-responsive dataTable">
     <thead>
         <tr style="background-color:#3c8dbc ;color: #ffffff;">
-            <th>ID</th>
+            @*<th>ID</th>
             <th>TIENDA</th>
             <th>ARCHIVO</th>
             <th>DESCRIPCION</th>
@@ -21,32 +22,34 @@
             <th>FECHA_HORA_CREA</th>
             <th>FECHA_HORA_MOD</th>
             <th>FECHA_LEIDO_FECHA</th>
-            <th>FILE_LEIDO</th>            
+            <th>FILE_LEIDO</th>*@            
+            <th>ID</th>
+            <th>Tienda</th>
+            <th>Archivo</th>
+            <th>Descripcion</th>
+            <th>URL</th>
+            @*<th>F/H Creacion</th>*@
+            <th>F.Envio</th>
+            <th>F/H Leido</th>
+            <th>Leido</th>            
         </tr>
     </thead>
     <tbody data-bind="foreach:"></tbody>
     <tfoot>
         <tr @*style="background-color:#3c8dbc ;color: #ffffff;"*@>
             <th>ID</th>
-            <th>TIENDA</th>
-            <th>ARCHIVO</th>
-            <th>DESCRIPCION</th>
+            <th>Tienda</th>
+            <th>Archivo</th>
+            <th>Descripcion</th>
             <th>URL</th>
-            <th>FECHA_HORA_CREA</th>
-            <th>FECHA_HORA_MOD</th>
-            <th>FECHA_LEIDO_FECHA</th>
-            <th>FILE_LEIDO</th>   
+            @*<th>F/H Creacion</th>*@
+            <th>F.Envio</th>
+            <th>F/H Leido</th>
+            <th>Leido</th>         
         </tr>
     </tfoot>
 </table>
 
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" ng-app>
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div id='myModalContent'></div>
-        </div>
-    </div>
-</div>
 @*<script src='https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js'></script>
 <script src='//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js'></script>
 <script src='//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js'></script>
@@ -55,27 +58,24 @@
 
 
 <script>
-    $(document).ready(function () {
-    //    alert("entro a _guiatable.cshmtl - document ready");
-        $('.table').dataTable({
+
+
+    var table;
+    function cargarDatatable() {
+         $('.table').dataTable({
             "language": {
                 "url": "../Scripts/DataTables/Spanish.json"
             },
-            "bProcessing": true, // se agrego para probar
+            //"bProcessing": true, // se agrego para probar
             "bServerSide": true,
             "bAutoWidth": false,
             "sAjaxSource": '@Url.Action("getComAjax", "ComunicadoTDA")',
-            //"data": function ( d ) {
-            //    d.myKey = "myValue";
-            //    // d.custom = $('#myInput').val();
-            //    // etc
-            //},
             "fnServerParams": function (aoData) {
-                aoData.push({ "name": "tda_destino", "value": $('#txtTda').val()});
+                aoData.push({ "name": "noLeidos", "value": $('#noLeidos').is(':checked') });
             },
             "bdestroy": true,
             "start": 0,
-            //"order": [0, "asc"],
+            "order": [5, "desc"],
             "bDeferRender": true,
             "aoColumns": [
                     { "sName": "id", "mData": "id" },
@@ -83,19 +83,19 @@
                     { "sName": "archivo", "mData": "archivo" },
                     { "sName": "descripcion", "mData": "descripcion" },
                     {
-                        "className": "pad-url","render": function (data, type, full) {
+                        "className": "pad-url", "render": function (data, type, full) {
                             if (full.url === "") {
-                                return  ''
+                                return ''
                             } else {
                                 var _url = full.url;
-                                return "<button class='btn btn-info btn-sm' title='Ir al enlace' onclick='LeerComunicado(\"" + full.url + "\",\"" + full.id + "\")' ><span class='glyphicon glyphicon-link' ></span></button>"
+                                return "<button class='btn btn-info btn-sm' title='Ir al enlace' onclick='LeerComunicado(\"" + full.url + "\",\"" + full.id + "\", " + full.file_leido + ")' ><span class='glyphicon glyphicon-link' ></span></button>"
                             }
                         }
                     },
-                    { "sName": "fecha_hora_crea", "mData": "fecha_hora_crea" },
+                    //{ "sName": "fecha", "mData": "fecha" },
                     { "sName": "fecha_hora_mod", "mData": "fecha_hora_mod" },
-                    { "sName": "file_leido_fecha", "mData": "file_leido_fecha"},
-                    { 
+                    { "sName": "file_leido_fecha", "mData": "file_leido_fecha" },
+                    {
                         "render": function (data, type, full) {
                             if (full.file_leido == true) {
                                 return '<span class="text-success glyphicon glyphicon-ok"></span>'
@@ -103,7 +103,7 @@
                                 return ''
                             }
                         }, "className": "content-center-text"
-                    },
+                    }
                    // {
                    //     "render": function (data, type, full) {
                    //        // console.log(full.desc_send_tda);
@@ -146,27 +146,42 @@
                 if (mData.file_leido == false) {
                     //console.log(mData.file_leido)
                     $(row).addClass('info text-bold');
-                } 
-            },
-            dom: 'Bfrtip',
-            buttons: [
-            {
-                extend: 'excelHtml5',
-                title: 'Bataclub_xls'
-            },
-            {
-                extend: 'csvHtml5',
-                title: 'BataClub_csv'
-            },
-            {
-                extend: 'pdfHtml5',
-                title: 'BataClub_pdf'
-            },
-            'copyHtml5',
-            ]
+                }
+            }
+            //dom: 'Bfrtip',
+            //buttons: [
+            //{
+            //    extend: 'excelHtml5',
+            //    title: 'Bataclub_xls'
+            //},
+            //{
+            //    extend: 'csvHtml5',
+            //    title: 'BataClub_csv'
+            //},
+            //{
+            //    extend: 'pdfHtml5',
+            //    title: 'BataClub_pdf'
+            //},
+            //'copyHtml5',
+            //]
+        });
+    }
+    $(document).ready(function () {
+        cargarDatatable();
+        $("#noLeidos").change(function () {
+            if (this.checked) {
+                //waitingDialog.show('Espere un momento por favor');
+                $('.table').DataTable().ajax.reload();
+                //waitingDialog.hide();
+            } else {
+                //waitingDialog.show('Espere un momento por favor');
+                $('.table').DataTable().ajax.reload();
+                //waitingDialog.hide();
+            }
         });
 
-
+    //    alert("entro a _guiatable.cshmtl - document ready");
+        
     });
     //$('#form1').on('keypress, click', function () {
     //    return false;
@@ -268,15 +283,19 @@
             };
         })();
     }
-    function LeerComunicado(url, id) {
+    function LeerComunicado(url, id, leido) {
         waitingDialog.show('Espere un momento por favor');
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("LeerComunicado", "ComunicadoTDA")',
-                data: { id_comunicado:id    },
+                data: { id_comunicado:id  , leido :leido  },
                 success: function (data) {
                     waitingDialog.hide();
-                    if (data.estado == 1) { 
+                    if (data.estado == 1) {
+                        if (!leido) {
+                            comunicadosPendiente();
+                            $('.table').DataTable().ajax.reload();
+                        }
                         window.open(url, '_blank');
                     } else {
                         //waitingDialog.hide();

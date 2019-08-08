@@ -39,17 +39,20 @@ namespace CapaDato.Transac
                                 listar = (from DataRow dr in dt.Rows
                                           select new Ent_Consultar_Guia()
                                           {
-                                              desc_almac        = dr["desc_almac"].ToString(),
-                                              num_gudis         = dr["num_gudis"].ToString(),
-                                              num_guia          = dr["num_guia"].ToString(),
-                                              tienda_origen     = dr["tienda_origen"].ToString(),
-                                              tienda_destino    = dr["tienda_destino"].ToString(),
-                                              fecha_des         = dr["fecha_des"].ToString(),
-                                              desc_send_tda     = dr["desc_send_tda"].ToString(),
-                                              fec_env           = dr["fec_env"].ToString(),
+                                              desc_almac = dr["desc_almac"].ToString(),
+                                              num_gudis = dr["num_gudis"].ToString(),
+                                              num_guia = dr["num_guia"].ToString(),
+                                              tienda_origen = dr["tienda_origen"].ToString(),
+                                              tienda_destino = dr["tienda_destino"].ToString(),
+                                              fecha_des = dr["fecha_des"].ToString(),
+                                              desc_send_tda = dr["desc_send_tda"].ToString(),
+                                              fec_env = dr["fec_env"].ToString(),
                                               mc_id = Convert.ToDecimal(dr["mc_id"]),
-                                              fec_recep= dr["fec_recep"].ToString(),
-
+                                              fec_recep = dr["fec_recep"].ToString(),
+                                              cant_despd = Convert.ToInt32(dr["cant_despd"]),
+                                              cant_fmd = Convert.ToInt32(dr["cant_fmd"]),
+                                              con_id = dr["con_id"].ToString(),
+                                              con_des = dr["con_des"].ToString()
                                           }).ToList();
                             }
 
@@ -100,6 +103,48 @@ namespace CapaDato.Transac
                     if (cn != null)
                         if (cn.State == ConnectionState.Open) cn.Close();
                 }               
+
+            }
+            catch (Exception ex)
+            {
+
+                intRespuesta = -1;
+
+            }
+
+            return intRespuesta;
+        }
+
+        public int reprocesarGuia(string desc_almac, string num_gudis, decimal usu_id)
+        {
+            Int32 intRespuesta = 0;
+            string sqlquery = "USP_XSTORE_REPROCESAR_GUIATDA";
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+                    try
+                    {
+                        if (cn.State == 0) cn.Open();
+                        using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                        {
+                            cmd.CommandTimeout = 0;
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.AddWithValue("@desc_almac", desc_almac);
+                            cmd.Parameters.AddWithValue("@desc_gudis", num_gudis);
+                            cmd.Parameters.AddWithValue("@USU_ID", usu_id);
+                            cmd.ExecuteNonQuery();
+                            intRespuesta = 1;
+                        }
+                    }
+                    catch
+                    {
+
+                        intRespuesta = -1;
+                    }
+                    if (cn != null)
+                        if (cn.State == ConnectionState.Open) cn.Close();
+                }
 
             }
             catch (Exception ex)

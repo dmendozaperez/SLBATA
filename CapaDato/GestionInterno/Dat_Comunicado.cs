@@ -42,8 +42,10 @@ namespace CapaDato.GestionInterno
                                               url = dr["URL"].ToString(),
                                               fecha_hora_crea = dr["FECHA_HORA_CREA"].ToString(),
                                               fecha_hora_mod = dr["FECHA_HORA_MOD"].ToString(),
+                                              file_leido_fecha = dr["FILE_LEIDO_FECHA"].ToString(),
                                               file_leido =Convert.ToBoolean(dr["FILE_LEIDO"]),                                              
                                               id= Convert.ToDecimal(dr["ID"]),
+                                              fecha=Convert.ToDateTime(dr["FECHA"]),
                                           }).ToList();
                             }
                         }
@@ -103,7 +105,7 @@ namespace CapaDato.GestionInterno
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@COD_TDA", tienda);
-                        cmd.Parameters.AddWithValue("@N_MENSAJE", mensaje).Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add("@N_MENSAJE",SqlDbType.Int).Direction = ParameterDirection.Output;
                         cmd.ExecuteNonQuery();
                         nroNoti = Convert.ToInt32(cmd.Parameters["@N_MENSAJE"].Value);
                     }
