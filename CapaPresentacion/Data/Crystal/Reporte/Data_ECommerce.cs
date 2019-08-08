@@ -1,4 +1,6 @@
-﻿using CapaEntidad.Util;
+﻿using BarcodeLib.Barcode;
+using BarcodeLib.Barcode.CrystalReports;
+using CapaEntidad.Util;
 using CapaPresentacion.Models.ECommerce;
 using Models.Crystal.Reporte;
 using Newtonsoft.Json;
@@ -6,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Web;
 
@@ -74,6 +77,26 @@ namespace Data.Crystal.Reporte
                                 guia.cod_entid = dt.Rows[0]["cod_entid"].ToString();
                                 guia.nombreEstado = dt.Rows[0]["nombreEstado"].ToString();
                                 guia.detalles = lista;
+
+                                /*****BarCode*****/
+                                if (dt.Rows[0]["codSeguimiento"].ToString().Length > 0)
+                                {
+                                    //Create an instance of Linear Barcode
+                                    //Use DataMatrixCrystal for Data Matrix
+                                    //Use PDF417Crystal for PDF417
+                                    //Use QRCodeCrystal for QR Code
+                                    LinearCrystal barcode = new LinearCrystal();
+                                    //Barcode settings
+                                    barcode.Type = BarcodeType.CODE128;
+                                    barcode.BarHeight = 100; //50 pixels
+                                    barcode.ImageFormat = System.Drawing.Imaging.ImageFormat.Png;
+
+                                    barcode.Data = dt.Rows[0]["codSeguimiento"].ToString();
+                                    byte[] imageData = barcode.drawBarcodeAsBytes();
+                                    guia.BarCode = imageData;
+                                }
+ 
+                                /*****************/
                             }
                         }
                     }

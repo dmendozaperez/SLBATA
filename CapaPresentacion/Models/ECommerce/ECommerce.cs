@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using CapaPresentacion.Models.ECommerce;
 using System.Data;
+using System.IO;
 
 namespace CapaPresentacion.Models.ECommerce
 {
@@ -43,6 +44,7 @@ namespace CapaPresentacion.Models.ECommerce
         //public string nombreTipoCV { get; set; }
         public List<DetallesECommerce> detalles { get; set; }
         //public List<HistorialEstadosCV> historialEstados { get; set; }
+        public byte[] BarCode { get; set; }
     }
     public class DetallesECommerce
     {
