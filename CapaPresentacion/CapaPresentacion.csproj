@@ -48,6 +48,10 @@
       <HintPath>..\packages\AdminLteMvc.1.0.0\lib\AdminLte.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="BarcodeLib.Barcode.CrystalReports, Version=6.2.0.10118, Culture=neutral, PublicKeyToken=16333e246fee2590, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Files\Barcode Lib\BarcodeLib.Barcode.CrystalReports.dll</HintPath>
+    </Reference>
     <Reference Include="ClosedXML, Version=0.93.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ClosedXML.0.93.1\lib\net40\ClosedXML.dll</HintPath>
       <Private>True</Private>
@@ -538,6 +542,7 @@
     <Content Include="Content\toastr.min.css" />
     <Content Include="EncryptaData\Encripta.dll" />
     <Content Include="favicon.ico" />
+    <Content Include="Files\Barcode Lib\BarcodeLib.Barcode.CrystalReports.dll" />
     <Content Include="Files\RuletaBata\-10 TODA LA TIENDA.png" />
     <Content Include="Files\RuletaBata\-20 ACCESORIOS.png" />
     <Content Include="Files\RuletaBata\-20 NS.png" />
