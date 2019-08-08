@@ -79,7 +79,7 @@
                         <label>Codigo Guia Electronica :&nbsp;&nbsp;</label><a title="Imprimir codigo de barras." style="cursor:pointer" id="guiaE"><b>@Model.guia_electronica</b></a>
                     </li>
                     <li>
-                        <a title="Sigue tu pedido." href="https://www.comercioxpress.com/" target="_blank" ><b>Sigue tu pedido en comercio xpress...</b></a>
+                        <a title="Sigue tu pedido." href="https://chazki.com/" target="_blank" ><b>Sigue tu pedido...</b></a>
                     </li>
                     <li>
                         <label>Cliente: </label>
@@ -114,7 +114,7 @@
                 <tbody data-bind="foreach:">
                     @foreach (var item in Model.detalles)
                     {
-                        <tr>
+                        <tr @*@(item.fd_colo == "C" ? "class:'text-bold'" : "" )*@ >
                             <td>@item.codigoProducto - @item.nombreProducto</td>
                             <td>@item.talla</td>
                             <td>@item.cantidad</td>
