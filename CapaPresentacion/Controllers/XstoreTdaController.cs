@@ -14,6 +14,7 @@ using CapaEntidad.XstoreTda;
 using CapaEntidad.ValeCompra;
 using System.Web.Script.Serialization;
 using CapaDato.XstoreTda;
+using System.Net.NetworkInformation;
 
 namespace CapaPresentacion.Controllers
 {
@@ -23,6 +24,9 @@ namespace CapaPresentacion.Controllers
         private string _session_listTdaXstore_private = "_session_listTda_private";
         private string _session_Totalxstore = "_session_totalxstore";
         private string _session_TotalNxstore = "_session_totalNxstore";
+
+        private string _session_cc_central_xst = "_session_cc_central_xst";
+        private string _session_cc_caja_xst = "_session_cc_caja_xst";
         // GET: Consulta
         public ActionResult Index()
         {
@@ -272,5 +276,117 @@ namespace CapaPresentacion.Controllers
             return View();
         }
         #endregion
+
+        #region ***CONFIG CONEXION***
+        
+        public ActionResult ConfigConexion()
+        {
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
+
+            if (_usuario == null)
+            {
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+            }
+            else
+            {
+                return View(listar_config_conexion());
+            }            
+        }
+        public Ent_ConfigConexion listar_config_conexion()
+        {
+            Ent_ConfigConexion config_conexion = dat_storeTda.XSTORE_GET_CONEXION_GLOBAL();
+            Session[_session_cc_central_xst] = config_conexion.list_central_xst;
+            Session[_session_cc_caja_xst] = config_conexion.list_cajas_xst;
+            return config_conexion;
+        }
+        public ActionResult central_conexion()
+        {
+            try
+            {
+                if (Session[_session_cc_central_xst] == null)
+                {
+                    listar_config_conexion();
+                }
+                //listar_config_conexion();
+                List<Ent_Central_Xst> central_xst = (List<Ent_Central_Xst>)Session[_session_cc_central_xst];
+                return Json(new { estado = 1, central_xst = central_xst });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { estado = 0 , resultados = ex.Message});
+            }
+        }
+        public PartialViewResult _listaCajasXst()
+        {
+            return PartialView(listar_config_conexion());
+        }
+
+        public ActionResult getCajasXstAjax(Ent_jQueryDataTableParams param , string sinConexion)
+        {
+
+            if (Session[_session_cc_caja_xst] == null)
+            {
+                listar_config_conexion();
+            }
+            IQueryable<Ent_Cajas_Xst> membercol = ((List<Ent_Cajas_Xst>)(Session[_session_cc_caja_xst])).AsQueryable();  //lista().AsQueryable();
+
+            //Manejador de filtros
+            int totalCount = membercol.Count();
+            IEnumerable<Ent_Cajas_Xst> filteredMembers = membercol;
+
+
+            if (!string.IsNullOrEmpty(param.sSearch))
+            {
+                filteredMembers = membercol
+                    .Where(m => m.TIENDA.ToUpper().Contains(param.sSearch.ToUpper()));
+            }
+
+            //Manejador de orden
+            var sortIdx = Convert.ToInt32(Request["iSortCol_0"]);
+            Func<Ent_Cajas_Xst, string> orderingFunction =
+            (
+            m => m.TIENDA);
+            var sortDirection = Request["sSortDir_0"];
+            if (sortDirection == "asc")
+                filteredMembers = filteredMembers.OrderBy(orderingFunction);
+            else
+                filteredMembers = filteredMembers.OrderByDescending(orderingFunction);
+
+            if (Convert.ToBoolean(sinConexion))
+            {
+                filteredMembers = filteredMembers.Where(m => Convert.ToBoolean(m.ESTADO_CONEXION_CAJA_XST) == false);
+            }
+
+            var displayMembers = filteredMembers
+                .Skip(param.iDisplayStart)
+                .Take(param.iDisplayLength);
+
+           //displayMembers.Select(a => { a.ESTADO_CONEXION_CAJA_XST = dat_storeTda.PingHost(a.IP); return a; }).ToList();
+
+            var result = from a in displayMembers
+                         select new
+                         {
+                             a.COD_ENTID,
+                             a.TIENDA,
+                             a.NCAJA,
+                             a.IP,
+                             a.VERSION_XST,
+                             a.ESTADO_CONEXION_CAJA_XST
+                         };
+            return Json(new
+            {
+                sEcho = param.sEcho,
+                iTotalRecords = totalCount,
+                iTotalDisplayRecords = filteredMembers.Count(),
+                aaData = result
+            }, JsonRequestBehavior.AllowGet);
+        }
+     
+        #endregion
+
+
     }
 }

@@ -274,6 +274,7 @@ namespace CapaDato.CanalVenta
                                 venD.total = item["FD_TOTAL"].ToString();
                                 venD.cantidad = Convert.ToInt32( Convert.ToDouble(item["FD_QFAC"].ToString()));
                                 venD.talla = item["FD_REGL"].ToString();
+                                venD.fd_colo = item["FD_COLO"].ToString();
                                 listVenD.Add(venD);
                             }
                             ven.detalles = listVenD;
@@ -308,9 +309,9 @@ namespace CapaDato.CanalVenta
                                 ic.cx_codCtaCliente = dtIC.Rows[0]["cx_codCtaCliente"].ToString();
                                 ic.id_usuario = dtIC.Rows[0]["id_usuario"].ToString();
                                 ic.de_terminal = dtIC.Rows[0]["de_terminal"].ToString();
-                                //ic.chaski_storeId = dtIC.Rows[0]["chaski_storeId"].ToString();
-                                //ic.chaski_branchId = dtIC.Rows[0]["chaski_branchId"].ToString();
-                                //ic.chaski_api_key = dtIC.Rows[0]["chaski_api_key"].ToString();
+                                ic.chaski_storeId = dtIC.Rows[0]["chaski_storeId"].ToString();
+                                ic.chaski_branchId = dtIC.Rows[0]["chaski_branchId"].ToString();
+                                ic.chaski_api_key = dtIC.Rows[0]["chaski_api_key"].ToString();
                                 ven.informacionTiendaEnvio = ic;
                             }
 

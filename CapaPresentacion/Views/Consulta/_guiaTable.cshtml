@@ -18,6 +18,8 @@
             <th>Guía Destino</th>
             <th>Tienda Origen</th>
             <th>Tienda Destino</th>
+            <th>Cant. Despd</th>
+            <th>Cant. Fmd</th>
             <th>Fecha Destino</th>
             <th>Envio</th>
             <th>Fecha Envio</th>
@@ -32,6 +34,8 @@
             <th>Guía Destino</th>
             <th>Tienda Origen</th>
             <th>Tienda Destino</th>
+            <th>Cant. Despd</th>
+            <th>Cant. Fmd</th>
             <th>Fecha Destino</th>
             <th>Envio</th>
             <th>Fecha Envio</th>
@@ -80,6 +84,8 @@
                     { "sName": "num_guia", "mData": "num_guia" },
                     { "sName": "tienda_origen", "mData": "tienda_origen" },
                     { "sName": "tienda_destino", "mData": "tienda_destino" },
+                    { "sName": "cant_despd", "mData": "cant_despd" },
+                    { "sName": "cant_fmd", "mData": "cant_fmd" },
                     { "sName": "fecha_des", "mData": "fecha_des" },
                     {
                         "render": function (data, type, full) {
@@ -105,19 +111,32 @@
                             //}
                               //  console.log(full.desc_send_tda);
                                // console.log(full.mc_id);
-                              //  console.log(full);
+                            //  console.log(full);
+                                var diferencia = ((full.cant_despd - full.cant_fmd) != 0) && full.con_id == 32;
+
+                                var botones = '<div>';
                                 if (full.desc_send_tda == 'X' && full.mc_id > 0) {
                                    // return '<div style="display: block;background-color: #41b341;" class="badge badge-pill badge-success"><a class="badge badge-success" style=" background-color: #41b341;"  >Enviado</a></div>';
-                                    return '<div> <a title="Enviado" target="_blank" class="js-open-popup btn btn-default btn-sm disabled"> <span class="glyphicon glyphicon-send"></span>  Enviado </a></div>';
+                                    botones += '<a title="Enviado" target="_blank" class="js-open-popup btn btn-default btn-sm disabled"> <span class="glyphicon glyphicon-send"></span>' + (diferencia ? '' : '&nbsp;&nbsp;Enviado') + '</a>';
                                 }
                                 else {
-                                    return '<div> <a title="Enviar Guía" target="_blank" data-desc-almac="' + desc_almac[0] + '" data-num-gudis="' + full.num_gudis + '" class="js-open-popup btn btn-primary btn-sm"> <span class="glyphicon glyphicon-send"></span>  Enviar</a></div>';
+                                    botones += '<a title="Enviar Guía" target="_blank" data-desc-almac="' + desc_almac[0] + '" data-num-gudis="' + full.num_gudis + '" class="js-open-popup btn btn-primary btn-sm"> <span class="glyphicon glyphicon-send"></span>' + (diferencia ? '' : '&nbsp;&nbsp;Enviado') + '</a>';
                                 }
-
+                                if (diferencia) {
+                                    botones += ' <a title="Reprocesar" target="_blank" data-desc-almac="' + desc_almac[0] + '" data-num-gudis="' + full.num_gudis + '" class="reprocesar btn btn-warning btn-sm"> <span class="glyphicon glyphicon-repeat"></span>' + (diferencia ? '' : '&nbsp;&nbsp;Reprocesar') + '</a>';
+                                }
+                                return botones+'</div>';
                         }
                     },            
                    { "sName": "fec_recep", "mData": "fec_recep" },
             ],
+            "createdRow": function (row, mData, dataIndex) {
+                //console.log(mData.file_leido)
+                if (((mData.cant_despd - mData.cant_fmd) != 0) && mData.con_id == 32 ) {
+                    //console.log(mData.file_leido)
+                    $(row).addClass('text-danger text-bold');
+                }
+            },
             dom: 'Bfrtip',
             buttons: [
             {
@@ -180,6 +199,55 @@
         $('#myModal').modal(options);
         $('#myModal').modal('show');
     }
+
+    $('.table').on('click', '.reprocesar', function (e) {
+        var num_gudis = $(this).attr('data-num-gudis');
+        var tda = $("#dwtda").val();
+        var num_guia = $("#numguia").val();
+        swal({
+            title: "Reprocesar",
+            text: "¿Desea reprocesar el documento: " + $(this).attr('data-num-gudis')+ "?",
+            icon: "warning",
+            buttons: ["Cancelar", true  ],
+            dangerMode: true,
+        }).then((value) => {
+            switch (value) {
+                case true:
+                    waitingDialog.show('Espere un momento por favor');
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("ReprocesarGuide", "Consulta")',
+                        data: { desc_almac: $(this).attr('data-desc-almac'), num_gudis: $(this).attr('data-num-gudis'), tda_destino: $(this).attr('data-num-gudis'), tda_destino: tda, num_guia: num_guia },
+                        success: function (data) {
+                            waitingDialog.hide();
+                            if (data.estado == 1) {
+                                $('.table').DataTable().ajax.reload();
+                                swal({
+                                    title: "Reprocesar",
+                                    text: "La guia: " + num_gudis + ", fue reprocesada con éxito.",
+                                    icon: "success"                                    
+                                });
+                                $(".swal-text").css("color", "rgba(0, 0, 0, 0.64)")
+                            } else {
+                                //waitingDialog.hide();
+                                swal({
+                                    title: "Error",
+                                    text: data.resultados,
+                                    icon: "error",
+                                    dangerMode: true,
+                                });
+                            }
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            var error = eval("(" + XMLHttpRequest.responseText + ")");
+                            waitingDialog.hide();
+                            toastr.error('Hubo un error en el registro : ' + error, "Alerta");
+                        }
+                    });
+            }
+        });
+        //_popupGuide($(this).attr('data-desc-almac'), $(this).attr('data-num-gudis'));
+    });
 
     $('#myModal').on('click', '.js-send-guide', function (e) {
         _sendGuide($(this).attr('data-desc-almac'), $(this).attr('data-num-gudis'));

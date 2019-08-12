@@ -159,6 +159,36 @@
         </script>
         <input type="hidden" id="forgeryToken" value="@GetAntiForgeryToken()" />*@
     @Html.Partial("_GlobalJsPartial")
-</body>
 
+
+    <script>
+    function comunicadosPendiente() {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("NotificacionesComunicados", "ComunicadoTDA")',
+            data: null,
+            success: function (data) {
+                //alert(data.no_noti);
+                if (data.no_noti > 0)
+                    $("#noNoti").html(data.no_noti);
+                else 
+                    $("#noNoti").html("");
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                var error = eval("(" + XMLHttpRequest.responseText + ")");
+                toastr.error('Hubo un error en el registro : ' + error, "Alerta");
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        comunicadosPendiente()
+    });
+
+    setInterval(function () {
+        comunicadosPendiente()
+    }, 10000);
+    </script>
+
+</body>
 </html>

@@ -55,6 +55,7 @@ namespace CapaEntidad.CanalVenta
         public string descuento { get; set; }
         public string total { get; set; }
         public string talla { get; set; }
+        public string fd_colo { get; set; }
     }
     public class Ent_HistorialEstadosCV
     {

@@ -10,6 +10,7 @@
         OnComplete = "waitingDialog.hide();",
         OnBegin = "waitingDialog.show('Espere un momento por favor');",
         OnFailure = "waitingDialog.hide();"
+        
     };
 }
 @*<link href="~/Content/bootstrap-select.css" rel="stylesheet" />*@
@@ -17,7 +18,14 @@
 
 
 <link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />
-
+<style>
+    .swal-text {
+        color: red;
+    }
+    .swal-text-default {
+        color: rgba(0, 0, 0, 0.64);
+    }
+</style>
 <p class="text-danger">¡Consulta de guías de traspaso de almacen o tienda para el reenvio, filtro por tienda y número de guia!</p>
 <div class="box box-body box-primary">
     @using (Ajax.BeginForm("_guiaTable", options))
@@ -70,7 +78,7 @@
 </div>
 <script src="~/Scripts/bootstrap-select.min.js"></script>
     <script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
-
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 @*<script src="~/Scripts/bootstrap.min.js"></script>
 <script src="~/ScriptsSelect/bootstrap-select.js"></script>*@

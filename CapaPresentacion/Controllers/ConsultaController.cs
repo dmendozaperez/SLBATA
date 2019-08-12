@@ -257,7 +257,11 @@ namespace CapaPresentacion.Controllers
                              a.desc_send_tda,
                              a.fec_env,
                              a.mc_id,
-                             a.fec_recep
+                             a.fec_recep,
+                             a.cant_despd,
+                             a.cant_fmd,
+                             a.con_id,
+                             a.con_des
                          };
 
             //Se devuelven los resultados por json
@@ -295,6 +299,33 @@ namespace CapaPresentacion.Controllers
             }
 
             return Json(oJRespuesta, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult ReprocesarGuide(string desc_almac, string num_gudis, string tda_destino, string num_guia )
+        {
+            try
+            {
+                Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+                 int respuesta = 0;
+                respuesta = datGuia.reprocesarGuia(desc_almac, num_gudis, _usuario.usu_id);
+
+                //var oJRespuesta = new JsonResponse();
+                var oJRespuesta = new CapaEntidad.ValeCompra.JsonResponse();
+
+                if (respuesta == 1)
+                {
+                    listaGuia(tda_destino, num_guia);
+                    return Json(new { estado = 1, resultados = respuesta });
+
+                }
+                else
+                {
+                    return Json(new { estado = 0, resultados = respuesta });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { estado = 0, resultados = ex.Message });
+            }
         }
     }
 }

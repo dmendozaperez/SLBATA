@@ -18,5 +18,9 @@ namespace CapaEntidad.Transac
         public string fec_env { get; set; }
         public decimal mc_id { get; set; }
         public string fec_recep { get; set; }
+        public int cant_despd { get; set; }
+        public int cant_fmd { get; set; }
+        public string con_id { get; set; }
+        public string con_des { get; set; }
     }
 }

@@ -460,12 +460,12 @@ namespace CapaPresentacion.Controllers
 
 
                     strJson = datCbo.listarStr_ListaTienda("PE");
-                    jRespuesta = Json(serializer.Deserialize<List<Ent_ListaTienda>>(strJson), JsonRequestBehavior.AllowGet);
+                    jRespuesta = Json(serializer.Deserialize<List<Ent_ListaTienda>>(strJson).Where(d => d.cod_entid != "0"), JsonRequestBehavior.AllowGet);
                     ViewBag.ClTienda = jRespuesta;
 
                 }
 
-                ViewBag.listCalidad = datCbo.get_ListaCalidad();
+                ViewBag.listCalidad = datCbo.get_ListaCalidad().Where(d => d.cbo_codigo != "0");
 
 
 
