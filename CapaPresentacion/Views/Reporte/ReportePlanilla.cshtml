@@ -109,7 +109,7 @@
             <label for="dwCalidad">Calidad</label>
             <div class="form-group">
                 <div id="tipocal" class="form-group">
-                    @Html.DropDownList("dwCalidad", new SelectList(ViewBag.listCalidad, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwCalidad", @name = "dwCalidad", style = "width:270px;max-width:270px;" })
+                    @Html.DropDownList("dwCalidad", new MultiSelectList(ViewBag.listCalidad, "cbo_codigo", "cbo_descripcion" ), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwCalidad", @name = "dwCalidad", @data_actions_box = "true", @data_selected_text_format = "count > 2", style = "width:270px;max-width:270px;" })
                 </div>
 
             </div>
@@ -180,7 +180,7 @@
     <script src="~/Scripts/BI.js"></script>
     <script>
         $(document).ready(function () {
-
+            $("#dwCalidad").selectpicker('selectAll');
             ListarGrupo()
         });
 
@@ -424,7 +424,7 @@
         function llenarCombo(DivId, IdControl, Data, codDefecto, desDefecto, onchangeFuncion) {
 
             $('#' + IdControl).find('option').remove();
-            var str = '<select class="selectpicker"  multiple = "multiple"  data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '">';
+            var str = '<select class="selectpicker"  multiple = "multiple"  data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '" data-actions-box="true"  data-selected-text-format="count > 2" >';
             var ItemNormal = '<option value="codItem>desItem</option>';
             var colectItemNormal = '';
           
@@ -442,7 +442,7 @@
                     strSelected = '" selected="selected" '
 
                 }
-
+                strSelected = '" selected="selected" '; // seleccionar todos al cargar
                 colectItemNormal = colectItemNormal.replace("codItem", item.cbo_codigo + strSelected);
                 colectItemNormal = colectItemNormal.replace("desItem", item.cbo_descripcion);
 

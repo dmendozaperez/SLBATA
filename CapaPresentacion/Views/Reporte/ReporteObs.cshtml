@@ -56,7 +56,7 @@
                     <label for="txtTda">Distrito.</label>
                     <div class="form-group">
                         <div id="div_dwDis" class="form-group">
-                            @Html.DropDownList("dwDis", new SelectList(ViewBag.Distrito, "cod_dis", "des_dis", "-1"), new { @class = "selectpicker", @data_live_search = "true", multiple = "multiple", @id = "dwDis", @name = "dwDis", @onchange = "ListarTienda()" })
+                            @Html.DropDownList("dwDis", new SelectList(ViewBag.Distrito, "cod_dis", "des_dis", "-1"), new { @class = "selectpicker", @data_live_search = "true", multiple = "multiple", @id = "dwDis", @name = "dwDis", @onchange = "ListarTienda()", @data_actions_box = "true", @data_selected_text_format = "count > 2" })
                         </div>
                     </div>
                 </div>
@@ -92,10 +92,7 @@
                             </div>
                         </div>
                     </div>
-
-
                 </div>
-
             </td>
         </tr>
         <tr style="padding-top:2px">
@@ -114,7 +111,7 @@
                         <label for="dwGrupo">Grupo</label>
                         <div class="form-group">
                             <div id="divgrupo" class="form-group">
-                                @Html.DropDownList("dwGrupo", new SelectList(ViewBag.Categoria, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwGrupo", @name = "dwGrupo", style = "width:270px;max-width:270px;", @onchange = "ListarCategoria()" })
+                                @Html.DropDownList("dwGrupo", new SelectList(ViewBag.Categoria, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwGrupo", @name = "dwGrupo", style = "width:270px;max-width:270px;", @onchange = "ListarCategoria()", @data_actions_box = "true", @data_selected_text_format = "count > 2" })
                             </div>
                         </div>
                     </div>
@@ -122,7 +119,7 @@
                         <label for="dwCate">Categoria</label>
                         <div class="form-group">
                             <div id="divcateg" class="form-group">
-                                @Html.DropDownList("dwCate", new SelectList(ViewBag.Categoria, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwCate" })
+                                @Html.DropDownList("dwCate", new SelectList(ViewBag.Categoria, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwCate", @data_actions_box = "true", @data_selected_text_format = "count > 2" })
                             </div>
                         </div>
                     </div>
@@ -151,7 +148,7 @@
                         <label for="txtTda">Rango.</label>
                         <div class="form-group">
                             <div id="div_dwRango" class="form-group">
-                                @Html.DropDownList("dwRango", new SelectList(ViewBag.lisRango, "cbo_codigo", "cbo_descripcion"), new { @class = "selectpicker", @id = "dwRango", @name = "dwRango", })
+                                @Html.DropDownList("dwRango", new SelectList(ViewBag.lisRango, "cbo_codigo", "cbo_descripcion"), new { @class = "selectpicker", @id = "dwRango", @name = "dwRango",  @data_actions_box = "true", @data_selected_text_format = "count > 2" })
                             </div>
                         </div>
                     </div>
@@ -255,7 +252,7 @@
 
 
 
-            var str =(tipo=='1')? '<select class="selectpicker" multiple = "multiple"  data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '">':'<select class="selectpicker"  data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '">';
+            var str =(tipo=='1')? '<select class="selectpicker" multiple = "multiple"  data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '" data-actions-box="true"  data-selected-text-format="count > 2" >':'<select class="selectpicker"  data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '"  data-actions-box="true"  data-selected-text-format="count > 2" > ';
             var ItemNormal = '<option value="codItem">desItem</option>';
             var colectItemNormal = '';
 
@@ -273,6 +270,7 @@
                     strSelected = '" selected="selected" '
 
                 }
+                strSelected = '" selected="selected" '; // seleccionar todos al cargar
                 colectItemNormal = colectItemNormal.replace("codItem", item.cod_entid + strSelected);
                 colectItemNormal = colectItemNormal.replace("desItem", item.des_entid);
 
@@ -293,7 +291,7 @@
         function llenarComboAlt(DivId, IdControl, Data, codDefecto, desDefecto, onchangeFuncion) {
 
             $('#' + IdControl).find('option').remove();
-            var str = '<select class="selectpicker"  multiple = "multiple"  data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '">';
+            var str = '<select class="selectpicker"  multiple = "multiple"  data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '" data-actions-box="true"  data-selected-text-format="count > 2" >';
             var ItemNormal = '<option value="codItem>desItem</option>';
             var colectItemNormal = '';
           
@@ -309,7 +307,7 @@
                     strSelected = '" selected="selected" '
 
                 }
-
+                strSelected = '" selected="selected" '
                 colectItemNormal = colectItemNormal.replace("codItem", item.cbo_codigo + strSelected);
                 colectItemNormal = colectItemNormal.replace("desItem", item.cbo_descripcion);
 
