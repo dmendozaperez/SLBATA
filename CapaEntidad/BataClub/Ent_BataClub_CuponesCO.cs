@@ -9,7 +9,7 @@ namespace CapaEntidad.BataClub
     public class Ent_BataClub_CuponesCO
     {
         public string Nombres { get; set; }
-       /* public string Apellidos { get; set; }*/
+        public string Apellidos { get; set; }
         public string dni { get; set; }
         public string correo { get; set; }
         public string cupon { get; set; }
@@ -28,5 +28,22 @@ namespace CapaEntidad.BataClub
         public string prom_des { get; set; }
         public string est_des { get; set; }
         public string cup_fecha_fin { get; set; }
+        public string max_pares { get; set; }
     }
+
+    public class Ent_BataClub_ListaCliente
+    {
+        public string dni { get; set; }
+        public string nombre { get; set; }
+        public string apellidos { get; set; }
+        public string email { get; set; }
+        public string barra { get; set; }
+        public string error { get; set; }
+    }
+
+    public class Ent_BataClub_ListaItems
+    {
+        public Ent_BataClub_ListaCliente[] Lista { get; set; }
+    }
+
 }
