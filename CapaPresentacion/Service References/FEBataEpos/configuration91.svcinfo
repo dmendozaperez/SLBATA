@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="OMa7ypMaOISp9GV/qaqOe8EkZdI=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="Q5e1z93Gyq/l0GVfCFtaAKVEqgs=">
   <bindingConfigurations>
     <bindingConfiguration bindingType="basicHttpBinding" name="OnlineSOAP11Binding1">
       <properties>
@@ -110,10 +110,10 @@
         </property>
       </properties>
     </bindingConfiguration>
-    <bindingConfiguration bindingType="customBinding" name="OnlineSOAP12Binding1">
+    <bindingConfiguration bindingType="customBinding" name="OnlineSOAP12Binding">
       <properties>
         <property path="/name" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>OnlineSOAP12Binding1</serializedValue>
+          <serializedValue>OnlineSOAP12Binding</serializedValue>
         </property>
         <property path="/closeTimeout" isComplexType="false" isExplicitlyDefined="true" clrType="System.TimeSpan, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
@@ -348,7 +348,7 @@
         </property>
       </properties>
     </endpoint>
-    <endpoint name="OnlineSOAP12port_http" contract="FEBataEpos.OnlinePortType" bindingType="customBinding" address="http://200.121.128.110:8060/axis2/services/Online" bindingConfiguration="OnlineSOAP12Binding1">
+    <endpoint name="OnlineSOAP12port_http" contract="FEBataEpos.OnlinePortType" bindingType="customBinding" address="http://200.121.128.110:8060/axis2/services/Online" bindingConfiguration="OnlineSOAP12Binding">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>http://200.121.128.110:8060/axis2/services/Online</serializedValue>
@@ -360,7 +360,7 @@
           <serializedValue>customBinding</serializedValue>
         </property>
         <property path="/bindingConfiguration" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>OnlineSOAP12Binding1</serializedValue>
+          <serializedValue>OnlineSOAP12Binding</serializedValue>
         </property>
         <property path="/contract" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>FEBataEpos.OnlinePortType</serializedValue>
