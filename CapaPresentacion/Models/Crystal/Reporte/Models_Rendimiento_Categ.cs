@@ -31,5 +31,6 @@ namespace Models.Crystal.Reporte
         public decimal saly_soles_acum { get; set; }
         public decimal nlineas_act { get; set; }
         public decimal nlineas_pas { get; set; }
+        public string evalua { get; set; }
     }
 }
