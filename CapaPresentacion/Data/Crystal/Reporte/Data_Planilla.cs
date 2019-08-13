@@ -177,6 +177,7 @@ namespace Data.Crystal.Reporte
                                              store_name = dr["STORE_NAME"].ToString(),
                                              semana_str = dr["SEMANA_STR"].ToString(),
                                              dni = dr["DNI"].ToString(),
+                                             dni_nombre= dr["DNI_NOMBRE"].ToString(),
                                              pares = string.IsNullOrEmpty(dr["PARES"].ToString()) ? 0 : Convert.ToDecimal(dr["PARES"].ToString()),
                                              ropa = string.IsNullOrEmpty(dr["ROPA"].ToString()) ? 0 : Convert.ToDecimal(dr["ROPA"].ToString()), //Convert.ToDecimal(dr["tcant"]),
                                              acc = string.IsNullOrEmpty(dr["ACC"].ToString()) ? 0 : Convert.ToDecimal(dr["ACC"].ToString()), //Convert.ToDecimal(dr["valor"]),

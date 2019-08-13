@@ -13,6 +13,7 @@ namespace Models.Crystal.Reporte
         public string des_entid { get; set; }
         public string store_name { get; set; }
         public string dni { get; set; }
+        public string dni_nombre { get; set; }
         public decimal pares { get; set; }
         public decimal ropa { get; set; }
         public decimal acc { get; set; }

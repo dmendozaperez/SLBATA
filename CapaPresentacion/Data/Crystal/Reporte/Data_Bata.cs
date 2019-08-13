@@ -325,7 +325,8 @@ namespace Data.Crystal.Reporte
                                              soles_acum_ant = Convert.ToDecimal(dr["SOLES_ACUM_ANT"]),
                                              soles_acum_real = Convert.ToDecimal(dr["SOLES_ACUM_REAL"]),
                                              saly_soles_acum = Convert.ToDecimal(dr["SALY_SOLES_ACUM"]),
-                                            
+                                             nlineas_act= Convert.ToDecimal(dr["NLINEAS_ACT"]),
+                                             nlineas_pas = Convert.ToDecimal(dr["NLINEAS_PAS"]),
                                          }).ToList();
                             }
                         }
