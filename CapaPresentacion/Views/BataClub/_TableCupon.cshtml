@@ -1,49 +1,22 @@
 ﻿
-
 <table id="example" class="table table-hover dataTable  table-striped table-responsive">
     <thead>
         <tr style="background-color:#3d566e; color:#ecf0f1">
-            <th>Promoción</th>
-            <th>Estado Promo.</th>
-            <th>Fecha fin cupón</th>
             <th>Nombres</th>
-            @*<th>Apellidos</th>*@
+            <th>Apellidos</th>
             <th>DNI</th>
             <th>Correo</th>
-            <th>Cupón</th>
-            <th>Tienda</th>
-            @*<th>DNI (venta)</th>*@
-            <th>Nombres (venta)</th>
-            @*<th>Correo (venta)</th>
-                <th>Teléf. (venta)</th>*@
-            <th>Tickets</th>
-            <th>Soles</th>
-            @*<th>Grupo</th>*@
-            <th>Desc (%)</th>
-            <th>Fecha Doc.</th>
+            <th>Borrar</th>
         </tr>
     </thead>
     <tbody data-bind="foreach:"></tbody>
     <tfoot>
         <tr>
-            <th>Promoción</th>
-            <th>Estado Promo.</th>
-            <th>Fecha fin cupón</th>
             <th>Nombres</th>
-            @*<th>Apellidos</th>*@
+            <th>Apellidos</th>
             <th>DNI</th>
             <th>Correo</th>
-            <th>Cupón</th>
-            <th>Tienda</th>
-            @*<th>DNI (venta)</th>*@
-            <th>Nombres (venta)</th>
-            @*<th>Correo (venta)</th>
-                <th>Teléf. (venta)</th>*@
-            <th>Tickets</th>
-            <th>Soles</th>
-            @*<th>Grupo</th>*@
-            <th>Desc (%)</th>
-            <th>Fecha Doc.</th>
+            <th>Borrar</th>
         </tr>
     </tfoot>
 </table>
@@ -56,47 +29,38 @@
             "bProcessing": true, 
             "bServerSide": true,
             "bAutoWidth": false,
-            "sAjaxSource": '@Url.Action("getTablePromoAjax", "BataClub")',
+            "sAjaxSource": '@Url.Action("getTableCuponAjax", "BataClub")',
             "fnServerParams": function (aoData) {
                 //aoData.push({ "name": "lblConsumidos", "value": $.trim($('#lblConsumidos')[0].textContent).toString() });
-                //aoData.push({ "name": "lblDisponibles", "value": $.trim($('#lblDisponibles')[0].textContent).toString() });
-                //aoData.push({ "name": "lblCaducados", "value": $.trim($('#lblCaducados')[0].textContent).toString() });
-             //   console.log("buscó");
-             //   console.log(aoData);
               //  $('#lblConsumidos')[0].textContent.toString() = "Consumidos:";
                 //aoData.push({ "name": "lblDisponibles", "value": $.trim($('#lblDisponibles').val()) });
-                //aoData.push({ "name": "lblCaducados", "value": $.trim($('#lblCaducados').val()) });
             },
-
-            "fnServerData": function ( sSource, aoData, fnCallback ) {
-                $.getJSON( sSource, aoData, function (json) {
+          //  "fnServerData": function ( sSource, aoData, fnCallback ) {
+               // $.getJSON( sSource, aoData, function (json) {
                     /* Do whatever additional processing you want on the callback, then tell DataTables */
-                  //  console.log("entró a fnServerData");
-                    //console.log(sSource);
-                    //console.log(aoData);
-                    //console.log(fnCallback);
+                    //  console.log("entró a fnServerData");
                     //debugger;
-                  //  console.log(json.variable1);
-                    $('#lblIndicador')[0].textContent = "Data encontrada: " + json.variable1;
-                 //   console.log(json);
-                    fnCallback(json)
-                } );
-            },
-
+                   //  console.log(json.variable1);
+                   // $('#lblIndicador')[0].textContent = "Data encontrada: " + json.variable1;
+                  //  fnCallback(json)
+                //} );
+          //  },
             "bdestroy": true,
             "start": 0,
             "order": [0, "asc"],
             "bDeferRender": true,
             "aoColumns": [
-                    { "sName": "prom_des", "mData": "prom_des" },
-                    { "sName": "est_des", "mData": "est_des" },
-                    { "sName": "cup_fecha_fin", "mData": "cup_fecha_fin" },
+                    { "sName": "Nombres", "mData": "Nombres" },
+                    { "sName": "Apellidos", "mData": "Apellidos" },
                     { "sName": "dni", "mData": "dni" },
                     { "sName": "correo", "mData": "correo" },
-                    { "sName": "cupon", "mData": "cupon" },
-                    { "sName": "tienda", "mData": "tienda" },
-                    { "sName": "porc_desc", "mData": "porc_desc" },
-                    { "sName": "fec_doc", "mData": "fec_doc" }
+                    {     
+                        "render": function (data, type, full) {
+                           // var envio = "'" + full.dni + "','" + full.correo + "'"
+                            var envio = "'" + full.dni + "'"
+                            return '<div> <a title="Eliminar" id="btnEliminar" type="button" onclick="EliminarSeleccion(' + envio + ')"  class="btn btn-danger btn-sm"> <span class="glyphicon glyphicon-remove" type="button"></span></a></div>';
+                        }
+                    }
             ],
             dom: 'Bfrtip',
             buttons: [

@@ -280,8 +280,20 @@ namespace CapaPresentacion.Controllers
         #region ***CONFIG CONEXION***
         
         public ActionResult ConfigConexion()
-        {                       
-            return View();   
+        {
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
+
+            if (_usuario == null)
+            {
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+            }
+            else
+            {
+                return View(listar_config_conexion());
+            }            
         }
         public Ent_ConfigConexion listar_config_conexion()
         {
@@ -312,7 +324,7 @@ namespace CapaPresentacion.Controllers
             return PartialView(listar_config_conexion());
         }
 
-        public ActionResult getCajasXstAjax(Ent_jQueryDataTableParams param)
+        public ActionResult getCajasXstAjax(Ent_jQueryDataTableParams param , string sinConexion)
         {
 
             if (Session[_session_cc_caja_xst] == null)
@@ -343,11 +355,16 @@ namespace CapaPresentacion.Controllers
             else
                 filteredMembers = filteredMembers.OrderByDescending(orderingFunction);
 
+            if (Convert.ToBoolean(sinConexion))
+            {
+                filteredMembers = filteredMembers.Where(m => Convert.ToBoolean(m.ESTADO_CONEXION_CAJA_XST) == false);
+            }
+
             var displayMembers = filteredMembers
                 .Skip(param.iDisplayStart)
                 .Take(param.iDisplayLength);
 
-            displayMembers.Select(a => { a.ESTADO_CONEXION_CAJA_XST = PingHost(a.IP); return a; }).ToList();
+           //displayMembers.Select(a => { a.ESTADO_CONEXION_CAJA_XST = dat_storeTda.PingHost(a.IP); return a; }).ToList();
 
             var result = from a in displayMembers
                          select new
@@ -367,33 +384,7 @@ namespace CapaPresentacion.Controllers
                 aaData = result
             }, JsonRequestBehavior.AllowGet);
         }
-        public static int PingHost(string nameOrAddress)
-        {
-            bool ping = false;
-            Ping pinger = null;
-
-            try
-            {
-                pinger = new Ping();
-                PingReply reply = pinger.Send(nameOrAddress);
-                ping = reply.Status == IPStatus.Success;
-            }
-            catch (PingException)
-            {
-                // Discard PingExceptions and return false;
-            }
-            finally
-            {
-                if (pinger != null)
-                {
-                    pinger.Dispose();
-                }
-            }
-
-            return ping ? 1 : 0;
-        }
-
-
+     
         #endregion
 
 

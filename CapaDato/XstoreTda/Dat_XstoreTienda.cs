@@ -321,7 +321,7 @@ namespace CapaDato.Maestros
                                           NCAJA = dr["NCAJA"].ToString(),
                                           IP = dr["IP"].ToString(),
                                           VERSION_XST = dr["VERSION_XST"].ToString(),
-                                          ESTADO_CONEXION_CAJA_XST = 0// PingHost(dr["IP"].ToString())
+                                          ESTADO_CONEXION_CAJA_XST = PingHost(dr["IP"].ToString())
                                       }).ToList();
                     configConexion = new Ent_ConfigConexion();
                     configConexion.list_cajas_xst = listCajasXst;
@@ -334,31 +334,50 @@ namespace CapaDato.Maestros
             }
             return configConexion;
         }
-        public static int PingHost(string nameOrAddress)
+        public int PingHost(string nameOrAddress)
         {
-            bool pingable = false;
-            Ping pinger = null;
-
             try
             {
-                pinger = new Ping();
-                PingReply reply = pinger.Send(nameOrAddress);
-                pingable = reply.Status == IPStatus.Success;
-            }
-            catch (PingException)
-            {
-                // Discard PingExceptions and return false;
-                pingable = false;
-            }
-            finally
-            {
-                if (pinger != null)
+                Ping Pings = new Ping();
+                int timeout = 1000;
+
+                if (Pings.Send(nameOrAddress, timeout).Status == IPStatus.Success)
                 {
-                    pinger.Dispose();
+                    return 1;
+                }
+                else
+                {
+                    return 0;
                 }
             }
+            catch (Exception ex)
+            {
+                return 0;
+            }
 
-            return pingable ? 1 : 0;
+            //bool pingable = false;
+            //Ping pinger = null;
+
+            //try
+            //{
+            //    pinger = new Ping();
+            //    PingReply reply = pinger.Send(nameOrAddress);
+            //    pingable = reply.Status == IPStatus.Success;
+            //}
+            //catch (PingException)
+            //{
+            //    // Discard PingExceptions and return false;
+            //    pingable = false;
+            //}
+            //finally
+            //{
+            //    if (pinger != null)
+            //    {
+            //        pinger.Dispose();
+            //    }
+            //}
+
+            //return pingable ? 1 : 0;
         }
        
         #endregion
