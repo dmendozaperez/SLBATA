@@ -115,7 +115,7 @@ namespace CapaDato.Transac
             return intRespuesta;
         }
 
-        public int reprocesarGuia(string desc_almac, string num_gudis, decimal usu_id)
+        public int reprocesarGuia(string desc_almac, string num_gudis, decimal usu_id, ref string mensaje)
         {
             Int32 intRespuesta = 0;
             string sqlquery = "USP_XSTORE_REPROCESAR_GUIATDA";
@@ -137,9 +137,9 @@ namespace CapaDato.Transac
                             intRespuesta = 1;
                         }
                     }
-                    catch
+                    catch (Exception ex)
                     {
-
+                        mensaje = ex.Message;
                         intRespuesta = -1;
                     }
                     if (cn != null)

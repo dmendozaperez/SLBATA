@@ -306,7 +306,8 @@ namespace CapaPresentacion.Controllers
             {
                 Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
                  int respuesta = 0;
-                respuesta = datGuia.reprocesarGuia(desc_almac, num_gudis, _usuario.usu_id);
+                string mensaje = "";
+                respuesta = datGuia.reprocesarGuia(desc_almac, num_gudis, _usuario.usu_id ,ref mensaje);
 
                 //var oJRespuesta = new JsonResponse();
                 var oJRespuesta = new CapaEntidad.ValeCompra.JsonResponse();
@@ -319,7 +320,7 @@ namespace CapaPresentacion.Controllers
                 }
                 else
                 {
-                    return Json(new { estado = 0, resultados = respuesta });
+                    return Json(new { estado = 0, resultados = mensaje });
                 }
             }
             catch (Exception ex)
