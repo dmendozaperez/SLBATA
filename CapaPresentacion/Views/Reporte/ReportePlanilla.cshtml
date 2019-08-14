@@ -190,14 +190,14 @@
 
         function MostrarReporte(e) {
 
-            var tda = $('#txtTda').val();
-            var grupo = $('#dwGrupo').val();
+            var tda =  $('#txtTda').val();
+            var grupo = ($("#dwGrupo option:not(:selected)").length == 0 && $("#dwGrupo > option").length > 1 ? "0" : $('#dwGrupo').val()); // $('#dwGrupo').val();
             var tipo = $('#dwTipo').val();
             //var str = grupo.toString();
-            var cate = $('#dwCate').val();
-            var sbCate = $('#dwsbCate').val();
+            var cate = ($("#dwCate option:not(:selected)").length == 0 && $("#dwCate > option").length > 1 ? "0" : $('#dwCate').val()); // $('#dwCate').val();
+            var sbCate = ($("#dwsbCate option:not(:selected)").length == 0 && $("#dwsbCate > option").length > 1 ? "0" : $('#dwsbCate').val());  //$('#dwsbCate').val();
             var Estado = $('#dwEstado').val();
-            var Calidad = $('#dwCalidad').val();
+            var Calidad = ($("#dwCalidad option:not(:selected)").length == 0 && $("#dwCalidad > option").length > 1 ? "0" : $('#dwCalidad').val());// $('#dwCalidad').val();
             var tipoReport = $('#dwReporte').val();
 
             if (grupo == '' || grupo == null) { grupo = '0' };

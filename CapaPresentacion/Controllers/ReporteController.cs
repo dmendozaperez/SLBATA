@@ -362,7 +362,7 @@ namespace CapaPresentacion.Controllers
                     list.Add(entCombo);
                     ViewBag.Tienda = list;
 
-                    ViewBag.Distrito = distrito_list.listar_distrito();//.Where(d => d.cod_dis != "-1");
+                    ViewBag.Distrito = distrito_list.listar_distrito().Where(d => d.cod_dis != "-1");
 
                     string strJson = "";
                     JsonResult jRespuesta = null;
@@ -370,7 +370,7 @@ namespace CapaPresentacion.Controllers
 
 
                     strJson = datCbo.listarStr_ListaTienda("PE");
-                    jRespuesta = Json(serializer.Deserialize<List<Ent_ListaTienda>>(strJson), JsonRequestBehavior.AllowGet);
+                    jRespuesta = Json(serializer.Deserialize<List<Ent_ListaTienda>>(strJson).Where(d => d.cod_entid != "0"), JsonRequestBehavior.AllowGet);
                     ViewBag.ClTienda = jRespuesta;
 
                 }
@@ -384,16 +384,16 @@ namespace CapaPresentacion.Controllers
 
                 strJson2 = datCbo.listarStr_ListaGrupoTipo();
 
-                jRespuesta2 = Json(serializer2.Deserialize<List<Ent_Combo>>(strJson2), JsonRequestBehavior.AllowGet);
+                jRespuesta2 = Json(serializer2.Deserialize<List<Ent_Combo>>(strJson2).Where(d => d.cbo_codigo != "0"), JsonRequestBehavior.AllowGet);
                 ViewBag.ClGrupo = jRespuesta2;
 
                 strJson2 = datCbo.listarStr_ListaCategoria("");
-                jRespuesta2 = Json(serializer2.Deserialize<List<Ent_Combo>>(strJson2) , JsonRequestBehavior.AllowGet);
+                jRespuesta2 = Json(serializer2.Deserialize<List<Ent_Combo>>(strJson2).Where(d => d.cbo_codigo != "0"), JsonRequestBehavior.AllowGet);
                 ViewBag.ClCategoria = jRespuesta2;
                 Ent_ComboList filtros = datCbo.Listar_Filtros_OBS();
 
 
-                ViewBag.listCalidad  = filtros.Lista_1;
+                ViewBag.listCalidad  = filtros.Lista_1.Where(d => d.cbo_codigo != "-1");
                 ViewBag.listTipoObs = filtros.Lista_2;
                 ViewBag.lisRango = filtros.Lista_3;
 
@@ -914,7 +914,7 @@ namespace CapaPresentacion.Controllers
                     list.Add(entCombo);
                     ViewBag.Tienda = list;
 
-                    ViewBag.Distrito = distrito_list.listar_distrito();//.Where(a => a.cod_dis != "-1");
+                    ViewBag.Distrito = distrito_list.listar_distrito().Where(a => a.cod_dis != "-1");
 
                     string strJson = "";
                     JsonResult jRespuesta = null;

@@ -143,13 +143,13 @@
 
         var tda = $('#txtTda').val();
         var cadena ="-1";
-        var semana = $('#txtsemana').val();
+        var semana =  $('#txtsemana').val();
         var strpares = $('#txtpares').val();
         var strestado = $('#txtEstado').val();
-        var grupo = $('#dwGrupo').val();
+        var grupo = ($("#dwGrupo option:not(:selected)").length == 0 && $("#dwGrupo > option").length > 1 ? "0" : $('#dwGrupo').val());// $('#dwGrupo').val();
         var tipo = $('#dwTipo').val();
         //var str = grupo.toString();
-        var cate = $('#dwCate').val();
+        var cate = ($("#dwCate option:not(:selected)").length == 0 && $("#dwCate > option").length > 1 ? "0" : $('#dwCate').val());// $('#dwCate').val();
 
         if (grupo == '' || grupo == null) { grupo = '0' };
         if (cate == '' || cate == null) { cate = '0' };  

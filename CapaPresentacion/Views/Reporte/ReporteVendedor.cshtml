@@ -219,8 +219,8 @@
 
         function MostrarReporte(e) {
             var dis = $('#dwDis').val(); // ($("#dwDis option:not(:selected)").length == 0 ? "-1" : $('#dwDis').val() ) ;
-            var tda =  ($("#dwtda option:not(:selected)").length == 0 ? "0" : $('#dwtda').val() ) ; //$('#dwtda').val();
-            var Calidad = ($("#dwCalidad option:not(:selected)").length == 0 ? "0" : $('#dwCalidad').val() ) ;// $('#dwCalidad').val();
+            var tda =  ($("#dwtda option:not(:selected)").length == 0 && $("#dwtda > option").length > 1 ? "0" : $('#dwtda').val() ) ; //$('#dwtda').val();
+            var Calidad = ($("#dwCalidad option:not(:selected)").length == 0 && $("#dwCalidad > option").length > 1 ? "0" : $('#dwCalidad').val() ) ;// $('#dwCalidad').val();
             var fecIni = ($("#fecini").val()).split('-');
             var fecFin = ($("#fecfin").val()).split('-');
             var strIni = fecIni[2] + fecIni[1] + fecIni[0];

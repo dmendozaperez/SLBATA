@@ -80,7 +80,7 @@
                         <label for="txtTda">Calidad</label>
                         <div class="form-group">
                             <div id="div_dwCalidad" class="form-group">
-                                @Html.DropDownList("dwCalidad", new SelectList(ViewBag.listCalidad, "cbo_codigo", "cbo_descripcion", "-1"), new { @class = "selectpicker", multiple = "multiple", @id = "dwCalidad", @name = "dwCalidad",  })
+                                @Html.DropDownList("dwCalidad", new SelectList(ViewBag.listCalidad, "cbo_codigo", "cbo_descripcion", "-1"), new { @class = "selectpicker", multiple = "multiple", @id = "dwCalidad", @name = "dwCalidad", @data_actions_box = "true", @data_selected_text_format = "count > 2" })
                             </div>
                         </div>
                     </div>
@@ -326,7 +326,12 @@
         }
 </script>
 <script>
-        $(document).ready(function () {
+    $(document).ready(function () {
+        $("#dwDis").selectpicker('selectAll');
+        $("#dwtda").selectpicker('selectAll');
+        $("#dwCalidad").selectpicker('selectAll');
+        $("#dwGrupo").selectpicker('selectAll');
+        $("#dwCate").selectpicker('selectAll');
             ListarTienda();
             ListarGrupo();
         });
@@ -336,17 +341,17 @@
         function MostrarReporte(e) {
 
             var bValidacion = true;
-            var coddis = $('#dwDis').val();
-            var cod_tda = $('#dwtda').val();
+            var coddis = ($("#dwDis option:not(:selected)").length == 0 && $("#dwDis > option").length > 1  ? "-1" : $('#dwDis').val()); // $('#dwDis').val();
+            var cod_tda =  ($("#dwtda option:not(:selected)").length == 0 && $("#dwtda > option").length > 1 ? "0" : $('#dwtda').val()); // $('#dwtda').val();
 
             
             var tipo_cat = $('#dwTipo').val();
-            var cod_linea = $('#dwGrupo').val(); 
-            var cod_categ = $('#dwCate').val();
+            var cod_linea = ($("#dwGrupo option:not(:selected)").length == 0 && $("#dwGrupo > option").length > 1  ? "0" : $('#dwGrupo').val());// $('#dwGrupo').val(); 
+            var cod_categ = ($("#dwCate option:not(:selected)").length == 0 && $("#dwCate > option").length  > 1 ? "0" : $('#dwCate').val());// $('#dwCate').val();
             var strTipo = $('#dwTipo').val();         
 
-            var calidad = $('#dwCalidad').val();
-            var tipoObs = $('#dwTipoObs').val();
+            var calidad = ($("#dwCalidad option:not(:selected)").length == 0 && $("#dwCalidad > option").length > 1 ? "-1" : $('#dwCalidad').val()); // $('#dwCalidad').val();
+            var tipoObs =  $('#dwTipoObs').val();
 
             var rangoObs = $('#dwRango').val();
             var precio1 = $('#txtprcIni').val();

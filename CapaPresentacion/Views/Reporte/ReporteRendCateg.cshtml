@@ -209,8 +209,8 @@
 
 
         function MostrarReporte(e) {
-            var coddis =  ($("#dwDis option:not(:selected)").length == 0 ? "-1" : $('#dwDis').val() );  // $('#dwDis').val();
-            var tda = ($("#dwtda option:not(:selected)").length == 0 ? "0" : $('#dwtda').val() )  ;
+            var coddis =  ($("#dwDis option:not(:selected)").length == 0 && $("#dwDis > option").length > 1 ? "-1" : $('#dwDis').val() );  // $('#dwDis').val();
+            var tda = ($("#dwtda option:not(:selected)").length == 0 && $("#dwtda > option").length > 1 ? "0" : $('#dwtda').val() )  ;
             var tipo_cat = $('#dwTipo').val();
             var semana = $('#dwSemana').val();
             var evalua = $('#dwEvaluacion').val();
