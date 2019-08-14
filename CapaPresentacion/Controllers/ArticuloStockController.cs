@@ -323,11 +323,9 @@ namespace CapaPresentacion.Controllers
                 cod_tda = Session["Tienda"].ToString();
             }
             
-          
-
             strJson = datArticuloStock.listarStr_ArticuloStock(codArticulo, CodDpto, CodPrv, CodDist, codTalla, coddist_b, cod_tda,/*sostic 06/2019*/ multicanalidad);
             var serializer = new JavaScriptSerializer();
-            jRespuesta = Json(serializer.Deserialize<List<Articulo_Stock_Tienda>>(strJson), JsonRequestBehavior.AllowGet);
+            //jRespuesta = Json(serializer.Deserialize<List<Articulo_Stock_Tienda>>(strJson), JsonRequestBehavior.AllowGet);
 
             return strJson;
         }
