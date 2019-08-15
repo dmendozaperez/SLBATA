@@ -12,6 +12,7 @@ using CapaEntidad.Util;
 using CapaEntidad.Control;
 using CapaDato.Reporte;
 using System.Web.Script.Serialization;
+using CapaEntidad.Maestros;
 
 namespace CapaPresentacion.Controllers
 {
@@ -41,26 +42,44 @@ namespace CapaPresentacion.Controllers
             }
             else
             {
-
-                ViewBag.concepto_suna = dat_concepto_suna.lista_concepto_suna();
+                if (Session["Tienda"] != null)
+                {
+                    string strJson = "";
+                    var serializer = new JavaScriptSerializer();
+                    strJson = tienda.listarStr_ListaTienda("PE");
+                    List<Ent_ListaTienda> listar_tda = serializer.Deserialize<List<Ent_ListaTienda>>(strJson);
+                    var tda = listar_tda.Where(t => t.cod_entid == Session["Tienda"].ToString()).ToList();
+                    ViewBag.Tienda = tda;
+                    ViewBag.concepto_suna = dat_concepto_suna.lista_concepto_suna().Where(d => d.con_sun_id != "07");
+                }
+                else
+                {
+                    string strJson = "";
+                    var serializer = new JavaScriptSerializer();
+                    strJson = tienda.listarStr_ListaTienda("PE");
+                    List<Ent_ListaTienda> listar_tda = serializer.Deserialize<List<Ent_ListaTienda>>(strJson);
+                    var tda = listar_tda;
+                    ViewBag.Tienda = tda;
+                    ViewBag.concepto_suna = dat_concepto_suna.lista_concepto_suna();
+                }                
                 return View();
             }
         }
-        public PartialViewResult ListaDocumento(string dwtipodoc, string numdoc, string fecini, string fecfinc)
+        public PartialViewResult ListaDocumento(string dwtipodoc, string numdoc, string fecini, string fecfinc, string dwtda , string txtArticulo)
         {
-            return PartialView(lista(dwtipodoc, numdoc, fecini, fecfinc));
+            return PartialView(lista(dwtipodoc, numdoc, fecini, fecfinc, dwtda , txtArticulo));
         }
 
-        public List<Ent_Documentos_Tda> lista(string tipo_doc, string num_doc, string fec_ini, string fec_fin)
+        public List<Ent_Documentos_Tda> lista(string tipo_doc, string num_doc, string fec_ini, string fec_fin , string cod_tda , string articulo)
         {
-            string gcodTda = (String)Session["Tienda"];
+            //string gcodTda = (String)Session["Tienda"];
             string strParams = "";
-            if (gcodTda != "" && gcodTda != null)
-            {
-                strParams = gcodTda;
-            }
-
-            List<Ent_Documentos_Tda> listdoc = dat_doc.get_lista(strParams, tipo_doc, num_doc, fec_ini, fec_fin);
+            //if (gcodTda != "" && gcodTda != null)
+            //{
+            //    strParams = gcodTda;
+            //}
+            strParams = (cod_tda == "0" ? "" : cod_tda);
+            List<Ent_Documentos_Tda> listdoc = dat_doc.get_lista(strParams, tipo_doc, num_doc, fec_ini, fec_fin , articulo);
             Session[_session_listdocumentoDetalle_private] = listdoc;
             return listdoc;
         }
