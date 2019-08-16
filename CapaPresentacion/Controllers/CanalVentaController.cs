@@ -485,7 +485,7 @@ namespace CapaPresentacion.Controllers
                     http.DefaultRequestHeaders.Add("chazki-api-key", cvCzk.informacionTiendaEnvio.chaski_api_key);
                     HttpContent content = new StringContent(jsonChazki);
                     content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                    var request = http.PostAsync("https://sandboxintegracion.chazki.com:8443/chazkiServices/delivery/create/deliveryService", content);
+                    var request = http.PostAsync("https://integracion.chazki.com:8443/chazkiServices/delivery/create/deliveryService", content);
                     var response = request.Result.Content.ReadAsStringAsync().Result;
                     rpta = JsonConvert.DeserializeObject<Response_Registro>(response);
                 }

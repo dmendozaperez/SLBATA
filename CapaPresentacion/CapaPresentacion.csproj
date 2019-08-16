@@ -1432,6 +1432,9 @@
     <Content Include="Service References\FEBataEpos\CapaPresentacion.FEBataEpos.OnlineRecoveryResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
+    <Content Include="Service References\FEBataEpos\CapaPresentacion.FEBataEpos.ConsultResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
     <None Include="Service References\FEBataEpos\configuration91.svcinfo" />
     <None Include="Service References\FEBataEpos\configuration.svcinfo" />
     <None Include="Service References\FEBataEpos\Reference.svcmap">

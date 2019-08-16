@@ -33,7 +33,7 @@
             <label for="txtTda">Distrito.</label>
             <div class="form-group">
                 <div id="distrito" class="form-group">
-                    @Html.DropDownList("dwDis", new SelectList(ViewBag.Distrito, "cod_dis", "des_dis", "-1"), new { @class = "selectpicker",  @data_live_search = "true", @id = "dwDis", @name = "dwDis", @onchange = "ListarTienda()" })
+                    @Html.DropDownList("dwDis", new SelectList(ViewBag.Distrito, "cod_dis", "des_dis", "-1"), new { @class = "selectpicker",  @data_live_search = "true", @id = "dwDis", @name = "dwDis", @onchange = "ListarTienda()", @multiple = "multiple", @data_actions_box = "true", @data_selected_text_format = "count > 2" })
                 </div>
             </div>
         </div> 
@@ -41,7 +41,7 @@
             <label for="txtTda">Cod Tda.</label>
             <div class="form-group">
                 <div id="div_tda" class="form-group">
-                    @Html.DropDownList("dwtda", new SelectList(ViewBag.tienda, "cod_entid", "des_entid", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwtda", @name = "dwtda" })
+                    @Html.DropDownList("dwtda", new SelectList(ViewBag.tienda, "cod_entid", "des_entid", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwtda", @name = "dwtda", @data_actions_box = "true", @data_selected_text_format = "count > 2" })
                 </div>
             </div>
         </div>      
@@ -50,7 +50,7 @@
             <label for="txtTda">Tipo</label>
             <div class="form-group">
                 <div id="div_tipo" class="form-group">
-                    @Html.DropDownList("dwTipo", new SelectList(ViewBag.Tipo, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker",  @data_live_search = "false", @id = "dwTipo", @name = "dwTipo" })
+                    @Html.DropDownList("dwTipo", new SelectList(ViewBag.Tipo, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker",  @data_live_search = "false", @id = "dwTipo", @name = "dwTipo"  })
                 </div>
             </div>
         </div>  
@@ -62,17 +62,16 @@
                         @Html.DropDownList("dwSemana", new SelectList(ViewBag.Semana, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", @data_live_search = "false", @id = "dwSemana", @name = "dwSemana" })
                     </div>
                 </div>
-
             </div>
-        </div>     
-      
-                         
+        </div>           
     </div>
     <div class="row">
         <div class="col-sm-3">
-            <label for="txtTda"></label>
+            <label for="dwEvaluacion">Acumulado</label>
             <div class="form-group">
-               
+                <div id="div_tipo" class="form-group">
+                    @Html.DropDownList("dwEvaluacion", new SelectList(ViewBag.Evaluacion, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", @data_live_search = "false", @id = "dwEvaluacion", @name = "dwEvaluacion" })
+                </div>
             </div>
         </div>
         <div class="col-sm-3">
@@ -129,11 +128,30 @@
             var listar = [];
 
             if (strTipo != null) {
-                var lista_filter = (strTipo == "-1") ? dataArray.filter(obj => obj.cod_distri != strTipo) : dataArray.filter(obj => obj.cod_distri === strTipo || obj.cod_distri=='0');
-                $.each(lista_filter, function (index, item) {
+                if(strTipo == "-1"){
+                    var lista_filter = (strTipo == "-1") ? dataArray.filter(obj => obj.cod_distri != strTipo) : dataArray.filter(obj => obj.cod_distri === strTipo || obj.cod_distri=='0');
+                    $.each(lista_filter, function (index, item) {
 
-                    listar.push(item);
-                });
+                        listar.push(item);
+                    });
+                }else{
+                    
+                    var lista_filter = dataArray.filter(obj => obj.cod_distri=='0');
+                    $.each(lista_filter, function (index, item) {
+
+                        listar.push(item);
+                    });                
+
+                    $.each(strTipo, function (index2, item2) {
+
+                        var lista_filter = dataArray.filter(obj => obj.cod_distri === item2);
+                        $.each(lista_filter, function (index, item) {
+
+                            listar.push(item);
+                        });
+                       
+                    });
+                }
             }
 
             llenarCombo("div_tda", "dwtda", listar, '0', '', "",tipo);
@@ -146,7 +164,7 @@
 
             
 
-            var str =(tipo=='1')? '<select class="selectpicker" multiple = "multiple"  data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '">':'<select class="selectpicker"  data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '">';
+            var str =(tipo=='1')? '<select class="selectpicker" multiple = "multiple"  data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '"  data-actions-box="true"  data-selected-text-format="count > 2" >':'<select class="selectpicker"  data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '" data-actions-box="true"  data-selected-text-format="count > 2">';
             var ItemNormal = '<option value="codItem">desItem</option>';
             var colectItemNormal = '';
 
@@ -164,6 +182,7 @@
                     strSelected = '" selected="selected" '
 
                 }
+                strSelected = '" selected="selected" '
                 colectItemNormal = colectItemNormal.replace("codItem", item.cod_entid + strSelected);
                 colectItemNormal = colectItemNormal.replace("desItem", item.des_entid);
 
@@ -184,15 +203,17 @@
     
     <script>
         $(document).ready(function () {
+            $("#dwDis").selectpicker('selectAll');
             ListarTienda();
         });
 
 
         function MostrarReporte(e) {
-            var coddis = $('#dwDis').val();
-            var tda = $('#dwtda').val();
+            var coddis =  ($("#dwDis option:not(:selected)").length == 0 && $("#dwDis > option").length > 1 ? "-1" : $('#dwDis').val() );  // $('#dwDis').val();
+            var tda = ($("#dwtda option:not(:selected)").length == 0 && $("#dwtda > option").length > 1 ? "0" : $('#dwtda').val() )  ;
             var tipo_cat = $('#dwTipo').val();
             var semana = $('#dwSemana').val();
+            var evalua = $('#dwEvaluacion').val();
           
             tipo_cat = tipo_cat == '01'  ? 'S'  : tipo_cat;
             tipo_cat = tipo_cat == '02'  ? 'R'  : tipo_cat;
@@ -210,7 +231,7 @@
                     dataType: 'json',
                     type: 'POST',
                     //dataType: "html",
-                    data: { tip_Categ:tipo_cat, cod_Dis:coddis, codEntid:tda, cod_Semana:semana},
+                    data: { tip_Categ:tipo_cat, cod_Dis:coddis, codEntid:tda, cod_Semana:semana , evalua : evalua},
                     //cache: false,
                     //async: false,
                     //dataType: "html",

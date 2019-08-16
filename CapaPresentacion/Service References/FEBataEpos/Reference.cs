@@ -16,15 +16,6 @@ namespace CapaPresentacion.FEBataEpos {
     public interface OnlinePortType {
         
         // CODEGEN: El parámetro 'return' requiere información adicional de esquema que no se puede capturar con el modo de parámetros. El atributo específico es 'System.Xml.Serialization.XmlElementAttribute'.
-        [System.ServiceModel.OperationContractAttribute(Action="urn:OnlineRecovery", ReplyAction="urn:OnlineRecoveryResponse")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        [return: System.ServiceModel.MessageParameterAttribute(Name="return")]
-        CapaPresentacion.FEBataEpos.OnlineRecoveryResponse OnlineRecovery(CapaPresentacion.FEBataEpos.OnlineRecoveryRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="urn:OnlineRecovery", ReplyAction="urn:OnlineRecoveryResponse")]
-        System.Threading.Tasks.Task<CapaPresentacion.FEBataEpos.OnlineRecoveryResponse> OnlineRecoveryAsync(CapaPresentacion.FEBataEpos.OnlineRecoveryRequest request);
-        
-        // CODEGEN: El parámetro 'return' requiere información adicional de esquema que no se puede capturar con el modo de parámetros. El atributo específico es 'System.Xml.Serialization.XmlElementAttribute'.
         [System.ServiceModel.OperationContractAttribute(Action="urn:CargaInformeBajas", ReplyAction="urn:CargaInformeBajasResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [return: System.ServiceModel.MessageParameterAttribute(Name="return")]
@@ -34,13 +25,13 @@ namespace CapaPresentacion.FEBataEpos {
         System.Threading.Tasks.Task<CapaPresentacion.FEBataEpos.CargaInformeBajasResponse> CargaInformeBajasAsync(CapaPresentacion.FEBataEpos.CargaInformeBajasRequest request);
         
         // CODEGEN: El parámetro 'return' requiere información adicional de esquema que no se puede capturar con el modo de parámetros. El atributo específico es 'System.Xml.Serialization.XmlElementAttribute'.
-        [System.ServiceModel.OperationContractAttribute(Action="urn:OnlineARC", ReplyAction="urn:OnlineARCResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="urn:GenInformeReversiones", ReplyAction="urn:GenInformeReversionesResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [return: System.ServiceModel.MessageParameterAttribute(Name="return")]
-        CapaPresentacion.FEBataEpos.OnlineARCResponse OnlineARC(CapaPresentacion.FEBataEpos.OnlineARCRequest request);
+        CapaPresentacion.FEBataEpos.GenInformeReversionesResponse GenInformeReversiones(CapaPresentacion.FEBataEpos.GenInformeReversionesRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="urn:OnlineARC", ReplyAction="urn:OnlineARCResponse")]
-        System.Threading.Tasks.Task<CapaPresentacion.FEBataEpos.OnlineARCResponse> OnlineARCAsync(CapaPresentacion.FEBataEpos.OnlineARCRequest request);
+        [System.ServiceModel.OperationContractAttribute(Action="urn:GenInformeReversiones", ReplyAction="urn:GenInformeReversionesResponse")]
+        System.Threading.Tasks.Task<CapaPresentacion.FEBataEpos.GenInformeReversionesResponse> GenInformeReversionesAsync(CapaPresentacion.FEBataEpos.GenInformeReversionesRequest request);
         
         // CODEGEN: El parámetro 'return' requiere información adicional de esquema que no se puede capturar con el modo de parámetros. El atributo específico es 'System.Xml.Serialization.XmlElementAttribute'.
         [System.ServiceModel.OperationContractAttribute(Action="urn:OnlineConsultaEstado", ReplyAction="urn:OnlineConsultaEstadoResponse")]
@@ -52,13 +43,49 @@ namespace CapaPresentacion.FEBataEpos {
         System.Threading.Tasks.Task<CapaPresentacion.FEBataEpos.OnlineConsultaEstadoResponse> OnlineConsultaEstadoAsync(CapaPresentacion.FEBataEpos.OnlineConsultaEstadoRequest request);
         
         // CODEGEN: El parámetro 'return' requiere información adicional de esquema que no se puede capturar con el modo de parámetros. El atributo específico es 'System.Xml.Serialization.XmlElementAttribute'.
-        [System.ServiceModel.OperationContractAttribute(Action="urn:GenInformeReversiones", ReplyAction="urn:GenInformeReversionesResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="urn:OnlineRecoveryRecList", ReplyAction="urn:OnlineRecoveryRecListResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [return: System.ServiceModel.MessageParameterAttribute(Name="return")]
-        CapaPresentacion.FEBataEpos.GenInformeReversionesResponse GenInformeReversiones(CapaPresentacion.FEBataEpos.GenInformeReversionesRequest request);
+        CapaPresentacion.FEBataEpos.OnlineRecoveryRecListResponse OnlineRecoveryRecList(CapaPresentacion.FEBataEpos.OnlineRecoveryRecListRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="urn:GenInformeReversiones", ReplyAction="urn:GenInformeReversionesResponse")]
-        System.Threading.Tasks.Task<CapaPresentacion.FEBataEpos.GenInformeReversionesResponse> GenInformeReversionesAsync(CapaPresentacion.FEBataEpos.GenInformeReversionesRequest request);
+        [System.ServiceModel.OperationContractAttribute(Action="urn:OnlineRecoveryRecList", ReplyAction="urn:OnlineRecoveryRecListResponse")]
+        System.Threading.Tasks.Task<CapaPresentacion.FEBataEpos.OnlineRecoveryRecListResponse> OnlineRecoveryRecListAsync(CapaPresentacion.FEBataEpos.OnlineRecoveryRecListRequest request);
+        
+        // CODEGEN: El parámetro 'return' requiere información adicional de esquema que no se puede capturar con el modo de parámetros. El atributo específico es 'System.Xml.Serialization.XmlElementAttribute'.
+        [System.ServiceModel.OperationContractAttribute(Action="urn:Consult", ReplyAction="urn:ConsultResponse")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        [return: System.ServiceModel.MessageParameterAttribute(Name="return")]
+        CapaPresentacion.FEBataEpos.ConsultResponse Consult(CapaPresentacion.FEBataEpos.ConsultRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="urn:Consult", ReplyAction="urn:ConsultResponse")]
+        System.Threading.Tasks.Task<CapaPresentacion.FEBataEpos.ConsultResponse> ConsultAsync(CapaPresentacion.FEBataEpos.ConsultRequest request);
+        
+        // CODEGEN: El parámetro 'return' requiere información adicional de esquema que no se puede capturar con el modo de parámetros. El atributo específico es 'System.Xml.Serialization.XmlElementAttribute'.
+        [System.ServiceModel.OperationContractAttribute(Action="urn:ConsultaInformeReversiones", ReplyAction="urn:ConsultaInformeReversionesResponse")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        [return: System.ServiceModel.MessageParameterAttribute(Name="return")]
+        CapaPresentacion.FEBataEpos.ConsultaInformeReversionesResponse ConsultaInformeReversiones(CapaPresentacion.FEBataEpos.ConsultaInformeReversionesRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="urn:ConsultaInformeReversiones", ReplyAction="urn:ConsultaInformeReversionesResponse")]
+        System.Threading.Tasks.Task<CapaPresentacion.FEBataEpos.ConsultaInformeReversionesResponse> ConsultaInformeReversionesAsync(CapaPresentacion.FEBataEpos.ConsultaInformeReversionesRequest request);
+        
+        // CODEGEN: El parámetro 'return' requiere información adicional de esquema que no se puede capturar con el modo de parámetros. El atributo específico es 'System.Xml.Serialization.XmlElementAttribute'.
+        [System.ServiceModel.OperationContractAttribute(Action="urn:OnlineRecovery", ReplyAction="urn:OnlineRecoveryResponse")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        [return: System.ServiceModel.MessageParameterAttribute(Name="return")]
+        CapaPresentacion.FEBataEpos.OnlineRecoveryResponse OnlineRecovery(CapaPresentacion.FEBataEpos.OnlineRecoveryRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="urn:OnlineRecovery", ReplyAction="urn:OnlineRecoveryResponse")]
+        System.Threading.Tasks.Task<CapaPresentacion.FEBataEpos.OnlineRecoveryResponse> OnlineRecoveryAsync(CapaPresentacion.FEBataEpos.OnlineRecoveryRequest request);
+        
+        // CODEGEN: El parámetro 'return' requiere información adicional de esquema que no se puede capturar con el modo de parámetros. El atributo específico es 'System.Xml.Serialization.XmlElementAttribute'.
+        [System.ServiceModel.OperationContractAttribute(Action="urn:OnlineARC", ReplyAction="urn:OnlineARCResponse")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        [return: System.ServiceModel.MessageParameterAttribute(Name="return")]
+        CapaPresentacion.FEBataEpos.OnlineARCResponse OnlineARC(CapaPresentacion.FEBataEpos.OnlineARCRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="urn:OnlineARC", ReplyAction="urn:OnlineARCResponse")]
+        System.Threading.Tasks.Task<CapaPresentacion.FEBataEpos.OnlineARCResponse> OnlineARCAsync(CapaPresentacion.FEBataEpos.OnlineARCRequest request);
         
         // CODEGEN: El parámetro 'return' requiere información adicional de esquema que no se puede capturar con el modo de parámetros. El atributo específico es 'System.Xml.Serialization.XmlElementAttribute'.
         [System.ServiceModel.OperationContractAttribute(Action="urn:AddDocInfo", ReplyAction="urn:AddDocInfoResponse")]
@@ -79,15 +106,6 @@ namespace CapaPresentacion.FEBataEpos {
         System.Threading.Tasks.Task<CapaPresentacion.FEBataEpos.listarAdjuntosRecibidosResponse> listarAdjuntosRecibidosAsync(CapaPresentacion.FEBataEpos.listarAdjuntosRecibidosRequest request);
         
         // CODEGEN: El parámetro 'return' requiere información adicional de esquema que no se puede capturar con el modo de parámetros. El atributo específico es 'System.Xml.Serialization.XmlElementAttribute'.
-        [System.ServiceModel.OperationContractAttribute(Action="urn:OnlineRecoveryRecList", ReplyAction="urn:OnlineRecoveryRecListResponse")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        [return: System.ServiceModel.MessageParameterAttribute(Name="return")]
-        CapaPresentacion.FEBataEpos.OnlineRecoveryRecListResponse OnlineRecoveryRecList(CapaPresentacion.FEBataEpos.OnlineRecoveryRecListRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="urn:OnlineRecoveryRecList", ReplyAction="urn:OnlineRecoveryRecListResponse")]
-        System.Threading.Tasks.Task<CapaPresentacion.FEBataEpos.OnlineRecoveryRecListResponse> OnlineRecoveryRecListAsync(CapaPresentacion.FEBataEpos.OnlineRecoveryRecListRequest request);
-        
-        // CODEGEN: El parámetro 'return' requiere información adicional de esquema que no se puede capturar con el modo de parámetros. El atributo específico es 'System.Xml.Serialization.XmlElementAttribute'.
         [System.ServiceModel.OperationContractAttribute(Action="urn:InformeResBoletasDiario", ReplyAction="urn:InformeResBoletasDiarioResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [return: System.ServiceModel.MessageParameterAttribute(Name="return")]
@@ -95,15 +113,6 @@ namespace CapaPresentacion.FEBataEpos {
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:InformeResBoletasDiario", ReplyAction="urn:InformeResBoletasDiarioResponse")]
         System.Threading.Tasks.Task<CapaPresentacion.FEBataEpos.InformeResBoletasDiarioResponse> InformeResBoletasDiarioAsync(CapaPresentacion.FEBataEpos.InformeResBoletasDiarioRequest request);
-        
-        // CODEGEN: El parámetro 'return' requiere información adicional de esquema que no se puede capturar con el modo de parámetros. El atributo específico es 'System.Xml.Serialization.XmlElementAttribute'.
-        [System.ServiceModel.OperationContractAttribute(Action="urn:ConsultaInformeReversiones", ReplyAction="urn:ConsultaInformeReversionesResponse")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        [return: System.ServiceModel.MessageParameterAttribute(Name="return")]
-        CapaPresentacion.FEBataEpos.ConsultaInformeReversionesResponse ConsultaInformeReversiones(CapaPresentacion.FEBataEpos.ConsultaInformeReversionesRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="urn:ConsultaInformeReversiones", ReplyAction="urn:ConsultaInformeReversionesResponse")]
-        System.Threading.Tasks.Task<CapaPresentacion.FEBataEpos.ConsultaInformeReversionesResponse> ConsultaInformeReversionesAsync(CapaPresentacion.FEBataEpos.ConsultaInformeReversionesRequest request);
         
         // CODEGEN: El parámetro 'return' requiere información adicional de esquema que no se puede capturar con el modo de parámetros. El atributo específico es 'System.Xml.Serialization.XmlElementAttribute'.
         [System.ServiceModel.OperationContractAttribute(Action="urn:OnlineGeneration", ReplyAction="urn:OnlineGenerationResponse")]
@@ -131,65 +140,6 @@ namespace CapaPresentacion.FEBataEpos {
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:OnlineRecoveryRec", ReplyAction="urn:OnlineRecoveryRecResponse")]
         System.Threading.Tasks.Task<CapaPresentacion.FEBataEpos.OnlineRecoveryRecResponse> OnlineRecoveryRecAsync(CapaPresentacion.FEBataEpos.OnlineRecoveryRecRequest request);
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="OnlineRecovery", WrapperNamespace="http://ws.online.asp.core.paperless.cl", IsWrapped=true)]
-    public partial class OnlineRecoveryRequest {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public string ruc;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=1)]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public string login;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=2)]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public string clave;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=3)]
-        public int tipoDoc;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=4)]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public string folio;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=5)]
-        public int tipoRetorno;
-        
-        public OnlineRecoveryRequest() {
-        }
-        
-        public OnlineRecoveryRequest(string ruc, string login, string clave, int tipoDoc, string folio, int tipoRetorno) {
-            this.ruc = ruc;
-            this.login = login;
-            this.clave = clave;
-            this.tipoDoc = tipoDoc;
-            this.folio = folio;
-            this.tipoRetorno = tipoRetorno;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="OnlineRecoveryResponse", WrapperNamespace="http://ws.online.asp.core.paperless.cl", IsWrapped=true)]
-    public partial class OnlineRecoveryResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public string @return;
-        
-        public OnlineRecoveryResponse() {
-        }
-        
-        public OnlineRecoveryResponse(string @return) {
-            this.@return = @return;
-        }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -251,8 +201,8 @@ namespace CapaPresentacion.FEBataEpos {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="OnlineARC", WrapperNamespace="http://ws.online.asp.core.paperless.cl", IsWrapped=true)]
-    public partial class OnlineARCRequest {
+    [System.ServiceModel.MessageContractAttribute(WrapperName="GenInformeReversiones", WrapperNamespace="http://ws.online.asp.core.paperless.cl", IsWrapped=true)]
+    public partial class GenInformeReversionesRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
@@ -267,52 +217,47 @@ namespace CapaPresentacion.FEBataEpos {
         public string clave;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=3)]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public string rucEmisor;
+        public int tpoGen;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=4)]
-        public int tipoDoc;
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public string tramaTxt;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=5)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public string folio;
+        public string periodo;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=6)]
-        public int estado;
+        public bool envioSUNAT;
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=7)]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public string version;
-        
-        public OnlineARCRequest() {
+        public GenInformeReversionesRequest() {
         }
         
-        public OnlineARCRequest(string ruc, string login, string clave, string rucEmisor, int tipoDoc, string folio, int estado, string version) {
+        public GenInformeReversionesRequest(string ruc, string login, string clave, int tpoGen, string tramaTxt, string periodo, bool envioSUNAT) {
             this.ruc = ruc;
             this.login = login;
             this.clave = clave;
-            this.rucEmisor = rucEmisor;
-            this.tipoDoc = tipoDoc;
-            this.folio = folio;
-            this.estado = estado;
-            this.version = version;
+            this.tpoGen = tpoGen;
+            this.tramaTxt = tramaTxt;
+            this.periodo = periodo;
+            this.envioSUNAT = envioSUNAT;
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="OnlineARCResponse", WrapperNamespace="http://ws.online.asp.core.paperless.cl", IsWrapped=true)]
-    public partial class OnlineARCResponse {
+    [System.ServiceModel.MessageContractAttribute(WrapperName="GenInformeReversionesResponse", WrapperNamespace="http://ws.online.asp.core.paperless.cl", IsWrapped=true)]
+    public partial class GenInformeReversionesResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public string @return;
         
-        public OnlineARCResponse() {
+        public GenInformeReversionesResponse() {
         }
         
-        public OnlineARCResponse(string @return) {
+        public GenInformeReversionesResponse(string @return) {
             this.@return = @return;
         }
     }
@@ -385,8 +330,8 @@ namespace CapaPresentacion.FEBataEpos {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="GenInformeReversiones", WrapperNamespace="http://ws.online.asp.core.paperless.cl", IsWrapped=true)]
-    public partial class GenInformeReversionesRequest {
+    [System.ServiceModel.MessageContractAttribute(WrapperName="OnlineRecoveryRecList", WrapperNamespace="http://ws.online.asp.core.paperless.cl", IsWrapped=true)]
+    public partial class OnlineRecoveryRecListRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
@@ -401,47 +346,268 @@ namespace CapaPresentacion.FEBataEpos {
         public string clave;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=3)]
-        public int tpoGen;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=4)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public string tramaTxt;
+        public string fecha;
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=5)]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public string periodo;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=6)]
-        public bool envioSUNAT;
-        
-        public GenInformeReversionesRequest() {
+        public OnlineRecoveryRecListRequest() {
         }
         
-        public GenInformeReversionesRequest(string ruc, string login, string clave, int tpoGen, string tramaTxt, string periodo, bool envioSUNAT) {
+        public OnlineRecoveryRecListRequest(string ruc, string login, string clave, string fecha) {
             this.ruc = ruc;
             this.login = login;
             this.clave = clave;
-            this.tpoGen = tpoGen;
-            this.tramaTxt = tramaTxt;
-            this.periodo = periodo;
-            this.envioSUNAT = envioSUNAT;
+            this.fecha = fecha;
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="GenInformeReversionesResponse", WrapperNamespace="http://ws.online.asp.core.paperless.cl", IsWrapped=true)]
-    public partial class GenInformeReversionesResponse {
+    [System.ServiceModel.MessageContractAttribute(WrapperName="OnlineRecoveryRecListResponse", WrapperNamespace="http://ws.online.asp.core.paperless.cl", IsWrapped=true)]
+    public partial class OnlineRecoveryRecListResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
         public string @return;
         
-        public GenInformeReversionesResponse() {
+        public OnlineRecoveryRecListResponse() {
         }
         
-        public GenInformeReversionesResponse(string @return) {
+        public OnlineRecoveryRecListResponse(string @return) {
+            this.@return = @return;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="Consult", WrapperNamespace="http://ws.online.asp.core.paperless.cl", IsWrapped=true)]
+    public partial class ConsultRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public string ruc;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public string login;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=2)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public string clave;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=3)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public string @params;
+        
+        public ConsultRequest() {
+        }
+        
+        public ConsultRequest(string ruc, string login, string clave, string @params) {
+            this.ruc = ruc;
+            this.login = login;
+            this.clave = clave;
+            this.@params = @params;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="ConsultResponse", WrapperNamespace="http://ws.online.asp.core.paperless.cl", IsWrapped=true)]
+    public partial class ConsultResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public string @return;
+        
+        public ConsultResponse() {
+        }
+        
+        public ConsultResponse(string @return) {
+            this.@return = @return;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="ConsultaInformeReversiones", WrapperNamespace="http://ws.online.asp.core.paperless.cl", IsWrapped=true)]
+    public partial class ConsultaInformeReversionesRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public string ruc;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public string login;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=2)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public string clave;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=3)]
+        public int idRegistro;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=4)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public string numTicketSunat;
+        
+        public ConsultaInformeReversionesRequest() {
+        }
+        
+        public ConsultaInformeReversionesRequest(string ruc, string login, string clave, int idRegistro, string numTicketSunat) {
+            this.ruc = ruc;
+            this.login = login;
+            this.clave = clave;
+            this.idRegistro = idRegistro;
+            this.numTicketSunat = numTicketSunat;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="ConsultaInformeReversionesResponse", WrapperNamespace="http://ws.online.asp.core.paperless.cl", IsWrapped=true)]
+    public partial class ConsultaInformeReversionesResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public string @return;
+        
+        public ConsultaInformeReversionesResponse() {
+        }
+        
+        public ConsultaInformeReversionesResponse(string @return) {
+            this.@return = @return;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="OnlineRecovery", WrapperNamespace="http://ws.online.asp.core.paperless.cl", IsWrapped=true)]
+    public partial class OnlineRecoveryRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public string ruc;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public string login;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=2)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public string clave;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=3)]
+        public int tipoDoc;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=4)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public string folio;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=5)]
+        public int tipoRetorno;
+        
+        public OnlineRecoveryRequest() {
+        }
+        
+        public OnlineRecoveryRequest(string ruc, string login, string clave, int tipoDoc, string folio, int tipoRetorno) {
+            this.ruc = ruc;
+            this.login = login;
+            this.clave = clave;
+            this.tipoDoc = tipoDoc;
+            this.folio = folio;
+            this.tipoRetorno = tipoRetorno;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="OnlineRecoveryResponse", WrapperNamespace="http://ws.online.asp.core.paperless.cl", IsWrapped=true)]
+    public partial class OnlineRecoveryResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public string @return;
+        
+        public OnlineRecoveryResponse() {
+        }
+        
+        public OnlineRecoveryResponse(string @return) {
+            this.@return = @return;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="OnlineARC", WrapperNamespace="http://ws.online.asp.core.paperless.cl", IsWrapped=true)]
+    public partial class OnlineARCRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public string ruc;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public string login;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=2)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public string clave;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=3)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public string rucEmisor;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=4)]
+        public int tipoDoc;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=5)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public string folio;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=6)]
+        public int estado;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=7)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public string version;
+        
+        public OnlineARCRequest() {
+        }
+        
+        public OnlineARCRequest(string ruc, string login, string clave, string rucEmisor, int tipoDoc, string folio, int estado, string version) {
+            this.ruc = ruc;
+            this.login = login;
+            this.clave = clave;
+            this.rucEmisor = rucEmisor;
+            this.tipoDoc = tipoDoc;
+            this.folio = folio;
+            this.estado = estado;
+            this.version = version;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="OnlineARCResponse", WrapperNamespace="http://ws.online.asp.core.paperless.cl", IsWrapped=true)]
+    public partial class OnlineARCResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public string @return;
+        
+        public OnlineARCResponse() {
+        }
+        
+        public OnlineARCResponse(string @return) {
             this.@return = @return;
         }
     }
@@ -569,57 +735,6 @@ namespace CapaPresentacion.FEBataEpos {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="OnlineRecoveryRecList", WrapperNamespace="http://ws.online.asp.core.paperless.cl", IsWrapped=true)]
-    public partial class OnlineRecoveryRecListRequest {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public string ruc;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=1)]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public string login;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=2)]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public string clave;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=3)]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public string fecha;
-        
-        public OnlineRecoveryRecListRequest() {
-        }
-        
-        public OnlineRecoveryRecListRequest(string ruc, string login, string clave, string fecha) {
-            this.ruc = ruc;
-            this.login = login;
-            this.clave = clave;
-            this.fecha = fecha;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="OnlineRecoveryRecListResponse", WrapperNamespace="http://ws.online.asp.core.paperless.cl", IsWrapped=true)]
-    public partial class OnlineRecoveryRecListResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public string @return;
-        
-        public OnlineRecoveryRecListResponse() {
-        }
-        
-        public OnlineRecoveryRecListResponse(string @return) {
-            this.@return = @return;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="InformeResBoletasDiario", WrapperNamespace="http://ws.online.asp.core.paperless.cl", IsWrapped=true)]
     public partial class InformeResBoletasDiarioRequest {
         
@@ -664,61 +779,6 @@ namespace CapaPresentacion.FEBataEpos {
         }
         
         public InformeResBoletasDiarioResponse(string @return) {
-            this.@return = @return;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="ConsultaInformeReversiones", WrapperNamespace="http://ws.online.asp.core.paperless.cl", IsWrapped=true)]
-    public partial class ConsultaInformeReversionesRequest {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public string ruc;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=1)]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public string login;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=2)]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public string clave;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=3)]
-        public int idRegistro;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=4)]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public string numTicketSunat;
-        
-        public ConsultaInformeReversionesRequest() {
-        }
-        
-        public ConsultaInformeReversionesRequest(string ruc, string login, string clave, int idRegistro, string numTicketSunat) {
-            this.ruc = ruc;
-            this.login = login;
-            this.clave = clave;
-            this.idRegistro = idRegistro;
-            this.numTicketSunat = numTicketSunat;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="ConsultaInformeReversionesResponse", WrapperNamespace="http://ws.online.asp.core.paperless.cl", IsWrapped=true)]
-    public partial class ConsultaInformeReversionesResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://ws.online.asp.core.paperless.cl", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public string @return;
-        
-        public ConsultaInformeReversionesResponse() {
-        }
-        
-        public ConsultaInformeReversionesResponse(string @return) {
             this.@return = @return;
         }
     }
@@ -925,39 +985,6 @@ namespace CapaPresentacion.FEBataEpos {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        CapaPresentacion.FEBataEpos.OnlineRecoveryResponse CapaPresentacion.FEBataEpos.OnlinePortType.OnlineRecovery(CapaPresentacion.FEBataEpos.OnlineRecoveryRequest request) {
-            return base.Channel.OnlineRecovery(request);
-        }
-        
-        public string OnlineRecovery(string ruc, string login, string clave, int tipoDoc, string folio, int tipoRetorno) {
-            CapaPresentacion.FEBataEpos.OnlineRecoveryRequest inValue = new CapaPresentacion.FEBataEpos.OnlineRecoveryRequest();
-            inValue.ruc = ruc;
-            inValue.login = login;
-            inValue.clave = clave;
-            inValue.tipoDoc = tipoDoc;
-            inValue.folio = folio;
-            inValue.tipoRetorno = tipoRetorno;
-            CapaPresentacion.FEBataEpos.OnlineRecoveryResponse retVal = ((CapaPresentacion.FEBataEpos.OnlinePortType)(this)).OnlineRecovery(inValue);
-            return retVal.@return;
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<CapaPresentacion.FEBataEpos.OnlineRecoveryResponse> CapaPresentacion.FEBataEpos.OnlinePortType.OnlineRecoveryAsync(CapaPresentacion.FEBataEpos.OnlineRecoveryRequest request) {
-            return base.Channel.OnlineRecoveryAsync(request);
-        }
-        
-        public System.Threading.Tasks.Task<CapaPresentacion.FEBataEpos.OnlineRecoveryResponse> OnlineRecoveryAsync(string ruc, string login, string clave, int tipoDoc, string folio, int tipoRetorno) {
-            CapaPresentacion.FEBataEpos.OnlineRecoveryRequest inValue = new CapaPresentacion.FEBataEpos.OnlineRecoveryRequest();
-            inValue.ruc = ruc;
-            inValue.login = login;
-            inValue.clave = clave;
-            inValue.tipoDoc = tipoDoc;
-            inValue.folio = folio;
-            inValue.tipoRetorno = tipoRetorno;
-            return ((CapaPresentacion.FEBataEpos.OnlinePortType)(this)).OnlineRecoveryAsync(inValue);
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         CapaPresentacion.FEBataEpos.CargaInformeBajasResponse CapaPresentacion.FEBataEpos.OnlinePortType.CargaInformeBajas(CapaPresentacion.FEBataEpos.CargaInformeBajasRequest request) {
             return base.Channel.CargaInformeBajas(request);
         }
@@ -989,40 +1016,38 @@ namespace CapaPresentacion.FEBataEpos {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        CapaPresentacion.FEBataEpos.OnlineARCResponse CapaPresentacion.FEBataEpos.OnlinePortType.OnlineARC(CapaPresentacion.FEBataEpos.OnlineARCRequest request) {
-            return base.Channel.OnlineARC(request);
+        CapaPresentacion.FEBataEpos.GenInformeReversionesResponse CapaPresentacion.FEBataEpos.OnlinePortType.GenInformeReversiones(CapaPresentacion.FEBataEpos.GenInformeReversionesRequest request) {
+            return base.Channel.GenInformeReversiones(request);
         }
         
-        public string OnlineARC(string ruc, string login, string clave, string rucEmisor, int tipoDoc, string folio, int estado, string version) {
-            CapaPresentacion.FEBataEpos.OnlineARCRequest inValue = new CapaPresentacion.FEBataEpos.OnlineARCRequest();
+        public string GenInformeReversiones(string ruc, string login, string clave, int tpoGen, string tramaTxt, string periodo, bool envioSUNAT) {
+            CapaPresentacion.FEBataEpos.GenInformeReversionesRequest inValue = new CapaPresentacion.FEBataEpos.GenInformeReversionesRequest();
             inValue.ruc = ruc;
             inValue.login = login;
             inValue.clave = clave;
-            inValue.rucEmisor = rucEmisor;
-            inValue.tipoDoc = tipoDoc;
-            inValue.folio = folio;
-            inValue.estado = estado;
-            inValue.version = version;
-            CapaPresentacion.FEBataEpos.OnlineARCResponse retVal = ((CapaPresentacion.FEBataEpos.OnlinePortType)(this)).OnlineARC(inValue);
+            inValue.tpoGen = tpoGen;
+            inValue.tramaTxt = tramaTxt;
+            inValue.periodo = periodo;
+            inValue.envioSUNAT = envioSUNAT;
+            CapaPresentacion.FEBataEpos.GenInformeReversionesResponse retVal = ((CapaPresentacion.FEBataEpos.OnlinePortType)(this)).GenInformeReversiones(inValue);
             return retVal.@return;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<CapaPresentacion.FEBataEpos.OnlineARCResponse> CapaPresentacion.FEBataEpos.OnlinePortType.OnlineARCAsync(CapaPresentacion.FEBataEpos.OnlineARCRequest request) {
-            return base.Channel.OnlineARCAsync(request);
+        System.Threading.Tasks.Task<CapaPresentacion.FEBataEpos.GenInformeReversionesResponse> CapaPresentacion.FEBataEpos.OnlinePortType.GenInformeReversionesAsync(CapaPresentacion.FEBataEpos.GenInformeReversionesRequest request) {
+            return base.Channel.GenInformeReversionesAsync(request);
         }
         
-        public System.Threading.Tasks.Task<CapaPresentacion.FEBataEpos.OnlineARCResponse> OnlineARCAsync(string ruc, string login, string clave, string rucEmisor, int tipoDoc, string folio, int estado, string version) {
-            CapaPresentacion.FEBataEpos.OnlineARCRequest inValue = new CapaPresentacion.FEBataEpos.OnlineARCRequest();
+        public System.Threading.Tasks.Task<CapaPresentacion.FEBataEpos.GenInformeReversionesResponse> GenInformeReversionesAsync(string ruc, string login, string clave, int tpoGen, string tramaTxt, string periodo, bool envioSUNAT) {
+            CapaPresentacion.FEBataEpos.GenInformeReversionesRequest inValue = new CapaPresentacion.FEBataEpos.GenInformeReversionesRequest();
             inValue.ruc = ruc;
             inValue.login = login;
             inValue.clave = clave;
-            inValue.rucEmisor = rucEmisor;
-            inValue.tipoDoc = tipoDoc;
-            inValue.folio = folio;
-            inValue.estado = estado;
-            inValue.version = version;
-            return ((CapaPresentacion.FEBataEpos.OnlinePortType)(this)).OnlineARCAsync(inValue);
+            inValue.tpoGen = tpoGen;
+            inValue.tramaTxt = tramaTxt;
+            inValue.periodo = periodo;
+            inValue.envioSUNAT = envioSUNAT;
+            return ((CapaPresentacion.FEBataEpos.OnlinePortType)(this)).GenInformeReversionesAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -1061,38 +1086,162 @@ namespace CapaPresentacion.FEBataEpos {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        CapaPresentacion.FEBataEpos.GenInformeReversionesResponse CapaPresentacion.FEBataEpos.OnlinePortType.GenInformeReversiones(CapaPresentacion.FEBataEpos.GenInformeReversionesRequest request) {
-            return base.Channel.GenInformeReversiones(request);
+        CapaPresentacion.FEBataEpos.OnlineRecoveryRecListResponse CapaPresentacion.FEBataEpos.OnlinePortType.OnlineRecoveryRecList(CapaPresentacion.FEBataEpos.OnlineRecoveryRecListRequest request) {
+            return base.Channel.OnlineRecoveryRecList(request);
         }
         
-        public string GenInformeReversiones(string ruc, string login, string clave, int tpoGen, string tramaTxt, string periodo, bool envioSUNAT) {
-            CapaPresentacion.FEBataEpos.GenInformeReversionesRequest inValue = new CapaPresentacion.FEBataEpos.GenInformeReversionesRequest();
+        public string OnlineRecoveryRecList(string ruc, string login, string clave, string fecha) {
+            CapaPresentacion.FEBataEpos.OnlineRecoveryRecListRequest inValue = new CapaPresentacion.FEBataEpos.OnlineRecoveryRecListRequest();
             inValue.ruc = ruc;
             inValue.login = login;
             inValue.clave = clave;
-            inValue.tpoGen = tpoGen;
-            inValue.tramaTxt = tramaTxt;
-            inValue.periodo = periodo;
-            inValue.envioSUNAT = envioSUNAT;
-            CapaPresentacion.FEBataEpos.GenInformeReversionesResponse retVal = ((CapaPresentacion.FEBataEpos.OnlinePortType)(this)).GenInformeReversiones(inValue);
+            inValue.fecha = fecha;
+            CapaPresentacion.FEBataEpos.OnlineRecoveryRecListResponse retVal = ((CapaPresentacion.FEBataEpos.OnlinePortType)(this)).OnlineRecoveryRecList(inValue);
             return retVal.@return;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<CapaPresentacion.FEBataEpos.GenInformeReversionesResponse> CapaPresentacion.FEBataEpos.OnlinePortType.GenInformeReversionesAsync(CapaPresentacion.FEBataEpos.GenInformeReversionesRequest request) {
-            return base.Channel.GenInformeReversionesAsync(request);
+        System.Threading.Tasks.Task<CapaPresentacion.FEBataEpos.OnlineRecoveryRecListResponse> CapaPresentacion.FEBataEpos.OnlinePortType.OnlineRecoveryRecListAsync(CapaPresentacion.FEBataEpos.OnlineRecoveryRecListRequest request) {
+            return base.Channel.OnlineRecoveryRecListAsync(request);
         }
         
-        public System.Threading.Tasks.Task<CapaPresentacion.FEBataEpos.GenInformeReversionesResponse> GenInformeReversionesAsync(string ruc, string login, string clave, int tpoGen, string tramaTxt, string periodo, bool envioSUNAT) {
-            CapaPresentacion.FEBataEpos.GenInformeReversionesRequest inValue = new CapaPresentacion.FEBataEpos.GenInformeReversionesRequest();
+        public System.Threading.Tasks.Task<CapaPresentacion.FEBataEpos.OnlineRecoveryRecListResponse> OnlineRecoveryRecListAsync(string ruc, string login, string clave, string fecha) {
+            CapaPresentacion.FEBataEpos.OnlineRecoveryRecListRequest inValue = new CapaPresentacion.FEBataEpos.OnlineRecoveryRecListRequest();
             inValue.ruc = ruc;
             inValue.login = login;
             inValue.clave = clave;
-            inValue.tpoGen = tpoGen;
-            inValue.tramaTxt = tramaTxt;
-            inValue.periodo = periodo;
-            inValue.envioSUNAT = envioSUNAT;
-            return ((CapaPresentacion.FEBataEpos.OnlinePortType)(this)).GenInformeReversionesAsync(inValue);
+            inValue.fecha = fecha;
+            return ((CapaPresentacion.FEBataEpos.OnlinePortType)(this)).OnlineRecoveryRecListAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        CapaPresentacion.FEBataEpos.ConsultResponse CapaPresentacion.FEBataEpos.OnlinePortType.Consult(CapaPresentacion.FEBataEpos.ConsultRequest request) {
+            return base.Channel.Consult(request);
+        }
+        
+        public string Consult(string ruc, string login, string clave, string @params) {
+            CapaPresentacion.FEBataEpos.ConsultRequest inValue = new CapaPresentacion.FEBataEpos.ConsultRequest();
+            inValue.ruc = ruc;
+            inValue.login = login;
+            inValue.clave = clave;
+            inValue.@params = @params;
+            CapaPresentacion.FEBataEpos.ConsultResponse retVal = ((CapaPresentacion.FEBataEpos.OnlinePortType)(this)).Consult(inValue);
+            return retVal.@return;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<CapaPresentacion.FEBataEpos.ConsultResponse> CapaPresentacion.FEBataEpos.OnlinePortType.ConsultAsync(CapaPresentacion.FEBataEpos.ConsultRequest request) {
+            return base.Channel.ConsultAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<CapaPresentacion.FEBataEpos.ConsultResponse> ConsultAsync(string ruc, string login, string clave, string @params) {
+            CapaPresentacion.FEBataEpos.ConsultRequest inValue = new CapaPresentacion.FEBataEpos.ConsultRequest();
+            inValue.ruc = ruc;
+            inValue.login = login;
+            inValue.clave = clave;
+            inValue.@params = @params;
+            return ((CapaPresentacion.FEBataEpos.OnlinePortType)(this)).ConsultAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        CapaPresentacion.FEBataEpos.ConsultaInformeReversionesResponse CapaPresentacion.FEBataEpos.OnlinePortType.ConsultaInformeReversiones(CapaPresentacion.FEBataEpos.ConsultaInformeReversionesRequest request) {
+            return base.Channel.ConsultaInformeReversiones(request);
+        }
+        
+        public string ConsultaInformeReversiones(string ruc, string login, string clave, int idRegistro, string numTicketSunat) {
+            CapaPresentacion.FEBataEpos.ConsultaInformeReversionesRequest inValue = new CapaPresentacion.FEBataEpos.ConsultaInformeReversionesRequest();
+            inValue.ruc = ruc;
+            inValue.login = login;
+            inValue.clave = clave;
+            inValue.idRegistro = idRegistro;
+            inValue.numTicketSunat = numTicketSunat;
+            CapaPresentacion.FEBataEpos.ConsultaInformeReversionesResponse retVal = ((CapaPresentacion.FEBataEpos.OnlinePortType)(this)).ConsultaInformeReversiones(inValue);
+            return retVal.@return;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<CapaPresentacion.FEBataEpos.ConsultaInformeReversionesResponse> CapaPresentacion.FEBataEpos.OnlinePortType.ConsultaInformeReversionesAsync(CapaPresentacion.FEBataEpos.ConsultaInformeReversionesRequest request) {
+            return base.Channel.ConsultaInformeReversionesAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<CapaPresentacion.FEBataEpos.ConsultaInformeReversionesResponse> ConsultaInformeReversionesAsync(string ruc, string login, string clave, int idRegistro, string numTicketSunat) {
+            CapaPresentacion.FEBataEpos.ConsultaInformeReversionesRequest inValue = new CapaPresentacion.FEBataEpos.ConsultaInformeReversionesRequest();
+            inValue.ruc = ruc;
+            inValue.login = login;
+            inValue.clave = clave;
+            inValue.idRegistro = idRegistro;
+            inValue.numTicketSunat = numTicketSunat;
+            return ((CapaPresentacion.FEBataEpos.OnlinePortType)(this)).ConsultaInformeReversionesAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        CapaPresentacion.FEBataEpos.OnlineRecoveryResponse CapaPresentacion.FEBataEpos.OnlinePortType.OnlineRecovery(CapaPresentacion.FEBataEpos.OnlineRecoveryRequest request) {
+            return base.Channel.OnlineRecovery(request);
+        }
+        
+        public string OnlineRecovery(string ruc, string login, string clave, int tipoDoc, string folio, int tipoRetorno) {
+            CapaPresentacion.FEBataEpos.OnlineRecoveryRequest inValue = new CapaPresentacion.FEBataEpos.OnlineRecoveryRequest();
+            inValue.ruc = ruc;
+            inValue.login = login;
+            inValue.clave = clave;
+            inValue.tipoDoc = tipoDoc;
+            inValue.folio = folio;
+            inValue.tipoRetorno = tipoRetorno;
+            CapaPresentacion.FEBataEpos.OnlineRecoveryResponse retVal = ((CapaPresentacion.FEBataEpos.OnlinePortType)(this)).OnlineRecovery(inValue);
+            return retVal.@return;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<CapaPresentacion.FEBataEpos.OnlineRecoveryResponse> CapaPresentacion.FEBataEpos.OnlinePortType.OnlineRecoveryAsync(CapaPresentacion.FEBataEpos.OnlineRecoveryRequest request) {
+            return base.Channel.OnlineRecoveryAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<CapaPresentacion.FEBataEpos.OnlineRecoveryResponse> OnlineRecoveryAsync(string ruc, string login, string clave, int tipoDoc, string folio, int tipoRetorno) {
+            CapaPresentacion.FEBataEpos.OnlineRecoveryRequest inValue = new CapaPresentacion.FEBataEpos.OnlineRecoveryRequest();
+            inValue.ruc = ruc;
+            inValue.login = login;
+            inValue.clave = clave;
+            inValue.tipoDoc = tipoDoc;
+            inValue.folio = folio;
+            inValue.tipoRetorno = tipoRetorno;
+            return ((CapaPresentacion.FEBataEpos.OnlinePortType)(this)).OnlineRecoveryAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        CapaPresentacion.FEBataEpos.OnlineARCResponse CapaPresentacion.FEBataEpos.OnlinePortType.OnlineARC(CapaPresentacion.FEBataEpos.OnlineARCRequest request) {
+            return base.Channel.OnlineARC(request);
+        }
+        
+        public string OnlineARC(string ruc, string login, string clave, string rucEmisor, int tipoDoc, string folio, int estado, string version) {
+            CapaPresentacion.FEBataEpos.OnlineARCRequest inValue = new CapaPresentacion.FEBataEpos.OnlineARCRequest();
+            inValue.ruc = ruc;
+            inValue.login = login;
+            inValue.clave = clave;
+            inValue.rucEmisor = rucEmisor;
+            inValue.tipoDoc = tipoDoc;
+            inValue.folio = folio;
+            inValue.estado = estado;
+            inValue.version = version;
+            CapaPresentacion.FEBataEpos.OnlineARCResponse retVal = ((CapaPresentacion.FEBataEpos.OnlinePortType)(this)).OnlineARC(inValue);
+            return retVal.@return;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<CapaPresentacion.FEBataEpos.OnlineARCResponse> CapaPresentacion.FEBataEpos.OnlinePortType.OnlineARCAsync(CapaPresentacion.FEBataEpos.OnlineARCRequest request) {
+            return base.Channel.OnlineARCAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<CapaPresentacion.FEBataEpos.OnlineARCResponse> OnlineARCAsync(string ruc, string login, string clave, string rucEmisor, int tipoDoc, string folio, int estado, string version) {
+            CapaPresentacion.FEBataEpos.OnlineARCRequest inValue = new CapaPresentacion.FEBataEpos.OnlineARCRequest();
+            inValue.ruc = ruc;
+            inValue.login = login;
+            inValue.clave = clave;
+            inValue.rucEmisor = rucEmisor;
+            inValue.tipoDoc = tipoDoc;
+            inValue.folio = folio;
+            inValue.estado = estado;
+            inValue.version = version;
+            return ((CapaPresentacion.FEBataEpos.OnlinePortType)(this)).OnlineARCAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -1162,35 +1311,6 @@ namespace CapaPresentacion.FEBataEpos {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        CapaPresentacion.FEBataEpos.OnlineRecoveryRecListResponse CapaPresentacion.FEBataEpos.OnlinePortType.OnlineRecoveryRecList(CapaPresentacion.FEBataEpos.OnlineRecoveryRecListRequest request) {
-            return base.Channel.OnlineRecoveryRecList(request);
-        }
-        
-        public string OnlineRecoveryRecList(string ruc, string login, string clave, string fecha) {
-            CapaPresentacion.FEBataEpos.OnlineRecoveryRecListRequest inValue = new CapaPresentacion.FEBataEpos.OnlineRecoveryRecListRequest();
-            inValue.ruc = ruc;
-            inValue.login = login;
-            inValue.clave = clave;
-            inValue.fecha = fecha;
-            CapaPresentacion.FEBataEpos.OnlineRecoveryRecListResponse retVal = ((CapaPresentacion.FEBataEpos.OnlinePortType)(this)).OnlineRecoveryRecList(inValue);
-            return retVal.@return;
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<CapaPresentacion.FEBataEpos.OnlineRecoveryRecListResponse> CapaPresentacion.FEBataEpos.OnlinePortType.OnlineRecoveryRecListAsync(CapaPresentacion.FEBataEpos.OnlineRecoveryRecListRequest request) {
-            return base.Channel.OnlineRecoveryRecListAsync(request);
-        }
-        
-        public System.Threading.Tasks.Task<CapaPresentacion.FEBataEpos.OnlineRecoveryRecListResponse> OnlineRecoveryRecListAsync(string ruc, string login, string clave, string fecha) {
-            CapaPresentacion.FEBataEpos.OnlineRecoveryRecListRequest inValue = new CapaPresentacion.FEBataEpos.OnlineRecoveryRecListRequest();
-            inValue.ruc = ruc;
-            inValue.login = login;
-            inValue.clave = clave;
-            inValue.fecha = fecha;
-            return ((CapaPresentacion.FEBataEpos.OnlinePortType)(this)).OnlineRecoveryRecListAsync(inValue);
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         CapaPresentacion.FEBataEpos.InformeResBoletasDiarioResponse CapaPresentacion.FEBataEpos.OnlinePortType.InformeResBoletasDiario(CapaPresentacion.FEBataEpos.InformeResBoletasDiarioRequest request) {
             return base.Channel.InformeResBoletasDiario(request);
         }
@@ -1217,37 +1337,6 @@ namespace CapaPresentacion.FEBataEpos {
             inValue.clave = clave;
             inValue.fechaInforme = fechaInforme;
             return ((CapaPresentacion.FEBataEpos.OnlinePortType)(this)).InformeResBoletasDiarioAsync(inValue);
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        CapaPresentacion.FEBataEpos.ConsultaInformeReversionesResponse CapaPresentacion.FEBataEpos.OnlinePortType.ConsultaInformeReversiones(CapaPresentacion.FEBataEpos.ConsultaInformeReversionesRequest request) {
-            return base.Channel.ConsultaInformeReversiones(request);
-        }
-        
-        public string ConsultaInformeReversiones(string ruc, string login, string clave, int idRegistro, string numTicketSunat) {
-            CapaPresentacion.FEBataEpos.ConsultaInformeReversionesRequest inValue = new CapaPresentacion.FEBataEpos.ConsultaInformeReversionesRequest();
-            inValue.ruc = ruc;
-            inValue.login = login;
-            inValue.clave = clave;
-            inValue.idRegistro = idRegistro;
-            inValue.numTicketSunat = numTicketSunat;
-            CapaPresentacion.FEBataEpos.ConsultaInformeReversionesResponse retVal = ((CapaPresentacion.FEBataEpos.OnlinePortType)(this)).ConsultaInformeReversiones(inValue);
-            return retVal.@return;
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<CapaPresentacion.FEBataEpos.ConsultaInformeReversionesResponse> CapaPresentacion.FEBataEpos.OnlinePortType.ConsultaInformeReversionesAsync(CapaPresentacion.FEBataEpos.ConsultaInformeReversionesRequest request) {
-            return base.Channel.ConsultaInformeReversionesAsync(request);
-        }
-        
-        public System.Threading.Tasks.Task<CapaPresentacion.FEBataEpos.ConsultaInformeReversionesResponse> ConsultaInformeReversionesAsync(string ruc, string login, string clave, int idRegistro, string numTicketSunat) {
-            CapaPresentacion.FEBataEpos.ConsultaInformeReversionesRequest inValue = new CapaPresentacion.FEBataEpos.ConsultaInformeReversionesRequest();
-            inValue.ruc = ruc;
-            inValue.login = login;
-            inValue.clave = clave;
-            inValue.idRegistro = idRegistro;
-            inValue.numTicketSunat = numTicketSunat;
-            return ((CapaPresentacion.FEBataEpos.OnlinePortType)(this)).ConsultaInformeReversionesAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]

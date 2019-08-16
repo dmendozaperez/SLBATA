@@ -40,6 +40,23 @@
           </xs:sequence>
         </xs:complexType>
       </xs:element>
+      <xs:element name="Consult">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="ruc" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="login" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="clave" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="params" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="ConsultResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="return" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
       <xs:element name="ConsultaInformeReversiones">
         <xs:complexType>
           <xs:sequence>
@@ -249,23 +266,17 @@
       </xs:element>
     </xs:schema>
   </wsdl:types>
-  <wsdl:message name="OnlineRecoveryRequest">
-    <wsdl:part name="parameters" element="ns0:OnlineRecovery" />
-  </wsdl:message>
-  <wsdl:message name="OnlineRecoveryResponse">
-    <wsdl:part name="parameters" element="ns0:OnlineRecoveryResponse" />
-  </wsdl:message>
   <wsdl:message name="CargaInformeBajasRequest">
     <wsdl:part name="parameters" element="ns0:CargaInformeBajas" />
   </wsdl:message>
   <wsdl:message name="CargaInformeBajasResponse">
     <wsdl:part name="parameters" element="ns0:CargaInformeBajasResponse" />
   </wsdl:message>
-  <wsdl:message name="OnlineARCRequest">
-    <wsdl:part name="parameters" element="ns0:OnlineARC" />
+  <wsdl:message name="GenInformeReversionesRequest">
+    <wsdl:part name="parameters" element="ns0:GenInformeReversiones" />
   </wsdl:message>
-  <wsdl:message name="OnlineARCResponse">
-    <wsdl:part name="parameters" element="ns0:OnlineARCResponse" />
+  <wsdl:message name="GenInformeReversionesResponse">
+    <wsdl:part name="parameters" element="ns0:GenInformeReversionesResponse" />
   </wsdl:message>
   <wsdl:message name="OnlineConsultaEstadoRequest">
     <wsdl:part name="parameters" element="ns0:OnlineConsultaEstado" />
@@ -273,11 +284,35 @@
   <wsdl:message name="OnlineConsultaEstadoResponse">
     <wsdl:part name="parameters" element="ns0:OnlineConsultaEstadoResponse" />
   </wsdl:message>
-  <wsdl:message name="GenInformeReversionesRequest">
-    <wsdl:part name="parameters" element="ns0:GenInformeReversiones" />
+  <wsdl:message name="OnlineRecoveryRecListRequest">
+    <wsdl:part name="parameters" element="ns0:OnlineRecoveryRecList" />
   </wsdl:message>
-  <wsdl:message name="GenInformeReversionesResponse">
-    <wsdl:part name="parameters" element="ns0:GenInformeReversionesResponse" />
+  <wsdl:message name="OnlineRecoveryRecListResponse">
+    <wsdl:part name="parameters" element="ns0:OnlineRecoveryRecListResponse" />
+  </wsdl:message>
+  <wsdl:message name="ConsultRequest">
+    <wsdl:part name="parameters" element="ns0:Consult" />
+  </wsdl:message>
+  <wsdl:message name="ConsultResponse">
+    <wsdl:part name="parameters" element="ns0:ConsultResponse" />
+  </wsdl:message>
+  <wsdl:message name="ConsultaInformeReversionesRequest">
+    <wsdl:part name="parameters" element="ns0:ConsultaInformeReversiones" />
+  </wsdl:message>
+  <wsdl:message name="ConsultaInformeReversionesResponse">
+    <wsdl:part name="parameters" element="ns0:ConsultaInformeReversionesResponse" />
+  </wsdl:message>
+  <wsdl:message name="OnlineRecoveryRequest">
+    <wsdl:part name="parameters" element="ns0:OnlineRecovery" />
+  </wsdl:message>
+  <wsdl:message name="OnlineRecoveryResponse">
+    <wsdl:part name="parameters" element="ns0:OnlineRecoveryResponse" />
+  </wsdl:message>
+  <wsdl:message name="OnlineARCRequest">
+    <wsdl:part name="parameters" element="ns0:OnlineARC" />
+  </wsdl:message>
+  <wsdl:message name="OnlineARCResponse">
+    <wsdl:part name="parameters" element="ns0:OnlineARCResponse" />
   </wsdl:message>
   <wsdl:message name="AddDocInfoRequest">
     <wsdl:part name="parameters" element="ns0:AddDocInfo" />
@@ -291,23 +326,11 @@
   <wsdl:message name="listarAdjuntosRecibidosResponse">
     <wsdl:part name="parameters" element="ns0:listarAdjuntosRecibidosResponse" />
   </wsdl:message>
-  <wsdl:message name="OnlineRecoveryRecListRequest">
-    <wsdl:part name="parameters" element="ns0:OnlineRecoveryRecList" />
-  </wsdl:message>
-  <wsdl:message name="OnlineRecoveryRecListResponse">
-    <wsdl:part name="parameters" element="ns0:OnlineRecoveryRecListResponse" />
-  </wsdl:message>
   <wsdl:message name="InformeResBoletasDiarioRequest">
     <wsdl:part name="parameters" element="ns0:InformeResBoletasDiario" />
   </wsdl:message>
   <wsdl:message name="InformeResBoletasDiarioResponse">
     <wsdl:part name="parameters" element="ns0:InformeResBoletasDiarioResponse" />
-  </wsdl:message>
-  <wsdl:message name="ConsultaInformeReversionesRequest">
-    <wsdl:part name="parameters" element="ns0:ConsultaInformeReversiones" />
-  </wsdl:message>
-  <wsdl:message name="ConsultaInformeReversionesResponse">
-    <wsdl:part name="parameters" element="ns0:ConsultaInformeReversionesResponse" />
   </wsdl:message>
   <wsdl:message name="OnlineGenerationRequest">
     <wsdl:part name="parameters" element="ns0:OnlineGeneration" />
@@ -328,25 +351,37 @@
     <wsdl:part name="parameters" element="ns0:OnlineRecoveryRecResponse" />
   </wsdl:message>
   <wsdl:portType name="OnlinePortType">
-    <wsdl:operation name="OnlineRecovery">
-      <wsdl:input wsaw:Action="urn:OnlineRecovery" message="ns0:OnlineRecoveryRequest" />
-      <wsdl:output wsaw:Action="urn:OnlineRecoveryResponse" message="ns0:OnlineRecoveryResponse" />
-    </wsdl:operation>
     <wsdl:operation name="CargaInformeBajas">
       <wsdl:input wsaw:Action="urn:CargaInformeBajas" message="ns0:CargaInformeBajasRequest" />
       <wsdl:output wsaw:Action="urn:CargaInformeBajasResponse" message="ns0:CargaInformeBajasResponse" />
     </wsdl:operation>
-    <wsdl:operation name="OnlineARC">
-      <wsdl:input wsaw:Action="urn:OnlineARC" message="ns0:OnlineARCRequest" />
-      <wsdl:output wsaw:Action="urn:OnlineARCResponse" message="ns0:OnlineARCResponse" />
+    <wsdl:operation name="GenInformeReversiones">
+      <wsdl:input wsaw:Action="urn:GenInformeReversiones" message="ns0:GenInformeReversionesRequest" />
+      <wsdl:output wsaw:Action="urn:GenInformeReversionesResponse" message="ns0:GenInformeReversionesResponse" />
     </wsdl:operation>
     <wsdl:operation name="OnlineConsultaEstado">
       <wsdl:input wsaw:Action="urn:OnlineConsultaEstado" message="ns0:OnlineConsultaEstadoRequest" />
       <wsdl:output wsaw:Action="urn:OnlineConsultaEstadoResponse" message="ns0:OnlineConsultaEstadoResponse" />
     </wsdl:operation>
-    <wsdl:operation name="GenInformeReversiones">
-      <wsdl:input wsaw:Action="urn:GenInformeReversiones" message="ns0:GenInformeReversionesRequest" />
-      <wsdl:output wsaw:Action="urn:GenInformeReversionesResponse" message="ns0:GenInformeReversionesResponse" />
+    <wsdl:operation name="OnlineRecoveryRecList">
+      <wsdl:input wsaw:Action="urn:OnlineRecoveryRecList" message="ns0:OnlineRecoveryRecListRequest" />
+      <wsdl:output wsaw:Action="urn:OnlineRecoveryRecListResponse" message="ns0:OnlineRecoveryRecListResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="Consult">
+      <wsdl:input wsaw:Action="urn:Consult" message="ns0:ConsultRequest" />
+      <wsdl:output wsaw:Action="urn:ConsultResponse" message="ns0:ConsultResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="ConsultaInformeReversiones">
+      <wsdl:input wsaw:Action="urn:ConsultaInformeReversiones" message="ns0:ConsultaInformeReversionesRequest" />
+      <wsdl:output wsaw:Action="urn:ConsultaInformeReversionesResponse" message="ns0:ConsultaInformeReversionesResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="OnlineRecovery">
+      <wsdl:input wsaw:Action="urn:OnlineRecovery" message="ns0:OnlineRecoveryRequest" />
+      <wsdl:output wsaw:Action="urn:OnlineRecoveryResponse" message="ns0:OnlineRecoveryResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="OnlineARC">
+      <wsdl:input wsaw:Action="urn:OnlineARC" message="ns0:OnlineARCRequest" />
+      <wsdl:output wsaw:Action="urn:OnlineARCResponse" message="ns0:OnlineARCResponse" />
     </wsdl:operation>
     <wsdl:operation name="AddDocInfo">
       <wsdl:input wsaw:Action="urn:AddDocInfo" message="ns0:AddDocInfoRequest" />
@@ -356,17 +391,9 @@
       <wsdl:input wsaw:Action="urn:listarAdjuntosRecibidos" message="ns0:listarAdjuntosRecibidosRequest" />
       <wsdl:output wsaw:Action="urn:listarAdjuntosRecibidosResponse" message="ns0:listarAdjuntosRecibidosResponse" />
     </wsdl:operation>
-    <wsdl:operation name="OnlineRecoveryRecList">
-      <wsdl:input wsaw:Action="urn:OnlineRecoveryRecList" message="ns0:OnlineRecoveryRecListRequest" />
-      <wsdl:output wsaw:Action="urn:OnlineRecoveryRecListResponse" message="ns0:OnlineRecoveryRecListResponse" />
-    </wsdl:operation>
     <wsdl:operation name="InformeResBoletasDiario">
       <wsdl:input wsaw:Action="urn:InformeResBoletasDiario" message="ns0:InformeResBoletasDiarioRequest" />
       <wsdl:output wsaw:Action="urn:InformeResBoletasDiarioResponse" message="ns0:InformeResBoletasDiarioResponse" />
-    </wsdl:operation>
-    <wsdl:operation name="ConsultaInformeReversiones">
-      <wsdl:input wsaw:Action="urn:ConsultaInformeReversiones" message="ns0:ConsultaInformeReversionesRequest" />
-      <wsdl:output wsaw:Action="urn:ConsultaInformeReversionesResponse" message="ns0:ConsultaInformeReversionesResponse" />
     </wsdl:operation>
     <wsdl:operation name="OnlineGeneration">
       <wsdl:input wsaw:Action="urn:OnlineGeneration" message="ns0:OnlineGenerationRequest" />
@@ -383,15 +410,6 @@
   </wsdl:portType>
   <wsdl:binding name="OnlineSOAP11Binding" type="ns0:OnlinePortType">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
-    <wsdl:operation name="OnlineRecovery">
-      <soap:operation soapAction="urn:OnlineRecovery" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="CargaInformeBajas">
       <soap:operation soapAction="urn:CargaInformeBajas" style="document" />
       <wsdl:input>
@@ -401,8 +419,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="OnlineARC">
-      <soap:operation soapAction="urn:OnlineARC" style="document" />
+    <wsdl:operation name="GenInformeReversiones">
+      <soap:operation soapAction="urn:GenInformeReversiones" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -419,8 +437,44 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GenInformeReversiones">
-      <soap:operation soapAction="urn:GenInformeReversiones" style="document" />
+    <wsdl:operation name="OnlineRecoveryRecList">
+      <soap:operation soapAction="urn:OnlineRecoveryRecList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Consult">
+      <soap:operation soapAction="urn:Consult" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConsultaInformeReversiones">
+      <soap:operation soapAction="urn:ConsultaInformeReversiones" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OnlineRecovery">
+      <soap:operation soapAction="urn:OnlineRecovery" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OnlineARC">
+      <soap:operation soapAction="urn:OnlineARC" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -446,26 +500,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="OnlineRecoveryRecList">
-      <soap:operation soapAction="urn:OnlineRecoveryRecList" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="InformeResBoletasDiario">
       <soap:operation soapAction="urn:InformeResBoletasDiario" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="ConsultaInformeReversiones">
-      <soap:operation soapAction="urn:ConsultaInformeReversiones" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -503,15 +539,6 @@
   </wsdl:binding>
   <wsdl:binding name="OnlineSOAP12Binding" type="ns0:OnlinePortType">
     <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
-    <wsdl:operation name="OnlineRecovery">
-      <soap12:operation soapAction="urn:OnlineRecovery" style="document" />
-      <wsdl:input>
-        <soap12:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap12:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="CargaInformeBajas">
       <soap12:operation soapAction="urn:CargaInformeBajas" style="document" />
       <wsdl:input>
@@ -521,8 +548,8 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="OnlineARC">
-      <soap12:operation soapAction="urn:OnlineARC" style="document" />
+    <wsdl:operation name="GenInformeReversiones">
+      <soap12:operation soapAction="urn:GenInformeReversiones" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -539,8 +566,44 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GenInformeReversiones">
-      <soap12:operation soapAction="urn:GenInformeReversiones" style="document" />
+    <wsdl:operation name="OnlineRecoveryRecList">
+      <soap12:operation soapAction="urn:OnlineRecoveryRecList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Consult">
+      <soap12:operation soapAction="urn:Consult" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConsultaInformeReversiones">
+      <soap12:operation soapAction="urn:ConsultaInformeReversiones" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OnlineRecovery">
+      <soap12:operation soapAction="urn:OnlineRecovery" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OnlineARC">
+      <soap12:operation soapAction="urn:OnlineARC" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -566,26 +629,8 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="OnlineRecoveryRecList">
-      <soap12:operation soapAction="urn:OnlineRecoveryRecList" style="document" />
-      <wsdl:input>
-        <soap12:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap12:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="InformeResBoletasDiario">
       <soap12:operation soapAction="urn:InformeResBoletasDiario" style="document" />
-      <wsdl:input>
-        <soap12:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap12:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="ConsultaInformeReversiones">
-      <soap12:operation soapAction="urn:ConsultaInformeReversiones" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -623,15 +668,6 @@
   </wsdl:binding>
   <wsdl:binding name="OnlineHttpBinding" type="ns0:OnlinePortType">
     <http:binding verb="POST" />
-    <wsdl:operation name="OnlineRecovery">
-      <http:operation location="Online/OnlineRecovery" />
-      <wsdl:input>
-        <mime:content part="OnlineRecovery" type="text/xml" />
-      </wsdl:input>
-      <wsdl:output>
-        <mime:content part="OnlineRecovery" type="text/xml" />
-      </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="CargaInformeBajas">
       <http:operation location="Online/CargaInformeBajas" />
       <wsdl:input>
@@ -641,13 +677,13 @@
         <mime:content part="CargaInformeBajas" type="text/xml" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="OnlineARC">
-      <http:operation location="Online/OnlineARC" />
+    <wsdl:operation name="GenInformeReversiones">
+      <http:operation location="Online/GenInformeReversiones" />
       <wsdl:input>
-        <mime:content part="OnlineARC" type="text/xml" />
+        <mime:content part="GenInformeReversiones" type="text/xml" />
       </wsdl:input>
       <wsdl:output>
-        <mime:content part="OnlineARC" type="text/xml" />
+        <mime:content part="GenInformeReversiones" type="text/xml" />
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="OnlineConsultaEstado">
@@ -659,13 +695,49 @@
         <mime:content part="OnlineConsultaEstado" type="text/xml" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GenInformeReversiones">
-      <http:operation location="Online/GenInformeReversiones" />
+    <wsdl:operation name="OnlineRecoveryRecList">
+      <http:operation location="Online/OnlineRecoveryRecList" />
       <wsdl:input>
-        <mime:content part="GenInformeReversiones" type="text/xml" />
+        <mime:content part="OnlineRecoveryRecList" type="text/xml" />
       </wsdl:input>
       <wsdl:output>
-        <mime:content part="GenInformeReversiones" type="text/xml" />
+        <mime:content part="OnlineRecoveryRecList" type="text/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Consult">
+      <http:operation location="Online/Consult" />
+      <wsdl:input>
+        <mime:content part="Consult" type="text/xml" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="Consult" type="text/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConsultaInformeReversiones">
+      <http:operation location="Online/ConsultaInformeReversiones" />
+      <wsdl:input>
+        <mime:content part="ConsultaInformeReversiones" type="text/xml" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="ConsultaInformeReversiones" type="text/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OnlineRecovery">
+      <http:operation location="Online/OnlineRecovery" />
+      <wsdl:input>
+        <mime:content part="OnlineRecovery" type="text/xml" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="OnlineRecovery" type="text/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OnlineARC">
+      <http:operation location="Online/OnlineARC" />
+      <wsdl:input>
+        <mime:content part="OnlineARC" type="text/xml" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="OnlineARC" type="text/xml" />
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="AddDocInfo">
@@ -686,15 +758,6 @@
         <mime:content part="listarAdjuntosRecibidos" type="text/xml" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="OnlineRecoveryRecList">
-      <http:operation location="Online/OnlineRecoveryRecList" />
-      <wsdl:input>
-        <mime:content part="OnlineRecoveryRecList" type="text/xml" />
-      </wsdl:input>
-      <wsdl:output>
-        <mime:content part="OnlineRecoveryRecList" type="text/xml" />
-      </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="InformeResBoletasDiario">
       <http:operation location="Online/InformeResBoletasDiario" />
       <wsdl:input>
@@ -702,15 +765,6 @@
       </wsdl:input>
       <wsdl:output>
         <mime:content part="InformeResBoletasDiario" type="text/xml" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="ConsultaInformeReversiones">
-      <http:operation location="Online/ConsultaInformeReversiones" />
-      <wsdl:input>
-        <mime:content part="ConsultaInformeReversiones" type="text/xml" />
-      </wsdl:input>
-      <wsdl:output>
-        <mime:content part="ConsultaInformeReversiones" type="text/xml" />
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="OnlineGeneration">

@@ -274,7 +274,7 @@ namespace Data.Crystal.Reporte
             return content;
         }
 
-        public List<Models_Rendimiento_Categ> list_RendimientoxCategoria(string tip_Categ, string cod_Dis, string codEntid, string cod_Semana)
+        public List<Models_Rendimiento_Categ> list_RendimientoxCategoria(string tip_Categ, string cod_Dis, string codEntid, string cod_Semana, string evalua)
         {
             string sqlquery = "USP_XSTORE_REPORTE_RENDIMIENTO_CATEGORIA";
             List<Models_Rendimiento_Categ> lista = null;
@@ -293,7 +293,7 @@ namespace Data.Crystal.Reporte
                             cmd.Parameters.AddWithValue("@COD_DIS", cod_Dis);
                             cmd.Parameters.AddWithValue("@COD_TDA", codEntid);
                             cmd.Parameters.AddWithValue("@COD_SEM", cod_Semana);
-                           
+                            cmd.Parameters.AddWithValue("@EVALUA", evalua);
 
                             using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                             {
@@ -303,7 +303,7 @@ namespace Data.Crystal.Reporte
                                 lista = (from DataRow dr in dt.Rows
                                          select new Models_Rendimiento_Categ()
                                          {
-                                             semana= dr["SEMANA"].ToString(),
+                                             semana = dr["SEMANA"].ToString(),
                                              distrito = dr["DISTRITO"].ToString(),
                                              tienda = dr["TIENDA"].ToString(),
                                              tipo = dr["TIPO"].ToString(),
@@ -325,7 +325,9 @@ namespace Data.Crystal.Reporte
                                              soles_acum_ant = Convert.ToDecimal(dr["SOLES_ACUM_ANT"]),
                                              soles_acum_real = Convert.ToDecimal(dr["SOLES_ACUM_REAL"]),
                                              saly_soles_acum = Convert.ToDecimal(dr["SALY_SOLES_ACUM"]),
-                                            
+                                             nlineas_act = Convert.ToDecimal(dr["NLINEAS_ACT"]),
+                                             nlineas_pas = Convert.ToDecimal(dr["NLINEAS_PAS"]),
+                                             evalua = evalua
                                          }).ToList();
                             }
                         }
