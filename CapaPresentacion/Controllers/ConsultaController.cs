@@ -44,22 +44,12 @@ namespace CapaPresentacion.Controllers
             {
                 if (Session["Tienda"] != null)
                 {
-                    string strJson = "";
-                    var serializer = new JavaScriptSerializer();
-                    strJson = tienda.listarStr_ListaTienda("PE");
-                    List<Ent_ListaTienda> listar_tda = serializer.Deserialize<List<Ent_ListaTienda>>(strJson);
-                    var tda = listar_tda.Where(t => t.cod_entid == Session["Tienda"].ToString()).ToList();
-                    ViewBag.Tienda = tda;
+                    ViewBag.Tienda = tienda.get_ListaTiendaXstore().Where(a => a.cbo_codigo == Session["Tienda"].ToString());
                     ViewBag.concepto_suna = dat_concepto_suna.lista_concepto_suna().Where(d => d.con_sun_id != "07");
                 }
                 else
                 {
-                    string strJson = "";
-                    var serializer = new JavaScriptSerializer();
-                    strJson = tienda.listarStr_ListaTienda("PE");
-                    List<Ent_ListaTienda> listar_tda = serializer.Deserialize<List<Ent_ListaTienda>>(strJson);
-                    var tda = listar_tda;
-                    ViewBag.Tienda = tda;
+                    ViewBag.Tienda = tienda.get_ListaTiendaXstore(true);
                     ViewBag.concepto_suna = dat_concepto_suna.lista_concepto_suna();
                 }                
                 return View();
