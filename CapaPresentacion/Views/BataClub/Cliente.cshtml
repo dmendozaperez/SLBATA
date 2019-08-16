@@ -1,0 +1,130 @@
+﻿@using CapaEntidad.BataClub
+@model IEnumerable<Ent_BataClub_Cliente>
+@{
+    ViewBag.Title = "Consulta ....";
+    AjaxOptions options = new AjaxOptions
+    {
+        HttpMethod = "GET",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "lista",
+        OnComplete = "waitingDialog.hide();",
+        OnBegin = "waitingDialog.show('Espere un momento por favor');",
+        OnFailure = "waitingDialog.hide();"
+    };
+}
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+<link href="~/ContentSelect/bootstrap-multiselect.css" rel="stylesheet" />
+
+<p class="text-danger">Consulta de .............</p>
+<div class="box box-body box-primary">
+    @using (Ajax.BeginForm("_TableCliente", options))
+    {
+        <form id="form1">
+            <div class="row">
+                <div class="col-sm-4" style="padding-left: 25px;">
+                    <label for="segape" style="color: #3d566e;">Canal</label>
+                    <div class="form-group">
+                        <div id="can" class="form-group">
+                            @Html.DropDownList("dwcanal", new SelectList(ViewBag.Canal, "can_id", "can_des", "-1"), new { @class = "selectpicker dropdown-toggle btn btn-default", @data_live_search = "true", @id = "dwcanal", @name = "dwcanal", @enable = "false" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4" style="padding-left: 25px;">
+                    <label for="segape" style="color: #3d566e;">Departamento</label>
+                    <div class="form-group">
+                        <div id="dep" class="form-group">
+                            @Html.DropDownList("dwdep", new SelectList(ViewBag.Departamento, "dep_id", "dep_descripcion", "-1"), new { @class = "selectpicker dropdown-toggle btn btn-default", @data_live_search = "true", @id = "dwdep", @name = "dwdep", @enable = "false"/*, @onchange = "MostrarCanal()"*/ })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4" style="padding-left: 25px;">
+                    <label for="segape" style="color: #3d566e;">Provincia</label>
+                    <div class="form-group">
+                        <div id="pro" class="form-group">
+                            @Html.DropDownList("dwpro", new SelectList(ViewBag.Provincia, "prv_cod", "prv_descripcion", "-1"), new { @class = "selectpicker dropdown-toggle btn btn-default", @data_live_search = "true", @id = "dwpro", @name = "dwpro", @enable = "false"/*, @onchange = "MostrarCanal()"*/ })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4" style="padding-left: 25px;">
+                    <label for="segape" style="color: #3d566e;">Distrito</label>
+                    <div class="form-group">
+                        <div id="dis" class="form-group">
+                            @Html.DropDownList("dwdis", new SelectList(ViewBag.Distrito, "dis_cod", "dis_descripcion", "-1"), new { @class = "selectpicker dropdown-toggle btn btn-default", @data_live_search = "true", @id = "dwdis", @name = "dwdis", @enable = "false" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2" style="padding-left: 25px; margin-right: inherit;">
+                    <label for="segape" style="color: #3d566e;">DNI</label>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon" style="color: #3d566e;"><i class="glyphicon glyphicon-user"></i></span>
+                            <input id="dni" type="text" class="form-control" name="dni" placeholder="Ingresar DNI">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2" style="padding-left: 25px; margin-right: inherit;">
+                    <label for="segape" style="color: #3d566e;">Nombre</label>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-barcode"></i></span>
+                            <input id="nombre" type="text" class="form-control" name="nombre" placeholder="Ingresar un nombre">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2" style="padding-left: 25px; margin-right: inherit;">
+                    <label for="segape" style="color: #3d566e;">Apellido</label>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-barcode"></i></span>
+                            <input id="apellido" type="text" class="form-control" name="apellido" placeholder="Ingresar un apellido">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2" style="width: 105px;margin-top: 23px;float: right;margin-right: 25px;">
+                    <a class="btn btn-success glyphicon glyphicon-save-file" href="@Url.Action("ExportToExcelClientes")" title="Exportar a excel"> Excel</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3" style="padding-left: 25px; margin-right: inherit;">
+                    <label for="segape" style="color: #3d566e;">Correo</label>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+                            <input id="correo" type="text" class="form-control" name="correo" placeholder="Ingresar correo">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2" style="padding-left: 25px; width: 105px; margin-top: 23px; margin-bottom: 10px;">
+                    <button id="btnSearch" type="submit" title="Consultar" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-search"> Buscar</span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    }
+    <div class="box-body" id="lista" style="padding-bottom: 20px;overflow-x: auto;">
+        @{Html.RenderPartial("_TableCliente", Model);}
+    </div>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div id="myModalContent" class="modal-content" style="height:800px; width: 1000px; margin-left: -210px;">
+            <div style="background-color:#c0392b; color:white;" class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h5 class="modal-title" id="myModalLabel" style="font: icon; font-weight: 600;"></h5>
+            </div>
+            <div id="modalBody" class="modal-body">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="~/ScriptsSelect/bootstrap-multiselect.js"></script>
+

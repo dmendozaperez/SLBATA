@@ -1584,6 +1584,8 @@
     <None Include="Service References\SunatReniec\Sunat_Reniec_PE.wsdl" />
     <Content Include="Views\XstoreTda\ConfigConexion.cshtml" />
     <Content Include="Views\XstoreTda\_listaCajasXst.cshtml" />
+    <Content Include="Views\BataClub\Cliente.cshtml" />
+    <Content Include="Views\BataClub\_TableCliente.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,7 +1,7 @@
 ﻿@using CapaEntidad.BataClub
 @model IEnumerable<Ent_BataClub_CuponesCO>
 @{
-    ViewBag.Title = "Consulta ....";
+    //ViewBag.Title = "....";
     AjaxOptions options = new AjaxOptions
     {
         HttpMethod = "GET",
@@ -13,58 +13,68 @@
     };
 }
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-<link href="~/ContentSelect/bootstrap-multiselect.css" rel="stylesheet" />
 
-<p class="text-danger">Consulta de .............</p>
+
+@*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+<link href="~/ContentSelect/bootstrap-multiselect.css" rel="stylesheet" />*@
+
+@*<p class="text-danger"> de .............</p>*@
 <div class="box box-body box-primary">
-            <div class="row">
-                <div class="col-sm-4" style="padding-left: 25px;">
-                    <label for="segape" style="color: #3d566e;">Promoción</label>
-                    <div class="form-group">
-                        <div id="tda" class="form-group">
-                            @Html.DropDownList("dwprom", new SelectList(ViewBag.Promocion, "prom_id", "prom_des", "-1"), new { @class = "selectpicker dropdown-toggle btn btn-default", @data_live_search = "true", @id = "dwprom", @name = "dwprom", @enable = "false", @onchange = "MostrarPromDet()" })
-                        </div>
+    <div class="row">
+        <div class="col-sm-4" style="padding-left: 25px;">
+            <label for="segape" style="color: #3d566e;">Promoción</label>
+            <div class="form-group">
+                <div id="prm" class="form-group" disabled>
+                    @Html.DropDownList("dwpromcp", new SelectList(ViewBag.PromoPop, "prom_id", "prom_des", "-1"), new
+                               {
+                                   @class = "selectpicker dropdown-toggle btn btn-default",
+                                   @data_live_search = "true",
+                                   @id = "dwpromcp",
+                                   @name = "dwpromcp",
+                                   @enable = "false" @*, @onchange = "MostrarPromDet()"*@ }
+                                         )
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2" style="padding-left: 25px; margin-right: inherit;">
+            <label for="segape" style="color: #3d566e;">Descuento</label>
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-tag"></i></span>
+                    <input id="desc" type="text" value="@ViewBag.Descuento" class="form-control" name="desc" placeholder="Descuento" disabled>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3" style="padding-left: 25px;">
+            <label for="fecnac" style="color: #3d566e;">Fecha Final</label>
+            <div class="form-group">
+                <div class="input-group">
+                    <div id="datepickerfin" class="input-group date" data-date-format="dd-mm-yyyy">
+                        <input id="fec_fin" name="fec_fin" value="@ViewBag.FechaFin" class="form-control custom-input" placeholder="dd-mm-yyyy" type="text" oninvalid="InvalidMsg(this,'Ingrese la fecha final')" required="required" disabled />
+                        <span class="input-group-addon  bg-white"><img src="~/Content/images/wall-calendar-with-lines.svg" height="20" width="20"></span>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-sm-2" style="padding-left: 25px; margin-right: inherit;">
-                    <label for="segape" style="color: #3d566e;">Descuento</label>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-tag"></i></span>
-                            <input id="desc" type="text" value="@ViewBag.Descuento" class="form-control" name="desc" placeholder="Descuento" disabled>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-2" style="padding-left: 25px;">
-                    <label for="fecnac"  style="color: #3d566e;">Fecha Final</label>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <div id="datepickerfin" class="input-group date" data-date-format="dd-mm-yyyy">
-                                <input id="fec_fin" name="fec_fin" value="@ViewBag.FechaFin" class="form-control custom-input" placeholder="dd-mm-yyyy" type="text" oninvalid="InvalidMsg(this,'Ingrese la fecha final')" required="required" disabled/>
-                                <span class="input-group-addon  bg-white"><img src="~/Content/images/wall-calendar-with-lines.svg" height="20" width="20"></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-1" style="padding-left: 25px; margin-right: inherit; width: 130px;">
-                    <label for="segape" style="color: #3d566e;">Pares Máx.</label>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-tag"></i></span>
-                            <input id="pares" type="text" value="@ViewBag.Pares" class="form-control" name="pares" placeholder="Pares Máx" disabled>
-                        </div>
-                    </div>
+        </div>
+        <div class="col-sm-1" style="padding-left: 25px; margin-right: inherit; width: 130px;">
+            <label for="segape" style="color: #3d566e;">Pares Máx.</label>
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-tag"></i></span>
+                    <input id="pares" type="text" value="@ViewBag.Pares" class="form-control" name="pares" placeholder="Pares Máx" disabled>
                 </div>
             </div>
+        </div>
+    </div>
 </div>
+
 <div class="box box-body box-primary">
     @using (Ajax.BeginForm("_TableCupon", options))
     {
-        <form id="form1">
+        <form id="form2">
             <div class="row">
                 <div class="col-sm-4" style="padding-left: 25px; margin-right: inherit;">
                     <label for="segape" style="color: #3d566e;">Identificación</label>
@@ -76,7 +86,7 @@
                     </div>
                 </div>
                 <div class="col-sm-2" style="padding-left: 25px; width: 105px; margin-top: 23px; margin-bottom: 10px;">
-                    <button id="btnAgregar" type="submit" title="Agregar" class="btn btn-success">
+                    <button id="btnAgregarBuscar" type="button" onclick="ListarTableCup();" title="Agregar" class="btn btn-success" @*href="@Url.Action("Cupon", "BataClub")"*@>
                         <span class="glyphicon glyphicon-ok-sign"> Agregar</span>
                     </button>
                 </div>
@@ -96,195 +106,34 @@
     </div>
 </div>
 
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-<script src="~/ScriptsSelect/bootstrap-multiselect.js"></script>
+@*<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="~/ScriptsSelect/bootstrap-multiselect.js"></script>*@
+
 
 <script>
+$(document).ready(function () {
+    $("#btnAgregarBuscar").click(function () {
+        console.log("aadfa");
+        // e.preventDefault();
 
-    $(function () {
-        $('#dwprom').multiselect({
-            includeSelectAllOption: false,
-            enableFiltering: true,
-            enableCaseInsensitiveFiltering: true,
-            filterPlaceholder: 'Buscar Promoción...',
-            onDropdownShown: function (even) {
-                this.$filter.find('.multiselect-search').focus()
-            }
-        });
-    });
-
-    $(document).ready(function () {
-        $("#btnAgregar").click(function () {
-            var strcadena = $.trim($('#identificacion').val());
-          //  console.log(strcadena);
-            if (strcadena == null || strcadena == "") {
-                toastr.error("Debe completar uno de los datos requeridos para buscar/agregar al listado.", "Mensaje");
-                return false;
-            }
-
-            $('table tr td').each(function () {
-                var texto = $(this).text();
-               // console.log($(this).text());
-                if (texto == strcadena) {
-                    toastr.error("Este cliente ya se encuentra en el listado actual.", "Mensaje");
-                    return false;
-                }
-            });
-
-        });
-
-        $("#btnGenerar").click(function () {
-            ConfirmacionCupon();
-        });
-        //$("#form1").submit(function () {
-        // ***   Cuando no encuentra registro (contar lineas antes y despues, comparar y según eso mostrar mensaje)   ***
-
-        //    if (x = 0) {
-        //        alert("Retorna falso");
-        //        return false;
-        //    } else
-        //        alert("Retorna verdadero");
-        //        return true;
-        //});
-
-
-    });
-
-
-    function ConfirmacionCupon() {
-        var msg_titulo = 'Mensaje ';
-        var message = "¿Está seguro de generar cupones a las siguientes personas?<br>";
-        var cadena = "";
-
-        $("#example a[type=button]").each(function () {
-            var row = $(this).closest("tr")[0];
-            message += " " + row.cells[0].innerHTML + " " + row.cells[1].innerHTML;
-            message += " de DNI " + row.cells[2].innerHTML;
-            message += " con el correo " + row.cells[3].innerHTML +".";
-            message += "<br>";
-            cadena += $(this).attr("id") + ",";
-        });
-      //  console.log(cadena);
-        if (cadena == null || cadena == "") {
-            toastr.error("Por favor ingresar al menos un registro para poder generar el cupón.", msg_titulo);
+        var strcadena = $.trim($('#identificacion').val());
+        // console.log(strcadena);
+        if (strcadena == null || strcadena == "") {
+            toastr.error("Debe completar uno de los datos requeridos para buscar/agregar al listado.", "Mensaje");
             return false;
         }
-        else {
-            // e.preventDefault();
-            bootbox.confirm({
-                message: message,
-                buttons: {
-                    confirm: {
-                        label: 'Si',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'No',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function (result) {
-                   // console.log(result);
-                    if (result) {                      
-                      //  console.log("Guardando registro")
-                        Generar()
-                    }
-                }
-            });
 
-        }
-    }
-
-    function Generar() {
-        var prom_des = $("#dwprom  option:selected").text();
-        var desc = $("#desc").val();
-        var pares = $("#pares").val();
-        var fec_fin = $("#fec_fin").val();
-
-        var ControllerUrl = "@Url.Action("GenerarCupones", "BataClub")";
-        var msg_titulo = 'Mensaje';
-        $.ajax({
-            type: "GET",
-            url: ControllerUrl,
-            contentType: "application/json; charset=utf-8",
-            data: { prom_des:prom_des, desc:desc, fec_fin:fec_fin, pares:pares },
-            datatype: "json",
-            success: function (data) {
-               // console.log(data);
-                if (data = "1") {
-                    toastr.success("Se realizó exitosamente la generación de cupones.", msg_titulo);
-                    ExportToExcel();
-                }
-                else {
-                    //toastr.error("Error al momento de generar los cupones. Por favor contactarse con el administrador. " + data, msg_titulo);
-                    toastr.error("Error al momento de generar los cupones. Por favor contactarse con el administrador. ", msg_titulo);
-                }               
-            },
-            error: function (xhr) {
-                toastr.error(xhr, msg_titulo);
+        $('table tr td').each(function () {
+            var texto = $(this).text();
+            // console.log($(this).text());
+            if (texto == strcadena) {
+                toastr.error("Este cliente ya se encuentra en el listado actual.", "Mensaje");
+                return false;
             }
         });
-    }
-
-    function ExportToExcel() {
-        //console.log("entro a nuevo  exporta excel");
-        window.location = "ExportToExcel_Cupones";
-    }
-
-    function MostrarPromDet() {
-        var valor_prom = $("#dwprom").val();
-        waitingDialog.show('Espere un momento por favor');
-        var ControllerUrl_c = "@Url.Action("getPromDet", "BataClub")";
-        $.ajax({
-            type: "GET",
-            url: ControllerUrl_c,
-            contentType: "application/json; charset=utf-8",
-            data: { valor_prom: valor_prom },
-            datatype: "json",
-            cache: true,
-            success: function (data) {
-               //  debugger;
-                waitingDialog.hide();
-                $("#desc").empty();
-                $("#fec_fin").empty();
-
-                $("#desc").val(data[0].porc_desc);
-                $("#fec_fin").val(data[0].cup_fecha_fin);
-            },
-            //timeout: 10000,
-            //async: false,
-            error: function () {
-                waitingDialog.hide();
-                alert('Error')
-            }
-        });
-    }
-
-    function EliminarSeleccion(dni) {
-        //waitingDialog.show('Espere un momento por favor');
-        var ControllerUrl_c = "@Url.Action("BorrarRegistro", "BataClub")";
-        $.ajax({
-            type: "GET",
-            url: ControllerUrl_c,
-            contentType: "application/json; charset=utf-8",
-            data: { dni: dni },
-            datatype: "json",
-            cache: true,
-            success: function (data) {
-                //  debugger;
-              // waitingDialog.hide();
-                 // console.log(data);
-                  $("#identificacion").val("");
-                  $("#btnAgregar").submit();
-            },
-            //timeout: 10000,
-            //async: false,
-            error: function () {
-              //  waitingDialog.hide();
-                alert('Error')
-            }
-        });
-    }
-
-  
+    });
+    $("#btnGenerar").click(function () {
+        ConfirmacionCupon();
+    });
+});
 </script>
