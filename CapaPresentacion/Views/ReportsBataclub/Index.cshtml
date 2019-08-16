@@ -1,7 +1,7 @@
 ﻿@using CapaEntidad.Reports
 @model IEnumerable<Ent_Bataclub>
 @{
-    ViewBag.Title = "Reporte Bataclub";
+    ViewBag.Title = "Ventas BataClub";
     AjaxOptions options = new AjaxOptions
     {
         HttpMethod = "GET",
@@ -14,7 +14,7 @@
 }
 @Scripts.Render("~/bundles/bootstrap")
 
-<p class="text-danger">Reporte de Venta Bataclub con cupon y sin cupon, Filtro por rango de fecha de registro del cliente</p>
+<p class="text-danger">Consulta de Venta Bataclub con cupon y sin cupon, Filtro por rango de fecha de registro del cliente</p>
 <div class="box box-body box-primary">
     @using (Ajax.BeginForm("ListaBataclub", options))
     {
