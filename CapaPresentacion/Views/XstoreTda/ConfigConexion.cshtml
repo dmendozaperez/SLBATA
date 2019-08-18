@@ -1,0 +1,113 @@
+﻿@using CapaEntidad.XstoreTda
+@model Ent_ConfigConexion
+@{
+    ViewBag.Title = "Config Conexion";
+    AjaxOptions options = new AjaxOptions
+    {
+        HttpMethod = "POST",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "listaCajasXst",
+        OnComplete = "waitingDialog.hide();",
+        OnBegin = "waitingDialog.show('Espere un momento por favor');",
+        OnFailure = "waitingDialog.hide();",
+        
+    };
+}
+<style>
+    .content-center-text {
+        text-align: center;
+    }
+
+    .dataTables_processing {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 100%;
+        height: 40px;
+        margin-left: -50%;
+        margin-top: -25px;
+        padding-top: 20px;
+        text-align: center;
+        font-size: 1.2em;
+        background-color: white;        
+        font-weight : bold;
+        background: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(255,255,255,0)), color-stop(25%, rgba(255,255,255,0.9)), color-stop(75%, rgba(255,255,255,0.9)), color-stop(100%, rgba(255,255,255,0)));
+        background: -webkit-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 25%, rgba(255,255,255,0.9) 75%, rgba(255,255,255,0) 100%);
+        background: -moz-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 25%, rgba(255,255,255,0.9) 75%, rgba(255,255,255,0) 100%);
+        background: -ms-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 25%, rgba(255,255,255,0.9) 75%, rgba(255,255,255,0) 100%);
+        background: -o-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 25%, rgba(255,255,255,0.9) 75%, rgba(255,255,255,0) 100%);
+        background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 25%, rgba(255,255,255,0.9) 75%, rgba(255,255,255,0) 100%);
+    }
+</style>
+
+<div class="box box-body box-primary" onload="waitingDialog.show('Espere un momento por favor')">
+    @using (Ajax.BeginForm("_listaCajasXst", options))
+    {
+        <div class="row">
+            <div class="col-md-12">
+                <button type="submit" class="btn btn-primary central_xst"><i class="glyphicon glyphicon-refresh"></i>&nbsp;&nbsp;Refrescar</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <h4 class="text-primary text-bold">Central - Conexiones</h4>
+                <ul class="list-group lista_central_xst"></ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h4 class="text-primary text-bold">Equipos en Tienda - Conexiones</h4>
+                <div class="col-sm-12 checkbox text-danger text-bold" id="">
+                    <label>
+                        <input type="checkbox" name="sinConexion" id="sinConexion" /> Mostrar equipos sin conexion.
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="box-body" id="listaCajasXst" >
+            @{Html.RenderPartial("_listaCajasXst", Model);}
+        </div>
+     }
+</div>
+<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+
+<script>
+    
+    $(document).ready(function () {
+        waitingDialog.show('Espere un momento por favor')
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("central_conexion", "XstoreTda")',
+            data: null,
+            success: function (data) {
+                waitingDialog.hide();
+                if (data.estado == 1) {
+                    var items = '';
+                    for (var i = 0; i < data.central_xst.length; i++) {
+                        var badge = "";
+                        if (data.central_xst[i]['ESTADO_CONEXION_CENTRAL_XST'] == 1)
+                            badge = '<span class="badge label-success" title="OK"><i class="glyphicon glyphicon-ok"></i></span>';
+                        else
+                            badge = '<span class="badge label-danger" title="Sin Conexión"><i class="glyphicon glyphicon-remove"></i></span>';
+
+                        items += '<li class="list-group-item">' + badge + '</span><b>' + data.central_xst[i]['DES_CENTRAL'] + '</b>&nbsp-&nbsp<small>' + data.central_xst[i]['IP_CENTRAL'] + '</small> </li>'
+                    }
+                    $(".lista_central_xst").html(items);
+                } else {
+                    //waitingDialog.hide();
+                    swal({
+                        title: "Error",
+                        text: data.resultados,
+                        icon: "error",
+                        dangerMode: true,
+                    });
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                var error = eval("(" + XMLHttpRequest.responseText + ")");
+                waitingDialog.hide();
+                toastr.error('Hubo un error en el registro : ' + error, "Alerta");
+            }
+        });
+    })
+</script>

@@ -1,0 +1,125 @@
+﻿
+
+<table id="example" class="table table-hover dataTable  table-striped table-responsive">
+    <thead>
+        <tr style="background-color:#3d566e; color:#ecf0f1">
+            <th>Canal</th>
+            <th>DNI</th>
+            <th>Nombres y Apellidos</th>
+            @*<th>Apellidos Pat.</th>
+            <th>Apellidos Mat.</th>*@
+            <th>Género</th>
+            <th>Correo</th>
+            <th>Fec. nac.</th>
+            <th>Teléfono</th>
+            <th>Ubigeo Distrito</th>
+            <th>Fec. modif.</th>
+            <th>Fec. registro</th>
+            @*<th>Fec. miembro</th>*@
+            @*<th>Código tienda</th>*@
+            <th>Tienda</th>
+            <th>Cadena</th>
+            @*<th>Envío correo</th>*@
+            @*<th>Fec. envío correo</th>
+            <th>Cupón Bienv.</th>*@
+            <th>Miembro</th>
+            <th>Fec. Membresía</th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach:"></tbody>
+    @*<tfoot>
+        <tr>
+            <th>Canal</th>
+            <th>DNI</th>
+            <th>Nombres</th>
+            <th>Apellidos Pat.</th>
+            <th>Apellidos Mat.</th>
+            <th>Genero</th>
+            <th>Correo</th>
+            <th>Fec. nac.</th>
+            <th>Teléfono</th>
+            <th>Ubigeo Distrito</th>
+            <th>Fec. modif.</th>
+            <th>Fec. registro</th>
+            <th>Fec. miembro</th>
+            <th>Código tienda</th>
+            <th>Tienda</th>
+            <th>Cadena</th>
+            <th>Envío correo</th>
+            <th>Fec. envío correo</th>
+            <th>Cupón Bienv.</th>
+            <th>Miembro</th>
+            <th>Fec. miembro</th>
+        </tr>
+    </tfoot>*@
+</table>
+
+<script>
+        $('.table').dataTable({
+            "language": {
+                "url": "../Scripts/DataTables/Spanish.json"
+            },
+            "bProcessing": true, // se agrego para probar
+            "bServerSide": true,
+            "bAutoWidth": false,
+            "sAjaxSource": '@Url.Action("getTableClienteAjax", "BataClub")',
+            "fnServerParams": function (aoData) {
+            },
+            "bdestroy": true,
+            "start": 0,
+            "order": [0, "asc"],
+            "bDeferRender": true,
+            "aoColumns": [
+                    { "sName": "can_des", "mData": "can_des" },
+                    { "sName": "dni", "mData": "dni" },
+                    { "sName": "nombres", "mData": "nombres" },
+                  //  { "sName": "apellido_pat", "mData": "apellido_pat" },
+                  //  { "sName": "apellido_mat", "mData": "apellido_mat" },
+                    { "sName": "genero", "mData": "genero" },
+                    { "sName": "correo", "mData": "correo" },
+                    { "sName": "fec_nac", "mData": "fec_nac" },
+                    { "sName": "telefono", "mData": "telefono" },
+                  //  { "sName": "ubigeo", "mData": "ubigeo" },
+                    { "sName": "ubigeo_distrito", "mData": "ubigeo_distrito" },
+                    { "sName": "fec_modif", "mData": "fec_modif" },
+                    { "sName": "fec_registro", "mData": "fec_registro" },
+                   // { "sName": "fec_miembro", "mData": "fec_miembro" },
+                   // { "sName": "cod_tda", "mData": "cod_tda" },
+                    { "sName": "des_entid", "mData": "des_entid" },
+                    { "sName": "cod_cadena", "mData": "cod_cadena" },
+                   // { "sName": "envio_correo", "mData": "envio_correo" }, //fec_envio_correo
+                  //  { "sName": "fec_envio_correo", "mData": "fec_envio_correo" },
+                  //  { "sName": "gene_cupon", "mData": "gene_cupon" },
+                    {
+                        //Label miembro de BataClub
+                        "render": function (data, type, full) {
+                            if (full.miem_bataclub == 'SI') {
+                                return '<div style="display: block;background-color: #41b341;" class="badge badge-pill badge-success disabled"><a class="badge badge-success disabled" style=" background-color: #41b341;"  >' + full.miem_bataclub + '</a></div>';
+                            } else {
+                                return '<div style="display: block;background-color:  #d9534f;" class="badge badge-pill badge-danger disabled"><a class="badge badge-danger disabled" style=" background-color: #d9534f;"  >' + full.miem_bataclub + '</a></div>';
+                            }
+                        }
+                    },
+                     //{ "sName": "miem_bataclub", "mData": "miem_bataclub" },
+                    { "sName": "miem_bataclub_fecha", "mData": "miem_bataclub_fecha" }
+            ],
+            dom: 'Bfrtip',
+            buttons: [
+            {
+                extend: 'excelHtml5',
+                title: 'Bataclub_xls'
+            },
+            {
+                extend: 'csvHtml5',
+                title: 'BataClub_csv'
+            },
+            {
+                extend: 'pdfHtml5',
+                title: 'BataClub_pdf'
+            },
+            'copyHtml5',
+            ]
+        });
+</script>
+
+

@@ -94,18 +94,18 @@ namespace CapaPresentacion.Controllers
                 JsonResult jRespuesta = null;
                 var serializer = new JavaScriptSerializer();
 
-                ViewBag.listCalidad = datCbo.get_ListaCalidad();
+                ViewBag.listCalidad = datCbo.get_ListaCalidad().Where(d => d.cbo_codigo != "0");
 
                 strJson = datCbo.listarStr_ListaGrupoTipo();
-                jRespuesta = Json(serializer.Deserialize<List<Ent_Combo>>(strJson), JsonRequestBehavior.AllowGet);
+                jRespuesta = Json(serializer.Deserialize<List<Ent_Combo>>(strJson).Where(d => d.cbo_codigo != "0"), JsonRequestBehavior.AllowGet);
                 ViewBag.ClGrupo = jRespuesta;
                 
                 strJson = datCbo.listarStr_ListaCategoria("");
-                jRespuesta = Json(serializer.Deserialize<List<Ent_Combo>>(strJson), JsonRequestBehavior.AllowGet);
+                jRespuesta = Json(serializer.Deserialize<List<Ent_Combo>>(strJson).Where(d => d.cbo_codigo != "0"), JsonRequestBehavior.AllowGet);
                 ViewBag.ClCategoria = jRespuesta;                          
 
                 strJson = datCbo.listarStr_ListaSubCategoria("");
-                jRespuesta = Json(serializer.Deserialize<List<Ent_Combo>>(strJson), JsonRequestBehavior.AllowGet);
+                jRespuesta = Json(serializer.Deserialize<List<Ent_Combo>>(strJson).Where(d => d.cbo_codigo != "0"), JsonRequestBehavior.AllowGet);
                 ViewBag.ClSBCategoria = jRespuesta;
 
                 return View();
@@ -362,7 +362,7 @@ namespace CapaPresentacion.Controllers
                     list.Add(entCombo);
                     ViewBag.Tienda = list;
 
-                    ViewBag.Distrito = distrito_list.listar_distrito();
+                    ViewBag.Distrito = distrito_list.listar_distrito().Where(d => d.cod_dis != "-1");
 
                     string strJson = "";
                     JsonResult jRespuesta = null;
@@ -370,7 +370,7 @@ namespace CapaPresentacion.Controllers
 
 
                     strJson = datCbo.listarStr_ListaTienda("PE");
-                    jRespuesta = Json(serializer.Deserialize<List<Ent_ListaTienda>>(strJson), JsonRequestBehavior.AllowGet);
+                    jRespuesta = Json(serializer.Deserialize<List<Ent_ListaTienda>>(strJson).Where(d => d.cod_entid != "0"), JsonRequestBehavior.AllowGet);
                     ViewBag.ClTienda = jRespuesta;
 
                 }
@@ -384,16 +384,16 @@ namespace CapaPresentacion.Controllers
 
                 strJson2 = datCbo.listarStr_ListaGrupoTipo();
 
-                jRespuesta2 = Json(serializer2.Deserialize<List<Ent_Combo>>(strJson2), JsonRequestBehavior.AllowGet);
+                jRespuesta2 = Json(serializer2.Deserialize<List<Ent_Combo>>(strJson2).Where(d => d.cbo_codigo != "0"), JsonRequestBehavior.AllowGet);
                 ViewBag.ClGrupo = jRespuesta2;
 
                 strJson2 = datCbo.listarStr_ListaCategoria("");
-                jRespuesta2 = Json(serializer2.Deserialize<List<Ent_Combo>>(strJson2), JsonRequestBehavior.AllowGet);
+                jRespuesta2 = Json(serializer2.Deserialize<List<Ent_Combo>>(strJson2).Where(d => d.cbo_codigo != "0"), JsonRequestBehavior.AllowGet);
                 ViewBag.ClCategoria = jRespuesta2;
                 Ent_ComboList filtros = datCbo.Listar_Filtros_OBS();
 
 
-                ViewBag.listCalidad  = filtros.Lista_1;
+                ViewBag.listCalidad  = filtros.Lista_1.Where(d => d.cbo_codigo != "-1");
                 ViewBag.listTipoObs = filtros.Lista_2;
                 ViewBag.lisRango = filtros.Lista_3;
 
@@ -559,11 +559,11 @@ namespace CapaPresentacion.Controllers
 
                 strJson2 = datCbo.listarStr_ListaGrupoTipo();
 
-                jRespuesta2 = Json(serializer2.Deserialize<List<Ent_Combo>>(strJson2), JsonRequestBehavior.AllowGet);
+                jRespuesta2 = Json(serializer2.Deserialize<List<Ent_Combo>>(strJson2).Where(d => d.cbo_codigo != "0"), JsonRequestBehavior.AllowGet);
                 ViewBag.ClGrupo = jRespuesta2;
 
                 strJson2 = datCbo.listarStr_ListaCategoria("");
-                jRespuesta2 = Json(serializer2.Deserialize<List<Ent_Combo>>(strJson2), JsonRequestBehavior.AllowGet);
+                jRespuesta2 = Json(serializer2.Deserialize<List<Ent_Combo>>(strJson2).Where(d => d.cbo_codigo != "0"), JsonRequestBehavior.AllowGet);
                 ViewBag.ClCategoria = jRespuesta2;
 
                 //ViewBag.Cadena = datCbo.get_ListaCadena();
@@ -914,14 +914,14 @@ namespace CapaPresentacion.Controllers
                     list.Add(entCombo);
                     ViewBag.Tienda = list;
 
-                    ViewBag.Distrito = distrito_list.listar_distrito();
+                    ViewBag.Distrito = distrito_list.listar_distrito().Where(a => a.cod_dis != "-1");
 
                     string strJson = "";
                     JsonResult jRespuesta = null;
                     var serializer = new JavaScriptSerializer();
 
                     strJson = datCbo.listarStr_ListaTienda("PE");
-                    jRespuesta = Json(serializer.Deserialize<List<Ent_ListaTienda>>(strJson), JsonRequestBehavior.AllowGet);
+                    jRespuesta = Json(serializer.Deserialize<List<Ent_ListaTienda>>(strJson).Where(a => a.cod_entid != "0" ) , JsonRequestBehavior.AllowGet);
                     ViewBag.ClTienda = jRespuesta;
                 }
 
@@ -935,8 +935,18 @@ namespace CapaPresentacion.Controllers
                 entCombocbo.cbo_descripcion = "RIMS";
                 listcbo.Add(entCombocbo);
                 ViewBag.Tipo = listcbo;
+                entCombocbo = new Ent_Combo();
+                entCombocbo.cbo_codigo = "01";
+                entCombocbo.cbo_descripcion = "SEMESTRAL";
+                List<Ent_Combo> listEvaluacion = new List<Ent_Combo>();
+                listEvaluacion.Add(entCombocbo);
+                entCombocbo = new Ent_Combo();
+                entCombocbo.cbo_codigo = "02";
+                entCombocbo.cbo_descripcion = "ANUAL";
+                listEvaluacion.Add(entCombocbo);
 
                 ViewBag.Semana = datCbo.get_ListaSemana();
+                ViewBag.Evaluacion = listEvaluacion;
 
                 return View();
             }
@@ -945,13 +955,13 @@ namespace CapaPresentacion.Controllers
 
 
         [HttpPost]
-        public ActionResult ShowGenericReportRendimientoCateg(string tip_Categ, string cod_Dis, string codEntid, string cod_Semana)
+        public ActionResult ShowGenericReportRendimientoCateg(string tip_Categ, string cod_Dis, string codEntid, string cod_Semana , string evalua)
         {
             //grupo = "0";categoria = "0";subcategoria = "0";estado = "0";
             Data_Bata pl = new Data_Bata();
             this.HttpContext.Session["ReportName"] = "ReporteRendCateg.rpt";
 
-            List<Models_Rendimiento_Categ> model_Art_rend_categ = pl.list_RendimientoxCategoria(tip_Categ, cod_Dis, codEntid, cod_Semana);
+            List<Models_Rendimiento_Categ> model_Art_rend_categ = pl.list_RendimientoxCategoria(tip_Categ, cod_Dis, codEntid, cod_Semana, evalua);
 
             this.HttpContext.Session["rptSource"] = model_Art_rend_categ;
 

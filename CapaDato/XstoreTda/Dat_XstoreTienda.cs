@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using System.Net.NetworkInformation;
 
 namespace CapaDato.Maestros
 {
@@ -285,6 +286,102 @@ namespace CapaDato.Maestros
 
             return strJson;
         }
+
+        #region **Config Conexion**
+        public Ent_ConfigConexion XSTORE_GET_CONEXION_GLOBAL()
+        {
+            string sql = "USP_XSTORE_GET_CONEXION_GLOBAL";
+            DataSet dsResponse = null;
+            Ent_ConfigConexion configConexion = null;
+            List<Ent_Central_Xst> listCentralXst = null;
+            List<Ent_Cajas_Xst> listCajasXst = null;
+            try
+            {
+                using (SqlConnection cn = new SqlConnection (Ent_Conexion.conexionPosPeru))
+                {
+                    dsResponse = new DataSet();
+                    SqlCommand cmd = new SqlCommand(sql, cn);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    da.Fill(dsResponse);
+                    listCentralXst = new List<Ent_Central_Xst>();
+                    listCentralXst = (from DataRow dr in dsResponse.Tables[0].Rows
+                                      select new Ent_Central_Xst()
+                                      {
+                                          IP_CENTRAL = dr["IP_CENTRAL"].ToString(),
+                                          DES_CENTRAL = dr["DES_CENTRAL"].ToString(),
+                                          ESTADO_CONEXION_CENTRAL_XST = PingHost(dr["IP_CENTRAL"].ToString())
+                                      }).ToList();
+                    listCajasXst = new List<Ent_Cajas_Xst>();
+                    listCajasXst = (from DataRow dr in dsResponse.Tables[1].Rows
+                                      select new Ent_Cajas_Xst()
+                                      {
+                                          COD_ENTID = dr["COD_ENTID"].ToString(),
+                                          TIENDA = dr["TIENDA"].ToString(),
+                                          NCAJA = dr["NCAJA"].ToString(),
+                                          IP = dr["IP"].ToString(),
+                                          VERSION_XST = dr["VERSION_XST"].ToString(),
+                                          ESTADO_CONEXION_CAJA_XST = PingHost(dr["IP"].ToString())
+                                      }).ToList();
+                    configConexion = new Ent_ConfigConexion();
+                    configConexion.list_cajas_xst = listCajasXst;
+                    configConexion.list_central_xst = listCentralXst;
+                }
+            }
+            catch (Exception ex)
+            {
+                configConexion = null;
+            }
+            return configConexion;
+        }
+        public int PingHost(string nameOrAddress)
+        {
+            try
+            {
+                Ping Pings = new Ping();
+                int timeout = 1000;
+
+                if (Pings.Send(nameOrAddress, timeout).Status == IPStatus.Success)
+                {
+                    return 1;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                return 0;
+            }
+
+            //bool pingable = false;
+            //Ping pinger = null;
+
+            //try
+            //{
+            //    pinger = new Ping();
+            //    PingReply reply = pinger.Send(nameOrAddress);
+            //    pingable = reply.Status == IPStatus.Success;
+            //}
+            //catch (PingException)
+            //{
+            //    // Discard PingExceptions and return false;
+            //    pingable = false;
+            //}
+            //finally
+            //{
+            //    if (pinger != null)
+            //    {
+            //        pinger.Dispose();
+            //    }
+            //}
+
+            //return pingable ? 1 : 0;
+        }
+       
+        #endregion
+
     }
 
 }

@@ -46,6 +46,7 @@
     <Compile Include="ArticuloStock\Departamento.cs" />
     <Compile Include="ArticuloStock\Articulo_Tienda.cs" />
     <Compile Include="ArticuloSustituto\Articulo_Sustituto_Tienda.cs" />
+    <Compile Include="BataClub\Ent_BataClub_Cliente.cs" />
     <Compile Include="BataClub\Ent_BataClub_CuponesCO.cs" />
     <Compile Include="BataClub\Ent_BataClub_ComboProm.cs" />
     <Compile Include="CanalVenta\Ent_Chaski.cs" />
@@ -69,12 +70,16 @@
     <Compile Include="Inventario\Ent_Inventario_Consulta.cs" />
     <Compile Include="Inventario\Ent_Inventario_Tienda.cs" />
     <Compile Include="Maestros\Ent_Cadena.cs" />
+    <Compile Include="Maestros\Ent_Canal.cs" />
     <Compile Include="Maestros\Ent_Concepto_Suna.cs" />
+    <Compile Include="Maestros\Ent_Departamento.cs" />
     <Compile Include="Maestros\Ent_ListaTienda.cs" />
     <Compile Include="Maestros\Ent_Prom_Filtro.cs" />
+    <Compile Include="Maestros\Ent_Provincia.cs" />
     <Compile Include="Maestros\Ent_Tienda_CadTip.cs" />
     <Compile Include="Maestros\Ent_TipoInterface.cs" />
     <Compile Include="Maestros\Ent_TipoTienda.cs" />
+    <Compile Include="Maestros\Ent_Distrito.cs" />
     <Compile Include="Oracle\Ent_Ora_Conexion.cs" />
     <Compile Include="ReportsValeCompra\Reporte_Resultado.cs" />
     <Compile Include="ReportsValeCompra\Reporte_Filtro.cs" />
@@ -103,6 +108,7 @@
     <Compile Include="ValeCompra\Ent_ValeCompra.cs" />
     <Compile Include="ValeCompra\Ent_ValeCompraDetalle.cs" />
     <Compile Include="ValeCompra\JsonResponse.cs" />
+    <Compile Include="XstoreTda\Ent_ConfigConexion.cs" />
     <Compile Include="XstoreTda\Ent_DatosTienda.cs" />
     <Compile Include="XstoreTda\Ent_DatosTienda_Xstore.cs" />
     <Compile Include="XstoreTda\Ent_TiendaConf.cs" />

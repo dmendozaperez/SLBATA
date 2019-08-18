@@ -329,16 +329,33 @@ namespace CapaDato.ReportsValeCompra
                 SqlParameter omulticanalidad = oComando.Parameters.Add("@multicanalidad", SqlDbType.Bit);
                 omulticanalidad.Direction = ParameterDirection.Input;
                 omulticanalidad.Value = Convert.ToInt16(multicanalidad);// ( == null ? 0 :1);
-                /*sostic 06/2019*/
+                                                                        /*sostic 06/2019*/
 
-                SqlDataReader oReader = oComando.ExecuteReader(CommandBehavior.SingleResult);
+
+                //SqlDataReader oReader = oComando.ExecuteReader(CommandBehavior.SingleResult);
+                DataSet dsRes = new DataSet();
+                //dataTable.Load(oReader);
+
+                SqlDataAdapter da = new SqlDataAdapter(oComando);
+
+                da.Fill(dsRes);
                 DataTable dataTable = new DataTable("row");
-                dataTable.Load(oReader);
+                dataTable = dsRes.Tables[0];
 
-                strJson = JsonConvert.SerializeObject(dataTable, Newtonsoft.Json.Formatting.Indented);
-                strJson = strJson.Replace(Environment.NewLine, "");
-                //strJson = strJson.Replace(" ", "");
-                cn.Close();
+                if (dataTable.Rows.Count == 0)
+                {
+                    strJson = "";
+                }
+                else
+                {
+                    strJson = JsonConvert.SerializeObject(dsRes, Newtonsoft.Json.Formatting.Indented);
+                    strJson = strJson.Replace(Environment.NewLine, "");
+                    //_pares_acumulados = pares_acumulados;
+                    //strJson = strJson.Replace(" ", "");
+                    
+                }
+                //string pares_acumulados = JsonConvert.SerializeObject(dsRes, Newtonsoft.Json.Formatting.Indented);
+                  cn.Close();             
             }
             catch (Exception ex) {
 

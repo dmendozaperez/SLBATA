@@ -34,7 +34,7 @@
             <label for="dwCate">Tienda</label>
             <div class="form-group">
                 <div class="form-group">
-                    @Html.DropDownList("txtTda", new SelectList(ViewBag.tienda, "cbo_codigo", "cbo_descripcion"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "txtTda", @name = "txtTda" })
+                    @Html.DropDownList("txtTda", new SelectList(ViewBag.tienda, "cbo_codigo", "cbo_descripcion"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "txtTda", @name = "txtTda" ,  @data_actions_box = "true", @data_selected_text_format = "count > 2" })
                 </div>
             </div>
         </div>
@@ -51,7 +51,7 @@
             <label for="dwGrupo">Grupo</label>
             <div class="form-group">
                 <div id="divgrupo" class="form-group">
-                    @Html.DropDownList("dwGrupo", new SelectList(ViewBag.Categoria, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwGrupo", @name = "dwGrupo", style = "width:270px;max-width:270px;", @onchange = "ListarCategoria()" })
+                    @Html.DropDownList("dwGrupo", new SelectList(ViewBag.Categoria, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwGrupo", @name = "dwGrupo", @onchange = "ListarCategoria()" })
                 </div>
             </div>
         </div>
@@ -130,9 +130,9 @@
 
 <script src="~/Scripts/BI.js"></script>
 <script>
-    $(document).ready(function () {
-        
+    $(document).ready(function () {        
         ListarGrupo();
+
     });
 
     function loadedFrame() {
@@ -143,13 +143,13 @@
 
         var tda = $('#txtTda').val();
         var cadena ="-1";
-        var semana = $('#txtsemana').val();
+        var semana =  $('#txtsemana').val();
         var strpares = $('#txtpares').val();
         var strestado = $('#txtEstado').val();
-        var grupo = $('#dwGrupo').val();
+        var grupo = ($("#dwGrupo option:not(:selected)").length == 0 && $("#dwGrupo > option").length > 1 ? "0" : $('#dwGrupo').val());// $('#dwGrupo').val();
         var tipo = $('#dwTipo').val();
         //var str = grupo.toString();
-        var cate = $('#dwCate').val();
+        var cate = ($("#dwCate option:not(:selected)").length == 0 && $("#dwCate > option").length > 1 ? "0" : $('#dwCate').val());// $('#dwCate').val();
 
         if (grupo == '' || grupo == null) { grupo = '0' };
         if (cate == '' || cate == null) { cate = '0' };  
@@ -285,7 +285,7 @@
     function llenarComboAlt(DivId, IdControl, Data, codDefecto, desDefecto, onchangeFuncion) {
 
         $('#' + IdControl).find('option').remove();
-        var str = '<select class="selectpicker"  multiple = "multiple"  data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '">';
+        var str = '<select class="selectpicker"  multiple = "multiple"  data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '" data-actions-box="true"  data-selected-text-format="count > 2">';
         var ItemNormal = '<option value="codItem>desItem</option>';
         var colectItemNormal = '';
 
@@ -301,10 +301,9 @@
                 strSelected = '" selected="selected" '
 
             }
-
+            strSelected = '" selected="selected" '; // seleccionar todos al cargar
             colectItemNormal = colectItemNormal.replace("codItem", item.cbo_codigo + strSelected);
             colectItemNormal = colectItemNormal.replace("desItem", item.cbo_descripcion);
-
         });
 
         str += colectItemNormal

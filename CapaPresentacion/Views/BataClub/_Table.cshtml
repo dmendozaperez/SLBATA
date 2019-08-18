@@ -1,6 +1,6 @@
 ﻿
 
-<table id="example" class="table table-hover dataTable  table-striped table-responsive">
+<table id="example1" class="table table-hover dataTable  table-striped table-responsive">
     <thead>
         <tr style="background-color:#3d566e; color:#ecf0f1">
             <th>Promoción</th>
@@ -49,11 +49,11 @@
 </table>
 
 <script>
-        $('.table').dataTable({
+    $('#example1').dataTable({
             "language": {
                 "url": "../Scripts/DataTables/Spanish.json"
             },
-            "bProcessing": true, // se agrego para probar
+            "bProcessing": false, // se agrego para probar
             "bServerSide": true,
             "bAutoWidth": false,
             "sAjaxSource": '@Url.Action("getTablePromoAjax", "BataClub")',
@@ -76,7 +76,7 @@
                     //console.log(aoData);
                     //console.log(fnCallback);
                     //debugger;
-                  //  console.log(json.variable1);
+                    console.log(json.variable1);
                     $('#lblConsumidos')[0].textContent = "Consumidos: " + json.variable1;
                     $('#lblDisponibles')[0].textContent = "Disponibles: " + json.variable2;
                     $('#lblCaducados')[0].textContent = "Caducados: " + json.variable3;

@@ -141,8 +141,10 @@
                      success: function (data, textStatus, XMLHttpRequest) {
 
                          //alert(data.toString());
-                         
-                         window.open(data.toString());
+                         if (!data.toString().includes("no encontrado"))
+                             window.open(data.toString());
+                         else
+                             swal("Documento no encontrado.");
 
                          @*if (data.estado == '1') {
 
