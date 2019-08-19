@@ -265,17 +265,25 @@
                                 <td>@row.noDocCli</td>
                                 <td>@row.nombreCompletoCliente</td>
                                 <td>@row.nom_courier</td>
-                                @if (row.nom_courier == "Comercio Xpress")
+                                @if (row.nom_courier.Contains("iend"))
+                                {   <td>@row.codSeguimiento</td>       }
+                                else if (row.nom_courier == "Comercio Xpress")
                                 {   <td><a href="https://bata.pe/tracking-ce/?norder=@row.codSeguimiento" target="_blank">@row.codSeguimiento</a></td>       }
                                 else
                                 {   <td><a href="http://app.urbano.com.pe/plugin/etracking/etracking/?guia=@row.codSeguimiento" target="_blank">@row.codSeguimiento</a></td>       }
+
+                                @if (row.nom_courier.Contains("iend"))
+                                {   <td></td>       }
+                                else
+                                {
                                 <td width="70px" class="p-0">
                                     <ul class="list-inline" style="margin-bottom: 0px;">
                                         <li>
-                                            <a class="btn btn-sm btn-primary"  onclick="EnviaCourier('@row.SerieDoc@row.NroDoc', '@row.codSeguimiento');"><span class="glyphicon glyphicon-list"></span></a>
-                                        </li>                                       
+                                            <a class="btn btn-sm btn-primary" onclick="EnviaCourier('@row.SerieDoc@row.NroDoc', '@row.codSeguimiento');"><span class="glyphicon glyphicon-list"></span></a>
+                                        </li>
                                     </ul>
                                 </td>
+                                }
                                 <td width="70px" class="p-0">
                                     <ul class="list-inline" style="margin-bottom: 0px;">
                                         <li>

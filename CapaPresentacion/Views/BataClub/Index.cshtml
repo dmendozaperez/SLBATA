@@ -1,7 +1,7 @@
 ﻿@using CapaEntidad.BataClub
 @model IEnumerable<Ent_BataClub_CuponesCO>
 @{
-    ViewBag.Title = "Consulta ....";
+    ViewBag.Title = "Consulta....";
     AjaxOptions options = new AjaxOptions
     {
         HttpMethod = "GET",
@@ -16,6 +16,8 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 <link href="~/ContentSelect/bootstrap-multiselect.css" rel="stylesheet" />
+
+
 
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/data.js"></script>
@@ -49,14 +51,12 @@
                 </div>
                 <div class="col-sm-1">
                 </div>
-
-                <div class="col-sm-2" style="padding-left: 25px; width: 105px; margin-top: 24px;  margin-bottom: 10px; ">
-                    <button id="btnAgregar" type="submit" title="Agregar" class="btn btn-warning">
+                @*<div class="col-sm-2" style="padding-left: 25px; width: 105px; margin-top: 24px;  margin-bottom: 10px; display:none">
+                    <button id="btnAgregar" type="submit" title="Agregar" class="btn btn-warning" onclick="@("window.location.href='" + @Url.Action("Cupon", "BataClub") + "'");">
                         <span class="glyphicon glyphicon-plus-sign"> Cupón</span>
                     </button>
-                </div>
-
-                <div class="col-sm-1" style="padding-left: 25px; width: 105px; margin-top: 24px; margin-bottom: 10px; ">
+                </div>*@
+                <div class="col-sm-1" style="padding-left: 25px; width: 105px; margin-top: 24px; margin-bottom: 10px; display:none;">
                     <button id="btnGrafica" type="button" title="Gráfica" class="btn btn-info">
                         <span class="glyphicon glyphicon-stats"> Gráfica</span>
                     </button>
@@ -91,21 +91,20 @@
                     </div>
                 </div>
                 <div class="col-sm-2" style="padding-left: 25px; width: 105px; margin-top: 23px; margin-bottom: 10px;">
-                    @*<label></label><br />*@
                     <button id="btnSearch" type="submit" title="Consultar" class="btn btn-primary">
                         <span class="glyphicon glyphicon-search"> Buscar</span>
                     </button>
                 </div>
-                <div class="col-md-2" style="width: 105px;margin-top: 23px;float: right;margin-right: 25px;">
+                <div class="col-md-2" style="width: 105px;margin-top: 23px;float: right; margin-right: 25px;">
                     <a class="btn btn-success glyphicon glyphicon-save-file" href="@Url.Action("ExportToExcel")" title="Exportar a excel"> Excel</a>
 
                 </div>
             </div>
             <div class="row">
                 <div class="col-sm-4" style="padding-left: 25px; ">
-                    <label id="lblConsumidos"  name="lblConsumidos">Valor consumidos</label><br />
-                    <label id="lblDisponibles" name="lblDisponibles">Valor disponibles</label><br />
-                    <label id="lblCaducados" name="lblCaducados">Valor caducados</label>
+                    <label id="lblConsumidos" name="lblConsumidos" style="padding-left: 15px; ">Valor consumidos</label>
+                    <label id="lblDisponibles" name="lblDisponibles" style="padding-left: 15px; ">Valor disponibles</label>
+                    <label id="lblCaducados" name="lblCaducados" style="padding-left: 15px; ">Valor caducados</label>
                 </div>
             </div>
         </form>
@@ -113,7 +112,27 @@
     <div class="box-body" id="listaGuia" style="padding-bottom: 20px;overflow-x: auto;">
         @{Html.RenderPartial("_Table", Model);}
     </div>
-
+</div>
+<div class="box box-body box-primary">
+    <form id="form2">
+        <div class="row">
+            <div class="col-sm-4" style="padding-left: 25px;">
+                <label for="segape" style="color: #3d566e;">Promoción</label>
+                <div class="form-group">
+                    <div id="promo" class="form-group">
+                        @Html.DropDownList("dwpromo", new SelectList(ViewBag.Promo, "prom_id", "prom_des", "-1"), new { @class = "selectpicker dropdown-toggle btn btn-default", @data_live_search = "true", @id = "dwpromo", @name = "dwpromo", @enable = "false" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2" style="padding-left: 25px; width: 105px; margin-top: 24px;  margin-bottom: 10px; ">
+                <button id="btnAgregarCup" type="button" title="Agregar" class="btn btn-warning" onclick="PopupCupones();">
+                    <span class="glyphicon glyphicon-plus-sign"> Agregar Cupón</span>
+                </button>
+            </div>
+        </div>
+    </form>
 </div>
 
 <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -124,6 +143,20 @@
                 <h5 class="modal-title" id="myModalLabel" style="font: icon; font-weight: 600;"></h5>
             </div>
             <div id="modalBody1" class="modal-body">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
+    <div class="modal-dialog" role="document">
+        <div id="myModalContent2" class="modal-content" style="height:800px; width: 1000px; margin-left: -210px;">
+            <div style="background-color:#3d566e; color:white;" class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h5 class="modal-title" id="myModalLabel2" style="font: icon; font-weight: 600;"></h5>
+            </div>
+            <div id="modalBody2" class="modal-body">
 
             </div>
         </div>
@@ -150,12 +183,16 @@
     });
 
     $(document).ready(function () {
+        $('#lblConsumidos')[0].textContent = "Consumidos: 0";
+        $('#lblDisponibles')[0].textContent = "Disponibles: 0";
+        $('#lblCaducados')[0].textContent = "Caducados: 0";
+
         $("#btnSearch").click(function () {
             ListaPromocionesSelect();
         });
 
         $("#btnGrafica").click(function () {
-          //  console.log("entro a boton graf");
+            //  console.log("entro a boton graf");
             PopupDetalle();
         });
     });
@@ -169,26 +206,54 @@
         else { document.getElementById("hidden").value = strcadena; }
     }
 
-    function PopupDetalle() {
-        var ControllerUrl = "@Url.Action("_popUpGrafica", "BataClub")";
-      //  console.log("entro a popupdetalle");
+    function PopupCupones() {
+        var ControllerUrl = "@Url.Action("Cupon", "BataClub")";
+       // waitingDialog.show('Espere un momento por favor');
+        var dwpromo = $.trim($('#dwpromo').val());
         $.ajax({
             type: "GET",
             url: ControllerUrl,
             contentType: "application/json; charset=utf-8",
-            data: {  },
+            data: { dwpromo: dwpromo },
+            datatype: "json",
+            cache: true,
+            success: function (data) {
+                //   waitingDialog.hide();
+
+                 var options = { "backdrop": "static", keyboard: true };
+                 var descModal = 'Generar cupones de la promoción ' + $("#dwpromo option:selected").text() + ' ';
+                console.log("entro a data");
+               // console.log(data);
+                $('#myModalLabel2').html(descModal);
+                $('#modalBody2').html(data);
+                $('#myModal2').modal(options);
+            },
+            error: function (xhr) {
+               // waitingDialog.hide();
+                toastr.error(xhr, 'Mensaje');
+            }
+        });
+    }
+
+    function PopupDetalle() {
+        var ControllerUrl = "@Url.Action("_popUpGrafica", "BataClub")";
+        $.ajax({
+            type: "GET",
+            url: ControllerUrl,
+            contentType: "application/json; charset=utf-8",
+            data: {},
             datatype: "json",
             cache: true,
             success: function (data) {
                 var options = { "backdrop": "static", keyboard: true };
                 var descModal = 'Gráfica anual de Promociones';
-               // console.log("entro a data");
+                // console.log("entro a data");
                 $('#myModalLabel').html(descModal);
                 $('#modalBody1').html(data);
                 $('#myModal1').modal(options);
 
                 MostrarGrafico();
-          
+
             },
             timeout: 10000,
             async: false,
@@ -200,20 +265,20 @@
 
     function MostrarGrafico() {
         //waitingDialog.show('Espere un momento por favor');
-      //  console.log("entro a Mostrar grafico");
+        //  console.log("entro a Mostrar grafico");
         var ControllerUrl_c = "@Url.Action("listarStr_graph", "BataClub")";
         $.ajax({
             type: "GET",
             url: ControllerUrl_c,
             contentType: "application/json; charset=utf-8",
-            data: { },
+            data: {},
             datatype: "json",
             cache: true,
-            success: function (data) {          
+            success: function (data) {
                 if (data != '' && data != '[]') {
                     console.log("success");
                     var valors = JSON.parse(data);
-                    // EXTRACT VALUE FOR HTML HEADER. 
+                    // EXTRACT VALUE FOR HTML HEADER.
                     // ('Book ID', 'Book Name', 'Category' and 'Price')
                     var col = [];
                     for (var i = 0; i < valors.length; i++) {
@@ -226,9 +291,9 @@
                     // CREATE DYNAMIC TABLE.
                     var table = document.createElement("table");
                     table.setAttribute("id", "datatable_graph");
-                    // CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.                     
+                    // CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.
                     var tr = table.insertRow(-1);                   // TABLE ROW.
-                      
+
                     for (var i = 0; i < col.length; i++) {
                         var th = document.createElement("th");      // TABLE HEADER.
                         th.innerHTML = col[i];
@@ -249,7 +314,7 @@
                     console.log(table);
                     $("#container").html(table);
                     MostrarGrafico_contenido();
-                }              
+                }
                 // waitingDialog.hide();
             },
             timeout: 10000,
@@ -292,6 +357,157 @@
             if (index !== -1) arr.splice(index, 1);
         }
         );
+    }
+</script>
+
+
+
+
+<script>
+    $(function () {
+        $('#dwpromcp').multiselect({
+            includeSelectAllOption: false,
+            enableFiltering: true,
+            enableCaseInsensitiveFiltering: true,
+            filterPlaceholder: 'Buscar Promoción...',
+            //onDropdownShown: function (even) {
+            //    this.$filter.find('.multiselect-search').focus()
+            //}
+        });
+    });
+
+    function ListarTableCup() {
+        var ControllerUrl = "@Url.Action("_TableCupon", "BataClub")";
+        // waitingDialog.show('Espere un momento por favor');
+        //  console.log("entro a popupdetalle");
+        var identificacion = $.trim($('#identificacion').val());
+        $.ajax({
+            type: "GET",
+            url: ControllerUrl,
+            contentType: "application/json; charset=utf-8",
+            data: { identificacion: identificacion },
+            datatype: "json",
+            cache: true,
+            success: function (data) {
+                 //  waitingDialog.hide();
+                console.log("listar tabla");
+              //   console.log(data);
+                $('#lista').html(data);
+            },
+            // timeout: 10000,
+            // async: false,
+            error: function (xhr) {
+               //  waitingDialog.hide();
+                toastr.error(xhr, 'Mensaje');
+            }
+        });
+    }
+
+    function ConfirmacionCupon() {
+        var msg_titulo = 'Mensaje ';
+        var message = "¿Está seguro de generar cupones a las siguientes personas?<br>";
+        var cadena = "";
+
+        $("#example2 a[type=button]").each(function () {
+            var row = $(this).closest("tr")[0];
+            message += " " + row.cells[0].innerHTML + " " + row.cells[1].innerHTML;
+            message += " de DNI " + row.cells[2].innerHTML;
+            message += " con el correo " + row.cells[3].innerHTML +".";
+            message += "<br>";
+            cadena += $(this).attr("id") + ",";
+        });
+      //  console.log(cadena);
+        if (cadena == null || cadena == "") {
+            toastr.error("Por favor ingresar al menos un registro para poder generar el cupón.", msg_titulo);
+            return false;
+        }
+        else {
+            // e.preventDefault();
+            bootbox.confirm({
+                message: message,
+                buttons: {
+                    confirm: {
+                        label: 'Si',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'No',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
+                   // console.log(result);
+                    if (result) {
+                      //  console.log("Guardando registro")
+                        Generar()
+                    }
+                }
+            });
+
+        }
+    }
+
+    function Generar() {
+        var prom_des = $("#dwpromcp  option:selected").text();
+        var desc = $("#desc").val();
+        var pares = $("#pares").val();
+        var fec_fin = $("#fec_fin").val();
+
+        var ControllerUrl = "@Url.Action("GenerarCupones", "BataClub")";
+        var msg_titulo = 'Mensaje';
+        $.ajax({
+            type: "GET",
+            url: ControllerUrl,
+            contentType: "application/json; charset=utf-8",
+            data: { prom_des:prom_des, desc:desc, fec_fin:fec_fin, pares:pares },
+            datatype: "json",
+            success: function (data) {
+               // console.log(data);
+                if (data = "1") {
+                    toastr.success("Se realizó exitosamente la generación de cupones.", msg_titulo);
+                    ExportToExcelCup();
+                }
+                else {
+                    //toastr.error("Error al momento de generar los cupones. Por favor contactarse con el administrador. " + data, msg_titulo);
+                    toastr.error("Error al momento de generar los cupones. Por favor contactarse con el administrador. ", msg_titulo);
+                }
+            },
+            error: function (xhr) {
+                toastr.error(xhr, msg_titulo);
+            }
+        });
+    }
+
+    function ExportToExcelCup() {
+        //console.log("entro a nuevo  exporta excel");
+        window.location = "ExportToExcel_Cupones";
+    }
+
+    function EliminarSeleccion(dni) {
+        //waitingDialog.show('Espere un momento por favor');
+        $("#identificacion").val("");
+        var ControllerUrl_c = "@Url.Action("BorrarRegistro", "BataClub")";
+        $.ajax({
+            type: "GET",
+            url: ControllerUrl_c,
+            contentType: "application/json; charset=utf-8",
+            data: { dni: dni },
+            datatype: "json",
+            cache: true,
+            success: function (data) {
+                //  debugger;
+                // waitingDialog.hide();
+                console.log("eliminar seleccion");
+                 // console.log(data);
+                 // $("#identificacion").val("");
+                //  $("#btnAgregar").submit();
+                  ListarTableCup();
+            },
+            error: function () {
+              //  waitingDialog.hide();
+                alert('Error')
+            }
+        });
     }
 
 </script>

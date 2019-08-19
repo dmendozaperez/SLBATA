@@ -1,4 +1,5 @@
 ﻿using CapaDato.BataClub;
+using CapaDato.Maestros;
 using CapaDato.Reporte;
 using CapaEntidad.BataClub;
 using CapaEntidad.Control;
@@ -23,10 +24,15 @@ namespace CapaPresentacion.Controllers
     public class BataClubController : Controller
     {
 
-        private Dat_BataClub_CuponesCO datProm = new Dat_BataClub_CuponesCO(); 
+        private Dat_BataClub_CuponesCO datProm = new Dat_BataClub_CuponesCO();
+        private Dat_BataClub_Cliente datCli = new Dat_BataClub_Cliente();
+        private Dat_Canal datCan = new Dat_Canal();
+        private Dat_Ubigeo datUbi = new Dat_Ubigeo();
         private string _session_tabla_prom_private = "_session_tabla_prom_private"; 
         private string _BataClub_Promociones_Combo = "_BataClub_Promociones_Combo";
+        private string _BataClub_Canal_Combo = "_BataClub_Canal_Combo";
         private string _session_tabla_cupon_private = "_session_tabla_cupon_private";
+        private string _session_tabla_cliente_private = "_session_tabla_cliente_private";
         private string _session_tabla_cupon_exportar_private= "_session_tabla_cupon_exportar_private";
         private string _BataClub_cupon_Combo = "_BataClub_cupon_Combo";
         private string _BataClub_Cupon_Desc = "_BataClub_Cupon_Desc";
@@ -62,10 +68,10 @@ namespace CapaPresentacion.Controllers
             //    return View();
             //}
             if (Session["_BataClub_Promociones_Combo"] == null)
-               {
+            {
                 ViewBag.Promocion = datProm.get_ListaPromociones();
                 Session["_BataClub_Promociones_Combo"] = ViewBag.Promocion;
-               }
+            }
             else
             { ViewBag.Promocion = Session["_BataClub_Promociones_Combo"]; }
 
@@ -77,10 +83,19 @@ namespace CapaPresentacion.Controllers
             else
             { ViewBag.Estado = Session["_BataClub_Promociones_estado"]; }
 
+            if (Session["_BataClub_cupon_Combo"] == null)
+            {
+                ViewBag.Promo = datProm.get_ListaPromo_Disp();
+                Session["_BataClub_cupon_Combo"] = ViewBag.Promo;
+            }
+            else {
+                ViewBag.Promo = Session["_BataClub_cupon_Combo"];
+            }
 
-            return View();
+                return View();
         }
 
+        //Table
         public PartialViewResult _Table(string dni, string cupon, string hidden, string correo,string dwprom, string dwest)
         {
             if (dwprom == null)
@@ -241,7 +256,8 @@ namespace CapaPresentacion.Controllers
 
         #region Bataclub/Cupon
         //Index
-        public ActionResult Cupon()
+        [HttpGet]
+        public ActionResult Cupon(string dwpromo)
         {
             string cod_prom = "";
 
@@ -269,13 +285,22 @@ namespace CapaPresentacion.Controllers
             //}
 
             List<Ent_BataClub_CuponesCO> list = null;
+
+            if (Session["_BataClub_Promociones_Combo"] == null)
+            {
+                ViewBag.Promocion = datProm.get_ListaPromociones();
+                Session["_BataClub_Promociones_Combo"] = ViewBag.Promocion;
+            }
+            else
+            { ViewBag.Promocion = Session["_BataClub_Promociones_Combo"]; }
+
+
             if (Session["_BataClub_cupon_Combo"] == null)
             {
-                ViewBag.Promocion = datProm.get_ListaPromo_Disp();
-                Session["_BataClub_cupon_Combo"] = ViewBag.Promocion;
-
-                cod_prom = ViewBag.Promocion[0].prom_id.ToString();
-                list=datProm.getPromDet(cod_prom);
+                ViewBag.PromoPop = datProm.get_ListaPromo_Disp();
+                Session["_BataClub_cupon_Combo"] = ViewBag.PromoPop;
+                cod_prom = ViewBag.PromoPop[0].prom_id.ToString();
+                list =datProm.getPromDet(cod_prom);
                 ViewBag.Descuento = list[0].porc_desc.ToString();
                 ViewBag.FechaFin = list[0].cup_fecha_fin.ToString();
                 ViewBag.Pares = list[0].max_pares.ToString();
@@ -285,16 +310,17 @@ namespace CapaPresentacion.Controllers
             }
             else
             {
-                ViewBag.Promocion = Session["_BataClub_cupon_Combo"]; 
-                ViewBag.Descuento = Session["_BataClub_Cupon_Desc"];
-                ViewBag.FechaFin = Session["_BataClub_Cupon_FechaFin"];
-                ViewBag.Pares = Session["_BataClub_Cupon_Pares"];
+                list = datProm.getPromDet(dwpromo);            
+                ViewBag.PromoPop = ((List<Ent_BataClub_ComboProm>)(Session[_BataClub_cupon_Combo])).Where(t => t.prom_id == dwpromo);
+                ViewBag.Descuento = list[0].porc_desc.ToString();
+                ViewBag.FechaFin = list[0].cup_fecha_fin.ToString();
+                ViewBag.Pares = list[0].max_pares.ToString();
             }
-            return View();
+            return PartialView();
         }
 
         //Table cupón 
-        public ActionResult getTableCuponAjax(Ent_jQueryDataTableParams param)
+        public ActionResult getTableCuponAjax(Ent_jQueryDataTableParams param /*, int nListado*/)
         {
             /*verificar si esta null*/
             if (Session[_session_tabla_cupon_private] == null)
@@ -381,6 +407,7 @@ namespace CapaPresentacion.Controllers
         }
 
         //Table cupón
+       // [HttpGet]
         public PartialViewResult _TableCupon(string identificacion)
         {
             //if (/*Session[_session_tabla_cupon_private] != null || */((List<Ent_BataClub_CuponesCO>)(Session[_session_tabla_cupon_private])).Count > 0)              
@@ -526,7 +553,8 @@ namespace CapaPresentacion.Controllers
                 //  Session[_session_tabla_cupon_private] = listdoc;
             }
 
-           // return RedirectToAction("_TableCupon");
+            // return RedirectToAction("_TableCupon");
+          //  return PartialView("_TableCupon");
         }
 
         //Generación de cupones
@@ -618,6 +646,168 @@ namespace CapaPresentacion.Controllers
         //    return table;
         //}
 
+        #endregion
+
+        #region Bataclub/Cliente
+        //Index
+        public ActionResult Cliente()
+        {
+            //Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            //string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            //string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            //string return_view = actionName + "|" + controllerName;
+
+            //if (_usuario == null)
+            //{
+            //    return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+            //}
+            //else
+            //{
+            //    return View();
+            //}
+            if (Session["_BataClub_Canal_Combo"] == null)
+            {
+                ViewBag.Canal = datCan.get_lista();
+                Session["_BataClub_Canal_Combo"] = ViewBag.Canal;
+            }
+            else
+            { ViewBag.Canal = Session["_BataClub_Canal_Combo"]; }
+
+            //ViewBag.Departamento = datUbi.get_lista_Departamento();
+            //ViewBag.Provincia = datUbi.get_lista_Provincia(ViewBag.Provincia);
+            //ViewBag.Distrito = datUbi.get_lista_Distrito(ViewBag.Departamento,ViewBag.Provincia);
+
+            return View();
+        }
+
+        //Table
+        public PartialViewResult _TableCliente(string dni="", string nombre = "", string apellido="", string correo = "")
+        {
+            return PartialView(listaTablaCliente(dni, nombre, apellido, correo));
+        }
+
+        public List<Ent_BataClub_Cliente> listaTablaCliente(string dni, string nombre, string apellido, string correo )
+        {
+            List<Ent_BataClub_Cliente> list = datCli.get_lista_cliente(dni, nombre,  apellido, correo);
+            Session[_session_tabla_cliente_private] = list;
+            return list;
+        }
+
+        public ActionResult getTableClienteAjax(Ent_jQueryDataTableParams param)
+        {
+            /*verificar si esta null*/
+            if (Session[_session_tabla_cliente_private] == null)
+            {
+                List<Ent_BataClub_Cliente> listdoc = new List<Ent_BataClub_Cliente>();
+                Session[_session_tabla_cliente_private] = listdoc;
+            }
+
+            //Traer registros
+            IQueryable<Ent_BataClub_Cliente> membercol = ((List<Ent_BataClub_Cliente>)(Session[_session_tabla_cliente_private])).AsQueryable();
+
+            //Manejador de filtros
+            int totalCount = membercol.Count();
+
+            IEnumerable<Ent_BataClub_Cliente> filteredMembers = membercol;
+
+            if (!string.IsNullOrEmpty(param.sSearch))
+            {
+                filteredMembers = membercol
+                    .Where(m =>
+                    m.can_des.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                   // m.canal.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    m.dni.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    m.nombres.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                   // m.apellido_pat.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                   // m.apellido_mat.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    m.genero.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    m.correo.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    m.fec_nac.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    m.telefono.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                  //  m.ubigeo.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    m.ubigeo_distrito.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    m.fec_modif.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    m.fec_registro.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                   // m.fec_miembro.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    m.cod_tda.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    m.des_entid.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    m.cod_cadena.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                   // m.envio_correo.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                  //  m.fec_envio_correo.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                  //  m.gene_cupon.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    m.miem_bataclub.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    m.miem_bataclub_fecha.ToUpper().Contains(param.sSearch.ToUpper()));
+            }
+
+            //Manejador de orden
+            var sortIdx = Convert.ToInt32(Request["iSortCol_0"]);
+
+            Func<Ent_BataClub_Cliente, string> orderingFunction =
+                   (
+                      //m => sortIdx == 0 ? m.fec_doc :
+                      // m.fec_doc
+                      m => sortIdx == 0 ? m.fec_registro :
+                    sortIdx == 1 ? m.miem_bataclub_fecha :
+                    sortIdx == 2 ? m.fec_modif :
+                    sortIdx == 3 ? m.can_des :
+                    m.nombres
+                   );
+            var sortDirection = Request["sSortDir_0"];
+            if (sortDirection == "asc")
+                filteredMembers = filteredMembers.OrderBy(orderingFunction);
+            else
+                filteredMembers = filteredMembers.OrderByDescending(orderingFunction);
+            var displayMembers = filteredMembers
+                .Skip(param.iDisplayStart)
+                .Take(param.iDisplayLength);
+
+            var result = from a in displayMembers
+                         select new
+                         {
+                             a.can_des,
+                            // a.canal,
+                             a.dni,
+                             a.nombres,
+                           //  a.apellido_pat,
+                            // a.apellido_mat,
+                             a.genero,
+                             a.correo,
+                             a.fec_nac,
+                             a.telefono,
+                            // a.ubigeo,
+                             a.ubigeo_distrito,
+                             a.fec_modif,
+                             a.fec_registro,
+                           //  a.fec_miembro,
+                           //  a.cod_tda,
+                             a.des_entid,
+                             a.cod_cadena,
+                            // a.envio_correo,
+                            // a.fec_envio_correo,
+                            // a.gene_cupon,
+                             a.miem_bataclub,
+                             a.miem_bataclub_fecha
+                          };
+            //Se devuelven los resultados por json
+            return Json(new
+            {
+                sEcho = param.sEcho,
+                iTotalRecords = totalCount,
+                iTotalDisplayRecords = filteredMembers.Count(),
+                aaData = result
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        //Exportar Excel
+        [HttpGet]
+        public FileContentResult ExportToExcelClientes()
+        {
+            List<Ent_BataClub_Cliente> listaclientes = (List<Ent_BataClub_Cliente>)Session[_session_tabla_cliente_private];
+            string[] columns = { "can_des", "dni", "dni", "nombres", "apellido_pat", "apellido_mat", "genero", "correo", "fec_nac", "telefono", "ubigeo_distrito", "fec_modif"
+            , "fec_registro", "fec_miembro", "cod_tda", "des_entid", "cod_cadena", "envio_correo", "fec_envio_correo", "gene_cupon", "miem_bataclub", "miem_bataclub_fecha"};
+            byte[] filecontent = ExcelExportHelper.ExportExcel(listaclientes, "BATACLUB_Clientes", true, columns);
+            return File(filecontent, ExcelExportHelper.ExcelContentType, "BATACLUB_Clientes.xlsx");
+        }
         #endregion
 
     }

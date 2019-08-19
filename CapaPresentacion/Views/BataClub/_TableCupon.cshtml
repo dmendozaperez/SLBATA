@@ -1,5 +1,5 @@
 ﻿
-<table id="example" class="table table-hover dataTable  table-striped table-responsive">
+<table id="example2" class="table table-hover dataTable  table-striped table-responsive">
     <thead>
         <tr style="background-color:#3d566e; color:#ecf0f1">
             <th>Nombres</th>
@@ -22,29 +22,33 @@
 </table>
 
 <script>
-        $('.table').dataTable({
+    $('#example2').dataTable({
             "language": {
                 "url": "../Scripts/DataTables/Spanish.json"
             },
-            "bProcessing": true, 
+            "bProcessing": false, 
             "bServerSide": true,
             "bAutoWidth": false,
             "sAjaxSource": '@Url.Action("getTableCuponAjax", "BataClub")',
             "fnServerParams": function (aoData) {
                 //aoData.push({ "name": "lblConsumidos", "value": $.trim($('#lblConsumidos')[0].textContent).toString() });
-              //  $('#lblConsumidos')[0].textContent.toString() = "Consumidos:";
-                //aoData.push({ "name": "lblDisponibles", "value": $.trim($('#lblDisponibles').val()) });
+                //  $('#lblConsumidos')[0].textContent.toString() = "Consumidos:";
+
+                //var nListado = $("#example2 tr").length - 2;
+                //aoData.push({ "name": "nListado", "value": nListado });
             },
-          //  "fnServerData": function ( sSource, aoData, fnCallback ) {
-               // $.getJSON( sSource, aoData, function (json) {
-                    /* Do whatever additional processing you want on the callback, then tell DataTables */
-                    //  console.log("entró a fnServerData");
-                    //debugger;
-                   //  console.log(json.variable1);
-                   // $('#lblIndicador')[0].textContent = "Data encontrada: " + json.variable1;
-                  //  fnCallback(json)
-                //} );
-          //  },
+          // "fnServerData": function ( sSource, aoData, fnCallback ) {
+               //$.getJSON( sSource, aoData, function (json) {
+               //    /* Do whatever additional processing you want on the callback, then tell DataTables */
+               //    console.log("entró a fnServerData");
+               //    //debugger;
+               //    console.log(json.variable1);
+               //    //  $('#lblIndicador')[0].textContent = "Data encontrada: " + json.variable1;   
+               //    if (json.variable1==true) { toastr.error("No se encontró registro alguno.", "Mensaje"); }
+               //      //return false;
+               //     fnCallback(json)
+               // } );
+           // },
             "bdestroy": true,
             "start": 0,
             "order": [0, "asc"],
