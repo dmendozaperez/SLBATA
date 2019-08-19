@@ -187,6 +187,7 @@ namespace CapaDato.Interface
                     string rutaInterface = "";
 
                     nombreBK = _gen_inter_name;
+                    if (_gen_inter_name == "ITEM_MAINTENANCE") _entorno = "ORCE";
 
                     switch (_entorno)
                     {

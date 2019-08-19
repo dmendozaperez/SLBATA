@@ -15,7 +15,7 @@ namespace CapaDato.Transac
     {
         public List<Ent_Documentos_Tda> get_lista(string tienda, string tipo_doc,string num_doc,string fecha_ini,string fecha_fin , string articulo)
         {
-            string sqlquery = "[USP_GET_DOCUMENTOS_TIENDA_PRUEBA]";
+            string sqlquery = "[USP_GET_DOCUMENTOS_TIENDA]";
             List<Ent_Documentos_Tda> listar = null;
             try
             {
