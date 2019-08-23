@@ -40,10 +40,15 @@ namespace CapaPresentacion.Controllers
             {
                 List<Ent_Orce_Inter_Cab> liststoreConf = new List<Ent_Orce_Inter_Cab>();
                 liststoreConf = datOE.get_lista_orce_exlude();
+                if (liststoreConf == null)
+                {
+                    liststoreConf = new List<Ent_Orce_Inter_Cab>();
+                }
                 Session[_session_lista_orce] = liststoreConf;
             }
-            
+
             //Traer registros
+
             IQueryable<Ent_Orce_Inter_Cab> membercol = ((List<Ent_Orce_Inter_Cab>)(Session[_session_lista_orce])).AsQueryable();  //lista().AsQueryable();
 
             //Manejador de filtros
