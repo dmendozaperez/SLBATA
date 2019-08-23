@@ -1,0 +1,317 @@
+﻿<link href="~/ContentSelect/bootstrap-select.css" rel="stylesheet" />
+<link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />  
+
+<style>
+    .dataTables_processing {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 100%;
+        height: 40px;
+        margin-left: -50%;
+        margin-top: -25px;
+        padding-top: 20px;
+        text-align: center;
+        font-size: 1.2em;
+        background-color: white;
+        font-weight: bold;
+        color: cornflowerblue;
+        background: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(255,255,255,0)), color-stop(25%, rgba(255,255,255,0.9)), color-stop(75%, rgba(255,255,255,0.9)), color-stop(100%, rgba(255,255,255,0)));
+        background: -webkit-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 25%, rgba(255,255,255,0.9) 75%, rgba(255,255,255,0) 100%);
+        background: -moz-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 25%, rgba(255,255,255,0.9) 75%, rgba(255,255,255,0) 100%);
+        background: -ms-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 25%, rgba(255,255,255,0.9) 75%, rgba(255,255,255,0) 100%);
+        background: -o-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 25%, rgba(255,255,255,0.9) 75%, rgba(255,255,255,0) 100%);
+        background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 25%, rgba(255,255,255,0.9) 75%, rgba(255,255,255,0) 100%);
+    }
+</style>
+<script src="~/Scripts/bootstrap-select.min.js"></script>
+<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.7/xlsx.core.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xls/0.7.4-a/xls.core.min.js"></script>
+@model CapaEntidad.OrceExlud.Ent_Orce_Inter_Cab
+  @*@using (Ajax.BeginForm(null, null, options, new { @class = "form-horizontal" }))
+        {*@
+    <div class="form-horizontal">
+        <div class="form-group form-group-sm">
+            <label class="col-md-2 control-label" for="txtCodigo">Codigo:</label>
+            <div class="col-md-3">
+                @Html.TextBox("codigo", Model.ORC_COD, new { @class = "form-control", @id = "codigo", @readonly = "readonly" })
+            </div>
+        </div>
+        <div class="form-group form-group-sm">
+            <label class="col-md-2 control-label" for="txtCodigo">Descripcion:</label>
+            <div class="col-md-4">
+                @Html.TextArea("descripcion", Model.ORC_DESCRIPCION, new { @class = "form-control", @id = "descripcion" })
+            </div>
+        </div>
+        <div class="form-group form-group-sm">
+            <label class="col-md-2 control-label" for="ddlCadena">Cadena:</label>
+            <div class="col-md-3">
+                @Html.DropDownList("cadena", new MultiSelectList(ViewBag.listCadena, "cbo_codigo", "cbo_descripcion", (Model.TIENDAS == null ? null : Model.TIENDAS.Select(s => s.ORC_DET_TDA_CAD).Distinct())), new { @class = "form-control selectpicker", @id = "cadena", @data_live_search = "true", @multiple = "multiple", @data_actions_box = "true", @data_selected_text_format = "count > 2", @onchange = "ListarTienda()" })
+            </div>
+        </div>
+        <div class="form-group form-group-sm">
+            <label class="col-md-2 control-label" for="ddlTdaCadena">Tienda:</label>
+            <div class="col-md-3">
+                @Html.DropDownList("tdaCadena", new MultiSelectList(ViewBag.listTdaCadena, "cbo_codigo", "cbo_descripcion",(Model.TIENDAS ==null? null : Model.TIENDAS.Select(s => s.ORC_DET_TDA))), new { @class = "form-control selectpicker", @id = "tdaCadena", @data_live_search = "true", @multiple = "multiple", @data_actions_box = "true", @data_selected_text_format = "count > 2" })
+            </div>
+        </div>
+        <div class="form-group form-group-sm">
+            <label class="col-md-2 control-label" for="ddlAtributo">Atributo:</label>
+            <div class="col-md-3">
+                @Html.DropDownList("atributo", new SelectList(ViewBag.listAtr, "cbo_codigo", "cbo_descripcion", Model.ORC_ATRIBUTO), new { @class = "form-control selectpicker", @id = "atributo", @data_live_search = "true", @onchange = "ListarArticulos();" })
+            </div>
+        </div>
+        <div class="form-group form-group-sm">
+            <label class="col-md-2 control-label" for="ddlAtributo">Cargar Excel:</label>
+            <div class="col-md-3">
+                <input type="file" id="excelFile" accept=".xlsx">
+                @*@Html.DropDownList("ddlAtributo", null, new { @class = "form-control selectpicker", @id = "ddlAtributo", @data_live_search = "true" })*@
+            </div>
+        </div>
+    </div>
+
+    @*}*@
+    <div class="row">
+        <div class="col-md-7">
+            <table class="table table-bordered table-condensed">
+                <thead>
+                    <tr style="background-color:#3d566e; color:#ecf0f1">
+                        <th>Articulo</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody data-bind="foreach:"></tbody>
+                <tfoot>
+                    <tr>
+                        <th>Articulo</th>
+                        <th>Estado</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+<script>
+    var _exceljson = "";
+    var _art_mod = "";
+    var ordenar = true;
+    $(document).ready(function () {
+        $('input[type="file"]').change(function () {
+            ExportToTable();
+        });
+        $('.table').dataTable({
+            "language": {
+                "url": "../Scripts/DataTables/Spanish.json",
+                //"bProcessing" : '<div class="spinner"></div>'
+            },
+            "bProcessing": true,
+            "bServerSide": true,
+            "bAutoWidth": false,
+            "sAjaxSource": '@Url.Action("getArtAjax", "Orce_Exclud")',
+            "fnServerParams": function (aoData) {
+                aoData.push({ "name": "atributo", "value": $('#atributo').val() }, { "name": "_art_mod", "value": _art_mod }, { "name" : "ordenar" , "value" : ordenar });
+            },
+            "bdestroy": true,
+            "start": 0,
+            //"order": [0, "desc"],
+            "bDeferRender": true,
+            "aoColumns": [
+                    { "sName": "ARTICULO", "mData": "ARTICULO" },
+                    {
+                        "render": function (data, type, full) {
+                            if (full.VALOR == true  ) {
+                                return "<div class='checkbox'><label><input onClick='actualizarValorArt(\"" + full.ARTICULO + "\");' type='checkbox'  checked> TRUE</label></div>"
+                            } else {
+                                return "<div class='checkbox'><label><input onClick='actualizarValorArt(\"" + full.ARTICULO + "\");' type='checkbox'  > FALSE</label></div>"
+                            }
+                        }, "className": "content-center-text"
+                    }
+            ]
+        });
+
+    });
+    function actualizarValorArt(articulo)
+    {
+        _art_mod = articulo;
+        $('.table').DataTable().ajax.reload(null,false);
+        _art_mod = "";
+    }
+    function ListarArticulos() {
+        //waitingDialog.show('Espere un momento por favor');
+        $('#excelFile').val("");
+        $('.table').DataTable().ajax.reload();
+        //waitingDialog.hide();
+    }
+    function ListarTienda() {
+        var cadenas = $("#cadena").val();
+        cadenas = cadenas == null ? "" : cadenas.toString();
+        //waitingDialog.show('Espere un momento por favor');
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("get_tda_cadena", "Orce_Exclud")',
+            data: { cadenas: cadenas } ,
+            success: function (resultado) {
+                //waitingDialog.hide();
+                $('#tdaCadena').html(ParseJSONSelectList(resultado));
+                $('#tdaCadena').selectpicker('refresh');
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                //waitingDialog.hide();
+                var error = eval("(" + XMLHttpRequest.responseText + ")");
+                swal(error.Message);
+            }
+        });
+    }
+    function EnviarArticulosExcel(jsonExcel) {
+        waitingDialog.show('Espere un momento por favor');
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("JsonExcelArticulos", "Orce_Exclud")',
+            data: { articulos: JSON.stringify(jsonExcel) },
+            dataType : "json",
+            success: function (data) {
+                waitingDialog.hide();
+                if (data.estado == 1) {
+                    ordenar = false;
+                    $('.table').DataTable().ajax.reload();
+                } else {
+                    swal("Error", "" + data.resultados);
+                    $('#excelFile').val("");
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                waitingDialog.hide();
+                var error = eval("(" + XMLHttpRequest.responseText + ")");
+                swal(error.Message);
+            }
+        });
+    }
+    function ExportToTable() {
+        try {
+            var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xlsx|.xls)$/;
+            /*Checks whether the file is a valid excel file*/
+            if (regex.test($("#excelFile").val().toLowerCase())) {
+                var xlsxflag = false; /*Flag for checking whether excel is .xls format or .xlsx format*/
+                if ($("#excelFile").val().toLowerCase().indexOf(".xlsx") > 0) {
+                    xlsxflag = true;
+                }
+                /*Checks whether the browser supports HTML5*/
+                if (typeof (FileReader) != "undefined") {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        var data = e.target.result;
+                        /*Converts the excel data in to object*/
+                        if (xlsxflag) {
+                            var workbook = XLSX.read(data, { type: 'binary' });
+                        }
+                        else {
+                            var workbook = XLS.read(data, { type: 'binary' });
+                        }
+                        /*Gets all the sheetnames of excel in to a variable*/
+                        var sheet_name_list = workbook.SheetNames;
+
+                        var cnt = 0; /*This is used for restricting the script to consider only first sheet of excel*/
+                        sheet_name_list.forEach(function (y) { /*Iterate through all sheets*/
+                            /*Convert the cell value to Json*/
+                            if (xlsxflag) {
+                                var exceljson = XLSX.utils.sheet_to_json(workbook.Sheets[y]);
+                            }
+                            else {
+                                var exceljson = XLS.utils.sheet_to_row_object_array(workbook.Sheets[y]);
+                            }
+                            if (exceljson.length > 0 && cnt == 0) {
+                                EnviarArticulosExcel(exceljson);
+                            }
+                            //ret_exceljson = exceljson;
+                        });
+                        //$('#exceltable').show();
+                    }
+                    if (xlsxflag) {/*If excel file is .xlsx extension than creates a Array Buffer from excel*/
+                        reader.readAsArrayBuffer($("#excelFile")[0].files[0]);
+                    }
+                    else {
+                        reader.readAsBinaryString($("#excelFile")[0].files[0]);
+                    }
+                }
+                else {
+                    swal("Tu navegador no soporta HTML5");
+                }
+            }
+            else {
+                swal("Por favor selecciona un archivo excel *xlsx");
+            }
+        } catch (e) {
+            swal("Error al cargar archivo excel.");
+        }
+
+    }
+    function ParseJSONSelectList(JSONData) {
+        var html = ''; //'<option value="-1" Selected>TODOS</option>';
+        var len = JSONData.length;
+        for (var i = 0; i < len; i++) {
+            html += '<option value="' + JSONData[i].cbo_codigo + '"' + (JSONData[i].Selected == true ? ' Selected ' : '') + '>' + JSONData[i].cbo_descripcion + '</option>';
+        }
+        return html;
+    }
+
+
+    function NuevoGrabar(est_orce, op) {
+        var _titulo = "";
+        
+
+
+        swal({
+            title: (est_orce == "P" ? "Generar Interface" : "Generar y enviar Interface"),
+            text: (est_orce == "P" ? "¿Desea generar interface?" : "¿Desea generar y enviar interface?"),
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+       .then((cambiar) => {
+           if (cambiar) {
+               var codigo = $("#codigo").val();
+               var descripcion = $("#descripcion").val();
+               var cadena = $("#cadena").val();
+               var tdaCadena = $("#tdaCadena").val();
+               var atributo = $("#atributo").val();
+               cadena = (cadena == null ? '' : cadena)
+               tdaCadena = (tdaCadena == null ? '' : tdaCadena)
+               cadena = cadena.toString();
+               tdaCadena = tdaCadena.toString();
+               waitingDialog.show('Espere un momento por favor');
+               $.ajax({
+                   type: "POST",
+                   url: '@Url.Action("ORCE_INTERFACE_EXCLUD_ACT", "Orce_Exclud")',
+                   data: { codigo: codigo, descripcion: descripcion, cadena: cadena, tdaCadena: tdaCadena, atributo: atributo, est_orce: est_orce, operacion: op },
+                   dataType: "json",
+                   success: function (data) {
+                       waitingDialog.hide();
+                       if (data.estado == 1) {
+                           swal({
+                               title: "OK",
+                               text: data.mensaje,
+                               icon: "success"
+                           }).then((value) => {
+                               window.location.href = "@Url.Action("Index", "Orce_Exclud")";
+                           });
+                       } else {
+                           swal({
+                               title: "Error",
+                               text: data.mensaje,
+                               icon: "error",
+                               dangerMode: true,
+                           });
+                       }
+                   },
+                   error: function (XMLHttpRequest, textStatus, errorThrown) {
+                       waitingDialog.hide();
+                       var error = eval("(" + XMLHttpRequest.responseText + ")");
+                       swal(error.Message);
+                   }
+               });
+           }
+       });
+    }
+</script>

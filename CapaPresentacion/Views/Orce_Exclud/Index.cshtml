@@ -1,0 +1,292 @@
+﻿@{
+    ViewBag.Title = "Lista de Envio de Interface Exclud";
+}
+<div class="box box-body box-primary">
+    <div class="row">
+        <div class="col-md-12">
+            <a href="@Url.Action("Nuevo", "Orce_Exclud")" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i>&nbsp;Crear nueva interface Exclud</a>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-12">
+            <div id="lista">
+                <table id="listaPrincipal" class="table dt-lista table-hover dataTable table-striped table-responsive">
+                    <thead>
+                        <tr style="background-color:#3d566e; color:#ecf0f1">
+                            <th>Codigo</th>
+                            <th>Descripcion</th>
+                            <th>Fec. Registro</th>
+                            <th>Fec. Modificacion</th>
+                            <th>Fec. Envío</th>
+                            <th>Ver Tiendas</th>
+                            <th>Atributo</th>
+                            <th>Articulos</th>
+                            <th>Estado</th>
+                            <th>Enviar</th>
+                            <th>Editar</th>
+                            <th>Anular</th>
+                        </tr>
+                    </thead>
+                    <tbody data-bind="foreach:"></tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Codigo</th>
+                            <th>Descripcion</th>
+                            <th>Fec. Registro</th>
+                            <th>Fec. Modificacion</th>
+                            <th>Fec. Envío</th>
+                            <th>Ver Tiendas</th>
+                            <th>Atributo</th>
+                            <th>Articulos</th>
+                            <th>Estado</th>
+                            <th>Enviar</th>
+                            <th>Editar</th>
+                            <th>Anular</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>    
+</div>
+@* popup lista *@
+<div class="modal fade" id="modalListaTiendas" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="text-primary modal-title" id="myModalLabel">Lista de Tiendas</h4>
+            </div>
+            <div class="modal-body" id="listaDetTdas">
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalListaArticulos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="text-primary modal-title" id="myModalLabel">Lista de Articulos</h4>
+            </div>
+            <div class="modal-body" id="listaDetArt">
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+    var actualizar = "";
+    $(document).ready(function () {
+        $('.dt-lista').DataTable({
+            "language": {
+                "url": "../Scripts/DataTables/Spanish.json"
+            },
+            "bServerSide": true,
+            "bAutoWidth": false,
+            "sAjaxSource": '@Url.Action("getListaAjax", "Orce_Exclud")',
+            "fnServerParams": function (aoData) {
+                aoData.push({ "name": "actualizar", "value": actualizar });
+            },
+            "bdestroy": true,
+            "start": 0,
+            "order": [0, "desc"],
+            "bDeferRender": true,
+            "aoColumns": [
+                  { "sName": "ORC_COD", "mData": "ORC_COD" },
+                  { "sName": "ORC_DESCRIPCION", "mData": "ORC_DESCRIPCION", "sClass": "right" },
+                  { "sName": "ORC_FECHA_ING", "mData": "ORC_FECHA_ING", "sClass": "right" },
+                  { "sName": "ORC_FECHA_ACT", "mData": "ORC_FECHA_ACT", "sClass": "right" },
+                  { "sName": "ORC_FEC_ENV", "mData": "ORC_FEC_ENV", "sClass": "right" },
+                  {
+                      "render": function (data, type, full) {
+                          return '<button title="Ver lista de tiendas" class="btn btn-default btn-sm tiendas" data-cod-orce="' + full.ORC_COD + '" ><i class="glyphicon glyphicon-list"></i></button>';
+                      }
+                  },
+                  { "sName": "ORC_ATRIBUTO", "mData": "ORC_ATRIBUTO", "sClass": "right" },
+                  {
+                      "render": function (data, type, full) {
+                          return '<button title="Ver lista de articulos" class="btn btn-default btn-sm articulos" data-cod-orce="' + full.ORC_COD + '"><i class="glyphicon glyphicon-list"></i></button>';
+                      }
+                  },
+                  {
+                      "render": function (data, type, full) {
+                          if (full.ORC_EST_ID == 'P') {
+                              return '<span class="label label-warning">PENDIENTE</span>'
+                          } else if (full.ORC_EST_ID == 'A') {
+                              return '<span class="label label-danger">ANULADO</span>'
+                          } else {
+                              return '<span class="label label-success">ENVIADO</span>'
+                          }
+                      }
+                  }, //estado
+                  {
+                      "render": function (data, type, full) {
+                          if (full.ORC_EST_ID == 'P')
+                              return '<button class="btn btn-success btn-sm accion-inter" title="Enviar Interface" data-accion-iter="E" data-cod-orce="' + full.ORC_COD + '"><i class="glyphicon glyphicon-send"></i></button>';
+                          else
+                              return '';
+                      }
+                  },
+                  {
+                      "render": function (data, type, full) {
+                          if (full.ORC_EST_ID == 'P')
+                              return '<a href="../Orce_Exclud/Editar?id=' + full.ORC_COD + '" class="btn btn-primary btn-sm " title="Editar interface" data-accion-iter="P" data-cod-orce="' + full.ORC_COD + '"><i class="glyphicon glyphicon-edit"></i></a>';
+                          else
+                              return '';
+                      }
+                  },
+                  {
+                      "render": function (data, type, full) {
+                          if (full.ORC_EST_ID == 'P')
+                              return '<button class="btn btn-danger btn-sm accion-inter" title="Anular interface" data-accion-iter="A" data-cod-orce="' + full.ORC_COD + '"><i class="glyphicon glyphicon-trash"></i></button>';
+                          else
+                              return '';
+                      }
+                  },
+            ]
+        });
+        $('.dt-lista').on('click', '.tiendas', function (e) {
+            waitingDialog.show('Espere un momento por favor');
+            var cod_orce = $(this).attr('data-cod-orce');
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("getListaDetTdas", "Orce_Exclud")',
+                data: { cod_orce: cod_orce },
+                dataType: "json",
+                success: function (data) {
+                    waitingDialog.hide();
+                    if (data.estado == 1) {
+                        var table = '<table id="example" class="table table-hover table-condensed dt-lista-tdas table-striped table-responsive"><thead><tr style="background-color:#3d566e; color:#ecf0f1"><th>Codigo</th><th>Tienda</th></tr></thead><tbody data-bind="foreach:">';
+                        for (var i = 0; i < data.tiendas.length; i++) {
+                            table += '<tr><td>' + data.tiendas[i].ORC_DET_TDA + '</td><td>' + data.tiendas[i].ORC_DET_TDA_DES + '</td></tr>'
+                        }
+                        table += '</tbody><tfoot><tr><th>Codigo</th><th>Tienda</th></tr></tfoot></table>'
+                        $("#listaDetTdas").html(table);
+                        $(".dt-lista-tdas").DataTable({
+                            "language": {
+                                "url": "../Scripts/DataTables/Spanish.json"
+                            }
+                        });
+                        $("#modalListaTiendas").modal({ backdrop: 'static', keyboard: false });
+                    } else {
+                        swal("Error", "No se pudo cargar la lista de Tiendas");
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    waitingDialog.hide();
+                    var error = eval("(" + XMLHttpRequest.responseText + ")");
+                    swal(error.Message);
+                }
+            });
+            
+        });
+        $('.dt-lista').on('click', '.articulos', function (e) {
+            waitingDialog.show('Espere un momento por favor');
+            var cod_orce = $(this).attr('data-cod-orce');
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("getListaDetArt", "Orce_Exclud")',
+                data: { cod_orce: cod_orce },
+                dataType: "json",
+                success: function (data) {
+                    waitingDialog.hide();
+                    if (data.estado == 1) {
+                        var table = '<table class="table table-hover table-condensed dt-lista-art table-striped table-responsive"><thead><tr style="background-color:#3d566e; color:#ecf0f1"><th>Articulo</th><th>Valor</th></tr></thead><tbody data-bind="foreach:">';
+                        for (var i = 0; i < data.articulos.length; i++) {
+                            table += '<tr><td>' + data.articulos[i].ARTICULO + '</td><td>' + data.articulos[i].VALOR.toString().toUpperCase() + '</td></tr>'
+                        }
+                        table += '</tbody><tfoot><tr><th>Articulo</th><th>Valor</th></tr></tfoot></table>'
+                        $("#listaDetArt").html(table);
+                        $(".dt-lista-art").DataTable({
+                            "language": {
+                                "url": "../Scripts/DataTables/Spanish.json"
+                            }
+                        });
+                        $("#modalListaArticulos").modal({ backdrop: 'static', keyboard: false });
+                    } else {
+                        swal("Error", "No se pudo cargar la lista de articulos");
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    waitingDialog.hide();
+                    var error = eval("(" + XMLHttpRequest.responseText + ")");
+                    swal(error.Message);
+                }
+            });
+           
+        });
+        $('#modalListaTiendas').on('hidden.bs.modal', function () {
+            $('.dt-lista-tdas').DataTable().destroy();
+        });
+        $('#modalListaArticulos').on('hidden.bs.modal', function () {
+            $('.dt-lista-art').DataTable().destroy();
+        })
+        $('.dt-lista').on('click', '.accion-inter', function (e) {
+            var est_orce = $(this).attr('data-accion-iter');
+            var cod_orce = $(this).attr('data-cod-orce');//
+            var titulo_s = "";
+            if (est_orce == "E") {
+                titulo_s = "Enviar";
+            } else {
+                titulo_s = "Anular";
+            } 
+            swal({
+                title: titulo_s,
+                text: "¿Desea " + titulo_s.toLowerCase() + " interface?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+          .then((cambiar) => {
+              if (cambiar) {
+                  waitingDialog.show('Espere un momento por favor');
+                  $.ajax({
+                      type: "POST",
+                      url: '@Url.Action("ORCE_INTERFACE_EXCLUD_ACT", "Orce_Exclud")',
+                      data: { est_orce: est_orce, codigo: cod_orce, operacion: 3 },
+                      dataType: "json",
+                      success: function (data) {
+                          waitingDialog.hide();
+                          if (data.estado == 1) {
+                              swal({
+                                  title: "OK",
+                                  text: data.mensaje,
+                                  icon: "success"
+                              }).then((value) => {
+                                  actualizar = "actualizar";
+                                  $('.dt-lista').DataTable().ajax.reload(null, false);
+                                  actualizar = "";
+                              });
+                          } else {
+                              swal({
+                                  title: "Error",
+                                  text: data.mensaje,
+                                  icon: "error",
+                                  dangerMode: true,
+                              });
+                          }
+                      },
+                      error: function (XMLHttpRequest, textStatus, errorThrown) {
+                          waitingDialog.hide();
+                          var error = eval("(" + XMLHttpRequest.responseText + ")");
+                          swal(error.Message);
+                      }
+                  });
+              }
+          });
+        });
+
+    });
+
+</script>

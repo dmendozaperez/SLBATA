@@ -333,6 +333,7 @@
     <Compile Include="Controllers\InventarioController.cs" />
     <Compile Include="Controllers\LoginIntermedioController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
+    <Compile Include="Controllers\Orce_ExcludController.cs" />
     <Compile Include="Controllers\ReporteController.cs" />
     <Compile Include="Controllers\ReporteCrystalController.cs" />
     <Compile Include="Controllers\ReportsBataclubController.cs" />
@@ -1589,6 +1590,10 @@
     <Content Include="Views\XstoreTda\_listaCajasXst.cshtml" />
     <Content Include="Views\BataClub\Cliente.cshtml" />
     <Content Include="Views\BataClub\_TableCliente.cshtml" />
+    <Content Include="Views\Orce_Exclud\Index.cshtml" />
+    <Content Include="Views\Orce_Exclud\Nuevo.cshtml" />
+    <Content Include="Views\Orce_Exclud\_form.cshtml" />
+    <Content Include="Views\Orce_Exclud\Editar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

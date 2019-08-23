@@ -1,0 +1,18 @@
+﻿@{
+    ViewBag.Title = "Crear nueva Interface Exclud";
+}
+@model CapaEntidad.OrceExlud.Ent_Orce_Inter_Cab
+
+
+<div class="box box-body box-primary">
+    <div class="row">
+        <div class="col-sm-offset-1 col-sm-10">
+            <button type="button" onclick="NuevoGrabar('E',1);" class="btn btn-primary"><i class="glyphicon glyphicon-send"></i>&nbsp;&nbsp;Generar y Enviar</button>&nbsp;&nbsp;&nbsp;&nbsp;
+            <button type="button" onclick="NuevoGrabar('P',1);" class="btn btn-info"><i class="glyphicon glyphicon-floppy-disk"></i>&nbsp;&nbsp;Generar</button>&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="@Url.Action("Index" , "Orce_Exclud")" class="btn btn-default"><i class="glyphicon glyphicon-trash"></i>&nbsp;&nbsp;Cancelar</a>
+        </div>
+    </div>
+    <br />
+    @{Html.RenderPartial("_form",Model);}
+</div>
+
