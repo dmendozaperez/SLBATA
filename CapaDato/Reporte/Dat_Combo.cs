@@ -151,6 +151,47 @@ namespace CapaDato.Reporte
             return list;
         }
 
+        public List<Ent_Combo> get_lista_anios( int a_inicio)
+        {
+            List<Ent_Combo> list = null;
+            string sqlquery = "USP_GET_LISTA_ANIOS";
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+                    if (cn.State == 0) cn.Open();
+                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@ANIO_INICIO", a_inicio);
+                        SqlDataReader dr = cmd.ExecuteReader();
+                        if (dr.HasRows)
+                        {
+                            list = new List<Ent_Combo>();
+
+                            while (dr.Read())
+                            {
+                                Ent_Combo combo = new Ent_Combo();
+                                combo.cbo_codigo = dr["cod"].ToString();
+                                combo.cbo_descripcion = dr["anio"].ToString();
+
+                                list.Add(combo);
+
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+                list = null;
+            }
+            return list;
+        }
+
+
         public List<Ent_Combo> get_ListaSemana()
         {
             List<Ent_Combo> list = null;

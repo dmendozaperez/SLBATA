@@ -7,6 +7,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
+using CapaPresentacion.Models.Crystal.Reporte;
 
 namespace Data.Crystal.Reporte
 {
@@ -345,5 +346,66 @@ namespace Data.Crystal.Reporte
             return lista;
         }
 
+        internal List<Models_Tab_Pros> list_tab_pros(string tienda, string anio)
+        {
+            string sqlquery = "USP_XSTORE_TABLA_PROSPERIDAD";
+            List<Models_Tab_Pros> lista = null;
+            DataTable dt = null;
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+                    try
+                    {
+                        using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                        {
+                            cmd.CommandTimeout = 0;
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.AddWithValue("@ANIO", anio);
+                            cmd.Parameters.AddWithValue("@COD_TDA", tienda);
+                            using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                            {
+                                dt = new DataTable();
+                                da.Fill(dt);
+                                lista = new List<Models_Tab_Pros>();
+                                lista = (from DataRow dr in dt.Rows
+                                         select new Models_Tab_Pros()
+                                         {
+                                             ID = Convert.ToInt32( dr["ID"].ToString()),
+                                             TIENDA = dr["TIENDA"].ToString(),
+                                             SEMANA = dr["SEMANA"].ToString(),
+                                             TIPO_VALOR_1 = dr["TIPO_VALOR_1"].ToString(),
+                                             STK_ACTUAL = Convert.ToInt32(dr["STK_ACTUAL"]),
+                                             STK_TALY_ACT = Convert.ToInt32(dr["STK_TALY_ACT"]),
+                                             CWS = Convert.ToInt32(dr["CWS"]),
+                                             TIPO_VALOR_2 = dr["TIPO_VALOR_2"].ToString(),
+                                             PARES_VENTA_ANT = Convert.ToInt32(dr["PARES_VENTA_ANT"]),
+                                             PARES_PRESU_ACT = Convert.ToInt32(dr["PARES_PRESU_ACT"]),
+                                             PARES_VENTA_ACT = Convert.ToInt32(dr["PARES_VENTA_ACT"]),
+                                             PARES_TEST_ACT = Convert.ToInt32(dr["PARES_TEST_ACT"]),
+                                             PARES_TALY_ACT = Convert.ToInt32(dr["PARES_TALY_ACT"]),
+                                             SOLES_VENTA_ANT= Convert.ToInt32(dr["SOLES_VENTA_ANT"]),
+                                             SOLES_PRESU_ACT = Convert.ToInt32(dr["SOLES_PRESU_ACT"]),
+                                             SOLES_VENTA_ACT = Convert.ToInt32(dr["SOLES_VENTA_ACT"]),
+                                             SOLES_TEST_ACT = Convert.ToInt32(dr["SOLES_TEST_ACT"]),
+                                             SOLES_TALY_ACT = Convert.ToInt32(dr["SOLES_TALY_ACT"]),
+                                             PRECIO_PROM_ANT = Convert.ToInt32(dr["PRECIO_PROM_ANT"]),
+                                             PRECIO_PROM_ACT = Convert.ToInt32(dr["PRECIO_PROM_ACT"])
+                                         }).ToList();
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+                }
+            }
+            catch
+            {
+
+            }
+            return lista;
+        }
     }
 }

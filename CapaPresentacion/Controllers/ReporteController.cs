@@ -1051,6 +1051,52 @@ namespace CapaPresentacion.Controllers
                 }
             }
         }
+        public ActionResult ReporteTablaProsp()
+        {
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
+            if (_usuario == null)
+            {
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+            }
+            else
+            {
+                if (Session["Tienda"] != null)
+                {
+                    ViewBag.Tienda = datCbo.get_ListaTiendaXstore().Where(t => t.cbo_codigo == Session["Tienda"].ToString()).ToList();
+                }
+                else
+                {
+                    ViewBag.Tienda = datCbo.get_ListaTiendaXstore();
+                    
+                }
+                ViewBag.anios = datCbo.get_lista_anios(2015);
+            }
+            return View();
+        }
+        [HttpPost]
+        public ActionResult ShowGenericReportTablaPropInNewWin(string tienda , string anio)
+        {
+            //grupo = "0";categoria = "0";subcategoria = "0";estado = "0";
+            Data_Bata pl = new Data_Bata();
+            this.HttpContext.Session["ReportName"] = "TablaProsperidad.rpt";
 
+            List<CapaPresentacion.Models.Crystal.Reporte.Models_Tab_Pros> model_Art_sn_mov = pl.list_tab_pros(tienda , anio);
+
+            this.HttpContext.Session["rptSource"] = model_Art_sn_mov;
+
+
+            /*error=0;exito=1*/
+            string _estado = (model_Art_sn_mov == null) ? "0" : "1";
+
+            //if (model_planilla==null)
+
+            return Json(new
+            {
+                estado = _estado
+            });
+        }
     }
 }

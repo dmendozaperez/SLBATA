@@ -294,6 +294,13 @@
     <Compile Include="AspNetForms\RendimientoxCateg.aspx.designer.cs">
       <DependentUpon>RendimientoxCateg.aspx</DependentUpon>
     </Compile>
+    <Compile Include="AspNetForms\TabProsp.aspx.cs">
+      <DependentUpon>TabProsp.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AspNetForms\TabProsp.aspx.designer.cs">
+      <DependentUpon>TabProsp.aspx</DependentUpon>
+    </Compile>
     <Compile Include="AspNetForms\Vendedor.aspx.cs">
       <DependentUpon>Vendedor.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -359,6 +366,7 @@
     <Compile Include="Models\Crystal\Reporte\Models_Guia.cs" />
     <Compile Include="Models\Crystal\Reporte\Models_Comparativo_Venta.cs" />
     <Compile Include="Models\Crystal\Reporte\Models_Obs.cs" />
+    <Compile Include="Models\Crystal\Reporte\Models_Tab_Pros.cs" />
     <Compile Include="Models\Crystal\Reporte\Models_Vendedor.cs" />
     <Compile Include="Models\Crystal\Reporte\Models_Art_Sin_Mov.cs" />
     <Compile Include="Models\Crystal\Reporte\Models_Planilla.cs" />
@@ -406,6 +414,12 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ReporteOBS.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RptsCrystal\TablaProsperidad.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TablaProsperidad.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="RptsCrystal\Vendedor.cs">
@@ -465,6 +479,7 @@
     <Content Include="AspNetForms\GuiaEcommerce.aspx" />
     <Content Include="AspNetForms\ReporteObs.aspx" />
     <Content Include="AspNetForms\RendimientoxCateg.aspx" />
+    <Content Include="AspNetForms\TabProsp.aspx" />
     <Content Include="AspNetForms\Vendedor.aspx" />
     <Content Include="AspNetForms\Planilla.aspx" />
     <Content Include="ContentSelect\bootstrap-multiselect.css" />
@@ -1594,6 +1609,7 @@
     <Content Include="Views\Orce_Exclud\Nuevo.cshtml" />
     <Content Include="Views\Orce_Exclud\_form.cshtml" />
     <Content Include="Views\Orce_Exclud\Editar.cshtml" />
+    <Content Include="Views\Reporte\ReporteTablaProsp.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1663,6 +1679,10 @@
     <EmbeddedResource Include="RptsCrystal\ReporteOBS.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>ReporteOBS.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RptsCrystal\TablaProsperidad.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>TablaProsperidad.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="RptsCrystal\Vendedor.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
