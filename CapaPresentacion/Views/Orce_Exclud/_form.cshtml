@@ -1,6 +1,5 @@
 ﻿<link href="~/ContentSelect/bootstrap-select.css" rel="stylesheet" />
 <link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />  
-
 <style>
     .dataTables_processing {
         position: absolute;
@@ -29,6 +28,7 @@
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.7/xlsx.core.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xls/0.7.4-a/xls.core.min.js"></script>
+
 @model CapaEntidad.OrceExlud.Ent_Orce_Inter_Cab
   @*@using (Ajax.BeginForm(null, null, options, new { @class = "form-horizontal" }))
         {*@
@@ -122,9 +122,9 @@
                     {
                         "render": function (data, type, full) {
                             if (full.VALOR == true  ) {
-                                return "<div class='checkbox'><label><input onClick='actualizarValorArt(\"" + full.ARTICULO + "\");' type='checkbox'  checked> TRUE</label></div>"
+                                return "<div class='checkbox' style='height: 13px;'><label><input style='margin-top: 0px;' onClick='actualizarValorArt(\"" + full.ARTICULO + "\");' type='checkbox'  checked> TRUE</label></div>"
                             } else {
-                                return "<div class='checkbox'><label><input onClick='actualizarValorArt(\"" + full.ARTICULO + "\");' type='checkbox'  > FALSE</label></div>"
+                                return "<div class='checkbox' style='height: 13px;'><label><input style='margin-top: 0px;'  onClick='actualizarValorArt(\"" + full.ARTICULO + "\");' type='checkbox'  > FALSE</label></div>"
                             }
                         }, "className": "content-center-text"
                     }

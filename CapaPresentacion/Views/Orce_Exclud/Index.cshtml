@@ -1,6 +1,12 @@
 ﻿@{
     ViewBag.Title = "Lista de Envio de Interface Exclud";
 }
+<style>
+    .boton-td{        
+        padding-top: 3px !important;
+        padding-bottom: 3px !important;
+    }
+</style>
 <div class="box box-body box-primary">
     <div class="row">
         <div class="col-md-12">
@@ -16,11 +22,11 @@
                         <tr style="background-color:#3d566e; color:#ecf0f1">
                             <th>Codigo</th>
                             <th>Descripcion</th>
+                            <th>Atributo</th>
                             <th>Fec. Registro</th>
                             <th>Fec. Modificacion</th>
                             <th>Fec. Envío</th>
-                            <th>Ver Tiendas</th>
-                            <th>Atributo</th>
+                            <th>Ver Tiendas</th>                            
                             <th>Articulos</th>
                             <th>Estado</th>
                             <th>Enviar</th>
@@ -33,11 +39,11 @@
                         <tr>
                             <th>Codigo</th>
                             <th>Descripcion</th>
+                            <th>Atributo</th>
                             <th>Fec. Registro</th>
                             <th>Fec. Modificacion</th>
                             <th>Fec. Envío</th>
-                            <th>Ver Tiendas</th>
-                            <th>Atributo</th>
+                            <th>Ver Tiendas</th>                            
                             <th>Articulos</th>
                             <th>Estado</th>
                             <th>Enviar</th>
@@ -72,7 +78,16 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="text-primary modal-title" id="myModalLabel">Lista de Articulos</h4>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p class="text-primary modal-title" id="myModalLabel"><b>Lista de Articulos</b></p>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <span class="label label-info" id="maAtributo"></span>
+                    </div>
+                </div>
+                
+                
             </div>
             <div class="modal-body" id="listaDetArt">
                 
@@ -104,20 +119,20 @@
             "bDeferRender": true,
             "aoColumns": [
                   { "sName": "ORC_COD", "mData": "ORC_COD" },
-                  { "sName": "ORC_DESCRIPCION", "mData": "ORC_DESCRIPCION", "sClass": "right" },
-                  { "sName": "ORC_FECHA_ING", "mData": "ORC_FECHA_ING", "sClass": "right" },
-                  { "sName": "ORC_FECHA_ACT", "mData": "ORC_FECHA_ACT", "sClass": "right" },
-                  { "sName": "ORC_FEC_ENV", "mData": "ORC_FEC_ENV", "sClass": "right" },
+                  { "sName": "ORC_DESCRIPCION", "mData": "ORC_DESCRIPCION", "class": "right" },
+                  { "sName": "ORC_ATRIBUTO", "mData": "ORC_ATRIBUTO", "class": "right" },
+                  { "sName": "ORC_FECHA_ING", "mData": "ORC_FECHA_ING", "class": "right" },
+                  { "sName": "ORC_FECHA_ACT", "mData": "ORC_FECHA_ACT", "class": "right" },
+                  { "sName": "ORC_FEC_ENV", "mData": "ORC_FEC_ENV", "class": "right" },
                   {
                       "render": function (data, type, full) {
                           return '<button title="Ver lista de tiendas" class="btn btn-default btn-sm tiendas" data-cod-orce="' + full.ORC_COD + '" ><i class="glyphicon glyphicon-list"></i></button>';
-                      }
+                      }, "sClass": "boton-td"
                   },
-                  { "sName": "ORC_ATRIBUTO", "mData": "ORC_ATRIBUTO", "sClass": "right" },
                   {
                       "render": function (data, type, full) {
-                          return '<button title="Ver lista de articulos" class="btn btn-default btn-sm articulos" data-cod-orce="' + full.ORC_COD + '"><i class="glyphicon glyphicon-list"></i></button>';
-                      }
+                          return '<button title="Ver lista de articulos" class="btn btn-default btn-sm articulos" data-atributo="' + full.ORC_ATRIBUTO + '" data-cod-orce="' + full.ORC_COD + '"><i class="glyphicon glyphicon-list"></i></button>';
+                      }, "class": "boton-td"
                   },
                   {
                       "render": function (data, type, full) {
@@ -136,7 +151,7 @@
                               return '<button class="btn btn-success btn-sm accion-inter" title="Enviar Interface" data-accion-iter="E" data-cod-orce="' + full.ORC_COD + '"><i class="glyphicon glyphicon-send"></i></button>';
                           else
                               return '';
-                      }
+                      }, "class": "boton-td"
                   },
                   {
                       "render": function (data, type, full) {
@@ -144,7 +159,7 @@
                               return '<a href="../Orce_Exclud/Editar?id=' + full.ORC_COD + '" class="btn btn-primary btn-sm " title="Editar interface" data-accion-iter="P" data-cod-orce="' + full.ORC_COD + '"><i class="glyphicon glyphicon-edit"></i></a>';
                           else
                               return '';
-                      }
+                      }, "class": "boton-td"
                   },
                   {
                       "render": function (data, type, full) {
@@ -152,7 +167,7 @@
                               return '<button class="btn btn-danger btn-sm accion-inter" title="Anular interface" data-accion-iter="A" data-cod-orce="' + full.ORC_COD + '"><i class="glyphicon glyphicon-trash"></i></button>';
                           else
                               return '';
-                      }
+                      }, "class": "boton-td"
                   },
             ]
         });
@@ -194,6 +209,7 @@
         $('.dt-lista').on('click', '.articulos', function (e) {
             waitingDialog.show('Espere un momento por favor');
             var cod_orce = $(this).attr('data-cod-orce');
+            var ma_atributo = $(this).attr('data-atributo');
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("getListaDetArt", "Orce_Exclud")',
@@ -208,6 +224,7 @@
                         }
                         table += '</tbody><tfoot><tr><th>Articulo</th><th>Valor</th></tr></tfoot></table>'
                         $("#listaDetArt").html(table);
+                        $("#maAtributo").html("Atributo" + ": " + ma_atributo);
                         $(".dt-lista-art").DataTable({
                             "language": {
                                 "url": "../Scripts/DataTables/Spanish.json"
