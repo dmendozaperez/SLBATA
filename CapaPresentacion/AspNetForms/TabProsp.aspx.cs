@@ -68,5 +68,14 @@ namespace CapaPresentacion.AspNetForms
             }
             return string.Empty;
         }
+        protected void Page_Unload(object sender, EventArgs e)
+        {
+            /// Reporte generalizado
+            if ((rd != null) && rd.IsLoaded)
+            {
+                rd.Close();
+                rd.Dispose();
+            }
+        }
     }
 }

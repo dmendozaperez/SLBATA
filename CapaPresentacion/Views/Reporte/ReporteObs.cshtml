@@ -155,10 +155,17 @@
                     <div style="width:25%" class="col-sm-3">
                         <label for="rprc"></label>
                         <div class="form-group">
-                            <div id="divRangoPrc" class="form-group">
-                                &nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" onchange="validarRangoPrecio()" id="idRango" name="idRango" value="1">&nbsp;&nbsp;<label>Rango de precio</label>
+                            <div class="col-sm-12 checkbox text-danger text-bold" id="">
+                                <label>
+                                    <input type="checkbox" name="idRango" onchange="validarRangoPrecio()" id="idRango" value="1" /> Rango de precio.
+                                </label>
                             </div>
-                        </div>
+                            @*<div class="col-sm-12 checkbox text-danger text-bold" id="">
+                                <div id="divRangoPrc" class="form-group">
+                                    &nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" onchange="validarRangoPrecio()" id="idRango" name="idRango" value="1">&nbsp;&nbsp;<label>Rango de precio</label>
+                                </div>
+                            </div>*@
+                         </div>
                     </div>                  
                     <div  id="divprcFin" style="width:25%;display:none" class="col-sm-3">
                         <label for="lbltxtprcIni">Precio Ini.</label>
