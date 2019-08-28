@@ -62,9 +62,17 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="text-primary modal-title" id="myModalLabel">Lista de Tiendas</h4>
+                <div class="row">
+                    <div class="col-md-8">
+                        <p style="font-size:medium" class="text-primary modal-title" id="myModalLabel"><strong class="text-danger" id="desc_orce_tda"></strong></p>
+                        <p style="font-size:medium" class="text-primary modal-title" id="myModalLabel"><b>Lista de Tiendas: &nbsp;</b></p>                        
+                    </div>
+                    <div class="col-md-4 text-right">
+                        <span style="font-size:medium" class="label label-danger" id="maAtributoTda"></span>
+                    </div>
+                </div>                
             </div>
-            <div class="modal-body" id="listaDetTdas">
+            <div style="font-size:small" class="modal-body" id="listaDetTdas">
                 
             </div>
             <div class="modal-footer">
@@ -80,16 +88,15 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <div class="row">
                     <div class="col-md-6">
-                        <p class="text-primary modal-title" id="myModalLabel"><b>Lista de Articulos</b></p>
+                        <p style="font-size:medium" class="text-primary modal-title" id="myModalLabel"><strong class="text-danger" id="desc_orce_art"></strong></p>
+                        <p style="font-size:medium" class="text-primary modal-title" id="myModalLabel"><b>Lista de Articulos</b></p>
                     </div>
                     <div class="col-md-6 text-right">
-                        <span class="label label-info" id="maAtributo"></span>
+                        <span style="font-size:medium" class="label label-danger" id="maAtributoArt"></span>
                     </div>
                 </div>
-                
-                
             </div>
-            <div class="modal-body" id="listaDetArt">
+            <div style="font-size:small" class="modal-body" id="listaDetArt">
                 
             </div>
             <div class="modal-footer">
@@ -126,12 +133,12 @@
                   { "sName": "ORC_FEC_ENV", "mData": "ORC_FEC_ENV", "class": "right" },
                   {
                       "render": function (data, type, full) {
-                          return '<button title="Ver lista de tiendas" class="btn btn-default btn-sm tiendas" data-cod-orce="' + full.ORC_COD + '" ><i class="glyphicon glyphicon-list"></i></button>';
+                          return '<button title="Ver lista de tiendas" class="btn btn-default btn-sm tiendas" data-des-orce="' + full.ORC_DESCRIPCION + '" data-atributo="' + full.ORC_ATRIBUTO + '" data-cod-orce="' + full.ORC_COD + '" ><i class="glyphicon glyphicon-list"></i></button>';
                       }, "sClass": "boton-td"
                   },
                   {
                       "render": function (data, type, full) {
-                          return '<button title="Ver lista de articulos" class="btn btn-default btn-sm articulos" data-atributo="' + full.ORC_ATRIBUTO + '" data-cod-orce="' + full.ORC_COD + '"><i class="glyphicon glyphicon-list"></i></button>';
+                          return '<button title="Ver lista de articulos" class="btn btn-default btn-sm articulos"  data-des-orce="' + full.ORC_DESCRIPCION + '"  data-atributo="' + full.ORC_ATRIBUTO + '" data-cod-orce="' + full.ORC_COD + '"><i class="glyphicon glyphicon-list"></i></button>';
                       }, "class": "boton-td"
                   },
                   {
@@ -173,7 +180,9 @@
         });
         $('.dt-lista').on('click', '.tiendas', function (e) {
             waitingDialog.show('Espere un momento por favor');
-            var cod_orce = $(this).attr('data-cod-orce');
+            var cod_orce = $(this).attr('data-cod-orce'); 
+            var des_orce = $(this).attr('data-des-orce');
+            var ma_atributo = $(this).attr('data-atributo');
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("getListaDetTdas", "Orce_Exclud")',
@@ -188,6 +197,8 @@
                         }
                         table += '</tbody><tfoot><tr><th>Codigo</th><th>Tienda</th></tr></tfoot></table>'
                         $("#listaDetTdas").html(table);
+                        $("#desc_orce_tda").html(cod_orce + ". " + des_orce);
+                        $("#maAtributoTda").html("Atributo" + ": " + ma_atributo);
                         $(".dt-lista-tdas").DataTable({
                             "language": {
                                 "url": "../Scripts/DataTables/Spanish.json"
@@ -209,6 +220,7 @@
         $('.dt-lista').on('click', '.articulos', function (e) {
             waitingDialog.show('Espere un momento por favor');
             var cod_orce = $(this).attr('data-cod-orce');
+            var des_orce = $(this).attr('data-des-orce');
             var ma_atributo = $(this).attr('data-atributo');
             $.ajax({
                 type: "POST",
@@ -224,7 +236,8 @@
                         }
                         table += '</tbody><tfoot><tr><th>Articulo</th><th>Valor</th></tr></tfoot></table>'
                         $("#listaDetArt").html(table);
-                        $("#maAtributo").html("Atributo" + ": " + ma_atributo);
+                        $("#desc_orce_art").html(cod_orce + ". " + des_orce);
+                        $("#maAtributoArt").html("Atributo" + ": " + ma_atributo);
                         $(".dt-lista-art").DataTable({
                             "language": {
                                 "url": "../Scripts/DataTables/Spanish.json"
