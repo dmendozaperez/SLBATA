@@ -22,8 +22,20 @@ namespace CapaPresentacion.Controllers
         string _session_lista_orce = "_session_lista_orce";
         public ActionResult Index()
         {
-            Session[_session_lista_orce] = null;
-            return View();
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
+
+            if (_usuario == null)
+            {
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+            }
+            else
+            {
+                Session[_session_lista_orce] = null;
+                return View();
+            }
 
         }
         public ActionResult getListaAjax(Ent_jQueryDataTableParams param , string actualizar )
