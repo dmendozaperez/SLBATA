@@ -38,4 +38,15 @@ namespace CapaEntidad.OrceExlud
         public string ATRIBUTO { get; set; }
         public bool VALOR { get; set; }
     }
+    public class Ent_Orce_Exclud_Atributo
+    {
+        public string COD_ATR {get;set;}
+        public string DES_ATR {get;set;}
+        public int ID {get;set;}
+        public bool ESTADO {get;set;}
+        public string USUARIO_CREA {get;set;}
+        public string USUARIO_MODIFICA {get;set;}
+        public string FECHA_CREACION {get;set;}
+        public string FECHA_MODIFICA { get; set; }
+    }
 }

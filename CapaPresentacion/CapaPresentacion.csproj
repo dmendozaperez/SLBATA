@@ -1610,6 +1610,7 @@
     <Content Include="Views\Orce_Exclud\_form.cshtml" />
     <Content Include="Views\Orce_Exclud\Editar.cshtml" />
     <Content Include="Views\Reporte\ReporteTablaProsp.cshtml" />
+    <Content Include="Views\Orce_Exclud\Atributos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

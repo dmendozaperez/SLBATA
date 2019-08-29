@@ -10,6 +10,7 @@ using CapaEntidad.General;
 using CapaEntidad.OrceExlud;
 using Newtonsoft.Json;
 using CapaEntidad.Control;
+using CapaPresentacion.Bll;
 
 namespace CapaPresentacion.Controllers
 {
@@ -20,6 +21,7 @@ namespace CapaPresentacion.Controllers
         string _session_lista_articulos = "_session_lista_articulos";
         string _session_atribuo_actual = "_session_atribuo_actual";
         string _session_lista_orce = "_session_lista_orce";
+        string _session_lista_atributos = "_session_lista_atributos";
         public ActionResult Index()
         {
             Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
@@ -34,6 +36,24 @@ namespace CapaPresentacion.Controllers
             else
             {
                 Session[_session_lista_orce] = null;
+                return View();
+            }
+
+        }
+        public ActionResult Atributos()
+        {
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
+
+            if (_usuario == null)
+            {
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+            }
+            else
+            {
+                Session[_session_lista_atributos] = null;
                 return View();
             }
 
@@ -114,6 +134,76 @@ namespace CapaPresentacion.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult getListaArticulosAjax(Ent_jQueryDataTableParams param, string actualizar)
+        {
+            List<Ent_Orce_Exclud_Atributo> listAtributos = null;
+            if (!String.IsNullOrEmpty(actualizar))
+            {
+                listAtributos = datOE.get_lista_atributos();
+                Session[_session_lista_atributos] = listAtributos;
+            }
+
+            /*verificar si esta null*/
+            if (Session[_session_lista_atributos] == null)
+            {
+                List<Ent_Orce_Exclud_Atributo> liststoreConf = new List<Ent_Orce_Exclud_Atributo>();
+                liststoreConf = datOE.get_lista_atributos();
+                if (liststoreConf == null)
+                {
+                    liststoreConf = new List<Ent_Orce_Exclud_Atributo>();
+                }
+                Session[_session_lista_atributos] = liststoreConf;
+            }
+
+            //Traer registros
+
+            IQueryable<Ent_Orce_Exclud_Atributo> membercol = ((List<Ent_Orce_Exclud_Atributo>)(Session[_session_lista_atributos])).AsQueryable();  //lista().AsQueryable();
+
+            //Manejador de filtros
+            int totalCount = membercol.Count();
+            IEnumerable<Ent_Orce_Exclud_Atributo> filteredMembers = membercol;
+
+            if (!string.IsNullOrEmpty(param.sSearch))
+            {
+                filteredMembers = membercol
+                    .Where(m => m.COD_ATR.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                     m.DES_ATR.ToString().Contains(param.sSearch.ToUpper()));
+            }
+            //Manejador de orden
+            var sortIdx = Convert.ToInt32(Request["iSortCol_0"]);
+            Func<Ent_Orce_Exclud_Atributo, string> orderingFunction =
+                (
+                    m => m.COD_ATR
+                );
+            var sortDirection = Request["sSortDir_0"];
+            if (sortDirection == "asc")
+                filteredMembers = filteredMembers.OrderBy(orderingFunction);
+            else
+                filteredMembers = filteredMembers.OrderByDescending(orderingFunction);
+            var displayMembers = filteredMembers
+                .Skip(param.iDisplayStart)
+                .Take(param.iDisplayLength);
+            var result = from a in displayMembers
+                         select new
+                         {
+                             a.COD_ATR,
+                             a.DES_ATR,
+                             a.ESTADO,
+                             a.USUARIO_CREA,
+                             a.USUARIO_MODIFICA,
+                             a.FECHA_CREACION,
+                             a.FECHA_MODIFICA
+                         };
+            //Se devuelven los resultados por json
+            return Json(new
+            {
+                sEcho = param.sEcho,
+                iTotalRecords = totalCount,
+                iTotalDisplayRecords = filteredMembers.Count(),
+                aaData = result
+            }, JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult getListaDetTdas(string cod_orce)
         {
             List<Ent_Orce_Inter_Det_Tda> liststoreConf = datOE.get_lista_det_tdas(cod_orce);
@@ -131,6 +221,16 @@ namespace CapaPresentacion.Controllers
             {
                 liststoreConf = new List<Ent_Orce_Inter_Art>();
             }
+            return Json(new { estado = 1, articulos = liststoreConf });
+        }
+        public ActionResult getListaArtAjax(string cod_atr)
+        {
+            List<Ent_Orce_Inter_Art> liststoreConf = datOE.get_articulos_atributo(cod_atr);
+            if (liststoreConf == null)
+            {
+                liststoreConf = new List<Ent_Orce_Inter_Art>();
+            }
+            Session[_session_lista_articulos] = liststoreConf;
             return Json(new { estado = 1, articulos = liststoreConf });
         }
 
@@ -335,6 +435,23 @@ namespace CapaPresentacion.Controllers
                     return Json(new { estado = 0, resultado = "Error", mensaje = _mensaje });
                 }
             }
+        }
+        public FileContentResult ListaArticulosExcel()
+        {
+            if (Session[_session_lista_articulos] == null)
+            {
+                List<Ent_Orce_Inter_Art> liststoreConf = new List<Ent_Orce_Inter_Art>();
+                Session[_session_lista_articulos] = liststoreConf;
+            }
+            List<Ent_Orce_Inter_Art> lista = (List<Ent_Orce_Inter_Art>)Session[_session_lista_articulos];
+            string[] columns = { "ARTICULO", "VALOR"};
+            byte[] filecontent = ExcelExportHelper.ExportExcel3( lista, "", false, columns);
+            string nom_excel = "Lista de Articulos";
+            if (lista.Count > 0)
+            {
+                nom_excel = lista.First().ATRIBUTO;
+            }            
+            return File(filecontent, ExcelExportHelper.ExcelContentType, nom_excel + ".xlsx");
         }
     }
 }

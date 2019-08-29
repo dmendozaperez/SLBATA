@@ -349,5 +349,46 @@ namespace CapaDato.OrceExclud
             }
             return dtRet;
         }
+        public List<Ent_Orce_Exclud_Atributo> get_lista_atributos()
+        {
+            List<Ent_Orce_Exclud_Atributo> list = null;
+            string sqlquery = "USP_ORCE_GET_ATRIBUTOS";
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+                    if (cn.State == 0) cn.Open();
+                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        SqlDataReader dr = cmd.ExecuteReader();
+                        if (dr.HasRows)
+                        {
+                            list = new List<Ent_Orce_Exclud_Atributo>();
+                            while (dr.Read())
+                            {
+                                Ent_Orce_Exclud_Atributo atr = new Ent_Orce_Exclud_Atributo();
+                                atr.COD_ATR = dr["COD_ATR"].ToString();
+                                atr.DES_ATR = dr["DES_ATR"].ToString();
+                                atr.ID =Convert.ToInt32(dr["ID"]);
+                                atr.ESTADO = Convert.ToBoolean(dr["ESTADO"]);
+                                atr.USUARIO_CREA = dr["USUARIO_CREA"].ToString();
+                                atr.USUARIO_MODIFICA = dr["USUARIO_MODIFICA"].ToString();
+                                atr.FECHA_CREACION = (String.IsNullOrEmpty(dr["FECHA_CREACION"].ToString()) ? "" : Convert.ToDateTime(dr["FECHA_CREACION"]).ToString("dd-MM-yyyy")); 
+                                atr.FECHA_MODIFICA = (String.IsNullOrEmpty(dr["FECHA_MODIFICA"].ToString()) ? "" : Convert.ToDateTime(dr["FECHA_MODIFICA"]).ToString("dd-MM-yyyy"));
+                                list.Add(atr);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                list = null;
+            }
+            return list;
+        }
+
     }
 }

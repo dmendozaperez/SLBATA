@@ -1,0 +1,143 @@
+﻿@{
+    ViewBag.Title = "Lista de Atributos - Orce Exclud";
+}
+<style>
+    .boton-td {
+        padding-top: 3px !important;
+        padding-bottom: 3px !important;
+    }
+</style>
+<div class="box box-body box-primary">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="lista">
+                <table id="listaPrincipal" class="table dt-lista table-hover dataTable table-striped table-responsive">
+                    <thead>
+                        <tr style="background-color:#3d566e; color:#ecf0f1">
+                            <th>Codigo</th>
+                            <th>Descripcion</th>
+                            <th>Estado</th>
+                            <th>Usuario</th>
+                            <th>Fec. Creacion</th>
+                            <th>Lista de articulos</th>
+                        </tr>
+                    </thead>
+                    <tbody data-bind="foreach:"></tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Codigo</th>
+                            <th>Descripcion</th>
+                            <th>Estado</th>
+                            <th>Usuario</th>
+                            <th>Fec. Creacion</th>
+                            <th>Lista de articulos</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>    
+</div>
+<div class="modal fade" id="modalListaArticulos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p style="font-size:medium" class="text-primary modal-title" id="myModalLabel"><strong class="text-danger" id="desc_orce_art"></strong></p>
+                        <p style="font-size:medium" class="text-primary modal-title" id="myModalLabel"><b>Lista de Articulos</b></p>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <a href="@Url.Action("ListaArticulosExcel","Orce_Exclud")" class="btn btn-success btn-sm"><i class="glyphicon glyphicon-export"></i>&nbsp;&nbsp;Exportar Lista</a>
+                    </div>
+                </div>
+            </div>
+            <div style="font-size:small" class="modal-body" id="listaDetArt">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="">Cerrar</button>
+            </div>
+        </div>
+    </div>e
+</div>
+<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+    var actualizar = "";
+    $(document).ready(function () {
+        $('.dt-lista').DataTable({
+            "language": {
+                "url": "../Scripts/DataTables/Spanish.json"
+            },
+            "bServerSide": true,
+            "bAutoWidth": false,
+            "sAjaxSource": '@Url.Action("getListaArticulosAjax", "Orce_Exclud")',
+            "fnServerParams": function (aoData) {
+                aoData.push({ "name": "actualizar", "value": actualizar });
+            },
+            "bdestroy": true,
+            "start": 0,
+            "order": [0, "desc"],
+            "bDeferRender": true,
+            "aoColumns": [
+                  { "sName": "COD_ATR", "mData": "COD_ATR" },
+                  { "sName": "DES_ATR", "mData": "DES_ATR" },
+                  {
+                      "render": function (data, type, full) {
+                          if (full.ESTADO == true) {
+                              return '<span class="label label-success">ACTIVADO</span>'
+                          } else{
+                              return '<span class="label label-danger">NO ACTIVO</span>'
+                          } 
+                      }
+                  },
+                  { "sName": "USUARIO_CREA", "mData": "USUARIO_CREA"},
+                  { "sName": "FECHA_CREACION", "mData": "FECHA_CREACION"},
+                  {
+                      "render": function (data, type, full) {
+                          return '<button title="Ver lista de articulos" class="btn btn-default btn-sm articulos"  data-des-atr="' + full.DES_ATR + '" data-cod-atr="' + full.COD_ATR + '"><i class="glyphicon glyphicon-list"></i></button>';
+                      }, "class": "boton-td"
+                  }
+            ]
+        });
+    });
+    $('.dt-lista').on('click', '.articulos', function (e) {
+        waitingDialog.show('Espere un momento por favor');
+        var cod_atr = $(this).attr('data-cod-atr');
+        var des_atr = $(this).attr('data-des-atr');
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("getListaArtAjax", "Orce_Exclud")',
+            data: { cod_atr: cod_atr },
+            dataType: "json",
+            success: function (data) {
+                waitingDialog.hide();
+                if (data.estado == 1) {
+                    var table = '<table class="table table-hover table-condensed dt-lista-art table-striped table-responsive"><thead><tr style="background-color:#3d566e; color:#ecf0f1"><th>Articulo</th><th>Valor</th></tr></thead><tbody data-bind="foreach:">';
+                    for (var i = 0; i < data.articulos.length; i++) {
+                        table += '<tr><td>' + data.articulos[i].ARTICULO + '</td><td>' + data.articulos[i].VALOR.toString().toUpperCase() + '</td></tr>'
+                    }
+                    table += '</tbody><tfoot><tr><th>Articulo</th><th>Valor</th></tr></tfoot></table>'
+                    $("#listaDetArt").html(table);
+                    $("#desc_orce_art").html(cod_atr);
+                    $(".dt-lista-art").DataTable({
+                        "language": {
+                            "url": "../Scripts/DataTables/Spanish.json"
+                        }
+                    });
+                    $("#modalListaArticulos").modal({ backdrop: 'static', keyboard: false });
+                } else {
+                    swal("Error", "No se pudo cargar la lista de articulos");
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                waitingDialog.hide();
+                var error = eval("(" + XMLHttpRequest.responseText + ")");
+                swal(error.Message);
+            }
+        });
+
+    });
+</script>
