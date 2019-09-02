@@ -29,12 +29,19 @@
 <div class="box box-body box-primary">
 
     <div class="row">
-
+        <div class="col-sm-3">
+            <label for="dwCate">Distrito</label>
+            <div class="form-group">
+                <div class="form-group">
+                    @Html.DropDownList("dwDis", new SelectList(ViewBag.Distrito, "cod_dis", "des_dis", "-1"), new { @class = "selectpicker", @data_live_search = "true", multiple = "multiple", @id = "dwDis", @name = "dwDis", @onchange = "ListarTienda()", @data_actions_box = "true", @data_selected_text_format = "count > 2" })
+                </div>
+            </div>
+        </div>
         <div class="col-sm-3">
             <label for="dwCate">Tienda</label>
             <div class="form-group">
-                <div class="form-group">
-                    @Html.DropDownList("txtTda", new SelectList(ViewBag.tienda, "cbo_codigo", "cbo_descripcion"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "txtTda", @name = "txtTda" ,  @data_actions_box = "true", @data_selected_text_format = "count > 2" })
+                <div id="div_tda" class="form-group">
+                    @Html.DropDownList("dwtda", new SelectList(ViewBag.tienda, "cod_entid", "des_entid", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwtda", @name = "dwtda" })
                 </div>
             </div>
         </div>
@@ -55,6 +62,10 @@
                 </div>
             </div>
         </div>
+
+
+    </div>
+    <div class="row">
         <div class="col-sm-3">
             <label for="dwCate">Categoria</label>
             <div class="form-group">
@@ -63,10 +74,6 @@
                 </div>
             </div>
         </div>
-
-    </div>
-    <div class="row">
-
         <div class="col-sm-3">
             <label for="dwCate">Semanas vta. a evaluar</label>
             <div class="form-group">
@@ -91,8 +98,19 @@
                     @Html.DropDownList("txtEstado", new SelectList(ViewBag.Estado, "cbo_codigo", "cbo_descripcion"), new { @class = "selectpicker", @data_live_search = "true", @id = "txtEstado", @name = "txtEstado" })
                 </div>
             </div>
-        </div>
-
+        </div>        
+    </div>
+    <div class="row">
+        <div class="col-sm-3">
+            <label for=""></label>
+            <div class="form-group">
+                <div class="col-sm-12 checkbox text-primary text-bold">
+                    <label>
+                        <input type="checkbox" name="resumen" id="resumen" value="1" /> Resumen
+                    </label>
+                </div>
+            </div>
+        </div>  
         <div class="col-sm-3">
             <label for="dwEstado"></label>
             <div class="form-group">
@@ -101,14 +119,9 @@
                         <span class="glyphicon glyphicon-th-list"></span>&nbsp;Ver Reporte
                     </button>
                 </div>
-
             </div>
         </div>
-
-
-
     </div>
-
 
 </div>
                      
@@ -130,6 +143,89 @@
 
 <script src="~/Scripts/BI.js"></script>
 <script>
+    function ListarTienda() {
+        var data = function () { return @Html.Raw(Json.Encode(ViewBag.ClTienda)); }();
+        var tipo=@ViewBag.tda;
+
+        var dataArray = data.Data;
+        var strTipo = $('#dwDis').val();          
+           
+
+        var listar = [];
+
+        if (strTipo != null) {             
+
+            if(strTipo == "-1"){
+                var lista_filter = (strTipo == "-1") ? dataArray.filter(obj => obj.cod_distri != strTipo) : dataArray.filter(obj => obj.cod_distri === strTipo || obj.cod_distri=='0');
+                $.each(lista_filter, function (index, item) {
+
+                    listar.push(item);
+                });
+            }else{
+                    
+                var lista_filter = dataArray.filter(obj => obj.cod_distri=='0');
+                $.each(lista_filter, function (index, item) {
+
+                    listar.push(item);
+                });                
+
+                $.each(strTipo, function (index2, item2) {
+
+                    var lista_filter = dataArray.filter(obj => obj.cod_distri === item2);
+                    $.each(lista_filter, function (index, item) {
+
+                        listar.push(item);
+                    });
+                       
+                });
+            }
+        }
+
+        llenarCombo("div_tda", "dwtda", listar, '0', '', "",tipo);
+        //ListarCategoria();
+        //ListarSubCategoria()
+    }
+    function llenarCombo(DivId, IdControl, Data, codDefecto, desDefecto, onchangeFuncion,tipo) {
+
+        $('#' + IdControl).find('option').remove();
+
+
+
+        var str =(tipo=='1')? '<select class="selectpicker" multiple = "multiple"  data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '" data-actions-box="true"  data-selected-text-format="count > 2" >':'<select class="selectpicker"  data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '"  data-actions-box="true"  data-selected-text-format="count > 2" > ';
+        var ItemNormal = '<option value="codItem">desItem</option>';
+        var colectItemNormal = '';
+
+        //if (codDefecto != '') { str += '<option value="' + codDefecto + '" selected="selected">------' + desDefecto + '------</option>'; }
+
+        if (onchangeFuncion != '') { onchangeFuncion = 'onchange = "' + onchangeFuncion + '()"' }
+        str = str.replace("onchangeFuncion", onchangeFuncion);
+
+        $.each(Data, function (index, item) {
+
+            colectItemNormal = colectItemNormal + ItemNormal
+            var strSelected = '"';
+
+            if (item.cod_entid == codDefecto) {
+                strSelected = '" selected="selected" '
+
+            }
+            strSelected = '" selected="selected" '; // seleccionar todos al cargar
+            colectItemNormal = colectItemNormal.replace("codItem", item.cod_entid + strSelected);
+            colectItemNormal = colectItemNormal.replace("desItem", item.des_entid);
+
+        });
+
+        str += colectItemNormal
+        str += '</select>'
+
+        document.getElementById(DivId).innerHTML = str
+
+        $('.selectpicker').selectpicker({
+            liveSearch: true,
+            showSubtext: true
+        });
+
+    }
     $(document).ready(function () {        
         ListarGrupo();
 
@@ -141,7 +237,9 @@
 
     function MostrarReporte(e) {
 
-        var tda = $('#txtTda').val();
+        //var tda = $('#txtTda').val();
+        var coddis = ($("#dwDis option:not(:selected)").length == 0 && $("#dwDis > option").length > 1  ? "-1" : $('#dwDis').val()); // $('#dwDis').val();
+        var tda =  ($("#dwtda option:not(:selected)").length == 0 && $("#dwtda > option").length > 1 ? "0" : $('#dwtda').val()); // $('#dwtda').val();
         var cadena ="-1";
         var semana =  $('#txtsemana').val();
         var strpares = $('#txtpares').val();
@@ -150,12 +248,20 @@
         var tipo = $('#dwTipo').val();
         //var str = grupo.toString();
         var cate = ($("#dwCate option:not(:selected)").length == 0 && $("#dwCate > option").length > 1 ? "0" : $('#dwCate').val());// $('#dwCate').val();
+        var resumen = 0;
+        if ($('#resumen').is(':checked')){
+            resumen = 1;
+        }
+        coddis = coddis == '0'  ||coddis == '' ? '-1'  : coddis;
+        tda = tda == '0' ||tda == ''  ? '0'  : tda;
 
         if (grupo == '' || grupo == null) { grupo = '0' };
         if (cate == '' || cate == null) { cate = '0' };  
         if (semana == '' || semana == null) { semana = '0' };
         if (strpares == '' || strpares == null) { strpares = '0' };
         if (tda == '' || tda == null) { tda = '0' };
+        if(coddis != '-1'){ coddis = coddis.toString();}
+        //if(tda != '-1'){ tda = tda.toString();}
 
         var paresInt = parseInt(strpares);
         var semanaInt = parseInt(semana);
@@ -172,7 +278,7 @@
                 url:TeamDetailPostBackURL,
                 dataType: 'json',
                 type: 'POST',
-                data: { cod_cadena: cadena, cod_tda: tda, nsemana: semana, maxpares: strpares, estado: strestado, grupo: grupo, categoria: cate, tipo: tipo },
+                data: { cod_cadena: cadena, cod_dis:coddis , cod_tda: tda, nsemana: semana, maxpares: strpares, estado: strestado, grupo: grupo, categoria: cate, tipo: tipo, resumen:resumen },
                 
                 success: function (data) {
                     //alert('ok');

@@ -33,10 +33,13 @@ namespace CapaPresentacion.AspNetForms
                 if (rptSource != null && rptSource.GetType().ToString() != "System.String")
                     rd.SetDataSource(rptSource);
 
+            rd.DataDefinition.FormulaFields["supress"].Text = Session["obs_resumen"].ToString();
 
-                crv_obs.ReportSource = rd;
+            crv_obs.ReportSource = rd;
                 crv_obs.ToolPanelView = CrystalDecisions.Web.ToolPanelViewType.None;
                 crv_obs.HasToggleGroupTreeButton = false;
+            
+
             //}
             //else
             //{

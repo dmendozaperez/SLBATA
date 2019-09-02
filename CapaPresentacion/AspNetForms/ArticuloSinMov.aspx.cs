@@ -30,6 +30,7 @@ namespace CapaPresentacion.AspNetForms
                 if (rptSource != null && rptSource.GetType().ToString() != "System.String")
                     rd.SetDataSource(rptSource);
 
+                rd.DataDefinition.FormulaFields["supress"].Text = Session["obs_resumen"].ToString();
 
                 crv_artSinMov.ReportSource = rd;
                 crv_artSinMov.ToolPanelView = CrystalDecisions.Web.ToolPanelViewType.None;

@@ -144,7 +144,7 @@
             <td width="100%" colspan="2" style="padding:1px">
                 <div id="lugar" class="row">
 
-                    <div style="width:25%" class="col-sm-3">
+                    <div style="width:20%" class="col-sm-3">
                         <label for="txtTda">Rango.</label>
                         <div class="form-group">
                             <div id="div_dwRango" class="form-group">
@@ -152,7 +152,7 @@
                             </div>
                         </div>
                     </div>
-                    <div style="width:25%" class="col-sm-3">
+                    <div style="width:20%" class="col-sm-3">
                         <label for="rprc"></label>
                         <div class="form-group">
                             <div class="col-sm-12 checkbox text-danger text-bold" id="">
@@ -167,7 +167,7 @@
                             </div>*@
                          </div>
                     </div>                  
-                    <div  id="divprcFin" style="width:25%;display:none" class="col-sm-3">
+                    <div  id="divprcFin" style="width:20%;display:none" class="col-sm-3">
                         <label for="lbltxtprcIni">Precio Ini.</label>
                         <div class="form-group">
                             <div id="divtxtprcIni" class="form-group">
@@ -175,7 +175,7 @@
                             </div>
                         </div>
                     </div>
-                    <div id="divprcIni" style="width:25%;display:none" class="col-sm-3">
+                    <div id="divprcIni" style="width:20%;display:none" class="col-sm-3">
                         <label for="lbltxtprcIni">Precio Fin.</label>
                         <div class="form-group">
                             <div id="divtxtprcFin" class="form-group">
@@ -183,10 +183,21 @@
                             </div>
                         </div>
                     </div>
-                   
-                   
-
-
+                    <div style="width:20%" class="col-sm-3">
+                        <label for=""></label>
+                        <div class="form-group">
+                            <div class="col-sm-12 checkbox text-primary text-bold" >
+                                <label>
+                                    <input type="checkbox" name="resumen" id="resumen" value="1" /> Resumen
+                                </label>
+                            </div>
+                            @*<div class="col-sm-12 checkbox text-danger text-bold" id="">
+                    <div id="divRangoPrc" class="form-group">
+                        &nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" onchange="validarRangoPrecio()" id="idRango" name="idRango" value="1">&nbsp;&nbsp;<label>Rango de precio</label>
+                    </div>
+                </div>*@
+                        </div>
+                    </div>  
                 </div>
 
             </td>
@@ -341,9 +352,7 @@
         $("#dwCate").selectpicker('selectAll');
             ListarTienda();
             ListarGrupo();
-        });
-
-        
+        });      
 
         function MostrarReporte(e) {
 
@@ -363,6 +372,11 @@
             var rangoObs = $('#dwRango').val();
             var precio1 = $('#txtprcIni').val();
             var precio2 = $('#txtprcFin').val();
+            var resumen = 0;
+            if ($('#resumen').is(':checked')){
+                resumen = 1;
+            }
+
 
             rangoObs=rangoObs.replace("\n","");
 
@@ -390,7 +404,7 @@
                     url: TeamDetailPostBackURL,// '../ReporteCrystal/ShowGenericReportInNewWin',
                     dataType: 'json',
                     type: 'POST',                  
-                    data: { coddis:coddis, cod_tda: cod_tda, tipo_cat:tipo_cat,cod_linea:cod_linea,cod_categ:cod_categ,calidad:calidad,precio1:precio1,precio2:precio2,tipoObs:tipoObs,rangoObs:rangoObs},
+                    data: { coddis:coddis, cod_tda: cod_tda, tipo_cat:tipo_cat,cod_linea:cod_linea,cod_categ:cod_categ,calidad:calidad,precio1:precio1,precio2:precio2,tipoObs:tipoObs,rangoObs:rangoObs, resumen:resumen},
                     //cache: false,
                     //async: false,
                     //dataType: "html",

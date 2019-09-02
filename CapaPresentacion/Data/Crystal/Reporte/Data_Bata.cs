@@ -13,7 +13,7 @@ namespace Data.Crystal.Reporte
 {
     public class Data_Bata
     {
-        public List<Models_Art_Sin_Mov> list_art_sin_mov(string cadena,string tienda,Int32 nsemana,Int32 maxpares, string estado, string grupo, string categoria, string tipo)
+        public List<Models_Art_Sin_Mov> list_art_sin_mov(string cadena,string cod_dis, string tienda,Int32 nsemana,Int32 maxpares, string estado, string grupo, string categoria, string tipo)
         {
             string sqlquery = "USP_XSTORE_REPORTE_ART_SIN_MOVIMIENTOS";
             List<Models_Art_Sin_Mov> lista = null;
@@ -29,6 +29,7 @@ namespace Data.Crystal.Reporte
                             cmd.CommandTimeout = 0;
                             cmd.CommandType = CommandType.StoredProcedure;
                             cmd.Parameters.AddWithValue("@cadena", cadena);
+                            cmd.Parameters.AddWithValue("@cod_distri", cod_dis);
                             cmd.Parameters.AddWithValue("@codtda", tienda);
                             cmd.Parameters.AddWithValue("@nsemanas", nsemana);
                             cmd.Parameters.AddWithValue("@nstock", maxpares);
@@ -55,6 +56,7 @@ namespace Data.Crystal.Reporte
                                              pplan =Convert.ToDecimal(dr["pplan"]),
                                              pares =Convert.ToInt32(dr["pares"]),
                                              stock =Convert.ToInt32(dr["stock"]),
+                                             DISTRITOS = dr["DISTRITOS"].ToString()
                                          }).ToList();
                             }
                         }

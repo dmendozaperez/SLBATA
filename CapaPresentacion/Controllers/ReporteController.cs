@@ -500,6 +500,8 @@ namespace CapaPresentacion.Controllers
 
         public ActionResult ReporteArticuloSinMov()
         {
+            Dat_ArticuloStock distrito_list = new Dat_ArticuloStock();
+
             Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
             string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
             string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
@@ -543,11 +545,47 @@ namespace CapaPresentacion.Controllers
 
                 if (Session["Tienda"] != null)
                 {
-                    ViewBag.Tienda = datCbo.get_ListaTiendaXstoreActivo(Session["Tienda"].ToString());
+                    //ViewBag.Tienda = datCbo.get_ListaTiendaXstoreActivo(Session["Tienda"].ToString());
+                    string strJson = "";
+                    JsonResult jRespuesta = null;
+                    var serializer = new JavaScriptSerializer();
+
+
+                    strJson = datCbo.listarStr_ListaTienda("PE");
+                    jRespuesta = Json(serializer.Deserialize<List<Ent_ListaTienda>>(strJson).Where(t => t.cod_entid == Session["Tienda"].ToString()), JsonRequestBehavior.AllowGet);
+                    ViewBag.ClTienda = jRespuesta;
+                    ViewBag.tda = "0";
+
+
+                    List<Ent_ListaTienda> listar_tda = serializer.Deserialize<List<Ent_ListaTienda>>(strJson);
+                    var tda = listar_tda.Where(t => t.cod_entid == Session["Tienda"].ToString()).ToList();
+                    ViewBag.Tienda = tda;
+
+                    ViewBag.Distrito = distrito_list.listar_distrito().Where(d => d.cod_dis == tda[0].cod_distri);
                 }
                 else
                 {
-                    ViewBag.Tienda = datCbo.get_ListaTiendaXstoreActivo("");
+                    //ViewBag.Tienda = datCbo.get_ListaTiendaXstoreActivo("");
+
+                    ViewBag.tda = "1";
+                    /*ViewBag.Tienda = list_tda.get_tienda("PE");*/ //datCbo.get_ListaTiendaXstoreActivo("");
+                    List<Ent_ListaTienda> list_tda = new List<Ent_ListaTienda>();
+                    Ent_ListaTienda entCombo_tda = new Ent_ListaTienda();
+                    entCombo_tda.cod_entid = "-1";
+                    entCombo_tda.des_entid = "----Todos----";
+                    list_tda.Add(entCombo_tda);
+                    ViewBag.Tienda = list_tda;
+
+                    ViewBag.Distrito = distrito_list.listar_distrito().Where(d => d.cod_dis != "-1");
+
+                    string strJson = "";
+                    JsonResult jRespuesta = null;
+                    var serializer = new JavaScriptSerializer();
+
+
+                    strJson = datCbo.listarStr_ListaTienda("PE");
+                    jRespuesta = Json(serializer.Deserialize<List<Ent_ListaTienda>>(strJson).Where(d => d.cod_entid != "0"), JsonRequestBehavior.AllowGet);
+                    ViewBag.ClTienda = jRespuesta;
                 }
 
                 ViewBag.Tipo = datCbo.get_ListaTipoCategoria();
@@ -574,16 +612,16 @@ namespace CapaPresentacion.Controllers
         }
 
         [HttpPost]
-        public ActionResult ShowGenericReportArtSinMovInNewWin(string cod_cadena, string cod_tda, Int32 nsemana, Int32 maxpares, string estado, string grupo, string categoria, string tipo)
+        public ActionResult ShowGenericReportArtSinMovInNewWin(string cod_cadena,string cod_dis, string cod_tda, Int32 nsemana, Int32 maxpares, string estado, string grupo, string categoria, string tipo,string resumen)
         {
             //grupo = "0";categoria = "0";subcategoria = "0";estado = "0";
             Data_Bata pl = new Data_Bata();
             this.HttpContext.Session["ReportName"] = "ReportArtSinMov.rpt";
 
-            List<Models_Art_Sin_Mov> model_Art_sn_mov = pl.list_art_sin_mov(cod_cadena, cod_tda, nsemana, maxpares, estado, grupo, categoria, tipo);
+            List<Models_Art_Sin_Mov> model_Art_sn_mov = pl.list_art_sin_mov(cod_cadena, cod_dis, cod_tda, nsemana, maxpares, estado, grupo, categoria, tipo);
 
             this.HttpContext.Session["rptSource"] = model_Art_sn_mov;
-
+            this.HttpContext.Session["obs_resumen"] = resumen;
 
             /*error=0;exito=1*/
             string _estado = (model_Art_sn_mov == null) ? "0" : "1";
@@ -705,15 +743,16 @@ namespace CapaPresentacion.Controllers
         }
 
         [HttpPost]
-        public ActionResult ShowGenericReportObsolescenciaInNewWin(string coddis, string cod_tda, string tipo_cat, string cod_linea, string cod_categ, string calidad, string precio1, string precio2, string tipoObs,string rangoObs)
+        public ActionResult ShowGenericReportObsolescenciaInNewWin(string coddis, string cod_tda, string tipo_cat, string cod_linea, string cod_categ, string calidad, string precio1, string precio2, string tipoObs,string rangoObs , string resumen)
         {
             //grupo = "0";categoria = "0";subcategoria = "0";estado = "0";
             Data_Bata da = new Data_Bata();
             this.HttpContext.Session["ReportName"] = "Vendedor.rpt";
 
-            List<Models_Obs> model_obs = da.list_obs(coddis, cod_tda, tipo_cat, cod_linea, cod_categ, calidad, Convert.ToDecimal(precio1), Convert.ToDecimal(precio2), tipoObs, rangoObs);
+            List<Models_Obs> model_obs = da.list_obs(coddis, cod_tda, tipo_cat, cod_linea, cod_categ, calidad, Convert.ToDecimal(precio1), Convert.ToDecimal(precio2), tipoObs, rangoObs );
 
             this.HttpContext.Session["data"] = model_obs;
+            this.HttpContext.Session["obs_resumen"] = resumen;
 
 
             /*error=0;exito=1*/

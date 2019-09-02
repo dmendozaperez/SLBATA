@@ -17,5 +17,6 @@ namespace Models.Crystal.Reporte
         public Decimal pplan { get; set; }
         public Int32 pares { get; set; }
         public Int32 stock { get; set; }
+        public string DISTRITOS { get; set; }    
     }
 }
