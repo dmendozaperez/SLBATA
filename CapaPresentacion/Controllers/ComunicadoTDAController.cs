@@ -94,14 +94,14 @@ namespace CapaPresentacion.Controllers
                      m.archivo.ToUpper().Contains(param.sSearch.ToUpper()));
             }
             //Manejador de orden
-
+            //0 = ID 
+            //5 = fecha envio
+            //6 = fecha leido
             var sortIdx = Convert.ToInt32(Request["iSortCol_0"]);
-            Func<Ent_Comunicado, Boolean> orderingFunction =
-            (
-            m => m.file_leido);
-            Func<Ent_Comunicado, decimal> orderingFunction2 =
-            (
-            m => m.id);
+            Func<Ent_Comunicado, DateTime> orderingFunctionFE =(m => Convert.ToDateTime(m.fecha_hora_mod));
+            Func<Ent_Comunicado, decimal> orderingFunctionID =(m => m.id);
+            Func<Ent_Comunicado, string> orderingFunctionFL = (m => m.file_leido_fecha);
+
             var sortDirection = Request["sSortDir_0"];
             Boolean order_colum = false;
             if (param!=null)
@@ -112,13 +112,38 @@ namespace CapaPresentacion.Controllers
             if (order_colum)
             { 
                 if (sortDirection == "asc")
-                    filteredMembers = filteredMembers.OrderBy(orderingFunction).ThenBy(orderingFunction2);
+                { 
+                    if (sortIdx == 0)
+                    {
+                        filteredMembers = filteredMembers.OrderBy(orderingFunctionID);
+                    }
+                    else if(sortIdx == 5)
+                    {
+                        filteredMembers = filteredMembers.OrderBy(orderingFunctionFE);
+                    }else
+                    {
+                        filteredMembers = filteredMembers.OrderBy(orderingFunctionFL);
+                    }
+                }
                 else
-                    filteredMembers = filteredMembers.OrderByDescending(orderingFunction).ThenByDescending(orderingFunction2);
+                { 
+                    if (sortIdx == 0)
+                    {
+                        filteredMembers = filteredMembers.OrderByDescending(orderingFunctionID);
+                    }
+                    else if (sortIdx == 5)
+                    {
+                        filteredMembers = filteredMembers.OrderByDescending(orderingFunctionFE);
+                    }
+                    else
+                    {
+                        filteredMembers = filteredMembers.OrderByDescending(orderingFunctionFL);
+                    }
+                }
             }
 
             if (Convert.ToBoolean(noLeidos)){
-                filteredMembers = filteredMembers.Where(m => m.file_leido == false);
+                filteredMembers = filteredMembers.Where(m => m.file_leido == false).OrderByDescending(orderingFunctionFE);
             }
                    
 

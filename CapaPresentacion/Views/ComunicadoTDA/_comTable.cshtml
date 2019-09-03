@@ -294,7 +294,7 @@
                     if (data.estado == 1) {
                         if (!leido) {
                             comunicadosPendiente();
-                            $('.table').DataTable().ajax.reload();
+                            $('.table').DataTable().ajax.reload(null, false);
                         }
                         window.open(url, '_blank');
                     } else {
