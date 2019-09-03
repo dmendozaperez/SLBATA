@@ -287,7 +287,7 @@ namespace CapaPresentacion.Controllers
         }
 
         public List<Ent_Orce_Inter_Art> unirListas(List<Ent_Orce_Inter_Art> lista)
-        {
+        { 
             List<Ent_Orce_Inter_Art> listArt_Actual = (List<Ent_Orce_Inter_Art>)Session[_session_lista_articulos];
             listArt_Actual = listArt_Actual.Where(w => !lista.Select(s => s.ARTICULO).ToList().Contains(w.ARTICULO)).OrderBy(o => o.ARTICULO).ToList(); // listArt_Actual.Except(lista).ToList();
             return listArt_Actual;
@@ -313,7 +313,7 @@ namespace CapaPresentacion.Controllers
                 return Json(new { estado = 0, resultados = ex.Message });
             }
         }
-        public ActionResult getArtAjax(Ent_jQueryDataTableParams param, string atributo , string _art_mod , bool ordenar)
+        public ActionResult getArtAjax(Ent_jQueryDataTableParams param, string atributo , string _art_mod , bool ordenar, bool _all_check ,bool _all_check_val )
         {
             /*verificar si esta null*/
             if (Session[_session_lista_articulos] == null || Session[_session_atribuo_actual].ToString() != atributo )
@@ -327,9 +327,14 @@ namespace CapaPresentacion.Controllers
                 listArt.Where(w => w.ARTICULO == _art_mod).Select(a => { a.VALOR = !a.VALOR ; return a; }).ToList();
                 Session[_session_lista_articulos] = listArt;
             }
-
+            if (_all_check)
+            {
+                List<Ent_Orce_Inter_Art> lista = (List<Ent_Orce_Inter_Art>)Session[_session_lista_articulos];
+                lista.Select(a => { a.VALOR = _all_check_val; return a; }).ToList();
+                Session[_session_lista_articulos] = lista;
+            }
             IQueryable<Ent_Orce_Inter_Art> membercol = ((List<Ent_Orce_Inter_Art>)Session[_session_lista_articulos]).AsQueryable();  //lista().AsQueryable();
-            
+
             //displayMembers.Select(a => { a.ESTADO_CONEXION_CAJA_XST = dat_storeTda.PingHost(a.IP); return a; }).ToList();
             //Manejador de filtros
             int totalCount = membercol.Count();

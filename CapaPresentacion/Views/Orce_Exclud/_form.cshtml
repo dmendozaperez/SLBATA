@@ -79,7 +79,7 @@
                 <thead>
                     <tr style="background-color:#3d566e; color:#ecf0f1">
                         <th>Articulo</th>
-                        <th>Estado</th>
+                        <th><div id="all" class="checkbox"><input type="checkbox" name="rGroupPrinc" value="0" id="check_all" />&nbsp;&nbsp;Valor (Todos)</div></th>
                     </tr>
                 </thead>
                 <tbody data-bind="foreach:"></tbody>
@@ -97,6 +97,8 @@
     var _exceljson = "";
     var _art_mod = "";
     var ordenar = true;
+    var _all_check = false;
+    var _all_check_val = false;
     $(document).ready(function () {
         $('input[type="file"]').change(function () {
             ExportToTable();
@@ -106,12 +108,16 @@
                 "url": "../Scripts/DataTables/Spanish.json",
                 //"bProcessing" : '<div class="spinner"></div>'
             },
+            "columnDefs":[{
+                "targets": 1,
+                "orderable": false
+            }],
             "bProcessing": true,
             "bServerSide": true,
             "bAutoWidth": false,
             "sAjaxSource": '@Url.Action("getArtAjax", "Orce_Exclud")',
             "fnServerParams": function (aoData) {
-                aoData.push({ "name": "atributo", "value": $('#atributo').val() }, { "name": "_art_mod", "value": _art_mod }, { "name" : "ordenar" , "value" : ordenar });
+                aoData.push({ "name": "atributo", "value": $('#atributo').val() }, { "name": "_art_mod", "value": _art_mod }, { "name": "ordenar", "value": ordenar }, { "name": "_all_check", "value": _all_check }, { "name": "_all_check_val", "value": _all_check_val });
             },
             "bdestroy": true,
             "start": 0,
@@ -130,7 +136,16 @@
                     }
             ]
         });
-
+        $('#check_all').change(function () {
+            _all_check = true;
+            if (this.checked) {
+                _all_check_val = true;
+            } else {
+                _all_check_val = false;
+            }
+            $('.table').DataTable().ajax.reload(null, false);
+            _all_check = false;
+        });
     });
     function actualizarValorArt(articulo)
     {
