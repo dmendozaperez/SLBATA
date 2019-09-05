@@ -250,7 +250,9 @@ namespace Data.Crystal.Reporte
                                              VCALZADO = dr["VCALZADO"].ToString(),
                                              NOCALZADO = dr["NOCALZADO"].ToString(),
                                              VNOCALZADO = dr["VNOCALZADO"].ToString(),
-                                             ESTADO = dr["ESTADO"].ToString()
+                                             ESTADO = dr["ESTADO"].ToString(),
+                                             TIENDA_ORI = dr["TIENDA_ORI"].ToString(),
+                                             TIENDA_DES = dr["TIENDA"].ToString()
                                              //ARTICULO = dr["ARTICULO"].ToString(),
                                              //CALIDAD = dr["CALIDAD"].ToString(),
                                              //TALLA = dr["TALLA"].ToString(),

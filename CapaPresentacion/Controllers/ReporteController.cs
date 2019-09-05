@@ -880,6 +880,7 @@ namespace CapaPresentacion.Controllers
             }
             //Manejador de orden
             var sortIdx = Convert.ToInt32(Request["iSortCol_0"]);
+            Func<Models_Guia, string> orderTO = (m => m.TIENDA_ORI);
             Func<Models_Guia, string> orderNumero = ( m => m.NUMERO);
             Func<Models_Guia, DateTime> orderFecha = (m => Convert.ToDateTime(m.FECHA));
             Func<Models_Guia, int> orderPares = (m => Convert.ToInt32( m.PARES));
@@ -889,24 +890,26 @@ namespace CapaPresentacion.Controllers
             Func<Models_Guia, string> orderEstado = (m => m.ESTADO);
 
             var sortDirection = Request["sSortDir_0"];
-            if (sortDirection == "asc") { 
-                if (sortIdx == 0) filteredMembers = filteredMembers.OrderBy(orderNumero);
-                else if(sortIdx == 1) filteredMembers = filteredMembers.OrderBy(orderFecha);
-                else if (sortIdx == 2) filteredMembers = filteredMembers.OrderBy(orderPares);
-                else if (sortIdx == 3) filteredMembers = filteredMembers.OrderBy(orderVC);
-                else if (sortIdx == 4) filteredMembers = filteredMembers.OrderBy(orderNC);
-                else if (sortIdx == 5) filteredMembers = filteredMembers.OrderBy(orderVNC);
-                else if (sortIdx == 6) filteredMembers = filteredMembers.OrderBy(orderEstado);
+            if (sortDirection == "asc") {
+                if (sortIdx == 0) filteredMembers = filteredMembers.OrderBy(orderTO);
+                else if (sortIdx == 2) filteredMembers = filteredMembers.OrderBy(orderNumero);
+                else if(sortIdx == 3) filteredMembers = filteredMembers.OrderBy(orderFecha);
+                else if (sortIdx == 4) filteredMembers = filteredMembers.OrderBy(orderPares);
+                else if (sortIdx == 5) filteredMembers = filteredMembers.OrderBy(orderVC);
+                else if (sortIdx == 6) filteredMembers = filteredMembers.OrderBy(orderNC);
+                else if (sortIdx == 7) filteredMembers = filteredMembers.OrderBy(orderVNC);
+                else if (sortIdx == 8) filteredMembers = filteredMembers.OrderBy(orderEstado);
             }
             else
             {
-                if (sortIdx == 0) filteredMembers = filteredMembers.OrderByDescending(orderNumero);
-                else if (sortIdx == 1) filteredMembers = filteredMembers.OrderByDescending(orderFecha);
-                else if (sortIdx == 2) filteredMembers = filteredMembers.OrderByDescending(orderPares);
-                else if (sortIdx == 3) filteredMembers = filteredMembers.OrderByDescending(orderVC);
-                else if (sortIdx == 4) filteredMembers = filteredMembers.OrderByDescending(orderNC);
-                else if (sortIdx == 5) filteredMembers = filteredMembers.OrderByDescending(orderVNC);
-                else if (sortIdx == 6) filteredMembers = filteredMembers.OrderByDescending(orderEstado);
+                if (sortIdx == 0) filteredMembers = filteredMembers.OrderByDescending(orderTO);
+                else if (sortIdx == 2) filteredMembers = filteredMembers.OrderByDescending(orderNumero);
+                else if (sortIdx == 3) filteredMembers = filteredMembers.OrderByDescending(orderFecha);
+                else if (sortIdx == 4) filteredMembers = filteredMembers.OrderByDescending(orderPares);
+                else if (sortIdx == 5) filteredMembers = filteredMembers.OrderByDescending(orderVC);
+                else if (sortIdx == 6) filteredMembers = filteredMembers.OrderByDescending(orderNC);
+                else if (sortIdx == 7) filteredMembers = filteredMembers.OrderByDescending(orderVNC);
+                else if (sortIdx == 8) filteredMembers = filteredMembers.OrderByDescending(orderEstado);
             }
             var displayMembers = filteredMembers.Skip(param.iDisplayStart).Take(param.iDisplayLength);
 
@@ -919,7 +922,9 @@ namespace CapaPresentacion.Controllers
                              a.VCALZADO,
                              a.NOCALZADO,
                              a.VNOCALZADO,
-                             a.ESTADO
+                             a.ESTADO,
+                             a.TIENDA_ORI,
+                             a.TIENDA_DES
                          };
             //Se devuelven los resultados por json
             return Json(new

@@ -21,6 +21,8 @@
 <table id="example" class="table table-hover dataTable  table-striped table-responsive table-principal">
     <thead>
         <tr style="background-color:#3d566e; color:#ecf0f1">
+            <th>TIENDA ORI.</th>
+            <th>TIENDA DES.</th>
             <th>NUMERO</th>
             <th>FECHA</th>
             <th>PARES</th>
@@ -36,6 +38,8 @@
     <tbody data-bind="foreach:"></tbody>
     <tfoot>
         <tr>
+            <th>TIENDA ORI.</th>
+            <th>TIENDA DES.</th>
             <th>NUMERO</th>
             <th>FECHA</th>
             <th>Pares</th>
@@ -70,11 +74,16 @@
 
             //"ordering": false,
             "order": [0, "asc"],
-
+            "columnDefs":[{
+                "targets": 1,
+                "orderable": false
+            }],
 
             "bDeferRender": true,
             "aoColumns": [
-                 { "sName": "NUMERO", "mData": "NUMERO" },
+                    { "sName": "TIENDA_ORI", "mData": "TIENDA_ORI" },
+                    { "sName": "TIENDA_DES", "mData": "TIENDA_DES" },
+                    { "sName": "NUMERO", "mData": "NUMERO" },
                    { "sName": "FECHA", "mData": "FECHA" },
                    { "sName": "CALZADO", "mData": "PARES", "sClass": "right" },
                    { "sName": "VCALZADO", "mData": "VCALZADO", "sClass": "right" },

@@ -21,6 +21,8 @@ namespace Models.Crystal.Reporte
         public string CALIDAD { get; set; }
         public string TALLA { get; set; }
         public string CANTIDAD { get; set; }
+        public string TIENDA_ORI { get; set; }
+        public string TIENDA_DES { get; set; }
     }
 
     public class Models_GuiaConten
