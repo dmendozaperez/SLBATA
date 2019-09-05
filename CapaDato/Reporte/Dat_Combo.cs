@@ -650,5 +650,77 @@ namespace CapaDato.Reporte
             }
             return list;
         }
+
+        public List<Ent_Combo> get_ListaEstadoPres()
+        {
+            List<Ent_Combo> list = null;
+            string sqlquery = "USP_XSTORE_GET_ESTADO_INV";
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+                    if (cn.State == 0) cn.Open();
+                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        SqlDataReader dr = cmd.ExecuteReader();
+                        if (dr.HasRows)
+                        {
+                            list = new List<Ent_Combo>();
+
+                            while (dr.Read())
+                            {
+                                Ent_Combo combo = new Ent_Combo();
+                                combo.cbo_codigo = dr["EST_XOF_COD"].ToString();
+                                combo.cbo_descripcion = dr["EST_XOF_DES"].ToString();
+                                list.Add(combo);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                list = null;
+            }
+            return list;
+        }
+
+        public List<Ent_Combo> get_ListaTipos2()
+        {
+            List<Ent_Combo> list = null;
+            string sqlquery = "USP_GET_CONCEPTO_MOVLAM";
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+                    if (cn.State == 0) cn.Open();
+                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        SqlDataReader dr = cmd.ExecuteReader();
+                        if (dr.HasRows)
+                        {
+                            list = new List<Ent_Combo>();
+
+                            while (dr.Read())
+                            {
+                                Ent_Combo combo = new Ent_Combo();
+                                combo.cbo_codigo = dr["CON_ID"].ToString();
+                                combo.cbo_descripcion = dr["CON_DES"].ToString();
+                                list.Add(combo);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                list = null;
+            }
+            return list;
+        }
     }
 }

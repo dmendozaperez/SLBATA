@@ -209,7 +209,7 @@ namespace Data.Crystal.Reporte
             return lista;
         }
 
-        public Models_GuiaConten list_Guia_Tienda(string codEntid, string tipo_cat, string cod_linea, string cod_categ, string articulo, string calidad)
+        public Models_GuiaConten list_Guia_Tienda(string codEntid, string tipo_cat, string cod_linea, string cod_categ, string articulo, string calidad , string estado , string tipo_con)
         {
             string sqlquery = "USP_XSTORE_REPORTE_PRESCRIPCIONES";
             List<Models_Guia> lista = null;
@@ -233,6 +233,8 @@ namespace Data.Crystal.Reporte
                             cmd.Parameters.AddWithValue("@COD_CATEG", cod_categ);
                             cmd.Parameters.AddWithValue("@ARTICULO", articulo);
                             cmd.Parameters.AddWithValue("@CALIDAD", calidad);
+                            cmd.Parameters.AddWithValue("@ESTADO", estado);
+                            cmd.Parameters.AddWithValue("@TIPO", tipo_con);
 
                             using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                             {

@@ -7,7 +7,7 @@
         HttpMethod = "GET",
         InsertionMode = InsertionMode.Replace,
         UpdateTargetId = "lista",
-        OnComplete = "waitingDialog.hide();rf_filtro();",
+        OnComplete = "waitingDialog.hide();",
         OnBegin = "waitingDialog.show('Espere un momento por favor');",
         OnFailure = "waitingDialog.hide();"
     };
@@ -70,12 +70,10 @@
             </div>
            
             <div class="col-sm-3">
-                <label for="segape"></label>
+                <label for="txtTda">Tipo</label>
                 <div class="form-group">
-                  <div id="div" class="form-group">
-                      <button type="submit" title="Consultar" class="btn btn-primary">
-                          <span class="glyphicon glyphicon-search"></span>&nbsp;Consultar
-                      </button>
+                    <div id="divTipo" class="form-group">
+                        @Html.DropDownList("dwTipo", new SelectList(ViewBag.Tipo, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", @id = "dwTipo", @name = "dwTipo", style = "width:270px;max-width:270px;", @onchange = "ListarGrupo()" })
                     </div>
                 </div>
             </div>
@@ -83,14 +81,7 @@
     
           <div id="lugar" class="row">
 
-              <div  class="col-sm-3">
-                  <label for="txtTda">Tipo.</label>
-                  <div class="form-group">
-                      <div id="divTipo" class="form-group">
-                          @Html.DropDownList("dwTipo", new SelectList(ViewBag.Tipo, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", @id = "dwTipo", @name = "dwTipo", style = "width:270px;max-width:270px;", @onchange = "ListarGrupo()" })
-                      </div>
-                  </div>
-              </div>
+              
               <div class="col-sm-3">
                   <label for="dwGrupo">Grupo</label>
                   <div class="form-group">
@@ -107,9 +98,35 @@
                       </div>
                   </div>
               </div>         
-
-
+              <div class="col-sm-3">
+                  <label for="dwCate">Estado</label>
+                  <div class="form-group">
+                      <div id="divcateg" class="form-group">
+                          @Html.DropDownList("dwEst", new SelectList(ViewBag.Estado, "cbo_codigo", "cbo_descripcion", "OPEN"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwEst", @data_actions_box = "true", @data_selected_text_format = "count > 2" , multiple = "multiple", })
+                      </div>
+                  </div>
+              </div>
+              <div class="col-sm-3">
+                  <label for="dwCate">Concepto</label>
+                  <div class="form-group">
+                      <div id="divcateg" class="form-group">
+                          @Html.DropDownList("dwTipoCon", new MultiSelectList(ViewBag.Tipo2, "cbo_codigo", "cbo_descripcion", new[] { "30", "31" } ), new { @class = "selectpicker", @data_live_search = "true", @id = "dwTipoCon", @data_actions_box = "true", @data_selected_text_format = "count > 2", multiple = "multiple", })
+                      </div>
+                  </div>
+              </div>       
           </div>    
+    <div class="row">
+        <div class="col-sm-3">
+            <label for="segape"></label>
+            <div class="form-group">
+                <div id="div" class="form-group">
+                    <button type="submit" title="Consultar" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-search"></span>&nbsp;Consultar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
     </form>
     }
    

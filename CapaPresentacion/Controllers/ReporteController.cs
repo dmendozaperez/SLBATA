@@ -816,33 +816,41 @@ namespace CapaPresentacion.Controllers
                 listD.Add(entComboD);
                 ViewBag.Categoria = listD;
 
+                listD = new List<Ent_Combo>();
+                listD = datCbo.get_ListaEstadoPres();
+                ViewBag.Estado = listD;
+
+                ViewBag.Tipo2 = datCbo.get_ListaTipos2();
+
                 return View();
             }
 
         }
 
-        public PartialViewResult ListaGuiaTienda(string dwtienda, string dwTipo, string dwGrupo, string dwCate, string txtarticulo, string dwCalidad)
+        public PartialViewResult ListaGuiaTienda(string dwtienda, string dwTipo, string dwGrupo, string dwCate, string txtarticulo, string dwCalidad, string[] dwEst, string[] dwTipoCon)
         {
-            dwTipo= dwTipo =="01"? "S" : "R";         
+            dwTipo = dwTipo == "01" ? "S" : "R";
             txtarticulo = txtarticulo.Trim();
             dwGrupo = dwGrupo == "0" ? "-1" : dwGrupo;
             dwCate = dwCate == "0" ? "-1" : dwCate;
             txtarticulo = txtarticulo == "" ? "-1" : txtarticulo;
-            dwCalidad = dwCalidad==null ? "0" : dwCalidad;
+            dwCalidad = dwCalidad == null ? "0" : dwCalidad;
+            dwEst = dwEst == null ? new string[] { "0" } : dwEst;
+            dwTipoCon = dwTipoCon == null ? new string[] { "0" } : dwTipoCon;
 
-            Models_GuiaConten model_vent_comp = listaGuia(dwtienda, dwTipo, dwGrupo, dwCate, txtarticulo, dwCalidad);
+            Models_GuiaConten model_vent_comp = listaGuia(dwtienda, dwTipo, dwGrupo, dwCate, txtarticulo, dwCalidad, String.Join(",",dwEst),String.Join(",",dwTipoCon) );
 
-          ViewBag.GuiaDetalle = model_vent_comp.strDetalle;
-          Session[_session_listguia_private] = model_vent_comp.listGuia;
+            ViewBag.GuiaDetalle = model_vent_comp.strDetalle;
+            Session[_session_listguia_private] = model_vent_comp.listGuia;
 
             return PartialView(model_vent_comp.listGuia);
         }
 
-        public Models_GuiaConten listaGuia(string dwtienda, string tipo_cat, string cod_linea, string cod_categ, string articulo, string calidad)
+        public Models_GuiaConten listaGuia(string dwtienda, string tipo_cat, string cod_linea, string cod_categ, string articulo, string calidad , string estado , string tipo_con)
         {
             Data_Bata pl = new Data_Bata();
 
-            Models_GuiaConten model_vent_comp = pl.list_Guia_Tienda(dwtienda, tipo_cat, cod_linea, cod_categ, articulo, calidad);
+            Models_GuiaConten model_vent_comp = pl.list_Guia_Tienda(dwtienda, tipo_cat, cod_linea, cod_categ, articulo, calidad, estado , tipo_con);
 
             return model_vent_comp;
         }
@@ -872,18 +880,35 @@ namespace CapaPresentacion.Controllers
             }
             //Manejador de orden
             var sortIdx = Convert.ToInt32(Request["iSortCol_0"]);
-            Func<Models_Comparativo_Venta, string> orderingFunction =
-            (
-            //m => sortIdx == 0 ? m.orden :
-             m => m.orden
-            );
+            Func<Models_Guia, string> orderNumero = ( m => m.NUMERO);
+            Func<Models_Guia, DateTime> orderFecha = (m => Convert.ToDateTime(m.FECHA));
+            Func<Models_Guia, int> orderPares = (m => Convert.ToInt32( m.PARES));
+            Func<Models_Guia, double> orderVC = (m => Convert.ToDouble( m.VCALZADO));
+            Func<Models_Guia, int> orderNC = (m =>Convert.ToInt32(m.NOCALZADO));
+            Func<Models_Guia, double> orderVNC = (m => Convert.ToDouble(m.VNOCALZADO));
+            Func<Models_Guia, string> orderEstado = (m => m.ESTADO);
+
             var sortDirection = Request["sSortDir_0"];
-            //if (sortDirection == "asc")
-            //    filteredMembers = filteredMembers.OrderBy(orderingFunction);
-            //else
-            //    filteredMembers = filteredMembers.OrderByDescending(orderingFunction);
-            var displayMembers = filteredMembers
-                .Skip(param.iDisplayStart);
+            if (sortDirection == "asc") { 
+                if (sortIdx == 0) filteredMembers = filteredMembers.OrderBy(orderNumero);
+                else if(sortIdx == 1) filteredMembers = filteredMembers.OrderBy(orderFecha);
+                else if (sortIdx == 2) filteredMembers = filteredMembers.OrderBy(orderPares);
+                else if (sortIdx == 3) filteredMembers = filteredMembers.OrderBy(orderVC);
+                else if (sortIdx == 4) filteredMembers = filteredMembers.OrderBy(orderNC);
+                else if (sortIdx == 5) filteredMembers = filteredMembers.OrderBy(orderVNC);
+                else if (sortIdx == 6) filteredMembers = filteredMembers.OrderBy(orderEstado);
+            }
+            else
+            {
+                if (sortIdx == 0) filteredMembers = filteredMembers.OrderByDescending(orderNumero);
+                else if (sortIdx == 1) filteredMembers = filteredMembers.OrderByDescending(orderFecha);
+                else if (sortIdx == 2) filteredMembers = filteredMembers.OrderByDescending(orderPares);
+                else if (sortIdx == 3) filteredMembers = filteredMembers.OrderByDescending(orderVC);
+                else if (sortIdx == 4) filteredMembers = filteredMembers.OrderByDescending(orderNC);
+                else if (sortIdx == 5) filteredMembers = filteredMembers.OrderByDescending(orderVNC);
+                else if (sortIdx == 6) filteredMembers = filteredMembers.OrderByDescending(orderEstado);
+            }
+            var displayMembers = filteredMembers.Skip(param.iDisplayStart).Take(param.iDisplayLength);
 
             var result = from a in displayMembers
                          select new

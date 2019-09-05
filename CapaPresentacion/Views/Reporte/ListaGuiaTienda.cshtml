@@ -1,4 +1,10 @@
-﻿<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.min.css" />
+﻿@{
+    var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+    serializer.MaxJsonLength = Int32.MaxValue;
+    var jsonModel = serializer.Serialize(ViewBag.GuiaDetalle);
+}
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.min.css" />
 
 <style type="text/css">
     .dt-buttons {
@@ -12,7 +18,7 @@
 
 </style>
 
-<table id="example" class="table table-hover dataTable  table-striped table-responsive ">
+<table id="example" class="table table-hover dataTable  table-striped table-responsive table-principal">
     <thead>
         <tr style="background-color:#3d566e; color:#ecf0f1">
             <th>NUMERO</th>
@@ -51,7 +57,7 @@
 
 <script>
     $(document).ready(function () {
-        $('.table').dataTable({
+        $('.table-principal').dataTable({
             "language": {
                 "url": "../Scripts/DataTables/Spanish.json"
             },
@@ -60,7 +66,7 @@
             "sAjaxSource": '@Url.Action("getGuias", "Reporte")',
             "bdestroy": true,
             "start": 0,
-            "searching": false,
+            "searching": true,
 
             //"ordering": false,
             "order": [0, "asc"],
@@ -75,13 +81,13 @@
                    { "sName": "NOCALZADO", "mData": "NOCALZADO", "sClass": "right" },
                    { "sName": "VNOCALZADO", "mData": "VNOCALZADO", "sClass": "right" },
                    { "sName": "ESTADO", "mData": "ESTADO" },
-                    {
+                   {
                         "render": function (data, type, full) {
                             var envio = "'" + full.NUMERO + "'"
 
                             return '<div> <a title="Ver Detalle"  onclick="verDetalle(' + envio + ')" target="_blank" class="btn btn-primary btn-sm"> <span class="	glyphicon glyphicon-th-list"></span></a></div>';
                         }
-                    }
+                   }
 
 
             ],
@@ -109,19 +115,19 @@
     //    alert(numero)
     //}
 
-    function verDetalle(numero) {  
-       
-        var data = function () { return @Html.Raw(Json.Encode(ViewBag.GuiaDetalle)); }();
+    function verDetalle(numero) {
+
+        var data = @Html.Raw(jsonModel);
         var dataArray = JSON.parse(data);
 
-        var lista_default = dataArray.filter(obj => obj.NUMERO == numero);       
+        var lista_default = dataArray.filter(obj => obj.NUMERO == numero);
         var style = 'width="10%;"'
         var style2 = 'width="50%;"'
         var strtable = '';
         var theader = '';
         var tbody = '';
         theader += '<thead>';
-        theader += '<tr>';         
+        theader += '<tr>';
         theader += '<th ' + style + ' >';
         theader += '<div class="col-sm-1" style="margin-top:2px;margin-bottom:2px;">';
         theader += '<label for="disponible">GRUPO</label>';
@@ -146,11 +152,11 @@
         theader += '<div class="col-sm-1" style="width:100%;text-align:center;margin-top:2px;margin-bottom:2px;Text">';
         theader += '<label for="disponible">TALLA/CANTIDAD</label>';
         theader += '</div>';
-        theader += '</th>';      
+        theader += '</th>';
         theader += '</tr>';
         theader += '</thead>';
 
-        
+
         tbody += '<td   ' + style + '>';
         tbody += '<div class="col-sm-1" style="width:100%;margin-top:2px;margin-bottom:2px;">';
         tbody += 'grupo';
@@ -175,8 +181,8 @@
         tbody += '<div class="col-sm-1" style="width:100%;margin-top:2px;margin-bottom:2px;text-align:center;">';
         tbody += '<table><tr><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs"  title="Tallas"  style="width:100%;">T:</button></div></td><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-success btn-xs" style="width:100%;">Total</button></div></td>ListvariableTalla</tr><tr><td><div style="margin-top:2px;margin-right:2px;"><button  title="Cantidad"  class="btn btn-white btn-xs" style="width:100%;">C:</button></div></td></td><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-success btn-xs" style="width:100%;">VTotal</button></div></td>ListvariableCantidad</tr></table>'
         tbody += '</div>';
-        tbody += '</td>';          
-        tbody += '</tr>';        
+        tbody += '</td>';
+        tbody += '</tr>';
 
         var ConstTalla = '<td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-primary btn-xs"  style="width:100%;" title="Talla"  data-id="codTienda" data-tda="desTiendaS" data-modal="codTalla" data-art="codArticulo"  >variableTalla</button></div></td>'
         var ConstCantidad = '<td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-info btn-xs" style="width:100%;text-align:center;">variableCantidad</button></div></td>'
@@ -209,10 +215,10 @@
 
         var fncalzado = 0
         var fnvcalzado = 0.00
-       
+
         $.each(lista_default, function (index, item) {
-           
-            if (index == 0) { articulo_old = item.ARTICULO; calidad_old = item.CALIDAD };          
+
+            if (index == 0) { articulo_old = item.ARTICULO; calidad_old = item.CALIDAD };
 
             articulo = item.ARTICULO;
             calidad = item.CALIDAD;
@@ -223,15 +229,15 @@
             Ncalzado = item.NOCALZADO;
             VNcalzado = item.VNOCALZADO;
             Estado = item.ESTADO;
-        
+
             fnvcalzado = articulo.charAt(0) == '9' ? fnvcalzado + parseFloat(item.VDETALLE) : fnvcalzado;
             fncalzado = articulo.charAt(0) == '9' ? fncalzado + parseInt(item.CANTIDAD) : fncalzado;
 
             fvcalzado = articulo.charAt(0) != '9' ? fvcalzado + parseFloat(item.VDETALLE) : fvcalzado;
             fcalzado = articulo.charAt(0) != '9' ? fcalzado + parseInt(item.CANTIDAD) : fcalzado;
-            
 
-            if (articulo != articulo_old || calidad != calidad_old) {               
+
+            if (articulo != articulo_old || calidad != calidad_old) {
 
                 var temrBody = tbody
                 temrBody = temrBody.replace("tipo", '');
@@ -256,7 +262,7 @@
             linea = item.LINEA;
             categoria = item.CATEGORIA;
 
-            
+
 
             talla = item.TALLA;
             cantidad = item.CANTIDAD;
@@ -267,7 +273,7 @@
 
             listTalla = listTalla.replace("variableTalla", talla);
             listCantidad = listCantidad.replace("variableCantidad", cantidad);
-            
+
         });
 
         //alert(parseFloat(fnvcalzado).toFixed(2))
@@ -296,12 +302,12 @@
         //alert(fcalzado)
         //alert(Ncalzado)
         //alert(fncalzado)
-        if (calzado == fcalzado && Ncalzado==fncalzado){
+        if (calzado == fcalzado && Ncalzado == fncalzado) {
             strStyle = 'style="display:none"'
         }
 
         strtable = '<table style="width:100%;" class="table table-hover dataTable  table-striped table-responsive" role="grid">' + theader + '<tbody>' + Body + '</tbody>' + '</table>';
-       
+
         var strhtml = ''
         strhtml += '<div class="modal-header modal-header-danger" style="margin-top:0px;margin-bottom:0px;padding-top:2px;padding-bottom:2px;">'
         strhtml += '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
@@ -343,7 +349,7 @@
         strhtml += '&nbsp;&nbsp;S/.&nbsp;' + VNcalzado
         strhtml += '</td>'
         strhtml += '</tr>'
-        strhtml += '<tr '+strStyle+' >'
+        strhtml += '<tr ' + strStyle + ' >'
         strhtml += '<td colspan="1" style="text-align:left;"><button class="btn btn-success btn-xs" style="width:100%;text-align:left;">CALZADO</button></td>'
         strhtml += '<td colspan="1">'
         strhtml += '&nbsp;&nbsp;' + fcalzado
@@ -352,7 +358,7 @@
         strhtml += '<td colspan="1">'
         strhtml += '&nbsp;&nbsp;S/.&nbsp;' + parseFloat(fvcalzado).toFixed(2)
         strhtml += '</td>'
-       strhtml += '<td colspan="1" style="text-align:left;"><button class="btn btn-success btn-xs" style="width:100%;text-align:left;">NO CALZADO</button></td>'
+        strhtml += '<td colspan="1" style="text-align:left;"><button class="btn btn-success btn-xs" style="width:100%;text-align:left;">NO CALZADO</button></td>'
         strhtml += '<td colspan="1">'
         strhtml += '&nbsp;&nbsp;' + fncalzado
         strhtml += '</td>'
@@ -362,7 +368,7 @@
         strhtml += '</td>'
         strhtml += '</tr>'
         strhtml += '<tr>'
-        
+
         strhtml += '</table>'
         strhtml += strtable
         strhtml += '</div>'
