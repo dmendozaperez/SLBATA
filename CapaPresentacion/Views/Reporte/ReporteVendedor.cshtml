@@ -250,10 +250,18 @@
                             $("#load").attr("src", "../AspNetForms/Vendedor.aspx");
                         }
                         else {
+                            if (data.estado == "-1")
+                            {
+                                $('#load').hide();
+                                waitingDialog.hide();
+                                toastr.error('No hay datos para mostrar', "Alerta");
+                            }
+                            else
+                              {
                             $('#load').hide();
                             waitingDialog.hide();
                             toastr.error('Hubo un error en el reporte', "Alerta");
-
+                            }
                         }
                         //document.getElementById("ifrReporte").innerHTML = data;
                         //waitingDialog.hide();

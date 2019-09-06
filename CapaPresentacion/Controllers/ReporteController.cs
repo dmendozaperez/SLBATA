@@ -487,12 +487,18 @@ namespace CapaPresentacion.Controllers
             this.HttpContext.Session["rptSource"] = model_vendedor;
            
 
-            /*error=0;exito=1*/
+            /*error=0;exito=1;no hay datos=-1*/
             string _estado = (model_vendedor == null) ? "0" : "1";
+
+            if (model_vendedor!=null)
+            {
+                if (model_vendedor.Count() == 0) _estado = "-1";
+            }
+
 
             //if (model_planilla==null)
 
-            return Json(new
+                return Json(new
             {
                 estado = _estado
             });
