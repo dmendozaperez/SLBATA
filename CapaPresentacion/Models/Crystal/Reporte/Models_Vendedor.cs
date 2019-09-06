@@ -5,6 +5,11 @@ using System.Web;
 
 namespace Models.Crystal.Reporte
 {
+    public class Reporte_Vendedor
+    {
+        public List<Models_Vendedor> listMV { get; set; }
+        public List<Models_Total2> listTotal2 { get; set; }
+    }
     public class Models_Vendedor
     {
         public string semana_str { get; set; }
@@ -27,6 +32,16 @@ namespace Models.Crystal.Reporte
         public decimal pormay1 { get; set; }
         public decimal ticket_prom { get; set; }
 
+    }
+
+    public class Models_Total2
+    {
+        public string COD_ENTID_2 { get; set; }
+        public int SUM_CANT_TOTAL { get; set; }
+        public int SUM_NTK_TOTAL { get; set; }
+        public decimal TOTAL_2 { get; set; }
+        public decimal UPT_2 { get; set; }
+        public decimal TICKET_PROM_2 { get; set; }
     }
    
 }

@@ -209,7 +209,7 @@ namespace Data.Crystal.Reporte
             return lista;
         }
 
-        public Models_GuiaConten list_Guia_Tienda(string codEntid, string tipo_cat, string cod_linea, string cod_categ, string articulo, string calidad , string estado , string tipo_con)
+        public Models_GuiaConten list_Guia_Tienda(string codEntid, string tipo_cat, string cod_linea, string cod_categ, string articulo, string calidad , string estado , string tipo_con , string guia)
         {
             string sqlquery = "USP_XSTORE_REPORTE_PRESCRIPCIONES";
             List<Models_Guia> lista = null;

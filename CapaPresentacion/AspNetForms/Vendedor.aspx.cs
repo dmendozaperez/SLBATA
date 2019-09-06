@@ -18,7 +18,7 @@ namespace CapaPresentacion.AspNetForms
             {
                 string strReportName = System.Web.HttpContext.Current.Session["ReportName"].ToString();
                 var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
-         
+                var rptSource2 = System.Web.HttpContext.Current.Session["rptSource2"];
 
                 rd = new ReportDocument();
                 
@@ -27,10 +27,11 @@ namespace CapaPresentacion.AspNetForms
                 rd.Load(strRptPath);
 
                 // Setting report data source
-                if (rptSource != null && rptSource.GetType().ToString() != "System.String")
-                    rd.SetDataSource(rptSource);
-              
-               
+                if (rptSource != null && rptSource.GetType().ToString() != "System.String") { 
+                    //rd.SetDataSource(rptSource);
+                    rd.Database.Tables[0].SetDataSource(rptSource);
+                    rd.Database.Tables[1].SetDataSource(rptSource2);
+                }
                 crv_vendedor.ReportSource = rd;
                 crv_vendedor.ToolPanelView = CrystalDecisions.Web.ToolPanelViewType.None;
                 crv_vendedor.HasToggleGroupTreeButton = false;

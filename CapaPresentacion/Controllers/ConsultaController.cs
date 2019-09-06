@@ -188,6 +188,7 @@ namespace CapaPresentacion.Controllers
             }
             else
             {
+                Session[_session_listguia_private] = null;
                 if (Session["Tienda"] != null)
                 {
                     ViewBag.Tienda = tienda.get_ListaTiendaXstore().Where(t => t.cbo_codigo == Session["Tienda"].ToString()).ToList();

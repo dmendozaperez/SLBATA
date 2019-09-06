@@ -482,10 +482,11 @@ namespace CapaPresentacion.Controllers
             Data_Planilla pl = new Data_Planilla();
             this.HttpContext.Session["ReportName"] = "Vendedor.rpt";
 
-            List<Models_Vendedor> model_vendedor = pl.get_reporteVendedor(coddis, cod_tda, fecIni, FecFin, calidad);
+            Reporte_Vendedor model_vendedor = pl.get_reporteVendedor(coddis, cod_tda, fecIni, FecFin, calidad);
 
-            this.HttpContext.Session["rptSource"] = model_vendedor;
-           
+            this.HttpContext.Session["rptSource"] = model_vendedor.listMV;
+            this.HttpContext.Session["rptSource2"] = model_vendedor.listTotal2;
+
 
             /*error=0;exito=1*/
             string _estado = (model_vendedor == null) ? "0" : "1";
@@ -827,7 +828,7 @@ namespace CapaPresentacion.Controllers
 
         }
 
-        public PartialViewResult ListaGuiaTienda(string dwtienda, string dwTipo, string dwGrupo, string dwCate, string txtarticulo, string dwCalidad, string[] dwEst, string[] dwTipoCon)
+        public PartialViewResult ListaGuiaTienda(string dwtienda, string dwTipo, string dwGrupo, string dwCate, string txtarticulo, string dwCalidad, string[] dwEst, string[] dwTipoCon, string txtGuia)
         {
             dwTipo = dwTipo == "01" ? "S" : "R";
             txtarticulo = txtarticulo.Trim();
@@ -838,7 +839,7 @@ namespace CapaPresentacion.Controllers
             dwEst = dwEst == null ? new string[] { "0" } : dwEst;
             dwTipoCon = dwTipoCon == null ? new string[] { "0" } : dwTipoCon;
 
-            Models_GuiaConten model_vent_comp = listaGuia(dwtienda, dwTipo, dwGrupo, dwCate, txtarticulo, dwCalidad, String.Join(",",dwEst),String.Join(",",dwTipoCon) );
+            Models_GuiaConten model_vent_comp = listaGuia(dwtienda, dwTipo, dwGrupo, dwCate, txtarticulo, dwCalidad, String.Join(",",dwEst),String.Join(",",dwTipoCon) , txtGuia);
 
             ViewBag.GuiaDetalle = model_vent_comp.strDetalle;
             Session[_session_listguia_private] = model_vent_comp.listGuia;
@@ -846,11 +847,11 @@ namespace CapaPresentacion.Controllers
             return PartialView(model_vent_comp.listGuia);
         }
 
-        public Models_GuiaConten listaGuia(string dwtienda, string tipo_cat, string cod_linea, string cod_categ, string articulo, string calidad , string estado , string tipo_con)
+        public Models_GuiaConten listaGuia(string dwtienda, string tipo_cat, string cod_linea, string cod_categ, string articulo, string calidad , string estado , string tipo_con , string guia)
         {
             Data_Bata pl = new Data_Bata();
 
-            Models_GuiaConten model_vent_comp = pl.list_Guia_Tienda(dwtienda, tipo_cat, cod_linea, cod_categ, articulo, calidad, estado , tipo_con);
+            Models_GuiaConten model_vent_comp = pl.list_Guia_Tienda(dwtienda, tipo_cat, cod_linea, cod_categ, articulo, calidad, estado , tipo_con, guia);
 
             return model_vent_comp;
         }

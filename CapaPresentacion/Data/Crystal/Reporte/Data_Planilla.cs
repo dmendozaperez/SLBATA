@@ -140,10 +140,10 @@ namespace Data.Crystal.Reporte
             return lista;
         }
 
-        public List<Models_Vendedor> get_reporteVendedor(string coddis,string cod_tda, string fecIni, string fecFin, string calidad)
+        public Reporte_Vendedor get_reporteVendedor(string coddis,string cod_tda, string fecIni, string fecFin, string calidad)
         {
-            string sqlquery = "USP_XSTORE_REPORTE_VENDEDORES";
-            List<Models_Vendedor> lista = null;
+            string sqlquery = "USP_XSTORE_REPORTE_VENDEDORES_PRUEBA";
+            Reporte_Vendedor lista = null;
             try
             {
              
@@ -162,13 +162,12 @@ namespace Data.Crystal.Reporte
                             cmd.Parameters.AddWithValue("@FEC_FIN", fecFin);
                             cmd.Parameters.AddWithValue("@coddist", coddis);
                             cmd.Parameters.AddWithValue("@calidad", calidad);
-
                             using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                             {
-                                DataTable dt = new DataTable();
-                                da.Fill(dt);
-                                lista = new List<Models_Vendedor>();
-                                lista = (from DataRow dr in dt.Rows
+                                DataSet ds = new DataSet();
+                                da.Fill(ds);
+                                List<Models_Vendedor> lista1 = new List<Models_Vendedor>();
+                                lista1 = (from DataRow dr in ds.Tables[0].Rows
                                          select new Models_Vendedor()
                                          {
                                              cod_distri=dr["DISTRITO"].ToString(),
@@ -192,19 +191,32 @@ namespace Data.Crystal.Reporte
                                              ticket_prom = string.IsNullOrEmpty(dr["ACC"].ToString()) ? 0 : Convert.ToDecimal(dr["TICKET_PROM"].ToString()),
 
                                          }).ToList();
+                                List<Models_Total2> lista2 = new List<Models_Total2>();
+                                lista2 = (from DataRow dr in ds.Tables[1].Rows
+                                          select new Models_Total2()
+                                          {
+                                              COD_ENTID_2 = dr["COD_ENTID_2"].ToString(),
+                                              SUM_CANT_TOTAL = Convert.ToInt32(dr["SUM_CANT_TOTAL"].ToString()),
+                                              SUM_NTK_TOTAL = Convert.ToInt32(dr["SUM_NTK_TOTAL"].ToString()),
+                                              TOTAL_2 = Convert.ToDecimal(dr["TOTAL_2"].ToString()),
+                                              UPT_2 = Convert.ToDecimal(dr["UPT_2"].ToString()),
+                                              TICKET_PROM_2 = Convert.ToDecimal(dr["TICKET_PROM_2"].ToString()),
+                                          }).ToList();
+                                lista = new Reporte_Vendedor();
+                                lista.listMV = lista1;
+                                lista.listTotal2 = lista2;                                                          
                             }
                         }
                     }
                     catch (Exception exc)
                     {
-
-
+                        lista = null;
                     }
                 }
             }
             catch (Exception)
             {
-
+                lista = null;
             }
             return lista;
         }
