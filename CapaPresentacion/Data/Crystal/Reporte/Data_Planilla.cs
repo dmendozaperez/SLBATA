@@ -144,6 +144,8 @@ namespace Data.Crystal.Reporte
         {
             string sqlquery = "USP_XSTORE_REPORTE_VENDEDORES_PRUEBA";
             Reporte_Vendedor lista = null;
+            List<Models_Vendedor> lista1 = null;
+            List<Models_Total2> lista2 = null;
             try
             {
              
@@ -166,7 +168,7 @@ namespace Data.Crystal.Reporte
                             {
                                 DataSet ds = new DataSet();
                                 da.Fill(ds);
-                                List<Models_Vendedor> lista1 = new List<Models_Vendedor>();
+                                lista1 = new List<Models_Vendedor>();
                                 lista1 = (from DataRow dr in ds.Tables[0].Rows
                                          select new Models_Vendedor()
                                          {
@@ -191,7 +193,7 @@ namespace Data.Crystal.Reporte
                                              ticket_prom = string.IsNullOrEmpty(dr["ACC"].ToString()) ? 0 : Convert.ToDecimal(dr["TICKET_PROM"].ToString()),
 
                                          }).ToList();
-                                List<Models_Total2> lista2 = new List<Models_Total2>();
+                                lista2 = new List<Models_Total2>();
                                 lista2 = (from DataRow dr in ds.Tables[1].Rows
                                           select new Models_Total2()
                                           {

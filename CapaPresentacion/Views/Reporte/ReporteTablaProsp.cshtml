@@ -53,10 +53,16 @@
                 @Html.DropDownList("tienda", new SelectList(ViewBag.Tienda, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", @data_live_search = "true", @id = "tienda", @name = "tienda" })
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="form-group">
                 <label for="tiendaOrigen">Año:</label>
                 @Html.DropDownList("anio", new SelectList(ViewBag.anios, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", @data_live_search = "true", @id = "anio", @name = "anio" })
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                <label for="tiendaOrigen">Tipo:</label>
+                @Html.DropDownList("tipo", new SelectList(ViewBag.tipo, "cbo_codigo", "cbo_descripcion", "A"), new { @class = "selectpicker", @data_live_search = "true", @id = "tipo", @name = "tipo" })
             </div>
         </div>
         <div class="col-sm-3">
@@ -90,6 +96,7 @@
         var TeamDetailPostBackURL = "@Url.Action("ShowGenericReportTablaPropInNewWin", "Reporte")";
         var tienda = $('#tienda').val();
         var anio = $('#anio').val();
+        var tipo = $('#tipo').val();
             waitingDialog.show('Espere un momento por favor');
             $.ajax({
                 //url: GLB_RUT_APP_REPVENR + "?tda=" + tda + "&grupo=" + grupo + "&cate=" + cate + "&subcate=" + sbCate + "&estado=" + Estado,
@@ -97,7 +104,7 @@
                 dataType: 'json',
                 type: 'POST',
                 //dataType: "html",
-                data: {tienda : tienda , anio : anio},
+                data: {tienda : tienda , anio : anio , tipo : tipo},
                 success: function (data) {
                     //alert('ok');
                     if (data.estado == "1") {

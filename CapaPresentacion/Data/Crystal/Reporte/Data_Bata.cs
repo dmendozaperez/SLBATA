@@ -352,7 +352,7 @@ namespace Data.Crystal.Reporte
             return lista;
         }
 
-        internal List<Models_Tab_Pros> list_tab_pros(string tienda, string anio)
+        internal List<Models_Tab_Pros> list_tab_pros(string tienda, string anio, string tipo)
         {
             string sqlquery = "USP_XSTORE_TABLA_PROSPERIDAD";
             List<Models_Tab_Pros> lista = null;
@@ -369,6 +369,7 @@ namespace Data.Crystal.Reporte
                             cmd.CommandType = CommandType.StoredProcedure;
                             cmd.Parameters.AddWithValue("@ANIO", anio);
                             cmd.Parameters.AddWithValue("@COD_TDA", tienda);
+                            cmd.Parameters.AddWithValue("@PARAM", tipo);
                             using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                             {
                                 dt = new DataTable();

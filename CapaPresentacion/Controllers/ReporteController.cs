@@ -493,7 +493,8 @@ namespace CapaPresentacion.Controllers
 
             if (model_vendedor!=null)
             {
-                if (model_vendedor.Count() == 0) _estado = "-1";
+                if (model_vendedor.listMV.Count() == 0) _estado = "-1";
+                if (model_vendedor.listTotal2.Count() == 0) _estado = "-1";
             }
 
 
@@ -1149,17 +1150,27 @@ namespace CapaPresentacion.Controllers
                     
                 }
                 ViewBag.anios = datCbo.get_lista_anios(2015);
+                List<Ent_Combo> listcbo = new List<Ent_Combo>();
+                Ent_Combo entCombocbo = new Ent_Combo();
+                entCombocbo.cbo_codigo = "A";
+                entCombocbo.cbo_descripcion = "ANUAL";
+                listcbo.Add(entCombocbo);
+                entCombocbo = new Ent_Combo();
+                entCombocbo.cbo_codigo = "S";
+                entCombocbo.cbo_descripcion = "SEMESTRAL";
+                listcbo.Add(entCombocbo);
+                ViewBag.tipo = listcbo;
             }
             return View();
         }
         [HttpPost]
-        public ActionResult ShowGenericReportTablaPropInNewWin(string tienda , string anio)
+        public ActionResult ShowGenericReportTablaPropInNewWin(string tienda , string anio , string tipo)
         {
             //grupo = "0";categoria = "0";subcategoria = "0";estado = "0";
             Data_Bata pl = new Data_Bata();
             this.HttpContext.Session["ReportName"] = "TablaProsperidad.rpt";
 
-            List<CapaPresentacion.Models.Crystal.Reporte.Models_Tab_Pros> model_Art_sn_mov = pl.list_tab_pros(tienda , anio);
+            List<CapaPresentacion.Models.Crystal.Reporte.Models_Tab_Pros> model_Art_sn_mov = pl.list_tab_pros(tienda , anio, tipo);
 
             this.HttpContext.Session["rptSource"] = model_Art_sn_mov;
 
