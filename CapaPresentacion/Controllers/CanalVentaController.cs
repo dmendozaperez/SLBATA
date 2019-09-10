@@ -437,7 +437,7 @@ namespace CapaPresentacion.Controllers
                 List<Ent_ItemSold> listItemSold = new List<Ent_ItemSold>();
                 foreach (var producto in cvCzk.detalles)
                 {
-                    if (producto.codigoProducto != "9999997" )//&& producto.fd_colo == "C")
+                    if (producto.codigoProducto != "9999997" && producto.fd_colo == "C")
                     {
                         Ent_ItemSold _item = new Ent_ItemSold();
                         _item.name = producto.nombreProducto;

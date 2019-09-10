@@ -114,7 +114,7 @@
                 <tbody data-bind="foreach:">
                     @foreach (var item in Model.detalles)
                     {
-                        <tr @*@(item.fd_colo == "C" ? "class:'text-bold'" : "" )*@ >
+                        <tr @(item.fd_colo == "C" ? "class:'text-bold text-danger'" : "" )>
                             <td>@item.codigoProducto - @item.nombreProducto</td>
                             <td>@item.talla</td>
                             <td>@item.cantidad</td>
