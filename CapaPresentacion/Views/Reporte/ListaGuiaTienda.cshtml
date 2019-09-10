@@ -157,6 +157,11 @@
         theader += '<label for="disponible">CALIDAD</label>';
         theader += '</div>';
         theader += '</th>';
+        theader += '<th ' + style + '>';
+        theader += '<div class="col-sm-1" style="margin-top:2px;margin-bottom:2px;">';
+        theader += '<label for="disponible">PRECIO PLANILLA</label>';
+        theader += '</div>';
+        theader += '</th>';
         theader += '<th ' + style2 + '>';
         theader += '<div class="col-sm-1" style="width:100%;text-align:center;margin-top:2px;margin-bottom:2px;Text">';
         theader += '<label for="disponible">TALLA/CANTIDAD</label>';
@@ -186,6 +191,11 @@
         tbody += 'calidad';
         tbody += '</div>';
         tbody += '</td>';
+        tbody += '<td   ' + style + '>';
+        tbody += '<div class="col-sm-1" style="width:100%;margin-top:2px;margin-bottom:2px;">';
+        tbody += 'pplan';
+        tbody += '</div>';
+        tbody += '</td>';
         tbody += '<td  ' + style2 + '>';
         tbody += '<div class="col-sm-1" style="width:100%;margin-top:2px;margin-bottom:2px;text-align:center;">';
         tbody += '<table><tr><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs"  title="Tallas"  style="width:100%;">T:</button></div></td><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-success btn-xs" style="width:100%;">Total</button></div></td>ListvariableTalla</tr><tr><td><div style="margin-top:2px;margin-right:2px;"><button  title="Cantidad"  class="btn btn-white btn-xs" style="width:100%;">C:</button></div></td></td><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-success btn-xs" style="width:100%;">VTotal</button></div></td>ListvariableCantidad</tr></table>'
@@ -201,6 +211,7 @@
         var tpCategoria = '';
         var linea = '';
         var categoria = '';
+        var pplan = '';
         var articulo = '';
         var calidad = '';
         var talla = '';
@@ -253,6 +264,7 @@
                 //temrBody = temrBody.replace("tipo", tpCategoria);
                 temrBody = temrBody.replace("grupo", linea);
                 temrBody = temrBody.replace("categoria", categoria);
+                temrBody = temrBody.replace("pplan", pplan);
                 temrBody = temrBody.replace("articulo", articulo_old);
                 temrBody = temrBody.replace("calidad", calidad_old);
                 temrBody = temrBody.replace("VTotal", total);
@@ -270,7 +282,7 @@
             tpCategoria = item.TIPO_CATE;
             linea = item.LINEA;
             categoria = item.CATEGORIA;
-
+            pplan = item.P_PLAN;
 
 
             talla = item.TALLA;
@@ -294,6 +306,7 @@
         temrBody = temrBody.replace("tipo", tpCategoria);
         temrBody = temrBody.replace("grupo", linea);
         temrBody = temrBody.replace("categoria", categoria);
+        temrBody = temrBody.replace("pplan", pplan);
         temrBody = temrBody.replace("articulo", articulo_old);
         temrBody = temrBody.replace("calidad", calidad_old);
         temrBody = temrBody.replace("VTotal", total);
