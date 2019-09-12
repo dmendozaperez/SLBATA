@@ -193,5 +193,130 @@ namespace CapaDato.Inventario
             }
             return listar ;
         }
+
+        public List<Ent_Inv_Ajuste_Articulos> getListaTeorico(string tienda, DateTime fecha)
+        {
+            //[USP_XSTORE_INVENTARIO_CORTE]
+            string sqlquery = "USP_XSTORE_INVENTARIO_CORTE";
+            DataTable dt = null;
+            List<Ent_Inv_Ajuste_Articulos> listar = null;
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+
+                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@cod_tda", tienda);
+                        cmd.Parameters.AddWithValue("@fec_inv", fecha);
+                        //cmd.Parameters.AddWithValue("@estado", dwest);
+                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                        {
+                            dt = new DataTable();
+                            da.Fill(dt);
+                            listar = new List<Ent_Inv_Ajuste_Articulos>();
+                            listar = (from DataRow dr in dt.Rows
+                                      select new Ent_Inv_Ajuste_Articulos()
+                                      {
+                                          ARTICULO = dr["ARTICULO"].ToString(),
+                                          CALIDAD = dr["CALIDAD"].ToString(),
+                                          MEDIDA = dr["TALLA"].ToString(),
+                                          STOCK = Convert.ToDecimal(dr["FISICO"].ToString()),
+                                          TEORICO = Convert.ToDecimal(dr["TEORICO"].ToString()),
+                                          DIFERENCIA = Convert.ToDecimal(dr["DIFERENCIA"].ToString()),
+                                      }).ToList();
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                listar = null;
+            }
+            return listar;
+        }
+
+        public string validarExcel(List<Ent_Inv_Ajuste_Articulos> listArtExcel)
+        {
+            string sqlquery = "USP_XSTORE_INVENTARIO_UPLOAD_VALIDA";
+            DataTable dt = null;
+            string mensaje = "";
+            try
+            {
+                dt = new DataTable();
+                dt = _toDTListInv(listArtExcel);
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+                    if (cn.State == 0) cn.Open();
+                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@TMP", dt);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                mensaje = ex.Message;
+            }
+            return mensaje;
+        }
+        private DataTable _toDTListInv(List<Ent_Inv_Ajuste_Articulos> listArticulos)
+        {
+            DataTable dtRet = new DataTable();
+            dtRet.Columns.Add("INV_COD_ART");
+            dtRet.Columns.Add("INV_CAL");
+            dtRet.Columns.Add("INV_MED_PER");
+            dtRet.Columns.Add("INV_TEORICO");
+            dtRet.Columns.Add("INV_FISICO");
+            foreach (var item in listArticulos)
+            {
+                dtRet.Rows.Add(item.ARTICULO, item.CALIDAD , item.MEDIDA , item.TEORICO , item.STOCK );
+            }
+            return dtRet;
+        }
+        public int XSTORE_INSERTAR_INVENTARIO(string cod_tda , string inv_des , DateTime inv_fec_inv , decimal inv_usu , List<Ent_Inv_Ajuste_Articulos> lista , ref decimal tot_teorico , ref decimal tot_fisico , ref decimal stk_actual , ref string mensaje)
+        {
+            string sqlquery = "USP_XSTORE_INSERTAR_INVENTARIO";
+            int f = 0;
+            DataTable dt = null;
+            try
+            {
+                dt = new DataTable();
+                dt = _toDTListInv(lista);
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+                    if (cn.State == 0) cn.Open();
+                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@COD_TDA", cod_tda);
+                        cmd.Parameters.AddWithValue("@INV_DES", inv_des);
+                        cmd.Parameters.AddWithValue("@INV_FEC_INV", inv_fec_inv);
+                        cmd.Parameters.AddWithValue("@INV_USU", inv_usu);
+                        cmd.Parameters.AddWithValue("@TMP", dt);
+                        cmd.Parameters.Add("@TOT_TEORICO", SqlDbType.Decimal).Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add("@TOT_FISICO", SqlDbType.Decimal).Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add("@STK_ACTUAL", SqlDbType.Decimal).Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+                        tot_teorico = Convert.ToDecimal(cmd.Parameters["@TOT_TEORICO"].Value);
+                        tot_fisico = Convert.ToDecimal(cmd.Parameters["@TOT_FISICO"].Value);
+                        stk_actual = Convert.ToDecimal(cmd.Parameters["@STK_ACTUAL"].Value);
+                        f = 1;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                f = 0;
+                mensaje = ex.Message;
+            }
+            return f;
+        }
     }
 }
