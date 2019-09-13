@@ -235,6 +235,7 @@ namespace Data.Crystal.Reporte
                             cmd.Parameters.AddWithValue("@CALIDAD", calidad);
                             cmd.Parameters.AddWithValue("@ESTADO", estado);
                             cmd.Parameters.AddWithValue("@TIPO", tipo_con);
+                            cmd.Parameters.AddWithValue("@NUMDOC", guia);
 
                             using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                             {
