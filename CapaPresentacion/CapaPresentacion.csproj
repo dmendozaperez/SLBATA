@@ -1612,6 +1612,8 @@
     <Content Include="Views\Reporte\ReporteTablaProsp.cshtml" />
     <Content Include="Views\Orce_Exclud\Atributos.cshtml" />
     <Content Include="Views\Inventario\AjusteInventario.cshtml" />
+    <Content Include="Views\Inventario\ListaAjustes.cshtml" />
+    <Content Include="Views\Inventario\ListaAjustesInv.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

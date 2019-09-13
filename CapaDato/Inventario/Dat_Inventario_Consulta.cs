@@ -318,5 +318,91 @@ namespace CapaDato.Inventario
             }
             return f;
         }
+
+        public List<Ent_Inventario_Ajuste> getListaAjustesInv(string tienda)
+        {
+            string sqlquery = "USP_XSTORE_INVENTARIO_GET";
+            DataTable dt = null;
+            List<Ent_Inventario_Ajuste> listar = null;
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+
+                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@COD_TDA ", tienda);                        
+                        //cmd.Parameters.AddWithValue("@estado", dwest);
+                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                        {
+                            dt = new DataTable();
+                            da.Fill(dt);
+                            listar = new List<Ent_Inventario_Ajuste>();
+                            listar = (from DataRow dr in dt.Rows
+                                      select new Ent_Inventario_Ajuste()
+                                      {
+                                          CODIGO = Convert.ToDecimal(dr["CODIGO"].ToString()),
+                                          TIENDA = dr["TIENDA"].ToString(),
+                                          DESCRIPCION = dr["DESCRIPCION"].ToString(),
+                                          FECHA_INV =Convert.ToDateTime(dr["FECHA_INV"]).ToString("dd/MM/yyyy"),
+                                          FISICO = Convert.ToDecimal(dr["FISICO"].ToString()),
+                                          TEORICO = Convert.ToDecimal(dr["TEORICO"].ToString()),
+                                          DIFERENCIA = Convert.ToDecimal(dr["DIFERENCIA"].ToString()),
+                                      }).ToList();
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                listar = null;
+            }
+            return listar;
+        }
+
+        public List<Ent_Inv_Ajuste_Articulos> get_list_arts_ajus_inv(string cod_ajus)
+        {
+            string sqlquery = "USP_XSTORE_INVENTARIO_GET";
+            DataTable dt = null;
+            List<Ent_Inv_Ajuste_Articulos> listar = null;
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+
+                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@DET", 1);
+                        cmd.Parameters.AddWithValue("@CODIGO", cod_ajus);
+                        //cmd.Parameters.AddWithValue("@estado", dwest);
+                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                        {
+                            dt = new DataTable();
+                            da.Fill(dt);
+                            listar = new List<Ent_Inv_Ajuste_Articulos>();
+                            listar = (from DataRow dr in dt.Rows
+                                      select new Ent_Inv_Ajuste_Articulos()
+                                      {
+                                          ARTICULO = dr["ARTICULO"].ToString(),
+                                          CALIDAD = dr["CALIDAD"].ToString(),
+                                          MEDIDA = dr["MEDIDA"].ToString(),
+                                          STOCK = Convert.ToDecimal(dr["FISICO"].ToString()),
+                                          TEORICO = Convert.ToDecimal(dr["TEORICO"].ToString()),
+                                          DIFERENCIA = Convert.ToDecimal(dr["DIFERENCIA"].ToString()),
+                                      }).ToList();
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                listar = null;
+            }
+            return listar;
+        }
     }
 }

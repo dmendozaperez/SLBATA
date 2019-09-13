@@ -8,7 +8,13 @@ namespace CapaEntidad.Inventario
 {
     public class Ent_Inventario_Ajuste
     {
-        
+        public decimal CODIGO { get; set; }
+        public string TIENDA { get; set; }
+        public string DESCRIPCION { get; set; }
+        public  string FECHA_INV { get; set; }
+        public decimal FISICO { get; set; }
+        public decimal TEORICO { get; set; }
+        public decimal DIFERENCIA { get; set; }
     }
     public class Ent_Inv_Ajuste_Articulos
     {

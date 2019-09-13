@@ -1,0 +1,133 @@
+﻿@{
+    Layout = null;
+}
+<div class="row">
+    <div class="col-md-12" id="lista1">
+        <table id="lista" class="table table-striped">
+            <thead>
+                <tr style="background-color:#3d566e; color:#ecf0f1;padding-top: 0px;padding-bottom: 0px;">
+                    <th>Codigo</th>
+                    <th>Tienda</th>
+                    <th>Descripcion</th>                    
+                    <th>Fecha</th>                    
+                    <th>Fisico</th>
+                    <th>Teorico</th>
+                    <th>Diferencia</th>
+                    <th>Articulos</th>
+                </tr>
+            </thead>
+            <tbody data-bind="foreach:"></tbody>
+            <tfoot>
+                <tr>
+                    <th>Codigo</th>
+                    <th>Tienda</th>
+                    <th>Descripcion</th>
+                    <th>Fecha</th>
+                    <th>Fisico</th>
+                    <th>Teorico</th>
+                    <th>Diferencia</th>
+                    <th>Articulos</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+<div class="modal fade" id="modalListaArticulos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p style="font-size:medium" class="text-primary modal-title" id="myModalLabel"><strong class="text-danger" id="desc_orce_art"></strong></p>
+                        <p style="font-size:medium" class="text-primary modal-title" id="myModalLabel"><b>Lista de Articulos</b></p>
+                    </div>
+                    @*<div class="col-md-6 text-right">
+                        <span style="font-size:medium" class="label label-danger" id="maAtributoArt"></span>
+                    </div>*@
+                    <div class="col-md-6 text-right">
+                        <a href="@Url.Action("ListaArticulosExcel","Inventario")" class="btn btn-success btn-sm"><i class="glyphicon glyphicon-export"></i>&nbsp;&nbsp;Exportar Lista</a>
+                    </div>
+                </div>
+            </div>
+            <div style="font-size:small" class="modal-body" id="listaDetArt">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#lista').DataTable({
+            "language": {
+                "url": "../Scripts/DataTables/Spanish.json"
+            },
+            "bServerSide": true,
+            "bAutoWidth": false,
+            "sAjaxSource": '@Url.Action("getListaAjustesInvAjax", "Inventario")',
+            "bdestroy": true,
+            "start": 0,
+            "order": [3, "desc"],
+            "bDeferRender": true,
+            "aoColumns": [
+                 { "sName": "CODIGO", "mData": "CODIGO" },
+                 { "sName": "TIENDA", "mData": "TIENDA" },
+                 { "sName": "DESCRIPCION", "mData": "DESCRIPCION" },
+                 { "sName": "FECHA_INV", "mData": "FECHA_INV" },
+                 { "sName": "FISICO", "mData": "FISICO" },
+                 { "sName": "TEORICO", "mData": "TEORICO" },
+                 { "sName": "DIFERENCIA", "mData": "DIFERENCIA" },
+                {
+                    "render": function (data, type, full) {
+                        return '<button type="button" title="Ver lista de articulos" class="btn btn-default btn-sm articulos"  data-des-ajus="' + full.DESCRIPCION + '" data-fisico="' + full.FISICO + '" data-cod-ajus="' + full.CODIGO + '" data-teorico= "' + full.TEORICO + '"  data-diferencia ="' + full.DIFERENCIA + '"  ><i class="glyphicon glyphicon-list"></i></button>';
+                    }, "class": "boton-td"
+                }
+            ]           
+        });
+        $('#lista').on('click', '.articulos', function (e) {
+            waitingDialog.show('Espere un momento por favor');
+            var des_ajus = $(this).attr('data-des-ajus');
+            var fisico = $(this).attr('data-fisico');
+            var cod_ajus = $(this).attr('data-cod-ajus');
+            var teorico = $(this).attr('data-teorico');
+            var diferencia = $(this).attr('data-diferencia');
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("getListaDetArt", "Inventario")',
+                data: { cod_ajus: cod_ajus },
+                dataType: "json",
+                success: function (data) {
+                    waitingDialog.hide();
+                    if (data.estado == 1) {
+                        var table = '<table class="table table-bordered table-condensed dt-lista-art table-responsive"><thead><tr style="background-color:#3d566e; color:#ecf0f1">' +
+                            '<th>Articulo</th><th>Calidad</th><th>Medida</th><th>Fisico</th><th>Teorico</th><th>Diferencia</th></tr></thead><tbody data-bind="foreach:">';
+                        for (var i = 0; i < data.articulos.length; i++) {
+                            table += '<tr><td>' + data.articulos[i].ARTICULO + '</td><td>' + data.articulos[i].CALIDAD + '</td><td>' + data.articulos[i].MEDIDA + '</td><td>' + data.articulos[i].STOCK + '</td><td>' + data.articulos[i].TEORICO + '</td><td>' + data.articulos[i].DIFERENCIA + '</td></tr>'
+                        }
+                        table += '</tbody><tfoot><tr><th>Articulo</th><th>Calidad</th><th>Medida</th><th>Fisico</th><th>Teorico</th><th>Diferencia</th></tr></tfoot></table>'
+                        $("#listaDetArt").html(table);
+                        $("#desc_orce_art").html(cod_ajus + ". " + des_ajus);
+                        //$("#maAtributoArt").html("Atributo" + ": " + ma_atributo);
+                        $(".dt-lista-art").DataTable({
+                            "language": {
+                                "url": "../Scripts/DataTables/Spanish.json"
+                            }
+                        });
+                        $("#modalListaArticulos").modal({ backdrop: 'static', keyboard: false });
+                    } else {
+                        swal("Error", "No se pudo cargar la lista de articulos");
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    waitingDialog.hide();
+                    var error = eval("(" + XMLHttpRequest.responseText + ")");
+                    swal(error.Message);
+                }
+            });
+
+        });
+    });
+</script>

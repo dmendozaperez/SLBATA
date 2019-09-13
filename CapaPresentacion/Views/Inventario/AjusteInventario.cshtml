@@ -297,7 +297,7 @@
                                text: data.mensaje + "\n" + "Total Teorico: " + data.tot_teorico + "\n" + "Total Físico: " + data.tot_fisico + "\n" + "Total Actual: " + data.tot_actual,
                                icon: "success"
                            }).then((value) => {
-                               window.location.href = "@Url.Action("AjusteInventario", "Inventario")";
+                               window.location.href = "@Url.Action("ListaAjustes", "Inventario")";
                            });
                        } else {
                            swal({
