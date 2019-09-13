@@ -1,8 +1,11 @@
 ﻿using CapaDato.Inventario;
 using CapaDato.Maestros;
+using CapaEntidad.Control;
 using CapaEntidad.General;
 using CapaEntidad.Inventario;
+using CapaEntidad.Util;
 using CapaPresentacion.Bll;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -19,6 +22,7 @@ namespace CapaPresentacion.Controllers
         private string _session_tabla_inventCons_private = "_session_tabla_inventCons_private"; //gft
         private string _Inventario_Tienda_Combo = "_Inventario_Tienda_Combo"; 
         private string _Inventario_TiendaFecha_Combo = "_Inventario_TiendaFecha_Combo";
+        private string _session_lista_articulos = "_session_lista_articulos";
 
         // GET: Inventario
 
@@ -295,6 +299,181 @@ namespace CapaPresentacion.Controllers
             byte[] filecontent = ExcelExportHelper.ExportExcel2(headers, lista, "Inventario: Consulta de Movimientos por Fecha" + Environment.NewLine + "Tienda: " + lista[0].TIENDA ,false,columns);
             return File(filecontent, ExcelExportHelper.ExcelContentType, "Inventario_Consulta_Movimientos_Fecha.xlsx");
         }
+        #endregion
+        #region AJUSTE DE INVENTARIO
+        
+        public ActionResult AjusteInventario()
+        {
+            ViewBag.tienda = dat_lista_tienda.get_tienda("PE", "1");
+            Session[_session_lista_articulos] = null;
+            return View();
+        }
+
+        public ActionResult getInvArtAjax(Ent_jQueryDataTableParams param,bool corteInventario, string tienda , DateTime fecha)//, string _art_mod, bool ordenar, bool _all_check, bool _all_check_val)
+        {
+            /*verificar si esta null*/
+            if (corteInventario)
+            {
+                //List<Ent_Inv_Ajuste_Articulos> list = new List<Ent_Inv_Ajuste_Articulos>();
+                //list.Add(new Ent_Inv_Ajuste_Articulos() { ARTICULO = "0034869", CALIDAD = "1", MEDIDA = "04", TEORICO = 3, STOCK = 3, DIFERENCIA = 0});
+                //list.Add(new Ent_Inv_Ajuste_Articulos() { ARTICULO = "0034869", CALIDAD = "1", MEDIDA = "05", TEORICO = 5, STOCK = 3, DIFERENCIA = 0 });
+                //list.Add(new Ent_Inv_Ajuste_Articulos() { ARTICULO = "0043824", CALIDAD = "1", MEDIDA = "03", TEORICO = 4, STOCK = 3, DIFERENCIA = 0 });
+                //list.Add(new Ent_Inv_Ajuste_Articulos() { ARTICULO = "0049910", CALIDAD = "1", MEDIDA = "05", TEORICO = 5, STOCK = 3, DIFERENCIA = 0 });
+                //list.Add(new Ent_Inv_Ajuste_Articulos() { ARTICULO = "0064806", CALIDAD = "1", MEDIDA = "02", TEORICO = 7, STOCK = 3, DIFERENCIA = 0 });
+                //list.Select(a => { a.DIFERENCIA =  a.STOCK - a.TEORICO; return a; }).ToList();
+                //Session[_session_lista_articulos] = list;
+                List<Ent_Inv_Ajuste_Articulos> list = datInv.getListaTeorico(tienda,fecha);
+                Session[_session_lista_articulos] = list;
+            }
+            if (Session[_session_lista_articulos] == null)
+            {
+                List<Ent_Inv_Ajuste_Articulos> list = new List<Ent_Inv_Ajuste_Articulos>();
+                Session[_session_lista_articulos] = list;
+            }
+            
+            IQueryable<Ent_Inv_Ajuste_Articulos> membercol =((List<Ent_Inv_Ajuste_Articulos>)Session[_session_lista_articulos]).AsQueryable();  //lista().AsQueryable();
+
+            //displayMembers.Select(a => { a.ESTADO_CONEXION_CAJA_XST = dat_storeTda.PingHost(a.IP); return a; }).ToList();
+            //Manejador de filtros
+            int totalCount = membercol.Count();
+
+            IEnumerable<Ent_Inv_Ajuste_Articulos> filteredMembers = membercol;
+
+            if (!string.IsNullOrEmpty(param.sSearch))
+            {
+                filteredMembers = membercol
+                    .Where(m => m.ARTICULO.ToUpper().Contains(param.sSearch.ToUpper()));
+            }
+            //Manejador de orden
+
+            var sortIdx = Convert.ToInt32(Request["iSortCol_0"]);
+            Func<Ent_Inv_Ajuste_Articulos, string> orderingFunction =
+            (
+            m => sortIdx == 0 ? m.ARTICULO : m.CALIDAD.ToString());
+            var sortDirection = Request["sSortDir_0"];
+
+            if (sortDirection == "asc")
+                filteredMembers = filteredMembers.OrderBy(orderingFunction);
+            else
+                filteredMembers = filteredMembers.OrderByDescending(orderingFunction);
+
+            var displayMembers = filteredMembers
+                .Skip(param.iDisplayStart)
+                .Take(param.iDisplayLength);
+
+            var result = from a in displayMembers
+                         select new
+                         {
+                             a.ARTICULO,
+                             a.CALIDAD  ,
+                             a.MEDIDA,
+                             a.TEORICO,
+                             a.STOCK,
+                             a.DIFERENCIA
+                         };
+
+            //Se devuelven los resultados por json
+            return Json(new
+            {
+                sEcho = param.sEcho,
+                iTotalRecords = totalCount,
+                iTotalDisplayRecords = filteredMembers.Count(),
+                aaData = result
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult JsonExcelArticulos(string articulos)
+        {
+            List<Ent_Inv_Ajuste_Articulos> listArtExcel = null;
+            try
+            {
+                listArtExcel = new List<Ent_Inv_Ajuste_Articulos>();
+                listArtExcel = JsonConvert.DeserializeObject<List<Ent_Inv_Ajuste_Articulos>>(articulos.ToUpper());
+
+                listArtExcel = listArtExcel.GroupBy(d => new { d.ARTICULO, d.CALIDAD, d.MEDIDA })
+                    .Select(g => new Ent_Inv_Ajuste_Articulos() { STOCK = g.Sum(s => s.STOCK), ARTICULO = g.First().ARTICULO , CALIDAD = g.First().CALIDAD , MEDIDA = g.First().MEDIDA  })
+                    .ToList();
+                string msg_validar = datInv.validarExcel(listArtExcel);
+
+                if (msg_validar == "")
+                {
+                    Session[_session_lista_articulos] = unirListas(listArtExcel);
+                    return Json(new { estado = 1, resultados = "ok" });
+                }
+                else
+                {
+                    return Json(new { estado = 0, resultados = msg_validar });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { estado = 0, resultados = ex.Message });
+            }
+        }
+
+        private List<Ent_Inv_Ajuste_Articulos> unirListas(List<Ent_Inv_Ajuste_Articulos> listArtExcel)
+        {
+            List<Ent_Inv_Ajuste_Articulos> oldList = (List<Ent_Inv_Ajuste_Articulos>)Session[_session_lista_articulos];
+            foreach (var item in listArtExcel)
+            {
+                oldList.Where(o => o.ARTICULO == item.ARTICULO && o.MEDIDA == item.MEDIDA && o.CALIDAD == item.CALIDAD).Select(a => { a.STOCK = item.STOCK; a.DIFERENCIA = item.STOCK - a.TEORICO; return a; }).ToList();                              
+            }
+
+            List<Ent_Inv_Ajuste_Articulos> newExcelList = new List<Ent_Inv_Ajuste_Articulos>();
+
+            foreach (var ritem in oldList )
+            {
+                listArtExcel.Remove(listArtExcel.Where(o => o.ARTICULO == ritem.ARTICULO && o.MEDIDA == ritem.MEDIDA && o.CALIDAD == ritem.CALIDAD).FirstOrDefault());
+            }           
+
+            return oldList.Union(newExcelList).ToList();
+        }
+
+        public ActionResult XSTORE_INSERTAR_INVENTARIO (string cod_tda, string inv_des, DateTime inv_fec_inv)
+        {
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            List<Ent_Inv_Ajuste_Articulos> listArticulos = null;
+            string _error = "";
+            string _mensaje = "";
+            int result = 0;
+            decimal tot_teorico = 0;
+            decimal tot_fisico = 0;
+            decimal tot_actual = 0;
+            if (Session[_session_lista_articulos] != null)
+            {
+                listArticulos = new List<Ent_Inv_Ajuste_Articulos>();
+                listArticulos = (List<Ent_Inv_Ajuste_Articulos>)Session[_session_lista_articulos];
+            }
+            if (listArticulos == null || (listArticulos != null && listArticulos.Count == 0))
+            {
+                _error += "La lista de articulos está vacia" + Environment.NewLine;
+            }
+            if (String.IsNullOrEmpty(cod_tda))
+            {
+                _error += "Seleccione tienda(s)." + Environment.NewLine;
+            }
+            if (String.IsNullOrEmpty(inv_des.Trim()))
+            {
+                _error += "Ingrese una descripcion." + Environment.NewLine;
+            } //validar fecha
+            if (_error != "")
+            {
+                return Json(new { estado = 0, resultado = "Error", mensaje = _error });
+            }
+            else
+            {
+                result = datInv.XSTORE_INSERTAR_INVENTARIO(cod_tda, inv_des, inv_fec_inv, _usuario.usu_id, listArticulos, ref tot_teorico, ref tot_fisico, ref tot_actual, ref _mensaje);
+                if (result == 1)
+                {
+                    return Json(new { estado = 1, resultado = "", mensaje = "Operacion realizada con éxito." });
+                }
+                else
+                {
+                    return Json(new { estado = 0, resultado = "Error", mensaje = _mensaje });
+                }
+            }
+        }
+
         #endregion
     }
 }

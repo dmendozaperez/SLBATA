@@ -67,6 +67,7 @@
     <Compile Include="GestionInterno\Ent_Comunicado.cs" />
     <Compile Include="Interface\Ent_TiendaInterface.cs" />
     <Compile Include="Interface\Ent_Interface.cs" />
+    <Compile Include="Inventario\Ent_Inventario_Ajuste.cs" />
     <Compile Include="Inventario\Ent_Inventario_Consulta.cs" />
     <Compile Include="Inventario\Ent_Inventario_Tienda.cs" />
     <Compile Include="Maestros\Ent_Cadena.cs" />
