@@ -309,7 +309,7 @@ namespace CapaPresentacion.Controllers
             return View();
         }
 
-        public ActionResult getInvArtAjax(Ent_jQueryDataTableParams param,bool corteInventario, string tienda , DateTime fecha)//, string _art_mod, bool ordenar, bool _all_check, bool _all_check_val)
+        public ActionResult getInvArtAjax(Ent_jQueryDataTableParams param,bool corteInventario, string tienda , string fecha)//, string _art_mod, bool ordenar, bool _all_check, bool _all_check_val)
         {
             /*verificar si esta null*/
             if (corteInventario)
@@ -322,7 +322,7 @@ namespace CapaPresentacion.Controllers
                 //list.Add(new Ent_Inv_Ajuste_Articulos() { ARTICULO = "0064806", CALIDAD = "1", MEDIDA = "02", TEORICO = 7, STOCK = 3, DIFERENCIA = 0 });
                 //list.Select(a => { a.DIFERENCIA =  a.STOCK - a.TEORICO; return a; }).ToList();
                 //Session[_session_lista_articulos] = list;
-                List<Ent_Inv_Ajuste_Articulos> list = datInv.getListaTeorico(tienda,fecha);
+                List<Ent_Inv_Ajuste_Articulos> list = datInv.getListaTeorico(tienda,Convert.ToDateTime(fecha));
                 Session[_session_lista_articulos] = list;
             }
             if (Session[_session_lista_articulos] == null)
@@ -429,7 +429,7 @@ namespace CapaPresentacion.Controllers
             return oldList.Union(newExcelList).ToList();
         }
 
-        public ActionResult XSTORE_INSERTAR_INVENTARIO (string cod_tda, string inv_des, DateTime inv_fec_inv)
+        public ActionResult XSTORE_INSERTAR_INVENTARIO (string cod_tda, string inv_des, string inv_fec_inv)
         {
             Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
             List<Ent_Inv_Ajuste_Articulos> listArticulos = null;
@@ -456,21 +456,46 @@ namespace CapaPresentacion.Controllers
             {
                 _error += "Ingrese una descripcion." + Environment.NewLine;
             } //validar fecha
+            if (String.IsNullOrEmpty(inv_fec_inv.Trim()))
+            {
+                _error += "Ingrese una Fecha." + Environment.NewLine;
+            }
             if (_error != "")
             {
                 return Json(new { estado = 0, resultado = "Error", mensaje = _error });
             }
             else
             {
-                result = datInv.XSTORE_INSERTAR_INVENTARIO(cod_tda, inv_des, inv_fec_inv, _usuario.usu_id, listArticulos, ref tot_teorico, ref tot_fisico, ref tot_actual, ref _mensaje);
+                result = datInv.XSTORE_INSERTAR_INVENTARIO(cod_tda, inv_des,Convert.ToDateTime(inv_fec_inv), _usuario.usu_id, listArticulos, ref tot_teorico, ref tot_fisico, ref tot_actual, ref _mensaje);
                 if (result == 1)
                 {
-                    return Json(new { estado = 1, resultado = "", mensaje = "Operacion realizada con éxito." });
+                    return Json(new { estado = 1, resultado = "", mensaje = "Operacion realizada con éxito.", tot_teorico = tot_teorico , tot_fisico = tot_fisico , tot_actual = tot_actual });
                 }
                 else
                 {
                     return Json(new { estado = 0, resultado = "Error", mensaje = _mensaje });
                 }
+            }
+        }
+        public ActionResult getResumen()
+        {
+            try
+            {
+                if (Session[_session_lista_articulos] == null)
+                {
+                    List<Ent_Inv_Ajuste_Articulos> liststoreConf = new List<Ent_Inv_Ajuste_Articulos>();
+                    Session[_session_lista_articulos] = liststoreConf;
+                }
+                List<Ent_Inv_Ajuste_Articulos> lista = (List<Ent_Inv_Ajuste_Articulos>)Session[_session_lista_articulos];
+                var tot_teorico = lista.Sum(s => s.TEORICO);
+                var tot_fisico = lista.Sum(s => s.STOCK);
+                var tot_diferencia = lista.Sum(s => s.DIFERENCIA);
+
+                return Json(new { estado = 1, tot_teorico = tot_teorico, tot_fisico = tot_fisico, tot_diferencia = tot_diferencia });            
+            }
+            catch (Exception ex)
+            {
+                return Json(new { estado = 0, resultados = "Sin Resultados " + ex.Message});
             }
         }
 

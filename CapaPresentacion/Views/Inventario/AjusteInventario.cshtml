@@ -72,22 +72,28 @@
         <div class="form-group">
             <label class="col-md-2 control-label" for="fecha">Fecha:</label>
             <div class="col-md-3">
-                <div id="datepicker" style="width:100%" class="input-group date" data-date-format="dd-mm-yyyy">
-                    <input id="fecha" name="fecha" value="" class="form-control custom-input" placeholder="dd-mm-yyyy" type="text" />
-                    <span class="input-group-addon  bg-white"><img src="~/Content/images/wall-calendar-with-lines.svg" height="20" width="20"></span>
+                <div id="datepicker" style="width:100%" class="input-group date">
+                    <input type="text" name="fecha" class="form-control" value="" id="fecha">
+                    <span class="input-group-addon bg-white disabled" id="btdp"><img src="~/Content/images/wall-calendar-with-lines.svg" height="20" width="20"></span>
                 </div>
+               
             </div>
             <div class="col-md-offset-0 col-md-2 "><button type="button" id="corteInventario" class="btn btn-sm btn-default">Corte de Inventario</button></div>
         </div>
         <div class="form-group form-group">
             <label class="col-md-2 control-label" for="ddlAtributo">Cargar Excel:</label>
             <div class="col-md-3">
-                <input type="file" id="excelFile" accept=".xlsx">
+                <input type="file" id="excelFile" disabled accept=".xlsx">
                 @*@Html.DropDownList("ddlAtributo", null, new { @class = "form-control selectpicker", @id = "ddlAtributo", @data_live_search = "true" })*@
             </div>
         </div>
     </div>
     <br />
+    <div class="row">
+        <div class="col-md-5" id="resumen">
+
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-7">
              <table class="table table-condensed table-bordered">
@@ -123,6 +129,11 @@
         $('input[type="file"]').change(function () {
             ExportToTable();
         });
+        $('#datepicker').datepicker({
+            format: "dd-mm-yyyy",
+            autoclose: true,
+            maxDate: new Date(),
+        }).datepicker("setDate", "0");
         $('.table').DataTable({
             "language": {
                 "url": "../Scripts/DataTables/Spanish.json",
@@ -154,26 +165,19 @@
                     { "sName": "DIFERENCIA", "mData": "DIFERENCIA", "className": "content-center-text" },
             ]
         });
-        $('.table').on('blur', '.stock', function (e) {
-            //waitingDialog.show('Espere un momento por favor');
-            var column = $(this).attr('data-column'); //data-articulo
-            var articulo = $(this).attr('data-articulo');
-            var value = $(this).val();
-            swal("Articulo : " + articulo + " nuevo valor: " + value);
-        });
         $("#corteInventario").click(function () {
-            //waitingDialog.show('Espere un momento por favor');
             corteInventario = true;
-            $('.table').DataTable().ajax.reload();
+            $('.table').DataTable().ajax.reload(function () {
+                Resumen(true);
+                $("#tienda").prop('disabled', true);
+                $("#fecha").prop('disabled', true);
+                $("#btdp").attr('disabled', true);
+                $("#excelFile").prop('disabled', false);
+            });
             corteInventario = false;
+
         });
-    })
-    $(function () {
-        $("#datepicker").datepicker({
-            autoclose: true,
-            todayHighlight: true,
-            maxDate: '0'
-        }).datepicker("setDate", "0");;
+        Resumen(true);
     });
 
     function EnviarArticulosExcel(jsonExcel) {
@@ -187,7 +191,7 @@
                 waitingDialog.hide();
                 if (data.estado == 1) {
                     ordenar = false;
-                    $('.table').DataTable().ajax.reload();
+                    $('.table').DataTable().ajax.reload(function () { Resumen(false); });
                 } else {
                     swal({
                         title: "Error",
@@ -199,7 +203,7 @@
                 }
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
-                waitingDialog.hide();
+                //waitingDialog.hide();
                 var error = eval("(" + XMLHttpRequest.responseText + ")");
                 swal(error.Message);
             }
@@ -208,7 +212,7 @@
 
     function ExportToTable() {
         try {
-            var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xlsx|.xls)$/;
+            var regex = /\.(xls[mx]?)$/;
             /*Checks whether the file is a valid excel file*/
             if (regex.test($("#excelFile").val().toLowerCase())) {
                 var xlsxflag = false; /*Flag for checking whether excel is .xls format or .xlsx format*/
@@ -266,9 +270,6 @@
     }
     function NuevoGrabar() {
         var _titulo = "";
-
-
-
         swal({
             title: "Ajustar Inventario",
             text: "¿Desea ajustar el inventario?",
@@ -281,6 +282,7 @@
                var tienda = $("#tienda").val();
                var descripcion = $("#descripcion").val();
                var fecha = $("#fecha").val();
+
                waitingDialog.show('Espere un momento por favor');
                $.ajax({
                    type: "POST",
@@ -292,8 +294,10 @@
                        if (data.estado == 1) {
                            swal({
                                title: "OK",
-                               text: data.mensaje,
+                               text: data.mensaje + "\n" + "Total Teorico: " + data.tot_teorico + "\n" + "Total Físico: " + data.tot_fisico + "\n" + "Total Actual: " + data.tot_actual,
                                icon: "success"
+                           }).then((value) => {
+                               window.location.href = "@Url.Action("AjusteInventario", "Inventario")";
                            });
                        } else {
                            swal({
@@ -312,6 +316,43 @@
                });
            }
        });
+    }
+    function Resumen(dialog) {
+        if (dialog == true) {
+            waitingDialog.show('Espere un momento por favor');
+        }
+        $("#resumen").html("");
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("getResumen", "Inventario")',
+            data: null,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            async: true,
+            success: function (resultado) {
+                if (dialog == true) {
+                    waitingDialog.hide();
+                }
+                if (resultado.estado == 1) {
+                    resumen = '<div class="panel panel-primary p-10">' +
+                               '<div class="panel-body"  style="padding-top: 7px;padding-bottom: 4px;">' +
+                               '<h5 class="text-bold text-info">Resumen</h5>' +
+                               '<p><span class="label label-primary" style="font-size:14px"><b>Teorico:</b><small class="text-right">&nbsp;' + resultado.tot_teorico + '</small>' +
+                                '</span>&nbsp;&nbsp;<span class="label label-success" style="font-size:14px"><b>Físico:</b><small class="text-right">&nbsp;' + resultado.tot_fisico + '</small>' +
+                                '</span>&nbsp;&nbsp;<span class="label label-danger" style="font-size:14px"><b>Deferencia:</b><small class="text-right">&nbsp;' + resultado.tot_diferencia + '</small></span></p>' +
+                    '</div></div>';
+                }
+                $("#resumen").html(resumen)
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) { // función que va a ejecutar si hubo algún tipo de error en el pedido
+                var error = eval("(" + XMLHttpRequest.responseText + ")");
+                alert(error.Message);
+                waitingDialog.hide();
+                if (dialog == true) {
+                    waitingDialog.hide();
+                }
+            }
+        });
     }
 
 </script>
