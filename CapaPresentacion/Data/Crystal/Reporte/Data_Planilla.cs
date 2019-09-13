@@ -142,7 +142,7 @@ namespace Data.Crystal.Reporte
 
         public Reporte_Vendedor get_reporteVendedor(string coddis,string cod_tda, string fecIni, string fecFin, string calidad)
         {
-            string sqlquery = "USP_XSTORE_REPORTE_VENDEDORES_PRUEBA";
+            string sqlquery = "USP_XSTORE_REPORTE_VENDEDORES";
             Reporte_Vendedor lista = null;
             List<Models_Vendedor> lista1 = null;
             List<Models_Total2> lista2 = null;
