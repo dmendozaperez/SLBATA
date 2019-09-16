@@ -21,8 +21,8 @@ namespace CapaEntidad.Inventario
         public string ARTICULO { get; set; }
         public string CALIDAD { get; set; }
         public string MEDIDA { get; set; }
-        public decimal TEORICO { get; set; }
-        public decimal STOCK { get; set; }
-        public decimal DIFERENCIA { get; set; }
+        public decimal? TEORICO { get; set; } 
+        public decimal? STOCK { get; set; }
+        public decimal? DIFERENCIA { get; set; }
     }
 }

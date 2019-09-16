@@ -360,9 +360,9 @@ namespace CapaPresentacion.Controllers
             Func<Ent_Inv_Ajuste_Articulos, string> orderingCodigo = (m => m.ARTICULO);
             Func<Ent_Inv_Ajuste_Articulos, string> orderingCalidad = (m => m.CALIDAD);
             Func<Ent_Inv_Ajuste_Articulos, string> orderingMedida = (m => m.MEDIDA);
-            Func<Ent_Inv_Ajuste_Articulos, decimal> orderingFisico = (m => m.STOCK);
-            Func<Ent_Inv_Ajuste_Articulos, decimal> orderingTeorico = (m => m.TEORICO);
-            Func<Ent_Inv_Ajuste_Articulos, decimal> orderingDiferencia = (m => m.DIFERENCIA);
+            Func<Ent_Inv_Ajuste_Articulos, decimal?> orderingFisico = (m => m.STOCK);
+            Func<Ent_Inv_Ajuste_Articulos, decimal?> orderingTeorico = (m => m.TEORICO);
+            Func<Ent_Inv_Ajuste_Articulos, decimal?> orderingDiferencia = (m => m.DIFERENCIA);
 
             var sortDirection = Request["sSortDir_0"];
 
@@ -417,20 +417,25 @@ namespace CapaPresentacion.Controllers
             {
                 listArtExcel = new List<Ent_Inv_Ajuste_Articulos>();
                 listArtExcel = JsonConvert.DeserializeObject<List<Ent_Inv_Ajuste_Articulos>>(articulos.ToUpper());
-
-                listArtExcel = listArtExcel.GroupBy(d => new { d.ARTICULO, d.CALIDAD, d.MEDIDA })
-                    .Select(g => new Ent_Inv_Ajuste_Articulos() { STOCK = g.Sum(s => s.STOCK), ARTICULO = g.First().ARTICULO , CALIDAD = g.First().CALIDAD , MEDIDA = g.First().MEDIDA  })
+                if (listArtExcel.Where(w=> String.IsNullOrEmpty(w.ARTICULO) || String.IsNullOrEmpty(w.CALIDAD) || String.IsNullOrEmpty(w.MEDIDA) || String.IsNullOrEmpty(w.STOCK.ToString())).ToList().Count > 0 )
+                {
+                    return Json(new { estado = 0, resultados = "El Archivo no tiene el formato correcto ó hay campos vacios.\nVerifique el archivo." });
+                }else
+                {
+                    listArtExcel = listArtExcel.GroupBy(d => new { d.ARTICULO, d.CALIDAD, d.MEDIDA })
+                    .Select(g => new Ent_Inv_Ajuste_Articulos() { STOCK = g.Sum(s => s.STOCK), ARTICULO = g.First().ARTICULO, CALIDAD = g.First().CALIDAD, MEDIDA = g.First().MEDIDA })
                     .ToList();
-                string msg_validar = datInv.validarExcel(listArtExcel);
+                    string msg_validar = datInv.validarExcel(listArtExcel);
 
-                if (msg_validar == "")
-                {
-                    Session[_session_lista_articulos_inv] = unirListas(listArtExcel);
-                    return Json(new { estado = 1, resultados = "ok" });
-                }
-                else
-                {
-                    return Json(new { estado = 0, resultados = msg_validar });
+                    if (msg_validar == "")
+                    {
+                        Session[_session_lista_articulos_inv] = unirListas(listArtExcel);
+                        return Json(new { estado = 1, resultados = "ok" });
+                    }
+                    else
+                    {
+                        return Json(new { estado = 0, resultados = msg_validar });
+                    }
                 }
             }
             catch (Exception ex)
