@@ -41,6 +41,8 @@ namespace CapaPresentacion.Models.CanalVenta
         public string ubigeoCliente { get; set; }
         public string ubigeoTienda { get; set; }
         public string telefonoCliente { get; set; }
+        public decimal nroPares { get; set; }
+        public decimal totalSinIgv { get; set; }
         public List<DetallesCanalVenta> detalles { get; set; }
         public List<HistorialEstadosCV> historialEstados { get; set; }
         public Informacion_Tienda_envio informacionTiendaEnvio { get; set; }

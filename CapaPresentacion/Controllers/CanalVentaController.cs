@@ -200,7 +200,9 @@ namespace CapaPresentacion.Controllers
                              a.fc_nint,
                              a.nombreTipoCV,
                              a.nombreEstado,
-                             a.colorEstado
+                             a.colorEstado,
+                             a.nroPares,
+                             a.totalSinIgv
                          };
             return Json(new
             {
@@ -663,7 +665,9 @@ namespace CapaPresentacion.Controllers
                               descripcionEstado = dr["descripcionEstado"].ToString(),
                               colorEstado = dr["colorEstado"].ToString(),
                               importeTotal = Convert.ToDecimal(dr["FC_TOTAL"].ToString()),
-                              nombreTipoCV = dr["nombre_tipo_cv"].ToString()
+                              nombreTipoCV = dr["nombre_tipo_cv"].ToString(),
+                              nroPares = Convert.ToDecimal(dr["pares"].ToString()),
+                              totalSinIgv = Convert.ToDecimal(dr["soles"].ToString())
                           }).ToList();
             }
             Session["_cv"] = ventas;

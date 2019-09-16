@@ -26,6 +26,10 @@
         width: 100%;
         height: 800px;
     }
+    .modal-body {
+        max-height: calc(100vh - 212px);
+        overflow-y: auto;
+    }
 </style>
 <div class="box box-body box-primary">
     @using (Ajax.BeginForm("ListaVentas", options))
