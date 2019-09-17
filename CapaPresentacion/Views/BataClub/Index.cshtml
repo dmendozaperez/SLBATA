@@ -1,7 +1,8 @@
 ﻿@using CapaEntidad.BataClub
+
 @model IEnumerable<Ent_BataClub_CuponesCO>
 @{
-    ViewBag.Title = "Consulta....";
+    ViewBag.Title = "Consulta de Cupones BataClub";
     AjaxOptions options = new AjaxOptions
     {
         HttpMethod = "GET",
@@ -12,203 +13,135 @@
         OnFailure = "waitingDialog.hide();"
     };
 }
-
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-<link href="~/ContentSelect/bootstrap-multiselect.css" rel="stylesheet" />
-
-
-
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/data.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
-<script src="https://code.highcharts.com/modules/export-data.js"></script>
-
-<p class="text-danger">Consulta de .............</p>
+<style>
+    .dataTables_processing {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 100%;
+        height: 40px;
+        margin-left: -50%;
+        margin-top: -25px;
+        padding-top: 20px;
+        text-align: center;
+        font-size: 1.2em;
+        background-color: white;
+        font-weight: bold;
+        color: cornflowerblue;
+        background: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(255,255,255,0)), color-stop(25%, rgba(255,255,255,0.9)), color-stop(75%, rgba(255,255,255,0.9)), color-stop(100%, rgba(255,255,255,0)));
+        background: -webkit-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 25%, rgba(255,255,255,0.9) 75%, rgba(255,255,255,0) 100%);
+        background: -moz-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 25%, rgba(255,255,255,0.9) 75%, rgba(255,255,255,0) 100%);
+        background: -ms-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 25%, rgba(255,255,255,0.9) 75%, rgba(255,255,255,0) 100%);
+        background: -o-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 25%, rgba(255,255,255,0.9) 75%, rgba(255,255,255,0) 100%);
+        background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 25%, rgba(255,255,255,0.9) 75%, rgba(255,255,255,0) 100%);
+    }
+    .boton-td{        
+        padding-top: 3px !important;
+        padding-bottom: 3px !important;
+    }
+    .modal-body {
+        max-height: calc(100vh - 212px);
+        overflow-y: auto;
+    }
+</style>
+<link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />
+<p class="text-danger">Consulta de cupones BataClub por estado, promocion, dni, correo y codigo de cupón. </p>
 <div class="box box-body box-primary">
     @using (Ajax.BeginForm("_Table", options))
     {
-        <form id="form1">
-            <div class="row">
-                <div class="col-sm-2" style="padding-left: 25px;">
-                    <label for="segape" style="color: #3d566e;">Estado cupón</label>
-                    <div class="form-group">
-                        <div id="estado" class="form-group">
-                            @Html.DropDownList("dwest", new SelectList(ViewBag.Estado, "est_id", "est_des", "-1"), new { @class = "selectpicker dropdown-toggle btn btn-default", @data_live_search = "true", @id = "dwest", @name = "dwest", @enable = "false" })
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6" style="padding-left: 25px;">
-                    <label for="segape" style="color: #3d566e;">Promoción</label>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <div id="tda" class="input-group autofocus">
-                                @Html.DropDownList("dwprom", new SelectList(ViewBag.Promocion, "prom_id", "prom_des", "-1"), new { @multiple = "multiple", @class = "multiselect", @data_live_search = "true", @id = "dwprom", @name = "dwprom" })
-                            </div>
-                        </div>
-                    </div>
-                    <input type="hidden" id="hidden" name="hidden" value="">
-                </div>
-                <div class="col-sm-1">
-                </div>
-                @*<div class="col-sm-2" style="padding-left: 25px; width: 105px; margin-top: 24px;  margin-bottom: 10px; display:none">
-                    <button id="btnAgregar" type="submit" title="Agregar" class="btn btn-warning" onclick="@("window.location.href='" + @Url.Action("Cupon", "BataClub") + "'");">
-                        <span class="glyphicon glyphicon-plus-sign"> Cupón</span>
-                    </button>
-                </div>*@
-                <div class="col-sm-1" style="padding-left: 25px; width: 105px; margin-top: 24px; margin-bottom: 10px; display:none;">
-                    <button id="btnGrafica" type="button" title="Gráfica" class="btn btn-info">
-                        <span class="glyphicon glyphicon-stats"> Gráfica</span>
-                    </button>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-2" style="padding-left: 25px; margin-right: inherit;">
-                    <label for="segape" style="color: #3d566e;">DNI</label>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <span class="input-group-addon" style="color: #3d566e;"><i class="glyphicon glyphicon-user"></i></span>
-                            <input id="dni" type="text" class="form-control" name="dni" placeholder="Ingresar DNI">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-3" style="padding-left: 25px; margin-right: inherit;">
-                    <label for="segape" style="color: #3d566e;">Cupón</label>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-barcode"></i></span>
-                            <input id="cupon" type="text" class="form-control" name="cupon" placeholder="Ingresar cupon">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-3" style="padding-left: 25px; margin-right: inherit;">
-                    <label for="segape" style="color: #3d566e;">Correo</label>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-                            <input id="correo" type="text" class="form-control" name="correo" placeholder="Ingresar correo">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-2" style="padding-left: 25px; width: 105px; margin-top: 23px; margin-bottom: 10px;">
-                    <button id="btnSearch" type="submit" title="Consultar" class="btn btn-primary">
-                        <span class="glyphicon glyphicon-search"> Buscar</span>
-                    </button>
-                </div>
-                <div class="col-md-2" style="width: 105px;margin-top: 23px;float: right; margin-right: 25px;">
-                    <a class="btn btn-success glyphicon glyphicon-save-file" href="@Url.Action("ExportToExcel")" title="Exportar a excel"> Excel</a>
-
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-4" style="padding-left: 25px; ">
-                    <label id="lblConsumidos" name="lblConsumidos" style="padding-left: 15px; ">Valor consumidos</label>
-                    <label id="lblDisponibles" name="lblDisponibles" style="padding-left: 15px; ">Valor disponibles</label>
-                    <label id="lblCaducados" name="lblCaducados" style="padding-left: 15px; ">Valor caducados</label>
-                </div>
-            </div>
-        </form>
-    }
-    <div class="box-body" id="listaGuia" style="padding-bottom: 20px;overflow-x: auto;">
-        @{Html.RenderPartial("_Table", Model);}
-    </div>
-</div>
-<div class="box box-body box-primary">
-    <form id="form2">
         <div class="row">
-            <div class="col-sm-4" style="padding-left: 25px;">
-                <label for="segape" style="color: #3d566e;">Promoción</label>
+            <div class="col-sm-3" style="padding-left: 25px;">
                 <div class="form-group">
-                    <div id="promo" class="form-group">
-                        @Html.DropDownList("dwpromo", new SelectList(ViewBag.Promo, "prom_id", "prom_des", "-1"), new { @class = "selectpicker dropdown-toggle btn btn-default", @data_live_search = "true", @id = "dwpromo", @name = "dwpromo", @enable = "false" })
-                    </div>
+                    <label for="dwest">Estado cupón</label>
+                    @Html.DropDownList("dwest", new MultiSelectList(ViewBag.Estado, "est_id", "est_des", null), new { @class = "form-control selectpicker", @id = "dwest", @name = "dwest", @data_live_search = "true", @multiple = "multiple", @data_actions_box = "true", @data_selected_text_format = "count > 2" })
+                </div>
+            </div>
+            <div class="col-sm-3" style="padding-left: 25px;">
+                <div class="form-group">
+                    <label for="dwprom">Promoción</label>
+                    @Html.DropDownList("dwprom", new MultiSelectList(ViewBag.Promocion, "Codigo", "Descripcion", null), new { @class = "form-control selectpicker", @id = "dwprom", @data_live_search = "true", @multiple = "multiple", @data_actions_box = "true", @data_selected_text_format = "count > 2" })
                 </div>
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-2" style="padding-left: 25px; width: 105px; margin-top: 24px;  margin-bottom: 10px; ">
-                <button id="btnAgregarCup" type="button" title="Agregar" class="btn btn-warning" onclick="PopupCupones();">
-                    <span class="glyphicon glyphicon-plus-sign"> Agregar Cupón</span>
+            <div class="col-sm-2" style="padding-left: 25px; margin-right: inherit;">
+                <label for="segape" style="color: #3d566e;">DNI</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon" style="color: #3d566e;"><i class="glyphicon glyphicon-user"></i></span>
+                        <input id="dni" type="text" class="form-control" name="dni" placeholder="Ingresar DNI">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3" style="padding-left: 25px; margin-right: inherit;">
+                <label for="segape" style="color: #3d566e;">Cupón</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-barcode"></i></span>
+                        <input id="cupon" type="text" class="form-control" name="cupon" placeholder="Ingresar cupon">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3" style="padding-left: 25px; margin-right: inherit;">
+                <label for="segape" style="color: #3d566e;">Correo</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+                        <input id="correo" type="text" class="form-control" name="correo" placeholder="Ingresar correo">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-2" style="padding-left: 25px; width: 105px; margin-top: 23px; margin-bottom: 10px;">
+                <button id="btnSearch" type="submit" title="Consultar" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-search"></span>&nbsp;&nbsp;Buscar
                 </button>
             </div>
-        </div>
-    </form>
-</div>
-
-<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div id="myModalContent1" class="modal-content" style="height:800px; width: 1000px; margin-left: -210px;">
-            <div style="background-color:#c0392b; color:white;" class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h5 class="modal-title" id="myModalLabel" style="font: icon; font-weight: 600;"></h5>
-            </div>
-            <div id="modalBody1" class="modal-body">
-
+            <div class="col-md-2" style="width: 105px;margin-top: 23px;float: right; margin-right: 25px;">
+                <a class="btn btn-success" href="@Url.Action("ExportToExcel")" title="Exportar a excel"><i class="glyphicon glyphicon-export"></i>&nbsp;&nbsp;Excel</a>
             </div>
         </div>
-    </div>
-</div>
-
-<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
-    <div class="modal-dialog" role="document">
-        <div id="myModalContent2" class="modal-content" style="height:800px; width: 1000px; margin-left: -210px;">
-            <div style="background-color:#3d566e; color:white;" class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h5 class="modal-title" id="myModalLabel2" style="font: icon; font-weight: 600;"></h5>
-            </div>
-            <div id="modalBody2" class="modal-body">
-
+        <div class="row">
+            <div class="col-md-6" id="resumen">
+                <div class="panel panel-primary p-10">
+                    <div class="panel-body" style="padding-top: 7px;padding-bottom: 4px;">
+                        <h5 class="text-bold text-info">Resumen</h5>
+                        <p>
+                            <span class="label label-primary" style="font-size:14px">
+                                <b>Consumidos:</b><small class="text-right">&nbsp;<label id="lblConsumidos" name="lblConsumidos"></label></small>
+                            </span>&nbsp;&nbsp;
+                            <span class="label label-success" style="font-size:14px">
+                                <b>Disponibles:</b><small class="text-right">&nbsp;<label id="lblDisponibles" name="lblDisponibles"></label></small>
+                            </span>&nbsp;&nbsp;
+                            <span class="label label-danger" style="font-size:14px"><b>Caducados:</b><small class="text-right">&nbsp;<label id="lblCaducados" name="lblCaducados" ></label></small></span>
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
-
-
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-<script src="~/ScriptsSelect/bootstrap-multiselect.js"></script>
-
-
-<script>
-
-    $(function () {
-        $('#dwprom').multiselect({
-            includeSelectAllOption: true,
-            enableFiltering: true,
-            enableCaseInsensitiveFiltering: true,
-            filterPlaceholder: 'Buscar Promoción...',
-            onDropdownShown: function (even) {
-                this.$filter.find('.multiselect-search').focus()
-            }
-        });
-    });
-
-    $(document).ready(function () {
-        $('#lblConsumidos')[0].textContent = "Consumidos: 0";
-        $('#lblDisponibles')[0].textContent = "Disponibles: 0";
-        $('#lblCaducados')[0].textContent = "Caducados: 0";
-
-        $("#btnSearch").click(function () {
-            ListaPromocionesSelect();
-        });
-
-        $("#btnGrafica").click(function () {
-            //  console.log("entro a boton graf");
-            PopupDetalle();
-        });
-    });
-
-    function ListaPromocionesSelect() {
-        var strcadena = $.trim($('#dwprom').val());
-        if (strcadena == null || strcadena == "") {
-            toastr.error("Debe seleccionar al menos una Promoción.", "Mensaje");
-            return false;
-        }
-        else { document.getElementById("hidden").value = strcadena; }
     }
 
+    <div id="listaGuia" style="padding-bottom: 20px;">
+        @{Html.RenderPartial("_Table", Model);}
+    </div>   
+</div>
+
+
+<script src="~/Scripts/bootstrap-select.min.js"></script>
+<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+<script>
+    $(document).ready(function () {
+        $('#lblConsumidos')[0].textContent = "0";
+        $('#lblDisponibles')[0].textContent = "0";
+        $('#lblCaducados')[0].textContent = "0";
+        //$("#btnGrafica").click(function () {
+        //    //  console.log("entro a boton graf");
+        //    PopupDetalle();
+        //});
+        
+    });
     function PopupCupones() {
         var ControllerUrl = "@Url.Action("Cupon", "BataClub")";
-       // waitingDialog.show('Espere un momento por favor');
+        // waitingDialog.show('Espere un momento por favor');
         var dwpromo = $.trim($('#dwpromo').val());
         $.ajax({
             type: "GET",
@@ -220,16 +153,16 @@
             success: function (data) {
                 //   waitingDialog.hide();
 
-                 var options = { "backdrop": "static", keyboard: true };
-                 var descModal = 'Generar cupones de la promoción ' + $("#dwpromo option:selected").text() + ' ';
-                console.log("entro a data");
-               // console.log(data);
+                var options = { "backdrop": "static", keyboard: true };
+                var descModal = 'Generar cupones de la promoción ' + $("#dwpromo option:selected").text() + ' ';
+                //console.log("entro a data");
+                // console.log(data);
                 $('#myModalLabel2').html(descModal);
                 $('#modalBody2').html(data);
                 $('#myModal2').modal(options);
             },
             error: function (xhr) {
-               // waitingDialog.hide();
+                // waitingDialog.hide();
                 toastr.error(xhr, 'Mensaje');
             }
         });
@@ -311,7 +244,7 @@
                         }
                     }
                     // FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
-                    console.log(table);
+                    //console.log(table);
                     $("#container").html(table);
                     MostrarGrafico_contenido();
                 }
@@ -359,23 +292,8 @@
         );
     }
 </script>
-
-
-
-
 <script>
-    $(function () {
-        $('#dwpromcp').multiselect({
-            includeSelectAllOption: false,
-            enableFiltering: true,
-            enableCaseInsensitiveFiltering: true,
-            filterPlaceholder: 'Buscar Promoción...',
-            //onDropdownShown: function (even) {
-            //    this.$filter.find('.multiselect-search').focus()
-            //}
-        });
-    });
-
+   
     function ListarTableCup() {
         var ControllerUrl = "@Url.Action("_TableCupon", "BataClub")";
         // waitingDialog.show('Espere un momento por favor');
@@ -389,15 +307,15 @@
             datatype: "json",
             cache: true,
             success: function (data) {
-                 //  waitingDialog.hide();
+                //  waitingDialog.hide();
                 console.log("listar tabla");
-              //   console.log(data);
+                //   console.log(data);
                 $('#lista').html(data);
             },
             // timeout: 10000,
             // async: false,
             error: function (xhr) {
-               //  waitingDialog.hide();
+                //  waitingDialog.hide();
                 toastr.error(xhr, 'Mensaje');
             }
         });
@@ -412,11 +330,11 @@
             var row = $(this).closest("tr")[0];
             message += " " + row.cells[0].innerHTML + " " + row.cells[1].innerHTML;
             message += " de DNI " + row.cells[2].innerHTML;
-            message += " con el correo " + row.cells[3].innerHTML +".";
+            message += " con el correo " + row.cells[3].innerHTML + ".";
             message += "<br>";
             cadena += $(this).attr("id") + ",";
         });
-      //  console.log(cadena);
+        //  console.log(cadena);
         if (cadena == null || cadena == "") {
             toastr.error("Por favor ingresar al menos un registro para poder generar el cupón.", msg_titulo);
             return false;
@@ -436,9 +354,9 @@
                     }
                 },
                 callback: function (result) {
-                   // console.log(result);
+                    // console.log(result);
                     if (result) {
-                      //  console.log("Guardando registro")
+                        //  console.log("Guardando registro")
                         Generar()
                     }
                 }
@@ -459,10 +377,10 @@
             type: "GET",
             url: ControllerUrl,
             contentType: "application/json; charset=utf-8",
-            data: { prom_des:prom_des, desc:desc, fec_fin:fec_fin, pares:pares },
+            data: { prom_des: prom_des, desc: desc, fec_fin: fec_fin, pares: pares },
             datatype: "json",
             success: function (data) {
-               // console.log(data);
+                // console.log(data);
                 if (data = "1") {
                     toastr.success("Se realizó exitosamente la generación de cupones.", msg_titulo);
                     ExportToExcelCup();
@@ -498,13 +416,13 @@
                 //  debugger;
                 // waitingDialog.hide();
                 console.log("eliminar seleccion");
-                 // console.log(data);
-                 // $("#identificacion").val("");
+                // console.log(data);
+                // $("#identificacion").val("");
                 //  $("#btnAgregar").submit();
-                  ListarTableCup();
+                ListarTableCup();
             },
             error: function () {
-              //  waitingDialog.hide();
+                //  waitingDialog.hide();
                 alert('Error')
             }
         });

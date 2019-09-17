@@ -6,6 +6,27 @@ using System.Threading.Tasks;
 
 namespace CapaEntidad.BataClub
 {
+    public class Ent_BataClub_Cupones
+    {
+        public string promocion  { get; set; }
+        public string estado { get; set; }
+        public string fechaFin { get; set; }
+        public string nombresCliente { get; set; }
+        public string dniCliente { get; set; }
+        public string correo { get; set; }
+        public string cupon { get; set; }
+        public decimal porcDesc { get; set; }
+    }
+    public class Ent_BataClub_Promociones
+    {
+        public string Codigo { get; set; }
+        public string Descripcion { get; set; }
+        public string Porc_Dcto { get; set; }
+        public int MaxPares { get; set; }
+        public string FechaFin { get; set; }
+        public bool PromActiva { get; set; }
+    }
+
     public class Ent_BataClub_CuponesCO
     {
         public string Nombres { get; set; }

@@ -1614,6 +1614,7 @@
     <Content Include="Views\Inventario\AjusteInventario.cshtml" />
     <Content Include="Views\Inventario\ListaAjustes.cshtml" />
     <Content Include="Views\Inventario\ListaAjustesInv.cshtml" />
+    <Content Include="Views\BataClub\Promociones.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,127 @@
+﻿@{
+    ViewBag.Title = "Lista de Promociones BataClub";
+}
+<style>
+    .boton-td {
+        padding-top: 3px !important;
+        padding-bottom: 3px !important;
+    }
+
+    .modal-body {
+        max-height: calc(100vh - 212px);
+        overflow-y: auto;
+    }
+</style>
+<div class="box box-body box-primary">
+    <div class="row">
+        <div class="col-md-12">
+            <a href="@Url.Action("Nuevo", "Orce_Exclud")" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i>&nbsp;Crear nueva interface Exclud</a>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-12">
+            <div id="lista">
+                <table id="listaPromociones" class="table dt-lista table-hover dataTable table-striped table-responsive">
+                    <thead>
+                        <tr style="background-color:#3d566e; color:#ecf0f1">
+                            <th>Codigo</th>
+                            <th>Descripcion</th>
+                            <th>Desc (%)</th>
+                            <th>Max Pares</th>
+                            <th>Fec. Fin</th>
+                            <th>Activa</th>                            
+                        </tr>
+                    </thead>
+                    <tbody data-bind="foreach:"></tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Codigo</th>
+                            <th>Descripcion</th>
+                            <th>Desc (%)</th>
+                            <th>Max Pares</th>
+                            <th>Fec. Fin</th>
+                            <th>Activa</th>         
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+    var actualizar = "";
+    $(document).ready(function () {
+        $('.dt-lista').DataTable({
+            "language": {
+                "url": "../Scripts/DataTables/Spanish.json"
+            },
+            "bServerSide": true,
+            "bAutoWidth": false,
+            "sAjaxSource": '@Url.Action("getListaPromocionesAjax", "BataClub")',
+            "fnServerParams": function (aoData) {
+                aoData.push({ "name": "actualizar", "value": actualizar });
+            },
+            "bdestroy": true,
+            "start": 0,
+            "order": [1, "asc"],
+            "bDeferRender": true,
+            "aoColumns": [
+
+
+                  { "sName": "ORC_COD", "mData": "ORC_COD" },
+                  { "sName": "ORC_DESCRIPCION", "mData": "ORC_DESCRIPCION", "class": "right" },
+                  { "sName": "ORC_ATRIBUTO", "mData": "ORC_ATRIBUTO", "class": "right" },
+                  { "sName": "ORC_FECHA_ING", "mData": "ORC_FECHA_ING", "class": "right" },
+                  { "sName": "ORC_FECHA_ACT", "mData": "ORC_FECHA_ACT", "class": "right" },
+                  { "sName": "ORC_FEC_ENV", "mData": "ORC_FEC_ENV", "class": "right" },
+                  {
+                      "render": function (data, type, full) {
+                          return '<button title="Ver lista de tiendas" class="btn btn-default btn-sm tiendas" data-des-orce="' + full.ORC_DESCRIPCION + '" data-atributo="' + full.ORC_ATRIBUTO + '" data-cod-orce="' + full.ORC_COD + '" ><i class="glyphicon glyphicon-list"></i></button>';
+                      }, "sClass": "boton-td"
+                  },
+                  {
+                      "render": function (data, type, full) {
+                          return '<button title="Ver lista de articulos" class="btn btn-default btn-sm articulos"  data-des-orce="' + full.ORC_DESCRIPCION + '"  data-atributo="' + full.ORC_ATRIBUTO + '" data-cod-orce="' + full.ORC_COD + '"><i class="glyphicon glyphicon-list"></i></button>';
+                      }, "class": "boton-td"
+                  },
+                  {
+                      "render": function (data, type, full) {
+                          if (full.ORC_EST_ID == 'P') {
+                              return '<span class="label label-warning">PENDIENTE</span>'
+                          } else if (full.ORC_EST_ID == 'A') {
+                              return '<span class="label label-danger">ANULADO</span>'
+                          } else {
+                              return '<span class="label label-success">ENVIADO</span>'
+                          }
+                      }
+                  },//estado
+                  {
+                      "render": function (data, type, full) {
+                          if (full.ORC_EST_ID == 'P')
+                              return '<button class="btn btn-success btn-sm accion-inter" title="Enviar Interface" data-accion-iter="E" data-cod-orce="' + full.ORC_COD + '"><i class="glyphicon glyphicon-send"></i></button>';
+                          else
+                              return '';
+                      }, "class": "boton-td"
+                  },
+                  {
+                      "render": function (data, type, full) {
+                          if (full.ORC_EST_ID == 'P')
+                              return '<a href="../Orce_Exclud/Editar?id=' + full.ORC_COD + '" class="btn btn-primary btn-sm " title="Editar interface" data-accion-iter="P" data-cod-orce="' + full.ORC_COD + '"><i class="glyphicon glyphicon-edit"></i></a>';
+                          else
+                              return '';
+                      }, "class": "boton-td"
+                  },
+                  {
+                      "render": function (data, type, full) {
+                          if (full.ORC_EST_ID == 'P')
+                              return '<button class="btn btn-danger btn-sm accion-inter" title="Anular interface" data-accion-iter="A" data-cod-orce="' + full.ORC_COD + '"><i class="glyphicon glyphicon-trash"></i></button>';
+                          else
+                              return '';
+                      }, "class": "boton-td"
+                  },
+            ]
+        });
+</script>

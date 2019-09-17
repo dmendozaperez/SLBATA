@@ -1,130 +1,207 @@
-﻿
-
-<table id="example1" class="table table-hover dataTable  table-striped table-responsive">
+﻿<table id="listaCupones" class="table table-hover dataTable  table-striped table-responsive">
     <thead>
         <tr style="background-color:#3d566e; color:#ecf0f1">
             <th>Promoción</th>
-            <th>Estado Promo.</th>
-            <th>Fecha fin cupón</th>
+            <th>Estado Prom.</th>
+            <th>F. Fin cupón</th>
             <th>Nombres</th>
-            @*<th>Apellidos</th>*@
             <th>DNI</th>
             <th>Correo</th>
             <th>Cupón</th>
-            <th>Tienda</th>
-            @*<th>DNI (venta)</th>*@
-            <th>Nombres (venta)</th>
-            @*<th>Correo (venta)</th>
-            <th>Teléf. (venta)</th>*@
-            <th>Tickets</th>
-            <th>Soles</th>
-            @*<th>Grupo</th>*@
-            <th>Desc (%)</th>
-            <th>Fecha Doc.</th>
+            <th>Desc (%)</th>         
+            <th>Detalles</th>   
         </tr>
     </thead>
     <tbody data-bind="foreach:"></tbody>
     <tfoot>
         <tr>
             <th>Promoción</th>
-            <th>Estado Promo.</th>
-            <th>Fecha fin cupón</th>
+            <th>Estado Prom.</th>
+            <th>F. Fin cupón</th>
             <th>Nombres</th>
-            @*<th>Apellidos</th>*@
             <th>DNI</th>
             <th>Correo</th>
             <th>Cupón</th>
-            <th>Tienda</th>
-            @*<th>DNI (venta)</th>*@
-            <th>Nombres (venta)</th>
-            @*<th>Correo (venta)</th>
-        <th>Teléf. (venta)</th>*@
-            <th>Tickets</th>
-            <th>Soles</th>
-            @*<th>Grupo</th>*@
-            <th>Desc (%)</th>
-            <th>Fecha Doc.</th>
+            <th>Desc (%)</th>          
+            <th>Detalles</th>   
         </tr>
     </tfoot>
 </table>
-
+<div class="modal fade" id="modalDetalleCupon" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p style="font-size:medium" class="text-primary modal-title" id="myModalLabel"><strong class="text-danger" id="dcCliente"></strong></p>
+                        <p style="font-size:medium" class="text-primary modal-title" id="myModalLabel"><b>Detalles del cupón</b></p>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <span style="font-size:medium" class="label label-danger" id="dcCupon"></span>
+                    </div>
+                </div>
+            </div>
+            <div style="font-size:small" class="modal-body" id="listaDetArt">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <p>Tienda: <strong id="dcTienda"></strong></p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p>Xstore: <strong id="dcXstore"></strong></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <p>Tipo Documento: <strong id="dcTipoDoc"></strong></p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p>Numero: <strong id="dcNumero"></strong></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <p>Fecha: <strong id="dcFecha"></strong></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <p>DNI: <strong id="dcDni"></strong></p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p>Nombres: <strong id="dcNombres"></strong></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div id="dcTabDetalles"></div>
+                    </div>                    
+                </div>                
+                <div class="row">
+                    <div class="col-sm-offset-10 col-sm-2">
+                        @*<p>Sub Total: <strong id="dcSubTotald"></strong></p>
+                        <p>Desc.: <strong id="dcDescuento"></strong></p>*@
+                        <p>Total: <strong id="dcTotal"></strong></p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
-    $('#example1').dataTable({
+    $('#listaCupones').dataTable({
             "language": {
                 "url": "../Scripts/DataTables/Spanish.json"
             },
-            "bProcessing": false, // se agrego para probar
+            "bProcessing": true,
             "bServerSide": true,
             "bAutoWidth": false,
-            "sAjaxSource": '@Url.Action("getTablePromoAjax", "BataClub")',
+            "sAjaxSource": '@Url.Action("getTableCuponesAjax", "BataClub")',
             "fnServerParams": function (aoData) {
-                //aoData.push({ "name": "lblConsumidos", "value": $.trim($('#lblConsumidos')[0].textContent).toString() });
-                //aoData.push({ "name": "lblDisponibles", "value": $.trim($('#lblDisponibles')[0].textContent).toString() });
-                //aoData.push({ "name": "lblCaducados", "value": $.trim($('#lblCaducados')[0].textContent).toString() });
-             //   console.log("buscó");
-             //   console.log(aoData);
-              //  $('#lblConsumidos')[0].textContent.toString() = "Consumidos:";
-                //aoData.push({ "name": "lblDisponibles", "value": $.trim($('#lblDisponibles').val()) });
-                //aoData.push({ "name": "lblCaducados", "value": $.trim($('#lblCaducados').val()) });
             },
-
             "fnServerData": function ( sSource, aoData, fnCallback ) {
                 $.getJSON( sSource, aoData, function (json) { 
-                    /* Do whatever additional processing you want on the callback, then tell DataTables */
-                  //  console.log("entró a fnServerData");
-                    //console.log(sSource);
-                    //console.log(aoData);
-                    //console.log(fnCallback);
-                    //debugger;
                     console.log(json.variable1);
-                    $('#lblConsumidos')[0].textContent = "Consumidos: " + json.variable1;
-                    $('#lblDisponibles')[0].textContent = "Disponibles: " + json.variable2;
-                    $('#lblCaducados')[0].textContent = "Caducados: " + json.variable3;
-                 //   console.log(json);
+                    $('#lblConsumidos')[0].textContent = "" + json.variable1;
+                    $('#lblDisponibles')[0].textContent = "" + json.variable2;
+                    $('#lblCaducados')[0].textContent = "" + json.variable3;
                     fnCallback(json)
                 } );
             },
-
+            "columnDefs": [{
+                "targets": [2,3,4,5,6,7],
+                "orderable": false
+            }],
             "bdestroy": true,
             "start": 0,
-            "order": [0, "asc"],
+            "order": [],
             "bDeferRender": true,
             "aoColumns": [
-                    { "sName": "prom_des", "mData": "prom_des" },
-                    { "sName": "est_des", "mData": "est_des" },
-                    { "sName": "cup_fecha_fin", "mData": "cup_fecha_fin" },
-                    { "sName": "Nombres", "mData": "Nombres" },
-                    //{ "sName": "Apellidos", "mData": "Apellidos" },
-                    { "sName": "dni", "mData": "dni" },
+                            @*a.promocion,
+                            a.estado,
+                            a.fechaFin,
+                            a.nombresCliente,
+                            a.dniCliente,
+                            a.correo,
+                            a.cupon,
+                            a.porcDesc*@
+                    { "sName": "promocion", "mData": "promocion" },
+                    { "sName": "estado", "mData": "estado" },
+                    { "sName": "fechaFin", "mData": "fechaFin" },
+                    { "sName": "nombresCliente", "mData": "nombresCliente" },
+                    { "sName": "dniCliente", "mData": "dniCliente" },
                     { "sName": "correo", "mData": "correo" },
                     { "sName": "cupon", "mData": "cupon" },
-                    { "sName": "tienda", "mData": "tienda" },
-                    //{ "sName": "dni_venta", "mData": "dni_venta" },
-                    { "sName": "nombres_venta", "mData": "nombres_venta" },
-                    //{ "sName": "correo_venta", "mData": "correo_venta" },
-                    //{ "sName": "telefono_venta", "mData": "telefono_venta" },
-                    { "sName": "tickets", "mData": "tickets" },
-                    { "sName": "soles", "mData": "soles" },
-                    //{ "sName": "grupo", "mData": "grupo" },
-                    { "sName": "porc_desc", "mData": "porc_desc" },
-                    { "sName": "fec_doc", "mData": "fec_doc" }
-            ],
-            dom: 'Bfrtip',
-            buttons: [
-            {
-                extend: 'excelHtml5',
-                title: 'Bataclub_xls'
-            },
-            {
-                extend: 'csvHtml5',
-                title: 'BataClub_csv'
-            },
-            {
-                extend: 'pdfHtml5',
-                title: 'BataClub_pdf'
-            },
-            'copyHtml5',
+                    { "sName": "porcDesc", "mData": "porcDesc" },
+                    {
+                        "render": function (data, type, full) {
+                            if (full.estado.toString().toUpperCase() == "CONSUMIDO") {
+                                return '<button title="Ver Detalles del cupón." class="btn btn-default btn-sm detalles-cupon"  data-cupon="' + full.cupon + '"  data-cliente="' + full.dniCliente + ' - ' + full.nombresCliente + '"><i class="glyphicon glyphicon-list"></i></button>';
+                            }
+                            else {
+                                return "";
+                            }                            
+                        }, "class": "boton-td"
+                    }
             ]
+    });
+    $('#listaCupones').on('click', '.detalles-cupon', function (e) {
+        waitingDialog.show('Espere un momento por favor');
+        var cliente = $(this).attr('data-cliente');
+        var cupon = $(this).attr('data-cupon');
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("getDetalleCupon", "BataClub")',
+            data: { cupon: cupon },
+            dataType: "json",
+            success: function (data) {
+                waitingDialog.hide();
+                if (data.estado == 1) {
+                    var detalles = JSON.parse(data.detalles);
+                    var table = '<table class="table table-condensed table-bordered table-responsive"><thead><tr style="background-color:#3d566e; color:#ecf0f1">' 
+                        +'<th>Item</th><th>Articulo</th><th>Talla</th><th>Precio</th><th>Desc.</th><th>Total</th></tr></thead><tbody data-bind="foreach:">';
+                    for (var i = 0; i < detalles.length; i++) {
+                        table += '<tr><td>' + detalles[i].Item + '</td><td>' + detalles[i].Articulo + '</td><td>' + detalles[i].Talla + '</td><td>' + detalles[i].Precio + '</td><td>' + detalles[i].Descuento + '</td><td>' + detalles[i].Tot_Linea + '</td></tr>'
+                    }
+                    table += '</tbody><tfoot><tr><th>Item</th><th>Articulo</th><th>Talla</th><th>Precio</th><th>Desc.</th><th>Total</th></tr></tfoot></table>'
+                    $("#dcTienda").html("&nbsp;&nbsp;" + detalles[0].Tienda);
+                    $("#dcXstore").html("&nbsp;&nbsp;" + (detalles[0].Xstore == 1 ? "SI" : "NO"));
+                    $("#dcTipoDoc").html("&nbsp;&nbsp;" + detalles[0].TipoDoc);
+                    $("#dcNumero").html("&nbsp;&nbsp;" + detalles[0].Numero);
+                    $("#dcFecha").html("&nbsp;&nbsp;" + formatDate(new Date(detalles[0].FechaDoc)));
+                    $("#dcDni").html("&nbsp;&nbsp;" + detalles[0].Dni);
+                    $("#dcNombres").html("&nbsp;&nbsp;" + detalles[0].Nombres);
+                    $("#dcTabDetalles").html(table);
+                    $("#dcTotal").html("&nbsp;&nbsp;" + detalles[0].Total);
+                    $("#dcCliente").html(cliente);
+                    $("#dcCupon").html(cupon);
+                    $("#modalDetalleCupon").modal({ backdrop: 'static', keyboard: false });
+                } else {
+                    swal("Error", "No se pudo cargar la lista de articulos" , "Error", "danger");
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                waitingDialog.hide();
+                var error = eval("(" + XMLHttpRequest.responseText + ")");
+                swal(error.Message);
+            }
         });
+
+    });
+    function formatDate(date) {
+        var monthNames = [
+          "Enero", "Febrero", "Marzo",
+          "Abril", "Mayo", "Junio", "Julio",
+          "Agosto", "Setiembre", "Octubre",
+          "Noviembre", "Diciembre"
+        ];
+        var day = date.getDate();
+        var monthIndex = date.getMonth();
+        var year = date.getFullYear();
+        return day + ' ' + monthNames[monthIndex] + ' ' + year;
+    }
 </script>
 

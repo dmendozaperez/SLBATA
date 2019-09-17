@@ -28,7 +28,10 @@ namespace CapaPresentacion.Controllers
         private Dat_BataClub_Cliente datCli = new Dat_BataClub_Cliente();
         private Dat_Canal datCan = new Dat_Canal();
         private Dat_Ubigeo datUbi = new Dat_Ubigeo();
-        private string _session_tabla_prom_private = "_session_tabla_prom_private"; 
+        private string _session_tabla_cupones = "_session_tabla_cupones";
+        private string _session_lista_promociones = "_session_lista_promociones";
+
+
         private string _BataClub_Promociones_Combo = "_BataClub_Promociones_Combo";
         private string _BataClub_Canal_Combo = "_BataClub_Canal_Combo";
         private string _session_tabla_cupon_private = "_session_tabla_cupon_private";
@@ -45,130 +48,119 @@ namespace CapaPresentacion.Controllers
         #region Bataclub/Index
         public ActionResult Index()
         {
-            //Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
-            //string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
-            //string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
-            //string return_view = actionName + "|" + controllerName;
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
 
-            //if (_usuario == null)
-            //{
-            //    return RedirectToAction("Login", "Control", new { returnUrl = return_view });
-            //}
-            //else
-            //{
-            //    if (Session["Tienda"] != null)  
-            //    {
-            //        ViewBag.Tienda = tienda.get_ListaTiendaXstore().Where(t => t.cbo_codigo == Session["Tienda"].ToString()).ToList();
-            //    }
-            //    else
-            //    {
-            //        ViewBag.Tienda = tienda.get_ListaTiendaXstore(true);
-            //    }
-
-            //    return View();
-            //}
-            if (Session["_BataClub_Promociones_Combo"] == null)
+            if (_usuario == null)
             {
-                ViewBag.Promocion = datProm.get_ListaPromociones();
-                Session["_BataClub_Promociones_Combo"] = ViewBag.Promocion;
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
             }
             else
-            { ViewBag.Promocion = Session["_BataClub_Promociones_Combo"]; }
-
-            if (Session["_BataClub_Promociones_estado"] == null)
             {
                 ViewBag.Estado = datProm.get_ListaEstados();
-                Session["_BataClub_Promociones_estado"] = ViewBag.Estado;
+                ViewBag.Promocion = datProm.get_ListaPromociones();
+                Session[_session_tabla_cupones] = null;
+                return View();
+            }  
+        }
+        public ActionResult getDetalleCupon(string cupon)
+        {
+            string detalles = "";
+            detalles = datProm.get_detalles_cupon(cupon);
+            if (detalles != "")
+            {
+                return Json(new { estado = 1, detalles =  detalles});
             }
             else
-            { ViewBag.Estado = Session["_BataClub_Promociones_estado"]; }
-
-            if (Session["_BataClub_cupon_Combo"] == null)
             {
-                ViewBag.Promo = datProm.get_ListaPromo_Disp();
-                Session["_BataClub_cupon_Combo"] = ViewBag.Promo;
-            }
-            else {
-                ViewBag.Promo = Session["_BataClub_cupon_Combo"];
-            }
-
-                return View();
+                return Json(new { estado = 0, resultados = "No hay resultados." });
+            }   
         }
-
         //Table
-        public PartialViewResult _Table(string dni, string cupon, string hidden, string correo,string dwprom, string dwest)
+        public PartialViewResult _Table(string dni, string cupon, string hidden, string correo,string[] dwprom, string[] dwest)
         {
-            if (dwprom == null)
-            { return PartialView(); }
+            if (dwprom == null || dwest == null)
+            {
+                Session[_session_tabla_cupones] = null;
+                return PartialView();
+            }
             else
             { //string dwprom--> se reemplaza por hidden - para agarrar varios id de promociones con el combo multiselect
-                return PartialView(listaTablaPromociones(dni, cupon, hidden, correo, dwest));
+                return PartialView(listaTablaPromociones(dni, cupon, String.Join(",",dwprom) , correo, String.Join(",", dwest)  ));
             }
         }
 
-        public List<Ent_BataClub_CuponesCO> listaTablaPromociones(string dni, string cupon, string id_grupo, string correo,string dwest)
+        public List<Ent_BataClub_Cupones> listaTablaPromociones(string dni, string cupon, string id_grupo, string correo,string dwest)
         {
-            List<Ent_BataClub_CuponesCO> listguia = datProm.get_lista_prom(dni, cupon, id_grupo, correo, dwest);
-            Session[_session_tabla_prom_private] = listguia;
+            List<Ent_BataClub_Cupones> listguia = datProm.get_lista_cupones(dni, cupon, id_grupo, correo, dwest);
+            Session[_session_tabla_cupones] = listguia;
             return listguia;
         }
 
-        public ActionResult getTablePromoAjax(Ent_jQueryDataTableParams param, string lblConsumidos)
+        public ActionResult getTableCuponesAjax(Ent_jQueryDataTableParams param, string lblConsumidos)
         {
             /*verificar si esta null*/
-            if (Session[_session_tabla_prom_private] == null)
+            if (Session[_session_tabla_cupones] == null)
             {
-                List<Ent_BataClub_CuponesCO> listdoc = new List<Ent_BataClub_CuponesCO>();
-                Session[_session_tabla_prom_private] = listdoc;
+                List<Ent_BataClub_Cupones> listdoc = new List<Ent_BataClub_Cupones>();
+                Session[_session_tabla_cupones] = listdoc;
             }
 
             //Traer registros
-            IQueryable<Ent_BataClub_CuponesCO> membercol = ((List<Ent_BataClub_CuponesCO>)(Session[_session_tabla_prom_private])).AsQueryable();
+            IQueryable<Ent_BataClub_Cupones> membercol = ((List<Ent_BataClub_Cupones>)(Session[_session_tabla_cupones])).AsQueryable();
 
             //Manejador de filtros
             int totalCount = membercol.Count();
 
-            IEnumerable<Ent_BataClub_CuponesCO> filteredMembers = membercol;
+            IEnumerable<Ent_BataClub_Cupones> filteredMembers = membercol;
 
             if (!string.IsNullOrEmpty(param.sSearch))
             {
                 filteredMembers = membercol
                     .Where(m =>
                     m.correo.ToUpper().Contains(param.sSearch.ToUpper()) ||
-                    m.prom_des.ToUpper().Contains(param.sSearch.ToUpper()) ||
-                    m.est_des.ToUpper().Contains(param.sSearch.ToUpper()) ||
-                    m.cup_fecha_fin.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    m.promocion.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    m.fechaFin.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    m.nombresCliente.ToUpper().Contains(param.sSearch.ToUpper()) ||
                     m.cupon.ToUpper().Contains(param.sSearch.ToUpper()) ||
-                    m.dni.ToUpper().Contains(param.sSearch.ToUpper()) ||
-                    m.fec_doc.ToUpper().Contains(param.sSearch.ToUpper()) ||
-                    // m.id_grupo.ToUpper().Contains(param.sSearch.ToUpper()) ||
-                    m.Nombres.ToUpper().Contains(param.sSearch.ToUpper()) ||
-                    m.nombres_venta.ToUpper().Contains(param.sSearch.ToUpper()) ||
-                    m.porc_desc.ToUpper().Contains(param.sSearch.ToUpper()) ||
-                    m.soles.ToUpper().Contains(param.sSearch.ToUpper()) ||
-                    m.tickets.ToUpper().Contains(param.sSearch.ToUpper()) ||
-                    m.tienda.ToUpper().Contains(param.sSearch.ToUpper()));
+                    m.dniCliente.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    m.correo.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    m.cupon.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    m.porcDesc.ToString().Contains(param.sSearch.ToUpper()));
             }
 
             //Manejador de orden
             var sortIdx = Convert.ToInt32(Request["iSortCol_0"]);
 
-            Func<Ent_BataClub_CuponesCO, string> orderingFunction =
-                   (
-                      //m => sortIdx == 0 ? m.fec_doc :
-                      // m.fec_doc
-                      m => sortIdx == 0 ? m.prom_des :
-                    sortIdx == 1 ? m.est_des :
-                    sortIdx == 2 ? m.cup_fecha_fin :
-                    sortIdx == 3 ? m.Nombres :
-                    m.tienda
-                   );
-
             var sortDirection = Request["sSortDir_0"];
-            if (sortDirection == "asc")
-                filteredMembers = filteredMembers.OrderBy(orderingFunction);
-            else
-                filteredMembers = filteredMembers.OrderByDescending(orderingFunction);
+            if (param.iSortingCols > 0)
+            {
+                if (sortDirection == "asc")
+                {
+                    if (sortIdx == 0)
+                    {
+                        filteredMembers = filteredMembers.OrderBy(o => o.promocion);
+                    }
+                    else if (sortIdx == 1)
+                    {
+                        filteredMembers = filteredMembers.OrderBy(o => o.estado);
+                    }
+
+                }
+                else
+                {
+                    if (sortIdx == 0)
+                    {
+                        filteredMembers = filteredMembers.OrderByDescending(o => o.promocion);
+                    }
+                    else if (sortIdx == 1)
+                    {
+                        filteredMembers = filteredMembers.OrderByDescending(o => o.estado);
+                    }
+                }
+            }
             var displayMembers = filteredMembers
                 .Skip(param.iDisplayStart)
                 .Take(param.iDisplayLength);
@@ -176,29 +168,18 @@ namespace CapaPresentacion.Controllers
             var result = from a in displayMembers
                          select new
                          {
-                             a.prom_des,
-                             a.est_des,
-                             a.cup_fecha_fin,
-                             a.Nombres,
-                            // a.Apellidos,
-                             a.dni,
+                             a.promocion,
+                             a.estado,
+                             a.fechaFin,
+                             a.nombresCliente,
+                             a.dniCliente,
                              a.correo,
                              a.cupon,
-                             a.tienda,
-                            // a.dni_venta,
-                             a.nombres_venta,
-                            // a.correo_venta,
-                           //  a.telefono_venta,
-                             a.tickets,
-                             a.soles,
-                             //a.grupo,
-                             a.porc_desc,
-                             a.fec_doc
+                             a.porcDesc
                          };
-
-            var numvariable1 = filteredMembers.Count(n => n.est_des == "CONSUMIDO");
-            var numvariable2 = filteredMembers.Count(n => n.est_des == "DISPONIBLE");
-            var numvariable3 = filteredMembers.Count(n => n.est_des == "CADUCADO");
+            var numvariable1 = filteredMembers.Count(n => n.estado.ToUpper() == "CONSUMIDO");
+            var numvariable2 = filteredMembers.Count(n => n.estado.ToUpper() == "DISPONIBLE");
+            var numvariable3 = filteredMembers.Count(n => n.estado.ToUpper() == "CADUCADO");
             // param.variable1 = lblConsumidos;
             param.variable1 = numvariable1.ToString();
             param.variable2 = numvariable2.ToString();
@@ -210,11 +191,88 @@ namespace CapaPresentacion.Controllers
                 iTotalRecords = totalCount,
                 iTotalDisplayRecords = filteredMembers.Count(),
                 aaData = result,
-                variable1=param.variable1,
+                variable1 = param.variable1,
                 variable2 = param.variable2,
                 variable3 = param.variable3
             }, JsonRequestBehavior.AllowGet);
         }
+        public ActionResult getListaPromocionesAjax(Ent_jQueryDataTableParams param)
+        {
+            /*verificar si esta null*/
+            if (Session[_session_lista_promociones] == null)
+            {
+                List<Ent_BataClub_Promociones> listdoc = new List<Ent_BataClub_Promociones>();
+                Session[_session_lista_promociones] = listdoc;
+            }
+
+            //Traer registros
+            IQueryable<Ent_BataClub_Promociones> membercol = ((List<Ent_BataClub_Promociones>)(Session[_session_lista_promociones])).AsQueryable();
+
+            //Manejador de filtros
+            int totalCount = membercol.Count();
+
+            IEnumerable<Ent_BataClub_Promociones> filteredMembers = membercol;
+
+            if (!string.IsNullOrEmpty(param.sSearch))
+            {
+                filteredMembers = membercol
+                    .Where(m =>
+                    m.Codigo.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    m.Descripcion.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    m.FechaFin.ToUpper().Contains(param.sSearch.ToUpper()));
+            }
+
+            //Manejador de orden
+            var sortIdx = Convert.ToInt32(Request["iSortCol_0"]);
+
+            var sortDirection = Request["sSortDir_0"];
+            if (param.iSortingCols > 0)
+            {
+                if (sortDirection == "asc")
+                {
+                    if (sortIdx == 0) filteredMembers = filteredMembers.OrderBy(o => o.Codigo);
+                    else if (sortIdx == 1) filteredMembers = filteredMembers.OrderBy(o => o.Descripcion);
+                    else if (sortIdx == 2) filteredMembers = filteredMembers.OrderBy(o => o.Porc_Dcto);
+                    else if (sortIdx == 3) filteredMembers = filteredMembers.OrderBy(o => o.MaxPares);
+                    else if (sortIdx == 4) filteredMembers = filteredMembers.OrderBy(o => o.FechaFin);
+                    else if (sortIdx == 5) filteredMembers = filteredMembers.OrderBy(o => o.PromActiva);
+                }
+                else
+                {
+                    if (sortIdx == 0) filteredMembers = filteredMembers.OrderByDescending(o => o.Codigo);
+                    else if (sortIdx == 1) filteredMembers = filteredMembers.OrderByDescending(o => o.Descripcion);
+                    else if (sortIdx == 2) filteredMembers = filteredMembers.OrderByDescending(o => o.Porc_Dcto);
+                    else if (sortIdx == 3) filteredMembers = filteredMembers.OrderByDescending(o => o.MaxPares);
+                    else if (sortIdx == 4) filteredMembers = filteredMembers.OrderByDescending(o => o.FechaFin);
+                    else if (sortIdx == 5) filteredMembers = filteredMembers.OrderByDescending(o => o.PromActiva);
+                }
+            }
+            var displayMembers = filteredMembers
+                .Skip(param.iDisplayStart)
+                .Take(param.iDisplayLength);
+
+            var result = from a in displayMembers
+                         select new
+                         {
+                             a.Codigo,
+                             a.Descripcion,
+                             a.Porc_Dcto,
+                             a.MaxPares,
+                             a.FechaFin,
+                             a.PromActiva
+                         };
+            //Se devuelven los resultados por json
+            return Json(new
+            {
+                sEcho = param.sEcho,
+                iTotalRecords = totalCount,
+                iTotalDisplayRecords = filteredMembers.Count(),
+                aaData = result
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+
+
 
         //Gráfica
         public string listarStr_graph()
@@ -246,10 +304,9 @@ namespace CapaPresentacion.Controllers
         [HttpGet]
         public FileContentResult ExportToExcel()
         {
-            List<Ent_BataClub_CuponesCO> listbataclub = (List<Ent_BataClub_CuponesCO>)Session[_session_tabla_prom_private];
-            string[] columns = { "Nombres", "Apellidos", "dni", "correo", "cupon", "tienda", "dni_venta", "nombres_venta", "correo_venta", "telefono_venta", "tickets", "soles"
-            , "grupo", "porc_desc", "fec_doc"};
-            byte[] filecontent = ExcelExportHelper.ExportExcel(listbataclub, "BATACLUB_Promociones", true, columns);
+            List<Ent_BataClub_Cupones> listbataclub = (List<Ent_BataClub_Cupones>)Session[_session_tabla_cupones];
+            string[] columns = { "promocion", "estado", "fechaFin", "nombresCliente", "dniCliente", "correo", "cupon", "porcDesc"};
+            byte[] filecontent = ExcelExportHelper.ExportExcel(listbataclub, "", true, columns);
             return File(filecontent, ExcelExportHelper.ExcelContentType, "BATACLUB_Promociones.xlsx");
         }
         #endregion

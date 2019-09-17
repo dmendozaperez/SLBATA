@@ -51,10 +51,10 @@ namespace CapaDato.BataClub
         }
 
         // Combo de Promociones
-        public List<Ent_BataClub_ComboProm> get_ListaPromociones()
+        public List<Ent_BataClub_Promociones> get_ListaPromociones()
         {
-            List<Ent_BataClub_ComboProm> list = null;
-            string sqlquery = "USP_BATACLUB_GET_PROMOCION";
+            List<Ent_BataClub_Promociones> list = null;
+            string sqlquery = "USP_BATACLUB_PROMOCION_LISTA";
             try
             {
                 using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
@@ -67,14 +67,18 @@ namespace CapaDato.BataClub
                         SqlDataReader dr = cmd.ExecuteReader();
                         if (dr.HasRows)
                         {
-                            list = new List<Ent_BataClub_ComboProm>();
-                            Ent_BataClub_ComboProm combo = new Ent_BataClub_ComboProm();
+                            list = new List<Ent_BataClub_Promociones>();
+                            Ent_BataClub_Promociones prom = new Ent_BataClub_Promociones();
                             while (dr.Read())
                             {
-                                combo = new Ent_BataClub_ComboProm();
-                                combo.prom_id = dr["Prom_ID"].ToString();
-                                combo.prom_des = dr["Prom_Des"].ToString();
-                                list.Add(combo);
+                                prom = new Ent_BataClub_Promociones();
+                                prom.Codigo = dr["Codigo"].ToString();
+                                prom.Descripcion = dr["Descripcion"].ToString();
+                                prom.Porc_Dcto = dr["Porc_Dcto"].ToString();
+                                prom.MaxPares = Convert.ToInt32( dr["MaxPares"].ToString());
+                                prom.FechaFin = dr["FechaFin"].ToString();
+                                prom.PromActiva = Convert.ToBoolean(dr["PromActiva"]);
+                                list.Add(prom);
                             }
                         }
                     }
@@ -125,10 +129,10 @@ namespace CapaDato.BataClub
         }
 
         //Listado Tabla principal
-        public List<Ent_BataClub_CuponesCO> get_lista_prom(string dni, string cupon, string id_grupo, string correo,string dwest)
+        public List<Ent_BataClub_Cupones> get_lista_cupones(string dni, string cupon, string prom, string correo,string estado)
         {
             string sqlquery = "USP_BATACLUB_CONSULTAR_CUPONES";
-            List<Ent_BataClub_CuponesCO> listar = null;
+            List<Ent_BataClub_Cupones> listar = null;
             try
             {
                 using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
@@ -140,38 +144,28 @@ namespace CapaDato.BataClub
                         {
                             cmd.CommandTimeout = 0;
                             cmd.CommandType = CommandType.StoredProcedure;
-                            cmd.Parameters.AddWithValue("@grupo", id_grupo);
+                            cmd.Parameters.AddWithValue("@estado_con", 1);
+                            cmd.Parameters.AddWithValue("@grupo", prom);
                             cmd.Parameters.AddWithValue("@dni", dni);
                             cmd.Parameters.AddWithValue("@cupon", cupon);
                             cmd.Parameters.AddWithValue("@correo", correo);
-                            cmd.Parameters.AddWithValue("@estado", dwest);
+                            cmd.Parameters.AddWithValue("@estado", estado);
                             using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                             {
                                 DataTable dt = new DataTable();
                                 da.Fill(dt);
-                                listar = new List<Ent_BataClub_CuponesCO>();
+                                listar = new List<Ent_BataClub_Cupones>();
                                 listar = (from DataRow dr in dt.Rows
-                                          select new Ent_BataClub_CuponesCO()
+                                          select new Ent_BataClub_Cupones()
                                           {
-                                              Nombres = dr["Nombres"].ToString(),
-                                             // Apellidos = dr["Apellidos"].ToString(),
-                                              dni = dr["DNI"].ToString(),
+                                              promocion = dr["Promocion"].ToString(),
+                                              estado = dr["Estado"].ToString(),
+                                              fechaFin = Convert.ToDateTime(dr["FechaFin"]).ToString("dd-MM-yyyy"),
+                                              nombresCliente = dr["Nombres"].ToString(),
+                                              dniCliente = dr["Dni"].ToString(),
                                               correo = dr["Correo"].ToString(),
                                               cupon = dr["Cupon"].ToString(),
-                                              tienda = dr["Tienda"].ToString(),
-                                             // dni_venta = dr["Dni_Venta"].ToString(),
-                                              nombres_venta = dr["Nombres_Venta"].ToString(),
-                                             // correo_venta = dr["Correo_Venta"].ToString(),
-                                             // telefono_venta = dr["Telefono_Venta"].ToString(),
-                                              tickets = dr["Tickets"].ToString(),
-                                              soles = dr["Soles"].ToString(),
-                                              id_grupo = dr["id_grupo"].ToString(),
-                                             // grupo = dr["Grupo"].ToString(),
-                                              porc_desc = dr["Porc_Desc"].ToString(),
-                                              fec_doc = String.Format("{0:dd/MM/yyyy}", Convert.ToDateTime(dr["Fec_Doc"])),
-                                              prom_des = cupon = dr["PROM_DES"].ToString(),
-                                              est_des = cupon = dr["EST_DES"].ToString(),
-                                              cup_fecha_fin = cupon = dr["CUP_FECHA_FIN"].ToString()
+                                              porcDesc = Convert.ToDecimal(dr["Porc_Desc"].ToString()),
                                           }).ToList();                                    
                                }
                          }
@@ -191,6 +185,49 @@ namespace CapaDato.BataClub
             }
             return listar;
         }
+
+        public string get_detalles_cupon(string cupon)
+        {
+            string sqlquery = "USP_BATACLUB_CONSULTAR_CUPONES";
+            string json = "";
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+                    try
+                    {
+                        if (cn.State == 0) cn.Open();
+                        using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                        {
+                            cmd.CommandTimeout = 0;
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.AddWithValue("@estado_con", 2);
+                            cmd.Parameters.AddWithValue("@cupon_det", cupon);
+                            using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                            {
+                                DataTable dt = new DataTable();
+                                da.Fill(dt);
+                                json = JsonConvert.SerializeObject(dt, Newtonsoft.Json.Formatting.None);
+
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        var mensaje = ex.Message;
+                        json = "";
+                    }
+                    if (cn != null)
+                        if (cn.State == ConnectionState.Open) cn.Close();
+                }
+            }
+            catch (Exception)
+            {
+                json = "";
+            }
+            return json;
+        }
+
 
         // *******Cambiar procedimiento al original luego (Cupón)
         public List<Ent_BataClub_CuponesCO> getPromDet(string prom_id)
