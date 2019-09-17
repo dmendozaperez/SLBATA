@@ -30,6 +30,7 @@ namespace CapaPresentacion.Controllers
         private Dat_Ubigeo datUbi = new Dat_Ubigeo();
         private string _session_tabla_cupones = "_session_tabla_cupones";
         private string _session_lista_promociones = "_session_lista_promociones";
+        private string _session_prom_generar_cupon = "_session_prom_generar_cupon";
 
 
         private string _BataClub_Promociones_Combo = "_BataClub_Promociones_Combo";
@@ -65,6 +66,14 @@ namespace CapaPresentacion.Controllers
                 return View();
             }  
         }
+
+        public ActionResult Promociones()
+        {
+            List<Ent_BataClub_Promociones> proms = datProm.get_ListaPromociones();
+            Session[_session_lista_promociones] = proms;
+            return View();
+        }
+
         public ActionResult getDetalleCupon(string cupon)
         {
             string detalles = "";
@@ -81,13 +90,16 @@ namespace CapaPresentacion.Controllers
         //Table
         public PartialViewResult _Table(string dni, string cupon, string hidden, string correo,string[] dwprom, string[] dwest)
         {
-            if (dwprom == null || dwest == null)
+            if (dwprom == null && dwest == null && String.IsNullOrEmpty(dni) && String.IsNullOrEmpty(cupon) && String.IsNullOrEmpty(correo))
             {
                 Session[_session_tabla_cupones] = null;
                 return PartialView();
             }
             else
             { //string dwprom--> se reemplaza por hidden - para agarrar varios id de promociones con el combo multiselect
+
+                dwprom = dwprom == null ? new string[] { "" } : dwprom;
+                dwest = dwest == null ? new string[] { "" } : dwest;
                 return PartialView(listaTablaPromociones(dni, cupon, String.Join(",",dwprom) , correo, String.Join(",", dwest)  ));
             }
         }
@@ -314,7 +326,7 @@ namespace CapaPresentacion.Controllers
         #region Bataclub/Cupon
         //Index
         [HttpGet]
-        public ActionResult Cupon(string dwpromo)
+        public ActionResult Cupon(string prom)
         {
             string cod_prom = "";
 
@@ -340,40 +352,58 @@ namespace CapaPresentacion.Controllers
 
             //    return View();
             //}
-
-            List<Ent_BataClub_CuponesCO> list = null;
-
-            if (Session["_BataClub_Promociones_Combo"] == null)
+            
+            if (String.IsNullOrEmpty(prom))
             {
-                ViewBag.Promocion = datProm.get_ListaPromociones();
-                Session["_BataClub_Promociones_Combo"] = ViewBag.Promocion;
-            }
-            else
-            { ViewBag.Promocion = Session["_BataClub_Promociones_Combo"]; }
-
-
-            if (Session["_BataClub_cupon_Combo"] == null)
-            {
-                ViewBag.PromoPop = datProm.get_ListaPromo_Disp();
-                Session["_BataClub_cupon_Combo"] = ViewBag.PromoPop;
-                cod_prom = ViewBag.PromoPop[0].prom_id.ToString();
-                list =datProm.getPromDet(cod_prom);
-                ViewBag.Descuento = list[0].porc_desc.ToString();
-                ViewBag.FechaFin = list[0].cup_fecha_fin.ToString();
-                ViewBag.Pares = list[0].max_pares.ToString();
-                Session["_BataClub_Cupon_Desc"] = ViewBag.Descuento;
-                Session["_BataClub_Cupon_FechaFin"] = ViewBag.FechaFin;
-                Session["_BataClub_Cupon_Pares"] = ViewBag.Pares;
+               ViewBag.proms = datProm.get_ListaPromo_Disp();
             }
             else
             {
-                list = datProm.getPromDet(dwpromo);            
-                ViewBag.PromoPop = ((List<Ent_BataClub_ComboProm>)(Session[_BataClub_cupon_Combo])).Where(t => t.prom_id == dwpromo);
-                ViewBag.Descuento = list[0].porc_desc.ToString();
-                ViewBag.FechaFin = list[0].cup_fecha_fin.ToString();
-                ViewBag.Pares = list[0].max_pares.ToString();
+                List<Ent_BataClub_Promociones> promsAct = datProm.get_ListaPromo_Disp().Where(w => w.Codigo == prom).ToList();
+                Ent_BataClub_Promociones _prom = promsAct.FirstOrDefault();
+                ViewBag.proms = promsAct;
+                ViewBag.Descuento = _prom.Porc_Dcto;
+                ViewBag.Fecha = _prom.FechaFin;
+                ViewBag.Pares = _prom.MaxPares;
+                ViewBag.prom = _prom.Codigo;
             }
-            return PartialView();
+            return View();
+            
+
+
+            //List<Ent_BataClub_CuponesCO> list = null;
+
+            //if (Session["_BataClub_Promociones_Combo"] == null)
+            //{
+            //    ViewBag.Promocion = datProm.get_ListaPromociones();
+            //    Session["_BataClub_Promociones_Combo"] = ViewBag.Promocion;
+            //}
+            //else
+            //{ ViewBag.Promocion = Session["_BataClub_Promociones_Combo"]; }
+
+
+            //if (Session["_BataClub_cupon_Combo"] == null)
+            //{
+            //    ViewBag.PromoPop = datProm.get_ListaPromo_Disp();
+            //    Session["_BataClub_cupon_Combo"] = ViewBag.PromoPop;
+            //    cod_prom = ViewBag.PromoPop[0].prom_id.ToString();
+            //    list =datProm.getPromDet(cod_prom);
+            //    ViewBag.Descuento = list[0].porc_desc.ToString();
+            //    ViewBag.FechaFin = list[0].cup_fecha_fin.ToString();
+            //    ViewBag.Pares = list[0].max_pares.ToString();
+            //    Session["_BataClub_Cupon_Desc"] = ViewBag.Descuento;
+            //    Session["_BataClub_Cupon_FechaFin"] = ViewBag.FechaFin;
+            //    Session["_BataClub_Cupon_Pares"] = ViewBag.Pares;
+            //}
+            //else
+            //{
+            //    list = datProm.getPromDet(dwpromo);            
+            //    ViewBag.PromoPop = ((List<Ent_BataClub_ComboProm>)(Session[_BataClub_cupon_Combo])).Where(t => t.prom_id == dwpromo);
+            //    ViewBag.Descuento = list[0].porc_desc.ToString();
+            //    ViewBag.FechaFin = list[0].cup_fecha_fin.ToString();
+            //    ViewBag.Pares = list[0].max_pares.ToString();
+            //}
+            //return PartialView();
         }
 
         //Table cupón 

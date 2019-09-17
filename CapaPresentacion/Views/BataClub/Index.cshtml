@@ -137,7 +137,12 @@
         //    //  console.log("entro a boton graf");
         //    PopupDetalle();
         //});
-        
+        $("#btnSearch").click(function () {
+            if ($("#dwest").val() == null && $("#dwprom").val() == null && $("#dni").val() == '' && $("#cupon").val() == '' && $("#correo").val() == '') {
+                toastr.error("Ingrese o seleccione algún filtro por favor.", "Mensaje");
+                return false;
+            }
+        })
     });
     function PopupCupones() {
         var ControllerUrl = "@Url.Action("Cupon", "BataClub")";
