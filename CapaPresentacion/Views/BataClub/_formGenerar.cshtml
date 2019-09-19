@@ -1,0 +1,216 @@
+﻿@using CapaEntidad.BataClub
+@model IEnumerable<Ent_BataClub_CuponesCO>
+@{
+    AjaxOptions options = new AjaxOptions
+    {
+        HttpMethod = "GET",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "lista",
+        OnComplete = "waitingDialog.hide();",
+        OnBegin = "waitingDialog.show('Espere un momento por favor');",
+        OnFailure = "waitingDialog.hide();"
+    };
+}
+<link href="~/ContentSelect/bootstrap-select.css" rel="stylesheet" />
+<link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />  
+<style>
+    .boton-td {
+        padding-top: 3px !important;
+        padding-bottom: 3px !important;
+    }
+    .content-center-text{
+        text-align: center;
+    }
+</style>
+<p class="text-danger">@ViewBag.SubTitle</p>
+
+<div class="box box-body box-primary">
+    <div class="row">
+        <div class="col-sm-4" style="padding-left: 25px;">
+            <label for="segape" style="color: #3d566e;">Promoción</label>
+            <div class="form-group">
+                <div id="prm" class="form-group" disabled>
+                    @if (ViewBag.Operacion == null)
+                    {
+                        <input type="text" value="@ViewBag.Descripcion" class="form-control" name="promocion" id="promocion" readonly="readonly" />
+                    }
+                    else
+                    {
+                        <input type="text" value="" class="form-control" name="promocion" id="promocion"/>
+                    }                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2" style="padding-left: 25px; margin-right: inherit;">
+            <label for="segape" style="color: #3d566e;">Descuento</label>
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-tag"></i></span>
+                    @if (ViewBag.Operacion == null)
+                    {
+                        <input id="dscto" type="text" value="@ViewBag.dscto" class="form-control" name="dscto" placeholder="Descuento" readonly="readonly">
+                    }
+                    else
+                    {
+                        <input id="dscto" type="text" value="" class="form-control" name="dscto" placeholder="Descuento">
+                    }                    
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3" style="padding-left: 25px;">
+            <div class="form-group">
+                <label for="fecnac" style="color: #3d566e;">Fecha Final</label>
+                <div class="input-group">
+                    <input type="text" name="fecha" id="fecha" class="form-control" value="@ViewBag.fecha" placeholder="dd-mm-aaaa" style="height: 33.979166px;">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" id="btdp" type="button"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div><!-- /input-group -->
+            </div>
+            </div>
+        <div class="col-sm-1" style="padding-left: 25px; margin-right: inherit; width: 130px;">
+            <label for="segape" style="color: #3d566e;">Pares Máx.</label>
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-tag"></i></span>
+                    <input id="pares" type="text" value="@ViewBag.pares" class="form-control" name="pares" placeholder="Pares Máx" readonly="readonly">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="box box-body box-primary">
+    @using (Ajax.BeginForm("_TableCupon", options))
+    {
+        <form id="form2">
+            <div class="row">
+                <div class="col-sm-4" style="padding-left: 25px; margin-right: inherit;">
+                    <label for="segape" style="color: #3d566e;">Identificación</label>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+                            <input id="identificacion" type="text" class="form-control" name="identificacion" placeholder="Ingrese DNI o Email completo">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2" style="padding-left: 25px; width: 105px; margin-top: 23px; margin-bottom: 10px;">
+                    <button id="btnAgregarBuscar" type="submit" title="Agregar" class="btn btn-success" @*href="@Url.Action("Cupon", "BataClub")"*@>
+                        <span class="glyphicon glyphicon-ok-sign"></span>&nbsp;&nbsp;Agregar
+                    </button>
+                </div>
+
+                <div class="col-sm-4"></div>
+                <div class="col-sm-2" style="padding-left: 25px; margin-top: 23px; margin-bottom: 10px; float: right;">
+                    <button id="btnGenerar" type="button" title="Generar" class="btn btn-warning">
+                        <span class="glyphicon glyphicon-barcode"></span>&nbsp;&nbsp;Generar
+                    </button>
+                </div>  
+
+            </div>
+        </form>
+    }
+    <div class="box-body" id="lista" style="padding-bottom: 20px;">
+        @{Html.RenderPartial("_TableCupon", Model);}
+    </div>
+</div>
+<div class="modal fade" id="modalResultCupones" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p style="font-size:medium" class="text-primary modal-title" id="myModalLabel"><b>Lista de Cupones generados: &nbsp;</b></p>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <a href="@Url.Action("ListaCuponesExcel","BataClub")" class="btn btn-success btn-sm"><i class="glyphicon glyphicon-export"></i>&nbsp;&nbsp;Exportar Lista</a>
+                    </div>
+                </div>
+            </div>
+            <div style="font-size:small" class="modal-body" id="divListaCupones">
+
+            </div>
+            <div class="modal-footer">
+                <a href="@Url.Action("Promociones" , "BataClub")" class="btn btn-primary" onclick=""><i class="glyphicon glyphicon-arrow-left"></i>&nbsp;&nbsp;Terminar y Salir</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#btdp").click(function () {
+            $("#fecha").datepicker('show')
+        });
+        $('#fecha').datepicker({
+            format: "dd-mm-yyyy",
+            autoclose: true,
+            maxDate: new Date(),
+        });
+    $("#btnGenerar").click(function () {
+            var _titulo = "";
+            swal({
+                title: "Generar Cupones",
+                text: "¿Desea generar cupones para la promocion?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+           .then((cambiar) => {
+               if (cambiar) {
+                   var promocion = $("#promocion").val();
+                   var dscto = $("#dscto").val();
+                   var fecha = $("#fecha").val();
+                   var pares = $("#pares").val();
+                   waitingDialog.show('Espere un momento por favor');
+                   $.ajax({
+                       type: "POST",
+                       url: '@Url.Action("BATACLUB_INSERTAR_CUPONES", "BataClub")',
+                       data: { promocion: promocion, dscto: dscto, fecha: fecha , pares : pares },
+                       dataType: "json",
+                       success: function (data) {
+                           waitingDialog.hide();
+                           if (data.estado == 1) {
+                               swal({
+                                   title: "OK",
+                                   text: data.mensaje,
+                                   icon: "success"
+                               }).then((value) => {
+                                   var table = '<table id="listaCuponesRes" class="table table-condensed table-responsive table-borderer"><thead><tr style="background-color:#3d566e; color:#ecf0f1">' +
+                                            '<th>Promocion</th><th>Dni</th><th>Nombres</th><th>Correo</th><th>Cupon</th></tr></thead><tbody data-bind="foreach:">';
+                                   for (var i = 0; i < data.listaCupones.length; i++) {
+                                       table += '<tr><td>' + data.listaCupones[i].promocion + '</td><td>' + data.listaCupones[i].dniCliente + '</td><td>' + data.listaCupones[i].nombresCliente + ' ' + data.listaCupones[i].apellidosCliente + '</td><td>' + data.listaCupones[i].correo + '</td><td>' + data.listaCupones[i].cupon + '</td></tr>'
+                                   }
+                                   table += '</tbody><tfoot><tr><th>Promocion</th><th>Dni</th><th>Nombres</th><th>Correo</th><th>Cupon</th></tr></tfoot></table>';
+                                   $("#divListaCupones").html(table);
+                                   $("#listaCuponesRes").DataTable({
+                                       "language": {
+                                           "url": "../Scripts/DataTables/Spanish.json"
+                                       }
+                                   });                                    
+                                   $("#modalResultCupones").modal({ backdrop: 'static', keyboard: false });
+                               });
+                           } else {
+                               swal({
+                                   title: "Error",
+                                   text: data.mensaje,
+                                   icon: "error",
+                                   dangerMode: true,
+                               });
+                           }
+                       },
+                       error: function (XMLHttpRequest, textStatus, errorThrown) {
+                           waitingDialog.hide();
+                           var error = eval("(" + XMLHttpRequest.responseText + ")");
+                           alert(error.Message);
+                       }
+                   });
+               }
+           });
+    });
+});
+</script>

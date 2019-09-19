@@ -1592,7 +1592,7 @@
     <Content Include="Views\Contabilidad\_popUpDetalle.cshtml" />
     <Content Include="Views\BataClub\_popUpGrafica.cshtml" />
     <Content Include="Views\RuletaBata\Index.cshtml" />
-    <Content Include="Views\BataClub\Cupon.cshtml" />
+    <Content Include="Views\BataClub\_formGenerar.cshtml" />
     <Content Include="Views\BataClub\_TableCupon.cshtml" />
     <Content Include="Views\Inventario\Consulta_Inv.cshtml" />
     <Content Include="Views\Inventario\_TableConsInv.cshtml" />
@@ -1615,6 +1615,8 @@
     <Content Include="Views\Inventario\ListaAjustes.cshtml" />
     <Content Include="Views\Inventario\ListaAjustesInv.cshtml" />
     <Content Include="Views\BataClub\Promociones.cshtml" />
+    <Content Include="Views\BataClub\GenerarCupon.cshtml" />
+    <Content Include="Views\BataClub\CrearPromocion.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

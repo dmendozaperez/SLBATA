@@ -14,9 +14,9 @@ namespace CapaDato.BataClub
     public class Dat_BataClub_CuponesCO
     {
         // Combo de Promociones disponibles (Cupón)
-        public List<Ent_BataClub_ComboProm> get_ListaPromo_Disp()
+        public List<Ent_BataClub_Promociones> get_ListaPromo_Disp()
         {
-            List<Ent_BataClub_ComboProm> list = null;
+            List<Ent_BataClub_Promociones> list = null;
             string sqlquery = "USP_BATACLUB_GET_PROMO_DISPONIBLE";
             try
             {
@@ -30,20 +30,22 @@ namespace CapaDato.BataClub
                         SqlDataReader dr = cmd.ExecuteReader();
                         if (dr.HasRows)
                         {
-                            list = new List<Ent_BataClub_ComboProm>();
-                            Ent_BataClub_ComboProm combo = new Ent_BataClub_ComboProm();
+                            list = new List<Ent_BataClub_Promociones>();
+                            Ent_BataClub_Promociones combo = new Ent_BataClub_Promociones();
                             while (dr.Read())
                             {
-                                combo = new Ent_BataClub_ComboProm();
-                                combo.prom_id = dr["Prom_ID"].ToString();
-                                combo.prom_des = dr["Prom_Des"].ToString();
+                                combo = new Ent_BataClub_Promociones();
+                                combo.Codigo = dr["Prom_ID"].ToString();
+                                combo.Descripcion = dr["Prom_Des"].ToString();
+                                combo.MaxPares = Convert.ToInt32(dr["Prom_Max_pares"].ToString());
+                                combo.Porc_Dcto = Convert.ToDecimal(dr["Prom_Porc_Dcto"].ToString());
                                 list.Add(combo);
                             }
                         }
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 list = null;
             }
@@ -74,9 +76,9 @@ namespace CapaDato.BataClub
                                 prom = new Ent_BataClub_Promociones();
                                 prom.Codigo = dr["Codigo"].ToString();
                                 prom.Descripcion = dr["Descripcion"].ToString();
-                                prom.Porc_Dcto = dr["Porc_Dcto"].ToString();
+                                prom.Porc_Dcto = Convert.ToDecimal(dr["Porc_Dcto"].ToString());
                                 prom.MaxPares = Convert.ToInt32( dr["MaxPares"].ToString());
-                                prom.FechaFin = dr["FechaFin"].ToString();
+                                prom.FechaFin = Convert.ToDateTime(dr["FechaFin"]).ToString("dd-MM-yyyy");
                                 prom.PromActiva = Convert.ToBoolean(dr["PromActiva"]);
                                 list.Add(prom);
                             }
@@ -90,6 +92,51 @@ namespace CapaDato.BataClub
             }
             return list;
         }
+
+        public List<Ent_BataClub_Cupones> get_ListaCuponesPromocion(string codProm)
+        {
+            List<Ent_BataClub_Cupones> list = null;
+            string sqlquery = "USP_BATACLUB_PROMOCION_LISTA";
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+                    if (cn.State == 0) cn.Open();
+                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@prom_id", codProm);
+                        cmd.Parameters.AddWithValue("@estado", 1);
+                        SqlDataReader dr = cmd.ExecuteReader();
+                        if (dr.HasRows)
+                        {
+                            list = new List<Ent_BataClub_Cupones>();
+                            Ent_BataClub_Cupones cup = new Ent_BataClub_Cupones();
+                            while (dr.Read())
+                            {
+                                cup = new Ent_BataClub_Cupones();
+                                cup.promocion = dr["Promocion"].ToString();
+                                cup.estado = dr["Estado"].ToString();
+                                cup.dniCliente = dr["Dni"].ToString(); ;
+                                cup.nombresCliente = dr["Nombres"].ToString(); ;
+                                cup.apellidosCliente = dr["Apellidos"].ToString(); ;
+                                cup.correo = dr["Email"].ToString(); ;
+                                cup.cupon = dr["Barra"].ToString(); ;
+                                list.Add(cup);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                list = null;
+            }
+            return list;
+        }
+
+
 
         // Combo de Estados de cupón
         public List<Ent_BataClub_ComboEstCupon> get_ListaEstados()
@@ -271,10 +318,10 @@ namespace CapaDato.BataClub
         }
 
         //Listado Tabla principal Cupón (Cupón)
-        public List<Ent_BataClub_CuponesCO> get_cliente(string dni_correo)
+        public Ent_BataClub_Cupones get_cliente(string dni_correo)
         {
             string sqlquery = "USP_BATACLUB_GET_EXISTE_CL";
-            List<Ent_BataClub_CuponesCO> listar = null;
+            Ent_BataClub_Cupones cliente = null;
             try
             {
                 using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
@@ -291,22 +338,22 @@ namespace CapaDato.BataClub
                             {
                                 DataTable dt = new DataTable();
                                 da.Fill(dt);
-                                listar = new List<Ent_BataClub_CuponesCO>();
-                                listar = (from DataRow dr in dt.Rows
-                                          select new Ent_BataClub_CuponesCO()
+                                cliente = new Ent_BataClub_Cupones();
+                                cliente = (from DataRow dr in dt.Rows
+                                          select new Ent_BataClub_Cupones()
                                           {
-                                              Nombres = dr["NOMBRES"].ToString(),
-                                              Apellidos = dr["APELLIDOS"].ToString(),
-                                              dni = dr["DNI"].ToString(),
-                                              correo = dr["CORREO"].ToString()       
-                                          }).ToList();
+                                              nombresCliente = dr["Nombres"].ToString(),
+                                              apellidosCliente = dr["Apellidos"].ToString(),
+                                              dniCliente = dr["Dni"].ToString(),
+                                              correo = dr["Email"].ToString()
+                                          }).FirstOrDefault();
                             }
                         }
                     }
                     catch (Exception ex)
                     {
                         var mensaje = ex.Message;
-                        listar = null;
+                        cliente = null;
                     }
                     if (cn != null)
                         if (cn.State == ConnectionState.Open) cn.Close();
@@ -314,9 +361,9 @@ namespace CapaDato.BataClub
             }
             catch (Exception)
             {
-                listar = null;
+                cliente = null;
             }
-            return listar;
+            return cliente;
         }
 
         //Gráfica del consumo de los cupones por mes
@@ -351,6 +398,71 @@ namespace CapaDato.BataClub
             //return oLista;
             return strJson;
         }
+        public List<Ent_BataClub_Cupones> BATACLUB_INSERTAR_CUPONES(decimal por_desc , DateTime fecha_fin , decimal pares , string prom_des, decimal usu_id , List<Ent_BataClub_Cupones> clientes ,ref string mensaje)
+        {
+            string sqlquery = "USP_BATACLUB_INSERTAR_CUPONES";
+            int f = 0;
+            DataTable tmpcupones = new DataTable();
+            tmpcupones = _toDTListCli(clientes);
+            List<Ent_BataClub_Cupones> list = null;
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+                    if (cn.State == 0) cn.Open();
+                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@pordes", por_desc);
+                        cmd.Parameters.AddWithValue("@fecfin", fecha_fin);
+                        cmd.Parameters.AddWithValue("@paresmax", pares);
+                        cmd.Parameters.AddWithValue("@prom_des", prom_des);
+                        cmd.Parameters.AddWithValue("@tmpcupones", tmpcupones);
+                        cmd.Parameters.AddWithValue("@usu_id", usu_id);
+                        SqlDataReader dr = cmd.ExecuteReader();
+                        if (dr.HasRows)
+                        {
+                            list = new List<Ent_BataClub_Cupones>();
+                            Ent_BataClub_Cupones cup = new Ent_BataClub_Cupones();
+                            while (dr.Read())
+                            {
+                                cup = new Ent_BataClub_Cupones();
+                                cup.promocion = dr["Promocion"].ToString();
+                                cup.dniCliente = dr["Dni"].ToString();
+                                cup.nombresCliente = dr["Nombres"].ToString();
+                                cup.apellidosCliente = dr["Apellidos"].ToString();
+                                cup.correo = dr["Email"].ToString();
+                                cup.cupon = dr["Barra"].ToString();
+                                list.Add(cup);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex )
+            {
+                mensaje = ex.Message;
+                list = null;
+            }
+            return list;
+        }
+
+        private DataTable _toDTListCli(List<Ent_BataClub_Cupones> clientes)
+        {
+            DataTable dtRet = new DataTable();
+            dtRet.Columns.Add("dni");
+            dtRet.Columns.Add("nombres");
+            dtRet.Columns.Add("apellidos");
+            dtRet.Columns.Add("email");
+            dtRet.Columns.Add("barra");
+            foreach (var item in clientes)
+            {
+                dtRet.Rows.Add(item.dniCliente, item.nombresCliente,item.apellidosCliente  , item.correo , "");
+            }
+            return dtRet;
+        }
+
 
         //Retorno de lista de clientes con la barra de cupón
         public static List<Ent_BataClub_ListaCliente> return_barra_list(Ent_BataClub_ListaItems list_cliente, decimal _pordes, DateTime fecfin, int _pares_max, string _tipo_des, decimal usu_id)
@@ -461,6 +573,5 @@ namespace CapaDato.BataClub
             return list_client_return;
 
         }
-
     }
 }
