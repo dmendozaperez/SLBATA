@@ -353,20 +353,20 @@ namespace CapaPresentacion.Controllers
             //    return View();
             //}
             
-            if (String.IsNullOrEmpty(prom))
-            {
-               ViewBag.proms = datProm.get_ListaPromo_Disp();
-            }
-            else
-            {
-                List<Ent_BataClub_Promociones> promsAct = datProm.get_ListaPromo_Disp().Where(w => w.Codigo == prom).ToList();
-                Ent_BataClub_Promociones _prom = promsAct.FirstOrDefault();
-                ViewBag.proms = promsAct;
-                ViewBag.Descuento = _prom.Porc_Dcto;
-                ViewBag.Fecha = _prom.FechaFin;
-                ViewBag.Pares = _prom.MaxPares;
-                ViewBag.prom = _prom.Codigo;
-            }
+            //if (String.IsNullOrEmpty(prom))
+            //{
+            //   ViewBag.proms = datProm.get_ListaPromo_Disp();
+            //}
+            //else
+            //{
+            //    List<Ent_BataClub_Promociones> promsAct = datProm.get_ListaPromo_Disp().Where(w => w.Codigo == prom).ToList();
+            //    Ent_BataClub_Promociones _prom = promsAct.FirstOrDefault();
+            //    ViewBag.proms = promsAct;
+            //    ViewBag.Descuento = _prom.Porc_Dcto;
+            //    ViewBag.Fecha = _prom.FechaFin;
+            //    ViewBag.Pares = _prom.MaxPares;
+            //    ViewBag.prom = _prom.Codigo;
+            //}
             return View();
             
 
