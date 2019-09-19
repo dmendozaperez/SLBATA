@@ -12,6 +12,7 @@ namespace CapaEntidad.BataClub
         public string estado { get; set; }
         public string fechaFin { get; set; }
         public string nombresCliente { get; set; }
+        public string apellidosCliente { get; set; }
         public string dniCliente { get; set; }
         public string correo { get; set; }
         public string cupon { get; set; }
@@ -21,7 +22,7 @@ namespace CapaEntidad.BataClub
     {
         public string Codigo { get; set; }
         public string Descripcion { get; set; }
-        public string Porc_Dcto { get; set; }
+        public decimal Porc_Dcto { get; set; }
         public int MaxPares { get; set; }
         public string FechaFin { get; set; }
         public bool PromActiva { get; set; }

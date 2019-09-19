@@ -15,7 +15,7 @@
 <div class="box box-body box-primary">
     <div class="row">
         <div class="col-md-12">
-            <a href="@Url.Action("Nuevo", "Orce_Exclud")" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i>&nbsp;Crear nueva interface Exclud</a>
+            <a href="@Url.Action("CrearPromocion", "BataClub")" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i>&nbsp;Crear nueva promocion</a>
         </div>
     </div>
     <br />
@@ -27,10 +27,12 @@
                         <tr style="background-color:#3d566e; color:#ecf0f1">
                             <th>Codigo</th>
                             <th>Descripcion</th>
-                            <th>Desc (%)</th>
+                            <th>Dcto (%)</th>
                             <th>Max Pares</th>
                             <th>Fec. Fin</th>
-                            <th>Activa</th>                            
+                            <th>Activa</th>
+                            <th>Cupones</th>                            
+                            <th>Generar</th>                            
                         </tr>
                     </thead>
                     <tbody data-bind="foreach:"></tbody>
@@ -38,13 +40,38 @@
                         <tr>
                             <th>Codigo</th>
                             <th>Descripcion</th>
-                            <th>Desc (%)</th>
+                            <th>Dcto (%)</th>
                             <th>Max Pares</th>
                             <th>Fec. Fin</th>
                             <th>Activa</th>         
+                            <th>Cupones</th>
+                            <th>Generar</th>                            
                         </tr>
                     </tfoot>
                 </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalResultCupones" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p style="font-size:medium" class="text-primary modal-title" id="myModalLabel"><strong class="text-danger" id="descPromocionLista"></strong></p>
+                        <p style="font-size:medium" class="text-primary modal-title" id="myModalLabel"><b>Lista de Cupones generados: &nbsp;</b></p>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <a href="@Url.Action("ListaCuponesExcel","BataClub")" class="btn btn-success btn-sm"><i class="glyphicon glyphicon-export"></i>&nbsp;&nbsp;Exportar Lista</a>
+                    </div>
+                </div>
+            </div>
+            <div style="font-size:small" class="modal-body" id="divListaCupones">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="">Cerrar</button>
             </div>
         </div>
     </div>
@@ -66,62 +93,91 @@
             },
             "bdestroy": true,
             "start": 0,
-            "order": [1, "asc"],
+            "order": [],
             "bDeferRender": true,
             "aoColumns": [
-
-
-                  { "sName": "ORC_COD", "mData": "ORC_COD" },
-                  { "sName": "ORC_DESCRIPCION", "mData": "ORC_DESCRIPCION", "class": "right" },
-                  { "sName": "ORC_ATRIBUTO", "mData": "ORC_ATRIBUTO", "class": "right" },
-                  { "sName": "ORC_FECHA_ING", "mData": "ORC_FECHA_ING", "class": "right" },
-                  { "sName": "ORC_FECHA_ACT", "mData": "ORC_FECHA_ACT", "class": "right" },
-                  { "sName": "ORC_FEC_ENV", "mData": "ORC_FEC_ENV", "class": "right" },
+                  { "sName": "Codigo", "mData": "Codigo" },
+                  { "sName": "Descripcion", "mData": "Descripcion", "class": "right" },
+                  { "sName": "Porc_Dcto", "mData": "Porc_Dcto", "class": "right" },
+                  { "sName": "MaxPares", "mData": "MaxPares", "class": "right" },
+                  { "sName": "FechaFin", "mData": "FechaFin", "class": "right" },
                   {
                       "render": function (data, type, full) {
-                          return '<button title="Ver lista de tiendas" class="btn btn-default btn-sm tiendas" data-des-orce="' + full.ORC_DESCRIPCION + '" data-atributo="' + full.ORC_ATRIBUTO + '" data-cod-orce="' + full.ORC_COD + '" ><i class="glyphicon glyphicon-list"></i></button>';
+                          if (full.PromActiva == 1) {
+                              return '<span class="label label-success">ACTIVO</span>'
+                          } else {
+                              return '<span class="label label-danger">CADUCADO</span>'
+                          }
+                      }
+                  },
+                  {
+                      "render": function (data, type, full) {
+                          return '<button title="Ver lista de cupones" class="btn btn-default btn-sm cupones" data-cod-prom="' + full.Codigo + '" data-des-prom="' + full.Descripcion + '"><i class="glyphicon glyphicon-list"></i></button>';
                       }, "sClass": "boton-td"
                   },
                   {
                       "render": function (data, type, full) {
-                          return '<button title="Ver lista de articulos" class="btn btn-default btn-sm articulos"  data-des-orce="' + full.ORC_DESCRIPCION + '"  data-atributo="' + full.ORC_ATRIBUTO + '" data-cod-orce="' + full.ORC_COD + '"><i class="glyphicon glyphicon-list"></i></button>';
-                      }, "class": "boton-td"
-                  },
-                  {
-                      "render": function (data, type, full) {
-                          if (full.ORC_EST_ID == 'P') {
-                              return '<span class="label label-warning">PENDIENTE</span>'
-                          } else if (full.ORC_EST_ID == 'A') {
-                              return '<span class="label label-danger">ANULADO</span>'
-                          } else {
-                              return '<span class="label label-success">ENVIADO</span>'
+                          var agregar = '';
+                          if (full.PromActiva == 1){
+                              agregar += '<form action="@Url.Action("GenerarCupon", "BataClub")" method="post">' +
+                                  '<input type="hidden" name="codigo" value="' + full.Codigo + '"/>' +
+                                  '<input type="hidden" name="descripcion" value="' + full.Descripcion + '" />' +
+                                  '<input type="hidden" name="dscto" value="' + full.Porc_Dcto + '" />' +
+                                  '<input type="hidden" name="fecha" value="' + full.FechaFin + '" />' +
+                                  '<input type="hidden" name="pares" value="' + full.MaxPares + '" />' +
+                                  '<button type="submit" class="btn btn-success btn-sm" title="Generar Cupones" ><i class="glyphicon glyphicon-plus"></i></button>'
+                              return agregar;
                           }
-                      }
-                  },//estado
-                  {
-                      "render": function (data, type, full) {
-                          if (full.ORC_EST_ID == 'P')
-                              return '<button class="btn btn-success btn-sm accion-inter" title="Enviar Interface" data-accion-iter="E" data-cod-orce="' + full.ORC_COD + '"><i class="glyphicon glyphicon-send"></i></button>';
                           else
+                          {
                               return '';
+                          }
                       }, "class": "boton-td"
-                  },
-                  {
-                      "render": function (data, type, full) {
-                          if (full.ORC_EST_ID == 'P')
-                              return '<a href="../Orce_Exclud/Editar?id=' + full.ORC_COD + '" class="btn btn-primary btn-sm " title="Editar interface" data-accion-iter="P" data-cod-orce="' + full.ORC_COD + '"><i class="glyphicon glyphicon-edit"></i></a>';
-                          else
-                              return '';
-                      }, "class": "boton-td"
-                  },
-                  {
-                      "render": function (data, type, full) {
-                          if (full.ORC_EST_ID == 'P')
-                              return '<button class="btn btn-danger btn-sm accion-inter" title="Anular interface" data-accion-iter="A" data-cod-orce="' + full.ORC_COD + '"><i class="glyphicon glyphicon-trash"></i></button>';
-                          else
-                              return '';
-                      }, "class": "boton-td"
-                  },
+                  }
             ]
         });
+        $('.dt-lista').on('click', '.cupones', function (e) {
+            waitingDialog.show('Espere un momento por favor');
+            var codProm = $(this).attr('data-cod-prom');
+            var desProm = $(this).attr('data-des-prom');
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("getListaCupProm", "BataClub")',
+                data: { codProm: codProm },
+                dataType: "json",
+                success: function (data) {
+                    waitingDialog.hide();
+                    if (data.estado == 1) {
+                        var table = '<table id="listaCuponesRes" class="table table-condensed table-responsive table-borderer"><thead><tr style="background-color:#3d566e; color:#ecf0f1">' +
+                                             '<th>Promocion</th><th>Dni</th><th>Nombres</th><th>Correo</th><th>Cupon</th></tr></thead><tbody data-bind="foreach:">';
+                        for (var i = 0; i < data.listaCupones.length; i++) {
+                            table += '<tr><td>' + data.listaCupones[i].promocion + '</td><td>' + data.listaCupones[i].dniCliente + '</td><td>' + data.listaCupones[i].nombresCliente + ' ' + data.listaCupones[i].apellidosCliente + '</td><td>' + data.listaCupones[i].correo + '</td><td>' + data.listaCupones[i].cupon + '</td></tr>'
+                        }
+                        table += '</tbody><tfoot><tr><th>Promocion</th><th>Dni</th><th>Nombres</th><th>Correo</th><th>Cupon</th></tr></tfoot></table>';
+                        $("#descPromocionLista").html(desProm);
+                        $("#divListaCupones").html(table);
+                        $("#listaCuponesRes").DataTable({
+                            "language": {
+                                "url": "../Scripts/DataTables/Spanish.json"
+                            },
+                            //"deferRender": true
+                        });
+                        $("#modalResultCupones").modal({ backdrop: 'static', keyboard: false });
+                    } else {
+                        swal("Error", "No se pudo cargar la lista de articulos");
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    waitingDialog.hide();
+                    var error = eval("(" + XMLHttpRequest.responseText + ")");
+                    console.log(XMLHttpRequest.responseText);
+                    alert(error.Message);
+                }
+            });
+
+        });
+    });
+
+
+
 </script>

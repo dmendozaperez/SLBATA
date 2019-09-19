@@ -104,7 +104,6 @@
             },
             "fnServerData": function ( sSource, aoData, fnCallback ) {
                 $.getJSON( sSource, aoData, function (json) { 
-                    console.log(json.variable1);
                     $('#lblConsumidos')[0].textContent = "" + json.variable1;
                     $('#lblDisponibles')[0].textContent = "" + json.variable2;
                     $('#lblCaducados')[0].textContent = "" + json.variable3;

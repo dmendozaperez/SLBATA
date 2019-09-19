@@ -2,9 +2,8 @@
 <table id="example2" class="table table-hover dataTable  table-striped table-responsive">
     <thead>
         <tr style="background-color:#3d566e; color:#ecf0f1">
-            <th>Nombres</th>
-            <th>Apellidos</th>
             <th>DNI</th>
+            <th>Nombres</th>
             <th>Correo</th>
             <th>Borrar</th>
         </tr>
@@ -12,9 +11,8 @@
     <tbody data-bind="foreach:"></tbody>
     <tfoot>
         <tr>
-            <th>Nombres</th>
-            <th>Apellidos</th>
             <th>DNI</th>
+            <th>Nombres</th>
             <th>Correo</th>
             <th>Borrar</th>
         </tr>
@@ -22,67 +20,57 @@
 </table>
 
 <script>
-    $('#example2').dataTable({
+    $(document).ready(function () {
+        //waitingDialog.show('Espere un momento por favor');
+        var dniEliminar = "";
+        $('#example2').DataTable({
             "language": {
                 "url": "../Scripts/DataTables/Spanish.json"
             },
-            "bProcessing": false, 
+            "bProcessing": false,
             "bServerSide": true,
             "bAutoWidth": false,
             "sAjaxSource": '@Url.Action("getTableCuponAjax", "BataClub")',
             "fnServerParams": function (aoData) {
-                //aoData.push({ "name": "lblConsumidos", "value": $.trim($('#lblConsumidos')[0].textContent).toString() });
-                //  $('#lblConsumidos')[0].textContent.toString() = "Consumidos:";
-
-                //var nListado = $("#example2 tr").length - 2;
-                //aoData.push({ "name": "nListado", "value": nListado });
+                aoData.push({ "name": "dniEliminar", "value": dniEliminar });
             },
-          // "fnServerData": function ( sSource, aoData, fnCallback ) {
-               //$.getJSON( sSource, aoData, function (json) {
-               //    /* Do whatever additional processing you want on the callback, then tell DataTables */
-               //    console.log("entró a fnServerData");
-               //    //debugger;
-               //    console.log(json.variable1);
-               //    //  $('#lblIndicador')[0].textContent = "Data encontrada: " + json.variable1;   
-               //    if (json.variable1==true) { toastr.error("No se encontró registro alguno.", "Mensaje"); }
-               //      //return false;
-               //     fnCallback(json)
-               // } );
-           // },
             "bdestroy": true,
             "start": 0,
-            "order": [0, "asc"],
+            "sort": false,
+            "order": [],
             "bDeferRender": true,
             "aoColumns": [
-                    { "sName": "Nombres", "mData": "Nombres" },
-                    { "sName": "Apellidos", "mData": "Apellidos" },
-                    { "sName": "dni", "mData": "dni" },
-                    { "sName": "correo", "mData": "correo" },
-                    {     
-                        "render": function (data, type, full) {
-                           // var envio = "'" + full.dni + "','" + full.correo + "'"
-                            var envio = "'" + full.dni + "'"
-                            return '<div> <a title="Eliminar" id="btnEliminar" type="button" onclick="EliminarSeleccion(' + envio + ')"  class="btn btn-danger btn-sm"> <span class="glyphicon glyphicon-remove" type="button"></span></a></div>';
+                    { "sName": "dniCliente", "mData": "dniCliente" },
+                    {
+                        "render": function (data, type, full) {                            
+                            return full.nombresCliente + ' ' + full.apellidosCliente;
                         }
+                    },
+                    { "sName": "correo", "mData": "correo" },
+                    {
+                        "render": function (data, type, full) {
+                            var envio = "'" + full.dni + "'"
+                            return '<div> <a title="Eliminar" id="btnEliminar" type="button" data-dni="' + full.dniCliente + '" class="btn btn-danger btn-sm eliminar"> <span class="glyphicon glyphicon-remove" type="button"></span></a></div>';
+                        }, "sClass": "boton-td"
                     }
-            ],
-            dom: 'Bfrtip',
-            buttons: [
-            {
-                extend: 'excelHtml5',
-                title: 'Bataclub_xls'
-            },
-            {
-                extend: 'csvHtml5',
-                title: 'BataClub_csv'
-            },
-            {
-                extend: 'pdfHtml5',
-                title: 'BataClub_pdf'
-            },
-            'copyHtml5',
             ]
         });
+        $('#example2').on('click', '.eliminar', function (e) {
+            dniEliminar = $(this).attr('data-dni');
+            waitingDialog.show('Espere un momento por favor');
+            $('#example2').DataTable().ajax.reload(function () { waitingDialog.hide(); dniEliminar = ""; }, false);
+
+        });
+    });
+    
 </script>
+@if (TempData["Success"] != null)
+{
+    <script>toastr.success("@TempData["Success"]");</script>
+}
+else if ((TempData["Error"] != null))
+{
+    <script>toastr.error("@TempData["Error"]");</script>
+}
 
 
