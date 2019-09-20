@@ -74,27 +74,41 @@ namespace CapaPresentacion.Controllers
 
         public ActionResult Promociones()
         {
-            List<Ent_BataClub_Promociones> proms = datProm.get_ListaPromociones();
-            Session[_session_lista_promociones] = proms;
-            return View();
-        }
-        public ActionResult getListaCupProm(string codProm)
-        {
-            List<Ent_BataClub_Cupones> listCups = datProm.get_ListaCuponesPromocion(codProm);
-            if (listCups == null)
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
+
+            if (_usuario == null)
             {
-                listCups = new List<Ent_BataClub_Cupones>();
-                Session[_session_lista_cupones_excel] = listCups;
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
             }
             else
             {
-                Session[_session_lista_cupones_excel] = listCups;
+                List<Ent_BataClub_Promociones> proms = datProm.get_ListaPromociones();
+                Session[_session_lista_promociones] = proms;
+                return View();
             }
-            JsonResult _json = new JsonResult();
-            _json.MaxJsonLength = Int32.MaxValue;
-            _json.Data = new { estado = 1, listaCupones = listCups.Take(200000) };
-
-            return _json;
+        }
+        [HttpPost]
+        public ActionResult getListaCupProm(string codProm , string operacion)
+        {
+            if (String.IsNullOrEmpty(operacion))
+            {
+                List<Ent_BataClub_Cupones> listCups = datProm.get_ListaCuponesPromocion(codProm);
+                if (listCups == null)
+                {
+                    listCups = new List<Ent_BataClub_Cupones>();
+                    Session[_session_lista_cupones_excel] = listCups;
+                    Session[_session_lista_clientes_cupon] = listCups;
+                }
+                else
+                {
+                    Session[_session_lista_cupones_excel] = listCups;
+                    Session[_session_lista_clientes_cupon] = listCups;
+                }
+            }
+            return View();
         }
 
         public ActionResult getDetalleCupon(string cupon)
@@ -231,9 +245,18 @@ namespace CapaPresentacion.Controllers
                 variable3 = param.variable3
             }, JsonRequestBehavior.AllowGet);
         }
-        public string addClienteLista(string dniCorreo)
+        public string addClienteLista(string dniCorreo, string mesCumple , string genero)
         {
-            Ent_BataClub_Cupones cliente = datProm.get_cliente(dniCorreo);
+            List<Ent_BataClub_Cupones> clientes = new List<Ent_BataClub_Cupones>();
+            if (!String.IsNullOrEmpty(dniCorreo))
+            {
+                clientes = datProm.get_cliente(dniCorreo);
+            }
+            else
+            {
+                clientes = datProm.get_cliente(mesCumple, genero);
+                ViewBag.Operacion = 1;
+            }
             List<Ent_BataClub_Cupones> listaClientes = null;
             string result = "";
             if(Session[_session_lista_clientes_cupon] == null)
@@ -241,17 +264,20 @@ namespace CapaPresentacion.Controllers
                 List<Ent_BataClub_Cupones> _cup = new List<Ent_BataClub_Cupones>();
                 Session[_session_lista_clientes_cupon] = _cup;
             }
-            if (cliente != null)
+            if (clientes != null)
             {
                 listaClientes = (List<Ent_BataClub_Cupones>)Session[_session_lista_clientes_cupon];
-                if (listaClientes.Where(w=> w.dniCliente == cliente.dniCliente).ToList().Count() == 0)                
-                    listaClientes.Insert(0,cliente);
-                else
-                    result = "El cliente " + cliente.nombresCliente + ", ya existe en la lista.";
+                foreach (var item in clientes)
+                {
+                    if (listaClientes.Where(w=> w.dniCliente == item.dniCliente).ToList().Count() == 0)                
+                        listaClientes.Insert(0, item);
+                    else
+                        result = !String.IsNullOrEmpty(dniCorreo) ? "El cliente " + item.nombresCliente + " " + item.apellidosCliente + ", ya existe en la lista." : "";
+                }                
             }
             else
             {
-                result = "Sin resultados para: " + dniCorreo;
+                result = ("Sin resultados " + (!String.IsNullOrEmpty(dniCorreo) ?   " para: " + dniCorreo : "")).Trim();
             }
             return result;
         }
@@ -295,6 +321,7 @@ namespace CapaPresentacion.Controllers
                     else if (sortIdx == 3) filteredMembers = filteredMembers.OrderBy(o => o.MaxPares);
                     else if (sortIdx == 4) filteredMembers = filteredMembers.OrderBy(o => o.FechaFin);
                     else if (sortIdx == 5) filteredMembers = filteredMembers.OrderBy(o => o.PromActiva);
+                    else if (sortIdx == 6) filteredMembers = filteredMembers.OrderBy(o => o.nroCupones);
                 }
                 else
                 {
@@ -303,7 +330,7 @@ namespace CapaPresentacion.Controllers
                     else if (sortIdx == 2) filteredMembers = filteredMembers.OrderByDescending(o => o.Porc_Dcto);
                     else if (sortIdx == 3) filteredMembers = filteredMembers.OrderByDescending(o => o.MaxPares);
                     else if (sortIdx == 4) filteredMembers = filteredMembers.OrderByDescending(o => o.FechaFin);
-                    else if (sortIdx == 5) filteredMembers = filteredMembers.OrderByDescending(o => o.PromActiva);
+                    else if (sortIdx == 6) filteredMembers = filteredMembers.OrderByDescending(o => o.nroCupones);
                 }
             }
             var displayMembers = filteredMembers
@@ -318,7 +345,8 @@ namespace CapaPresentacion.Controllers
                              a.Porc_Dcto,
                              a.MaxPares,
                              a.FechaFin,
-                             a.PromActiva
+                             a.PromActiva,
+                             a.nroCupones
                          };
             //Se devuelven los resultados por json
             return Json(new
@@ -329,10 +357,6 @@ namespace CapaPresentacion.Controllers
                 aaData = result
             }, JsonRequestBehavior.AllowGet);
         }
-
-
-
-
         //Gráfica
         public string listarStr_graph()
         {
@@ -375,37 +399,13 @@ namespace CapaPresentacion.Controllers
         [HttpPost]
         public ActionResult GenerarCupon(string codigo , string descripcion , decimal dscto , DateTime fecha, int pares)
         {
-            
-
-            //Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
-            //string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
-            //string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
-            //string return_view = actionName + "|" + controllerName;
-
-            //if (_usuario == null)
-            //{
-            //    return RedirectToAction("Login", "Control", new { returnUrl = return_view });
-            //}
-            //else
-            //{
-            //    if (Session["Tienda"] != null)  
-            //    {
-            //        ViewBag.Tienda = tienda.get_ListaTiendaXstore().Where(t => t.cbo_codigo == Session["Tienda"].ToString()).ToList();
-            //    }
-            //    else
-            //    {
-            //        ViewBag.Tienda = tienda.get_ListaTiendaXstore(true);
-            //    }
-
-            //    return View();
-            //}
-           
+            Session[_session_lista_clientes_cupon] = null;
             if (String.IsNullOrEmpty(codigo))
             {
                 return RedirectToAction("Promociones", "BataClub");
             }
             else
-            {                
+            {
                 ViewBag.Codigo = codigo;
                 ViewBag.Descripcion = descripcion;
                 ViewBag.dscto = dscto;
@@ -416,36 +416,26 @@ namespace CapaPresentacion.Controllers
         }
         public ActionResult CrearPromocion()
         {
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
 
-
-            //Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
-            //string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
-            //string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
-            //string return_view = actionName + "|" + controllerName;
-
-            //if (_usuario == null)
-            //{
-            //    return RedirectToAction("Login", "Control", new { returnUrl = return_view });
-            //}
-            //else
-            //{
-            //    if (Session["Tienda"] != null)  
-            //    {
-            //        ViewBag.Tienda = tienda.get_ListaTiendaXstore().Where(t => t.cbo_codigo == Session["Tienda"].ToString()).ToList();
-            //    }
-            //    else
-            //    {
-            //        ViewBag.Tienda = tienda.get_ListaTiendaXstore(true);
-            //    }
-
-            //    return View();
-            //}
-            ViewBag.Operacion = 1;
-            return View();
+            if (_usuario == null)
+            {
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+            }
+            else
+            {
+                Session[_session_lista_clientes_cupon] = null;
+                ViewBag.Operacion = 1;
+                List<Ent_Combo> listMeses = datProm.get_ListaMeses();
+                listMeses.Insert(0, new Ent_Combo() { cbo_codigo = "0", cbo_descripcion = "TODOS" });
+                ViewBag.Meses = listMeses;
+                ViewBag.fecha = DateTime.Now.ToString("dd-MM-yyyy");
+                return View();
+            }
         }
-
-
-
         //Table cupón 
         public ActionResult getTableCuponAjax(Ent_jQueryDataTableParams param , string dniEliminar)
         {
@@ -475,7 +465,9 @@ namespace CapaPresentacion.Controllers
                     .Where(m =>
                     m.correo.ToUpper().Contains(param.sSearch.ToUpper()) ||
                     m.nombresCliente.ToUpper().Contains(param.sSearch.ToUpper()) ||
-                    m.dniCliente.ToUpper().Contains(param.sSearch.ToUpper()) || m.apellidosCliente.ToUpper().Contains(param.sSearch.ToUpper()));
+                    m.dniCliente.ToUpper().Contains(param.sSearch.ToUpper()) || m.apellidosCliente.ToUpper().Contains(param.sSearch.ToUpper())||
+                    (m.nombresCliente.Trim() + " " + m.apellidosCliente.Trim()).ToUpper().Contains(param.sSearch.ToUpper())
+                    ) ;
             }
 
             //Manejador de orden
@@ -486,10 +478,15 @@ namespace CapaPresentacion.Controllers
             var result = from a in displayMembers
                          select new
                          {
+                             a.promocion,
                              a.dniCliente,
                              a.nombresCliente,
                              a.correo,
-                             a.apellidosCliente
+                             a.apellidosCliente,
+                             a.genero,
+                             a.mesCumple,
+                             a.miemBataClub,
+                             a.cupon
                          };
             //Se devuelven los resultados por json
             return Json(new
@@ -500,7 +497,12 @@ namespace CapaPresentacion.Controllers
                 aaData = result
             }, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult BATACLUB_INSERTAR_CUPONES(string promocion , decimal dscto , decimal pares , string fecha)
+        public static Boolean IsNumeric(string valor)
+        {
+            int result;
+            return int.TryParse(valor, out result);
+        }
+        public ActionResult BATACLUB_INSERTAR_CUPONES(string promocion , string dscto , string pares , string fecha)
         {
             Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
             List<Ent_BataClub_Cupones> listaClientes = null;
@@ -516,9 +518,21 @@ namespace CapaPresentacion.Controllers
             {
                 _error += "La lista de clientes está vacia" + Environment.NewLine;
             }
-            if (String.IsNullOrEmpty(fecha))
+            if (String.IsNullOrEmpty(fecha.Trim()))
             {
                 _error += "Ingrese fecha por favor." + Environment.NewLine;
+            }
+            if (String.IsNullOrEmpty(promocion.Trim()))
+            {
+                _error += "Ingrese el nombre de la promoción por favor." + Environment.NewLine;
+            }
+            if (!IsNumeric(dscto.ToString().Trim()))
+            {
+                _error += "Ingrese un valor válido en el campo descuento por favor." + Environment.NewLine;
+            }
+            if (!IsNumeric(pares.ToString().Trim()))
+            {
+                _error += "Ingrese un valor válido en el campo pares por favor." + Environment.NewLine;
             }
             if (_error != "")
             {
@@ -526,16 +540,18 @@ namespace CapaPresentacion.Controllers
             }
             else
             {
-                resultList = datProm.BATACLUB_INSERTAR_CUPONES(dscto, Convert.ToDateTime(fecha), pares, promocion, _usuario.usu_id, listaClientes, ref _mensaje);
+                resultList = datProm.BATACLUB_INSERTAR_CUPONES(Convert.ToDecimal(dscto), Convert.ToDateTime(fecha), Convert.ToDecimal(pares), promocion, _usuario.usu_id, listaClientes, ref _mensaje);
                 if (resultList == null)
                 {
                     Session[_session_lista_cupones_excel] = null;
+                    Session[_session_lista_clientes_cupon] = null;
                     return Json(new { estado = 0, resultado = "Error", mensaje = _mensaje });
                 }
                 else
                 {
                     Session[_session_lista_cupones_excel] = resultList;
-                    return Json(new { estado = 1, resultado = "", mensaje = "Operacion realizada con éxito.", listaCupones = resultList });
+                    Session[_session_lista_clientes_cupon] = resultList;
+                    return Json(new { estado = 1, resultado = "", mensaje = "Operacion realizada con éxito." });
                 }
             }
         }
@@ -565,13 +581,22 @@ namespace CapaPresentacion.Controllers
 
         //Table cupón
        // [HttpGet]
-        public PartialViewResult _TableCupon(string identificacion)
-        {           
-            string mensaje = addClienteLista(identificacion);
-            if (mensaje != "")
+        public PartialViewResult _TableCupon(int operacion, string identificacion,  string mesCumple , string genero)
+        {       
+            if (operacion == 1)
             {
-                TempData["Error"] = mensaje;
+                string mensaje = addClienteLista(identificacion, mesCumple, genero);
+                if (mensaje != "")
+                {
+                    TempData["Error"] = mensaje;
+                }
+                
+            }   
+            else
+            {
+                Session[_session_lista_clientes_cupon] = null;
             }
+            
             return PartialView();
         }
         
@@ -732,6 +757,7 @@ namespace CapaPresentacion.Controllers
 
             return View();
         }
+        
 
         //Table
         public PartialViewResult _TableCliente(string dni="", string nombre = "", string apellido="", string correo = "")

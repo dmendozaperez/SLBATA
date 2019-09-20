@@ -17,6 +17,9 @@ namespace CapaEntidad.BataClub
         public string correo { get; set; }
         public string cupon { get; set; }
         public decimal porcDesc { get; set; }
+        public string genero { get; set; }
+        public string mesCumple { get; set; }
+        public bool miemBataClub { get; set; }
     }
     public class Ent_BataClub_Promociones
     {
@@ -26,6 +29,7 @@ namespace CapaEntidad.BataClub
         public int MaxPares { get; set; }
         public string FechaFin { get; set; }
         public bool PromActiva { get; set; }
+        public int nroCupones { get; set; }
     }
 
     public class Ent_BataClub_CuponesCO

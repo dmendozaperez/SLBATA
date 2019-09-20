@@ -26,6 +26,12 @@
 
 <div class="box box-body box-primary">
     <div class="row">
+        <div class="col-sm-10"  style="padding-left: 25px;">
+            <a href="@Url.Action("Promociones" , "BataClub")" class="btn btn-default" title="Salir"><i class="fa fa-long-arrow-left"></i>&nbsp;&nbsp;Salir</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </div>
+    </div>
+    <br />
+    <div class="row">
         <div class="col-sm-4" style="padding-left: 25px;">
             <label for="segape" style="color: #3d566e;">Promoción</label>
             <div class="form-group">
@@ -44,7 +50,7 @@
     </div>
     <div class="row">
         <div class="col-sm-2" style="padding-left: 25px; margin-right: inherit;">
-            <label for="segape" style="color: #3d566e;">Descuento</label>
+            <label for="segape" style="color: #3d566e;">Descuento (%)</label>
             <div class="form-group">
                 <div class="input-group">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-tag"></i></span>
@@ -75,7 +81,14 @@
             <div class="form-group">
                 <div class="input-group">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-tag"></i></span>
-                    <input id="pares" type="text" value="@ViewBag.pares" class="form-control" name="pares" placeholder="Pares Máx" readonly="readonly">
+                    @if (ViewBag.Operacion == null)
+                    {
+                        <input id="pares" type="text" value="@ViewBag.pares" class="form-control" name="pares" placeholder="Pares Máx" readonly="readonly">
+                    }
+                    else
+                    {
+                        <input id="pares" type="text" class="form-control" name="pares" placeholder="Pares Máx" >
+                    }                      
                 </div>
             </div>
         </div>
@@ -83,34 +96,63 @@
 </div>
 
 <div class="box box-body box-primary">
-    @using (Ajax.BeginForm("_TableCupon", options))
-    {
-        <form id="form2">
+    @using (Ajax.BeginForm("_TableCupon", options))    {
             <div class="row">
-                <div class="col-sm-4" style="padding-left: 25px; margin-right: inherit;">
-                    <label for="segape" style="color: #3d566e;">Identificación</label>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-                            <input id="identificacion" type="text" class="form-control" name="identificacion" placeholder="Ingrese DNI o Email completo">
+                @if (ViewBag.Operacion == null)
+                {
+                    <div class="col-sm-6" style="padding-left: 25px; margin-right: inherit;">
+                        <label for="segape" style="color: #3d566e;">Identificación</label>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+                                <input id="identificacion" type="text" class="form-control" name="identificacion" placeholder="Ingrese DNI o Email completo">
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-sm-2" style="padding-left: 25px; width: 105px; margin-top: 23px; margin-bottom: 10px;">
-                    <button id="btnAgregarBuscar" type="submit" title="Agregar" class="btn btn-success" @*href="@Url.Action("Cupon", "BataClub")"*@>
+                }
+                else
+                {
+                    <div class="col-sm-3" style="padding-left: 25px;">
+                        <div class="form-group">
+                            <label for="">Mes de cumpleaños:</label>
+                            @Html.DropDownList("mesCumple", new SelectList(ViewBag.Meses, "cbo_codigo", "cbo_descripcion", null), new { @class = "form-control selectpicker", @id = "cadena", @data_live_search = "true", @data_actions_box = "true" })
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label for="">Genero:</label>
+                            <div>
+                                <label class="radio-inline">
+                                    <input type="radio" name="genero" id="generoF" value="F"> F
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="genero" id="generoM" value="M"> M
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="genero" id="generoT" checked value=""> Todos
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <div class="col-sm-6" style="padding-top: 23px; padding-right:25px">
+                    <button id="btnAgregarBuscar" type="submit" value="1" name="operacion" title="Agregar" class="btn btn-success" @*href="@Url.Action("Cupon", "BataClub")"*@>
                         <span class="glyphicon glyphicon-ok-sign"></span>&nbsp;&nbsp;Agregar
                     </button>
+                    <button id="btnAgregarBuscar" type="submit" value="0" name="operacion" title="Borrar todo" class="btn btn-danger" @*href="@Url.Action("Cupon", "BataClub")"*@>
+                        <span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;Limpiar Lista
+                    </button>
+                    <button id="btnGenerar" type="button" title="Generar" style="float:right" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-barcode"></span>&nbsp;&nbsp;<ins>GENERAR</ins>
+                    </button>                    
                 </div>
 
                 <div class="col-sm-4"></div>
-                <div class="col-sm-2" style="padding-left: 25px; margin-top: 23px; margin-bottom: 10px; float: right;">
-                    <button id="btnGenerar" type="button" title="Generar" class="btn btn-warning">
-                        <span class="glyphicon glyphicon-barcode"></span>&nbsp;&nbsp;Generar
-                    </button>
+                <div class="col-sm-2" style="padding-left:25px; margin-top: 23px; margin-bottom: 10px; float: right;">
+                    
                 </div>  
 
             </div>
-        </form>
     }
     <div class="box-body" id="lista" style="padding-bottom: 20px;">
         @{Html.RenderPartial("_TableCupon", Model);}
@@ -138,6 +180,7 @@
         </div>
     </div>
 </div>
+<script src="~/Scripts/bootstrap-select.min.js"></script>
 <script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
@@ -163,9 +206,10 @@
            .then((cambiar) => {
                if (cambiar) {
                    var promocion = $("#promocion").val();
-                   var dscto = $("#dscto").val();
-                   var fecha = $("#fecha").val();
-                   var pares = $("#pares").val();
+                   //promocion = (promocion == null ? "" : promocion);
+                   var dscto = $("#dscto").val();// == null ? -1 : $("#dscto").val();
+                   var fecha = $("#fecha").val(); //== null ? "" : $("#fecha").val();
+                   var pares = $("#pares").val(); //== null ? -1 : $("#pares").val();
                    waitingDialog.show('Espere un momento por favor');
                    $.ajax({
                        type: "POST",
@@ -180,19 +224,21 @@
                                    text: data.mensaje,
                                    icon: "success"
                                }).then((value) => {
-                                   var table = '<table id="listaCuponesRes" class="table table-condensed table-responsive table-borderer"><thead><tr style="background-color:#3d566e; color:#ecf0f1">' +
-                                            '<th>Promocion</th><th>Dni</th><th>Nombres</th><th>Correo</th><th>Cupon</th></tr></thead><tbody data-bind="foreach:">';
-                                   for (var i = 0; i < data.listaCupones.length; i++) {
-                                       table += '<tr><td>' + data.listaCupones[i].promocion + '</td><td>' + data.listaCupones[i].dniCliente + '</td><td>' + data.listaCupones[i].nombresCliente + ' ' + data.listaCupones[i].apellidosCliente + '</td><td>' + data.listaCupones[i].correo + '</td><td>' + data.listaCupones[i].cupon + '</td></tr>'
-                                   }
-                                   table += '</tbody><tfoot><tr><th>Promocion</th><th>Dni</th><th>Nombres</th><th>Correo</th><th>Cupon</th></tr></tfoot></table>';
-                                   $("#divListaCupones").html(table);
-                                   $("#listaCuponesRes").DataTable({
-                                       "language": {
-                                           "url": "../Scripts/DataTables/Spanish.json"
+                                   $.ajax({
+                                       type: "Post",
+                                       url: '@Url.Action("getListaCupProm", "BataClub")',
+                                       data: { operacion: "G" },
+                                       success: function (data) {
+                                           waitingDialog.hide();
+                                           $("#divListaCupones").html(data);
+                                           //$("#descPromocionLista").html(desProm);
+                                           $("#modalResultCupones").modal({ backdrop: 'static', keyboard: false });
+                                       },
+                                       error: function (xhr) {
+                                           waitingDialog.hide();
+                                           toastr.error(xhr, 'Mensaje');
                                        }
-                                   });                                    
-                                   $("#modalResultCupones").modal({ backdrop: 'static', keyboard: false });
+                                   });
                                });
                            } else {
                                swal({

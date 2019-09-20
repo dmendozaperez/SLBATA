@@ -1617,6 +1617,7 @@
     <Content Include="Views\BataClub\Promociones.cshtml" />
     <Content Include="Views\BataClub\GenerarCupon.cshtml" />
     <Content Include="Views\BataClub\CrearPromocion.cshtml" />
+    <Content Include="Views\BataClub\getListaCupProm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -30,7 +30,8 @@
                             <th>Dcto (%)</th>
                             <th>Max Pares</th>
                             <th>Fec. Fin</th>
-                            <th>Activa</th>
+                            <th>Estado</th>
+                            <th>Num Cupones</th>
                             <th>Cupones</th>                            
                             <th>Generar</th>                            
                         </tr>
@@ -43,7 +44,8 @@
                             <th>Dcto (%)</th>
                             <th>Max Pares</th>
                             <th>Fec. Fin</th>
-                            <th>Activa</th>         
+                            <th>Estado</th>         
+                            <th>Num Cupones</th>
                             <th>Cupones</th>
                             <th>Generar</th>                            
                         </tr>
@@ -110,6 +112,7 @@
                           }
                       }
                   },
+                  { "sName": "nroCupones", "mData": "nroCupones", "class": "right" },
                   {
                       "render": function (data, type, full) {
                           return '<button title="Ver lista de cupones" class="btn btn-default btn-sm cupones" data-cod-prom="' + full.Codigo + '" data-des-prom="' + full.Descripcion + '"><i class="glyphicon glyphicon-list"></i></button>';
@@ -136,48 +139,30 @@
                   }
             ]
         });
-        $('.dt-lista').on('click', '.cupones', function (e) {
-            waitingDialog.show('Espere un momento por favor');
-            var codProm = $(this).attr('data-cod-prom');
-            var desProm = $(this).attr('data-des-prom');
-            $.ajax({
-                type: "POST",
-                url: '@Url.Action("getListaCupProm", "BataClub")',
-                data: { codProm: codProm },
-                dataType: "json",
-                success: function (data) {
-                    waitingDialog.hide();
-                    if (data.estado == 1) {
-                        var table = '<table id="listaCuponesRes" class="table table-condensed table-responsive table-borderer"><thead><tr style="background-color:#3d566e; color:#ecf0f1">' +
-                                             '<th>Promocion</th><th>Dni</th><th>Nombres</th><th>Correo</th><th>Cupon</th></tr></thead><tbody data-bind="foreach:">';
-                        for (var i = 0; i < data.listaCupones.length; i++) {
-                            table += '<tr><td>' + data.listaCupones[i].promocion + '</td><td>' + data.listaCupones[i].dniCliente + '</td><td>' + data.listaCupones[i].nombresCliente + ' ' + data.listaCupones[i].apellidosCliente + '</td><td>' + data.listaCupones[i].correo + '</td><td>' + data.listaCupones[i].cupon + '</td></tr>'
-                        }
-                        table += '</tbody><tfoot><tr><th>Promocion</th><th>Dni</th><th>Nombres</th><th>Correo</th><th>Cupon</th></tr></tfoot></table>';
-                        $("#descPromocionLista").html(desProm);
-                        $("#divListaCupones").html(table);
-                        $("#listaCuponesRes").DataTable({
-                            "language": {
-                                "url": "../Scripts/DataTables/Spanish.json"
-                            },
-                            //"deferRender": true
-                        });
-                        $("#modalResultCupones").modal({ backdrop: 'static', keyboard: false });
-                    } else {
-                        swal("Error", "No se pudo cargar la lista de articulos");
-                    }
-                },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    waitingDialog.hide();
-                    var error = eval("(" + XMLHttpRequest.responseText + ")");
-                    console.log(XMLHttpRequest.responseText);
-                    alert(error.Message);
-                }
-            });
-
-        });
     });
+</script>
+<script>
+    $('.dt-lista').on('click', '.cupones', function (e) {
+        waitingDialog.show('Espere un momento por favor');
+        var codProm = $(this).attr('data-cod-prom');
+        var desProm = $(this).attr('data-des-prom');
+        $.ajax({
+            type: "Post",
+            url: '@Url.Action("getListaCupProm", "BataClub")',
+            //contentType: "application/json; charset=utf-8",
+            data: { codProm: codProm },
+            //dataType: "json",
+            success: function (data) {
+                waitingDialog.hide();                
+                $("#divListaCupones").html(data);
+                $("#descPromocionLista").html(desProm);
+                $("#modalResultCupones").modal({ backdrop: 'static', keyboard: false });               
+            },
+            error: function (xhr) {
+                waitingDialog.hide();
+                toastr.error(xhr, 'Mensaje');
+            }
+        });
 
-
-
+    });
 </script>

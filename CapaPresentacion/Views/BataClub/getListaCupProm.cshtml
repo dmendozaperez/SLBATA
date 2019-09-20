@@ -1,0 +1,58 @@
+﻿@{ 
+    Layout = null;
+}
+<table id="tabCupsProm" class="table dataTable table-hover table-striped table-responsive">
+    <thead>
+        <tr style="background-color:#3d566e; color:#ecf0f1">
+            <th>Promocion</th>
+            <th>Dni</th>
+            <th>Nombres</th>
+            <th>Correo</th>
+            <th>Cupon</th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach:"></tbody>
+    <tfoot>
+        <tr>
+            <th>Promocion</th>
+            <th>Dni</th>
+            <th>Nombres</th>
+            <th>Correo</th>
+            <th>Cupon</th>
+        </tr>
+    </tfoot>
+</table>
+<script>
+    $(document).ready(function () {
+        //waitingDialog.show('Espere un momento por favor');
+        var dniEliminar = "";
+        $('#tabCupsProm').DataTable({
+            "language": {
+                "url": "../Scripts/DataTables/Spanish.json"
+            },
+            "bProcessing": false,
+            "bServerSide": true,
+            "bAutoWidth": false,
+            "sAjaxSource": '@Url.Action("getTableCuponAjax", "BataClub")',
+            //"fnServerParams": function (aoData) {
+            //    aoData.push({ "name": "dniEliminar", "value": dniEliminar });
+            //},
+            "bdestroy": true,
+            "start": 0,
+            "sort": false,
+            "order": [],
+            "bDeferRender": true,
+            "aoColumns": [
+                    { "sName": "promocion", "mData": "promocion" },
+                    { "sName": "dniCliente", "mData": "dniCliente" },
+                    {
+                        "render": function (data, type, full) {
+                            return full.nombresCliente + ' ' + full.apellidosCliente;
+                        }
+                    },
+                    { "sName": "correo", "mData": "correo" },
+                    { "sName": "cupon", "mData": "cupon" },
+            ]
+        });
+    });
+</script>

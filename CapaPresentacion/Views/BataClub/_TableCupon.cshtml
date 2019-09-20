@@ -4,8 +4,12 @@
         <tr style="background-color:#3d566e; color:#ecf0f1">
             <th>DNI</th>
             <th>Nombres</th>
+            <th>Genero</th>
+            <th>Mes Cumpleaños</th>            
             <th>Correo</th>
+            <th>BataClub</th>
             <th>Borrar</th>
+            
         </tr>
     </thead>
     <tbody data-bind="foreach:"></tbody>
@@ -13,7 +17,10 @@
         <tr>
             <th>DNI</th>
             <th>Nombres</th>
+            <th>Genero</th>
+            <th>Mes Cumpleaños</th>
             <th>Correo</th>
+            <th>BataClub</th>
             <th>Borrar</th>
         </tr>
     </tfoot>
@@ -34,6 +41,16 @@
             "fnServerParams": function (aoData) {
                 aoData.push({ "name": "dniEliminar", "value": dniEliminar });
             },
+            @if(ViewBag.Operacion == null)
+            {
+            <text>
+                "columnDefs": [{
+                "targets": [ 2,3,5 ],
+                "visible": false,
+                "searchable": false
+                }],
+            </text>
+            }
             "bdestroy": true,
             "start": 0,
             "sort": false,
@@ -42,16 +59,27 @@
             "aoColumns": [
                     { "sName": "dniCliente", "mData": "dniCliente" },
                     {
-                        "render": function (data, type, full) {                            
-                            return full.nombresCliente + ' ' + full.apellidosCliente;
-                        }
+                        "render": function (data, type, full) {
+                return full.nombresCliente + ' ' + full.apellidosCliente;
+            }
                     },
+                    { "sName": "genero", "mData": "genero" },
+                    { "sName": "mesCumple", "mData": "mesCumple" },
                     { "sName": "correo", "mData": "correo" },
                     {
                         "render": function (data, type, full) {
-                            var envio = "'" + full.dni + "'"
-                            return '<div> <a title="Eliminar" id="btnEliminar" type="button" data-dni="' + full.dniCliente + '" class="btn btn-danger btn-sm eliminar"> <span class="glyphicon glyphicon-remove" type="button"></span></a></div>';
-                        }, "sClass": "boton-td"
+                            if (full.miemBataClub == true) {
+                                return '<label class="text-success"><i class="glyphicon glyphicon-ok"></i></label>'
+                            } else {
+                                return""
+                            }
+                        }
+                    },
+                    {
+                        "render": function (data, type, full) {
+                        var envio = "'" + full.dni + "'"
+                        return '<div> <a title="Eliminar" id="btnEliminar" type="button" data-dni="' + full.dniCliente + '" class="btn btn-danger btn-sm eliminar"> <span class="glyphicon glyphicon-remove" type="button"></span></a></div>';
+                    }, "sClass": "boton-td"
                     }
             ]
         });
@@ -62,7 +90,7 @@
 
         });
     });
-    
+
 </script>
 @if (TempData["Success"] != null)
 {
