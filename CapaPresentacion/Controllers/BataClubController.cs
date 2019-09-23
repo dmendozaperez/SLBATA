@@ -1,5 +1,6 @@
 ﻿using CapaDato.BataClub;
 using CapaDato.Maestros;
+using CapaDato.OrceExclud;
 using CapaDato.Reporte;
 using CapaEntidad.BataClub;
 using CapaEntidad.Control;
@@ -26,6 +27,7 @@ namespace CapaPresentacion.Controllers
 
         private Dat_BataClub_CuponesCO datProm = new Dat_BataClub_CuponesCO();
         private Dat_BataClub_Cliente datCli = new Dat_BataClub_Cliente();
+        Dat_OrceExclud datOE = new Dat_OrceExclud();
         private Dat_Canal datCan = new Dat_Canal();
         private Dat_Ubigeo datUbi = new Dat_Ubigeo();
         private string _session_tabla_cupones = "_session_tabla_cupones";
@@ -90,6 +92,16 @@ namespace CapaPresentacion.Controllers
                 return View();
             }
         }
+        public ActionResult get_tda_cadena(string cadenas)
+        {
+            List<Ent_Combo> list = datOE.get_tda_cadena(cadenas);
+            if (list == null)
+            {
+                list = new List<Ent_Combo>();
+            }
+            return Json(list);
+        }
+
         [HttpPost]
         public ActionResult getListaCupProm(string codProm , string operacion)
         {
@@ -124,6 +136,7 @@ namespace CapaPresentacion.Controllers
                 return Json(new { estado = 0, resultados = "No hay resultados." });
             }   
         }
+
         //Table
         public PartialViewResult _Table(string dni, string cupon, string hidden, string correo,string[] dwprom, string[] dwest)
         {
@@ -245,12 +258,13 @@ namespace CapaPresentacion.Controllers
                 variable3 = param.variable3
             }, JsonRequestBehavior.AllowGet);
         }
-        public string addClienteLista(string dniCorreo, string mesCumple , string genero)
+        public string addClienteLista(int operacion , string dniCorreo, string mesCumple , string genero)
         {
             List<Ent_BataClub_Cupones> clientes = new List<Ent_BataClub_Cupones>();
-            if (!String.IsNullOrEmpty(dniCorreo))
+            if (operacion == 2)
             {
-                clientes = datProm.get_cliente(dniCorreo);
+                if (!String.IsNullOrEmpty(dniCorreo))
+                    clientes = datProm.get_cliente(dniCorreo);
             }
             else
             {
@@ -267,13 +281,15 @@ namespace CapaPresentacion.Controllers
             if (clientes != null)
             {
                 listaClientes = (List<Ent_BataClub_Cupones>)Session[_session_lista_clientes_cupon];
-                foreach (var item in clientes)
+                if (listaClientes.Count == 0)
                 {
-                    if (listaClientes.Where(w=> w.dniCliente == item.dniCliente).ToList().Count() == 0)                
-                        listaClientes.Insert(0, item);
-                    else
-                        result = !String.IsNullOrEmpty(dniCorreo) ? "El cliente " + item.nombresCliente + " " + item.apellidosCliente + ", ya existe en la lista." : "";
+                    listaClientes = clientes;
+                }
+                else
+                {
+                    listaClientes = listaClientes.Union(clientes, new Ent_BataClub_CuponesComparer()).ToList();
                 }                
+                Session[_session_lista_clientes_cupon] = listaClientes;       
             }
             else
             {
@@ -428,6 +444,10 @@ namespace CapaPresentacion.Controllers
             else
             {
                 Session[_session_lista_clientes_cupon] = null;
+                
+                ViewBag.listCadena = datOE.get_cadena();
+                List<Ent_Combo> list = new List<Ent_Combo>();
+                ViewBag.listTdaCadena = list;
                 ViewBag.Operacion = 1;
                 List<Ent_Combo> listMeses = datProm.get_ListaMeses();
                 listMeses.Insert(0, new Ent_Combo() { cbo_codigo = "0", cbo_descripcion = "TODOS" });
@@ -583,18 +603,17 @@ namespace CapaPresentacion.Controllers
        // [HttpGet]
         public PartialViewResult _TableCupon(int operacion, string identificacion,  string mesCumple , string genero)
         {       
-            if (operacion == 1)
+            if (operacion == 0)
             {
-                string mensaje = addClienteLista(identificacion, mesCumple, genero);
+                Session[_session_lista_clientes_cupon] = null;
+            }   
+            else
+            {
+                string mensaje = addClienteLista(operacion, identificacion, mesCumple, genero);
                 if (mensaje != "")
                 {
                     TempData["Error"] = mensaje;
                 }
-                
-            }   
-            else
-            {
-                Session[_session_lista_clientes_cupon] = null;
             }
             
             return PartialView();

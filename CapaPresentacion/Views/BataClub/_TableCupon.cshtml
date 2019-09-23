@@ -41,6 +41,12 @@
             "fnServerParams": function (aoData) {
                 aoData.push({ "name": "dniEliminar", "value": dniEliminar });
             },
+            "fnServerData": function (sSource, aoData, fnCallback) {
+                $.getJSON(sSource, aoData, function (json) {
+                    $('#nroCupones').html("" + json.iTotalRecords);
+                    fnCallback(json)
+                });
+            },
             @if(ViewBag.Operacion == null)
             {
             <text>

@@ -486,7 +486,7 @@ namespace CapaDato.BataClub
         }
         public List<Ent_BataClub_Cupones> BATACLUB_INSERTAR_CUPONES(decimal por_desc , DateTime fecha_fin , decimal pares , string prom_des, decimal usu_id , List<Ent_BataClub_Cupones> clientes ,ref string mensaje)
         {
-            string sqlquery = "USP_BATACLUB_INSERTAR_CUPONES";
+            string sqlquery = "USP_BATACLUB_INSERTAR_CUPONES_GRUPO";// "USP_BATACLUB_INSERTAR_CUPONES";
             int f = 0;
             DataTable tmpcupones = new DataTable();
             tmpcupones = _toDTListCli(clientes);

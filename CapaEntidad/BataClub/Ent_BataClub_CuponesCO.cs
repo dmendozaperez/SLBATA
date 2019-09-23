@@ -72,4 +72,46 @@ namespace CapaEntidad.BataClub
         public Ent_BataClub_ListaCliente[] Lista { get; set; }
     }
 
+    /*
+     * Clase para comparar listas
+     * https://docs.microsoft.com/es-es/dotnet/api/system.linq.enumerable.union?view=netframework-4.8
+     */
+    public class Ent_BataClub_CuponesComparer : IEqualityComparer<Ent_BataClub_Cupones>
+    {
+        public bool Equals(Ent_BataClub_Cupones x, Ent_BataClub_Cupones y)
+        {
+            if (Object.ReferenceEquals(x, y)) return true;
+
+            if (Object.ReferenceEquals(x, null) || Object.ReferenceEquals(y, null))
+                return false;
+
+            return x.promocion == y.promocion && x.estado == y.estado && x.fechaFin == y.fechaFin && x.nombresCliente == y.nombresCliente &&
+                x.apellidosCliente == y.apellidosCliente && x.dniCliente == y.dniCliente && x.correo == y.correo && x.cupon == y.cupon &&
+                x.porcDesc == y.porcDesc && x.genero == y.genero && x.mesCumple == y.mesCumple && x.miemBataClub == y.miemBataClub;
+        }
+
+        public int GetHashCode(Ent_BataClub_Cupones cupon)
+        {
+            if (Object.ReferenceEquals(cupon, null)) return 0;
+
+            int hashCuponpromocion = cupon.promocion == null ? 0 : cupon.promocion.GetHashCode();
+            int hashCuponestado = cupon.estado == null ? 0 : cupon.estado.GetHashCode();
+            int hashCuponfechaFin = cupon.fechaFin == null ? 0 : cupon.fechaFin.GetHashCode();
+            int hashCuponnombresCliente = cupon.nombresCliente == null ? 0 : cupon.nombresCliente.GetHashCode();
+            int hashCuponapellidosCliente = cupon.apellidosCliente == null ? 0 : cupon.apellidosCliente.GetHashCode();
+            int hashCupondniCliente = cupon.dniCliente == null ? 0 : cupon.dniCliente.GetHashCode();
+            int hashCuponcorreo = cupon.correo == null ? 0 : cupon.correo.GetHashCode();
+            int hashCuponcupon = cupon.cupon == null ? 0 : cupon.cupon.GetHashCode();
+            int hashCuponporcDesc = cupon.porcDesc.GetHashCode();
+            int hashCupongenero = cupon.genero == null ? 0 : cupon.genero.GetHashCode();
+            int hashCuponmesCumple = cupon.mesCumple == null ? 0 : cupon.mesCumple.GetHashCode();
+            int hashCuponmiemBataClub = cupon.miemBataClub.GetHashCode();
+
+            return hashCuponpromocion ^ hashCuponestado ^ hashCuponfechaFin ^ hashCuponnombresCliente ^ hashCuponapellidosCliente ^ hashCupondniCliente ^ 
+                hashCuponcorreo ^ hashCuponcupon ^ hashCuponporcDesc ^ hashCupongenero ^ hashCuponmesCumple ^ hashCuponmiemBataClub ;
+        }
+
+    }
+
+
 }

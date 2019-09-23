@@ -7,7 +7,7 @@
         InsertionMode = InsertionMode.Replace,
         UpdateTargetId = "lista",
         OnComplete = "waitingDialog.hide();",
-        OnBegin = "waitingDialog.show('Espere un momento por favor');",
+        OnBegin = "waitingDialog.show('Espere un momento por favor. Este proceso puede tardar unos minutos');",
         OnFailure = "waitingDialog.hide();"
     };
 }
@@ -32,21 +32,36 @@
     </div>
     <br />
     <div class="row">
-        <div class="col-sm-4" style="padding-left: 25px;">
-            <label for="segape" style="color: #3d566e;">Promoción</label>
-            <div class="form-group">
-                <div id="prm" class="form-group" disabled>
+        <div class="col-md-4" style="padding-left: 25px;">            
+            <div id="prm" class="form-group" disabled>
+                <label for="segape" style="color: #3d566e;">Promoción</label>
+                <div class="form-group">
                     @if (ViewBag.Operacion == null)
                     {
                         <input type="text" value="@ViewBag.Descripcion" class="form-control" name="promocion" id="promocion" readonly="readonly" />
                     }
                     else
                     {
-                        <input type="text" value="" class="form-control" name="promocion" id="promocion"/>
-                    }                    
+                        <input type="text" value="" class="form-control" name="promocion" id="promocion" />
+                    }
                 </div>
             </div>
         </div>
+        @if (ViewBag.Operacion != null)
+        {
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="cadena">Cadena:</label>
+                    @Html.DropDownList("cadena", new MultiSelectList(ViewBag.listCadena, "cbo_codigo", "cbo_descripcion", null), new { @class = "form-control selectpicker", @id = "cadena", @data_live_search = "true", @multiple = "multiple", @data_actions_box = "true", @data_selected_text_format = "count > 2", @onchange = "ListarTienda()" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="tdaCadena">Tienda:</label>
+                    @Html.DropDownList("tdaCadena", new MultiSelectList(ViewBag.listTdaCadena, "cbo_codigo", "cbo_descripcion", null), new { @class = "form-control selectpicker", @id = "tdaCadena", @data_live_search = "true", @multiple = "multiple", @data_actions_box = "true", @data_selected_text_format = "count > 2" })
+                </div>
+            </div>
+        }
     </div>
     <div class="row">
         <div class="col-sm-2" style="padding-left: 25px; margin-right: inherit;">
@@ -96,28 +111,29 @@
 </div>
 
 <div class="box box-body box-primary">
-    @using (Ajax.BeginForm("_TableCupon", options))    {
-            <div class="row">
-                @if (ViewBag.Operacion == null)
-                {
-                    <div class="col-sm-6" style="padding-left: 25px; margin-right: inherit;">
-                        <label for="segape" style="color: #3d566e;">Identificación</label>
-                        <div class="form-group">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-                                <input id="identificacion" type="text" class="form-control" name="identificacion" placeholder="Ingrese DNI o Email completo">
-                            </div>
+    @using (Ajax.BeginForm("_TableCupon", options))
+    {
+        <div class="row">
+            @if (ViewBag.Operacion == null)
+            {
+                <div class="col-sm-6" style="padding-left: 25px; margin-right: inherit;">
+                    <label for="segape" style="color: #3d566e;">Identificación</label>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+                            <input id="identificacion" type="text" class="form-control" name="identificacion" placeholder="Ingrese DNI o Email completo">
                         </div>
                     </div>
-                }
-                else
-                {
-                    <div class="col-sm-3" style="padding-left: 25px;">
-                        <div class="form-group">
-                            <label for="">Mes de cumpleaños:</label>
-                            @Html.DropDownList("mesCumple", new SelectList(ViewBag.Meses, "cbo_codigo", "cbo_descripcion", null), new { @class = "form-control selectpicker", @id = "cadena", @data_live_search = "true", @data_actions_box = "true" })
-                        </div>
+                </div>
+            }
+            else
+            {
+                <div class="col-sm-3" style="padding-left: 25px;">
+                    <div class="form-group">
+                        <label for="">Mes de cumpleaños:</label>
+                        @Html.DropDownList("mesCumple", new SelectList(ViewBag.Meses, "cbo_codigo", "cbo_descripcion", null), new { @class = "form-control selectpicker", @id = "cadena", @data_live_search = "true", @data_actions_box = "true" })
                     </div>
+                </div>
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label for="">Genero:</label>
@@ -134,25 +150,24 @@
                             </div>
                         </div>
                     </div>
-                }
-                <div class="col-sm-6" style="padding-top: 23px; padding-right:25px">
-                    <button id="btnAgregarBuscar" type="submit" value="1" name="operacion" title="Agregar" class="btn btn-success" @*href="@Url.Action("Cupon", "BataClub")"*@>
-                        <span class="glyphicon glyphicon-ok-sign"></span>&nbsp;&nbsp;Agregar
-                    </button>
-                    <button id="btnAgregarBuscar" type="submit" value="0" name="operacion" title="Borrar todo" class="btn btn-danger" @*href="@Url.Action("Cupon", "BataClub")"*@>
-                        <span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;Limpiar Lista
-                    </button>
-                    <button id="btnGenerar" type="button" title="Generar" style="float:right" class="btn btn-primary">
-                        <span class="glyphicon glyphicon-barcode"></span>&nbsp;&nbsp;<ins>GENERAR</ins>
-                    </button>                    
-                </div>
-
-                <div class="col-sm-4"></div>
-                <div class="col-sm-2" style="padding-left:25px; margin-top: 23px; margin-bottom: 10px; float: right;">
-                    
-                </div>  
-
+            }
+            <div class="col-sm-6" style="padding-top: 23px; padding-right:25px">
+                <button id="btnAgregarBuscar" type="submit" value="@(ViewBag.Operacion == null ? 2 : 1)" name="operacion" title="Agregar" class="btn btn-success" @*href="@Url.Action("Cupon", "BataClub")"*@>
+                    <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;&nbsp;Agregar
+                </button>
+                <button id="btnAgregarBuscar" type="submit" value="0" name="operacion" title="Borrar todo" class="btn btn-danger" @*href="@Url.Action("Cupon", "BataClub")"*@>
+                    <span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;Limpiar Lista
+                </button>
+                <button id="btnGenerar" type="button" title="Generar" style="float:right" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-barcode"></span>&nbsp;&nbsp;<ins>GENERAR</ins>
+                </button>
             </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" style="padding-left:25px">
+                <strong>Cantidad de cupones a generar: <mark id="nroCupones"></mark></strong>
+            </div>
+        </div>
     }
     <div class="box-body" id="lista" style="padding-bottom: 20px;">
         @{Html.RenderPartial("_TableCupon", Model);}
@@ -194,7 +209,7 @@
             autoclose: true,
             maxDate: new Date(),
         });
-    $("#btnGenerar").click(function () {
+        $("#btnGenerar").click(function () {
             var _titulo = "";
             swal({
                 title: "Generar Cupones",
@@ -203,60 +218,88 @@
                 buttons: true,
                 dangerMode: true,
             })
-           .then((cambiar) => {
-               if (cambiar) {
-                   var promocion = $("#promocion").val();
-                   //promocion = (promocion == null ? "" : promocion);
-                   var dscto = $("#dscto").val();// == null ? -1 : $("#dscto").val();
-                   var fecha = $("#fecha").val(); //== null ? "" : $("#fecha").val();
-                   var pares = $("#pares").val(); //== null ? -1 : $("#pares").val();
-                   waitingDialog.show('Espere un momento por favor');
-                   $.ajax({
-                       type: "POST",
-                       url: '@Url.Action("BATACLUB_INSERTAR_CUPONES", "BataClub")',
-                       data: { promocion: promocion, dscto: dscto, fecha: fecha , pares : pares },
-                       dataType: "json",
-                       success: function (data) {
-                           waitingDialog.hide();
-                           if (data.estado == 1) {
-                               swal({
-                                   title: "OK",
-                                   text: data.mensaje,
-                                   icon: "success"
-                               }).then((value) => {
-                                   $.ajax({
-                                       type: "Post",
-                                       url: '@Url.Action("getListaCupProm", "BataClub")',
-                                       data: { operacion: "G" },
-                                       success: function (data) {
-                                           waitingDialog.hide();
-                                           $("#divListaCupones").html(data);
-                                           //$("#descPromocionLista").html(desProm);
-                                           $("#modalResultCupones").modal({ backdrop: 'static', keyboard: false });
-                                       },
-                                       error: function (xhr) {
-                                           waitingDialog.hide();
-                                           toastr.error(xhr, 'Mensaje');
-                                       }
-                                   });
-                               });
-                           } else {
-                               swal({
-                                   title: "Error",
-                                   text: data.mensaje,
-                                   icon: "error",
-                                   dangerMode: true,
-                               });
-                           }
-                       },
-                       error: function (XMLHttpRequest, textStatus, errorThrown) {
-                           waitingDialog.hide();
-                           var error = eval("(" + XMLHttpRequest.responseText + ")");
-                           alert(error.Message);
-                       }
-                   });
-               }
-           });
+            .then((cambiar) => {
+                if (cambiar) {
+                    var promocion = $("#promocion").val();
+                    //promocion = (promocion == null ? "" : promocion);
+                    var dscto = $("#dscto").val(); //== null ? -1 : $("#dscto").val();
+                    var fecha = $("#fecha").val(); //== null ? "" : $("#fecha").val();
+                    var pares = $("#pares").val(); //== null ? -1 : $("#pares").val();
+                    waitingDialog.show('Espere un momento por favor');
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("BATACLUB_INSERTAR_CUPONES", "BataClub")',
+                        data: { promocion: promocion, dscto: dscto, fecha: fecha , pares : pares },
+                        dataType: "json",
+                        success: function (data) {
+                            waitingDialog.hide();
+                            if (data.estado == 1) {
+                                swal({
+                                    title: "OK",
+                                    text: data.mensaje,
+                                    icon: "success"
+                                }).then((value) => {
+                                    $.ajax({
+                                        type: "Post",
+                                        url: '@Url.Action("getListaCupProm", "BataClub")',
+                                        data: { operacion: "G" },
+                                        success: function (data) {
+                                            waitingDialog.hide();
+                                            $("#divListaCupones").html(data);
+                                            //$("#descPromocionLista").html(desProm);
+                                            $("#modalResultCupones").modal({ backdrop: 'static', keyboard: false });
+                                        },
+                                        error: function (xhr) {
+                                            waitingDialog.hide();
+                                            toastr.error(xhr, 'Mensaje');
+                                        }
+                                    });
+                                });
+                            } else {
+                                swal({
+                                    title: "Error",
+                                    text: data.mensaje,
+                                    icon: "error",
+                                    dangerMode: true,
+                                });
+                            }
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            waitingDialog.hide();
+                            var error = eval("(" + XMLHttpRequest.responseText + ")");
+                            alert(error.Message);
+                        }
+                    });
+                }
+            });
+        });
     });
-});
+    function ListarTienda() {
+        var cadenas = $("#cadena").val();
+        cadenas = cadenas == null ? "" : cadenas.toString();
+        //waitingDialog.show('Espere un momento por favor');
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("get_tda_cadena", "BataClub")',
+            data: { cadenas: cadenas },
+            success: function (resultado) {
+                //waitingDialog.hide();
+                $('#tdaCadena').html(ParseJSONSelectList(resultado));
+                $('#tdaCadena').selectpicker('refresh');
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                //waitingDialog.hide();
+                var error = eval("(" + XMLHttpRequest.responseText + ")");
+                swal(error.Message);
+            }
+        });
+    }
+    function ParseJSONSelectList(JSONData) {
+        var html = '';
+        var len = JSONData.length;
+        for (var i = 0; i < len; i++) {
+            html += '<option value="' + JSONData[i].cbo_codigo + '"' + (JSONData[i].Selected == true ? ' Selected ' : '') + '>' + JSONData[i].cbo_descripcion + '</option>';
+        }
+        return html;
+    }
 </script>
