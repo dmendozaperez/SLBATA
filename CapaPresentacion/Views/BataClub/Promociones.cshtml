@@ -11,6 +11,15 @@
         max-height: calc(100vh - 212px);
         overflow-y: auto;
     }
+    p.content {
+        min-height: 0!important;
+        padding: 0!important;
+        margin-right: auto!important;
+        margin-left: auto!important;
+        padding-left: 0!important;
+        padding-right: 0!important;
+        color: dodgerblue;
+    }
 </style>
 <div class="box box-body box-primary">
     <div class="row">
@@ -143,7 +152,10 @@
 </script>
 <script>
     $('.dt-lista').on('click', '.cupones', function (e) {
-        waitingDialog.show('Espere un momento por favor');
+        waitingDialog.show('Este proceso, puede tardar unos minutos.', {
+            headerText: 'Espere un momento por favor.',
+            headerClass: 'content2',
+        });
         var codProm = $(this).attr('data-cod-prom');
         var desProm = $(this).attr('data-des-prom');
         $.ajax({

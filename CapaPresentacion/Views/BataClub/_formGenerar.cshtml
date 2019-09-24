@@ -7,7 +7,7 @@
         InsertionMode = InsertionMode.Replace,
         UpdateTargetId = "lista",
         OnComplete = "waitingDialog.hide();",
-        OnBegin = "waitingDialog.show('Espere un momento por favor. Este proceso puede tardar unos minutos');",
+        OnBegin = "waitingDialog.show('Este proceso puede tardar unos minutos' , {headerText:'Espere un momento por favor.'});",
         OnFailure = "waitingDialog.hide();"
     };
 }
@@ -20,6 +20,15 @@
     }
     .content-center-text{
         text-align: center;
+    }
+    p.content {
+        min-height: 0!important;
+        padding: 0!important;
+        margin-right: auto!important;
+        margin-left: auto!important;
+        padding-left: 0!important;
+        padding-right: 0!important;
+        color: dodgerblue;
     }
 </style>
 <p class="text-danger">@ViewBag.SubTitle</p>
@@ -131,7 +140,7 @@
                 <div class="col-sm-3" style="padding-left: 25px;">
                     <div class="form-group">
                         <label for="">Mes de cumpleaños:</label>
-                        @Html.DropDownList("mesCumple", new SelectList(ViewBag.Meses, "cbo_codigo", "cbo_descripcion", null), new { @class = "form-control selectpicker", @id = "cadena", @data_live_search = "true", @data_actions_box = "true" })
+                        @Html.DropDownList("mesCumple", new SelectList(ViewBag.Meses, "cbo_codigo", "cbo_descripcion", null), new { @class = "form-control selectpicker", @id = "mesCumple", @data_live_search = "true", @data_actions_box = "true" })
                     </div>
                 </div>
                     <div class="col-sm-3">
@@ -151,27 +160,37 @@
                         </div>
                     </div>
             }
-            <div class="col-sm-6" style="padding-top: 23px; padding-right:25px">
-                <button id="btnAgregarBuscar" type="submit" value="@(ViewBag.Operacion == null ? 2 : 1)" name="operacion" title="Agregar" class="btn btn-success" @*href="@Url.Action("Cupon", "BataClub")"*@>
-                    <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;&nbsp;Agregar
-                </button>
-                <button id="btnAgregarBuscar" type="submit" value="0" name="operacion" title="Borrar todo" class="btn btn-danger" @*href="@Url.Action("Cupon", "BataClub")"*@>
-                    <span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;Limpiar Lista
-                </button>
-                <button id="btnGenerar" type="button" title="Generar" style="float:right" class="btn btn-primary">
+            <div class="col-sm-6" style="padding-top: 23px; padding-right:25px">                
+                @if (ViewBag.Operacion == null)
+                {
+                    <button id="btnAgregarBuscar" type="submit" value="@(ViewBag.Operacion == null ? 2 : 1)" name="operacion" title="Agregar" class="btn btn-success" @*href="@Url.Action("Cupon", "BataClub")"*@>
+                        <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;&nbsp;Agregar
+                    </button>
+                    <button id="btnAgregarBuscar" type="submit" value="0" name="operacion" title="Borrar todo" class="btn btn-danger" @*href="@Url.Action("Cupon", "BataClub")"*@>
+                        <span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;Limpiar Lista
+                    </button>
+                }                
+                <button id="btnGenerar" type="button" title="Generar" value="@(ViewBag.Operacion == null ? 2 : 1)" style="float:right" class="btn btn-primary">
                     <span class="glyphicon glyphicon-barcode"></span>&nbsp;&nbsp;<ins>GENERAR</ins>
                 </button>
             </div>
         </div>
         <div class="row">
-            <div class="col-md-12" style="padding-left:25px">
-                <strong>Cantidad de cupones a generar: <mark id="nroCupones"></mark></strong>
-            </div>
+            @if (ViewBag.Operacion == null)
+            {
+                <div class="col-md-12" style="padding-left:25px">
+                    <strong>Cantidad de cupones a generar: <mark id="nroCupones"></mark></strong>
+                </div>
+            }
         </div>
     }
-    <div class="box-body" id="lista" style="padding-bottom: 20px;">
-        @{Html.RenderPartial("_TableCupon", Model);}
-    </div>
+    @if (ViewBag.Operacion == null)
+    {
+        <div class="box-body" id="lista" style="padding-bottom: 20px;">
+            @{Html.RenderPartial("_TableCupon", Model);}
+        </div>
+    }
+
 </div>
 <div class="modal fade" id="modalResultCupones" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog  modal-lg" role="document">
@@ -201,7 +220,7 @@
 
 <script>
     $(document).ready(function () {
-        $("#btdp").click(function () {
+        $("#btdp").click(function () {                                                                                                      
             $("#fecha").datepicker('show')
         });
         $('#fecha').datepicker({
@@ -225,11 +244,14 @@
                     var dscto = $("#dscto").val(); //== null ? -1 : $("#dscto").val();
                     var fecha = $("#fecha").val(); //== null ? "" : $("#fecha").val();
                     var pares = $("#pares").val(); //== null ? -1 : $("#pares").val();
-                    waitingDialog.show('Espere un momento por favor');
+                    var mesCumple = $("#mesCumple").val();
+                    var genero = $("input[name='genero']:checked").val(); //$("#genero").val();
+                    var operacion = $("#btnGenerar").val();//operacion
+                    waitingDialog.show('Este proceso puede tardar unos minutos', { headerText: 'Espere un momento por favor.' });
                     $.ajax({
                         type: "POST",
                         url: '@Url.Action("BATACLUB_INSERTAR_CUPONES", "BataClub")',
-                        data: { promocion: promocion, dscto: dscto, fecha: fecha , pares : pares },
+                        data: { operacion:operacion, promocion: promocion, dscto: dscto, fecha: fecha , pares : pares , mesCumple : mesCumple , genero : genero},
                         dataType: "json",
                         success: function (data) {
                             waitingDialog.hide();
@@ -239,6 +261,7 @@
                                     text: data.mensaje,
                                     icon: "success"
                                 }).then((value) => {
+                                    //  waitingDialog.show('', { headerText: 'Espere un momento por favor.' });
                                     $.ajax({
                                         type: "Post",
                                         url: '@Url.Action("getListaCupProm", "BataClub")',

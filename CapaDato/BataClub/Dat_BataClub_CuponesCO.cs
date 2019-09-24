@@ -484,12 +484,15 @@ namespace CapaDato.BataClub
             //return oLista;
             return strJson;
         }
-        public List<Ent_BataClub_Cupones> BATACLUB_INSERTAR_CUPONES(decimal por_desc , DateTime fecha_fin , decimal pares , string prom_des, decimal usu_id , List<Ent_BataClub_Cupones> clientes ,ref string mensaje)
+        public List<Ent_BataClub_Cupones> BATACLUB_INSERTAR_CUPONES(int operacion, decimal por_desc , DateTime fecha_fin , decimal pares , string prom_des, decimal usu_id , List<Ent_BataClub_Cupones> clientes , string mesCumple , string genero,ref string mensaje)
         {
-            string sqlquery = "USP_BATACLUB_INSERTAR_CUPONES_GRUPO";// "USP_BATACLUB_INSERTAR_CUPONES";
+            string sqlquery = "USP_BATACLUB_INSERTAR_CUPONES_GRUPO_PRUEBA";// "USP_BATACLUB_INSERTAR_CUPONES";
             int f = 0;
             DataTable tmpcupones = new DataTable();
-            tmpcupones = _toDTListCli(clientes);
+            if (operacion == 2)
+            {
+                tmpcupones = _toDTListCli(clientes);
+            }                
             List<Ent_BataClub_Cupones> list = null;
             try
             {
@@ -504,24 +507,25 @@ namespace CapaDato.BataClub
                         cmd.Parameters.AddWithValue("@fecfin", fecha_fin);
                         cmd.Parameters.AddWithValue("@paresmax", pares);
                         cmd.Parameters.AddWithValue("@prom_des", prom_des);
-                        cmd.Parameters.AddWithValue("@tmpcupones", tmpcupones);
+                        //cmd.Parameters.AddWithValue("@tmpcupones", tmpcupones);
                         cmd.Parameters.AddWithValue("@usu_id", usu_id);
-                        SqlDataReader dr = cmd.ExecuteReader();
-                        if (dr.HasRows)
+                        cmd.Parameters.AddWithValue("@Genero", genero);
+                        cmd.Parameters.AddWithValue("@Mes_Int", mesCumple );
+                        SqlDataAdapter da = new SqlDataAdapter(cmd);
+                        DataTable dtCupones = new DataTable();
+                        da.Fill(dtCupones);
+                        if (dtCupones.Rows.Count > 0)
                         {
                             list = new List<Ent_BataClub_Cupones>();
-                            Ent_BataClub_Cupones cup = new Ent_BataClub_Cupones();
-                            while (dr.Read())
-                            {
-                                cup = new Ent_BataClub_Cupones();
-                                cup.promocion = dr["Promocion"].ToString();
-                                cup.dniCliente = dr["Dni"].ToString();
-                                cup.nombresCliente = dr["Nombres"].ToString();
-                                cup.apellidosCliente = dr["Apellidos"].ToString();
-                                cup.correo = dr["Email"].ToString();
-                                cup.cupon = dr["Barra"].ToString();
-                                list.Add(cup);
-                            }
+                            list = (from DataRow dr in dtCupones.Rows
+                                    select new Ent_BataClub_Cupones() {
+                                        promocion = dr["Promocion"].ToString(),
+                                        dniCliente = dr["Dni"].ToString(),
+                                        nombresCliente = dr["Nombres"].ToString(),
+                                        apellidosCliente = dr["Apellidos"].ToString(),
+                                        correo = dr["Email"].ToString(),
+                                        cupon = dr["Barra"].ToString()
+                                        }).ToList();
                         }
                     }
                 }
@@ -548,7 +552,6 @@ namespace CapaDato.BataClub
             }
             return dtRet;
         }
-
 
         //Retorno de lista de clientes con la barra de cupón
         public static List<Ent_BataClub_ListaCliente> return_barra_list(Ent_BataClub_ListaItems list_cliente, decimal _pordes, DateTime fecfin, int _pares_max, string _tipo_des, decimal usu_id)

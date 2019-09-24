@@ -9,7 +9,7 @@
         InsertionMode = InsertionMode.Replace,
         UpdateTargetId = "listaGuia",
         OnComplete = "waitingDialog.hide();",
-        OnBegin = "waitingDialog.show('Espere un momento por favor');",
+        OnBegin = "waitingDialog.show('Este proceso puede tardar unos minutos' , {headerText:'Espere un momento por favor.'});",
         OnFailure = "waitingDialog.hide();"
     };
 }
@@ -42,6 +42,15 @@
     .modal-body {
         max-height: calc(100vh - 212px);
         overflow-y: auto;
+    }
+        p.content {
+        min-height: 0!important;
+        padding: 0!important;
+        margin-right: auto!important;
+        margin-left: auto!important;
+        padding-left: 0!important;
+        padding-right: 0!important;
+        color: dodgerblue;
     }
 </style>
 <link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />

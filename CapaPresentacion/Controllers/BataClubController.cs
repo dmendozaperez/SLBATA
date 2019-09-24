@@ -522,7 +522,7 @@ namespace CapaPresentacion.Controllers
             int result;
             return int.TryParse(valor, out result);
         }
-        public ActionResult BATACLUB_INSERTAR_CUPONES(string promocion , string dscto , string pares , string fecha)
+        public ActionResult BATACLUB_INSERTAR_CUPONES(int operacion , string promocion , string dscto , string pares , string fecha, string mesCumple , string genero)
         {
             Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
             List<Ent_BataClub_Cupones> listaClientes = null;
@@ -534,7 +534,7 @@ namespace CapaPresentacion.Controllers
                 listaClientes = new List<Ent_BataClub_Cupones>();
                 listaClientes = (List<Ent_BataClub_Cupones>)Session[_session_lista_clientes_cupon];
             }
-            if (listaClientes == null || (listaClientes != null && listaClientes.Count == 0))
+            if ((listaClientes == null || (listaClientes != null && listaClientes.Count == 0)) && operacion == 2)
             {
                 _error += "La lista de clientes está vacia" + Environment.NewLine;
             }
@@ -560,11 +560,11 @@ namespace CapaPresentacion.Controllers
             }
             else
             {
-                resultList = datProm.BATACLUB_INSERTAR_CUPONES(Convert.ToDecimal(dscto), Convert.ToDateTime(fecha), Convert.ToDecimal(pares), promocion, _usuario.usu_id, listaClientes, ref _mensaje);
+                resultList = datProm.BATACLUB_INSERTAR_CUPONES(operacion, Convert.ToDecimal(dscto), Convert.ToDateTime(fecha), Convert.ToDecimal(pares), promocion, _usuario.usu_id, listaClientes, mesCumple , genero ,ref _mensaje);
                 if (resultList == null)
                 {
                     Session[_session_lista_cupones_excel] = null;
-                    Session[_session_lista_clientes_cupon] = null;
+                    //Session[_session_lista_clientes_cupon] = null;
                     return Json(new { estado = 0, resultado = "Error", mensaje = _mensaje });
                 }
                 else
