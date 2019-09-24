@@ -440,6 +440,12 @@
       <DependentUpon>ReportArtSinMov.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="RptsCrystal\Vendedor1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Vendedor.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Service References\BataClub\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1694,7 +1700,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="RptsCrystal\Vendedor.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>Vendedor.cs</LastGenOutput>
+      <LastGenOutput>Vendedor1.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="RptsCrystal\Planilla.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

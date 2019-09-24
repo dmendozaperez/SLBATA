@@ -191,6 +191,7 @@ namespace Data.Crystal.Reporte
                                              mayor_1 = string.IsNullOrEmpty(dr["ACC"].ToString()) ? 0 : Convert.ToDecimal(dr["MAYOR_1"].ToString()),
                                              pormay1 = string.IsNullOrEmpty(dr["ACC"].ToString()) ? 0 : Convert.ToDecimal(dr["PORMAY1"].ToString()),
                                              ticket_prom = string.IsNullOrEmpty(dr["ACC"].ToString()) ? 0 : Convert.ToDecimal(dr["TICKET_PROM"].ToString()),
+                                             upt_un= string.IsNullOrEmpty(dr["ACC"].ToString()) ? 0 : Convert.ToDecimal(dr["UPT_UN"].ToString()),
 
                                          }).ToList();
                                 lista2 = new List<Models_Total2>();

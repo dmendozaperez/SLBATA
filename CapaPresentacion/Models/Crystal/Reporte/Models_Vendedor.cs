@@ -31,6 +31,7 @@ namespace Models.Crystal.Reporte
         public decimal mayor_1 { get; set; }
         public decimal pormay1 { get; set; }
         public decimal ticket_prom { get; set; }
+        public decimal upt_un { get; set; }
 
     }
 

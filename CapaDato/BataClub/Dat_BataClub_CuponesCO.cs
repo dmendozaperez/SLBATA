@@ -486,7 +486,7 @@ namespace CapaDato.BataClub
         }
         public List<Ent_BataClub_Cupones> BATACLUB_INSERTAR_CUPONES(decimal por_desc , DateTime fecha_fin , decimal pares , string prom_des, decimal usu_id , List<Ent_BataClub_Cupones> clientes ,ref string mensaje)
         {
-            string sqlquery = "USP_BATACLUB_INSERTAR_CUPONES_GRUPO";// "USP_BATACLUB_INSERTAR_CUPONES";
+            string sqlquery = "USP_BATACLUB_INSERTAR_CUPONES_GRUPO_PRUEBA";// "USP_BATACLUB_INSERTAR_CUPONES";
             int f = 0;
             DataTable tmpcupones = new DataTable();
             tmpcupones = _toDTListCli(clientes);
@@ -500,12 +500,20 @@ namespace CapaDato.BataClub
                     {
                         cmd.CommandTimeout = 0;
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@pordes", por_desc);
-                        cmd.Parameters.AddWithValue("@fecfin", fecha_fin);
-                        cmd.Parameters.AddWithValue("@paresmax", pares);
-                        cmd.Parameters.AddWithValue("@prom_des", prom_des);
-                        cmd.Parameters.AddWithValue("@tmpcupones", tmpcupones);
-                        cmd.Parameters.AddWithValue("@usu_id", usu_id);
+                        //cmd.Parameters.AddWithValue("@pordes", por_desc);
+                        //cmd.Parameters.AddWithValue("@fecfin", fecha_fin);
+                        //cmd.Parameters.AddWithValue("@paresmax", pares);
+                        //cmd.Parameters.AddWithValue("@prom_des", prom_des);
+                        //cmd.Parameters.AddWithValue("@tmpcupones", tmpcupones);
+                        //cmd.Parameters.AddWithValue("@usu_id", usu_id);
+
+
+                        SqlDataAdapter da = new SqlDataAdapter(cmd);
+                        DataSet ds = new DataSet();
+                        da.Fill(ds);
+
+                        cmd.ExecuteNonQuery(); 
+
                         SqlDataReader dr = cmd.ExecuteReader();
                         if (dr.HasRows)
                         {
