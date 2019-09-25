@@ -131,7 +131,7 @@ namespace CapaDato.OrceExclud
             return list;
         }
 
-        public List<Ent_Combo> get_tda_cadena(string cadena)
+        public List<Ent_Combo> get_tda_cadena(string cadena, int todos = 0)
         {
             List<Ent_Combo> list = null;
             string sqlquery = "USP_ORCE_GET_TDA_CADENA";
@@ -145,6 +145,7 @@ namespace CapaDato.OrceExclud
                         cmd.CommandTimeout = 0;
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@COD_CADENA", cadena);
+                        cmd.Parameters.AddWithValue("@TODOS", todos);
                         SqlDataReader dr = cmd.ExecuteReader();
                         if (dr.HasRows)
                         {

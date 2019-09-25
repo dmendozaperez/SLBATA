@@ -41,7 +41,8 @@
                             <th>Fec. Fin</th>
                             <th>Estado</th>
                             <th>Num Cupones</th>
-                            <th>Cupones</th>                            
+                            <th>Cupones</th>    
+                            <th>Tiendas</th>                                  
                             <th>Generar</th>                            
                         </tr>
                     </thead>
@@ -56,10 +57,32 @@
                             <th>Estado</th>         
                             <th>Num Cupones</th>
                             <th>Cupones</th>
+                            <th>Tiendas</th>                            
                             <th>Generar</th>                            
                         </tr>
                     </tfoot>
                 </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalListaTiendas" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <div class="row">
+                    <div class="col-md-8">
+                        <p style="font-size:medium" class="text-primary modal-title" id="myModalLabel"><strong class="text-danger" id="desc_orce_tda"></strong></p>
+                        <p style="font-size:medium" class="text-primary modal-title" id="myModalLabel"><b>Lista de Tiendas: &nbsp;</b></p>
+                    </div>
+                </div>
+            </div>
+            <div style="font-size:small" class="modal-body" id="listaDetTdas">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="">Cerrar</button>
             </div>
         </div>
     </div>
@@ -129,6 +152,11 @@
                   },
                   {
                       "render": function (data, type, full) {
+                          return '<button title="Ver lista de Tiendas" class="btn btn-default btn-sm tiendas" data-cod-prom="' + full.Codigo + '" data-des-prom="' + full.Descripcion + '"><i class="glyphicon glyphicon-list"></i></button>';
+                      }, "sClass": "boton-td"
+                  },
+                  {
+                      "render": function (data, type, full) {
                           var agregar = '';
                           if (full.PromActiva == 1){
                               agregar += '<form action="@Url.Action("GenerarCupon", "BataClub")" method="post">' +
@@ -169,6 +197,50 @@
                 $("#divListaCupones").html(data);
                 $("#descPromocionLista").html(desProm);
                 $("#modalResultCupones").modal({ backdrop: 'static', keyboard: false });               
+            },
+            error: function (xhr) {
+                waitingDialog.hide();
+                toastr.error(xhr, 'Mensaje');
+            }
+        });
+
+    });
+    $('.dt-lista').on('click', '.tiendas', function (e) {
+        waitingDialog.show('Este proceso, puede tardar unos minutos.', {
+            headerText: 'Espere un momento por favor.'
+        });
+        var codProm = $(this).attr('data-cod-prom');
+        var desProm = $(this).attr('data-des-prom');
+        $.ajax({
+            type: "Post",
+            url: '@Url.Action("getListaDetTdasProm", "BataClub")',
+            //contentType: "application/json; charset=utf-8",
+            data: { prom_id: codProm },
+            //dataType: "json",
+            success: function (data) {
+                waitingDialog.hide();
+                if (data.estado == 1) {
+                    if (data.tiendas.length == 0 ) {
+                        swal("Esta promocion es válida en todas las tiendas.");
+                    }
+                    else {
+                        var table = '<table id="" class="table table-hover table-condensed dt-lista-tdas table-striped table-responsive"><thead><tr style="background-color:#3d566e; color:#ecf0f1"><th>Codigo</th><th>Tienda</th></tr></thead><tbody data-bind="foreach:">';
+                        for (var i = 0; i < data.tiendas.length; i++) {
+                            table += '<tr><td>' + data.tiendas[i].cod_tda + '</td><td>' + data.tiendas[i].des_tda + '</td></tr>'
+                        }
+                        table += '</tbody><tfoot><tr><th>Codigo</th><th>Tienda</th></tr></tfoot></table>'
+                        $("#listaDetTdas").html(table);
+                        $("#desc_orce_tda").html(codProm + " - " + desProm);
+                        $(".dt-lista-tdas").DataTable({
+                            "language": {
+                                "url": "../Scripts/DataTables/Spanish.json"
+                            }
+                        });
+                        $("#modalListaTiendas").modal({ backdrop: 'static', keyboard: false });
+                    }
+                } else {
+                    swal("Error", "No se pudo cargar la lista de Tiendas");
+                }
             },
             error: function (xhr) {
                 waitingDialog.hide();

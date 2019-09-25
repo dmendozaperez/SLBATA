@@ -31,6 +31,13 @@ namespace CapaEntidad.BataClub
         public bool PromActiva { get; set; }
         public int nroCupones { get; set; }
     }
+    public class Ent_BataClub_ListTdasProm
+    {
+        public string prom_id { get; set; }
+        public string cod_tda { get; set; }
+        public string des_tda { get; set; }
+        public string des_cadena_tda { get; set; }
+    }
 
     public class Ent_BataClub_CuponesCO
     {

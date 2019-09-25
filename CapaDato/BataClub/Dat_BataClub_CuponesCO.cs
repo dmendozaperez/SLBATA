@@ -484,7 +484,7 @@ namespace CapaDato.BataClub
             //return oLista;
             return strJson;
         }
-        public List<Ent_BataClub_Cupones> BATACLUB_INSERTAR_CUPONES(int operacion, decimal por_desc , DateTime fecha_fin , decimal pares , string prom_des, decimal usu_id , List<Ent_BataClub_Cupones> clientes , string mesCumple , string genero,ref string _prom_id , ref string mensaje)
+        public List<Ent_BataClub_Cupones> BATACLUB_INSERTAR_CUPONES(int operacion, decimal por_desc , DateTime fecha_fin , decimal pares , string prom_des, decimal usu_id , List<Ent_BataClub_Cupones> clientes , string mesCumple , string genero, string tiendas ,ref string _prom_id , ref string mensaje)
         {
             string sqlquery = (operacion == 2 ? "USP_BATACLUB_INSERTAR_CUPONES" : "USP_BATACLUB_INSERTAR_CUPONES_GRUPO");         
             DataTable tmpcupones = new DataTable();
@@ -514,7 +514,8 @@ namespace CapaDato.BataClub
                         if (operacion == 1)
                         {
                             cmd.Parameters.AddWithValue("@Genero", genero);
-                            cmd.Parameters.AddWithValue("@Mes_Int", mesCumple);
+                            cmd.Parameters.AddWithValue("@Mes_Int", mesCumple);//@Tiendas
+                            cmd.Parameters.AddWithValue("@Tiendas", tiendas);
                             cmd.Parameters.Add("@ID_PROM", SqlDbType.VarChar,5).Direction = ParameterDirection.Output;
                         }                        
                         SqlDataAdapter da = new SqlDataAdapter(cmd);
@@ -631,6 +632,45 @@ namespace CapaDato.BataClub
             }
             return list_return;
         }
+
+        public List<Ent_BataClub_ListTdasProm> get_lista_det_tdas_prom(string prom_id)
+        {
+            List<Ent_BataClub_ListTdasProm> list = null;
+
+            string sqlquery = "[USP_BATACLUB_GET_PROM_DET_TDA]";
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+                    if (cn.State == 0) cn.Open();
+                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@PROM_ID", prom_id);
+                        SqlDataReader dr = cmd.ExecuteReader();
+                        if (dr.HasRows)
+                        {
+                            list = new List<Ent_BataClub_ListTdasProm>();
+                            while (dr.Read())
+                            {
+                                Ent_BataClub_ListTdasProm det_tdas = new Ent_BataClub_ListTdasProm();
+                                det_tdas.prom_id = dr["PROM_ID"].ToString();
+                                det_tdas.cod_tda = dr["COD_TDA"].ToString();
+                                det_tdas.des_tda = dr["DES_TDA"].ToString();
+                                det_tdas.des_cadena_tda = dr["DES_CADENA_TDA"].ToString();
+                                list.Add(det_tdas);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                list = null;
+            }
+            return list;
+    }
 
         //Generación de listado de cupones
         public List<Ent_BataClub_ListaCliente> genera_list_barra(decimal usu_id, decimal pordes, DateTime fecfin, int paresmax, string prom_des, Ent_BataClub_ListaItems list_cliente)

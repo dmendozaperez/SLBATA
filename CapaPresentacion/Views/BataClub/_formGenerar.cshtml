@@ -32,7 +32,6 @@
     }
 </style>
 <p class="text-danger">@ViewBag.SubTitle</p>
-
 <div class="box box-body box-primary">
     <div class="row">
         <div class="col-sm-10"  style="padding-left: 25px;">
@@ -66,8 +65,8 @@
             </div>
             <div class="col-md-3">
                 <div class="form-group">
-                    <label for="tdaCadena">Tienda:</label>
-                    @Html.DropDownList("tdaCadena", new MultiSelectList(ViewBag.listTdaCadena, "cbo_codigo", "cbo_descripcion", null), new { @class = "form-control selectpicker", @id = "tdaCadena", @data_live_search = "true", @multiple = "multiple", @data_actions_box = "true", @data_selected_text_format = "count > 2" })
+                    <label for="tienda">Tienda:</label>
+                    @Html.DropDownList("tienda", new MultiSelectList(ViewBag.listTdaCadena, "cbo_codigo", "cbo_descripcion", null), new { @class = "form-control selectpicker", @id = "tienda", @data_live_search = "true", @multiple = "multiple", @data_actions_box = "true", @data_selected_text_format = "count > 2" })
                 </div>
             </div>
         }
@@ -221,6 +220,7 @@
 
 <script>
     $(document).ready(function () {
+        $("#cadena").selectpicker('selectAll');        
         $("#btdp").click(function () {                                                                                                      
             $("#fecha").datepicker('show')
         });
@@ -248,11 +248,13 @@
                     var mesCumple = $("#mesCumple").val();
                     var genero = $("input[name='genero']:checked").val(); //$("#genero").val();
                     var operacion = $("#btnGenerar").val();//operacion
+                    var tienda = ((($("#tienda option:not(:selected)").length == 0 && $("#tienda > option").length > 1) && ($("#cadena option:not(:selected)").length == 0 && $("#cadena > option").length > 1)) ? "" : $('#tienda').val()); //$("#tienda").val();
+                    tienda = (tienda == null ? "" : tienda)
                     waitingDialog.show('Este proceso puede tardar unos minutos', { headerText: 'Espere un momento por favor.' });
                     $.ajax({
                         type: "POST",
                         url: '@Url.Action("BATACLUB_INSERTAR_CUPONES", "BataClub")',
-                        data: { operacion:operacion, promocion: promocion, dscto: dscto, fecha: fecha , pares : pares , mesCumple : mesCumple , genero : genero},
+                        data: { operacion: operacion, promocion: promocion, dscto: dscto, fecha: fecha, pares: pares, mesCumple: mesCumple, genero: genero, tienda: tienda },
                         dataType: "json",
                         success: function (data) {
                             waitingDialog.hide();
@@ -263,7 +265,7 @@
                                     text: data.mensaje,
                                     icon: "success"
                                 }).then((value) => {
-                                    //  waitingDialog.show('', { headerText: 'Espere un momento por favor.' });
+                                    //waitingDialog.show('', { headerText: 'Espere un momento por favor.' });
                                     $.ajax({
                                         type: "Post",
                                         url: '@Url.Action("getListaCupProm", "BataClub")',
@@ -309,8 +311,9 @@
             data: { cadenas: cadenas },
             success: function (resultado) {
                 //waitingDialog.hide();
-                $('#tdaCadena').html(ParseJSONSelectList(resultado));
-                $('#tdaCadena').selectpicker('refresh');
+                $('#tienda').html(ParseJSONSelectList(resultado));
+                $('#tienda').selectpicker('refresh');
+                $("#tienda").selectpicker('selectAll');
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 //waitingDialog.hide();
