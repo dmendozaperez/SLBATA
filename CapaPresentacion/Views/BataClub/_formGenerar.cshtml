@@ -198,6 +198,7 @@
             <div class="modal-header">
                 <div class="row">
                     <div class="col-md-6">
+                        <p style="font-size:medium" class="text-primary modal-title" id="myModalLabel"><strong class="text-danger" id="descPromCupLista"></strong></p>
                         <p style="font-size:medium" class="text-primary modal-title" id="myModalLabel"><b>Lista de Cupones generados: &nbsp;</b></p>
                     </div>
                     <div class="col-md-6 text-right">
@@ -256,6 +257,7 @@
                         success: function (data) {
                             waitingDialog.hide();
                             if (data.estado == 1) {
+                                _prom_id = data.prom_id;
                                 swal({
                                     title: "OK",
                                     text: data.mensaje,
@@ -269,7 +271,7 @@
                                         success: function (data) {
                                             waitingDialog.hide();
                                             $("#divListaCupones").html(data);
-                                            //$("#descPromocionLista").html(desProm);
+                                            $("#descPromCupLista").html(_prom_id + " - " + promocion);
                                             $("#modalResultCupones").modal({ backdrop: 'static', keyboard: false });
                                         },
                                         error: function (xhr) {

@@ -484,10 +484,9 @@ namespace CapaDato.BataClub
             //return oLista;
             return strJson;
         }
-        public List<Ent_BataClub_Cupones> BATACLUB_INSERTAR_CUPONES(int operacion, decimal por_desc , DateTime fecha_fin , decimal pares , string prom_des, decimal usu_id , List<Ent_BataClub_Cupones> clientes , string mesCumple , string genero,ref string mensaje)
+        public List<Ent_BataClub_Cupones> BATACLUB_INSERTAR_CUPONES(int operacion, decimal por_desc , DateTime fecha_fin , decimal pares , string prom_des, decimal usu_id , List<Ent_BataClub_Cupones> clientes , string mesCumple , string genero,ref string _prom_id , ref string mensaje)
         {
-            string sqlquery = "USP_BATACLUB_INSERTAR_CUPONES_GRUPO_PRUEBA";// "USP_BATACLUB_INSERTAR_CUPONES";
-            int f = 0;
+            string sqlquery = (operacion == 2 ? "USP_BATACLUB_INSERTAR_CUPONES" : "USP_BATACLUB_INSERTAR_CUPONES_GRUPO");         
             DataTable tmpcupones = new DataTable();
             if (operacion == 2)
             {
@@ -507,15 +506,26 @@ namespace CapaDato.BataClub
                         cmd.Parameters.AddWithValue("@fecfin", fecha_fin);
                         cmd.Parameters.AddWithValue("@paresmax", pares);
                         cmd.Parameters.AddWithValue("@prom_des", prom_des);
-                        //cmd.Parameters.AddWithValue("@tmpcupones", tmpcupones);
-                        cmd.Parameters.AddWithValue("@usu_id", usu_id);
-                        cmd.Parameters.AddWithValue("@Genero", genero);
-                        cmd.Parameters.AddWithValue("@Mes_Int", mesCumple );
+                        if (operacion == 2)
+                        {
+                            cmd.Parameters.AddWithValue("@tmpcupones", tmpcupones);
+                        }
+                        cmd.Parameters.AddWithValue("@usu_id", usu_id);                        
+                        if (operacion == 1)
+                        {
+                            cmd.Parameters.AddWithValue("@Genero", genero);
+                            cmd.Parameters.AddWithValue("@Mes_Int", mesCumple);
+                            cmd.Parameters.Add("@ID_PROM", SqlDbType.VarChar,5).Direction = ParameterDirection.Output;
+                        }                        
                         SqlDataAdapter da = new SqlDataAdapter(cmd);
                         DataTable dtCupones = new DataTable();
                         da.Fill(dtCupones);
                         if (dtCupones.Rows.Count > 0)
                         {
+                            if (operacion == 1)
+                            {
+                                _prom_id = cmd.Parameters["@ID_PROM"].Value.ToString();
+                            }                            
                             list = new List<Ent_BataClub_Cupones>();
                             list = (from DataRow dr in dtCupones.Rows
                                     select new Ent_BataClub_Cupones() {
@@ -533,6 +543,7 @@ namespace CapaDato.BataClub
             catch (Exception ex )
             {
                 mensaje = ex.Message;
+                _prom_id = "";
                 list = null;
             }
             return list;
