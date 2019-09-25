@@ -440,12 +440,6 @@
       <DependentUpon>ReportArtSinMov.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="RptsCrystal\Vendedor1.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Vendedor.rpt</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Service References\BataClub\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
