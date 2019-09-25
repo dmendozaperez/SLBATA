@@ -528,6 +528,7 @@ namespace CapaPresentacion.Controllers
             List<Ent_BataClub_Cupones> listaClientes = null;
             string _error = "";
             string _mensaje = "";
+            string _prom_id = "";
             List<Ent_BataClub_Cupones> resultList = null;
             if (Session[_session_lista_clientes_cupon] != null)
             {
@@ -560,7 +561,7 @@ namespace CapaPresentacion.Controllers
             }
             else
             {
-                resultList = datProm.BATACLUB_INSERTAR_CUPONES(operacion, Convert.ToDecimal(dscto), Convert.ToDateTime(fecha), Convert.ToDecimal(pares), promocion, _usuario.usu_id, listaClientes, mesCumple , genero ,ref _mensaje);
+                resultList = datProm.BATACLUB_INSERTAR_CUPONES(operacion, Convert.ToDecimal(dscto), Convert.ToDateTime(fecha), Convert.ToDecimal(pares), promocion, _usuario.usu_id, listaClientes, mesCumple , genero ,ref _prom_id ,ref _mensaje);
                 if (resultList == null)
                 {
                     Session[_session_lista_cupones_excel] = null;
@@ -571,7 +572,7 @@ namespace CapaPresentacion.Controllers
                 {
                     Session[_session_lista_cupones_excel] = resultList;
                     Session[_session_lista_clientes_cupon] = resultList;
-                    return Json(new { estado = 1, resultado = "", mensaje = "Operacion realizada con éxito." });
+                    return Json(new { estado = 1, resultado = "", mensaje = "Operacion realizada con éxito."+(operacion == 1 ? "\nCodigo de la promocion: " + _prom_id : ""), prom_id = _prom_id });
                 }
             }
         }
