@@ -7,6 +7,7 @@ using CapaEntidad.Control;
 using CapaEntidad.General;
 using CapaEntidad.Util;
 using CapaPresentacion.Bll;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -27,6 +28,7 @@ namespace CapaPresentacion.Controllers
 
         private Dat_BataClub_CuponesCO datProm = new Dat_BataClub_CuponesCO();
         private Dat_BataClub_Cliente datCli = new Dat_BataClub_Cliente();
+        private Dat_BataClub_Dashboard datDash = new Dat_BataClub_Dashboard();
         Dat_OrceExclud datOE = new Dat_OrceExclud();
         private Dat_Canal datCan = new Dat_Canal();
         private Dat_Ubigeo datUbi = new Dat_Ubigeo();
@@ -93,6 +95,28 @@ namespace CapaPresentacion.Controllers
         }
         public ActionResult Dashboard()
         {
+            Ent_BataClub_DashBoard dashboard =  datDash.GET_INFO_DASHBOARD();
+            ViewBag.general = dashboard.General;
+            Ent_BataClub_Chart_Data chartDS = new Ent_BataClub_Chart_Data();
+
+            chartDS.labels = dashboard.listMesMiembros.Select(s => s.MES_STR).ToArray();
+            Ent_BataClub_Chart_DataSet dsBC = (new Ent_BataClub_Chart_DataSet()
+            {
+                label = "REGISTRADOS",
+                backgroundColor = null,
+                borderWidth = "1",
+                data = dashboard.listMesRegistros.Select(s => s.NUMERO).ToArray()
+            });
+            Ent_BataClub_Chart_DataSet dsBC2 = (new Ent_BataClub_Chart_DataSet()
+            {
+                label = "MIEMBROS",
+                backgroundColor = "rgba(221, 75, 57,0.9)",
+                borderWidth = "1",
+                data = dashboard.listMesMiembros.Select(s => s.NUMERO).ToArray()
+            });
+            chartDS.datasets = new List<Ent_BataClub_Chart_DataSet>() { dsBC , dsBC2};
+            ViewBag.chartDS = chartDS;
+
             return View();
         }
         public ActionResult get_tda_cadena(string cadenas)

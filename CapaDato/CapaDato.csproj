@@ -63,6 +63,7 @@
     <Compile Include="ArticuloSustituto\Dat_ArticuloSustituto.cs" />
     <Compile Include="BataClub\Dat_BataClub_Cliente.cs" />
     <Compile Include="BataClub\Dat_BataClub_CuponesCO.cs" />
+    <Compile Include="BataClub\Dat_BataClub_Dashboard.cs" />
     <Compile Include="CanalVenta\Dat_CanalVenta.cs" />
     <Compile Include="Comunicado\Modulo.cs" />
     <Compile Include="Contabilidad\Dat_Contabilidad_EstadoDocumento.cs" />
