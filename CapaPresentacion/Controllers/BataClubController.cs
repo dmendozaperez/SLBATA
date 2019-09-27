@@ -29,6 +29,7 @@ namespace CapaPresentacion.Controllers
         private Dat_BataClub_CuponesCO datProm = new Dat_BataClub_CuponesCO();
         private Dat_BataClub_Cliente datCli = new Dat_BataClub_Cliente();
         private Dat_BataClub_Dashboard datDash = new Dat_BataClub_Dashboard();
+        private Dat_Combo datCbo = new Dat_Combo();
         Dat_OrceExclud datOE = new Dat_OrceExclud();
         private Dat_Canal datCan = new Dat_Canal();
         private Dat_Ubigeo datUbi = new Dat_Ubigeo();
@@ -97,26 +98,10 @@ namespace CapaPresentacion.Controllers
         {
             Ent_BataClub_DashBoard dashboard =  datDash.GET_INFO_DASHBOARD();
             ViewBag.general = dashboard.General;
-            //--- BAR - INFORME MENSUAL ---
-            Ent_BataClub_Chart_Data chartDS = new Ent_BataClub_Chart_Data();            
-            Ent_BataClub_Chart_DataSet dsBC = (new Ent_BataClub_Chart_DataSet()
-            {
-                label = "REGISTRADOS",
-                backgroundColor = Enumerable.Repeat("rgba(180, 180, 180,0.7)" , dashboard.listMesRegistros.Count ).ToArray() , // new string[] { "rgba(180, 180, 180,0.7)" },
-                borderWidth = "1",
-                data = dashboard.listMesRegistros.Select(s => s.NUMERO).ToArray()
-            });
-            Ent_BataClub_Chart_DataSet dsBC2 = (new Ent_BataClub_Chart_DataSet()
-            {
-                label = "MIEMBROS",
-                backgroundColor = Enumerable.Repeat("rgba(221, 75, 57,0.9)", dashboard.listMesRegistros.Count).ToArray(),
-                borderWidth = "1",
-                data = dashboard.listMesMiembros.Select(s => s.NUMERO).ToArray()
-            });
-            chartDS.labels = dashboard.listMesMiembros.Select(s => s.MES_STR).ToArray();
-            chartDS.datasets = new List<Ent_BataClub_Chart_DataSet>() { dsBC , dsBC2};
-            ViewBag.chartDS = chartDS;
+            //--- BAR - INFORME MENSUAL ---            
+            ViewBag.chartDS = informeMensualData(dashboard);
             //--- END BAR ----
+
             //--- DONUT CANALES ----
             Ent_BataClub_Chart_Data chartDSDonut = new Ent_BataClub_Chart_Data();
             Ent_BataClub_Chart_DataSet dsBCDonut = (new Ent_BataClub_Chart_DataSet()
@@ -131,15 +116,38 @@ namespace CapaPresentacion.Controllers
             chartDSDonut.datasets = new List<Ent_BataClub_Chart_DataSet>() { dsBCDonut };
             ViewBag.chartDonut = chartDSDonut;
             //--- END DONUT ----
-
-
-
-
-
-
-
+            ViewBag.anios = datCbo.get_lista_anios(2015);
             return View();
         }
+        public ActionResult updateChartData(string anio , int informe)
+        {
+            Ent_BataClub_DashBoard dashboard = datDash.GET_INFO_DASHBOARD(anio,informe);
+            Ent_BataClub_Chart_Data chartDS = informeMensualData(dashboard);
+            
+            return Json(JsonConvert.SerializeObject(chartDS, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore })); 
+        }
+        public Ent_BataClub_Chart_Data informeMensualData(Ent_BataClub_DashBoard dashboard)
+        {
+            Ent_BataClub_Chart_Data chartDS = new Ent_BataClub_Chart_Data();
+            Ent_BataClub_Chart_DataSet dsBC = (new Ent_BataClub_Chart_DataSet()
+            {
+                label = "REGISTRADOS",
+                backgroundColor = Enumerable.Repeat("rgba(180, 180, 180,0.7)", dashboard.listMesRegistros.Count).ToArray(), // new string[] { "rgba(180, 180, 180,0.7)" },
+                borderWidth = "1",
+                data = dashboard.listMesRegistros.Select(s => s.NUMERO).ToArray()
+            });
+            Ent_BataClub_Chart_DataSet dsBC2 = (new Ent_BataClub_Chart_DataSet()
+            {
+                label = "MIEMBROS",
+                backgroundColor = Enumerable.Repeat("rgba(221, 75, 57,0.9)", dashboard.listMesRegistros.Count).ToArray(),
+                borderWidth = "1",
+                data = dashboard.listMesMiembros.Select(s => s.NUMERO).ToArray()
+            });
+            chartDS.labels = dashboard.listMesMiembros.Select(s => s.MES_STR).ToArray();
+            chartDS.datasets = new List<Ent_BataClub_Chart_DataSet>() { dsBC, dsBC2 };
+            return chartDS;
+        }
+
         public ActionResult get_tda_cadena(string cadenas)
         {
             List<Ent_Combo> list = datOE.get_tda_cadena(cadenas,1   );

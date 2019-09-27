@@ -12,9 +12,9 @@ namespace CapaDato.BataClub
 {
     public class Dat_BataClub_Dashboard
     {
-        public Ent_BataClub_DashBoard GET_INFO_DASHBOARD(string anio = "2019")
+        public Ent_BataClub_DashBoard GET_INFO_DASHBOARD(string anio = "2019" , int informe = 0) // 0 = TODO | 1 = GENERAL | 2 = REGISTRADOS | 3 = MIEMBROS | 4 = CANALES
         {
-            string sqlquery = "USP_BATACLUB_DASHBOARD_2";
+            string sqlquery = "USP_BATACLUB_DASHBOARD_3";
             Ent_BataClub_DashBoard info = null;
             try
             {
@@ -26,21 +26,26 @@ namespace CapaDato.BataClub
                         cmd.CommandTimeout = 0;
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@ANIO", anio);
+                        cmd.Parameters.AddWithValue("@INFORME", informe);
                         using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                         {
                             DataSet ds = new DataSet();
-                            da.Fill(ds);
-                            
+                            da.Fill(ds);                            
                             info = new Ent_BataClub_DashBoard();
-                            info.General = (from DataRow dr in ds.Tables[0].Rows
-                                            select new Ent_BataClub_DashBoard_General()
-                                            {
-                                                REGISTROS = Convert.ToDecimal(dr["REGISTROS"]),
-                                                MIEMBROS = Convert.ToDecimal(dr["MIEMBROS"]),
-                                                RATIO = Convert.ToDecimal(dr["RATIO"]),
-                                                TRANSAC_CUPON = Convert.ToDecimal(dr["TRANSAC_CUPON"])
-                                            }).FirstOrDefault();
-                            info.listMesRegistros = (from DataRow dr in ds.Tables[1].Rows
+
+                            if (new[] { 0 ,1 }.Contains(informe))
+                                info.General = (from DataRow dr in ds.Tables[(0)].Rows
+                                                select new Ent_BataClub_DashBoard_General()
+                                                {
+                                                    REGISTROS = Convert.ToDecimal(dr["REGISTROS"]),
+                                                    MIEMBROS = Convert.ToDecimal(dr["MIEMBROS"]),                                                    
+                                                    TRANSAC_CUPON = Convert.ToDecimal(dr["TRANSAC_CUPON"]),
+                                                    PARES = Convert.ToDecimal(dr["PARES"]),
+                                                    SOLES = Convert.ToDecimal(dr["SOLES"])
+                                                }).FirstOrDefault();
+                            if (new[] { 0, 2 }.Contains(informe))
+                            {                                                           
+                                info.listMesRegistros = (from DataRow dr in ds.Tables[(informe == 0 ? 1 : 0)].Rows
                                                     select new Ent_BataClub_DashBoard_Mensual()
                                                     {
                                                         ANIO = dr["ANIO"].ToString(),
@@ -48,7 +53,7 @@ namespace CapaDato.BataClub
                                                         MES_STR = dr["MES_STR"].ToString(),
                                                         NUMERO = Convert.ToDecimal(dr["REGISTROS"])
                                                     }).ToList();
-                            info.listMesMiembros = (from DataRow dr in ds.Tables[2].Rows
+                                info.listMesMiembros = (from DataRow dr in ds.Tables[(informe == 0 ? 2 : 1) ].Rows
                                                      select new Ent_BataClub_DashBoard_Mensual()
                                                      {
                                                          ANIO = dr["ANIO"].ToString(),
@@ -56,7 +61,9 @@ namespace CapaDato.BataClub
                                                          MES_STR = dr["MES_STR"].ToString(),
                                                          NUMERO = Convert.ToDecimal(dr["MIEMBROS"])
                                                      }).ToList();
-                            info.listCanles = (from DataRow dr in ds.Tables[3].Rows
+                            }
+                            if (new[] { 0, 4 }.Contains(informe))
+                                info.listCanles = (from DataRow dr in ds.Tables[informe == 0 ? 3 : 0].Rows
                                                     select new Ent_BataClub_Dashboard_Canales()
                                                     {
                                                         CANAL = dr["CANAL"].ToString(),

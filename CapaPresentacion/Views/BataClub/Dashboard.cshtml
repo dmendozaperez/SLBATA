@@ -15,6 +15,7 @@
         width: 100% !important;
     }
 </style>
+<link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />  
 <section class="content">
     <!-- Info boxes -->
     <div class="row">
@@ -41,17 +42,7 @@
             </div>
             <!-- /.info-box -->
         </div>
-        <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="info-box">
-                <span class="info-box-icon bg-yellow"><i class="ion ion-information"></i></span>
-                <div class="info-box-content">
-                    <span class="info-box-text">RATIO</span>
-                    <span class="info-box-number" id="total_miembros">@ViewBag.general.RATIO.ToString("N0")</span>
-                </div>
-                <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-        </div>
+
         <!-- /.col -->
         <!-- fix for small devices only -->
         <div class="clearfix visible-sm-block"></div>
@@ -67,19 +58,39 @@
             </div>  
             <!-- /.info-box -->
         </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-yellow"><i class="glyphicon glyphicon glyphicon-tags" ></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">PARES</span>
+                    <span class="info-box-number" id="total_miembros">@ViewBag.general.PARES.ToString("N0")</span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-blue"><i class="fa fa-money"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">SOLES</span>
+                    <span class="info-box-number" id="total_miembros">@ViewBag.general.SOLES.ToString("N0")</span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
     </div>
     <!-- /.row -->
     <div class="row">   
         <div class="col-md-8">
             <div class="box">
                 <div class="box-header with-border">
-                    <i class="fa fa-bar-chart-o"></i>
-                    <h3 class="box-title">Informe Mensual</h3>
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                            <i class="fa fa-minus"></i>
-                        </button>
-                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                        <i class="fa fa-bar-chart-o"></i>
+                        <h3 class="box-title">Informe Mensual</h3>
+                    
+                    <div class="box-tools pull-right" style="top: 3px;">
+                        @Html.DropDownList("anioIm", new SelectList(ViewBag.anios, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "form-control form-control-sm selectpicker", @id = "anioIm", @name = "anioIm" })
                     </div>
                 </div>
                 <!-- /.box-header -->
@@ -284,12 +295,13 @@
 
 </section>
 <script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+<script src="~/Scripts/bootstrap-select.min.js"></script>
 <script type="text/javascript">
-    $(document).ready(function () {
-        var ctx = document.getElementById('barChart');
-        var myChart = new Chart(ctx, {
+    var myChart;
+    function getChartInformeMensual(canvas, data) {        
+        myChart = new Chart(canvas, {
             type: 'bar',
-            data: JSON.parse('@Html.Raw(ViewBag.chartDS)'),
+            data: data,
             options: {
                 scales: {
                     yAxes: [{
@@ -303,12 +315,16 @@
                     intersect: false,
                     backgroundColor: 'rgba(237, 237, 237,0.8)',
                     bodyFontColor: 'rgba(73, 73, 73,0.8)',
-                    borderWidth : 1,
+                    borderWidth: 1,
                     borderColor: 'rgba(158, 158, 158, 1)',
                     titleFontColor: 'rgba(73, 73, 73,0.8)'
                 },
             }
         });
+    }
+    $(document).ready(function () {
+
+        getChartInformeMensual(document.getElementById('barChart'),JSON.parse('@Html.Raw(ViewBag.chartDS)'));
 
         var ctxCanal = document.getElementById('canalChart');
         var myDoughnutChart = new Chart(ctxCanal, {
@@ -343,5 +359,22 @@
                 })
             };
         }
+
+        $("#anioIm").change(function () {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("updateChartData", "BataClub")',
+                data: { anio: $("#anioIm").val() , informe : 2 },
+                success: function (data) {
+                    myChart.destroy();
+                    getChartInformeMensual(document.getElementById('barChart'),JSON.parse(data));
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    //waitingDialog.hide();
+                    var error = eval("(" + XMLHttpRequest.responseText + ")");
+                    swal(error.Message);
+                }
+            });
+        });
     });
 </script>

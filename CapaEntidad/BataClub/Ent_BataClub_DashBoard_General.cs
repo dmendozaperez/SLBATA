@@ -16,9 +16,10 @@ namespace CapaEntidad.BataClub
     public class Ent_BataClub_DashBoard_General
     {
         public decimal REGISTROS { get; set; }
-        public decimal MIEMBROS { get; set; }
-        public decimal RATIO { get; set; }
+        public decimal MIEMBROS { get; set; }        
         public decimal TRANSAC_CUPON { get; set; }
+        public decimal PARES { get; set; }
+        public decimal SOLES { get; set; }
     }
     public class Ent_BataClub_DashBoard_Mensual
     {
