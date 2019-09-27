@@ -11,11 +11,13 @@ namespace CapaEntidad.BataClub
         public Ent_BataClub_DashBoard_General General { get; set; }
         public List<Ent_BataClub_DashBoard_Mensual> listMesRegistros { get; set; }
         public List<Ent_BataClub_DashBoard_Mensual> listMesMiembros { get; set; }
+        public List<Ent_BataClub_Dashboard_Canales> listCanles { get; set; }
     }
     public class Ent_BataClub_DashBoard_General
     {
         public decimal REGISTROS { get; set; }
         public decimal MIEMBROS { get; set; }
+        public decimal RATIO { get; set; }
         public decimal TRANSAC_CUPON { get; set; }
     }
     public class Ent_BataClub_DashBoard_Mensual
@@ -24,6 +26,12 @@ namespace CapaEntidad.BataClub
         public int MES { get; set; }
         public string MES_STR { get; set; }
         public decimal NUMERO { get; set; }
+    }   
+    public class Ent_BataClub_Dashboard_Canales
+    {
+        public string CANAL { get; set; }
+        public decimal REGISTROS { get; set; }
+        public decimal PORC { get; set; }
     }
     public class Ent_BataClub_Chart_Data
     {
@@ -33,12 +41,8 @@ namespace CapaEntidad.BataClub
     public class Ent_BataClub_Chart_DataSet
     {
         public string label                { get; set; }
-        public string backgroundColor { get;set;}
+        public string[] backgroundColor { get;set;}
         public string borderWidth { get;set;}
-        //public string pointColor           {get;set;}
-        //public string pointStrokeColor     {get;set;}
-        //public string pointHighlightFill   {get;set;}
-        //public string pointHighlightStroke {get;set;}
         public decimal[] data { get; set; }
     }
 }

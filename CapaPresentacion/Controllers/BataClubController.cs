@@ -97,25 +97,46 @@ namespace CapaPresentacion.Controllers
         {
             Ent_BataClub_DashBoard dashboard =  datDash.GET_INFO_DASHBOARD();
             ViewBag.general = dashboard.General;
-            Ent_BataClub_Chart_Data chartDS = new Ent_BataClub_Chart_Data();
-
-            chartDS.labels = dashboard.listMesMiembros.Select(s => s.MES_STR).ToArray();
+            //--- BAR - INFORME MENSUAL ---
+            Ent_BataClub_Chart_Data chartDS = new Ent_BataClub_Chart_Data();            
             Ent_BataClub_Chart_DataSet dsBC = (new Ent_BataClub_Chart_DataSet()
             {
                 label = "REGISTRADOS",
-                backgroundColor = null,
+                backgroundColor = Enumerable.Repeat("rgba(180, 180, 180,0.7)" , dashboard.listMesRegistros.Count ).ToArray() , // new string[] { "rgba(180, 180, 180,0.7)" },
                 borderWidth = "1",
                 data = dashboard.listMesRegistros.Select(s => s.NUMERO).ToArray()
             });
             Ent_BataClub_Chart_DataSet dsBC2 = (new Ent_BataClub_Chart_DataSet()
             {
                 label = "MIEMBROS",
-                backgroundColor = "rgba(221, 75, 57,0.9)",
+                backgroundColor = Enumerable.Repeat("rgba(221, 75, 57,0.9)", dashboard.listMesRegistros.Count).ToArray(),
                 borderWidth = "1",
                 data = dashboard.listMesMiembros.Select(s => s.NUMERO).ToArray()
             });
+            chartDS.labels = dashboard.listMesMiembros.Select(s => s.MES_STR).ToArray();
             chartDS.datasets = new List<Ent_BataClub_Chart_DataSet>() { dsBC , dsBC2};
             ViewBag.chartDS = chartDS;
+            //--- END BAR ----
+            //--- DONUT CANALES ----
+            Ent_BataClub_Chart_Data chartDSDonut = new Ent_BataClub_Chart_Data();
+            Ent_BataClub_Chart_DataSet dsBCDonut = (new Ent_BataClub_Chart_DataSet()
+            {
+                backgroundColor = new string[] { "rgba(99, 143, 197, 0.9)",
+                        "rgba(221, 75, 57,0.9)",
+                        "rgba(255, 206, 86, 0.8)",
+                        "rgba(75, 192, 192, 0.8)"},
+                data = dashboard.listCanles.Select(s => s.REGISTROS).ToArray()
+            });
+            chartDSDonut.labels = dashboard.listCanles.Select(s => s.CANAL).ToArray();
+            chartDSDonut.datasets = new List<Ent_BataClub_Chart_DataSet>() { dsBCDonut };
+            ViewBag.chartDonut = chartDSDonut;
+            //--- END DONUT ----
+
+
+
+
+
+
 
             return View();
         }
