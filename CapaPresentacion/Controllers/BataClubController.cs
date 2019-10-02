@@ -96,23 +96,37 @@ namespace CapaPresentacion.Controllers
         }
         public ActionResult Dashboard()
         {
-            if (Session["_dashboardData"] == null)
-            {
-                Session["_dashboardData"] = datDash.GET_INFO_DASHBOARD();
-            }
-            Ent_BataClub_DashBoard dashboard =(Ent_BataClub_DashBoard)Session["_dashboardData"];
-            ViewBag.general = dashboard.General;        
-            ViewBag.chartDS = informeBarChartData(dashboard,2); // Barras mensual regsitros/miembros
-            ViewBag.totalesGeneros = dashboard.listMesGenero;
-            ViewBag.chartDonut = informeCanales(dashboard); // Donut anual canales
-            ViewBag.chartMesParesSoles = informeBarChartData(dashboard, 4);
-            ViewBag.promsPS = dashboard.listPromsPS;
-            ViewBag.anios = datCbo.get_lista_anios(2015);
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
 
-            ViewBag.BarChartTranReg = informeBarChartData(dashboard, 6);
-            ViewBag.DetallesTiendaSuperv = dashboard.listTiendasSupervTot;
-            
-            return View();
+            if (_usuario == null)
+            {
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+            }
+            else
+            {
+                //if (Session["_dashboardData"] == null)
+                //{
+                //    Session["_dashboardData"] = datDash.GET_INFO_DASHBOARD();
+                //}
+                Session["_dashboardData"] = datDash.GET_INFO_DASHBOARD();
+
+                Ent_BataClub_DashBoard dashboard = (Ent_BataClub_DashBoard)Session["_dashboardData"];
+                ViewBag.general = dashboard.General;
+                ViewBag.chartDS = informeBarChartData(dashboard, 2); // Barras mensual regsitros/miembros
+                ViewBag.totalesGeneros = dashboard.listMesGenero;
+                ViewBag.chartDonut = informeCanales(dashboard); // Donut anual canales
+                ViewBag.chartMesParesSoles = informeBarChartData(dashboard, 4);
+                ViewBag.promsPS = dashboard.listPromsPS;
+                ViewBag.anios = datCbo.get_lista_anios(2015);
+
+                ViewBag.BarChartTranReg = informeBarChartData(dashboard, 6);
+                ViewBag.DetallesTiendaSuperv = dashboard.listTiendasSupervTot;
+
+                return View();
+            }
         }
         public ActionResult updateChartData(string anio, int informe , int mes = 0,string fecini = null , string fecfin = null)
         {
