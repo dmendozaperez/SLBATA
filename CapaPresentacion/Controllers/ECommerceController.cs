@@ -266,7 +266,10 @@ namespace CapaPresentacion.Controllers
         private List<ECommerce> selectVentas(DateTime fdesde , DateTime fhasta, string noDocCli,string noDoc)
         {
             List<ECommerce> ventas = new List<ECommerce>();
-            List<Ent_ECommerce> ent_ventas =  datos.get_Ventas(fdesde,fhasta,noDocCli, noDoc);
+            string _tienda = (Session["Tienda"]==null)?"": Session["Tienda"].ToString();
+
+
+            List<Ent_ECommerce> ent_ventas =  datos.get_Ventas(fdesde,fhasta,noDocCli, noDoc, _tienda);
             if (ent_ventas != null)
             {
                 foreach (var item in ent_ventas)

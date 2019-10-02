@@ -4,7 +4,7 @@
     ViewBag.Title = "Consulta de Boletas,Facturas,Nota de Credito y Debito";
     AjaxOptions options = new AjaxOptions
     {
-        HttpMethod = "POST",
+        HttpMethod = "GET",
         InsertionMode = InsertionMode.Replace,
         UpdateTargetId = "listaTable",
         OnComplete = "waitingDialog.hide();",
@@ -77,7 +77,7 @@
 </div>
 
 
-<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+@*<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document" style="padding-top: 150px;">
         <div id="myModalContent1" class="modal-content" style="height:190px">
             <div style="background-color:#607d8b; color:white; height:48.77px;" class="modal-header">
@@ -89,7 +89,7 @@
             </div>
         </div>
     </div>
-</div>
+</div>*@
 
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 <script src="~/ScriptsSelect/bootstrap-multiselect.js"></script>

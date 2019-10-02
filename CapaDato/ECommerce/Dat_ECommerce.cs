@@ -65,11 +65,11 @@ namespace CapaDato.ECommerce
         //    }
         //}
 
-        public List<Ent_ECommerce> get_Ventas(DateTime fdesde , DateTime fhasta, string noDocCli , string noDoc )
+        public List<Ent_ECommerce> get_Ventas(DateTime fdesde , DateTime fhasta, string noDocCli , string noDoc,string _tienda )
         {
             List<Ent_ECommerce> list = null;
             string sqlquery = "USP_ECOM_Lista_Ventas";
-            string _tienda = (String)Session["Tienda"];
+            //string _tienda = "";// (String)Session["Tienda"];
             try
             {
                 using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexionEcommerce))
