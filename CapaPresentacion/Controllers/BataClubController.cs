@@ -96,13 +96,84 @@ namespace CapaPresentacion.Controllers
         }
         public ActionResult Dashboard()
         {
-            Ent_BataClub_DashBoard dashboard =  datDash.GET_INFO_DASHBOARD();
-            ViewBag.general = dashboard.General;
-            //--- BAR - INFORME MENSUAL ---            
-            ViewBag.chartDS = informeMensualData(dashboard);
-            //--- END BAR ----
+            if (Session["_dashboardData"] == null)
+            {
+                Session["_dashboardData"] = datDash.GET_INFO_DASHBOARD();
+            }
+            Ent_BataClub_DashBoard dashboard =(Ent_BataClub_DashBoard)Session["_dashboardData"];
+            ViewBag.general = dashboard.General;        
+            ViewBag.chartDS = informeBarChartData(dashboard,2); // Barras mensual regsitros/miembros
+            ViewBag.totalesGeneros = dashboard.listMesGenero;
+            ViewBag.chartDonut = informeCanales(dashboard); // Donut anual canales
+            ViewBag.chartMesParesSoles = informeBarChartData(dashboard, 4);
+            ViewBag.promsPS = dashboard.listPromsPS;
+            ViewBag.anios = datCbo.get_lista_anios(2015);
 
-            //--- DONUT CANALES ----
+            ViewBag.BarChartTranReg = informeBarChartData(dashboard, 6);
+            ViewBag.DetallesTiendaSuperv = dashboard.listTiendasSupervTot;
+            
+            return View();
+        }
+        public ActionResult updateChartData(string anio, int informe , int mes = 0,string fecini = null , string fecfin = null)
+        {
+            Ent_BataClub_DashBoard dashboard = datDash.GET_INFO_DASHBOARD(anio, informe, mes,fecini , fecfin);
+            Ent_BataClub_Chart_Data chartDS = null;
+            JsonResult jsonResult = new JsonResult();
+            if (informe == 2)
+            {
+                chartDS = new Ent_BataClub_Chart_Data();
+                chartDS = informeBarChartData(dashboard,2);
+                jsonResult = Json(new { result = JsonConvert.SerializeObject(chartDS, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }), totalesGenero = dashboard.listMesGenero });                
+            }
+            else if (informe == 3)
+            {
+                chartDS = new Ent_BataClub_Chart_Data();
+                chartDS = informeCanales(dashboard);
+                jsonResult = Json(JsonConvert.SerializeObject(chartDS, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
+            }
+            else if (informe == 4)
+            {
+                chartDS = new Ent_BataClub_Chart_Data();
+                chartDS = informeBarChartData(dashboard,4);
+                jsonResult = Json(new { result = JsonConvert.SerializeObject(chartDS, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }), promsPS = dashboard.listPromsPS });
+            }
+            else if (informe == 5)
+            {               
+                jsonResult = Json(new { promsPS = dashboard.listPromsPS });
+            }
+            else if (informe == 6)
+            {
+                chartDS = new Ent_BataClub_Chart_Data();
+                chartDS = informeBarChartData(dashboard, 6);
+                jsonResult = Json(new { result = JsonConvert.SerializeObject(chartDS, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }), tiendas = dashboard.listTiendasSupervTot });
+            }
+
+            return jsonResult;        
+        }
+        public Ent_BataClub_Chart_Data informeSupervisor(Ent_BataClub_DashBoard dashboard)
+        {
+            Ent_BataClub_Chart_Data chartDSDonut = new Ent_BataClub_Chart_Data();
+            Ent_BataClub_Chart_DataSet dsBCDonut = (new Ent_BataClub_Chart_DataSet()
+            {
+                backgroundColor = new string[] {
+                        "rgba(99, 143, 197, 0.9)",
+                        "rgba(221, 75, 57,0.9)",
+                        "rgba(255, 206, 86, 0.8)",
+                        "rgba(44, 122, 192, 0.8)",
+                        "rgba(122, 65, 32,0.9)",
+                        "rgba(245, 123, 56, 0.8)",
+                        "rgba(14, 123, 245, 0.8)",
+                        "rgba(33, 154, 34,0.9)",
+                        "rgba(142, 121, 86, 0.8)",
+                        "rgba(54, 45, 65, 0.8)" },
+                data = dashboard.listSupervisorTot.Select(s => s.registros).ToArray()
+            });
+            chartDSDonut.labels = dashboard.listCanles.Select(s => s.CANAL).ToArray();
+            chartDSDonut.datasets = new List<Ent_BataClub_Chart_DataSet>() { dsBCDonut };
+            return chartDSDonut;
+        }
+        public Ent_BataClub_Chart_Data informeCanales(Ent_BataClub_DashBoard dashboard)
+        {
             Ent_BataClub_Chart_Data chartDSDonut = new Ent_BataClub_Chart_Data();
             Ent_BataClub_Chart_DataSet dsBCDonut = (new Ent_BataClub_Chart_DataSet()
             {
@@ -114,37 +185,69 @@ namespace CapaPresentacion.Controllers
             });
             chartDSDonut.labels = dashboard.listCanles.Select(s => s.CANAL).ToArray();
             chartDSDonut.datasets = new List<Ent_BataClub_Chart_DataSet>() { dsBCDonut };
-            ViewBag.chartDonut = chartDSDonut;
-            //--- END DONUT ----
-            ViewBag.anios = datCbo.get_lista_anios(2015);
-            return View();
+            return chartDSDonut;
         }
-        public ActionResult updateChartData(string anio , int informe)
-        {
-            Ent_BataClub_DashBoard dashboard = datDash.GET_INFO_DASHBOARD(anio,informe);
-            Ent_BataClub_Chart_Data chartDS = informeMensualData(dashboard);
-            
-            return Json(JsonConvert.SerializeObject(chartDS, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore })); 
-        }
-        public Ent_BataClub_Chart_Data informeMensualData(Ent_BataClub_DashBoard dashboard)
+        public Ent_BataClub_Chart_Data informeBarChartData(Ent_BataClub_DashBoard dashboard, int informe)
         {
             Ent_BataClub_Chart_Data chartDS = new Ent_BataClub_Chart_Data();
-            Ent_BataClub_Chart_DataSet dsBC = (new Ent_BataClub_Chart_DataSet()
+            if (informe == 2)
             {
-                label = "REGISTRADOS",
-                backgroundColor = Enumerable.Repeat("rgba(180, 180, 180,0.7)", dashboard.listMesRegistros.Count).ToArray(), // new string[] { "rgba(180, 180, 180,0.7)" },
-                borderWidth = "1",
-                data = dashboard.listMesRegistros.Select(s => s.NUMERO).ToArray()
-            });
-            Ent_BataClub_Chart_DataSet dsBC2 = (new Ent_BataClub_Chart_DataSet()
+                chartDS.datasets = new List<Ent_BataClub_Chart_DataSet>() {
+                (new Ent_BataClub_Chart_DataSet()
+                {
+                    label = "REGISTROS",
+                    backgroundColor = Enumerable.Repeat("rgba(60, 141, 188,0.8)", dashboard.listMesRegistros.Count).ToArray(), // new string[] { "rgba(180, 180, 180,0.7)" },
+                    borderWidth = "1",
+                    data = dashboard.listMesRegistros.Select(s => s.NUMERO).ToArray()
+                }),
+                (new Ent_BataClub_Chart_DataSet()
+                {
+                    label = "MIEMBROS",
+                    backgroundColor = Enumerable.Repeat("rgba(221, 75, 57,0.8)", dashboard.listMesRegistros.Count).ToArray(),
+                    borderWidth = "1",
+                    data = dashboard.listMesMiembros.Select(s => s.NUMERO).ToArray()
+                }) };
+                chartDS.labels = dashboard.listMesMiembros.Select(s => s.MES_STR).ToArray();
+            }
+            else if (informe == 4)
             {
-                label = "MIEMBROS",
-                backgroundColor = Enumerable.Repeat("rgba(221, 75, 57,0.9)", dashboard.listMesRegistros.Count).ToArray(),
-                borderWidth = "1",
-                data = dashboard.listMesMiembros.Select(s => s.NUMERO).ToArray()
-            });
-            chartDS.labels = dashboard.listMesMiembros.Select(s => s.MES_STR).ToArray();
-            chartDS.datasets = new List<Ent_BataClub_Chart_DataSet>() { dsBC, dsBC2 };
+                chartDS.datasets = new List<Ent_BataClub_Chart_DataSet>() {
+                (new Ent_BataClub_Chart_DataSet()
+                {
+                    label = "PARES",
+                    backgroundColor = Enumerable.Repeat("rgba(136, 61, 45,0.8)", dashboard.listMesParesSoles.Count).ToArray(), // new string[] { "rgba(180, 180, 180,0.7)" },
+                    borderWidth = "1",
+                    data = dashboard.listMesParesSoles.Select(s => s.NUMERO).ToArray()
+                }),
+                (new Ent_BataClub_Chart_DataSet()
+                {
+                    label = "SOLES",
+                    backgroundColor = Enumerable.Repeat("rgba(205, 236, 33 ,0.8)", dashboard.listMesParesSoles.Count).ToArray(),
+                    borderWidth = "1",
+                    data = dashboard.listMesParesSoles.Select(s => s.NUMERO2).ToArray()
+                }) };
+                chartDS.labels = dashboard.listMesParesSoles.Select(s => s.MES_STR).ToArray();
+            }       
+            else if (informe == 6)
+            {
+                chartDS.datasets = new List<Ent_BataClub_Chart_DataSet>() {
+                (new Ent_BataClub_Chart_DataSet()
+                {
+                    label = "REGISTROS",
+                    backgroundColor = Enumerable.Repeat("rgba(180, 180, 180,0.8)", dashboard.listSupervisorTot.Count).ToArray(), // new string[] { "rgba(180, 180, 180,0.7)" },
+                    borderWidth = "1",
+                    data = dashboard.listSupervisorTot.Select(s => s.registros).ToArray()
+                }),
+                (new Ent_BataClub_Chart_DataSet()
+                {
+                    label = "TRANSACCIONES",
+                    backgroundColor = Enumerable.Repeat("rgba(0, 166, 90,0.8)", dashboard.listSupervisorTot.Count).ToArray(),
+                    borderWidth = "1",
+                    data = dashboard.listSupervisorTot.Select(s => s.transac).ToArray()
+                }) };
+                chartDS.labels = dashboard.listSupervisorTot.Select(s => s.supervisor).ToArray();
+                chartDS.labelsTooltip = new string[] { "Hola", "Hola", "Hola", "Hola", "Hola", "Hola", "Hola", "HOLA" };
+            }     
             return chartDS;
         }
 
