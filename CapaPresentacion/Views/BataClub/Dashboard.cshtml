@@ -602,15 +602,15 @@
 
         $(".anio").change(function () {
             var informe = $(this).attr("data-informe");
-            var anio = function () {
+            var anio = "";
                 if (informe == 2) {
-                    return $("#anioIm").val()
+                    anio = $("#anioIm").val()
                 } else if (informe == 3) {
-                    return $("#anioC").val()
+                    anio = $("#anioC").val()
                 } else if (informe == 4){
-                    return $("#anioPS").val()
+                    anio = $("#anioPS").val()
                 }
-            }
+            
             updateCharts(anio, informe);
         });
         function updateCharts(anio , informe, mes, fecini,fecfin) {
