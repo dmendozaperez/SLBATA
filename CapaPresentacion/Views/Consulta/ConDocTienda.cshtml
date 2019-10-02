@@ -12,32 +12,34 @@
         OnFailure = "waitingDialog.hide();"
     };
 }
-<link href="~/ContentSelect/bootstrap-select.css" rel="stylesheet" />
-
+<link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />
 <p class="text-danger">Consulta de documentos boletas,facturas,notas y guias de remision, por filtro de fecha doc, tipo o numero de documento</p>
 <div class="box box-body box-primary">
     @using (Ajax.BeginForm("ListaDocumento", options))
     {
         <form id="form1">
             <div class="row">
-                <div class="col-sm-3">
-                    <label for="segape">Tienda</label>
+                <div class="col-sm-3">                    
                     <div class="form-group">
-                        <div class="input-group">
+                        <label for="segape">Tienda</label>
+                        @Html.DropDownList("dwtda", new SelectList(ViewBag.tienda, "cbo_codigo", "cbo_descripcion", null), new { @class = "form-control selectpicker", @data_live_search = "true", @id = "dwtda", @name = "dwtda", @data_actions_box = "true" })
+                        @*<div class="input-group">
                             <div id="tipodoc" class="input-group">
-                                @Html.DropDownList("dwtda", new SelectList(ViewBag.tienda, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwtda", @name = "dwtda" })
+                                
                             </div>
-                        </div>
+                        </div>*@
                     </div>
                 </div>
                 <div class="col-sm-3">
-                    <label for="segape">Tipo Doc.</label>
+                    
                     <div class="form-group">
-                        <div class="input-group">
+                        <label for="segape">Tipo Doc.</label>
+                        @Html.DropDownList("dwtipodoc", new SelectList(ViewBag.concepto_suna, "con_sun_id", "con_sun_des", null), new { @class = "form-control selectpicker", @data_live_search = "false", @id = "dwtipodoc", @name = "dwtipodoc" })
+                        @*<div class="input-group">
                             <div id="tipodoc" class="input-group">
-                                @Html.DropDownList("dwtipodoc", new SelectList(ViewBag.concepto_suna, "con_sun_id", "con_sun_des", "-1"), new { @class = "selectpicker", @data_live_search = "false", @id = "dwtipodoc", @name = "dwtipodoc" })
+                                
                             </div>
-                        </div>
+                        </div>*@
                     </div>
                 </div>
                 <div class="col-sm-2">
@@ -65,11 +67,11 @@
             </div>
             <div class="row">
                 <div class="col-sm-2">
-                    <label for="segape">Num Doc.</label>
+                    <label for="segape">Num Doc.&nbsp;<i class="text-info fa fa-info-circle"></i></label>
                     <div class="form-group">
                         <div class="input-group">
                             <div id="numdoc" class="input-group">
-                                <input id="numdoc" name="numdoc" value="" class="form-control custom-input" type="text" />
+                                <input id="numdoc" data-toggle="tooltip" title="Serie y número ó número: Ejm. B102-00124239 ó 124239" name="numdoc" value="" placeholder="Ejm: B102-00124239 ó 124239" class="form-control custom-input" type="text" />
                                 @*<span class="input-group-addon  bg-white"><img src="~/Content/images/wall-calendar-with-lines.svg" height="20" width="20"></span>*@
                             </div>
                         </div>
@@ -104,8 +106,8 @@
 
 
 </div>
-<script src="~/Scripts/bootstrap.min.js"></script>
-<script src="~/ScriptsSelect/bootstrap-select.js"></script>
+<script src="~/Scripts/bootstrap-select.min.js"></script>
+<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
 <script>
     $(document).ready(function () {
 

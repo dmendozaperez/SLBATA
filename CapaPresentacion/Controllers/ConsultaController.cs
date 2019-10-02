@@ -45,19 +45,28 @@ namespace CapaPresentacion.Controllers
                 if (Session["Tienda"] != null)
                 {
                     ViewBag.Tienda = tienda.get_ListaTiendaXstore().Where(a => a.cbo_codigo == Session["Tienda"].ToString());
-                    ViewBag.concepto_suna = dat_concepto_suna.lista_concepto_suna().Where(d => d.con_sun_id != "07");
+                    ViewBag.concepto_suna = dat_concepto_suna.lista_concepto_suna().Where(d => d.con_sun_id != "07" && d.con_sun_id != "-1");
                 }
                 else
                 {
                     ViewBag.Tienda = tienda.get_ListaTiendaXstore(true);
-                    ViewBag.concepto_suna = dat_concepto_suna.lista_concepto_suna();
+                    ViewBag.concepto_suna = dat_concepto_suna.lista_concepto_suna().Where(w=> w.con_sun_id != "-1");
                 }                
                 return View();
             }
         }
         public PartialViewResult ListaDocumento(string dwtipodoc, string numdoc, string fecini, string fecfinc, string dwtda , string txtArticulo)
         {
-            return PartialView(lista(dwtipodoc, numdoc, fecini, fecfinc, dwtda , txtArticulo));
+            if (fecini == "" || fecfinc == "")
+            {
+                TempData["Error"] = "Ingrese un rango de fechas por favor.";
+                return PartialView();
+            }
+            else
+            {
+                return PartialView(lista(dwtipodoc, numdoc, fecini, fecfinc, dwtda, txtArticulo));
+            }
+            
         }
 
         public List<Ent_Documentos_Tda> lista(string tipo_doc, string num_doc, string fec_ini, string fec_fin , string cod_tda , string articulo)
