@@ -12,6 +12,11 @@ namespace CapaEntidad.BataClub
         public List<Ent_BataClub_DashBoard_Mensual> listMesRegistros { get; set; }
         public List<Ent_BataClub_DashBoard_Mensual> listMesMiembros { get; set; }
         public List<Ent_BataClub_Dashboard_Canales> listCanles { get; set; }
+        public List<Ent_BataClub_DashBoard_Mensual> listMesParesSoles { get; set; }
+        public List<Ent_BataClub_DashBoard_Proms> listPromsPS { get; set; }
+        public List<Ent_BataClub_Dashboard_Genero> listMesGenero { get; set; }
+        public List<Ent_BataClub_DashBoard_Supervisor> listSupervisorTot { get; set; }
+        public List<Ent_BataClub_DashBoard_TiendasSupervisor> listTiendasSupervTot { get; set; }
     }
     public class Ent_BataClub_DashBoard_General
     {
@@ -27,6 +32,7 @@ namespace CapaEntidad.BataClub
         public int MES { get; set; }
         public string MES_STR { get; set; }
         public decimal NUMERO { get; set; }
+        public decimal NUMERO2 { get; set; }
     }   
     public class Ent_BataClub_Dashboard_Canales
     {
@@ -37,6 +43,7 @@ namespace CapaEntidad.BataClub
     public class Ent_BataClub_Chart_Data
     {
         public string[] labels { get; set; }
+        public string[] labelsTooltip { get; set; }
         public List<Ent_BataClub_Chart_DataSet> datasets { get; set; }        
     }
     public class Ent_BataClub_Chart_DataSet
@@ -45,5 +52,30 @@ namespace CapaEntidad.BataClub
         public string[] backgroundColor { get;set;}
         public string borderWidth { get;set;}
         public decimal[] data { get; set; }
+    }
+    public class Ent_BataClub_DashBoard_Proms
+    {
+        public string promocion { get; set; }
+        public decimal pares { get; set; }
+        public decimal soles { get; set; }
+    }
+    public class Ent_BataClub_Dashboard_Genero
+    {
+        public string anio { get; set; }
+        public string genero { get; set; }
+        public decimal registros { get; set; }
+    }
+    public class Ent_BataClub_DashBoard_Supervisor
+    {
+        public string supervisor { get; set; }
+        public decimal registros { get; set; }
+        public decimal transac { get; set; }
+    }
+    public class Ent_BataClub_DashBoard_TiendasSupervisor
+    {
+        public string supervisor { get; set; }
+        public string tienda { get; set; }
+        public decimal registros { get; set; }
+        public decimal transac { get; set; }
     }
 }

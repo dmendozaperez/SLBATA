@@ -4,6 +4,11 @@
     ViewBag.Title = "BataClub - Dashboard";
     ViewBag.chartDS = JsonConvert.SerializeObject(ViewBag.chartDS, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
     ViewBag.chartDonut = JsonConvert.SerializeObject(ViewBag.chartDonut, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+    ViewBag.chartMesParesSoles = JsonConvert.SerializeObject(ViewBag.chartMesParesSoles, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+    ViewBag.promsPS = JsonConvert.SerializeObject(ViewBag.promsPS, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+    ViewBag.totalesGeneros = JsonConvert.SerializeObject(ViewBag.totalesGeneros, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+    ViewBag.BarChartTranReg = JsonConvert.SerializeObject(ViewBag.BarChartTranReg, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+    ViewBag.DetallesTiendaSuperv = JsonConvert.SerializeObject(ViewBag.DetallesTiendaSuperv, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 }
 <style>
     .chart {
@@ -14,14 +19,80 @@
     .chart svg, .chart canvas {
         width: 100% !important;
     }
+    .col-xs-5ths,
+    .col-sm-5ths,
+    .col-md-5ths,
+    .col-lg-5ths {
+        position: relative;
+        min-height: 1px;
+        padding-right: 15px;
+        padding-left: 15px;
+    }
+
+    .col-xs-5ths {
+        width: 20%;
+        float: left;
+    }
+
+    @@media (min-width: 768px) {
+        .col-sm-5ths {
+            width: 20%;
+            float: left;
+        }
+    }
+
+    @@media (min-width: 992px) {
+        .col-md-5ths {
+            width: 20%;
+            float: left;
+        }
+    }
+
+    @@media (min-width: 1200px) {
+        .col-lg-5ths {
+            width: 20%;
+            float: left;
+        }
+    }
+    .my-custom-scrollbar {
+        position: relative;
+        height: 200px;
+        overflow: auto;
+    }
+    .table-wrapper-scroll-y {
+        display: block;
+    }
+    .bg-soles{
+        background-color: #d7f04d !important;
+        color: #464646 !important;
+    }
+    .bg-pares{
+        background-color: #a06457 !important;
+        color: #fff !important;
+    }
+    .bg-registros{
+        background-color: #e6e6e6 !important;
+        color: #444 !important;
+    }
+    .bg-transac{
+        background-color: #33b87b !important;
+        color: #fff !important;
+    }
+
+    .table td.text {
+         max-width: 177px;
+    }
+    .table td.text span {
+       
+    }
 </style>
 <link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />  
 <section class="content">
     <!-- Info boxes -->
     <div class="row">
-        <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="col-md-5ths col-sm-4 col-sm-6 col-xs-12">
             <div class="info-box">
-                <span class="info-box-icon bg-aqua"><i class="glyphicon glyphicon-th-list"></i></span>
+                <span class="info-box-icon bg-light-blue"><i class="glyphicon glyphicon-th-list"></i></span>
                 <div class="info-box-content">
                     <span class="info-box-text">REGISTROS</span>
                     <span class="info-box-number" id="total_registros">@ViewBag.general.REGISTROS.ToString("N0")</span>
@@ -31,7 +102,7 @@
             <!-- /.info-box -->
         </div>
         <!-- /.col -->
-        <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="col-md-5ths col-sm-4 col-sm-6 col-xs-12">
             <div class="info-box">
                 <span class="info-box-icon bg-red"><i class="ion ion-ios-people-outline"></i></span>
                 <div class="info-box-content">
@@ -46,9 +117,9 @@
         <!-- /.col -->
         <!-- fix for small devices only -->
         <div class="clearfix visible-sm-block"></div>
-        <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="col-md-5ths col-sm-4 col-sm-6 col-xs-12">
             <div class="info-box">
-                <span class="info-box-icon bg-green"><i class="fa fa-ticket"></i></span>
+                <span class="info-box-icon bg-yellow"><i class="fa fa-ticket"></i></span>
                 <div class="info-box-content">
                     <span class="info-box-text">TRANSACCIONES</span>
                     <span class="info-box-text">CUPONES</span>
@@ -58,9 +129,9 @@
             </div>  
             <!-- /.info-box -->
         </div>
-        <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="col-md-5ths col-sm-4 col-sm-6 col-xs-12">
             <div class="info-box">
-                <span class="info-box-icon bg-yellow"><i class="glyphicon glyphicon glyphicon-tags" ></i></span>
+                <span class="info-box-icon bg-aqua"><i class="glyphicon glyphicon glyphicon-tags" ></i></span>
                 <div class="info-box-content">
                     <span class="info-box-text">PARES</span>
                     <span class="info-box-number" id="total_miembros">@ViewBag.general.PARES.ToString("N0")</span>
@@ -69,9 +140,9 @@
             </div>
             <!-- /.info-box -->
         </div>
-        <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="col-md-5ths col-sm-4 col-sm-6 col-xs-12">
             <div class="info-box">
-                <span class="info-box-icon bg-blue"><i class="fa fa-money"></i></span>
+                <span class="info-box-icon bg-green"><i class="fa fa-money"></i></span>
                 <div class="info-box-content">
                     <span class="info-box-text">SOLES</span>
                     <span class="info-box-number" id="total_miembros">@ViewBag.general.SOLES.ToString("N0")</span>
@@ -87,16 +158,19 @@
             <div class="box">
                 <div class="box-header with-border">
                         <i class="fa fa-bar-chart-o"></i>
-                        <h3 class="box-title">Informe Mensual</h3>
+                        <h3 class="box-title">Clientes  x  Mes</h3>
                     
                     <div class="box-tools pull-right" style="top: 3px;">
-                        @Html.DropDownList("anioIm", new SelectList(ViewBag.anios, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "form-control form-control-sm selectpicker", @id = "anioIm", @name = "anioIm" })
+                        @Html.DropDownList("anioIm", new SelectList(ViewBag.anios, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "form-control form-control-sm selectpicker anio", @id = "anioIm", @name = "anioIm" , @data_informe = 2 })
                     </div>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
                     <div class="row">
                         <div class="col-md-12">
+                            <p class="text-center">
+                                <strong id="tituloBarChar"></strong>
+                            </p>
                             <div class="chart">
                                 <canvas id="barChart" style="height: 250px;"></canvas>
                             </div>
@@ -110,36 +184,36 @@
                     <div class="row">
                         <div class="col-sm-3 col-xs-6">
                             <div class="description-block border-right">
-                                <span class="description-percentage text-green"><i class="fa fa-caret-up"></i> 17%</span>
-                                <h5 class="description-header">$35,210.43</h5>
-                                <span class="description-text">TOTAL REVENUE</span>
+                                <span class="description-percentage text-fuchsia"><i class="fa fa-female"></i></span>
+                                <h5 class="description-header" id="totalFemenino"></h5>
+                                <span class="description-text">FEMENINO</span>
                             </div>
                             <!-- /.description-block -->
                         </div>
                         <!-- /.col -->
                         <div class="col-sm-3 col-xs-6">
                             <div class="description-block border-right">
-                                <span class="description-percentage text-yellow"><i class="fa fa-caret-left"></i> 0%</span>
-                                <h5 class="description-header">$10,390.90</h5>
-                                <span class="description-text">TOTAL COST</span>
+                                <span class="description-percentage text-blue"><i class="fa fa-male"></i></span>
+                                <h5 class="description-header" id="totalMasculino"></h5>
+                                <span class="description-text">MASCULINO</span>
                             </div>
                             <!-- /.description-block -->
                         </div>
                         <!-- /.col -->
                         <div class="col-sm-3 col-xs-6">
                             <div class="description-block border-right">
-                                <span class="description-percentage text-green"><i class="fa fa-caret-up"></i> 20%</span>
-                                <h5 class="description-header">$24,813.53</h5>
-                                <span class="description-text">TOTAL PROFIT</span>
+                                <span class="description-percentage text-gray"><i class="fa fa-users"></i></span>
+                                <h5 class="description-header" id="totalOtro"></h5>
+                                <span class="description-text">OTRO</span>
                             </div>
                             <!-- /.description-block -->
                         </div>
                         <!-- /.col -->
                         <div class="col-sm-3 col-xs-6">
                             <div class="description-block">
-                                <span class="description-percentage text-red"><i class="fa fa-caret-down"></i> 18%</span>
-                                <h5 class="description-header">1200</h5>
-                                <span class="description-text">GOAL COMPLETIONS</span>
+                                <span class="description-percentage text-red"><i class="fa fa-ban"></i></span>
+                                <h5 class="description-header" id="totalNulo"></h5>
+                                <span class="description-text">SIN DATOS</span>
                             </div>
                             <!-- /.description-block -->
                         </div>
@@ -155,18 +229,17 @@
             <div class="box box-default">
                 <div class="box-header with-border">
                     <i class="fa fa-pie-chart"></i>
-                    <h3 class="box-title">Canales</h3>
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                            <i class="fa fa-minus"></i>
-                        </button>
-                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                    <h3 class="box-title">Canales  x  Año</h3>
+                    <div class="box-tools pull-right" style="top: 3px;">
+                        @Html.DropDownList("anioC", new SelectList(ViewBag.anios, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "form-control form-control-sm selectpicker anio", @id = "anioC", @name = "anioC", @data_informe = 3 })
                     </div>
                 </div>
-                <!-- /.box-header -->
-                <div class="box-body">
+                    <!-- /.box-header -->
+                    <div class="box-body">
                     <div class="row">
                         <div class="col-md-12">
+                            <p class="text-center text-bold" id="tituloCanalesChar">
+                            </p>
                             <div class="chart-responsive">
                                 <canvas id="canalChart" height="280"></canvas>
                             </div>
@@ -179,105 +252,99 @@
             </div>
         </div>
     </div>
-
     <div class="row">
         <div class="col-md-12">
             <div class="box">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Informe Mensual</h3>
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                            <i class="fa fa-minus"></i>
-                        </button>
-                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                    <i class="fa fa-bar-chart-o"></i>
+                    <h3 class="box-title">Pares/Soles  x  Mes</h3>
+
+                    <div class="box-tools pull-right" style="top: 3px;">
+                        @Html.DropDownList("anioPS", new SelectList(ViewBag.anios, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "form-control form-control-sm selectpicker anio", @id = "anioPS", @name = "anioPS", @data_informe = 4 })
                     </div>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
                     <div class="row">
-                        <div class="col-md-5">
+                        <div class="col-md-8">
+                            <p class="text-center"  id="tituloBarCharPS">
+                            </p>
                             <div class="chart">
-                                <canvas id="barChart" style="height: 250px;"></canvas>
+                                <canvas id="barChartPS" style="height: 270px;"></canvas>
                             </div>
                             <!-- /.chart-responsive -->
                         </div>
-                        <!-- /.col -->
-                        <div class="col-md-7">
-                            <div class="box-body">
-                                <div class="table-responsive">
-                                    <table class="table no-margin">
-                                        <thead>
-                                            <tr>
-                                                <th>Order ID</th>
-                                                <th>Item</th>
-                                                <th>Status</th>
-                                                <th>Popularity</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                                                <td>Call of Duty IV</td>
-                                                <td><span class="label label-success">Shipped</span></td>
-                                                <td>
-                                                    <div class="sparkbar" data-color="#00a65a" data-height="20">90,80,90,-70,61,-83,63</div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><a href="pages/examples/invoice.html">OR1848</a></td>
-                                                <td>Samsung Smart TV</td>
-                                                <td><span class="label label-warning">Pending</span></td>
-                                                <td>
-                                                    <div class="sparkbar" data-color="#f39c12" data-height="20">90,80,-90,70,61,-83,68</div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                                                <td>iPhone 6 Plus</td>
-                                                <td><span class="label label-danger">Delivered</span></td>
-                                                <td>
-                                                    <div class="sparkbar" data-color="#f56954" data-height="20">90,-80,90,70,-61,83,63</div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                                                <td>Samsung Smart TV</td>
-                                                <td><span class="label label-info">Processing</span></td>
-                                                <td>
-                                                    <div class="sparkbar" data-color="#00c0ef" data-height="20">90,80,-90,70,-61,83,63</div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><a href="pages/examples/invoice.html">OR1848</a></td>
-                                                <td>Samsung Smart TV</td>
-                                                <td><span class="label label-warning">Pending</span></td>
-                                                <td>
-                                                    <div class="sparkbar" data-color="#f39c12" data-height="20">90,80,-90,70,61,-83,68</div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                                                <td>iPhone 6 Plus</td>
-                                                <td><span class="label label-danger">Delivered</span></td>
-                                                <td>
-                                                    <div class="sparkbar" data-color="#f56954" data-height="20">90,-80,90,70,-61,83,63</div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                                                <td>Call of Duty IV</td>
-                                                <td><span class="label label-success">Shipped</span></td>
-                                                <td>
-                                                    <div class="sparkbar" data-color="#00a65a" data-height="20">90,80,90,-70,61,-83,63</div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                        <div class="col-md-4">
+                            <div class="table-wrapper-scroll-y my-custom-scrollbar" style="height:270px" >
+                                <table id="promocionesDetalle" class="table table-bordered">                                  
+                                </table>                                
                             </div>
-                            <!-- /.progress-group -->
+                            <p id="totalesPromociones" class="pull-right" style="padding-right:15px; padding-top:7px"></p>
                         </div>
-                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- ./box-body -->               
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <i class="fa fa-bar-chart-o"></i>
+                    <h3 class="box-title">Registros/Transacciones  x  Supervisor/Tienda</h3>
+
+                    <div class="box-tools pull-right" style="top: 3px;">                        
+                        @*@Html.DropDownList("anioPS", new SelectList(ViewBag.anios, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "form-control form-control-sm selectpicker anio", @id = "anioPS", @name = "anioPS", @data_informe = 4 })*@
+
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-inline">
+                                <div class="form-group date">
+                                    <label>Inicio: </label>&nbsp;&nbsp;
+                                    <div class="input-group input-group-sm">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input type="text" class="form-control pull-right" id="fechaIni">
+                                    </div>
+                                </div>&nbsp;&nbsp;&nbsp;
+                                <div class="form-group date">
+                                    <label>Fin: </label>&nbsp;&nbsp;
+                                    <div class="input-group input-group-sm">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input type="text" class="form-control pull-right" id="fechaFin">
+                                    </div>
+                                </div>&nbsp;&nbsp;&nbsp;
+                                <button type="button" class="btn btn-primary btn-sm" title="Mostrar" id="btnMostrarCharBarSup" ><i class="fa fa-search"></i></button>
+                            </div>
+
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-8">
+                            <p class="text-center" id="tituloBarCharSuperv">
+                            </p>
+                            <div class="chart">
+                                <canvas id="barChartSuperv" style="height: 270px;"></canvas>
+                            </div>
+                            <!-- /.chart-responsive -->
+                        </div>
+                        <div class="col-md-4">
+                            <div class="table-wrapper-scroll-y my-custom-scrollbar" style="height:270px">
+                                <table id="tiendasDetalle" class="table table-bordered"></table>
+                            </div>
+                            <p id="totalesTiendas" class="pull-right" style="padding-right:15px; padding-top:7px"></p>
+                        </div>
                     </div>
                     <!-- /.row -->
                 </div>
@@ -285,30 +352,53 @@
             </div>
             <!-- /.box -->
         </div>
-        <!-- /.col -->
     </div>
-
-
-
-
-
-
+    <strong class="text-red"></strong>
 </section>
 <script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
-<script src="~/Scripts/bootstrap-select.min.js"></script>
+<script src="@Url.Content("~/Scripts/bootstrap-select.min.js")"></script>
+
 <script type="text/javascript">
     var myChart;
-    function getChartInformeMensual(canvas, data) {        
-        myChart = new Chart(canvas, {
+    var myDoughnutChart;
+    var myChartPS;
+    var myBarChartTR;
+    function sum(input) {
+
+        if (toString.call(input) !== "[object Array]")
+            return false;
+
+        var total = 0;
+        for (var i = 0; i < input.length; i++) {
+            if (isNaN(input[i])) {
+                continue;
+            }
+            total += Number(input[i]);
+        }
+        return total;
+    }
+    function getChartInformeMensual(informe, canvas, data) {
+        _chart = new Chart(canvas, {
             type: 'bar',
             data: data,
             options: {
                 scales: {
                     yAxes: [{
                         ticks: {
-                            beginAtZero: true
+                            beginAtZero: true,
                         }
-                    }]
+                    }],
+                    xAxes: [{
+                        ticks: {
+                            callback: function (value) {
+                                if (value.length > 7 && informe == 6) {
+                                    return value.substr(0, 7) + "..."; //truncate
+                                } else {
+                                    return value
+                                }
+                            }
+                        }
+                    }],
                 },
                 tooltips: {
                     mode: 'index',
@@ -317,19 +407,30 @@
                     bodyFontColor: 'rgba(73, 73, 73,0.8)',
                     borderWidth: 1,
                     borderColor: 'rgba(158, 158, 158, 1)',
-                    titleFontColor: 'rgba(73, 73, 73,0.8)'
-                },
+                    titleFontColor: 'rgba(73, 73, 73,0.8)',
+                    callbacks: {
+                        title: function (tooltipItems, data) {
+                            //if (informe == 6){
+                            var idx = tooltipItems[0].index;
+                            return data.labels[idx]; //do something with title
+                            //}
+                        },
+                    }
+                }
             }
         });
+        if (informe == 2) {
+            myChart = _chart;
+        } else if (informe == 4) {
+            myChartPS = _chart;
+        } else if (informe == 6) {
+            myBarChartTR = _chart;
+        }
     }
-    $(document).ready(function () {
-
-        getChartInformeMensual(document.getElementById('barChart'),JSON.parse('@Html.Raw(ViewBag.chartDS)'));
-
-        var ctxCanal = document.getElementById('canalChart');
-        var myDoughnutChart = new Chart(ctxCanal, {
+    function getChartCanales(canvas , data) {
+        myDoughnutChart = new Chart(canvas, {
             type: 'doughnut',
-            data: JSON.parse('@Html.Raw(ViewBag.chartDonut)'),
+            data: data,
             options: {
                 legend: {
                     position: 'bottom'
@@ -343,38 +444,205 @@
                 },
             }
         });
-        ctxCanal.onclick = function (evt) {
-            var activePoints = myDoughnutChart.getElementsAtEvent(evt);
-            if (activePoints[0]) {
-                var chartData = activePoints[0]['_chart'].config.data;
-                var idx = activePoints[0]['_index'];
-
-                var label = chartData.labels[idx];
-                var value = chartData.datasets[0].data[idx];
-
-                //var url = "http://example.com/?label=" + label + "&value=" + value;
-                swal({
-                    title:"Prueba evento click chart",
-                    text: label + " = " + value
-                })
-            };
+        var total = sum(data.datasets[0].data);
+        $("#tituloCanalesChar").html("Total: " + total);
+    }
+    function getChartMensualRegMiem(canvas, data, totalesGenero) {
+        getChartInformeMensual(2,canvas, data);
+        var totRegistrados = sum(data.datasets[0].data);
+        var totMiembros = sum(data.datasets[1].data);
+        var title = '<strong class="text-light-blue">R: ' + totRegistrados.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;&nbsp;&nbsp;' +
+            '<strong class="text-red">M: ' + totMiembros.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;' +
+            '<strong class="">Total: ' + parseFloat(totRegistrados + totMiembros).toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;&nbsp;&nbsp;'
+        $("#tituloBarChar").html(title);
+        for (var i = 0; i < totalesGenero.length; i++) {
+            if (totalesGenero[i].genero == 'FEMENINO') {
+                $("#totalFemenino").html(totalesGenero[i].registros.toLocaleString('es-PE'))
+            }
+            else if (totalesGenero[i].genero == 'MASCULINO') {
+                $("#totalMasculino").html(totalesGenero[i].registros.toLocaleString('es-PE'))
+            }
+            else if (totalesGenero[i].genero == 'SIN DATOS') {
+                $("#totalNulo").html(totalesGenero[i].registros.toLocaleString('es-PE'))
+            }
+            else {
+                $("").html(totalesGenero[i].registros.toLocaleString('es-PE'))
+            }
         }
+    }
+    function getChartSuperv(canvas, data, tiendas) {
+        if (data != null) {
+            getChartInformeMensual(6, canvas, data);
+            var totalregSup = sum(data.datasets[0].data).toLocaleString('es-PE');
+            var totaltranSup = sum(data.datasets[1].data).toLocaleString('es-PE');
+            var title = '<strong style="color: rgb(90, 90, 90)">P: ' + totalregSup + '</strong>&nbsp;&nbsp;&nbsp;&nbsp;' +
+                '<strong style="color: rgb(42, 152, 102)">T: ' + totaltranSup + '</strong>&nbsp;&nbsp;'
+            $("#tituloBarCharSuperv").html(title);
+        }
+        var tbody = '<tr><th class="col-md-8">Tiendas</th><th class="col-md-2">Registros</th><th class="col-md-2">Transac</th></tr>';
+        var ultimoSup = "";
+        for (var i = 0; i < tiendas.length; i++) {
+            var sup = tiendas[i].supervisor;
+            if (sup != ultimoSup) {
+                tbody += '<tr><th colspan="3">' + sup + '</th></tr>';
+                ultimoSup = sup;
+            }
+            tbody += '<tr><td class="text"><span>' + tiendas[i].tienda + '</span></td><td><span class="badge bg-registros">' + tiendas[i].registros + '</span></td><td><span class="badge bg-transac">' + tiendas[i].transac + '</span></td></tr>'
+        }
+        $("#tiendasDetalle").html(tbody);
 
-        $("#anioIm").change(function () {
+        var totaltdaRegSup = 0;
+        var totaltdaTranSup = 0;
+        for (var i = 0; i < tiendas.length; i++) {
+            totaltdaRegSup += parseFloat(tiendas[i].registros);
+            totaltdaTranSup += parseFloat(tiendas[i].transac);
+        }
+        var title2 = '<strong class="pull-left">#: ' + tiendas.length + '</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong style="color: rgb(90, 90, 90)">P: ' + totaltdaRegSup.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;&nbsp;&nbsp;' +
+                '<strong style="color: rgb(42, 152, 102)">S/ ' + totaltdaTranSup.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;'
+        $("#totalesTiendas").html(title2);
+    }
+    function getChartMensualPS(canvas, data, proms, mes , anio) {
+        if (data != null) {
+            getChartInformeMensual(4, canvas, data);
+            var totalPares = sum(data.datasets[0].data).toLocaleString('es-PE');
+            var totalSoles = sum(data.datasets[1].data).toLocaleString('es-PE');
+            var title = '<strong style="color: rgb(160, 100, 87)">P: ' + totalPares + '</strong>&nbsp;&nbsp;&nbsp;&nbsp;' +
+                '<strong style="color: rgb(104, 123, 0)">S/ ' + totalSoles + '</strong>&nbsp;&nbsp;'
+            $("#tituloBarCharPS").html(title);
+        }
+        var tbody = '<tr><th class="col-md-8">Promociones</th><th class="col-md-2">Pares</th><th class="col-md-2">Soles</th></tr>';
+        if (mes == null) {
+            tbody += '<tr><th>' + anio + '</th></tr>'
+        } else {
+            tbody += '<tr><th>' + myChartPS.chart.config.data.labels[mes - 1] + '</th></tr>'
+        }
+        for (var i = 0; i < proms.length; i++) {
+            tbody += '<tr><td class="text"><span>' + proms[i].promocion + '</span></td><td><span class="badge bg-pares">' + proms[i].pares + '</span></td><td><span class="badge bg-soles">' + proms[i].soles + '</span></td></tr>'
+        }
+        $("#promocionesDetalle").html(tbody);
+
+        var totalParesP = 0;
+        var totalSolesP = 0;
+        for (var i = 0; i < proms.length; i++) {
+            totalParesP += parseFloat(proms[i].pares);
+            totalSolesP += parseFloat(proms[i].soles);
+        }
+        var title2 = '<strong class="pull-left">#: ' + proms.length + '</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong style="color: rgb(160, 100, 87)">P: ' + totalParesP.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;&nbsp;&nbsp;' +
+                '<strong style="color: rgb(104, 123, 0)">S/ ' + totalSolesP.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;'
+        $("#totalesPromociones").html(title2);
+        //totales pendientes
+    }
+    $(document).ready(function () {
+        var date = new Date();
+        var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+        $('#fechaIni').datepicker({
+            format: "dd-mm-yyyy",
+            autoclose: true,
+            maxDate: new Date(),
+        }).datepicker("setDate", firstDay);
+        $('#fechaFin').datepicker({
+            format: "dd-mm-yyyy",
+            autoclose: true,
+            maxDate: new Date(),
+        }).datepicker("setDate", "0");
+
+        $("#btnMostrarCharBarSup").click(function () {
+            updateCharts(0, 6, null, $('#fechaIni').val(), $('#fechaFin').val());
+        });
+
+        getChartMensualRegMiem(document.getElementById('barChart'), JSON.parse('@Html.Raw(ViewBag.chartDS)'), JSON.parse('@Html.Raw(ViewBag.totalesGeneros)'));
+        getChartCanales(document.getElementById('canalChart'), JSON.parse('@Html.Raw(ViewBag.chartDonut)'));
+        getChartMensualPS(document.getElementById('barChartPS'), JSON.parse('@Html.Raw(ViewBag.chartMesParesSoles)'), JSON.parse('@Html.Raw(ViewBag.promsPS)'), null, $("#anioPS").val());
+        getChartSuperv(document.getElementById('barChartSuperv'), JSON.parse('@Html.Raw(ViewBag.BarChartTranReg)'), JSON.parse('@Html.Raw(ViewBag.DetallesTiendaSuperv)'));
+        //document.getElementById('barChartPS').onclick = function (evt) {
+        //    var activePoints = myChartPS.getElementsAtEvent(evt);
+        //    //if (activePoints[0]) {
+        //        var chartData = activePoints[0]['_chart'].config.data;
+        //        var idx = activePoints[0]['_index'];
+
+        //        var label = chartData.labels[idx];
+        //        var value = chartData.datasets[0].data[idx];
+
+        //        //var url = "http://example.com/?label=" + label + "&value=" + value;
+        //        swal({
+        //            title:"Prueba evento click chart",
+        //            text: label + " = " + value
+        //        })
+        //    //};
+        //}
+        document.getElementById("barChartPS").onclick = function (e) {
+            //if (e.clientY <= 315) {
+            //    return;
+            //}
+            try {
+                var activeIndex = myChartPS.tooltip._lastActive[0]._index;
+                var clickCoordinates = Chart.helpers.getRelativePosition(e, myChartPS.chart);
+                if (clickCoordinates.y >= 36) {
+                    var activePoints = myChartPS.getElementsAtEvent(e);
+                    var informe = 5;
+                    var anio = $("#anioPS").val();
+                    var mes = activeIndex + 1
+                    updateCharts(anio, informe, mes);
+                }
+            } catch (e) {
+
+            }
+        };
+        document.getElementById("barChartSuperv").onclick = function (e) {
+            try {
+                var activeIndex = myBarChartTR.tooltip._lastActive[0]._index;
+                var clickCoordinates = Chart.helpers.getRelativePosition(e, myBarChartTR.chart);
+                if (clickCoordinates.y >= 36) {
+                    getChartSuperv(null, null, (JSON.parse('@Html.Raw(ViewBag.DetallesTiendaSuperv)')).filter(w=>w.supervisor == myBarChartTR.chart.config.data.labels[activeIndex]));
+                }
+            } catch (e) {
+
+            }
+        };
+
+        $(".anio").change(function () {
+            var informe = $(this).attr("data-informe");
+            var anio = function () {
+                if (informe == 2) {
+                    return $("#anioIm").val()
+                } else if (informe == 3) {
+                    return $("#anioC").val()
+                } else if (informe == 4){
+                    return $("#anioPS").val()
+                }
+            }
+            updateCharts(anio, informe);
+        });
+        function updateCharts(anio , informe, mes, fecini,fecfin) {
+            waitingDialog.show('Espere un momento por favor');
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("updateChartData", "BataClub")',
-                data: { anio: $("#anioIm").val() , informe : 2 },
+                data: { anio: anio, informe: informe, mes: (mes == null || mes == '' ? 0 : mes), fecini: fecini, fecfin: fecfin },
                 success: function (data) {
-                    myChart.destroy();
-                    getChartInformeMensual(document.getElementById('barChart'),JSON.parse(data));
+                    if (informe == 2) {
+                        myChart.destroy();
+                        getChartMensualRegMiem(document.getElementById('barChart'), JSON.parse(data.result), data.totalesGenero);
+                    } else if (informe == 3) {
+                        myDoughnutChart.destroy();
+                        getChartCanales(document.getElementById('canalChart'), JSON.parse(data));
+                    } else if (informe == 4) {
+                        myChartPS.destroy();
+                        getChartMensualPS(document.getElementById('barChartPS'), JSON.parse(data.result), data.promsPS, null, anio);
+                    } else if (informe == 5) {
+                        getChartMensualPS(null, null, data.promsPS,mes,null);
+                    } else if (informe == 6) {
+                        myBarChartTR.destroy();
+                        getChartSuperv(document.getElementById('barChartSuperv'), JSON.parse(data.result), data.tiendas );
+                    }
+                    waitingDialog.hide();
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    //waitingDialog.hide();
+                    waitingDialog.hide();
                     var error = eval("(" + XMLHttpRequest.responseText + ")");
                     swal(error.Message);
                 }
             });
-        });
+        }
     });
 </script>
