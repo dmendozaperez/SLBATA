@@ -69,7 +69,7 @@ namespace CapaDato.ECommerce
         {
             List<Ent_ECommerce> list = null;
             string sqlquery = "USP_ECOM_Lista_Ventas";
-            string _tienda = "50" + "143";/* Environment.GetEnvironmentVariable("codtda").ToString();*/
+            string _tienda = (String)Session["Tienda"];
             try
             {
                 using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexionEcommerce))
