@@ -85,6 +85,10 @@
     .table td.text span {
        
     }
+    .modal-body {
+        max-height: calc(100vh - 212px);
+        overflow-y: auto;
+    }
 </style>
 <link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />  
 <section class="content">
@@ -201,15 +205,6 @@
                         </div>
                         <!-- /.col -->
                         <div class="col-sm-3 col-xs-6">
-                            <div class="description-block border-right">
-                                <span class="description-percentage text-gray"><i class="fa fa-users"></i></span>
-                                <h5 class="description-header" id="totalOtro"></h5>
-                                <span class="description-text">OTRO</span>
-                            </div>
-                            <!-- /.description-block -->
-                        </div>
-                        <!-- /.col -->
-                        <div class="col-sm-3 col-xs-6">
                             <div class="description-block">
                                 <span class="description-percentage text-red"><i class="fa fa-ban"></i></span>
                                 <h5 class="description-header" id="totalNulo"></h5>
@@ -276,7 +271,7 @@
                         </div>
                         <div class="col-md-4">
                             <div class="table-wrapper-scroll-y my-custom-scrollbar" style="height:270px" >
-                                <table id="promocionesDetalle" class="table table-bordered">                                  
+                                <table id="promocionesDetalle" class="table table-hover">                                  
                                 </table>                                
                             </div>
                             <p id="totalesPromociones" class="pull-right" style="padding-right:15px; padding-top:7px"></p>
@@ -341,7 +336,7 @@
                         </div>
                         <div class="col-md-4">
                             <div class="table-wrapper-scroll-y my-custom-scrollbar" style="height:270px">
-                                <table id="tiendasDetalle" class="table table-bordered"></table>
+                                <table id="tiendasDetalle" class="table table-hover"></table>
                             </div>
                             <p id="totalesTiendas" class="pull-right" style="padding-right:15px; padding-top:7px"></p>
                         </div>
@@ -355,6 +350,32 @@
     </div>
     <strong class="text-red"></strong>
 </section>
+<div class="modal fade" id="modalPromDetTda" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <div class="row">
+                    <div class="col-md-12">
+                        @*<p style="font-size:medium" class="text-primary modal-title" id="myModalLabel"><strong class="text-danger" id="desc_orce_art"></strong></p>*@
+                        <p style="font-size:medium" class="text-primary modal-title" id="myModalLabel"><b>Lista de Tiendas</b></p>
+                        <p id="tituloPromDetTda" class="text-bold text-danger" ></p>
+                    </div>
+                    @*<div class="col-md-6 text-right">
+                        <span style="font-size:medium" class="label label-danger" id="maAtributoArt"></span>
+                    </div>*@
+                </div>
+            </div>
+            <div style="font-size:small" class="modal-body" id="listTdaProm">
+                
+            </div>
+            <div class="modal-footer">
+                <p id="totalesPromocionesDetTda"></p>
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
 <script src="@Url.Content("~/Scripts/bootstrap-select.min.js")"></script>
 
@@ -512,12 +533,12 @@
         }
         var tbody = '<tr><th class="col-md-8">Promociones</th><th class="col-md-2">Pares</th><th class="col-md-2">Soles</th></tr>';
         if (mes == null) {
-            tbody += '<tr><th>' + anio + '</th></tr>'
+            tbody += '<tr><th colspan="3">' + anio + '</th></tr>'
         } else {
             tbody += '<tr><th>' + myChartPS.chart.config.data.labels[mes - 1] + '</th></tr>'
         }
         for (var i = 0; i < proms.length; i++) {
-            tbody += '<tr><td class="text"><span>' + proms[i].promocion + '</span></td><td><span class="badge bg-pares">' + proms[i].pares + '</span></td><td><span class="badge bg-soles">' + proms[i].soles + '</span></td></tr>'
+            tbody += '<tr class="prom-det-tda"  data-tot-pares="' + proms[i].pares + '"  data-tot-soles="' + proms[i].soles + '"  data-prom="' + proms[i].promocion + '"  data-anio-prom="' + anio + '" data-mes-prom="' + mes + '" ><td class="text"><span>' + proms[i].promocion + '</span></td><td><span class="badge bg-pares">' + proms[i].pares + '</span></td><td><span class="badge bg-soles">' + proms[i].soles + '</span></td></tr>'
         }
         $("#promocionesDetalle").html(tbody);
 
@@ -613,12 +634,60 @@
             
             updateCharts(anio, informe);
         });
-        function updateCharts(anio , informe, mes, fecini,fecfin) {
+
+        $('#promocionesDetalle').on('click', '.prom-det-tda', function (e) {
+            var anio = $(this).attr('data-anio-prom');
+            var mes = $(this).attr('data-mes-prom');
+            var prom = $(this).attr('data-prom');//data-tot-pares
+            var totPares = $(this).attr('data-tot-pares');//data-tot-pares
+            var totSoles = $(this).attr('data-tot-soles');//data-tot-pares
+            //swal(anio + " " + mes + " " + prom);
+            
             waitingDialog.show('Espere un momento por favor');
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("updateChartData", "BataClub")',
-                data: { anio: anio, informe: informe, mes: (mes == null || mes == '' ? 0 : mes), fecini: fecini, fecfin: fecfin },
+                data: { anio: anio, informe: 7, mes: (mes == null || mes == '' ? 0 : mes), prom: prom },
+                success: function (data) {
+                    var totalPares = 0;
+                    var totalSoles = 0;
+                    var title1 = 'Promocion : ' + prom + '  &nbsp;&nbsp;&nbsp;&nbsp;  Año:' + anio + ' &nbsp;&nbsp;&nbsp;&nbsp;   Mes: ' + mes 
+                    var table = '' +
+                    '<table id="promDetTda" class="table table-hover table-condensed dt-lista-tdas table-striped table-responsive">' +
+                    '<thead><tr style="background-color:#3d566e; color:#ecf0f1"><th>Promocion</th><th>Pares</th><th>Soles</th></tr></thead><tbody data-bind="foreach:">';
+                    for (var i = 0; i < data.promsDetPromTda.length; i++) {
+                        table += '<tr><td>' + data.promsDetPromTda[i].tienda + '</td><td><span class="badge bg-pares">' + data.promsDetPromTda[i].pares + '</span></td><td><span class="badge bg-soles">' + data.promsDetPromTda[i].soles + '</span></td></tr>'                       
+                    }
+                    table += '</tbody><tfoot><tr><th>Promocion</th><th>Pares</th><th>Soles</th></tr></tfoot></table>'
+                    $("#listTdaProm").html(table);
+                    $("#promDetTda").DataTable({
+                        "language": {
+                            "url": "../Scripts/DataTables/Spanish.json"
+                        },
+                        "order" : [2,"desc"]
+                    });
+                    var title2 = '<strong class="pull-left">#: ' + data.promsDetPromTda.length + '</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong style="color: rgb(160, 100, 87)">P: ' + totPares.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;&nbsp;&nbsp;' +
+                    '<strong style="color: rgb(104, 123, 0)">S/ ' + totSoles.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;'
+                    $("#totalesPromocionesDetTda").html(title2);
+                    $("#tituloPromDetTda").html(title1);
+
+                    $("#modalPromDetTda").modal({ backdrop: 'static', keyboard: false });
+                    waitingDialog.hide();
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    waitingDialog.hide();
+                    var error = eval("(" + XMLHttpRequest.responseText + ")");
+                    swal(error.Message);
+                }
+            });
+        }); 
+
+        function updateCharts(anio , informe, mes, fecini,fecfin , prom) {
+            waitingDialog.show('Espere un momento por favor');
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("updateChartData", "BataClub")',
+                data: { anio: anio, informe: informe, mes: (mes == null || mes == '' ? 0 : mes), fecini: fecini, fecfin: fecfin , prom : prom },
                 success: function (data) {
                     if (informe == 2) {
                         myChart.destroy();
@@ -630,10 +699,12 @@
                         myChartPS.destroy();
                         getChartMensualPS(document.getElementById('barChartPS'), JSON.parse(data.result), data.promsPS, null, anio);
                     } else if (informe == 5) {
-                        getChartMensualPS(null, null, data.promsPS,mes,null);
+                        getChartMensualPS(null, null, data.promsPS,mes,anio);
                     } else if (informe == 6) {
                         myBarChartTR.destroy();
                         getChartSuperv(document.getElementById('barChartSuperv'), JSON.parse(data.result), data.tiendas );
+                    } else if (informe == 7) {
+
                     }
                     waitingDialog.hide();
                 },

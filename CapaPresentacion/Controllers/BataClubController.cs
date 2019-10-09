@@ -128,9 +128,9 @@ namespace CapaPresentacion.Controllers
                 return View();
             }
         }
-        public ActionResult updateChartData(string anio, int informe , int mes = 0,string fecini = null , string fecfin = null)
+        public ActionResult updateChartData(string anio, int informe , int mes = 0,string fecini = null , string fecfin = null , string prom = "")
         {
-            Ent_BataClub_DashBoard dashboard = datDash.GET_INFO_DASHBOARD(anio, informe, mes,fecini , fecfin);
+            Ent_BataClub_DashBoard dashboard = datDash.GET_INFO_DASHBOARD(anio, informe, mes,fecini , fecfin , prom);
             Ent_BataClub_Chart_Data chartDS = null;
             JsonResult jsonResult = new JsonResult();
             if (informe == 2)
@@ -160,6 +160,10 @@ namespace CapaPresentacion.Controllers
                 chartDS = new Ent_BataClub_Chart_Data();
                 chartDS = informeBarChartData(dashboard, 6);
                 jsonResult = Json(new { result = JsonConvert.SerializeObject(chartDS, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }), tiendas = dashboard.listTiendasSupervTot });
+            }
+            else if (informe == 7)
+            {
+                jsonResult = Json(new { promsDetPromTda = dashboard.listDetPromTda });
             }
 
             return jsonResult;        
