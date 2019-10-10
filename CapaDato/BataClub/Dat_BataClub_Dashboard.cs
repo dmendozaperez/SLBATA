@@ -14,7 +14,7 @@ namespace CapaDato.BataClub
     {
         public Ent_BataClub_DashBoard GET_INFO_DASHBOARD(string anio = "2019" , int informe = 0, int mes = 0,object fechaIni = null , object fechaFin = null , string prom = "") // 0 = TODO | 1 = GENERAL | 2 = REGISTRADOS | 3 = MIEMBROS | 4 = CANALES
         {
-            string sqlquery = "USP_BATACLUB_DASHBOARD_3";
+            string sqlquery = "USP_BATACLUB_DASHBOARD";
             Ent_BataClub_DashBoard info = null;
             try
             {
