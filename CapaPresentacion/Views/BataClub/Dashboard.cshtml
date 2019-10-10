@@ -79,6 +79,11 @@
         color: #fff !important;
     }
 
+    .bg-consumido{
+        background-color: #f39c12 !important;
+        color: #fff  !important;
+    }
+
     .table td.text {
          max-width: 177px;
     }
@@ -94,7 +99,7 @@
 <section class="content">
     <!-- Info boxes -->
     <div class="row">
-        <div class="col-md-5ths col-sm-4 col-sm-6 col-xs-12">
+        <div class="col-sm-4 col-sm-6 col-xs-12">
             <div class="info-box">
                 <span class="info-box-icon bg-light-blue"><i class="glyphicon glyphicon-th-list"></i></span>
                 <div class="info-box-content">
@@ -105,13 +110,26 @@
             </div>
             <!-- /.info-box -->
         </div>
-        <!-- /.col -->
-        <div class="col-md-5ths col-sm-4 col-sm-6 col-xs-12">
+        <div class="col-sm-4 col-sm-6 col-xs-12">
             <div class="info-box">
-                <span class="info-box-icon bg-red"><i class="ion ion-ios-people-outline"></i></span>
+                <span class="info-box-icon bg-red"><i class="fa fa-user"></i></span>
                 <div class="info-box-content">
                     <span class="info-box-text">MIEMBROS</span>
-                    <span class="info-box-number" id="total_miembros">@ViewBag.general.MIEMBROS.ToString("N0")</span>
+                    <span class="info-box-number" id="total_registros">@ViewBag.general.MIEMBROS.ToString("N0")</span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-sm-4 col-sm-6 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-purple-gradient"><i class="ion ion-ios-people-outline"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">CLIENTES</span>
+                    <span class="info-box-number" id="total_miembros">@((ViewBag.general.MIEMBROS + ViewBag.general.REGISTROS).ToString("N0"))</span>
+                    @*<p>Registros:&nbsp;&nbsp;<small>@ViewBag.general.REGISTROS.ToString("N0")</small></p>
+                    <p>Miembros:&nbsp;&nbsp;<small>@ViewBag.general.MIEMBROS.ToString("N0")</small></p>*@
                 </div>
                 <!-- /.info-box-content -->
             </div>
@@ -121,7 +139,7 @@
         <!-- /.col -->
         <!-- fix for small devices only -->
         <div class="clearfix visible-sm-block"></div>
-        <div class="col-md-5ths col-sm-4 col-sm-6 col-xs-12">
+        <div class="col-sm-4 col-sm-6 col-xs-12">
             <div class="info-box">
                 <span class="info-box-icon bg-yellow"><i class="fa fa-ticket"></i></span>
                 <div class="info-box-content">
@@ -133,7 +151,7 @@
             </div>  
             <!-- /.info-box -->
         </div>
-        <div class="col-md-5ths col-sm-4 col-sm-6 col-xs-12">
+        <div class="col-sm-4 col-sm-6 col-xs-12">
             <div class="info-box">
                 <span class="info-box-icon bg-aqua"><i class="glyphicon glyphicon glyphicon-tags" ></i></span>
                 <div class="info-box-content">
@@ -144,7 +162,7 @@
             </div>
             <!-- /.info-box -->
         </div>
-        <div class="col-md-5ths col-sm-4 col-sm-6 col-xs-12">
+        <div class="col-sm-4 col-sm-6 col-xs-12">
             <div class="info-box">
                 <span class="info-box-icon bg-green"><i class="fa fa-money"></i></span>
                 <div class="info-box-content">
@@ -186,7 +204,7 @@
                 <!-- ./box-body -->
                 <div class="box-footer">
                     <div class="row">
-                        <div class="col-sm-3 col-xs-6">
+                        <div class="col-sm-4 col-xs-6">
                             <div class="description-block border-right">
                                 <span class="description-percentage text-fuchsia"><i class="fa fa-female"></i></span>
                                 <h5 class="description-header" id="totalFemenino"></h5>
@@ -195,7 +213,7 @@
                             <!-- /.description-block -->
                         </div>
                         <!-- /.col -->
-                        <div class="col-sm-3 col-xs-6">
+                        <div class="col-sm-4 col-xs-6">
                             <div class="description-block border-right">
                                 <span class="description-percentage text-blue"><i class="fa fa-male"></i></span>
                                 <h5 class="description-header" id="totalMasculino"></h5>
@@ -204,7 +222,7 @@
                             <!-- /.description-block -->
                         </div>
                         <!-- /.col -->
-                        <div class="col-sm-3 col-xs-6">
+                        <div class="col-sm-4 col-xs-6">
                             <div class="description-block">
                                 <span class="description-percentage text-red"><i class="fa fa-ban"></i></span>
                                 <h5 class="description-header" id="totalNulo"></h5>
@@ -289,7 +307,7 @@
             <div class="box">
                 <div class="box-header with-border">
                     <i class="fa fa-bar-chart-o"></i>
-                    <h3 class="box-title">Registros/Transacciones  x  Supervisor/Tienda</h3>
+                    <h3 class="box-title">Registros/Transacciones/Consumos  x  Supervisor/Tienda</h3>
 
                     <div class="box-tools pull-right" style="top: 3px;">                        
                         @*@Html.DropDownList("anioPS", new SelectList(ViewBag.anios, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "form-control form-control-sm selectpicker anio", @id = "anioPS", @name = "anioPS", @data_informe = 4 })*@
@@ -466,7 +484,7 @@
             }
         });
         var total = sum(data.datasets[0].data);
-        $("#tituloCanalesChar").html("Total: " + total);
+        $("#tituloCanalesChar").html("Total: " + total.toLocaleString('es-PE'));
     }
     function getChartMensualRegMiem(canvas, data, totalesGenero) {
         getChartInformeMensual(2,canvas, data);
@@ -494,13 +512,15 @@
     function getChartSuperv(canvas, data, tiendas) {
         if (data != null) {
             getChartInformeMensual(6, canvas, data);
-            var totalregSup = sum(data.datasets[0].data).toLocaleString('es-PE');
-            var totaltranSup = sum(data.datasets[1].data).toLocaleString('es-PE');
-            var title = '<strong style="color: rgb(90, 90, 90)">P: ' + totalregSup + '</strong>&nbsp;&nbsp;&nbsp;&nbsp;' +
-                '<strong style="color: rgb(42, 152, 102)">T: ' + totaltranSup + '</strong>&nbsp;&nbsp;'
+            var totaltranSup = sum(data.datasets[0].data).toLocaleString('es-PE');
+            var totalregSup = sum(data.datasets[1].data).toLocaleString('es-PE');            
+            var totalConSup = sum(data.datasets[2].data).toLocaleString('es-PE');
+            var title = '<strong style="color: rgb(42, 152, 102)">T: ' + totaltranSup + '</strong>&nbsp;&nbsp;' +
+                '<strong style="color: rgb(90, 90, 90)">P: ' + totalregSup + '</strong>&nbsp;&nbsp;&nbsp;&nbsp;' +                
+                '<strong style="color: rgb(243, 156, 18, 1)">C: ' + totalConSup + '</strong>&nbsp;&nbsp;'
             $("#tituloBarCharSuperv").html(title);
         }
-        var tbody = '<tr><th class="col-md-8">Tiendas</th><th class="col-md-2">Registros</th><th class="col-md-2">Transac</th></tr>';
+        var tbody = '<tr><th class="col-md-9">Tiendas</th><th class="col-md-1">Transac</th><th class="col-md-1">Registros</th><th class="col-md-1">Cons</th></tr>';
         var ultimoSup = "";
         for (var i = 0; i < tiendas.length; i++) {
             var sup = tiendas[i].supervisor;
@@ -508,18 +528,22 @@
                 tbody += '<tr><th colspan="3">' + sup + '</th></tr>';
                 ultimoSup = sup;
             }
-            tbody += '<tr><td class="text"><span>' + tiendas[i].tienda + '</span></td><td><span class="badge bg-registros">' + tiendas[i].registros + '</span></td><td><span class="badge bg-transac">' + tiendas[i].transac + '</span></td></tr>'
+            tbody += '<tr><td class="text"><span>' + tiendas[i].tienda + '</span></td><td><span class="badge bg-transac">' + tiendas[i].transac + '</span></td><td><span class="badge bg-registros">' + tiendas[i].registros + '</span></td><td><span class="badge bg-consumido">' + tiendas[i].consumido + '</span></td></tr>'
         }
         $("#tiendasDetalle").html(tbody);
 
         var totaltdaRegSup = 0;
         var totaltdaTranSup = 0;
+        var totaltdaConSup = 0;
         for (var i = 0; i < tiendas.length; i++) {
             totaltdaRegSup += parseFloat(tiendas[i].registros);
             totaltdaTranSup += parseFloat(tiendas[i].transac);
+            totaltdaConSup += parseFloat(tiendas[i].consumido);
         }
-        var title2 = '<strong class="pull-left">#: ' + tiendas.length + '</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong style="color: rgb(90, 90, 90)">P: ' + totaltdaRegSup.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;&nbsp;&nbsp;' +
-                '<strong style="color: rgb(42, 152, 102)">S/ ' + totaltdaTranSup.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;'
+        var title2 = '<strong class="pull-left">#: ' + tiendas.length + '</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+
+        '<strong style="color: rgb(42, 152, 102)">T: ' + totaltdaTranSup.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;' +
+            '<strong style="color: rgb(90, 90, 90)">R: ' + totaltdaRegSup.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;&nbsp;&nbsp;' +                
+                '<strong style="color: rgb(243, 156, 18)">C: ' + totaltdaConSup.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;'
         $("#totalesTiendas").html(title2);
     }
     function getChartMensualPS(canvas, data, proms, mes , anio) {
@@ -532,13 +556,16 @@
             $("#tituloBarCharPS").html(title);
         }
         var tbody = '<tr><th class="col-md-8">Promociones</th><th class="col-md-2">Pares</th><th class="col-md-2">Soles</th></tr>';
+        var strmes;
         if (mes == null) {
             tbody += '<tr><th colspan="3">' + anio + '</th></tr>'
         } else {
-            tbody += '<tr><th>' + myChartPS.chart.config.data.labels[mes - 1] + '</th></tr>'
+            strmes = myChartPS.chart.config.data.labels[mes - 1]
+            tbody += '<tr><th>' + strmes + '</th></tr>'
+            
         }
         for (var i = 0; i < proms.length; i++) {
-            tbody += '<tr class="prom-det-tda"  data-tot-pares="' + proms[i].pares + '"  data-tot-soles="' + proms[i].soles + '"  data-prom="' + proms[i].promocion + '"  data-anio-prom="' + anio + '" data-mes-prom="' + mes + '" ><td class="text"><span>' + proms[i].promocion + '</span></td><td><span class="badge bg-pares">' + proms[i].pares + '</span></td><td><span class="badge bg-soles">' + proms[i].soles + '</span></td></tr>'
+            tbody += '<tr class="prom-det-tda"  data-tot-pares="' + proms[i].pares.toLocaleString('es-PE') + '"  data-tot-soles="' + proms[i].soles.toLocaleString('es-PE') + '"  data-prom="' + proms[i].promocion + '"  data-anio-prom="' + anio + '" data-mes-prom="' + mes + '" data-strmes-prom="' + strmes + '"  ><td class="text"><span>' + proms[i].promocion + '</span></td><td><span class="badge bg-pares">' + proms[i].pares.toLocaleString('es-PE') + '</span></td><td><span class="badge bg-soles">' + proms[i].soles.toLocaleString('es-PE') + '</span></td></tr>'
         }
         $("#promocionesDetalle").html(tbody);
 
@@ -614,7 +641,19 @@
                 var activeIndex = myBarChartTR.tooltip._lastActive[0]._index;
                 var clickCoordinates = Chart.helpers.getRelativePosition(e, myBarChartTR.chart);
                 if (clickCoordinates.y >= 36) {
-                    getChartSuperv(null, null, (JSON.parse('@Html.Raw(ViewBag.DetallesTiendaSuperv)')).filter(w=>w.supervisor == myBarChartTR.chart.config.data.labels[activeIndex]));
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("updateChartData", "BataClub")',
+                        data: { informe: 8, sup: myBarChartTR.chart.config.data.labels[activeIndex] },
+                        success: function (data) {
+                            getChartSuperv(null, null,JSON.parse(data.tiendas)); //(JSON.parse('Html.Raw(ViewBag.DetallesTiendaSuperv)')).filter(w=>w.supervisor == myBarChartTR.chart.config.data.labels[activeIndex]));
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            waitingDialog.hide();
+                            var error = eval("(" + XMLHttpRequest.responseText + ")");
+                            swal(error.Message);
+                        }
+                    })
                 }
             } catch (e) {
 
@@ -637,7 +676,8 @@
 
         $('#promocionesDetalle').on('click', '.prom-det-tda', function (e) {
             var anio = $(this).attr('data-anio-prom');
-            var mes = $(this).attr('data-mes-prom');
+            var mes = $(this).attr('data-mes-prom');//strmes
+            var strmes = $(this).attr('data-strmes-prom');//strmes
             var prom = $(this).attr('data-prom');//data-tot-pares
             var totPares = $(this).attr('data-tot-pares');//data-tot-pares
             var totSoles = $(this).attr('data-tot-soles');//data-tot-pares
@@ -651,7 +691,7 @@
                 success: function (data) {
                     var totalPares = 0;
                     var totalSoles = 0;
-                    var title1 = 'Promocion : ' + prom + '  &nbsp;&nbsp;&nbsp;&nbsp;  Año:' + anio + ' &nbsp;&nbsp;&nbsp;&nbsp;   Mes: ' + mes 
+                    var title1 = 'Promocion : ' + prom + '  &nbsp;&nbsp;&nbsp;&nbsp;  Año:' + anio + ' &nbsp;&nbsp;&nbsp;&nbsp;   ' + (mes == null || mes == '' || mes == 'null' ? '' : 'Mes: ' + strmes)
                     var table = '' +
                     '<table id="promDetTda" class="table table-hover table-condensed dt-lista-tdas table-striped table-responsive">' +
                     '<thead><tr style="background-color:#3d566e; color:#ecf0f1"><th>Promocion</th><th>Pares</th><th>Soles</th></tr></thead><tbody data-bind="foreach:">';

@@ -109,7 +109,8 @@ namespace CapaDato.BataClub
                                                           {
                                                               supervisor = dr["SUPERVISOR"].ToString(),
                                                               registros = Convert.ToInt32(dr["REGISTROS"].ToString()),
-                                                              transac = Convert.ToInt32(dr["TRANSAC"].ToString())
+                                                              transac = Convert.ToInt32(dr["TRANSAC"].ToString()),
+                                                              consumido = Convert.ToInt32(dr["CONSUMIDO"].ToString()),
                                                           }).ToList();
                                 info.listTiendasSupervTot = (from DataRow dr in ds.Tables[(informe == 0 ? 8 : 1)].Rows
                                                           select new Ent_BataClub_DashBoard_TiendasSupervisor()
@@ -117,7 +118,8 @@ namespace CapaDato.BataClub
                                                               supervisor = dr["SUPERVISOR"].ToString(),
                                                               tienda = dr["TIENDA"].ToString(),
                                                               registros = Convert.ToInt32(dr["REGISTROS"].ToString()),
-                                                              transac = Convert.ToInt32(dr["TRANSAC"].ToString())
+                                                              transac = Convert.ToInt32(dr["TRANSAC"].ToString()),
+                                                              consumido = Convert.ToInt32(dr["CONSUMIDO"].ToString()),
                                                           }).ToList();
                             }
                             if (new[] { 7 }.Contains(informe))
