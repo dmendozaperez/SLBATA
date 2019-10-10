@@ -188,6 +188,7 @@ namespace Data.Crystal.Reporte
                                              total = string.IsNullOrEmpty(dr["ACC"].ToString()) ? 0 : Convert.ToDecimal(dr["TOTAL"].ToString()),
                                              upt = string.IsNullOrEmpty(dr["ACC"].ToString()) ? 0 : Convert.ToDecimal(dr["UPT"].ToString()),
                                              ntk = string.IsNullOrEmpty(dr["ACC"].ToString()) ? 0 : Convert.ToDecimal(dr["NTK"].ToString()),
+                                             ntk2 = string.IsNullOrEmpty(dr["ACC"].ToString()) ? 0 : Convert.ToDecimal(dr["NTK2"].ToString()),
                                              mayor_1 = string.IsNullOrEmpty(dr["ACC"].ToString()) ? 0 : Convert.ToDecimal(dr["MAYOR_1"].ToString()),
                                              pormay1 = string.IsNullOrEmpty(dr["ACC"].ToString()) ? 0 : Convert.ToDecimal(dr["PORMAY1"].ToString()),
                                              ticket_prom = string.IsNullOrEmpty(dr["ACC"].ToString()) ? 0 : Convert.ToDecimal(dr["TICKET_PROM"].ToString()),

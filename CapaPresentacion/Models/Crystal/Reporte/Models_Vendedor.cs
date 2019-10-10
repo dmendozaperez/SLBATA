@@ -28,6 +28,7 @@ namespace Models.Crystal.Reporte
         public decimal total { get; set; }
         public decimal upt { get; set; }
         public decimal ntk { get; set; }
+        public decimal ntk2 { get; set; }
         public decimal mayor_1 { get; set; }
         public decimal pormay1 { get; set; }
         public decimal ticket_prom { get; set; }

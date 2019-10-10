@@ -425,8 +425,8 @@
     <Compile Include="RptsCrystal\Vendedor.cs">
       <DependentUpon>Vendedor.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
-      <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="RptsCrystal\Planilla.cs">
       <AutoGen>True</AutoGen>
