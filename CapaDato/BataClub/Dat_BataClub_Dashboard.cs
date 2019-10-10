@@ -12,7 +12,7 @@ namespace CapaDato.BataClub
 {
     public class Dat_BataClub_Dashboard
     {
-        public Ent_BataClub_DashBoard GET_INFO_DASHBOARD(string anio = "2019" , int informe = 0, int mes = 0,object fechaIni = null , object fechaFin = null) // 0 = TODO | 1 = GENERAL | 2 = REGISTRADOS | 3 = MIEMBROS | 4 = CANALES
+        public Ent_BataClub_DashBoard GET_INFO_DASHBOARD(string anio = "2019" , int informe = 0, int mes = 0,object fechaIni = null , object fechaFin = null , string prom = "") // 0 = TODO | 1 = GENERAL | 2 = REGISTRADOS | 3 = MIEMBROS | 4 = CANALES
         {
             string sqlquery = "USP_BATACLUB_DASHBOARD";
             Ent_BataClub_DashBoard info = null;
@@ -33,6 +33,7 @@ namespace CapaDato.BataClub
                             cmd.Parameters.AddWithValue("@fecha_ini", Convert.ToDateTime(fechaIni));
                             cmd.Parameters.AddWithValue("@fecha_fin", Convert.ToDateTime(fechaFin));
                         }
+                        cmd.Parameters.AddWithValue("@prom", prom);//@prom
                         using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                         {
                             DataSet ds = new DataSet();
@@ -119,6 +120,15 @@ namespace CapaDato.BataClub
                                                               transac = Convert.ToInt32(dr["TRANSAC"].ToString())
                                                           }).ToList();
                             }
+                            if (new[] { 7 }.Contains(informe))
+                                info.listDetPromTda = (from DataRow dr in ds.Tables[(informe == 0 ? 6 : informe == 4 ? 1 : 0)].Rows
+                                                    select new Ent_BataClub_DashBoard_Proms()
+                                                    {
+                                                        promocion = dr["PROMOCION"].ToString(),
+                                                        tienda = dr["TIENDA"].ToString(),
+                                                        pares = Convert.ToInt32(dr["PARES"].ToString()),
+                                                        soles = Convert.ToInt32(dr["SOLES"].ToString())
+                                                    }).ToList();
                         }
                     }
                     if (cn != null)

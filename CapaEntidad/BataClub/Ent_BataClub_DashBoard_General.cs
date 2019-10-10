@@ -17,6 +17,8 @@ namespace CapaEntidad.BataClub
         public List<Ent_BataClub_Dashboard_Genero> listMesGenero { get; set; }
         public List<Ent_BataClub_DashBoard_Supervisor> listSupervisorTot { get; set; }
         public List<Ent_BataClub_DashBoard_TiendasSupervisor> listTiendasSupervTot { get; set; }
+        public List<Ent_BataClub_DashBoard_Proms> listDetPromTda { get; set; }
+
     }
     public class Ent_BataClub_DashBoard_General
     {
@@ -56,6 +58,7 @@ namespace CapaEntidad.BataClub
     public class Ent_BataClub_DashBoard_Proms
     {
         public string promocion { get; set; }
+        public string tienda { get; set; }
         public decimal pares { get; set; }
         public decimal soles { get; set; }
     }
