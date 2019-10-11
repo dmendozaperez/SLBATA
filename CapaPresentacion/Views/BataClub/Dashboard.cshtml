@@ -271,9 +271,10 @@
                 <div class="box-header with-border">
                     <i class="fa fa-bar-chart-o"></i>
                     <h3 class="box-title">Pares/Soles  x  Mes</h3>
-
+                    
                     <div class="box-tools pull-right" style="top: 3px;">
-                        @Html.DropDownList("anioPS", new SelectList(ViewBag.anios, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "form-control form-control-sm selectpicker anio", @id = "anioPS", @name = "anioPS", @data_informe = 4 })
+                        
+                        @Html.DropDownList("anioPS", new SelectList(ViewBag.anios, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "form-control form-control-sm selectpicker anio", @id = "anioPS", @name = "anioPS", @data_informe = 4 })                        
                     </div>
                 </div>
                 <!-- /.box-header -->
@@ -283,14 +284,22 @@
                             <p class="text-center"  id="tituloBarCharPS">
                             </p>
                             <div class="chart">
-                                <canvas id="barChartPS" style="height: 270px;"></canvas>
+                                <canvas id="barChartPS" style="height: 300px;"></canvas>
                             </div>
                             <!-- /.chart-responsive -->
                         </div>
                         <div class="col-md-4">
-                            <div class="table-wrapper-scroll-y my-custom-scrollbar" style="height:270px" >
-                                <table id="promocionesDetalle" class="table table-hover">                                  
-                                </table>                                
+                            <div class="row" style="margin-bottom:10px">
+                                <div class="col-sm-12">
+                                    <a href="@Url.Action("ParSolMesExcel","BataClub")" class="btn btn-success btn-sm pull-right" ><i class="glyphicon glyphicon-export"></i>&nbsp;&nbsp;Exportar</a>
+                                </div>                                
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="table-wrapper-scroll-y my-custom-scrollbar" style="height:270px">
+                                        <table id="promocionesDetalle" class="table table-hover"></table>
+                                    </div>
+                                </div>                                
                             </div>
                             <p id="totalesPromociones" class="pull-right" style="padding-right:15px; padding-top:7px"></p>
                         </div>
@@ -338,6 +347,7 @@
                                     </div>
                                 </div>&nbsp;&nbsp;&nbsp;
                                 <button type="button" class="btn btn-primary btn-sm" title="Mostrar" id="btnMostrarCharBarSup" ><i class="fa fa-search"></i></button>
+                                <a href="@Url.Action("RegTraConTdaExcel","BataClub")" class="btn btn-success btn-sm pull-right"><i class="glyphicon glyphicon-export"></i>&nbsp;&nbsp;Exportar</a>
                             </div>
 
                         </div>
@@ -520,7 +530,7 @@
                 '<strong style="color: rgb(243, 156, 18, 1)">C: ' + totalConSup + '</strong>&nbsp;&nbsp;'
             $("#tituloBarCharSuperv").html(title);
         }
-        var tbody = '<tr><th class="col-md-9">Tiendas</th><th class="col-md-1">Transac</th><th class="col-md-1">Registros</th><th class="col-md-1">Cons</th></tr>';
+        var tbody = '<tr><th class="col-md-9">Tiendas</th><th class="col-md-1">Tran</th><th class="col-md-1">Reg</th><th class="col-md-1">Cons</th></tr>';
         var ultimoSup = "";
         for (var i = 0; i < tiendas.length; i++) {
             var sup = tiendas[i].supervisor;

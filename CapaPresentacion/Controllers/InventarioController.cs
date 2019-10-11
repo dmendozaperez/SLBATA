@@ -459,7 +459,7 @@ namespace CapaPresentacion.Controllers
                 listArtExcel.Remove(listArtExcel.Where(o => o.ARTICULO == ritem.ARTICULO && o.MEDIDA == ritem.MEDIDA && o.CALIDAD == ritem.CALIDAD).FirstOrDefault());
             }           
 
-            return oldList.Union(newExcelList).ToList();
+            return oldList.Union(listArtExcel).ToList();
         }
 
         public ActionResult XSTORE_INSERTAR_INVENTARIO (string cod_tda, string inv_des, string inv_fec_inv)
