@@ -108,11 +108,11 @@ namespace CapaPresentacion.Controllers
             }
             else
             {
-                if (Session["_dashboardData"] == null)
-                {
-                    Session["_dashboardData"] = datDash.GET_INFO_DASHBOARD();
-                }
-                //Session["_dashboardData"] = datDash.GET_INFO_DASHBOARD();
+                //if (Session["_dashboardData"] == null)
+                //{
+                //    Session["_dashboardData"] = datDash.GET_INFO_DASHBOARD();
+                //}
+                Session["_dashboardData"] = datDash.GET_INFO_DASHBOARD();
 
                 Ent_BataClub_DashBoard dashboard = (Ent_BataClub_DashBoard)Session["_dashboardData"];
                 ViewBag.general = dashboard.General;
@@ -126,6 +126,8 @@ namespace CapaPresentacion.Controllers
                 ViewBag.BarChartTranReg = informeBarChartData(dashboard, 6);
                 ViewBag.DetallesTiendaSuperv = dashboard.listTiendasSupervTot;
                 Session[_session_det_tdas_sup] = dashboard.listTiendasSupervTot;
+                Session[_session_par_sol_mes_excel] = dashboard.listPromsPS;
+                Session[_session_det_tdas_sup_excel] = dashboard.listTiendasSupervTot;
                 return View();
             }
         }
@@ -151,6 +153,7 @@ namespace CapaPresentacion.Controllers
                 chartDS = new Ent_BataClub_Chart_Data();
                 chartDS = informeBarChartData(dashboard, 4);
                 jsonResult = Json(new { result = JsonConvert.SerializeObject(chartDS, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }), promsPS = dashboard.listPromsPS });
+                Session[_session_par_sol_mes_excel] = dashboard.listPromsPS;
             }
             else if (informe == 5)
             {
@@ -162,6 +165,7 @@ namespace CapaPresentacion.Controllers
                 chartDS = new Ent_BataClub_Chart_Data();
                 chartDS = informeBarChartData(dashboard, 6);
                 Session[_session_det_tdas_sup] = dashboard.listTiendasSupervTot;
+                Session[_session_det_tdas_sup_excel] = dashboard.listTiendasSupervTot;
                 jsonResult = Json(new { result = JsonConvert.SerializeObject(chartDS, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }), tiendas = dashboard.listTiendasSupervTot });
             }
             else if (informe == 7)
