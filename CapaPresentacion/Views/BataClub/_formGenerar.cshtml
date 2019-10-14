@@ -118,7 +118,8 @@
     </div>
 </div>
 
-<div class="box box-body box-primary">
+<div class="box box-body box-danger">
+    <h4 style="padding-left: 10px; margin-bottom:20px" class="text-bold">Clientes para cupones</h4>
     @using (Ajax.BeginForm("_TableCupon", options))
     {
         <div class="row">
@@ -174,6 +175,29 @@
                 </button>
             </div>
         </div>
+        if(ViewBag.Operacion != null)
+        {
+            <div class="row">
+                <div class="col-md-3"  style="padding-left: 25px;">
+                    <div class="form-group">
+                        <label for="cadena">Cadena:</label>
+                        @Html.DropDownList("cadena2", new MultiSelectList(ViewBag.listCadena, "cbo_codigo", "cbo_descripcion", null), new { @class = "form-control selectpicker", @id = "cadena2", @data_live_search = "true", @multiple = "multiple", @data_actions_box = "true", @data_selected_text_format = "count > 2", @onchange = "ListarTienda(2)" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="tienda">Tienda:</label>
+                        @Html.DropDownList("tienda2", new MultiSelectList(ViewBag.listTdaCadena, "cbo_codigo", "cbo_descripcion", null), new { @class = "form-control selectpicker", @id = "tienda2", @data_live_search = "true", @multiple = "multiple", @data_actions_box = "true", @data_selected_text_format = "count > 2" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Año</label>
+                        @Html.DropDownList("anio", new SelectList(ViewBag.anios, "cbo_codigo", "cbo_descripcion", "-1"), new { @class = "form-control form-control-sm selectpicker anio", @id = "anio", @name = "anio", @data_informe = 3 })
+                    </div>
+                </div>
+            </div>
+        }
         <div class="row">
             @if (ViewBag.Operacion == null)
             {
@@ -220,8 +244,12 @@
 
 <script>
     $(document).ready(function () {
-        $("#cadena").selectpicker('selectAll');        
-        $("#btdp").click(function () {                                                                                                      
+        $("#cadena").selectpicker('selectAll');
+        @if (ViewBag.Operacion != null)
+        {
+            <text>$("#cadena2").selectpicker('selectAll');</text>
+        }
+        $("#btdp").click(function () {
             $("#fecha").datepicker('show')
         });
         $('#fecha').datepicker({
@@ -249,12 +277,15 @@
                     var genero = $("input[name='genero']:checked").val(); //$("#genero").val();
                     var operacion = $("#btnGenerar").val();//operacion
                     var tienda = ((($("#tienda option:not(:selected)").length == 0 && $("#tienda > option").length > 1) && ($("#cadena option:not(:selected)").length == 0 && $("#cadena > option").length > 1)) ? "" : $('#tienda').val()); //$("#tienda").val();
-                    tienda = (tienda == null ? "" : tienda)
+                    var tienda2 = ((($("#tienda2 option:not(:selected)").length == 0 && $("#tienda2 > option").length > 1) && ($("#cadena2 option:not(:selected)").length == 0 && $("#cadena2 > option").length > 1)) ? "" : $('#tienda2').val()); //$("#tienda").val();
+                    var anio = $("#anio").val();
+                    tienda = (tienda == null ? "" : tienda);
+                    tienda2 = (tienda2 == null ? "" : tienda2);
                     waitingDialog.show('Este proceso puede tardar unos minutos', { headerText: 'Espere un momento por favor.' });
                     $.ajax({
                         type: "POST",
                         url: '@Url.Action("BATACLUB_INSERTAR_CUPONES", "BataClub")',
-                        data: { operacion: operacion, promocion: promocion, dscto: dscto, fecha: fecha, pares: pares, mesCumple: mesCumple, genero: genero, tienda: tienda },
+                        data: { operacion: operacion, promocion: promocion, dscto: dscto, fecha: fecha, pares: pares, mesCumple: mesCumple, genero: genero, tienda: tienda , tienda2 : tienda2 , anio : anio},
                         dataType: "json",
                         success: function (data) {
                             waitingDialog.hide();
@@ -301,8 +332,9 @@
             });
         });
     });
-    function ListarTienda() {
-        var cadenas = $("#cadena").val();
+    function ListarTienda(sel) {
+        var _sel = (sel == null || sel == '' ? 1 : _sel);
+        var cadenas = _sel == 1 ? $("#cadena").val() : $("#cadena2").val();
         cadenas = cadenas == null ? "" : cadenas.toString();
         //waitingDialog.show('Espere un momento por favor');
         $.ajax({
@@ -311,9 +343,16 @@
             data: { cadenas: cadenas },
             success: function (resultado) {
                 //waitingDialog.hide();
-                $('#tienda').html(ParseJSONSelectList(resultado));
-                $('#tienda').selectpicker('refresh');
-                $("#tienda").selectpicker('selectAll');
+                if (_sel == 1) {
+                    $('#tienda').html(ParseJSONSelectList(resultado));
+                    $('#tienda').selectpicker('refresh');
+                    $("#tienda").selectpicker('selectAll');
+                } else {
+                    $('#tienda2').html(ParseJSONSelectList(resultado));
+                    $('#tienda2').selectpicker('refresh');
+                    $("#tienda2").selectpicker('selectAll');
+                }
+
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 //waitingDialog.hide();

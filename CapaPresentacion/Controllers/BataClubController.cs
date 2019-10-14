@@ -38,10 +38,11 @@ namespace CapaPresentacion.Controllers
         private string _session_lista_clientes_cupon = "_session_lista_clientes_cupon";
         private string _session_lista_cupones_excel = "_session_lista_cupones_excel";
 
-
+        private string _session_det_tdas_sup = "_session_det_tdas_sup";
+        private string _session_det_tdas_sup_excel = "_session_det_tdas_sup_excel";
+        private string _session_par_sol_mes_excel = "_session_par_sol_mes_excel";
 
         private string _session_prom_generar_cupon = "_session_prom_generar_cupon";
-
 
         private string _BataClub_Promociones_Combo = "_BataClub_Promociones_Combo";
         private string _BataClub_Canal_Combo = "_BataClub_Canal_Combo";
@@ -107,11 +108,11 @@ namespace CapaPresentacion.Controllers
             }
             else
             {
-                //if (Session["_dashboardData"] == null)
-                //{
-                //    Session["_dashboardData"] = datDash.GET_INFO_DASHBOARD();
-                //}
-                Session["_dashboardData"] = datDash.GET_INFO_DASHBOARD();
+                if (Session["_dashboardData"] == null)
+                {
+                    Session["_dashboardData"] = datDash.GET_INFO_DASHBOARD();
+                }
+                //Session["_dashboardData"] = datDash.GET_INFO_DASHBOARD();
 
                 Ent_BataClub_DashBoard dashboard = (Ent_BataClub_DashBoard)Session["_dashboardData"];
                 ViewBag.general = dashboard.General;
@@ -124,11 +125,11 @@ namespace CapaPresentacion.Controllers
 
                 ViewBag.BarChartTranReg = informeBarChartData(dashboard, 6);
                 ViewBag.DetallesTiendaSuperv = dashboard.listTiendasSupervTot;
-
+                Session[_session_det_tdas_sup] = dashboard.listTiendasSupervTot;
                 return View();
             }
         }
-        public ActionResult updateChartData(string anio, int informe , int mes = 0,string fecini = null , string fecfin = null , string prom = "")
+        public ActionResult updateChartData(string anio, int informe , int mes = 0,string fecini = null , string fecfin = null , string prom = "" , string sup = "")
         {
             Ent_BataClub_DashBoard dashboard = datDash.GET_INFO_DASHBOARD(anio, informe, mes,fecini , fecfin , prom);
             Ent_BataClub_Chart_Data chartDS = null;
@@ -136,8 +137,8 @@ namespace CapaPresentacion.Controllers
             if (informe == 2)
             {
                 chartDS = new Ent_BataClub_Chart_Data();
-                chartDS = informeBarChartData(dashboard,2);
-                jsonResult = Json(new { result = JsonConvert.SerializeObject(chartDS, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }), totalesGenero = dashboard.listMesGenero });                
+                chartDS = informeBarChartData(dashboard, 2);
+                jsonResult = Json(new { result = JsonConvert.SerializeObject(chartDS, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }), totalesGenero = dashboard.listMesGenero });
             }
             else if (informe == 3)
             {
@@ -148,24 +149,35 @@ namespace CapaPresentacion.Controllers
             else if (informe == 4)
             {
                 chartDS = new Ent_BataClub_Chart_Data();
-                chartDS = informeBarChartData(dashboard,4);
+                chartDS = informeBarChartData(dashboard, 4);
                 jsonResult = Json(new { result = JsonConvert.SerializeObject(chartDS, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }), promsPS = dashboard.listPromsPS });
             }
             else if (informe == 5)
-            {               
+            {
                 jsonResult = Json(new { promsPS = dashboard.listPromsPS });
+                Session[_session_par_sol_mes_excel] = dashboard.listPromsPS;
             }
             else if (informe == 6)
             {
                 chartDS = new Ent_BataClub_Chart_Data();
                 chartDS = informeBarChartData(dashboard, 6);
+                Session[_session_det_tdas_sup] = dashboard.listTiendasSupervTot;
                 jsonResult = Json(new { result = JsonConvert.SerializeObject(chartDS, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }), tiendas = dashboard.listTiendasSupervTot });
             }
             else if (informe == 7)
             {
                 jsonResult = Json(new { promsDetPromTda = dashboard.listDetPromTda });
-            }
 
+            }
+            else if (informe == 8)
+            {
+                jsonResult = Json(new
+                {
+
+                    tiendas = JsonConvert.SerializeObject(((List<Ent_BataClub_DashBoard_TiendasSupervisor>)Session[_session_det_tdas_sup]).Where(w => w.supervisor == sup), Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore })                    
+                });
+                Session[_session_det_tdas_sup_excel] = ((List<Ent_BataClub_DashBoard_TiendasSupervisor>)Session[_session_det_tdas_sup]).Where(w => w.supervisor == sup).ToList();
+            }
             return jsonResult;        
         }
         public Ent_BataClub_Chart_Data informeSupervisor(Ent_BataClub_DashBoard dashboard)
@@ -249,24 +261,75 @@ namespace CapaPresentacion.Controllers
             else if (informe == 6)
             {
                 chartDS.datasets = new List<Ent_BataClub_Chart_DataSet>() {
-                (new Ent_BataClub_Chart_DataSet()
-                {
-                    label = "REGISTROS",
-                    backgroundColor = Enumerable.Repeat("rgba(180, 180, 180,0.8)", dashboard.listSupervisorTot.Count).ToArray(), // new string[] { "rgba(180, 180, 180,0.7)" },
-                    borderWidth = "1",
-                    data = dashboard.listSupervisorTot.Select(s => s.registros).ToArray()
-                }),
-                (new Ent_BataClub_Chart_DataSet()
-                {
-                    label = "TRANSACCIONES",
-                    backgroundColor = Enumerable.Repeat("rgba(0, 166, 90,0.8)", dashboard.listSupervisorTot.Count).ToArray(),
-                    borderWidth = "1",
-                    data = dashboard.listSupervisorTot.Select(s => s.transac).ToArray()
-                }) };
+                    (new Ent_BataClub_Chart_DataSet()
+                    {
+                        label = "TRANSACCIONES",
+                        backgroundColor = Enumerable.Repeat("rgba(0, 166, 90,0.8)", dashboard.listSupervisorTot.Count).ToArray(),
+                        borderWidth = "1",
+                        data = dashboard.listSupervisorTot.Select(s => s.transac).ToArray()
+                    }),
+                    (new Ent_BataClub_Chart_DataSet()
+                    {
+                        label = "REGISTROS",
+                        backgroundColor = Enumerable.Repeat("rgba(180, 180, 180,0.8)", dashboard.listSupervisorTot.Count).ToArray(), // new string[] { "rgba(180, 180, 180,0.7)" },
+                        borderWidth = "1",
+                        data = dashboard.listSupervisorTot.Select(s => s.registros).ToArray()
+                    }),
+                
+                    (new Ent_BataClub_Chart_DataSet()
+                    {
+                        label = "CONSUMIDOS",
+                        backgroundColor = Enumerable.Repeat("rgba(243, 156, 18, 0.8)", dashboard.listSupervisorTot.Count).ToArray(),
+                        borderWidth = "1",
+                        data = dashboard.listSupervisorTot.Select(s => s.consumido).ToArray()
+                    })
+                };
+                
                 chartDS.labels = dashboard.listSupervisorTot.Select(s => s.supervisor).ToArray();
                 chartDS.labelsTooltip = new string[] { "Hola", "Hola", "Hola", "Hola", "Hola", "Hola", "Hola", "HOLA" };
             }     
             return chartDS;
+        }
+
+        public FileContentResult RegTraConTdaExcel()
+        {
+            if (Session[_session_det_tdas_sup_excel] == null)
+            {
+                List<Ent_BataClub_DashBoard_TiendasSupervisor> liststoreConf = new List<Ent_BataClub_DashBoard_TiendasSupervisor>();
+                Session[_session_det_tdas_sup_excel] = liststoreConf;
+            }
+            /*
+                        public string supervisor { get; set; }
+        public string tienda { get; set; }
+        public decimal registros { get; set; }
+        public decimal transac { get; set; }
+        public decimal consumido { get; set; }
+             */
+            List<Ent_BataClub_DashBoard_TiendasSupervisor> lista = (List<Ent_BataClub_DashBoard_TiendasSupervisor>)Session[_session_det_tdas_sup_excel];
+            string[] columns = { "supervisor", "tienda", "registros", "transac", "consumido" };
+            byte[] filecontent = ExcelExportHelper.ExportExcel(lista, "", false, columns);
+            string nom_excel = "Lista de tiendas RTCxST";
+            return File(filecontent, ExcelExportHelper.ExcelContentType, nom_excel + ".xlsx");
+        }//
+
+        public FileContentResult ParSolMesExcel()
+        {
+            if (Session[_session_par_sol_mes_excel] == null)
+            {
+                List<Ent_BataClub_DashBoard_Proms> liststoreConf = new List<Ent_BataClub_DashBoard_Proms>();
+                Session[_session_par_sol_mes_excel] = liststoreConf;
+            }
+            /*
+                               public string promocion { get; set; }
+                                public string tienda { get; set; }
+                                public decimal pares { get; set; }
+                                public decimal soles { get; set; }
+             */
+            List<Ent_BataClub_DashBoard_Proms> lista = (List<Ent_BataClub_DashBoard_Proms>)Session[_session_par_sol_mes_excel];
+            string[] columns = { "promocion", "pares", "soles" };
+            byte[] filecontent = ExcelExportHelper.ExportExcel(lista, "", false, columns);
+            string nom_excel = "Lista de promociones PSxM";
+            return File(filecontent, ExcelExportHelper.ExcelContentType, nom_excel + ".xlsx");
         }
 
         public ActionResult get_tda_cadena(string cadenas)
@@ -630,6 +693,10 @@ namespace CapaPresentacion.Controllers
                 listMeses.Insert(0, new Ent_Combo() { cbo_codigo = "0", cbo_descripcion = "TODOS" });
                 ViewBag.Meses = listMeses;
                 ViewBag.fecha = DateTime.Now.ToString("dd-MM-yyyy");
+                List<Ent_Combo> anios = datCbo.get_lista_anios(2015);
+                anios.Insert(0, new Ent_Combo() { cbo_codigo = "0", cbo_descripcion = "TODOS" });
+                ViewBag.anios = anios;
+
                 return View();
             }
         }
@@ -699,7 +766,7 @@ namespace CapaPresentacion.Controllers
             int result;
             return int.TryParse(valor, out result);
         }
-        public ActionResult BATACLUB_INSERTAR_CUPONES(int operacion , string promocion , string dscto , string pares , string fecha, string mesCumple , string genero , string[] tienda)
+        public ActionResult BATACLUB_INSERTAR_CUPONES(int operacion , string promocion , string dscto , string pares , string fecha, string mesCumple , string genero , string[] tienda , string[] tienda2 , string anio)
         {
             Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
             List<Ent_BataClub_Cupones> listaClientes = null;
@@ -738,7 +805,7 @@ namespace CapaPresentacion.Controllers
             }
             else
             {
-                resultList = datProm.BATACLUB_INSERTAR_CUPONES(operacion, Convert.ToDecimal(dscto), Convert.ToDateTime(fecha), Convert.ToDecimal(pares), promocion, _usuario.usu_id, listaClientes, mesCumple , genero , String.Join(",",tienda),ref _prom_id ,ref _mensaje);
+                resultList = datProm.BATACLUB_INSERTAR_CUPONES(operacion, Convert.ToDecimal(dscto), Convert.ToDateTime(fecha), Convert.ToDecimal(pares), promocion, _usuario.usu_id, listaClientes, mesCumple , genero , String.Join(",",tienda), String.Join(",", tienda2) , anio, ref _prom_id ,ref _mensaje);
                 if (resultList == null)
                 {
                     Session[_session_lista_cupones_excel] = null;
@@ -762,6 +829,7 @@ namespace CapaPresentacion.Controllers
             }
             return Json(new { estado = 1, tiendas = liststoreConf });
         }
+
         public FileContentResult ListaCuponesExcel()
         {
             if (Session[_session_lista_cupones_excel] == null)
@@ -770,11 +838,12 @@ namespace CapaPresentacion.Controllers
                 Session[_session_lista_cupones_excel] = liststoreConf;
             }
             List<Ent_BataClub_Cupones> lista = (List<Ent_BataClub_Cupones>)Session[_session_lista_cupones_excel];
-            string[] columns = { "promocion", "dniCliente","nombresCliente", "apellidosCliente", "correo", "cupon"};
+            string[] columns = { "promocion", "dniCliente", "nombresCliente", "apellidosCliente", "correo", "cupon" };
             byte[] filecontent = ExcelExportHelper.ExportExcel(lista, "", false, columns);
             string nom_excel = "Lista de Cupones generados";
             return File(filecontent, ExcelExportHelper.ExcelContentType, nom_excel + ".xlsx");
         }
+
         //Dropdownlist - cambio de fechas
         public ActionResult getPromDet(Ent_jQueryDataTableParams param, string valor_prom)
         {

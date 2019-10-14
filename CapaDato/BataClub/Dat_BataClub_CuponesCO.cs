@@ -484,7 +484,7 @@ namespace CapaDato.BataClub
             //return oLista;
             return strJson;
         }
-        public List<Ent_BataClub_Cupones> BATACLUB_INSERTAR_CUPONES(int operacion, decimal por_desc , DateTime fecha_fin , decimal pares , string prom_des, decimal usu_id , List<Ent_BataClub_Cupones> clientes , string mesCumple , string genero, string tiendas ,ref string _prom_id , ref string mensaje)
+        public List<Ent_BataClub_Cupones> BATACLUB_INSERTAR_CUPONES(int operacion, decimal por_desc , DateTime fecha_fin , decimal pares , string prom_des, decimal usu_id , List<Ent_BataClub_Cupones> clientes , string mesCumple , string genero, string tiendas , string tiendas2 , string anio, ref string _prom_id , ref string mensaje)
         {
             string sqlquery = (operacion == 2 ? "USP_BATACLUB_INSERTAR_CUPONES" : "USP_BATACLUB_INSERTAR_CUPONES_GRUPO");         
             DataTable tmpcupones = new DataTable();
@@ -516,6 +516,9 @@ namespace CapaDato.BataClub
                             cmd.Parameters.AddWithValue("@Genero", genero);
                             cmd.Parameters.AddWithValue("@Mes_Int", mesCumple);//@Tiendas
                             cmd.Parameters.AddWithValue("@Tiendas", tiendas);
+                            cmd.Parameters.AddWithValue("@tdas_reg", tiendas2);
+                            cmd.Parameters.AddWithValue("@anio", anio);
+
                             cmd.Parameters.Add("@ID_PROM", SqlDbType.VarChar,5).Direction = ParameterDirection.Output;
                         }                        
                         SqlDataAdapter da = new SqlDataAdapter(cmd);

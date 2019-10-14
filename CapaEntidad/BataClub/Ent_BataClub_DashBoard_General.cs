@@ -73,6 +73,7 @@ namespace CapaEntidad.BataClub
         public string supervisor { get; set; }
         public decimal registros { get; set; }
         public decimal transac { get; set; }
+        public decimal consumido { get; set; }
     }
     public class Ent_BataClub_DashBoard_TiendasSupervisor
     {
@@ -80,5 +81,6 @@ namespace CapaEntidad.BataClub
         public string tienda { get; set; }
         public decimal registros { get; set; }
         public decimal transac { get; set; }
+        public decimal consumido { get; set; }
     }
 }
