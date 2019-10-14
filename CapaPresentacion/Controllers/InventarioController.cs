@@ -447,10 +447,15 @@ namespace CapaPresentacion.Controllers
         private List<Ent_Inv_Ajuste_Articulos> unirListas(List<Ent_Inv_Ajuste_Articulos> listArtExcel)
         {
             List<Ent_Inv_Ajuste_Articulos> oldList = (List<Ent_Inv_Ajuste_Articulos>)Session[_session_lista_articulos_inv];
-            foreach (var item in listArtExcel)
+
+
+            //decimal valor = 0;
+            foreach (var item in listArtExcel.GroupBy(t=>new { t.ARTICULO,t.CALIDAD,t.MEDIDA}).Select(g=> new  {ARTICULO=g.Key.ARTICULO,MEDIDA=g.Key.MEDIDA,CALIDAD=g.Key.CALIDAD,STOCK=g.Sum(X=>X.STOCK)}))
             {
+                //valor += Convert.ToDecimal(item.STOCK);
                 oldList.Where(o => o.ARTICULO == item.ARTICULO && o.MEDIDA == item.MEDIDA && o.CALIDAD == item.CALIDAD).Select(a => { a.STOCK = item.STOCK; a.DIFERENCIA = item.STOCK - a.TEORICO; return a; }).ToList();                              
             }
+            //decimal valor2 = oldList.Sum(t => t.STOCK).Value;
 
             List<Ent_Inv_Ajuste_Articulos> newExcelList = new List<Ent_Inv_Ajuste_Articulos>();
 
@@ -459,7 +464,8 @@ namespace CapaPresentacion.Controllers
                 listArtExcel.Remove(listArtExcel.Where(o => o.ARTICULO == ritem.ARTICULO && o.MEDIDA == ritem.MEDIDA && o.CALIDAD == ritem.CALIDAD).FirstOrDefault());
             }           
 
-            return oldList.Union(newExcelList).ToList();
+
+            return oldList.Union(listArtExcel).ToList();
         }
 
         public ActionResult XSTORE_INSERTAR_INVENTARIO (string cod_tda, string inv_des, string inv_fec_inv)
