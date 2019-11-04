@@ -190,5 +190,65 @@ namespace Data.Crystal.Reporte
             }
             return lista;
         }
+        #region<agregando vista adinson>
+        public ReporteVentasEcommerce get_ecommerce_reporteventa(string cod_tda, string fecIni, string fecFin)
+        {
+            ReporteVentasEcommerce lista = null;
+            List<Models_VentasEcommerce> lista1 = null;
+            var dt = new DataTable();
+            var sqlquery = "USP_ECOMMERCE_REPORTE_VENTAS";
+
+            try
+            {
+                using (var cn = new SqlConnection(Ent_Conexion.conexionEcommerce))
+                {
+                    if (cn.State == 0)
+                    {
+                        cn.Open();
+                    }
+                    using (var cmd = new SqlCommand(sqlquery, cn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@fecha_inicio", fecIni);
+                        cmd.Parameters.AddWithValue("@fecha_fin", fecFin);
+                        cmd.Parameters.AddWithValue("@usuario", cod_tda);
+
+                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                        {
+                            DataSet ds = new DataSet();
+                            da.Fill(ds);
+                            lista1 = new List<Models_VentasEcommerce>();
+                            lista1 = (from DataRow dr in ds.Tables[0].Rows
+                                      select new Models_VentasEcommerce()
+                                      {
+                                          BOL_FAC = dr["BOL_FAC"].ToString(),
+                                          NRO_DOC = dr["NRO_DOC"].ToString(),
+                                          CLIENTE = dr["CLIENTE"].ToString(),
+                                          PARES = string.IsNullOrEmpty(dr["PARES"].ToString()) ? 0 : Convert.ToInt32(dr["PARES"].ToString()),
+                                          ACCESORIOS = string.IsNullOrEmpty(dr["ACCESORIOS"].ToString()) ? 0 : Convert.ToInt32(dr["ACCESORIOS"].ToString()),
+                                          ROPA = string.IsNullOrEmpty(dr["ROPA"].ToString()) ? 0 : Convert.ToInt32(dr["ROPA"].ToString()),
+                                          TOT_ARTICULO = string.IsNullOrEmpty(dr["TOT_ARTICULO"].ToString()) ? 0 : Convert.ToInt32(dr["TOT_ARTICULO"].ToString()),
+                                          PRE_NETO = string.IsNullOrEmpty(dr["PRE_NETO"].ToString()) ? 0 : Convert.ToDecimal(dr["PRE_NETO"].ToString()),
+                                          IGV = string.IsNullOrEmpty(dr["IGV"].ToString()) ? 0 : Convert.ToDecimal(dr["IGV"].ToString()),
+                                          TOTAL = string.IsNullOrEmpty(dr["TOTAL"].ToString()) ? 0 : Convert.ToDecimal(dr["TOTAL"].ToString()),
+                                          NOM_TIENDA = dr["NOM_TIENDA"].ToString(),
+                                          FECHA_INICIO = dr["FECHA_INICIO"].ToString(),
+                                          FECHA_FIN = dr["FECHA_FIN"].ToString(),
+                                      }).ToList();
+                            lista = new ReporteVentasEcommerce();
+
+                            lista.ListVentaEcommerce = lista1;
+                        }
+                    }
+                }
+            }
+            catch (Exception exc)
+            {
+                lista = null;
+            }
+            return lista;
+        }
+        #endregion
     }
 }

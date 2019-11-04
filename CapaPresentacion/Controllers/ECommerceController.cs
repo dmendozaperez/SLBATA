@@ -11,6 +11,7 @@ using CapaEntidad.Control;
 using CapaDato.ECommerce;
 using CapaDato.ECommerce.Urbano;
 using CapaDato.comercioxpress;
+using Data.Crystal.Reporte;
 
 namespace CapaPresentacion.Controllers
 {
@@ -371,5 +372,74 @@ namespace CapaPresentacion.Controllers
             }*/
             return ventas;
         }
+
+        #region<agregando vista adinson>
+        [HttpPost] //VENTA_ECOMMERCE
+        public ActionResult ShowGenericReportTiendasEcommerceInNewWin(string fecIni, string FecFin)
+        {
+
+            try
+            {
+                string CodTda = "";
+                var ec = new Data_Ecommerce();
+                HttpContext.Session["ReportName"] = "VentasEcommerce.rpt";
+
+                if (Session["Tienda"] != null)
+                {
+                    CodTda = Session["Tienda"].ToString();
+                }
+                else
+                {
+                    CodTda = "-1";
+                }
+
+                ReporteVentasEcommerce ModeloRepVentaEcommerce = ec.get_ecommerce_reporteventa(CodTda, fecIni, FecFin);
+
+                HttpContext.Session["rptSource"] = ModeloRepVentaEcommerce.ListVentaEcommerce;
+
+                var _estado = (ModeloRepVentaEcommerce == null) ? "0" : "1";
+
+                if (ModeloRepVentaEcommerce != null)
+                {
+                    if (ModeloRepVentaEcommerce.ListVentaEcommerce.Count == 0)
+                    {
+                        _estado = "-1";
+                    }
+
+                }
+
+                return Json(new
+                {
+                    estado = _estado
+                });
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+
+        }
+
+        public ActionResult ReporteVentasEcommerce()
+        {
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
+            if (_usuario == null)
+            {
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+            }
+            else
+            {
+                return View();
+            }
+        }
+
+        #endregion
     }
 }

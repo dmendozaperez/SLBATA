@@ -301,6 +301,13 @@
     <Compile Include="AspNetForms\TabProsp.aspx.designer.cs">
       <DependentUpon>TabProsp.aspx</DependentUpon>
     </Compile>
+    <Compile Include="AspNetForms\TiendasEcommerce.aspx.cs">
+      <DependentUpon>TiendasEcommerce.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AspNetForms\TiendasEcommerce.aspx.designer.cs">
+      <DependentUpon>TiendasEcommerce.aspx</DependentUpon>
+    </Compile>
     <Compile Include="AspNetForms\Vendedor.aspx.cs">
       <DependentUpon>Vendedor.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -371,6 +378,7 @@
     <Compile Include="Models\Crystal\Reporte\Models_Art_Sin_Mov.cs" />
     <Compile Include="Models\Crystal\Reporte\Models_Planilla.cs" />
     <Compile Include="Models\ECommerce\ECommerce.cs" />
+    <Compile Include="Models\ECommerce\ReporteVentasEcommerce.cs" />
     <Compile Include="Models\FileManager\DataProvider.cs" />
     <Compile Include="Models\FileManager\FileSystemProvider.cs" />
     <Compile Include="Models\RuletaBata\RuletaBata.cs" />
@@ -440,6 +448,12 @@
       <DependentUpon>ReportArtSinMov.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="RptsCrystal\VentasEcommerce.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VentasEcommerce.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Service References\BataClub\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -480,6 +494,7 @@
     <Content Include="AspNetForms\ReporteObs.aspx" />
     <Content Include="AspNetForms\RendimientoxCateg.aspx" />
     <Content Include="AspNetForms\TabProsp.aspx" />
+    <Content Include="AspNetForms\TiendasEcommerce.aspx" />
     <Content Include="AspNetForms\Vendedor.aspx" />
     <Content Include="AspNetForms\Planilla.aspx" />
     <Content Include="ContentSelect\bootstrap-multiselect.css" />
@@ -1619,6 +1634,7 @@
     <Content Include="Views\BataClub\CrearPromocion.cshtml" />
     <Content Include="Views\BataClub\getListaCupProm.cshtml" />
     <Content Include="Views\BataClub\Dashboard.cshtml" />
+    <Content Include="Views\ECommerce\ReporteVentasEcommerce.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1704,6 +1720,10 @@
     <EmbeddedResource Include="RptsCrystal\ReportArtSinMov.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>ReportArtSinMov.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RptsCrystal\VentasEcommerce.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>VentasEcommerce.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
