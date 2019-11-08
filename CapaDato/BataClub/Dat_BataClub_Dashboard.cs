@@ -14,7 +14,7 @@ namespace CapaDato.BataClub
     {
         public Ent_BataClub_DashBoard GET_INFO_DASHBOARD(string anio = "2019" , int informe = 0, int mes = 0,object fechaIni = null , object fechaFin = null , string prom = "") // 0 = TODO | 1 = GENERAL | 2 = REGISTRADOS | 3 = MIEMBROS | 4 = CANALES
         {
-            string sqlquery = "USP_BATACLUB_DASHBOARD";
+            string sqlquery = "USP_BATACLUB_DASHBOARD_D";
             Ent_BataClub_DashBoard info = null;
             try
             {
@@ -83,28 +83,74 @@ namespace CapaDato.BataClub
                                                         CANAL = dr["CANAL"].ToString(),
                                                         REGISTROS = Convert.ToDecimal(dr["REGISTROS"]),
                                                         PORC = Convert.ToDecimal(dr["PORC"])
-                                                    }).ToList();               
-                            if (new[] { 0,4}.Contains(informe))
-                                info.listMesParesSoles = (from DataRow dr in ds.Tables[(informe == 0 ? 5 : 0)].Rows
-                                                         select new Ent_BataClub_DashBoard_Mensual()
-                                                         {
-                                                             ANIO = dr["ANIO"].ToString(),
-                                                             MES = Convert.ToInt32(dr["MES"].ToString()),
-                                                             MES_STR = dr["MES_STR"].ToString(),
-                                                             NUMERO = Convert.ToDecimal(dr["PARES"]),
-                                                             NUMERO2 = Convert.ToDecimal(dr["SOLES"])
-                                                         }).ToList();
-                            if (new[] { 0,4,5}.Contains(informe))
-                                info.listPromsPS = (from DataRow dr in ds.Tables[(informe == 0 ? 6 : informe == 4 ? 1 : 0)].Rows
-                                                          select new Ent_BataClub_DashBoard_Proms()
+                                                    }).ToList();
+                            DataTable dt_venta_bc = null;
+                            if (new[] { 0, 4 }.Contains(informe))
+                                dt_venta_bc = ds.Tables[(informe == 0 ? 5 : 0)];
+                                info.dtventa_bataclub = dt_venta_bc;
+                                info.listMesParesSoles = (from dr in dt_venta_bc.AsEnumerable()// ds.Tables[(informe == 0 ? 5 : 0)].AsEnumerable()
+                                                          group dr by
+                                                          new
                                                           {
-                                                              promocion = dr["PROMOCION"].ToString(),
-                                                              pares = Convert.ToInt32(dr["PARES"].ToString()),
-                                                              soles = Convert.ToInt32(dr["SOLES"].ToString())
-                                                          }).ToList();
+                                                              ANIO = dr["ANIO"].ToString(),
+                                                              MES = Convert.ToInt32(dr["MES"].ToString()),
+                                                              MES_STR = dr["MES_STR"].ToString(),
+                                                              //NUMERO = Convert.ToDecimal(dr["PARES"]),
+                                                              //NUMERO2 = Convert.ToDecimal(dr["SOLES"])
+                                                          }
+                                                          into G
+                                                          select new Ent_BataClub_DashBoard_Mensual()
+                                                          {
+                                                              ANIO = G.Key.ANIO,
+                                                              MES=G.Key.MES,
+                                                              MES_STR=G.Key.MES_STR,
+                                                              NUMERO=G.Sum(r=>Convert.ToInt32(r["PARES"])),
+                                                              NUMERO2 =G.Sum(r => Convert.ToInt32(r["SOLES"])),
+                                                          }).OrderBy(r=>r.MES).ToList();
+
+                            //info.listMesParesSoles = (from DataRow dr in ds.Tables[(informe == 0 ? 5 : 0)].Rows
+                            //                         select new Ent_BataClub_DashBoard_Mensual()
+                            //                         {
+                            //                             ANIO = dr["ANIO"].ToString(),
+                            //                             MES = Convert.ToInt32(dr["MES"].ToString()),
+                            //                             MES_STR = dr["MES_STR"].ToString(),
+                            //                             NUMERO = Convert.ToDecimal(dr["PARES"]),
+                            //                             NUMERO2 = Convert.ToDecimal(dr["SOLES"])
+                            //                         }).ToList();
+                            if (new[] { 0, 4, 5 }.Contains(informe))
+
+
+                                info.listPromsPS = (from dr in dt_venta_bc.AsEnumerable()
+                                                    group dr by
+                                                    new
+                                                    {
+                                                        promocion = dr["PROMOCION"].ToString()
+                                                    }
+                                                    into G
+                                                    select new Ent_BataClub_DashBoard_Proms()
+                                                    {
+                                                        promocion = G.Key.promocion,
+                                                        pares = G.Sum(r => Convert.ToInt32(r["PARES"])),
+                                                        soles = G.Sum(r => Convert.ToInt32(r["SOLES"])),
+                                                    }).OrderByDescending(r => r.soles).ToList();
+
+                                                    //select new Ent_BataClub_DashBoard_Proms()
+                                                    //{
+                                                    //    promocion = dr["PROMOCION"].ToString(),
+                                                    //    pares = Convert.ToInt32(dr["PARES"].ToString()),
+                                                    //    soles = Convert.ToInt32(dr["SOLES"].ToString())
+                                                    //}).ToList();
+
+                            //info.listPromsPS = (from DataRow dr in ds.Tables[(informe == 0 ? 6 : informe == 4 ? 1 : 0)].Rows
+                            //                              select new Ent_BataClub_DashBoard_Proms()
+                            //                              {
+                            //                                  promocion = dr["PROMOCION"].ToString(),
+                            //                                  pares = Convert.ToInt32(dr["PARES"].ToString()),
+                            //                                  soles = Convert.ToInt32(dr["SOLES"].ToString())
+                            //                              }).ToList();
                             if (new[] { 0, 6 }.Contains(informe))
                             {
-                                info.listSupervisorTot = (from DataRow dr in ds.Tables[(informe == 0 ? 7 :  0)].Rows
+                                info.listSupervisorTot = (from DataRow dr in ds.Tables[(informe == 0 ? 6 :  0)].Rows
                                                           select new Ent_BataClub_DashBoard_Supervisor()
                                                           {
                                                               supervisor = dr["SUPERVISOR"].ToString(),
@@ -112,7 +158,7 @@ namespace CapaDato.BataClub
                                                               transac = Convert.ToInt32(dr["TRANSAC"].ToString()),
                                                               consumido = Convert.ToInt32(dr["CONSUMIDO"].ToString()),
                                                           }).ToList();
-                                info.listTiendasSupervTot = (from DataRow dr in ds.Tables[(informe == 0 ? 8 : 1)].Rows
+                                info.listTiendasSupervTot = (from DataRow dr in ds.Tables[(informe == 0 ? 7 : 1)].Rows
                                                           select new Ent_BataClub_DashBoard_TiendasSupervisor()
                                                           {
                                                               supervisor = dr["SUPERVISOR"].ToString(),
@@ -123,7 +169,7 @@ namespace CapaDato.BataClub
                                                           }).ToList();
                             }
                             if (new[] { 7 }.Contains(informe))
-                                info.listDetPromTda = (from DataRow dr in ds.Tables[(informe == 0 ? 6 : informe == 4 ? 1 : 0)].Rows
+                                info.listDetPromTda = (from DataRow dr in ds.Tables[(informe == 0 ? 7 : informe == 4 ? 1 : 0)].Rows
                                                     select new Ent_BataClub_DashBoard_Proms()
                                                     {
                                                         promocion = dr["PROMOCION"].ToString(),

@@ -133,7 +133,16 @@ namespace CapaPresentacion.Controllers
         }
         public ActionResult updateChartData(string anio, int informe , int mes = 0,string fecini = null , string fecfin = null , string prom = "" , string sup = "")
         {
-            Ent_BataClub_DashBoard dashboard = datDash.GET_INFO_DASHBOARD(anio, informe, mes,fecini , fecfin , prom);
+            Ent_BataClub_DashBoard dashboard = null;
+            if (informe == 5 || informe == 7)
+            {
+                dashboard =(Ent_BataClub_DashBoard) Session["_dashboardData"];
+            }
+            else
+            {
+                dashboard = datDash.GET_INFO_DASHBOARD(anio, informe, mes, fecini, fecfin, prom);
+                Session["_dashboardData"] = dashboard;
+            }
             Ent_BataClub_Chart_Data chartDS = null;
             JsonResult jsonResult = new JsonResult();
             if (informe == 2)
@@ -157,6 +166,29 @@ namespace CapaPresentacion.Controllers
             }
             else if (informe == 5)
             {
+
+                /*en este caso vamos a filtrar con linkend agrupar */
+                Ent_BataClub_DashBoard lista_prom = new Ent_BataClub_DashBoard();
+                lista_prom.listPromsPS = (from dr in dashboard.dtventa_bataclub.AsEnumerable().
+                                          Where(myRow => myRow.Field<int>("MES") == mes && myRow.Field<int>("ANIO")==Convert.ToInt32(anio))
+                                          //where dr.Field<string>("ANIO") == anio
+                                          //&& (int)dr["MES"] == mes
+                                          group dr by
+                                          new
+                                          {
+                                              promocion = dr["PROMOCION"].ToString()
+                                          }
+                                        into G
+                                          select new Ent_BataClub_DashBoard_Proms()
+                                          {
+                                              promocion = G.Key.promocion,
+                                              pares = G.Sum(r => Convert.ToInt32(r["PARES"])),
+                                              soles = G.Sum(r => Convert.ToInt32(r["SOLES"])),
+                                          }
+                                        ).OrderByDescending(c=>c.soles).ToList();
+
+                dashboard.listPromsPS = lista_prom.listPromsPS;
+
                 jsonResult = Json(new { promsPS = dashboard.listPromsPS });
                 Session[_session_par_sol_mes_excel] = dashboard.listPromsPS;
             }
@@ -170,6 +202,55 @@ namespace CapaPresentacion.Controllers
             }
             else if (informe == 7)
             {
+                Ent_BataClub_DashBoard lista_prom = new Ent_BataClub_DashBoard();
+                if (mes==0)
+                {
+                    lista_prom.listDetPromTda= (from dr in dashboard.dtventa_bataclub.AsEnumerable().
+                                           Where(myRow => myRow.Field<string>("PROMOCION") == prom && myRow.Field<int>("ANIO") == Convert.ToInt32(anio))
+                                                    //where dr.Field<string>("ANIO") == anio
+                                                    //&& (int)dr["MES"] == mes
+                                                group dr by
+                                                new
+                                                {
+                                                    promocion = dr["PROMOCION"].ToString(),
+                                                    tienda = dr["TIENDA"].ToString()
+                                                }
+                                        into G
+                                                select new Ent_BataClub_DashBoard_Proms()
+                                                {
+                                                    promocion = G.Key.promocion,
+                                                    tienda = G.Key.tienda,
+                                                    pares = G.Sum(r => Convert.ToInt32(r["PARES"])),
+                                                    soles = G.Sum(r => Convert.ToInt32(r["SOLES"])),
+                                                }
+                                        ).OrderByDescending(c => c.soles).ToList();
+                }
+                else
+                {
+                    lista_prom.listDetPromTda = (from dr in dashboard.dtventa_bataclub.AsEnumerable().
+                                           Where(myRow => myRow.Field<string>("PROMOCION") == prom && myRow.Field<int>("ANIO") == Convert.ToInt32(anio)
+                                                      && myRow.Field<int>("MES")==mes )
+                                                     //where dr.Field<string>("ANIO") == anio
+                                                     //&& (int)dr["MES"] == mes
+                                                 group dr by
+                                                 new
+                                                 {
+                                                     promocion = dr["PROMOCION"].ToString(),
+                                                     tienda = dr["TIENDA"].ToString()
+                                                 }
+                                       into G
+                                                 select new Ent_BataClub_DashBoard_Proms()
+                                                 {
+                                                     promocion = G.Key.promocion,
+                                                     tienda = G.Key.tienda,
+                                                     pares = G.Sum(r => Convert.ToInt32(r["PARES"])),
+                                                     soles = G.Sum(r => Convert.ToInt32(r["SOLES"])),
+                                                 }
+                                       ).OrderByDescending(c => c.soles).ToList();
+                }
+
+                dashboard.listDetPromTda = lista_prom.listDetPromTda;
+
                 jsonResult = Json(new { promsDetPromTda = dashboard.listDetPromTda });
 
             }
