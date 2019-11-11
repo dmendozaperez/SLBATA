@@ -12,9 +12,9 @@ namespace CapaDato.Maestros
 {
     public class Dat_Ubigeo
     {
-        public List<Ent_Departamento> get_lista_Departamento()
+        public List<Ent_Combo> get_lista_Departamento()
         {
-            List<Ent_Departamento> list = null;
+            List<Ent_Combo> list = null;
             string sqlquery = "USP_Leer_Departamento";
             try
             {
@@ -28,16 +28,16 @@ namespace CapaDato.Maestros
                         SqlDataReader dr = cmd.ExecuteReader();
                         if (dr.HasRows)
                         {
-                            list = new List<Ent_Departamento>();
-                            Ent_Departamento dep = new Ent_Departamento();
-                            dep.dep_id = "0";
-                            dep.dep_descripcion = "--Ninguno--";
-                            list.Add(dep);
+                            list = new List<Ent_Combo>();
+                            Ent_Combo dep = new Ent_Combo();
+                            //dep.dep_id = "0";
+                            //dep.dep_descripcion = "--Ninguno--";
+                            //list.Add(dep);
                             while (dr.Read())
                             {
-                                dep = new Ent_Departamento();
-                                dep.dep_id = dr["DEP_ID"].ToString();
-                                dep.dep_descripcion = dr["DEP_DESCRIPCION"].ToString();
+                                dep = new Ent_Combo();
+                                dep.cbo_codigo = dr["DEP_ID"].ToString();
+                                dep.cbo_descripcion = dr["DEP_DESCRIPCION"].ToString();
                                 list.Add(dep);
                             }
                         }
@@ -51,9 +51,9 @@ namespace CapaDato.Maestros
             return list;
         }
 
-        public List<Ent_Provincia> get_lista_Provincia(string cod_dep)
+        public List<Ent_Combo> get_lista_Provincia(string cod_dep)
         {
-            List<Ent_Provincia> list = null;
+            List<Ent_Combo> list = null;
             string sqlquery = "USP_Leer_Provincia";
             try
             {
@@ -68,32 +68,32 @@ namespace CapaDato.Maestros
                         SqlDataReader dr = cmd.ExecuteReader();
                         if (dr.HasRows)
                         {
-                            list = new List<Ent_Provincia>();
-                            Ent_Provincia prv = new Ent_Provincia();
-                            prv.prv_cod = "0";
-                            prv.prv_descripcion = "--Ninguno--";
-                            list.Add(prv);
+                            list = new List<Ent_Combo>();
+                            Ent_Combo prv = new Ent_Combo();
+                            //prv.prv_cod = "0";
+                            //prv.prv_descripcion = "--Ninguno--";
+                            //list.Add(prv);
                             while (dr.Read())
                             {
-                                prv = new Ent_Provincia();
-                                prv.prv_cod = dr["PRV_ID"].ToString();
-                                prv.prv_descripcion = dr["PRV_DESCRIPCION"].ToString();
+                                prv = new Ent_Combo();
+                                prv.cbo_codigo = dr["PRV_COD"].ToString();
+                                prv.cbo_descripcion = dr["PRV_DESCRIPCION"].ToString();
                                 list.Add(prv);
                             }
                         }
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 list = null;
             }
             return list;
         }
 
-        public List<Ent_Distrito> get_lista_Distrito(string cod_dep, string cod_prv)
+        public List<Ent_Combo> get_lista_Distrito(string cod_dep, string cod_prv)
         {
-            List<Ent_Distrito> list = null;
+            List<Ent_Combo> list = null;
             string sqlquery = "USP_Leer_Distrito";
             try
             {
@@ -109,16 +109,16 @@ namespace CapaDato.Maestros
                         SqlDataReader dr = cmd.ExecuteReader();
                         if (dr.HasRows)
                         {
-                            list = new List<Ent_Distrito>();
-                            Ent_Distrito dis = new Ent_Distrito();
-                            dis.dis_cod = "0";
-                            dis.dis_descripcion = "--Ninguno--";
-                            list.Add(dis);
+                            list = new List<Ent_Combo>();
+                            Ent_Combo dis = new Ent_Combo();
+                            //dis.dis_cod = "0";
+                            //dis.dis_descripcion = "--Ninguno--";
+                            //list.Add(dis);
                             while (dr.Read())
                             {
-                                dis = new Ent_Distrito();
-                                dis.dis_cod = dr["DIS_COD"].ToString();
-                                dis.dis_descripcion = dr["DIS_DESCRIPCION"].ToString();
+                                dis = new Ent_Combo();
+                                dis.cbo_codigo = dr["DIS_COD"].ToString();
+                                dis.cbo_descripcion = dr["DIS_DESCRIPCION"].ToString();
                                 list.Add(dis);
                             }
                         }

@@ -15,6 +15,9 @@
             .mlb2 {
                 padding-top: 10vh;
             }
+            .mlb3 {
+                padding-top: 5vh;
+            }
 
             .pb-btn {
                 padding-bottom: 5vh;
@@ -37,6 +40,9 @@
             .pb-btn {
                 padding-bottom: 10vh;
             }
+            .mlb3 {
+                padding-top: 5vh;
+            }
         }
 
         .btn-lg {
@@ -48,7 +54,7 @@
             height: 85px;
         }
 
-        .form-control-lg {
+        .input-lg {
             height: calc(1.5em + 1rem + 2px);
             padding: .5rem 1rem;
             font-size: 1.5rem;
@@ -56,16 +62,71 @@
             border-radius: .3rem;
             height: 65px;
         }
+        .input-lg-reg {
+            padding: .5rem 1rem;
+            font-size: 1.3rem;
+            line-height: 1.5;
+            border-radius: .3rem;
+            height: 55px;
+        }
         /*h3 {
             text-shadow: 0 -0.1px white, 0 -0.1px white, 0 -0.1px white, 0 -0.1px white;
         }*/
         .container {
             background-color: rgba(255, 255, 255, 0.3);
         }
+        .bgc-2 {
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+        .bgc-1 {
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+        .slider.slider-horizontal{
+          width:100%; /* sample value - set it as you like*/      
+          font-size :large;   
+        }
+        .label-encuesta{
+            font-size: 22px;
+            font-weight : bold;
+        }
+        .slider-tick.in-selection {
+            /* background-image: -webkit-linear-gradient(top, #8ac1ef 0%, #82b3de 100%); */
+            /*background-image: -o-linear-gradient(top, #8ac1ef 0%, #82b3de 100%);
+            background-image: linear-gradient(to bottom, #ff6464 0%, #ff7878 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff8ac1ef', endColorstr='#ff82b3de', GradientType=0);
+            background-repeat: repeat-x;*/
+            background-image: linear-gradient(to bottom, #ff5858 0%, #ff5858 100%);
+            background-repeat: repeat-x;
+        }
+        .slider-handle {
+            background-image: linear-gradient(to bottom, #e80000 0%, #e80000 100%);
+        }
+        .slider-selection.tick-slider-selection {
+            background-image: linear-gradient(to bottom, #fbacac 0%, #fbacac 100%);
+        }
+        .container {
+            
+            height: auto;
+            min-height : 100vh;
+            max-height : 110vh; 
+        }
+        .custom-control-label::before ,.custom-control-label::after
+        {
+            width:30px; 
+            height:30px
+
+        }
+        .label-custom{
+            font-size:24px;
+            padding-left:15px;
+        }
+        .label-form-custom{
+            font-size:21px;
+        }
     </style>
 }
 <!-- **PRINCIPAL** -->
-<div class="container" id="principal">
+<div class="container vista" id="principal">
     <div class="row justify-content-center mlb">
         <div class="col-md-12 text-center">
             <h3 class="text-center">Bienvenidos a:</h3>
@@ -76,10 +137,10 @@
         <div class="col-md-12">
             <div class="row mm-btn">
                 <div class="col-md-12 text-center pb-btn">
-                    <button type="button" data-accion="registrarme" class="btn btn-light btn-lg action">REGISTRARME&nbsp;EN&nbsp;<strong class="text-danger">BATACLUB</strong></button>
+                    <button type="button" data-vista="preregistro" class="btn btn-light btn-lg action">REGISTRARME&nbsp;EN&nbsp;<strong class="text-danger">BATACLUB</strong></button>
                 </div>
                 <div class="col-md-12 text-center pb-btn">
-                    <button type="button" class="btn btn-light btn-lg action">ENCUESTA&nbsp;DE&nbsp;SATISFACCION&nbsp;<i class="fa-smile-o"></i></button>
+                    <button type="button" data-vista="preencuesta" class="btn btn-light btn-lg action">ENCUESTA&nbsp;DE&nbsp;SATISFACCION&nbsp;<i class="fa-smile-o"></i></button>
                 </div>
                 <div class="col-md-12 text-center">
                     <a href="https://bata.pe/" target="_blank" class="btn btn-light btn-lg action" style="padding-top:23px"><p>DESCUBRE&nbsp;<strong style="text-decoration-line:underline" class="text-danger">BATA.PE</strong></p></a>
@@ -88,11 +149,11 @@
         </div>
     </div>
 </div>
-<!--*PRE REGISTRO*-->
-<div class="container" id="preregistro">
+<!--*REGISTRO*-->
+<div class="container bgc-2 vista" id="preregistro">
     <div class="row justify-content-center mlb2">
         <div class="col-md-12 text-center">
-            <img src="../Files/BataClub/bata.png" style="width:450px" class="img-responsive action" data-accion="principal" />
+            <img src="../Files/BataClub/bata.png" style="width:450px" class="img-responsive action" data-vista="principal" />
             <br />
             <h3 class="text-center mt-4"><strong>¡Bienvenido a Bata Club!</strong></h3>
             <br />
@@ -103,18 +164,17 @@
             <br />
             <h3><strong>Ingresa a Bata Club</strong></h3>
             <br />
-
         </div>
     </div>
     <div class="row justify-content-center">
         <div class="col-md-7 text-center">
-            <input type="text" class="form-control form-control-lg" placeholder="Coloca tu DNI" />
+            <input type="search" class="form-control form-control-lg input-lg" placeholder="Coloca tu DNI" />
         </div>
     </div>
     <div class="row justify-content-center">
         <div class="col-md-12 text-center">
             <br />
-            <a href="#" class=""><h4 style="text-decoration-line:underline">Quiero registrarme</h4></a>
+            <a href="#" class="action" data-vista="registro"><h4 style="text-decoration-line:underline">Quiero registrarme</h4></a>
             <br />
             <button type="button" class="btn btn-danger btn-lg">INGRESAR</button>
         </div>
@@ -122,20 +182,225 @@
     <div class="row">
     </div>
 </div>
+
+<div class="container vista bgc-1" id="registro">
+    <div class="row justify-content-center mlb3">
+        <div class="col-md-12 text-center">
+            <h3 class="text-center"><strong>Registrate</strong></h3>
+            <br />
+            <h3 class="pl-4 pr-4">Coloca tu informacion personal</h3>
+            <hr />
+            <br />
+        </div>
+    </div>
+    <form action="/" method="post">
+        <div class="row justify-content-center">
+            <div class="col-md-6 text-center">
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="feminino" name="genero" class="custom-control-input">
+                    <label class="custom-control-label label-custom" for="feminino">Femenino</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="masculino" name="genero" class="custom-control-input">
+                    <label class="custom-control-label label-custom" for="masculino">Masculino</label>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group form-group-lg">
+                    <label for="exampleFormControlInput1" class="label-form-custom">Nombres</label>
+                    <input type="text" class="form-control form-control-lg input-lg-reg" id="" placeholder="Enrique...">
+                </div>
+                <div class="form-group form-group-lg">
+                    <label for="exampleFormControlInput1" class="label-form-custom">DNI</label>
+                    <input type="text" class="form-control form-control-lg input-lg-reg" id="" placeholder="73240543...">
+                </div>
+                <div class="form-group form-group-lg">
+                    <label for="exampleFormControlInput1" class="label-form-custom">Correo electrónico</label>
+                    <input type="email" class="form-control form-control-lg input-lg-reg" id="" placeholder="enriqueheredia.e@gmail.com...">
+                </div>
+                <div class="form-group form-group-lg">
+                    <label for="exampleFormControlInput1" class="label-form-custom">Fecha de nacimiento</label>
+                    <input type="text" class="form-control form-control-lg input-lg-reg" id="" placeholder="73240543...">
+                </div>
+                <div class="form-group form-group-lg">
+                    <label for="exampleFormControlInput1" class="label-form-custom">Provincia</label>
+                    <select class="form-control form-control-lg selectpicker input-lg-reg select-dep" id="prov" name="prov" title="Seleccione Departamento" 
+                            data-live-search="true" data-actions-box="true" data-action="2" data-afect="dist"></select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group form-group-lg">
+                    <label for="exampleFormControlInput1" class="label-form-custom">Heredia</label>
+                    <input type="text" class="form-control form-control-lg input-lg-reg" id="" placeholder="Heredia...">
+                </div>
+                <div class="form-group form-group-lg">
+                    <label for="exampleFormControlInput1" class="label-form-custom">Celular</label>
+                    <input type="text" class="form-control form-control-lg input-lg-reg" id="" placeholder="965369948...">
+                </div>
+                <div class="form-group form-group-lg">
+                    <label for="exampleFormControlInput1" class="label-form-custom">Correo electrónico</label>
+                    <input type="email" class="form-control form-control-lg input-lg-reg" id="" placeholder="enriqueheredia.e@gmail.com...">
+                </div>
+                <div class="form-group form-group-lg">
+                    <label for="exampleFormControlInput1" class="label-form-custom">Departamento</label>
+                    @Html.DropDownList("depto", new SelectList(ViewBag.Depto, "cbo_codigo", "cbo_descripcion", 0), new { @title= "Seleccione Departamento" ,@class = "select-dep form-control selectpicker form-control-lg input-lg-reg", @id = "depto", @name = "depto", @data_live_search = "true", @data_actions_box = "true" , @data_action = "1" , @data_afect = "prov" })
+                </div>
+                <div class="form-group form-group-lg">
+                    <label for="exampleFormControlInput1" class="label-form-custom">Distrito</label>
+                    <select class="form-control selectpicker form-control-lg input-lg-reg" id="dist" name="dist" title="Seleccione Departamento" data-live-search ="true" data-actions-box = "true" data_action = "1">
+                        
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="customCheck1">
+                    <label class="custom-control-label label-custom" for="customCheck1">He leído y acepto la <span class="text-red">Política de Privacidad y de Protección de Datos Personales</span></label>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center mt-2 mb-4">
+            <div class="col-md-12 text-center">
+                <button type="button" data-vista="principal" class="btn btn-danger btn-lg action">REGISTRAR DATOS</button>
+            </div>
+        </div>
+    </form>   
+</div>
+    
+<!--    **ENCUESTA**    -->
+
+<div class="container vista bgc-2" id="preencuesta">
+    <div class="row justify-content-center mlb2">
+        <div class="col-md-12 text-center">            
+            <h2 class="text-center mt-4"><strong>ENCUESTA DE SATISFACCIÓN</strong></h2>
+            <br />
+            <br />
+            <h3><strong>¡Queremos saber tu opinion para mejorar!</strong></h3>
+            <br />
+            <h3 class="pl-5 pr-5">Calificia nuestros productos, servicios y atencion y gana 10% de descuento en tu proxima compra.</h3>
+            <br />
+            <hr />
+            <br />
+            <h3><strong>N° de Boleta</strong></h3>
+            <br />
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-7 text-center">
+            <input type="search" class="form-control form-control-lg input-lg" placeholder="Ej. B001-0123" />
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-12 text-center">            
+            <br />
+            <button type="button" data-vista="encuesta" class="btn btn-danger btn-lg action">CONTINUAR</button>
+        </div>
+    </div>
+    <div class="row">
+    </div>
+</div>
+
+<div class="container vista bgc-1" id="encuesta">
+    <div class="row justify-content-center mlb3">
+        <div class="col-md-12 text-center">
+            <h2 class="text-center"><strong>ENCUESTA DE SATISFACCIÓN</strong></h2>
+            <br />
+            <h3 class="pl-4 pr-4">Califica nuestros productos, servicios y atencion y gana 10% de descuento en tu proxima compra</h3>            
+        </div>
+    </div>
+    <br />
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <input type="email" class="form-control form-control-lg input-lg" id="enccorreo" placeholder="Correo electrónico">
+        </div>
+    </div>
+    <br />
+    <div class="row justify-content-center mt-4 m-3">
+        <div class="col-md-4">
+            <label class="label-encuesta">Tiempo de atención</label>
+        </div>
+        <div class="col-md-8">
+            <input type="range" class="range" id="customRange3">    
+        </div>
+    </div>
+    <div class="row justify-content-center mt-4 m-3">
+        <div class="col-md-4">
+            <label class="label-encuesta">Calidad de servicio</label>
+        </div>
+        <div class="col-md-8">
+            <input type="range" class="range" id="customRange3">
+        </div>
+    </div>
+    <div class="row justify-content-center mt-4 m-3">
+        <div class="col-md-4">
+            <label class="label-encuesta">Calidad del producto</label>
+        </div>
+        <div class="col-md-8">
+            <input type="range" class="range" id="customRange3">
+        </div>
+    </div>
+    <div class="row justify-content-center mt-4 m-3">
+        <div class="col-md-4">
+            <label class="label-encuesta">¿Cuanto te gusta Bata?</label>
+        </div>
+        <div class="col-md-8">
+            <input type="range" class="range" id="customRange3">
+        </div>
+    </div>
+    <div class="row justify-content-center mt-4 m-3">
+        <div class="col-md-12">
+            <textarea class="form-control form-control-lg input-lg" rows="3" placeholder="Si deseas comentar algo adicional, Ingrésalo aquí"></textarea>
+        </div>
+    </div>
+    <div class="row justify-content-center mt-2 mb-4">
+        <div class="col-md-12 text-center">
+            <button type="button" data-vista="encuesta" class="btn btn-danger btn-lg action">ENVIAR ENCUESTA</button>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
     <script>
         $(document).ready(function () {
+            $(".range").slider({
+                ticks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                ticks_labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
+                ticks_snap_bounds: 0
+            });
+
+            $(".vista").hide();
             $("#principal").show();
-            $("#preregistro").hide();
             /*******/
             $(".action").click(function () {
-                if ($(this).attr("data-accion") == "registrarme") {
-                    $("#principal").hide();
-                    $("#preregistro").show();
-                }
-                if ($(this).attr("data-accion") == "principal") {
-                    $("#principal").show();
-                    $("#preregistro").hide();
+                var vista = $(this).attr("data-vista")
+                $(".vista").hide();
+                $("#" + vista + "").show();
+            });
+        });
+        $(".select-dep").change(function () {            
+            var operacion = $(this).attr("data-action");
+            var iddep = $("#depto").val();
+            var idpro = $("#prov").val();
+            var select = $(this).attr("data-afect");
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("get_otro_select", "BataClub")',
+                data: { operacion: operacion , iddep : iddep , idpro : idpro },
+                success: function (data) {
+                    var options = "";
+                    for (var i = 0; i < data.result.length; i++) {
+                        options += "<option value='" + data.result[i].cbo_codigo + "'>" + data.result[i].cbo_descripcion + "</option>"
+                    }
+                    $("#" + select + "").html(options);
+                    $("#" + select + "").selectpicker('refresh');
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    //waitingDialog.hide();
+                    var error = eval("(" + XMLHttpRequest.responseText + ")");
+                    swal(error.Message);
                 }
             });
         });

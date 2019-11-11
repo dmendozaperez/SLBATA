@@ -1253,9 +1253,22 @@ namespace CapaPresentacion.Controllers
 
         public ActionResult PruebaTablet()
         {
+            ViewBag.Depto = datUbi.get_lista_Departamento();
             return View();
         }
 
+        public ActionResult get_otro_select(string operacion, string iddep = "0" , string idpro = "0")
+        {
+            List<Ent_Combo> res = null;
+            if (operacion == "1" )
+            {
+                res = datUbi.get_lista_Provincia(iddep);
+            }else if (operacion == "2")
+            {
+                res = datUbi.get_lista_Distrito(iddep,idpro);
+            }
+            return Json(new { estado = 1, result = res });
+        }
         #endregion
 
     }
