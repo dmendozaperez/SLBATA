@@ -25,6 +25,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -574,6 +575,7 @@
     <Content Include="EncryptaData\Encripta.dll" />
     <Content Include="favicon.ico" />
     <Content Include="Files\Barcode Lib\BarcodeLib.Barcode.CrystalReports.dll" />
+    <Content Include="Files\BataClub\fondo_prueba.png" />
     <Content Include="Files\RuletaBata\-10 TODA LA TIENDA.png" />
     <Content Include="Files\RuletaBata\-20 ACCESORIOS.png" />
     <Content Include="Files\RuletaBata\-20 NS.png" />
@@ -1635,6 +1637,9 @@
     <Content Include="Views\BataClub\getListaCupProm.cshtml" />
     <Content Include="Views\BataClub\Dashboard.cshtml" />
     <Content Include="Views\ECommerce\ReporteVentasEcommerce.cshtml" />
+    <Content Include="Views\Soporte\PruebaOracle.cshtml" />
+    <Content Include="Views\Shared\_LayoutBataClubTablet.cshtml" />
+    <Content Include="Views\BataClub\PruebaTablet.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1670,6 +1675,10 @@
     <ProjectReference Include="..\CapaEntidad\CapaEntidad.csproj">
       <Project>{d766eb68-5a6b-4719-b604-60e1a87a999c}</Project>
       <Name>CapaEntidad</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CapaOraDato\CapaOraDato.csproj">
+      <Project>{218a9618-c092-4cdf-868a-8d2f2058def9}</Project>
+      <Name>CapaOraDato</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

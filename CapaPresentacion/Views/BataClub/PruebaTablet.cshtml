@@ -1,0 +1,143 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutBataClubTablet.cshtml";
+}
+@section Styles {
+    <style>
+        @@media (min-width: 768px) {
+            .mm-btn {
+                padding-top: 15vh;
+            }
+
+            .mlb {
+                padding-top: 20vh;
+            }
+
+            .mlb2 {
+                padding-top: 10vh;
+            }
+
+            .pb-btn {
+                padding-bottom: 5vh;
+            }
+        }
+
+        @@media (min-width: 992px) {
+            .mm-btn {
+                padding-top: 10vh;
+            }
+
+            .mlb {
+                padding-top: 10vh;
+            }
+
+            .mlb2 {
+                padding-top: 5vh;
+            }
+
+            .pb-btn {
+                padding-bottom: 10vh;
+            }
+        }
+
+        .btn-lg {
+            padding: .5rem 1rem;
+            font-size: 1.5rem;
+            line-height: 1.5;
+            border-radius: .4rem;
+            width: 360px;
+            height: 85px;
+        }
+
+        .form-control-lg {
+            height: calc(1.5em + 1rem + 2px);
+            padding: .5rem 1rem;
+            font-size: 1.5rem;
+            line-height: 1.5;
+            border-radius: .3rem;
+            height: 65px;
+        }
+        /*h3 {
+            text-shadow: 0 -0.1px white, 0 -0.1px white, 0 -0.1px white, 0 -0.1px white;
+        }*/
+        .container {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+    </style>
+}
+<!-- **PRINCIPAL** -->
+<div class="container" id="principal">
+    <div class="row justify-content-center mlb">
+        <div class="col-md-12 text-center">
+            <h3 class="text-center">Bienvenidos a:</h3>
+            <img src="../Files/BataClub/bata.png" style="width:450px" class="img-responsive" />
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="row mm-btn">
+                <div class="col-md-12 text-center pb-btn">
+                    <button type="button" data-accion="registrarme" class="btn btn-light btn-lg action">REGISTRARME&nbsp;EN&nbsp;<strong class="text-danger">BATACLUB</strong></button>
+                </div>
+                <div class="col-md-12 text-center pb-btn">
+                    <button type="button" class="btn btn-light btn-lg action">ENCUESTA&nbsp;DE&nbsp;SATISFACCION&nbsp;<i class="fa-smile-o"></i></button>
+                </div>
+                <div class="col-md-12 text-center">
+                    <a href="https://bata.pe/" target="_blank" class="btn btn-light btn-lg action" style="padding-top:23px"><p>DESCUBRE&nbsp;<strong style="text-decoration-line:underline" class="text-danger">BATA.PE</strong></p></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--*PRE REGISTRO*-->
+<div class="container" id="preregistro">
+    <div class="row justify-content-center mlb2">
+        <div class="col-md-12 text-center">
+            <img src="../Files/BataClub/bata.png" style="width:450px" class="img-responsive action" data-accion="principal" />
+            <br />
+            <h3 class="text-center mt-4"><strong>¡Bienvenido a Bata Club!</strong></h3>
+            <br />
+            <h3>Un club creado solo para ti.</h3>
+            <h3 class="pl-3 pr-3">Disfruta de promociones especiales, beneficios por tu cumpleaños e invitaciones a eventos exclusivos.</h3>
+            <br />
+            <hr />
+            <br />
+            <h3><strong>Ingresa a Bata Club</strong></h3>
+            <br />
+
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-7 text-center">
+            <input type="text" class="form-control form-control-lg" placeholder="Coloca tu DNI" />
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-12 text-center">
+            <br />
+            <a href="#" class=""><h4 style="text-decoration-line:underline">Quiero registrarme</h4></a>
+            <br />
+            <button type="button" class="btn btn-danger btn-lg">INGRESAR</button>
+        </div>
+    </div>
+    <div class="row">
+    </div>
+</div>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#principal").show();
+            $("#preregistro").hide();
+            /*******/
+            $(".action").click(function () {
+                if ($(this).attr("data-accion") == "registrarme") {
+                    $("#principal").hide();
+                    $("#preregistro").show();
+                }
+                if ($(this).attr("data-accion") == "principal") {
+                    $("#principal").show();
+                    $("#preregistro").hide();
+                }
+            });
+        });
+    </script>
+}

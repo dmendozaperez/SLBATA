@@ -1168,5 +1168,14 @@ namespace CapaPresentacion.Controllers
         }
         #endregion
 
+        #region BataClub/Tablet
+
+        public ActionResult PruebaTablet()
+        {
+            return View();
+        }
+
+        #endregion
+
     }
 }
