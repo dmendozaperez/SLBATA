@@ -291,8 +291,16 @@ namespace CapaPresentacion.Controllers
                 DataTable dt = dat_ora.get_documento("B143-62168" ,ref _mensaje);
 
                 ViewBag.Mensaje = _mensaje;
+                if (dt==null)
+                {
+                    ViewBag.TranSeq = 0;
+                    ViewBag.Total = 0;
+                }
+                else
+                { 
                 ViewBag.TranSeq = dt.Rows[0]["TRANS_SEQ"].ToString();
                 ViewBag.Total = dt.Rows[0]["TOTAL"].ToString();
+                }
             }
             return View();
 
