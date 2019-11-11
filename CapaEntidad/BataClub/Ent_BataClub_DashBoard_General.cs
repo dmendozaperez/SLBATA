@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +19,8 @@ namespace CapaEntidad.BataClub
         public List<Ent_BataClub_DashBoard_Supervisor> listSupervisorTot { get; set; }
         public List<Ent_BataClub_DashBoard_TiendasSupervisor> listTiendasSupervTot { get; set; }
         public List<Ent_BataClub_DashBoard_Proms> listDetPromTda { get; set; }
+
+        public DataTable dtventa_bataclub { get; set; }
 
     }
     public class Ent_BataClub_DashBoard_General
