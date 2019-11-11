@@ -1635,6 +1635,7 @@
     <Content Include="Views\BataClub\getListaCupProm.cshtml" />
     <Content Include="Views\BataClub\Dashboard.cshtml" />
     <Content Include="Views\ECommerce\ReporteVentasEcommerce.cshtml" />
+    <Content Include="Views\Soporte\PruebaOracle.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
