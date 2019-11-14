@@ -65,6 +65,7 @@
     <Compile Include="ECommerce\Ent_Urbano.cs" />
     <Compile Include="ECommerce\Order_Dtl.cs" />
     <Compile Include="ECommerce\Pagos.cs" />
+    <Compile Include="BataClub\Ent_BataClub_Registro.cs" />
     <Compile Include="GestionInterno\Ent_Comunicado.cs" />
     <Compile Include="Interface\Ent_TiendaInterface.cs" />
     <Compile Include="Interface\Ent_Interface.cs" />

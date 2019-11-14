@@ -1,5 +1,7 @@
-﻿@{
+﻿@using CapaEntidad.BataClub
+@{
     Layout = "~/Views/Shared/_LayoutBataClubTablet.cshtml";
+    //List<Ent_BataClub_Preg_Encuesta> ListPreg = (List<Ent_BataClub_Preg_Encuesta>)ViewBag.Preguntas();
 }
 @section Styles {
     <style>
@@ -72,15 +74,10 @@
         /*h3 {
             text-shadow: 0 -0.1px white, 0 -0.1px white, 0 -0.1px white, 0 -0.1px white;
         }*/
-        .container {
+
+        /*.fondo {
             background-color: rgba(255, 255, 255, 0.3);
-        }
-        .bgc-2 {
-            background-color: rgba(255, 255, 255, 0.5);
-        }
-        .bgc-1 {
-            background-color: rgba(255, 255, 255, 0.8);
-        }
+        }*/
         .slider.slider-horizontal{
           width:100%; /* sample value - set it as you like*/      
           font-size :large;   
@@ -104,12 +101,6 @@
         .slider-selection.tick-slider-selection {
             background-image: linear-gradient(to bottom, #fbacac 0%, #fbacac 100%);
         }
-        .container {
-            
-            height: auto;
-            min-height : 100vh;
-            max-height : 110vh; 
-        }
         .custom-control-label::before ,.custom-control-label::after
         {
             width:30px; 
@@ -123,10 +114,15 @@
         .label-form-custom{
             font-size:21px;
         }
+        /*.custom-control-input:checked~.custom-control-label::before {
+            color: #fff;
+            border-color: #dc3545;
+            background-color: #dc3545;
+        }*/
     </style>
 }
 <!-- **PRINCIPAL** -->
-<div class="container vista" id="principal">
+<div class="vista" id="principal" data-val-fnd="0.3">
     <div class="row justify-content-center mlb">
         <div class="col-md-12 text-center">
             <h3 class="text-center">Bienvenidos a:</h3>
@@ -150,7 +146,7 @@
     </div>
 </div>
 <!--*REGISTRO*-->
-<div class="container bgc-2 vista" id="preregistro">
+<div class="bgc-2 vista" id="preregistro" data-val-fnd="0.5">
     <div class="row justify-content-center mlb2">
         <div class="col-md-12 text-center">
             <img src="../Files/BataClub/bata.png" style="width:450px" class="img-responsive action" data-vista="principal" />
@@ -168,22 +164,22 @@
     </div>
     <div class="row justify-content-center">
         <div class="col-md-7 text-center">
-            <input type="search" class="form-control form-control-lg input-lg" placeholder="Coloca tu DNI" />
+            <input type="search" class="form-control form-control-lg input-lg" id="dni-pre" placeholder="Coloca tu DNI" />
         </div>
     </div>
     <div class="row justify-content-center">
         <div class="col-md-12 text-center">
             <br />
-            <a href="#" class="action" data-vista="registro"><h4 style="text-decoration-line:underline">Quiero registrarme</h4></a>
+            <a href="#" class="action" data-operacion="registro" data-vista="registro"><h4 style="text-decoration-line:underline">Quiero registrarme</h4></a>
             <br />
-            <button type="button" class="btn btn-danger btn-lg">INGRESAR</button>
+            <button type="button" data-operacion="ingresar"  class="btn btn-danger btn-lg action">INGRESAR</button>
         </div>
     </div>
     <div class="row">
     </div>
 </div>
 
-<div class="container vista bgc-1" id="registro">
+<div class="vista" id="registro" data-val-fnd="0.7">
     <div class="row justify-content-center mlb3">
         <div class="col-md-12 text-center">
             <h3 class="text-center"><strong>Registrate</strong></h3>
@@ -193,16 +189,16 @@
             <br />
         </div>
     </div>
-    <form action="/" method="post">
+    <form id="FormRegistro">
         <div class="row justify-content-center">
             <div class="col-md-6 text-center">
                 <div class="custom-control custom-radio custom-control-inline">
-                    <input type="radio" id="feminino" name="genero" class="custom-control-input">
+                    <input type="radio" id="feminino" value="F" name="Genero" class="custom-control-input">
                     <label class="custom-control-label label-custom" for="feminino">Femenino</label>
                 </div>
                 <div class="custom-control custom-radio custom-control-inline">
-                    <input type="radio" id="masculino" name="genero" class="custom-control-input">
-                    <label class="custom-control-label label-custom" for="masculino">Masculino</label>
+                    <input type="radio" id="masculino" value="M" checked name="Genero" class="custom-control-input">
+                    <label class="custom-control-label label-custom" for="masculino">Masculino</label>      
                 </div>
             </div>
         </div>
@@ -210,61 +206,94 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group form-group-lg">
-                    <label for="exampleFormControlInput1" class="label-form-custom">Nombres</label>
-                    <input type="text" class="form-control form-control-lg input-lg-reg" id="" placeholder="Enrique...">
-                </div>
-                <div class="form-group form-group-lg">
                     <label for="exampleFormControlInput1" class="label-form-custom">DNI</label>
-                    <input type="text" class="form-control form-control-lg input-lg-reg" id="" placeholder="73240543...">
-                </div>
-                <div class="form-group form-group-lg">
-                    <label for="exampleFormControlInput1" class="label-form-custom">Correo electrónico</label>
-                    <input type="email" class="form-control form-control-lg input-lg-reg" id="" placeholder="enriqueheredia.e@gmail.com...">
-                </div>
-                <div class="form-group form-group-lg">
-                    <label for="exampleFormControlInput1" class="label-form-custom">Fecha de nacimiento</label>
-                    <input type="text" class="form-control form-control-lg input-lg-reg" id="" placeholder="73240543...">
-                </div>
-                <div class="form-group form-group-lg">
-                    <label for="exampleFormControlInput1" class="label-form-custom">Provincia</label>
-                    <select class="form-control form-control-lg selectpicker input-lg-reg select-dep" id="prov" name="prov" title="Seleccione Departamento" 
-                            data-live-search="true" data-actions-box="true" data-action="2" data-afect="dist"></select>
+                    <input type="text" class="form-control form-control-lg input-lg-reg" value="73240543" name="Dni" placeholder="Coloca tu número de DNI...">
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group form-group-lg">
-                    <label for="exampleFormControlInput1" class="label-form-custom">Heredia</label>
-                    <input type="text" class="form-control form-control-lg input-lg-reg" id="" placeholder="Heredia...">
-                </div>
-                <div class="form-group form-group-lg">
-                    <label for="exampleFormControlInput1" class="label-form-custom">Celular</label>
-                    <input type="text" class="form-control form-control-lg input-lg-reg" id="" placeholder="965369948...">
-                </div>
-                <div class="form-group form-group-lg">
-                    <label for="exampleFormControlInput1" class="label-form-custom">Correo electrónico</label>
-                    <input type="email" class="form-control form-control-lg input-lg-reg" id="" placeholder="enriqueheredia.e@gmail.com...">
-                </div>
-                <div class="form-group form-group-lg">
-                    <label for="exampleFormControlInput1" class="label-form-custom">Departamento</label>
-                    @Html.DropDownList("depto", new SelectList(ViewBag.Depto, "cbo_codigo", "cbo_descripcion", 0), new { @title= "Seleccione Departamento" ,@class = "select-dep form-control selectpicker form-control-lg input-lg-reg", @id = "depto", @name = "depto", @data_live_search = "true", @data_actions_box = "true" , @data_action = "1" , @data_afect = "prov" })
-                </div>
-                <div class="form-group form-group-lg">
-                    <label for="exampleFormControlInput1" class="label-form-custom">Distrito</label>
-                    <select class="form-control selectpicker form-control-lg input-lg-reg" id="dist" name="dist" title="Seleccione Departamento" data-live-search ="true" data-actions-box = "true" data_action = "1">
-                        
-                    </select>
+                    <label for="exampleFormControlInput1" class="label-form-custom">Nombres</label>
+                    <input type="text" class="form-control form-control-lg input-lg-reg" value="Enrique" name="Nombres" placeholder="Coloca tus nombres...">
                 </div>
             </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group form-group-lg">
+                    <label for="exampleFormControlInput1" class="label-form-custom">Apellido Paterno</label>
+                    <input type="text" class="form-control form-control-lg input-lg-reg" value="Heredia" name="ApellidoPaterno" placeholder="Coloca tu apellido paterno...">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group form-group-lg">
+                    <label for="exampleFormControlInput1" class="label-form-custom">Apellido Materno</label>
+                    <input type="text" class="form-control form-control-lg input-lg-reg" value="Herrera" name="ApellidoMaterno" placeholder="Coloca tus apellido materno...">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group form-group-lg">
+                    <label for="exampleFormControlInput1" class="label-form-custom">Correo electrónico</label>
+                    <input type="email" class="form-control form-control-lg input-lg-reg" value="enriqueheredia.e@gmail.com" name="CorreoElectronico" placeholder="Coloca tu direccion de correo electronico...">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group form-group-lg">
+                    <label for="exampleFormControlInput1" class="label-form-custom">Confirma Correo electrónico</label>
+                    <input type="email" class="form-control form-control-lg input-lg-reg" value="enriqueheredia.e@gmail.com" name="CorreoElectronico2" placeholder="Vuelve a colocar tu direccion de correo electronico...">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group form-group-lg">
+                    <label for="exampleFormControlInput1" class="label-form-custom">Celular</label>
+                    <input type="text" class="form-control form-control-lg input-lg-reg" value="965369948" name="Celular" placeholder="Coloca tu numero de celular...">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group form-group-lg">
+                    <label for="exampleFormControlInput1" class="label-form-custom">Fecha de nacimiento</label>
+                    <input type="text" class="form-control form-control-lg input-lg-reg" value="07/02/1996" name="FechaNacimiento" id="FechaNacimiento" placeholder="Coloca tu fecha de nacimiento...">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group form-group-lg">
+                    <label for="exampleFormControlInput1" class="label-form-custom">Departamento</label>
+                    @Html.DropDownList("Departamento", new SelectList(ViewBag.Depto, "cbo_codigo", "cbo_descripcion", 0), new { @title = "Seleccione Departamento", @class = "select-dep form-control selectpicker form-control-lg input-lg-reg", @id = "depto", @name = "Departamento", @data_live_search = "true", @data_actions_box = "true", @data_action = "1", @data_afect = "prov" })
+                </div>
+                
+            </div>
+            <div class="col-md-6">
+                <div class="form-group form-group-lg">
+                    <label for="exampleFormControlInput1" class="label-form-custom">Provincia</label>
+                    <select class="form-control form-control-lg selectpicker input-lg-reg select-dep" id="prov" name="Provincia" title="Seleccione"
+                            data-live-search="true" data-actions-box="true" data-action="2" data-afect="dist"></select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6"> 
+                <div class="form-group form-group-lg">
+                    <label for="exampleFormControlInput1" class="label-form-custom">Distrito</label>
+                    <select class="form-control selectpicker form-control-lg input-lg-reg" id="dist" name="Distrito" title="Seleccione" data-live-search="true" data-actions-box="true" data_action="1"></select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
             <div class="col-md-12">
                 <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="customCheck1">
+                    <input type="checkbox" class="custom-control-input" value="True" name="Politica" id="customCheck1">
                     <label class="custom-control-label label-custom" for="customCheck1">He leído y acepto la <span class="text-red">Política de Privacidad y de Protección de Datos Personales</span></label>
                 </div>
             </div>
         </div>
         <div class="row justify-content-center mt-2 mb-4">
             <div class="col-md-12 text-center">
-                <button type="button" data-vista="principal" class="btn btn-danger btn-lg action">REGISTRAR DATOS</button>
+                <button type="button" data-vista="principal" data-operacion="registrar" class="btn btn-danger btn-lg action">REGISTRAR DATOS</button>
             </div>
         </div>
     </form>   
@@ -272,7 +301,7 @@
     
 <!--    **ENCUESTA**    -->
 
-<div class="container vista bgc-2" id="preencuesta">
+<div class="vista bgc-2" id="preencuesta" data-val-fnd="0.5">
     <div class="row justify-content-center mlb2">
         <div class="col-md-12 text-center">            
             <h2 class="text-center mt-4"><strong>ENCUESTA DE SATISFACCIÓN</strong></h2>
@@ -290,101 +319,181 @@
     </div>
     <div class="row justify-content-center">
         <div class="col-md-7 text-center">
-            <input type="search" class="form-control form-control-lg input-lg" placeholder="Ej. B001-0123" />
+            <input type="search" id="boletaEncuesta" class="form-control form-control-lg input-lg" placeholder="Ej. B001-0123" />
         </div>
     </div>
     <div class="row justify-content-center">
         <div class="col-md-12 text-center">            
             <br />
-            <button type="button" data-vista="encuesta" class="btn btn-danger btn-lg action">CONTINUAR</button>
+            <button type="button" data-vista="encuesta" data-operacion="validarBoleta" class="btn btn-danger btn-lg action">CONTINUAR</button>
         </div>
     </div>
     <div class="row">
     </div>
 </div>
 
-<div class="container vista bgc-1" id="encuesta">
-    <div class="row justify-content-center mlb3">
-        <div class="col-md-12 text-center">
-            <h2 class="text-center"><strong>ENCUESTA DE SATISFACCIÓN</strong></h2>
-            <br />
-            <h3 class="pl-4 pr-4">Califica nuestros productos, servicios y atencion y gana 10% de descuento en tu proxima compra</h3>            
+<div class="vista" id="encuesta" data-val-fnd="0.7">
+    <form id="formEncuesta">
+        <div class="row justify-content-center mlb3">
+            <div class="col-md-12 text-center">
+                <h2 class="text-center"><strong>ENCUESTA DE SATISFACCIÓN</strong></h2>
+                <br />
+                <h3 class="pl-4 pr-4">Califica nuestros productos, servicios y atencion y gana 10% de descuento en tu proxima compra</h3>
+            </div>
         </div>
-    </div>
-    <br />
-    <div class="row justify-content-center">
-        <div class="col-md-8 text-center">
-            <input type="email" class="form-control form-control-lg input-lg" id="enccorreo" placeholder="Correo electrónico">
+        <br />
+        <div class="row justify-content-center">
+            <div class="col-md-8 text-center">
+                <input type="email" class="form-control form-control-lg input-lg" id="enccorreo" name="CORREO" placeholder="Correo electrónico">
+            </div>
         </div>
-    </div>
-    <br />
-    <div class="row justify-content-center mt-4 m-3">
-        <div class="col-md-4">
-            <label class="label-encuesta">Tiempo de atención</label>
+        <br />
+        @foreach (Ent_BataClub_Preg_Encuesta item in (List<Ent_BataClub_Preg_Encuesta>)ViewBag.Preguntas)
+        {
+            if (item.COD_TIPO_PREG == "NPS")
+            {
+                <div class="row justify-content-center mt-4 m-3">
+                    <div class="col-md-4">
+                        <label class="label-encuesta">@item.NOMBRE</label>
+                    </div>
+                    <div class="col-md-8">
+                        <input type="range" name="respEncuesta" data-id="@item.COD_PREG_ENC" id="@item.COD_PREG_ENC" class="range">
+                    </div>
+                </div>
+            }
+            else if (item.COD_TIPO_PREG == "COMENTARIO")
+            {
+                <div class="row justify-content-center mt-4 m-3">
+                    <div class="col-md-12">
+                        <textarea name="respEncuesta" id="@item.COD_PREG_ENC" data-id="@item.COD_PREG_ENC" class="form-control form-control-lg input-lg" rows="3" placeholder="@item.NOMBRE"></textarea>
+                    </div>
+                </div>
+            }
+
+        }
+        <div class="row justify-content-center mt-2 mb-4">
+            <div class="col-md-12 text-center">
+                <button type="button" data-vista="encuesta" data-operacion="registrarEncuesta" class="btn btn-danger btn-lg action">ENVIAR ENCUESTA</button>
+            </div>
         </div>
-        <div class="col-md-8">
-            <input type="range" class="range" id="customRange3">    
-        </div>
-    </div>
-    <div class="row justify-content-center mt-4 m-3">
-        <div class="col-md-4">
-            <label class="label-encuesta">Calidad de servicio</label>
-        </div>
-        <div class="col-md-8">
-            <input type="range" class="range" id="customRange3">
-        </div>
-    </div>
-    <div class="row justify-content-center mt-4 m-3">
-        <div class="col-md-4">
-            <label class="label-encuesta">Calidad del producto</label>
-        </div>
-        <div class="col-md-8">
-            <input type="range" class="range" id="customRange3">
-        </div>
-    </div>
-    <div class="row justify-content-center mt-4 m-3">
-        <div class="col-md-4">
-            <label class="label-encuesta">¿Cuanto te gusta Bata?</label>
-        </div>
-        <div class="col-md-8">
-            <input type="range" class="range" id="customRange3">
-        </div>
-    </div>
-    <div class="row justify-content-center mt-4 m-3">
-        <div class="col-md-12">
-            <textarea class="form-control form-control-lg input-lg" rows="3" placeholder="Si deseas comentar algo adicional, Ingrésalo aquí"></textarea>
-        </div>
-    </div>
-    <div class="row justify-content-center mt-2 mb-4">
-        <div class="col-md-12 text-center">
-            <button type="button" data-vista="encuesta" class="btn btn-danger btn-lg action">ENVIAR ENCUESTA</button>
-        </div>
-    </div>
+    </form>
 </div>
 
 @section Scripts {
     <script>
-        $(document).ready(function () {
-            $(".range").slider({
-                ticks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-                ticks_labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
-                ticks_snap_bounds: 0
+        var array1 = [];
+        var array2 = [];
+        @foreach (var item in (List<int>)ViewBag.NPSValues)
+        {
+            @:array1.push(@item);
+            @:array2.push("@item");
+        }
+        $(document).ready(function (){
+            try {
+                $(".range").slider({
+                    ticks: array1, //[1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                    ticks_labels: array2,// ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
+                    ticks_snap_bounds: 0
+                });
+            } catch (e) {
+
+            }
+           
+            $("#FechaNacimiento").datepicker({
+                format: "dd-mm-yyyy",
+                autoclose: true,
             });
 
             $(".vista").hide();
             $("#principal").show();
             /*******/
             $(".action").click(function () {
-                var vista = $(this).attr("data-vista")
-                $(".vista").hide();
-                $("#" + vista + "").show();
+                var vista = $(this).attr("data-vista");
+                var operacion = $(this).attr("data-operacion");
+                if (operacion != null || operacion == "")
+                {
+                    if (operacion == "registro" || operacion == "ingresar") {
+                        showPleaseWait();
+                        var dni = $("#dni-pre").val();
+                        $.ajax({
+                            type: "POST",
+                            url: '@Url.Action("RegistrarIngresar", "BataClub")',
+                            data: { dni: dni, operacion: operacion },
+                            success: function (data) {
+                                hidePleaseWait();
+                                if (data.estado == 1) {
+
+                                    if (data.cliente.Miembro) {
+                                        swal({
+                                            title: "Bienvenido",
+                                            text: "Hola " + data.cliente.Nombres + " " + data.cliente.ApellidoPaterno + " Ya eres miembro Bata Club",
+                                            icon: "success",
+                                        });
+                                    }
+                                    else {
+                                        if (operacion == "ingresar") {
+                                            swal({
+                                                title: "Bienvenido",
+                                                text: "Hola " + data.cliente.Nombres + " " + data.cliente.ApellidoPaterno + " Usted no es miembro Bata Club. Registrese!",
+                                                icon: "info",
+                                                buttons: true,
+                                            }).then((yes) => {
+                                                if (yes) {
+                                                    $(".vista").hide();
+                                                    $("#registro").show();
+                                                    $('.container').css("background-color", "rgba(255, 255, 255, " + $("#" + vista + "").attr("data-val-fnd") + ")");
+                                                }
+                                            });
+                                        } else {
+                                            $(".vista").hide();
+                                            $("#" + vista + "").show();
+                                           // $(".fondo").attr('style', 'opacity:' + $("#" + vista + "").attr("data-val-fnd") + '');
+                                            $('.container').css("background-color", "rgba(255, 255, 255, " + $("#" + vista + "").attr("data-val-fnd") + ")");
+                                        }
+                                    }
+                                } else {
+                                    swal({
+                                        title: "Error",
+                                        text: data.mensaje,
+                                        icon: "error",
+                                        dangerMode: true,
+                                    });
+                                }
+                            },
+                            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                                hidePleaseWait();
+                                var error = eval("(" + XMLHttpRequest.responseText + ")");
+                                swal(error.Message);
+                            }
+                        });
+                    } else if (operacion == "registrar") {
+                         RegistrarCliente();
+                    } else if (operacion == "validarBoleta") {
+                        var boleta = $("#boletaEncuesta").val();
+                        if (boleta.length > 0) {
+                            ValidarBoleta(boleta,vista);
+                        }
+                    } else if (operacion == "registrarEncuesta") {
+                        RegistrarEncuesta();
+                    }
+                } else {
+                    $(".vista").hide();
+                    $("#" + vista + "").show();
+                    $('.container').css("background-color", "rgba(255, 255, 255, " + $("#" + vista + "").attr("data-val-fnd") + ")");
+                }
             });
         });
-        $(".select-dep").change(function () {            
+        $(".select-dep").change(function () {
             var operacion = $(this).attr("data-action");
             var iddep = $("#depto").val();
             var idpro = $("#prov").val();
             var select = $(this).attr("data-afect");
+            $("#" + select + "").html("");
+            $("#" + select + "").selectpicker('refresh');
+            if (operacion == 1) {
+                $("#dist").html("");
+                $("#dist").selectpicker('refresh');
+            }
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("get_otro_select", "BataClub")',
@@ -395,6 +504,7 @@
                         options += "<option value='" + data.result[i].cbo_codigo + "'>" + data.result[i].cbo_descripcion + "</option>"
                     }
                     $("#" + select + "").html(options);
+                    $("#" + select + "").selectpicker({ title: 'Seleccione ' + (operacion == 1 ? "Provicia" : "Distrito") });
                     $("#" + select + "").selectpicker('refresh');
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -404,5 +514,109 @@
                 }
             });
         });
+        function RegistrarCliente() {
+            showPleaseWait();
+            var dataForm = $('#FormRegistro');
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("RegistrarMiembro", "BataClub")',
+                data: dataForm.serialize(),
+                success: function (data) {
+                    hidePleaseWait();
+                    if (data.resultado == 1) {
+                        swal({
+                            title: "Exito",
+                            text: data.mensaje,
+                            icon: "success"
+                        }).then(() => {
+                            window.location.href = "@Url.Action("PruebaTablet", "BataClub")"
+                        });
+                    } else {
+                        swal({
+                            title: "Error",
+                            text: data.mensaje,
+                            icon: "error",
+                            dangerMode: true,
+                        });
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    hidePleaseWait();
+                    var error = eval("(" + XMLHttpRequest.responseText + ")");
+                    swal(error.Message);
+                }
+            });
+        }
+        function ValidarBoleta(boleta,vista) {
+            //var boleta = $("#boletaEncuesta").val();
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("BATACLUB_VALIDAR_COMPROBANTE_ENCUESTA", "BataClub")',
+                data: { boleta: boleta },
+                success: function (data) {
+                    hidePleaseWait();
+                    if (data.resultado == 0) {
+                        swal({
+                            title: "Error",
+                            text: data.mensaje,
+                            icon: "error",
+                            dangerMode: true,
+                        });
+                    } else {
+                        $(".vista").hide();
+                        $("#" + vista + "").show();
+                        $('.container').css("background-color", "rgba(255, 255, 255, " + $("#" + vista + "").attr("data-val-fnd") + ")");
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    hidePleaseWait();
+                    var error = eval("(" + XMLHttpRequest.responseText + ")");
+                    swal(error.Message);
+                }
+            });
+        }
+        function RegistrarEncuesta() {
+            showPleaseWait();
+            var resps = [];
+            var group = $('[name="respEncuesta"]');
+            if (group.length > 1){
+                group.each(function () {
+                    respEncuesta = {}
+                    respEncuesta["COD_PREG_ENC"] = $(this).attr("data-id");
+                    respEncuesta["VALOR"] = $(this).val();
+                    resps.push(respEncuesta);
+                });
+            }
+            var correo = $("#enccorreo").val();
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("BATACLUB_REGISTRAR_ENCUESTA", "BataClub")',
+                data: { respuestas: resps, correo: correo },
+                success: function (data) {
+                    hidePleaseWait();
+                    if (data.resultado == 1) {
+                        swal({
+                            title: "Exito",
+                            text: data.mensaje,
+                            icon: "success"
+                        }).then(() => {
+                            window.location.href = "@Url.Action("PruebaTablet", "BataClub")"
+                        });
+                    } else {
+                        swal({
+                            title: "Error",
+                            text: data.mensaje,
+                            icon: "error",
+                            dangerMode: true,
+                        });
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    hidePleaseWait();
+                    var error = eval("(" + XMLHttpRequest.responseText + ")");
+                    swal(error.Message);
+                }
+            });
+        }
     </script>
 }

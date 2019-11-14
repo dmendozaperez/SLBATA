@@ -33,6 +33,7 @@ namespace CapaPresentacion.Controllers
         Dat_OrceExclud datOE = new Dat_OrceExclud();
         private Dat_Canal datCan = new Dat_Canal();
         private Dat_Ubigeo datUbi = new Dat_Ubigeo();
+        private Dat_BataClub_Tablet datTab = new Dat_BataClub_Tablet();
         private string _session_tabla_cupones = "_session_tabla_cupones";
         private string _session_lista_promociones = "_session_lista_promociones";
         private string _session_lista_clientes_cupon = "_session_lista_clientes_cupon";
@@ -42,19 +43,23 @@ namespace CapaPresentacion.Controllers
         private string _session_det_tdas_sup_excel = "_session_det_tdas_sup_excel";
         private string _session_par_sol_mes_excel = "_session_par_sol_mes_excel";
 
+        #region SessionTablet
+        private string _session_boleta_encuesta = "_session_boleta_encuesta";
+        #endregion
+
         private string _session_prom_generar_cupon = "_session_prom_generar_cupon";
 
         private string _BataClub_Promociones_Combo = "_BataClub_Promociones_Combo";
         private string _BataClub_Canal_Combo = "_BataClub_Canal_Combo";
         private string _session_tabla_cupon_private = "_session_tabla_cupon_private";
         private string _session_tabla_cliente_private = "_session_tabla_cliente_private";
-        private string _session_tabla_cupon_exportar_private= "_session_tabla_cupon_exportar_private";
+        private string _session_tabla_cupon_exportar_private = "_session_tabla_cupon_exportar_private";
         private string _BataClub_cupon_Combo = "_BataClub_cupon_Combo";
         private string _BataClub_Cupon_Desc = "_BataClub_Cupon_Desc";
         private string _BataClub_Cupon_FechaFin = "_BataClub_Cupon_FechaFin";
         private string _BataClub_Cupon_Pares = "_BataClub_Cupon_Pares";
-        private string _BataClub_Promociones_estado = "_BataClub_Promociones_estado"; 
-        private string _BataClub_Promociones_grafica= "_BataClub_Promociones_grafica"; 
+        private string _BataClub_Promociones_estado = "_BataClub_Promociones_estado";
+        private string _BataClub_Promociones_grafica = "_BataClub_Promociones_grafica";
 
         // GET: BataClub
         #region Bataclub/Index
@@ -75,7 +80,7 @@ namespace CapaPresentacion.Controllers
                 ViewBag.Promocion = datProm.get_ListaPromociones();
                 Session[_session_tabla_cupones] = null;
                 return View();
-            }  
+            }
         }
         public ActionResult Promociones()
         {
@@ -131,12 +136,12 @@ namespace CapaPresentacion.Controllers
                 return View();
             }
         }
-        public ActionResult updateChartData(string anio, int informe , int mes = 0,string fecini = null , string fecfin = null , string prom = "" , string sup = "")
+        public ActionResult updateChartData(string anio, int informe, int mes = 0, string fecini = null, string fecfin = null, string prom = "", string sup = "")
         {
             Ent_BataClub_DashBoard dashboard = null;
             if (informe == 5 || informe == 7)
             {
-                dashboard =(Ent_BataClub_DashBoard) Session["_dashboardData"];
+                dashboard = (Ent_BataClub_DashBoard)Session["_dashboardData"];
             }
             else
             {
@@ -170,9 +175,9 @@ namespace CapaPresentacion.Controllers
                 /*en este caso vamos a filtrar con linkend agrupar */
                 Ent_BataClub_DashBoard lista_prom = new Ent_BataClub_DashBoard();
                 lista_prom.listPromsPS = (from dr in dashboard.dtventa_bataclub.AsEnumerable().
-                                          Where(myRow => myRow.Field<int>("MES") == mes && myRow.Field<int>("ANIO")==Convert.ToInt32(anio))
-                                          //where dr.Field<string>("ANIO") == anio
-                                          //&& (int)dr["MES"] == mes
+                                          Where(myRow => myRow.Field<int>("MES") == mes && myRow.Field<int>("ANIO") == Convert.ToInt32(anio))
+                                              //where dr.Field<string>("ANIO") == anio
+                                              //&& (int)dr["MES"] == mes
                                           group dr by
                                           new
                                           {
@@ -185,7 +190,7 @@ namespace CapaPresentacion.Controllers
                                               pares = G.Sum(r => Convert.ToInt32(r["PARES"])),
                                               soles = G.Sum(r => Convert.ToInt32(r["SOLES"])),
                                           }
-                                        ).OrderByDescending(c=>c.soles).ToList();
+                                        ).OrderByDescending(c => c.soles).ToList();
 
                 dashboard.listPromsPS = lista_prom.listPromsPS;
 
@@ -203,33 +208,33 @@ namespace CapaPresentacion.Controllers
             else if (informe == 7)
             {
                 Ent_BataClub_DashBoard lista_prom = new Ent_BataClub_DashBoard();
-                if (mes==0)
+                if (mes == 0)
                 {
-                    lista_prom.listDetPromTda= (from dr in dashboard.dtventa_bataclub.AsEnumerable().
-                                           Where(myRow => myRow.Field<string>("PROMOCION") == prom && myRow.Field<int>("ANIO") == Convert.ToInt32(anio))
-                                                    //where dr.Field<string>("ANIO") == anio
-                                                    //&& (int)dr["MES"] == mes
-                                                group dr by
-                                                new
-                                                {
-                                                    promocion = dr["PROMOCION"].ToString(),
-                                                    tienda = dr["TIENDA"].ToString()
-                                                }
+                    lista_prom.listDetPromTda = (from dr in dashboard.dtventa_bataclub.AsEnumerable().
+                                            Where(myRow => myRow.Field<string>("PROMOCION") == prom && myRow.Field<int>("ANIO") == Convert.ToInt32(anio))
+                                                     //where dr.Field<string>("ANIO") == anio
+                                                     //&& (int)dr["MES"] == mes
+                                                 group dr by
+                                                 new
+                                                 {
+                                                     promocion = dr["PROMOCION"].ToString(),
+                                                     tienda = dr["TIENDA"].ToString()
+                                                 }
                                         into G
-                                                select new Ent_BataClub_DashBoard_Proms()
-                                                {
-                                                    promocion = G.Key.promocion,
-                                                    tienda = G.Key.tienda,
-                                                    pares = G.Sum(r => Convert.ToInt32(r["PARES"])),
-                                                    soles = G.Sum(r => Convert.ToInt32(r["SOLES"])),
-                                                }
+                                                 select new Ent_BataClub_DashBoard_Proms()
+                                                 {
+                                                     promocion = G.Key.promocion,
+                                                     tienda = G.Key.tienda,
+                                                     pares = G.Sum(r => Convert.ToInt32(r["PARES"])),
+                                                     soles = G.Sum(r => Convert.ToInt32(r["SOLES"])),
+                                                 }
                                         ).OrderByDescending(c => c.soles).ToList();
                 }
                 else
                 {
                     lista_prom.listDetPromTda = (from dr in dashboard.dtventa_bataclub.AsEnumerable().
                                            Where(myRow => myRow.Field<string>("PROMOCION") == prom && myRow.Field<int>("ANIO") == Convert.ToInt32(anio)
-                                                      && myRow.Field<int>("MES")==mes )
+                                                      && myRow.Field<int>("MES") == mes)
                                                      //where dr.Field<string>("ANIO") == anio
                                                      //&& (int)dr["MES"] == mes
                                                  group dr by
@@ -259,11 +264,11 @@ namespace CapaPresentacion.Controllers
                 jsonResult = Json(new
                 {
 
-                    tiendas = JsonConvert.SerializeObject(((List<Ent_BataClub_DashBoard_TiendasSupervisor>)Session[_session_det_tdas_sup]).Where(w => w.supervisor == sup), Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore })                    
+                    tiendas = JsonConvert.SerializeObject(((List<Ent_BataClub_DashBoard_TiendasSupervisor>)Session[_session_det_tdas_sup]).Where(w => w.supervisor == sup), Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore })
                 });
                 Session[_session_det_tdas_sup_excel] = ((List<Ent_BataClub_DashBoard_TiendasSupervisor>)Session[_session_det_tdas_sup]).Where(w => w.supervisor == sup).ToList();
             }
-            return jsonResult;        
+            return jsonResult;
         }
         public Ent_BataClub_Chart_Data informeSupervisor(Ent_BataClub_DashBoard dashboard)
         {
@@ -342,7 +347,7 @@ namespace CapaPresentacion.Controllers
                     data = dashboard.listMesParesSoles.Select(s => s.NUMERO2).ToArray()
                 }) };
                 chartDS.labels = dashboard.listMesParesSoles.Select(s => s.MES_STR).ToArray();
-            }       
+            }
             else if (informe == 6)
             {
                 chartDS.datasets = new List<Ent_BataClub_Chart_DataSet>() {
@@ -360,7 +365,7 @@ namespace CapaPresentacion.Controllers
                         borderWidth = "1",
                         data = dashboard.listSupervisorTot.Select(s => s.registros).ToArray()
                     }),
-                
+
                     (new Ent_BataClub_Chart_DataSet()
                     {
                         label = "CONSUMIDOS",
@@ -369,10 +374,10 @@ namespace CapaPresentacion.Controllers
                         data = dashboard.listSupervisorTot.Select(s => s.consumido).ToArray()
                     })
                 };
-                
+
                 chartDS.labels = dashboard.listSupervisorTot.Select(s => s.supervisor).ToArray();
                 chartDS.labelsTooltip = new string[] { "Hola", "Hola", "Hola", "Hola", "Hola", "Hola", "Hola", "HOLA" };
-            }     
+            }
             return chartDS;
         }
 
@@ -419,7 +424,7 @@ namespace CapaPresentacion.Controllers
 
         public ActionResult get_tda_cadena(string cadenas)
         {
-            List<Ent_Combo> list = datOE.get_tda_cadena(cadenas,1   );
+            List<Ent_Combo> list = datOE.get_tda_cadena(cadenas, 1);
             if (list == null)
             {
                 list = new List<Ent_Combo>();
@@ -428,7 +433,7 @@ namespace CapaPresentacion.Controllers
         }
 
         [HttpPost]
-        public ActionResult getListaCupProm(string codProm , string operacion)
+        public ActionResult getListaCupProm(string codProm, string operacion)
         {
             if (String.IsNullOrEmpty(operacion))
             {
@@ -454,16 +459,16 @@ namespace CapaPresentacion.Controllers
             detalles = datProm.get_detalles_cupon(cupon);
             if (detalles != "")
             {
-                return Json(new { estado = 1, detalles =  detalles});
+                return Json(new { estado = 1, detalles = detalles });
             }
             else
             {
                 return Json(new { estado = 0, resultados = "No hay resultados." });
-            }   
+            }
         }
 
         //Table
-        public PartialViewResult _Table(string dni, string cupon, string hidden, string correo,string[] dwprom, string[] dwest)
+        public PartialViewResult _Table(string dni, string cupon, string hidden, string correo, string[] dwprom, string[] dwest)
         {
             if (dwprom == null && dwest == null && String.IsNullOrEmpty(dni) && String.IsNullOrEmpty(cupon) && String.IsNullOrEmpty(correo))
             {
@@ -475,11 +480,11 @@ namespace CapaPresentacion.Controllers
 
                 dwprom = dwprom == null ? new string[] { "" } : dwprom;
                 dwest = dwest == null ? new string[] { "" } : dwest;
-                return PartialView(listaTablaPromociones(dni, cupon, String.Join(",",dwprom) , correo, String.Join(",", dwest)  ));
+                return PartialView(listaTablaPromociones(dni, cupon, String.Join(",", dwprom), correo, String.Join(",", dwest)));
             }
         }
 
-        public List<Ent_BataClub_Cupones> listaTablaPromociones(string dni, string cupon, string id_grupo, string correo,string dwest)
+        public List<Ent_BataClub_Cupones> listaTablaPromociones(string dni, string cupon, string id_grupo, string correo, string dwest)
         {
             List<Ent_BataClub_Cupones> listguia = datProm.get_lista_cupones(dni, cupon, id_grupo, correo, dwest);
             Session[_session_tabla_cupones] = listguia;
@@ -583,7 +588,7 @@ namespace CapaPresentacion.Controllers
                 variable3 = param.variable3
             }, JsonRequestBehavior.AllowGet);
         }
-        public string addClienteLista(int operacion , string dniCorreo, string mesCumple , string genero)
+        public string addClienteLista(int operacion, string dniCorreo, string mesCumple, string genero)
         {
             List<Ent_BataClub_Cupones> clientes = new List<Ent_BataClub_Cupones>();
             if (operacion == 2)
@@ -598,7 +603,7 @@ namespace CapaPresentacion.Controllers
             }
             List<Ent_BataClub_Cupones> listaClientes = null;
             string result = "";
-            if(Session[_session_lista_clientes_cupon] == null)
+            if (Session[_session_lista_clientes_cupon] == null)
             {
                 List<Ent_BataClub_Cupones> _cup = new List<Ent_BataClub_Cupones>();
                 Session[_session_lista_clientes_cupon] = _cup;
@@ -613,12 +618,12 @@ namespace CapaPresentacion.Controllers
                 else
                 {
                     listaClientes = listaClientes.Union(clientes, new Ent_BataClub_CuponesComparer()).ToList();
-                }                
-                Session[_session_lista_clientes_cupon] = listaClientes;       
+                }
+                Session[_session_lista_clientes_cupon] = listaClientes;
             }
             else
             {
-                result = ("Sin resultados " + (!String.IsNullOrEmpty(dniCorreo) ?   " para: " + dniCorreo : "")).Trim();
+                result = ("Sin resultados " + (!String.IsNullOrEmpty(dniCorreo) ? " para: " + dniCorreo : "")).Trim();
             }
             return result;
         }
@@ -707,15 +712,15 @@ namespace CapaPresentacion.Controllers
             if (Session[_BataClub_Promociones_grafica] == null)
             {
                 strJson = datProm.listarStr_graph();
-                Session[_BataClub_Promociones_grafica]= strJson;
+                Session[_BataClub_Promociones_grafica] = strJson;
             }
             else
             {
                 strJson = Session[_BataClub_Promociones_grafica].ToString();
             }
-         
-           // var serializer = new JavaScriptSerializer();
-           // jRespuesta = Json(serializer.Deserialize<List<Articulo_Stock_Tienda>>(strJson), JsonRequestBehavior.AllowGet);
+
+            // var serializer = new JavaScriptSerializer();
+            // jRespuesta = Json(serializer.Deserialize<List<Articulo_Stock_Tienda>>(strJson), JsonRequestBehavior.AllowGet);
             return strJson;
         }
 
@@ -729,7 +734,7 @@ namespace CapaPresentacion.Controllers
         public FileContentResult ExportToExcel()
         {
             List<Ent_BataClub_Cupones> listbataclub = (List<Ent_BataClub_Cupones>)Session[_session_tabla_cupones];
-            string[] columns = { "promocion", "estado", "fechaFin", "nombresCliente", "dniCliente", "correo", "cupon", "porcDesc"};
+            string[] columns = { "promocion", "estado", "fechaFin", "nombresCliente", "dniCliente", "correo", "cupon", "porcDesc" };
             byte[] filecontent = ExcelExportHelper.ExportExcel(listbataclub, "", true, columns);
             return File(filecontent, ExcelExportHelper.ExcelContentType, "BATACLUB_Promociones.xlsx");
         }
@@ -738,7 +743,7 @@ namespace CapaPresentacion.Controllers
         #region Bataclub/Cupon
         //Index
         [HttpPost]
-        public ActionResult GenerarCupon(string codigo , string descripcion , decimal dscto , DateTime fecha, int pares)
+        public ActionResult GenerarCupon(string codigo, string descripcion, decimal dscto, DateTime fecha, int pares)
         {
             Session[_session_lista_clientes_cupon] = null;
             if (String.IsNullOrEmpty(codigo))
@@ -769,7 +774,7 @@ namespace CapaPresentacion.Controllers
             else
             {
                 Session[_session_lista_clientes_cupon] = null;
-                
+
                 ViewBag.listCadena = datOE.get_cadena();
                 List<Ent_Combo> list = new List<Ent_Combo>();
                 ViewBag.listTdaCadena = list;
@@ -786,7 +791,7 @@ namespace CapaPresentacion.Controllers
             }
         }
         //Table cupón 
-        public ActionResult getTableCuponAjax(Ent_jQueryDataTableParams param , string dniEliminar)
+        public ActionResult getTableCuponAjax(Ent_jQueryDataTableParams param, string dniEliminar)
         {
             /*verificar si esta null*/
             if (Session[_session_lista_clientes_cupon] == null)
@@ -814,9 +819,9 @@ namespace CapaPresentacion.Controllers
                     .Where(m =>
                     m.correo.ToUpper().Contains(param.sSearch.ToUpper()) ||
                     m.nombresCliente.ToUpper().Contains(param.sSearch.ToUpper()) ||
-                    m.dniCliente.ToUpper().Contains(param.sSearch.ToUpper()) || m.apellidosCliente.ToUpper().Contains(param.sSearch.ToUpper())||
+                    m.dniCliente.ToUpper().Contains(param.sSearch.ToUpper()) || m.apellidosCliente.ToUpper().Contains(param.sSearch.ToUpper()) ||
                     (m.nombresCliente.Trim() + " " + m.apellidosCliente.Trim()).ToUpper().Contains(param.sSearch.ToUpper())
-                    ) ;
+                    );
             }
 
             //Manejador de orden
@@ -851,7 +856,7 @@ namespace CapaPresentacion.Controllers
             int result;
             return int.TryParse(valor, out result);
         }
-        public ActionResult BATACLUB_INSERTAR_CUPONES(int operacion , string promocion , string dscto , string pares , string fecha, string mesCumple , string genero , string[] tienda , string[] tienda2 , string anio)
+        public ActionResult BATACLUB_INSERTAR_CUPONES(int operacion, string promocion, string dscto, string pares, string fecha, string mesCumple, string genero, string[] tienda, string[] tienda2, string anio)
         {
             Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
             List<Ent_BataClub_Cupones> listaClientes = null;
@@ -860,7 +865,7 @@ namespace CapaPresentacion.Controllers
             string _prom_id = "";
             List<Ent_BataClub_Cupones> resultList = null;
             if (Session[_session_lista_clientes_cupon] != null)
-            {   
+            {
                 listaClientes = new List<Ent_BataClub_Cupones>();
                 listaClientes = (List<Ent_BataClub_Cupones>)Session[_session_lista_clientes_cupon];
             }
@@ -890,7 +895,7 @@ namespace CapaPresentacion.Controllers
             }
             else
             {
-                resultList = datProm.BATACLUB_INSERTAR_CUPONES(operacion, Convert.ToDecimal(dscto), Convert.ToDateTime(fecha), Convert.ToDecimal(pares), promocion, _usuario.usu_id, listaClientes, mesCumple , genero , String.Join(",",tienda), String.Join(",", tienda2) , anio, ref _prom_id ,ref _mensaje);
+                resultList = datProm.BATACLUB_INSERTAR_CUPONES(operacion, Convert.ToDecimal(dscto), Convert.ToDateTime(fecha), Convert.ToDecimal(pares), promocion, _usuario.usu_id, listaClientes, mesCumple, genero, String.Join(",", tienda), String.Join(",", tienda2), anio, ref _prom_id, ref _mensaje);
                 if (resultList == null)
                 {
                     Session[_session_lista_cupones_excel] = null;
@@ -901,7 +906,7 @@ namespace CapaPresentacion.Controllers
                 {
                     Session[_session_lista_cupones_excel] = resultList;
                     Session[_session_lista_clientes_cupon] = resultList;
-                    return Json(new { estado = 1, resultado = "", mensaje = "Operacion realizada con éxito."+(operacion == 1 ? "\nCodigo de la promocion: " + _prom_id : ""), prom_id = _prom_id });
+                    return Json(new { estado = 1, resultado = "", mensaje = "Operacion realizada con éxito." + (operacion == 1 ? "\nCodigo de la promocion: " + _prom_id : ""), prom_id = _prom_id });
                 }
             }
         }
@@ -941,13 +946,13 @@ namespace CapaPresentacion.Controllers
         }
 
         //Table cupón
-       // [HttpGet]
-        public PartialViewResult _TableCupon(int operacion, string identificacion,  string mesCumple , string genero)
-        {       
+        // [HttpGet]
+        public PartialViewResult _TableCupon(int operacion, string identificacion, string mesCumple, string genero)
+        {
             if (operacion == 0)
             {
                 Session[_session_lista_clientes_cupon] = null;
-            }   
+            }
             else
             {
                 string mensaje = addClienteLista(operacion, identificacion, mesCumple, genero);
@@ -956,10 +961,10 @@ namespace CapaPresentacion.Controllers
                     TempData["Error"] = mensaje;
                 }
             }
-            
+
             return PartialView();
         }
-        
+
         //Borrar registro de la tabla
         public void BorrarRegistro(string dni)
         {
@@ -968,9 +973,9 @@ namespace CapaPresentacion.Controllers
                 var list_orig = (List<Ent_BataClub_CuponesCO>)Session["_session_tabla_cupon_private"];
                 IQueryable<Ent_BataClub_CuponesCO> membercol = ((List<Ent_BataClub_CuponesCO>)(Session[_session_tabla_cupon_private])).AsQueryable();
                 IEnumerable<Ent_BataClub_CuponesCO> filteredMembers = membercol;
-                    filteredMembers = membercol
-                        .Where(m =>
-                       ! m.dni.ToUpper().Contains(dni));
+                filteredMembers = membercol
+                    .Where(m =>
+                   !m.dni.ToUpper().Contains(dni));
 
                 Session[_session_tabla_cupon_private] = filteredMembers.ToList();
 
@@ -992,7 +997,7 @@ namespace CapaPresentacion.Controllers
             }
 
             // return RedirectToAction("_TableCupon");
-          //  return PartialView("_TableCupon");
+            //  return PartialView("_TableCupon");
         }
 
         //Generación de cupones
@@ -1019,7 +1024,7 @@ namespace CapaPresentacion.Controllers
                 str = "1";
             }
             else
-            { str = "0";}
+            { str = "0"; }
             return str;
         }
 
@@ -1028,8 +1033,8 @@ namespace CapaPresentacion.Controllers
         public FileContentResult ExportToExcel_Cupones()
         {
             //DateTime.Today.Date.ToShortDateString()
-             List<Ent_BataClub_ListaCliente> list_cupones = (List<Ent_BataClub_ListaCliente>)Session[_session_tabla_cupon_exportar_private];
-            string[] columns = { "dni", "nombre", "apellidos", "email", "barra", "error"};
+            List<Ent_BataClub_ListaCliente> list_cupones = (List<Ent_BataClub_ListaCliente>)Session[_session_tabla_cupon_exportar_private];
+            string[] columns = { "dni", "nombre", "apellidos", "email", "barra", "error" };
             byte[] filecontent = ExcelExportHelper.ExportExcel(list_cupones, "BATACLUB_Cupones", true, columns);
             return File(filecontent, ExcelExportHelper.ExcelContentType, "BATACLUB_Cupones.xlsx");
         }
@@ -1117,17 +1122,17 @@ namespace CapaPresentacion.Controllers
 
             return View();
         }
-        
+
 
         //Table
-        public PartialViewResult _TableCliente(string dni="", string nombre = "", string apellido="", string correo = "")
+        public PartialViewResult _TableCliente(string dni = "", string nombre = "", string apellido = "", string correo = "")
         {
             return PartialView(listaTablaCliente(dni, nombre, apellido, correo));
         }
 
-        public List<Ent_BataClub_Cliente> listaTablaCliente(string dni, string nombre, string apellido, string correo )
+        public List<Ent_BataClub_Cliente> listaTablaCliente(string dni, string nombre, string apellido, string correo)
         {
-            List<Ent_BataClub_Cliente> list = datCli.get_lista_cliente(dni, nombre,  apellido, correo);
+            List<Ent_BataClub_Cliente> list = datCli.get_lista_cliente(dni, nombre, apellido, correo);
             Session[_session_tabla_cliente_private] = list;
             return list;
         }
@@ -1154,26 +1159,26 @@ namespace CapaPresentacion.Controllers
                 filteredMembers = membercol
                     .Where(m =>
                     m.can_des.ToUpper().Contains(param.sSearch.ToUpper()) ||
-                   // m.canal.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    // m.canal.ToUpper().Contains(param.sSearch.ToUpper()) ||
                     m.dni.ToUpper().Contains(param.sSearch.ToUpper()) ||
                     m.nombres.ToUpper().Contains(param.sSearch.ToUpper()) ||
-                   // m.apellido_pat.ToUpper().Contains(param.sSearch.ToUpper()) ||
-                   // m.apellido_mat.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    // m.apellido_pat.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    // m.apellido_mat.ToUpper().Contains(param.sSearch.ToUpper()) ||
                     m.genero.ToUpper().Contains(param.sSearch.ToUpper()) ||
                     m.correo.ToUpper().Contains(param.sSearch.ToUpper()) ||
                     m.fec_nac.ToUpper().Contains(param.sSearch.ToUpper()) ||
                     m.telefono.ToUpper().Contains(param.sSearch.ToUpper()) ||
-                  //  m.ubigeo.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    //  m.ubigeo.ToUpper().Contains(param.sSearch.ToUpper()) ||
                     m.ubigeo_distrito.ToUpper().Contains(param.sSearch.ToUpper()) ||
                     m.fec_modif.ToUpper().Contains(param.sSearch.ToUpper()) ||
                     m.fec_registro.ToUpper().Contains(param.sSearch.ToUpper()) ||
-                   // m.fec_miembro.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    // m.fec_miembro.ToUpper().Contains(param.sSearch.ToUpper()) ||
                     m.cod_tda.ToUpper().Contains(param.sSearch.ToUpper()) ||
                     m.des_entid.ToUpper().Contains(param.sSearch.ToUpper()) ||
                     m.cod_cadena.ToUpper().Contains(param.sSearch.ToUpper()) ||
-                   // m.envio_correo.ToUpper().Contains(param.sSearch.ToUpper()) ||
-                  //  m.fec_envio_correo.ToUpper().Contains(param.sSearch.ToUpper()) ||
-                  //  m.gene_cupon.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    // m.envio_correo.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    //  m.fec_envio_correo.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    //  m.gene_cupon.ToUpper().Contains(param.sSearch.ToUpper()) ||
                     m.miem_bataclub.ToUpper().Contains(param.sSearch.ToUpper()) ||
                     m.miem_bataclub_fecha.ToUpper().Contains(param.sSearch.ToUpper()));
             }
@@ -1204,29 +1209,29 @@ namespace CapaPresentacion.Controllers
                          select new
                          {
                              a.can_des,
-                            // a.canal,
+                             // a.canal,
                              a.dni,
                              a.nombres,
-                           //  a.apellido_pat,
-                            // a.apellido_mat,
+                             //  a.apellido_pat,
+                             // a.apellido_mat,
                              a.genero,
                              a.correo,
                              a.fec_nac,
                              a.telefono,
-                            // a.ubigeo,
+                             // a.ubigeo,
                              a.ubigeo_distrito,
                              a.fec_modif,
                              a.fec_registro,
-                           //  a.fec_miembro,
-                           //  a.cod_tda,
+                             //  a.fec_miembro,
+                             //  a.cod_tda,
                              a.des_entid,
                              a.cod_cadena,
-                            // a.envio_correo,
-                            // a.fec_envio_correo,
-                            // a.gene_cupon,
+                             // a.envio_correo,
+                             // a.fec_envio_correo,
+                             // a.gene_cupon,
                              a.miem_bataclub,
                              a.miem_bataclub_fecha
-                          };
+                         };
             //Se devuelven los resultados por json
             return Json(new
             {
@@ -1253,10 +1258,275 @@ namespace CapaPresentacion.Controllers
 
         public ActionResult PruebaTablet()
         {
-            ViewBag.Depto = datUbi.get_lista_Departamento();
-            return View();
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
+
+            if (_usuario == null)
+            {
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+            }
+            else
+            {
+                List<Ent_BataClub_Preg_Encuesta> pregs = new List<Ent_BataClub_Preg_Encuesta>();
+                pregs = datTab.get_ListaPromo_Disp();
+                ViewBag.Depto = datUbi.get_lista_Departamento();
+                ViewBag.NPSValues = GetNpsThicks(pregs.First().VALOR_MIN, pregs.First().VALOR_MAX);
+                ViewBag.Preguntas = pregs;
+                Session[_session_boleta_encuesta] = null;
+                return View();
+            }
+        }
+        
+        public ActionResult RegistrarMiembro(Ent_BataClub_Registro registro)
+        {
+            string _mensaje = "";
+            DateTime _temp;
+            var regex = "\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*";
+            if (registro == null)
+            {
+                _mensaje += "No hay datos para registrar.";
+                return Json(new { resultado = 0, mensaje = _mensaje });
+            }
+            if (String.IsNullOrEmpty(registro.Nombres))
+            {
+                _mensaje += "Ingrese nombres por favor." + Environment.NewLine;
+            }
+            if (String.IsNullOrEmpty(registro.ApellidoPaterno))
+            {
+                _mensaje += "Ingrese apellido paterno por favor" + Environment.NewLine;
+            }
+            if (registro.Dni == null || registro.Dni == "" || registro.Dni.Length != 8 || !IsNumeric(registro.Dni))
+            {
+                _mensaje += "Ingrese dni válido por favor" + Environment.NewLine;
+            }
+            if (String.IsNullOrEmpty(registro.Celular))
+            {
+                _mensaje += "Ingrese celular por favor" + Environment.NewLine;
+            }
+            if (String.IsNullOrEmpty(registro.CorreoElectronico) && !System.Text.RegularExpressions.Regex.IsMatch(registro.CorreoElectronico, regex))
+            {
+                _mensaje += "Ingrese un correo electronico valido por favor." + Environment.NewLine;
+            }
+            if (String.IsNullOrEmpty(registro.CorreoElectronico2) && !System.Text.RegularExpressions.Regex.IsMatch(registro.CorreoElectronico2, regex))
+            {
+                _mensaje += "Ingrese un correo electronico valido por favor." + Environment.NewLine;
+            }
+            if (registro.CorreoElectronico != registro.CorreoElectronico2)
+            {
+                _mensaje += "Las direcciones de correo electronico no coinciden" + Environment.NewLine;
+            }
+            if (!DateTime.TryParse(registro.FechaNacimiento, out _temp)) {
+                _mensaje += "Ingrese una fecha de nacimiento válido" + Environment.NewLine;
+            }
+            if (String.IsNullOrEmpty(registro.Departamento))
+            {
+                _mensaje += "Seleccione departamento por favor" + Environment.NewLine;
+            }
+            if (String.IsNullOrEmpty(registro.Provincia))
+            {
+                _mensaje += "Seleccione provincia por favor" + Environment.NewLine;
+            }
+            if (String.IsNullOrEmpty(registro.Distrito))
+            {
+                _mensaje += "Seleccione distrito por favor" + Environment.NewLine;
+            }
+            if (!registro.Politica)
+            {
+                _mensaje += "Debe aceptar la politica de privacidad y proteccion de datos personales para continuar...";
+            }
+            if (_mensaje != "")
+            {
+                return Json(new { resultado = 0, mensaje = _mensaje });
+            }
+            else
+            {
+                registro.Ubigeo = registro.Departamento + registro.Provincia + registro.Distrito;
+                registro.UbigeoDistrito = datUbi.get_lista_Departamento().Where(w => w.cbo_codigo == registro.Departamento).Select(s => s.cbo_descripcion).FirstOrDefault()+", "+
+                    datUbi.get_lista_Provincia(registro.Departamento).Where(w => w.cbo_codigo == registro.Provincia).Select(s => s.cbo_descripcion).FirstOrDefault()+", "+
+                    datUbi.get_lista_Distrito(registro.Departamento,registro.Provincia).Where(w => w.cbo_codigo == registro.Distrito).Select(s => s.cbo_descripcion).FirstOrDefault();
+                string _cor = "";
+                string _tel = "";
+                string _res = "";
+                string _desc =  actualiza_cliente(registro, "50143",ref _cor,ref _tel , ref _res);
+                if (_res != "0")
+                {
+                    return Json(new { resultado = 0, mensaje = _mensaje + Environment.NewLine + _desc });
+                }
+                return Json(new { resultado = 1, mensaje = "Cliente registrado correctamente." });
+            }
         }
 
+        public ActionResult RegistrarIngresar(string dni , string operacion)
+        {
+            try
+            {
+                if (dni == null || dni == "" || dni.Length != 8 || !IsNumeric(dni))
+                {
+                    return Json(new { estado = 0, mensaje = "Ingrese un DNI valido por favor" });
+                }
+                string _mensaje = "";
+                Ent_BataClub_Registro cliente = ValidarDNI(dni, (operacion == "ingresar" ? null : "0") , ref _mensaje);
+                return Json(new { estado = 1 ,  cliente = cliente });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { estado = 0, mensaje = "Error al consultar DNI" + Environment.NewLine + ex.Message });
+            }
+           
+        }
+        public static string actualiza_cliente(Ent_BataClub_Registro registro, string tda, ref string correo_envio, ref string _telef_envia , ref string result)
+        {
+            string _valida = "";
+            try
+            {
+                #region<REGION BATACLUB BATA>
+                BataClub.BataEcommerceSoapClient cliente_bataclub = new BataClub.BataEcommerceSoapClient();
+                BataClub.ValidateAcceso header = new BataClub.ValidateAcceso();
+                header.Username = "EA646294-11F4-4836-8C6E-F5D9B5F681FC";
+                header.Password = "DB959DFE-E49A-4F9B-8CD5-97364EE31FBA";
+
+                BataClub.Ent_Cliente_BataClub cliente = new BataClub.Ent_Cliente_BataClub();
+                cliente.canal = "06";
+                cliente.dni = registro.Dni;
+                cliente.primerNombre = registro.Nombres;
+                cliente.apellidoPater = registro.ApellidoPaterno;
+                cliente.apellidoMater = registro.ApellidoMaterno;
+                cliente.correo = registro.CorreoElectronico;
+                cliente.telefono = registro.Celular;
+                cliente.tienda = tda;
+                cliente.genero = registro.Genero;
+                cliente.ubigeo = registro.Ubigeo;
+                cliente.ubigeo_distrito = registro.UbigeoDistrito;
+                cliente.fecNac = registro.FechaNacimiento;
+
+                BataClub.Cliente_Parameter_Bataclub parameter = new BataClub.Cliente_Parameter_Bataclub();
+                parameter.dni = registro.Dni;
+                parameter.dni_barra = "";
+
+                var existe_cl = cliente_bataclub.ws_consultar_Cliente(header, parameter);
+
+                var registra_cl = cliente_bataclub.ws_registrar_Cliente(header, cliente);
+                //if (!existe_cl.existe_cliente)
+                //{
+                //    if (_email.Length != 0)
+                //    {
+                //        var respuesta3 = cliente_metri.EnviarCorreoBienvenidaCliente_DniString(_ruc);
+                //        _correo_envio = "1";
+                //    }
+                //    else
+                //    {
+                //        _telef_envia = "1";
+                //    }
+                //}
+                if (registra_cl != null)
+                {
+                    result = registra_cl.codigo;
+                    /*se inserto correctamente*/
+                    if (registra_cl.codigo == "0")
+                    {
+                        if (!existe_cl.existe_cliente)
+                        {
+                            if (registro.CorreoElectronico.Length != 0)
+                            {
+                                correo_envio = "1";
+                            }
+                            else
+                            {
+                                _telef_envia = "1";
+                            }
+                        }
+                        else
+                        {
+                            if (registro.CorreoElectronico.Length != 0)
+                            {
+                                correo_envio = "0";
+                            }
+                            else
+                            {
+                                _telef_envia = "0";
+                            }
+                        }
+                    }
+                    else
+                    {
+                        _valida = registra_cl.descripcion;
+                    }
+
+                }
+                else
+                {
+                    _valida = "error de conexion de web service bata";
+                }
+                #endregion
+            }
+            catch (Exception exc)
+            {
+                _valida = exc.Message;
+            }
+            return _valida;
+        }
+
+        public Ent_BataClub_Registro ValidarDNI(string dni , string envia, ref string _mensaje )
+        {
+            Ent_BataClub_Registro cliente = new Ent_BataClub_Registro();            
+            try
+            {
+                BataClub.BataEcommerceSoapClient cliente_bataclub = new BataClub.BataEcommerceSoapClient();
+                BataClub.ValidateAcceso header = new BataClub.ValidateAcceso();
+                header.Username = "EA646294-11F4-4836-8C6E-F5D9B5F681FC";
+                header.Password = "DB959DFE-E49A-4F9B-8CD5-97364EE31FBA";
+
+                BataClub.Cliente_Parameter_Bataclub parameter = new BataClub.Cliente_Parameter_Bataclub();
+                parameter.dni = dni;
+                parameter.dni_barra = "";
+                parameter.envia_correo = envia; // "0"/*QUE NO ENVIE CORREO*/;
+
+                var datacliente = cliente_bataclub.ws_consultar_Cliente(header, parameter);
+                if (datacliente != null)
+                {
+                    cliente.Existe = datacliente.existe_cliente;
+                    if (datacliente.existe_cliente)
+                    {
+                        cliente.Dni = datacliente.dni.ToString();
+                        cliente.Nombres = datacliente.primerNombre + " " + datacliente.segundoNombre;
+                        cliente.ApellidoPaterno = datacliente.apellidoPater + " " + datacliente.apellidoMater;
+                        cliente.Miembro = datacliente.miembro_bataclub;
+                    }
+                    else
+                    {
+                        SunatReniec.Sunat_Reniec_PESoapClient clienteSunatReniec = new SunatReniec.Sunat_Reniec_PESoapClient();
+                        SunatReniec.validateLogin la = new SunatReniec.validateLogin();
+                        la.Username = "BataPeru";
+                        la.Password = "Bata2018**.";
+
+                        var dataClienteReniec = clienteSunatReniec.ws_persona_reniec(la, dni);
+                        if (dataClienteReniec.Valida_Reniec.Estado == "0")
+                        {
+                            cliente.Dni = dataClienteReniec.Dni.ToString();
+                            cliente.Nombres = dataClienteReniec.Nombres;
+                            cliente.ApellidoPaterno = dataClienteReniec.ApePat + " " + dataClienteReniec.ApeMat;
+                            cliente.Miembro = false;
+                        }
+                    }
+
+                }else
+                {
+                    cliente.Dni = dni;
+                    cliente.Existe = false;
+                    cliente.Miembro = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                _mensaje = ex.Message;
+                cliente.Dni = dni;
+                cliente.Existe = false;
+                cliente.Miembro = false;
+            }
+            return cliente;
+        }
         public ActionResult get_otro_select(string operacion, string iddep = "0" , string idpro = "0")
         {
             List<Ent_Combo> res = null;
@@ -1268,6 +1538,88 @@ namespace CapaPresentacion.Controllers
                 res = datUbi.get_lista_Distrito(iddep,idpro);
             }
             return Json(new { estado = 1, result = res });
+        }
+        public ActionResult BATACLUB_VALIDAR_COMPROBANTE_ENCUESTA (string boleta)
+        {
+            Session[_session_boleta_encuesta] = null;
+            try
+            {
+                int posGuion = boleta.IndexOf("-");
+                string serie = (posGuion > -1 ? boleta.Substring(0, posGuion) : (Session["Tienda"] == null ? "x" : Session["Tienda"].ToString().Substring(2)));
+                string strnumero = (posGuion > -1 ? boleta.Substring(posGuion + 1) : boleta);
+                int numero = 0;
+                if (IsNumeric(strnumero))
+                {
+                    numero = Convert.ToInt32(strnumero);
+                }
+                string cod_entid = "50" + (serie.Length > 3 ? serie.Substring(serie.Length - 3) : "x");
+                Ent_BataClub_Encuesta encuesta = new Ent_BataClub_Encuesta();
+                encuesta = datTab.BATACLUB_VALIDAR_COMPROBANTE_ENCUESTA(cod_entid, serie, numero.ToString());
+                if (encuesta == null)
+                {
+                    return Json(new { resultado = 0, mensaje = "La boleta/factura no existe o ya fue utilizada en una encuesta ateriormente." });
+                }
+                else
+                {
+                    Session[_session_boleta_encuesta] = encuesta;
+                    return Json(new { resultado = 1, mensaje = "Encontrado", info = encuesta });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { resultado = 0, mensaje = "Error al consultar el comprobante." + Environment.NewLine + ex.Message });
+            }
+         
+        }
+        public ActionResult BATACLUB_REGISTRAR_ENCUESTA(List<Ent_BataClub_Resp_Encuesta> respuestas, string correo = "")
+        {
+            try
+            {
+                Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+                string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+                string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+                string return_view = actionName + "|" + controllerName;
+                string _mensaje = "";
+                if (_usuario == null)
+                {
+                    return Json(new { resultado = 0, mensaje = "No hay usuario Logeado." });
+                }
+                var regex = "\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*";
+                if (!System.Text.RegularExpressions.Regex.IsMatch(correo, regex))
+                {
+                    return Json(new { resultado = 0, mensaje = "Ingrese un correo electronico valido por favor." });
+                }
+                if (Session[_session_boleta_encuesta] == null)
+                {
+                    return Json(new { resultado = 0, mensaje = "No existe informacion del comprobante de pago, por favor, vuelva a ingresar." });
+                }
+                Ent_BataClub_Encuesta _encuesta = (Ent_BataClub_Encuesta)Session[_session_boleta_encuesta];
+                _encuesta.COD_TDA_ENC = (Session["Tienda"] == null ? "" : Session["Tienda"].ToString());
+                _encuesta.CORREO = correo;
+                _encuesta.DNI = "";
+                _encuesta.USUARIO = _usuario.usu_id.ToString();
+                _encuesta.respuestas = respuestas;
+                bool res = datTab.BATACLUB_SET_ENCUESTA(_encuesta, ref _mensaje);
+                if (!res)
+                {
+                    return Json(new { resultado = 0, mensaje = _mensaje });
+                }
+                return Json(new { resultado = 1, mensaje = "Operacion completada con éxito." + Environment.NewLine + "Te hemos enviado un correo electronico con tu cupon." });
+            }
+            catch (Exception ex )
+            {
+                return Json(new { resultado = 0, mensaje = ex.Message });
+            }            
+        }
+        
+        public List<int> GetNpsThicks(int min, int max)
+        {
+            List<int> values = new List<int>();
+            for (int i = min; i < max; i++)
+            {
+                values.Add(i);
+            }
+            return values;
         }
         #endregion
 

@@ -1106,6 +1106,7 @@
     <Content Include="Scripts\bootstrap-select.min.js" />
     <Content Include="Scripts\bootstrap-slider.js" />
     <Content Include="Scripts\bootstrap-slider.min.css" />
+    <Content Include="Scripts\bootstrap-waitingfor.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\AdminLTE\plugins\input-mask\phone-codes\phone-codes.json" />
