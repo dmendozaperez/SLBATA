@@ -1,0 +1,273 @@
+﻿@using CapaEntidad.BataClub
+@{
+    Layout = "~/Views/Shared/_LayoutBataClubTablet.cshtml";
+}
+@model Ent_BataClub_Registro
+@section Styles {
+<style>
+    @@media (min-width: 200px) { 
+        .custom-control-label::before, .custom-control-label::after {           
+        }
+        .label-custom {
+        }
+        .label-form-custom {
+        }
+        .input-lg-reg {
+        }
+        .btn-lg {                   
+            width:100%;            
+        }
+    }
+
+    @@media (min-width: 768px) {
+        .custom-control-label::before, .custom-control-label::after {
+            width: 30px;
+            height: 30px;
+        }
+
+        .label-custom {
+            font-size: 24px;
+            padding-left: 15px;
+        }
+
+        .label-form-custom {
+            font-size: 21px;
+        }
+        .input-lg-reg {
+            padding: .5rem 1rem;
+            font-size: 1.3rem;
+            line-height: 1.5;
+            border-radius: .3rem;
+            height: 55px;
+        }
+        .btn-lg {
+            padding: .5rem 1rem;
+            font-size: 1.5rem;
+            line-height: 1.5;
+            border-radius: .4rem;            
+            width:100%;
+            height: 85px;
+            vertical-align:central;
+        }
+    }
+
+    @@media (min-width: 992px) {
+        .custom-control-label::before, .custom-control-label::after {
+            width: 30px;
+            height: 30px;
+        }
+
+        .label-custom {
+            font-size: 24px;
+            padding-left: 15px;
+        }
+
+        .label-form-custom {
+            font-size: 21px;
+        }
+        .input-lg-reg {
+            
+        }
+        .btn-lg {
+            width:100%;
+        }
+    }
+
+    .container-fluid {
+        background-color: rgba(255, 255, 255, 0.7);
+    }
+</style>
+}
+<div class="container-fluid">
+    <div class="vista" id="registro" data-val-fnd="0.7">
+        <div class="row justify-content-center">
+            <div class="col-md-12 text-center my-4">
+                <h3 class="text-center"><strong>Registrate</strong></h3>
+                <h3 class="mb-2">Coloca tu informacion personal</h3>
+                <hr />
+            </div>
+        </div>
+        <form id="FormRegistro" name="FormRegistro">
+            <div class="row justify-content-center">
+                <div class="col-md-6 text-center">
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="feminino" value="F" name="Genero" class="custom-control-input">
+                        <label class="custom-control-label label-custom" for="feminino">Femenino</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="masculino" value="M" checked name="Genero" class="custom-control-input">
+                        <label class="custom-control-label label-custom" for="masculino">Masculino</label>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group form-group-lg">
+                        <label for="exampleFormControlInput1" class="label-form-custom">DNI</label>
+                        <input type="text" class="form-control form-control-lg input-lg-reg" value="@Model.Dni" name="Dni" placeholder="Coloca tu número de DNI...">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group form-group-lg">
+                        <label for="exampleFormControlInput1" class="label-form-custom">Nombres</label>
+                        <input type="text" class="form-control form-control-lg input-lg-reg" value="@Model.Nombres" name="Nombres" placeholder="Coloca tus nombres...">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group form-group-lg">
+                        <label for="exampleFormControlInput1" class="label-form-custom">Apellido Paterno</label>
+                        <input type="text" class="form-control form-control-lg input-lg-reg" value="@Model.ApellidoPaterno" name="ApellidoPaterno" placeholder="Coloca tu apellido paterno...">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group form-group-lg">
+                        <label for="exampleFormControlInput1" class="label-form-custom">Apellido Materno</label>
+                        <input type="text" class="form-control form-control-lg input-lg-reg" value="@Model.ApellidoMaterno" name="ApellidoMaterno" placeholder="Coloca tus apellido materno...">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group form-group-lg">
+                        <label for="exampleFormControlInput1" class="label-form-custom">Correo electrónico</label>
+                        <input type="email" class="form-control form-control-lg input-lg-reg" value="" name="CorreoElectronico" placeholder="Coloca tu direccion de correo electronico...">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group form-group-lg">
+                        <label for="exampleFormControlInput1" class="label-form-custom">Confirma Correo electrónico</label>
+                        <input type="email" class="form-control form-control-lg input-lg-reg" value="" name="CorreoElectronico2" placeholder="Vuelve a colocar tu direccion de correo electronico...">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group form-group-lg">
+                        <label for="exampleFormControlInput1" class="label-form-custom">Celular</label>
+                        <input type="text" class="form-control form-control-lg input-lg-reg" value="" name="Celular" placeholder="Coloca tu numero de celular...">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group form-group-lg">
+                        <label for="exampleFormControlInput1" class="label-form-custom">Fecha de nacimiento</label>
+                        <input type="text" class="form-control form-control-lg input-lg-reg" value="" name="FechaNacimiento" id="FechaNacimiento" placeholder="Coloca tu fecha de nacimiento...">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group form-group-lg">
+                        <label for="exampleFormControlInput1" class="label-form-custom">Departamento</label>
+                        @Html.DropDownList("Departamento", new SelectList(ViewBag.Depto, "cbo_codigo", "cbo_descripcion", 0), new { @title = "Seleccione Departamento", @class = "select-dep form-control selectpicker form-control-lg input-lg-reg", @id = "depto", @name = "Departamento", @data_live_search = "true", @data_actions_box = "true", @data_action = "1", @data_afect = "prov" })
+                    </div>
+
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group form-group-lg">
+                        <label for="exampleFormControlInput1" class="label-form-custom">Provincia</label>
+                        <select class="form-control form-control-lg selectpicker input-lg-reg select-dep" id="prov" name="Provincia" title="Seleccione"
+                                data-live-search="true" data-actions-box="true" data-action="2" data-afect="dist"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group form-group-lg">
+                        <label for="exampleFormControlInput1" class="label-form-custom">Distrito</label>
+                        <select class="form-control selectpicker form-control-lg input-lg-reg" id="dist" name="Distrito" title="Seleccione" data-live-search="true" data-actions-box="true" data_action="1"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" value="True" name="Politica" id="customCheck1">
+                        <label class="custom-control-label label-custom" for="customCheck1">He leído y acepto la <span class="text-red">Política de Privacidad y de Protección de Datos Personales</span></label>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center my-4">
+                <div class="col-lg-4 col-md-6 col-sm-10 text-center">
+                    <button type="button" data-vista="principal" data-operacion="registrar" class="btn btn-danger btn-lg action">REGISTRAR DATOS</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts {
+<script>
+        $(document).ready(function () {
+            $("#FechaNacimiento").datepicker({
+                format: "dd-mm-yyyy",
+                autoclose: true,
+            });
+            $(".select-dep").change(function () {
+                var operacion = $(this).attr("data-action");
+                var iddep = $("#depto").val();
+                var idpro = $("#prov").val();
+                var select = $(this).attr("data-afect");
+                $("#" + select + "").html("");
+                $("#" + select + "").selectpicker('refresh');
+                if (operacion == 1) {
+                    $("#dist").html("");
+                    $("#dist").selectpicker('refresh');
+                }
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("get_otro_select", "BataClub")',
+                    data: { operacion: operacion, iddep: iddep, idpro: idpro },
+                    success: function (data) {
+                        var options = "";
+                        for (var i = 0; i < data.result.length; i++) {
+                            options += "<option value='" + data.result[i].cbo_codigo + "'>" + data.result[i].cbo_descripcion + "</option>"
+                        }
+                        $("#" + select + "").html(options);
+                        $("#" + select + "").selectpicker({ title: 'Seleccione ' + (operacion == 1 ? "Provicia" : "Distrito") });
+                        $("#" + select + "").selectpicker('refresh');
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        //waitingDialog.hide();
+                        var error = eval("(" + XMLHttpRequest.responseText + ")");
+                        swal(error.Message);
+                    }
+                });
+            });
+        });
+    $(".action").click(function () {
+        showPleaseWait();
+        var dataForm = $('#FormRegistro');
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("RegistrarMiembro", "BataClub")',
+            data: dataForm.serialize(),
+            success: function (data) {
+                hidePleaseWait();
+                if (data.resultado == 1) {
+                    swal({
+                        title: "Exito",
+                        text: data.mensaje,
+                        icon: "success"
+                    }).then(() => {
+                        window.location.href = "@Url.Action("TabletPrincipal", "BataClub")"
+                    });
+                } else {
+                    swal({
+                        title: "Error",
+                        text: data.mensaje,
+                        icon: "error",
+                        dangerMode: true,
+                    });
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                hidePleaseWait();
+                var error = eval("(" + XMLHttpRequest.responseText + ")");
+                swal(error.Message);
+            }
+        });
+    });        
+</script>
+}

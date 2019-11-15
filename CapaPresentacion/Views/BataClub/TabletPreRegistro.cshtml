@@ -1,0 +1,213 @@
+﻿@using CapaEntidad.BataClub
+@{
+    Layout = "~/Views/Shared/_LayoutBataClubTablet.cshtml";
+}
+@section Styles {
+    <style>
+         @@media (min-width: 200px) { 
+            .content-override{
+                padding-top:5% ;
+            }
+            .img-logo{
+
+            }
+            .btn-lg { 
+                margin-bottom :5%;
+                width:100%; 
+            }
+            .input-lg { }
+            .texto{
+                font-size : 18px;
+                font-weight :500;
+            }
+        }
+
+        @@media (min-width: 768px) { 
+            .content-override{
+                padding-top:10%;
+            }
+            .img-logo{
+
+            }
+            .btn-lg {
+            padding: .5rem 1rem;
+            font-size: 1.5rem;
+            line-height: 1.5;
+            border-radius: .4rem;            
+            width:100%;
+            height: 85px;
+            vertical-align:central;
+            }
+            .input-lg {
+            height: calc(1.5em + 1rem + 2px);
+            padding: .5rem 1rem;
+            font-size: 1.5rem;
+            line-height: 1.5;
+            border-radius: .3rem;
+            height: 65px;
+            }
+              .texto{
+                font-size : 28px;
+                font-weight :500;
+            }
+        }
+
+        @@media (min-width: 992px) { 
+            .content-override{
+                padding-top:5%;
+            }
+            .img-logo{
+            }
+            .btn-lg {
+                margin-bottom :5%;
+                width:100%;
+            }
+            .input-lg {  }
+              .texto{
+                font-size : 28px;
+                font-weight :500;
+            }
+        }
+        .container-fluid {
+            background-color: rgba(255, 255, 255, 0.5);            
+        }
+    </style>
+}
+<div class="container-fluid">
+    <form id="preRegistro" action="@Url.Action("TabletRegistro","BataClub")" method="post">
+        <input type="hidden" value="" name="Nombres" id="nombres"/>
+        <input type="hidden" value="" name="ApellidoPaterno" id="apepat" />
+        <input type="hidden" value="" name="ApellidoMaterno" id="apemat" />
+        <div class="content-override" id="preregistro" data-val-fnd="0.5">
+            <div class="row justify-content-center mb-4">
+                <div class="col-lg-3 col-md-8 col-sm-10 text-center">
+                    <img src="../Files/BataClub/bata.png" class="img-fluid img-logo" />
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-12 text-center">
+                    <h3 class="text-center my-4"><strong>¡Bienvenido a Bata Club!</strong></h3>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-12 text-center mb-3">
+                    <p class="texto">Un club creado solo para ti.</p>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-12 text-center px-3">
+                    <p class="texto">Disfruta de promociones especiales, beneficios por tu cumpleaños e invitaciones a eventos exclusivos.</p>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-12 text-center">
+                    <hr />
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-12 text-center my-3">
+                    <h3><strong>Ingresa a Bata Club</strong></h3>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-4 col-md-7 col-sm-12 text-center">
+                    <input type="search" class="form-control form-control-lg input-lg" id="dni-pre" name="Dni" placeholder="Coloca tu DNI" />
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-4 col-md-5 col-sm-12 text-center">
+                    <button type="submit" value="registrar" name="operacion" data-operacion="registrar" class="btn btn-link btn-lg action" style="text-decoration-line:underline">Quiero registrarme</button>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-4 col-md-5 col-sm-12 text-center">
+                    <button type="submit" value="actualizar" name="operacion" data-operacion="actualizar" class="btn btn-danger btn-lg action">INGRESAR</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>  
+@section Scripts {
+<script>
+    var operacion = "registrar";
+    $(document).on("click", ":submit", function (e) {
+        operacion = $(this).attr("data-operacion");
+    });
+    $(document).ready(function () {
+        $('form').submit(function (e) {
+            e.preventDefault();
+            e.returnValue = false;
+            var dni = $("#dni-pre").val();
+            //var operacion = "registrar";
+            //$('.action').click(function () {
+            //    operacion = $(this).attr("data-operacion");
+            //});
+
+            if (dni == null || dni.length == 0) {
+                return;
+            }
+            showPleaseWait();            
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("RegistrarActualizar", "BataClub")',
+                data: { dni: dni, operacion: operacion },
+                success: function (data) {
+                    hidePleaseWait();
+                    if (data.estado == 1) {
+
+                        if (data.cliente.Miembro) {
+                            swal({
+                                title: "Bienvenido",
+                                text: "Hola " + data.cliente.Nombres + " " + data.cliente.ApellidoPaterno + " " + data.cliente.ApellidoMaterno + " Ya eres miembro Bata Club",
+                                icon: "success",
+                            });
+                        }
+                        else {
+                            if (operacion == "actualizar") {
+                                var _nombres = "Hola usted no es miembro Bata Club. \n ¿Desea Registrarse?";
+                                if (data.cliente.Nombres != null) {
+                                    _nombres = "Hola " + data.cliente.Nombres + " " + data.cliente.ApellidoPaterno + " " + data.cliente.ApellidoMaterno + " Usted no es miembro Bata Club. \n ¿Desea Registrarse?";
+                                    $("#nombres").val(data.cliente.Nombres);
+                                    $("#apepat").val(data.cliente.ApellidoPaterno);
+                                    $("#apemat").val(data.cliente.ApellidoMaterno);
+                                }
+                                swal({
+                                    title: "Bienvenido",
+                                    text: _nombres,
+                                    icon: "info",
+                                    buttons: {cancel : "No" , yes:"Si"},
+                                }).then((value) => {
+                                    if (value == "yes") {
+                                        $("#preRegistro").off('submit');
+                                        $("#preRegistro").submit();
+                                    }
+                                });
+                            } else {
+                                if (data.cliente.Nombres != null) {
+                                    $("#nombres").val(data.cliente.Nombres);
+                                    $("#apepat").val(data.cliente.ApellidoPaterno);
+                                    $("#apemat").val(data.cliente.ApellidoMaterno);
+                                }
+                                $("#preRegistro").off('submit');
+                                 $("#preRegistro").submit();
+                            }
+                        }
+                    } else {
+                        swal({
+                            title: "Error",
+                            text: data.mensaje,
+                            icon: "error",
+                            dangerMode: true,
+                        });
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    hidePleaseWait();
+                    var error = eval("(" + XMLHttpRequest.responseText + ")");
+                    swal(error.Message);
+                }
+            });
+        });
+    });
+</script>
+}

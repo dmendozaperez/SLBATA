@@ -1,0 +1,91 @@
+﻿@using CapaEntidad.BataClub
+@{
+    Layout = "~/Views/Shared/_LayoutBataClubTablet.cshtml";
+}
+@section Styles {
+     <style>
+        @@media (min-width: 200px) { 
+            .content-override{
+                padding-top:10% ;
+            }
+            .img-logo{
+                margin-bottom: 10%;
+            }
+            .btn-lg { 
+                margin-bottom :5%;
+            }
+        }
+
+        @@media (min-width: 768px) { 
+            .content-override{
+                padding-top:15%;
+            }
+            .img-logo{
+                margin-bottom: 28%;
+            }
+            .btn-lg {
+            padding: .5rem 1rem;
+            font-size: 1.5rem;
+            line-height: 1.5;
+            border-radius: .4rem;
+            height: 85px;
+            margin-bottom :15%;
+            padding-top: 21px;
+            }
+        }
+
+        @@media (min-width: 992px) { 
+            .content-override{
+                padding-top:8%;
+            }
+            .img-logo{
+                margin-bottom: 5%;
+            }
+            .btn-lg {
+                margin-bottom :5%;
+            }
+        }
+     </style>
+}
+<div class="container-fluid">    
+    <div class="vista content-override" id="principal" data-val-fnd="0.3">
+        <div class="row justify-content-center">
+            <div class="col text-center">
+                <h3 class="text-center">Bienvenidos a:</h3>
+            </div>
+        </div>
+        <div class="row justify-content-center my-4">
+            <div class="col-lg-3 col-md-8 col-sm-10 text-center">
+                <img src="../Files/BataClub/bata.png" class="img-fluid img-logo"  />
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-5 col-md-6 col-sm-9 text-center">
+                <a href="@Url.Action("TabletPreRegistro","BataClub")" style="width:100%" class="btn btn-light btn-lg action">
+                    REGISTRARME&nbsp;EN&nbsp;<strong class="text-danger">BATACLUB</strong>
+                </a>              
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-5 col-md-6 col-sm-9 text-center">               
+                <a href="@Url.Action("TabletPreEncuesta","BataClub")"" style="width:100%" class="btn btn-light btn-lg">
+                    ENCUESTA&nbsp;DE&nbsp;SATISFACCION&nbsp;
+                </a>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-5 col-md-6 col-sm-9 text-center">
+                <a href="https://bata.pe/" target="_blank" style="width:100%"  class="btn btn-light btn-lg">
+                    DESCUBRE&nbsp;<strong style="text-decoration-line:underline" class="text-danger">BATA.PE</strong>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+<script>
+    $(document).ready(function () {
+
+    });
+</script>
+}

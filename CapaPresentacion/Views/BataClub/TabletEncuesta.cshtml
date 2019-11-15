@@ -1,0 +1,232 @@
+﻿@using CapaEntidad.BataClub
+@{
+    Layout = "~/Views/Shared/_LayoutBataClubTablet.cshtml";
+}
+@section Styles {
+
+    <style>
+        @@media (min-width: 200px) {
+                    .content-override{
+                padding-top:5% ;
+            }
+            .slider.slider-horizontal {
+                width: 95%; /* sample value - set it as you like*/
+                font-size: large;
+            }
+
+            .btn-lg {
+                margin-bottom: 5%;
+                width: 100%;
+            }
+
+            .input-lg {
+            }
+
+            .label-encuesta {
+                font-size: 22px;
+                font-weight: bold;
+            }
+        }
+
+        @@media (min-width: 768px) {
+                    .content-override{
+                padding-top:5% ;
+            }
+            .slider.slider-horizontal {
+                width: 95%; /* sample value - set it as you like*/
+                font-size: large;
+            }
+
+            .btn-lg {
+                padding: .5rem 1rem;
+                font-size: 1.5rem;
+                line-height: 1.5;
+                border-radius: .4rem;
+                width: 100%;
+                height: 85px;
+                vertical-align: central;
+            }
+
+            .input-lg {
+                height: calc(1.5em + 1rem + 2px);
+                padding: .5rem 1rem;
+                font-size: 1.5rem;
+                line-height: 1.5;
+                border-radius: .3rem;
+                height: 65px;
+            }
+
+            .texto {
+                font-size: 28px;
+                font-weight: 500;
+            }
+
+            .label-encuesta {
+                font-size: 22px;
+                font-weight: bold;
+            }
+        }
+
+        @@media (min-width: 992px) {
+                    .content-override{
+                padding-top:5% ;
+            }
+            .slider.slider-horizontal {
+                width: 95%; /* sample value - set it as you like*/
+                font-size: large;
+            }
+
+            .btn-lg {
+                margin-bottom: 5%;
+                width: 100%;
+            }
+
+            .input-lg {
+            }
+
+            .texto {
+                font-size: 28px;
+                font-weight: 500;
+            }
+
+            .label-encuesta {
+                font-size: 22px;
+                font-weight: bold;
+            }
+        }
+
+        .container-fluid {
+            background-color: rgba(255, 255, 255, 0.7);
+        }
+
+        .slider-tick.in-selection {
+            /* background-image: -webkit-linear-gradient(top, #8ac1ef 0%, #82b3de 100%); */
+            /*background-image: -o-linear-gradient(top, #8ac1ef 0%, #82b3de 100%);
+            background-image: linear-gradient(to bottom, #ff6464 0%, #ff7878 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff8ac1ef', endColorstr='#ff82b3de', GradientType=0);
+            background-repeat: repeat-x;*/
+            background-image: linear-gradient(to bottom, #ff5858 0%, #ff5858 100%);
+            background-repeat: repeat-x;
+        }
+
+        .slider-handle {
+            background-image: linear-gradient(to bottom, #e80000 0%, #e80000 100%);
+        }
+
+        .slider-selection.tick-slider-selection {
+            background-image: linear-gradient(to bottom, #fbacac 0%, #fbacac 100%);
+        }
+    </style>
+}
+<div class="container-fluid">
+    <form id="formEncuesta">
+        <div class="vista content-override" id="encuesta" data-val-fnd="0.7">
+            <div class="row justify-content-center">
+                <div class="col-md-12 text-center my-4">
+                    <h2 class="text-center mb-4"><strong>ENCUESTA DE SATISFACCIÓN</strong></h2>
+                    <p class="px-4 texto">Califica nuestros productos, servicios y atencion y gana 10% de descuento en tu proxima compra</p>
+                </div>
+            </div>
+            <div class="row justify-content-center mb-4">
+                <div class="col-lg-6 col-md-8 col-sm-12 text-center">
+                    <input type="email" class="form-control form-control-lg input-lg" id="enccorreo" name="CORREO" placeholder="Correo electrónico">
+                </div>
+            </div>
+            @foreach (Ent_BataClub_Preg_Encuesta item in (List<Ent_BataClub_Preg_Encuesta>)ViewBag.Preguntas)
+            {
+                if (item.COD_TIPO_PREG == "NPS")
+                {
+                    <div class="row justify-content-center my-4">
+                        <div class="col-md-4">
+                            <label class="label-encuesta">@item.NOMBRE</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="range" name="respEncuesta" data-id="@item.COD_PREG_ENC" id="@item.COD_PREG_ENC" class="range">
+                        </div>
+                    </div>
+                }
+                else if (item.COD_TIPO_PREG == "COMENTARIO")
+                {
+                    <div class="row justify-content-center my-4">
+                        <div class="col-lg-8 col-md-11 col-sm-12">
+                            <textarea name="respEncuesta" id="@item.COD_PREG_ENC" data-id="@item.COD_PREG_ENC" class="form-control form-control-lg input-lg" rows="3" placeholder="@item.NOMBRE"></textarea>
+                        </div>
+                    </div>
+                }
+
+            }
+            <div class="row justify-content-center my-4">
+                <div class="col-lg-5 col-md-7 col-sm-10 text-center">
+                    <button type="button" data-vista="encuesta" data-operacion="registrarEncuesta" class="btn btn-danger btn-lg action">ENVIAR ENCUESTA</button>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+@section Scripts {
+    <script>
+        var array1 = [];
+        var array2 = [];
+        @foreach (var item in (List<int>)ViewBag.NPSValues)
+        {
+        @:array1.push(@item);
+                                    @:array2.push("@item");
+                                        }
+        $(document).ready(function () {
+            try {
+                $(".range").slider({
+                    ticks: array1, //[1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                    ticks_labels: array2,// ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
+                    ticks_snap_bounds: 0
+                });
+            } catch (e) {
+
+            }
+        });
+        $(".action").click(function () {
+            showPleaseWait();
+            var resps = [];
+            var group = $('[name="respEncuesta"]');
+            if (group.length > 1) {
+                group.each(function () {
+                    respEncuesta = {}
+                    respEncuesta["COD_PREG_ENC"] = $(this).attr("data-id");
+                    respEncuesta["VALOR"] = $(this).val();
+                    resps.push(respEncuesta);
+                });
+            }
+            var correo = $("#enccorreo").val();
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("BATACLUB_REGISTRAR_ENCUESTA", "BataClub")',
+                data: { respuestas: resps, correo: correo },
+                success: function (data) {
+                    hidePleaseWait();
+                    if (data.resultado == 1) {
+                        swal({
+                            title: "Exito",
+                            text: data.mensaje,
+                            icon: "success"
+                        }).then(() => {
+                            window.location.href = "@Url.Action("TabletPrincipal", "BataClub")"
+                        });
+                    } else {
+                        swal({
+                            title: "Error",
+                            text: data.mensaje,
+                            icon: "error",
+                            dangerMode: true,
+                        });
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    hidePleaseWait();
+                    var error = eval("(" + XMLHttpRequest.responseText + ")");
+                    swal(error.Message);
+                }
+            });
+        })
+
+    </script>
+}

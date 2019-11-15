@@ -9,10 +9,10 @@ namespace CapaEntidad.BataClub
     public class Ent_BataClub_Registro
     {
         public string Genero { get; set; }
-        public string Nombres { get; set; }
-        public string ApellidoPaterno { get; set; }
-        public string ApellidoMaterno { get; set; }
-        public string Dni{ get; set; }
+        public string Nombres { get; set; } = "";
+        public string ApellidoPaterno { get; set; } = "";
+        public string ApellidoMaterno { get; set; } = "";
+        public string Dni{ get; set; } = "";
         public string Celular{ get; set; }
         public string CorreoElectronico{ get; set; }
         public string CorreoElectronico2{ get; set; }

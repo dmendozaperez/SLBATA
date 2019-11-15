@@ -441,14 +441,14 @@
                                                 if (yes) {
                                                     $(".vista").hide();
                                                     $("#registro").show();
-                                                    $('.container').css("background-color", "rgba(255, 255, 255, " + $("#" + vista + "").attr("data-val-fnd") + ")");
+                                                    $('.container-fluid').css("background-color", "rgba(255, 255, 255, " + $("#" + vista + "").attr("data-val-fnd") + ")");
                                                 }
                                             });
                                         } else {
                                             $(".vista").hide();
                                             $("#" + vista + "").show();
                                            // $(".fondo").attr('style', 'opacity:' + $("#" + vista + "").attr("data-val-fnd") + '');
-                                            $('.container').css("background-color", "rgba(255, 255, 255, " + $("#" + vista + "").attr("data-val-fnd") + ")");
+                                            $('.container-fluid').css("background-color", "rgba(255, 255, 255, " + $("#" + vista + "").attr("data-val-fnd") + ")");
                                         }
                                     }
                                 } else {
@@ -479,7 +479,7 @@
                 } else {
                     $(".vista").hide();
                     $("#" + vista + "").show();
-                    $('.container').css("background-color", "rgba(255, 255, 255, " + $("#" + vista + "").attr("data-val-fnd") + ")");
+                    $('.container-fluid').css("background-color", "rgba(255, 255, 255, " + $("#" + vista + "").attr("data-val-fnd") + ")");
                 }
             });
         });
@@ -565,7 +565,7 @@
                     } else {
                         $(".vista").hide();
                         $("#" + vista + "").show();
-                        $('.container').css("background-color", "rgba(255, 255, 255, " + $("#" + vista + "").attr("data-val-fnd") + ")");
+                        $('.container-fluid').css("background-color", "rgba(255, 255, 255, " + $("#" + vista + "").attr("data-val-fnd") + ")");
                     }
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {

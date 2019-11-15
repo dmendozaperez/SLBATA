@@ -1,0 +1,147 @@
+﻿@using CapaEntidad.BataClub
+@{
+    Layout = "~/Views/Shared/_LayoutBataClubTablet.cshtml";
+}
+@section Styles {
+    <style>
+        @@media (min-width: 200px) {
+            .content-override {
+                padding-top: 5%;
+            }
+
+            .texto {
+                font-size: 18px;
+                font-weight: 500;
+            }
+
+            .btn-lg {
+                width: 100%;
+            }
+
+            .input-lg {
+            }
+        }
+
+        @@media (min-width: 768px) {
+            .content-override {
+                padding-top: 20%;
+            }
+
+            .texto {
+                font-size: 28px;
+                font-weight: 500;
+            }
+
+            .btn-lg {
+                padding: .5rem 1rem;
+                font-size: 1.5rem;
+                line-height: 1.5;
+                border-radius: .4rem;
+                width: 100%;
+                height: 85px;
+                vertical-align: central;
+            }
+
+            .input-lg {
+                height: calc(1.5em + 1rem + 2px);
+                padding: .5rem 1rem;
+                font-size: 1.5rem;
+                line-height: 1.5;
+                border-radius: .3rem;
+                height: 65px;
+            }
+        }
+
+        @@media (min-width: 992px) {
+            .content-override {
+                padding-top: 5%;
+            }
+
+            .texto {
+                font-size: 28px;
+                font-weight: 500;
+            }
+
+            .btn-lg {
+                width: 100%;
+            }
+
+            .input-lg {
+            }
+        }
+
+        .container-fluid {
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+    </style>
+}
+
+<div class="container-fluid">
+    <form id="preEncuesta" action="@Url.Action("TabletEncuesta","BataClub")" method="post">
+        <div class="vista content-override" id="preencuesta" data-val-fnd="0.5">
+            <div class="row justify-content-center mlb2">
+                <div class="col-md-10 text-center">
+                    <h2 class="text-center mt-4"><strong>ENCUESTA DE SATISFACCIÓN</strong></h2>
+                    <p class="texto mt-5"><strong>¡Queremos saber tu opinion para mejorar!</strong></p>
+                    <p class="px-5 texto mt-4">Calificia nuestros productos, servicios y atencion y gana 10% de descuento en tu proxima compra.</p>
+                    <hr class="py-3" />
+                    <p class="texto"><strong>N° de Boleta</strong></p>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-7 text-center">
+                    <input type="search" id="boletaEncuesta" class="form-control form-control-lg input-lg" placeholder="Ej. B001-0123" />
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-4 col-md-6 col-sm-10 text-center">
+                    <br />
+                    <button type="submit" data-vista="encuesta" data-operacion="validarBoleta" class="btn btn-danger btn-lg action">CONTINUAR</button>
+                </div>
+            </div>
+            <div class="row">
+            </div>
+        </div>
+    </form>
+</div>
+@section Scripts {
+<script>
+    $(document).ready(function () {
+        $('form').submit(function (e) {
+            e.preventDefault();
+            e.returnValue = false;
+            var boleta = $("#boletaEncuesta").val();
+            if (boleta.length > 0) {
+                ValidarBoleta(boleta);
+            }
+        });
+    });
+    function ValidarBoleta(boleta) {
+        //var boleta = $("#boletaEncuesta").val();
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("BATACLUB_VALIDAR_COMPROBANTE_ENCUESTA", "BataClub")',
+            data: { boleta: boleta },
+            success: function (data) {
+                hidePleaseWait();
+                if (data.resultado == 0) {
+                    swal({
+                        title: "Error",
+                        text: data.mensaje,
+                        icon: "error",
+                        dangerMode: true,
+                    });
+                } else {
+                    $("#preEncuesta").off('submit');
+                    $("#preEncuesta").submit();
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                hidePleaseWait();
+                var error = eval("(" + XMLHttpRequest.responseText + ")");
+                swal(error.Message);
+            }
+        });
+    }
+</script>
+}

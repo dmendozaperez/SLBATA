@@ -1255,7 +1255,45 @@ namespace CapaPresentacion.Controllers
         #endregion
 
         #region BataClub/Tablet
+        public ActionResult TabletPrincipal()
+        {
+            //Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            //string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            //string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            //string return_view = actionName + "|" + controllerName;
 
+            //if (_usuario == null)
+            //{
+            //    return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+            //}
+            //else
+            //{
+                return View();
+            //}
+        }
+        public ActionResult TabletPreRegistro()
+        {
+            return View();
+        }
+        public ActionResult TabletRegistro(Ent_BataClub_Registro registro)
+        {
+            ViewBag.Depto = datUbi.get_lista_Departamento();
+            return View(registro);
+        }
+        public ActionResult TabletPreEncuesta()
+        {
+            Session[_session_boleta_encuesta] = null;
+            return View();
+        }
+        public ActionResult TabletEncuesta()
+        {
+            List<Ent_BataClub_Preg_Encuesta> pregs = new List<Ent_BataClub_Preg_Encuesta>();
+            pregs = datTab.get_ListaPromo_Disp();
+            ViewBag.NPSValues = GetNpsThicks(pregs.First().VALOR_MIN, pregs.First().VALOR_MAX);
+            ViewBag.Preguntas = pregs;
+            
+            return View();
+        }
         public ActionResult PruebaTablet()
         {
             Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
@@ -1358,7 +1396,7 @@ namespace CapaPresentacion.Controllers
             }
         }
 
-        public ActionResult RegistrarIngresar(string dni , string operacion)
+        public ActionResult RegistrarActualizar(string dni , string operacion)
         {
             try
             {
@@ -1367,7 +1405,7 @@ namespace CapaPresentacion.Controllers
                     return Json(new { estado = 0, mensaje = "Ingrese un DNI valido por favor" });
                 }
                 string _mensaje = "";
-                Ent_BataClub_Registro cliente = ValidarDNI(dni, (operacion == "ingresar" ? null : "0") , ref _mensaje);
+                Ent_BataClub_Registro cliente = ValidarDNI(dni, (operacion == "actualizar" ? null : "0") , ref _mensaje);
                 return Json(new { estado = 1 ,  cliente = cliente });
             }
             catch (Exception ex)
@@ -1491,7 +1529,8 @@ namespace CapaPresentacion.Controllers
                     {
                         cliente.Dni = datacliente.dni.ToString();
                         cliente.Nombres = datacliente.primerNombre + " " + datacliente.segundoNombre;
-                        cliente.ApellidoPaterno = datacliente.apellidoPater + " " + datacliente.apellidoMater;
+                        cliente.ApellidoPaterno = datacliente.apellidoPater;
+                        cliente.ApellidoMaterno = datacliente.apellidoMater;
                         cliente.Miembro = datacliente.miembro_bataclub;
                     }
                     else
@@ -1506,7 +1545,8 @@ namespace CapaPresentacion.Controllers
                         {
                             cliente.Dni = dataClienteReniec.Dni.ToString();
                             cliente.Nombres = dataClienteReniec.Nombres;
-                            cliente.ApellidoPaterno = dataClienteReniec.ApePat + " " + dataClienteReniec.ApeMat;
+                            cliente.ApellidoPaterno = dataClienteReniec.ApePat;
+                            cliente.ApellidoMaterno = dataClienteReniec.ApeMat;
                             cliente.Miembro = false;
                         }
                     }
@@ -1615,7 +1655,7 @@ namespace CapaPresentacion.Controllers
         public List<int> GetNpsThicks(int min, int max)
         {
             List<int> values = new List<int>();
-            for (int i = min; i < max; i++)
+            for (int i = min; i < max + 1; i++)
             {
                 values.Add(i);
             }

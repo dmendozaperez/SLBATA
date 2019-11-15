@@ -1644,6 +1644,11 @@
     <Content Include="Views\Soporte\PruebaOracle.cshtml" />
     <Content Include="Views\Shared\_LayoutBataClubTablet.cshtml" />
     <Content Include="Views\BataClub\PruebaTablet.cshtml" />
+    <Content Include="Views\BataClub\TabletPrincipal.cshtml" />
+    <Content Include="Views\BataClub\TabletPreRegistro.cshtml" />
+    <Content Include="Views\BataClub\TabletRegistro.cshtml" />
+    <Content Include="Views\BataClub\TabletPreEncuesta.cshtml" />
+    <Content Include="Views\BataClub\TabletEncuesta.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
