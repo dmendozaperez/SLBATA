@@ -20,6 +20,7 @@
                 font-size : 18px;
                 font-weight :500;
             }
+            
         }
 
         @@media (min-width: 768px) { 
@@ -49,6 +50,9 @@
               .texto{
                 font-size : 28px;
                 font-weight :500;
+            }
+            .invalid-feedback   {
+                font-size:120%;
             }
         }
 
@@ -111,7 +115,10 @@
             </div>
             <div class="row justify-content-center">
                 <div class="col-lg-4 col-md-7 col-sm-12 text-center">
-                    <input type="search" class="form-control form-control-lg input-lg" id="dni-pre" name="Dni" placeholder="Coloca tu DNI" />
+                    <input type="search" maxlength="8" class="form-control form-control-lg input-lg" id="dni-pre" name="Dni" placeholder="Coloca tu DNI" />
+                    <div class="invalid-feedback">
+                        Por favor ingrese un dni válido.
+                    </div>
                 </div>
             </div>
             <div class="row justify-content-center">
@@ -124,6 +131,11 @@
                     <button type="submit" value="actualizar" name="operacion" data-operacion="actualizar" class="btn btn-danger btn-lg action">INGRESAR</button>
                 </div>
             </div>
+            <div class="row justify-content-center my-4">
+                <div class="col-md-1 text-center">
+                    <a class="btn btn btn-outline-secondary" href="@Url.Action("TabletPrincipal" , "BataClub")"><i class="glyphicon glyphicon-home"></i>Inicio</a>
+                </div>
+            </div>
         </div>
     </form>
 </div>  
@@ -134,6 +146,10 @@
         operacion = $(this).attr("data-operacion");
     });
     $(document).ready(function () {
+        $("#dni-pre").inputFilter(function (value) {
+            return /^\d*$/.test(value);    // Allow digits only, using a RegExp
+        });
+        $('#dni-pre').focus();
         $('form').submit(function (e) {
             e.preventDefault();
             e.returnValue = false;
@@ -143,7 +159,8 @@
             //    operacion = $(this).attr("data-operacion");
             //});
 
-            if (dni == null || dni.length == 0) {
+            if (dni == null || dni.length != 8) {
+                $("#dni-pre").addClass("is-invalid");
                 return;
             }
             showPleaseWait();            
@@ -164,24 +181,68 @@
                         }
                         else {
                             if (operacion == "actualizar") {
-                                var _nombres = "Hola usted no es miembro Bata Club. \n ¿Desea Registrarse?";
-                                if (data.cliente.Nombres != null) {
-                                    _nombres = "Hola " + data.cliente.Nombres + " " + data.cliente.ApellidoPaterno + " " + data.cliente.ApellidoMaterno + " Usted no es miembro Bata Club. \n ¿Desea Registrarse?";
-                                    $("#nombres").val(data.cliente.Nombres);
-                                    $("#apepat").val(data.cliente.ApellidoPaterno);
-                                    $("#apemat").val(data.cliente.ApellidoMaterno);
-                                }
-                                swal({
-                                    title: "Bienvenido",
-                                    text: _nombres,
-                                    icon: "info",
-                                    buttons: {cancel : "No" , yes:"Si"},
-                                }).then((value) => {
-                                    if (value == "yes") {
-                                        $("#preRegistro").off('submit');
-                                        $("#preRegistro").submit();
+                                if (data.cliente.Existe) {
+                                    if (data.cliente.Nombres != null) {
+                                        _nombres = data.cliente.Nombres + " " + data.cliente.ApellidoPaterno + " " + data.cliente.ApellidoMaterno;                                        
                                     }
-                                });
+                                    swal({
+                                        title: "Bienvenido",
+                                        text: "Hola." + _nombres + "\n¿Deseas recibir un correo con un enlace a actualizar tus datos?",
+                                        icon: "info",
+                                        buttons: { cancel: "No", yes: "Si" },
+                                    }).then((value) => {
+                                        if (value == "yes") {
+                                            showPleaseWait();
+                                            $.ajax({
+                                                type: "POST",
+                                                url: '@Url.Action("EnviarCorreo", "BataClub")',
+                                                data: { dni: dni, operacion: operacion },
+                                                success: function (data) {
+                                                    hidePleaseWait();
+                                                    if (data.estado == 1) {
+                                                        swal({
+                                                            title: "Exito",
+                                                            text: data.mensaje,
+                                                            icon: "success",
+                                                        });
+                                                    } else {
+                                                        swal({
+                                                            title: "Error",
+                                                            text: data.mensaje,
+                                                            icon: "error",
+                                                            dangerMode: true,
+                                                        });
+                                                    }
+                                                },
+                                                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                                                    hidePleaseWait();
+                                                    var error = eval("(" + XMLHttpRequest.responseText + ")");
+                                                    swal(error.Message);
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                                else {
+                                    var _nombres = "Hola usted no es miembro Bata Club. \n ¿Desea Registrarse?";
+                                    if (data.cliente.Nombres != null) {
+                                        _nombres = "Hola " + data.cliente.Nombres + " " + data.cliente.ApellidoPaterno + " " + data.cliente.ApellidoMaterno + " Usted no es miembro Bata Club. \n ¿Desea Registrarse?";
+                                        $("#nombres").val(data.cliente.Nombres);
+                                        $("#apepat").val(data.cliente.ApellidoPaterno);
+                                        $("#apemat").val(data.cliente.ApellidoMaterno);
+                                    }
+                                    swal({
+                                        title: "Bienvenido",
+                                        text: _nombres,
+                                        icon: "info",
+                                        buttons: { cancel: "No", yes: "Si" },
+                                    }).then((value) => {
+                                        if (value == "yes") {
+                                            $("#preRegistro").off('submit');
+                                            $("#preRegistro").submit();
+                                        }
+                                    });
+                                }                                
                             } else {
                                 if (data.cliente.Nombres != null) {
                                     $("#nombres").val(data.cliente.Nombres);

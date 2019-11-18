@@ -14,6 +14,7 @@ using System.ComponentModel;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Net.Mail;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Web;
@@ -851,11 +852,7 @@ namespace CapaPresentacion.Controllers
                 aaData = result
             }, JsonRequestBehavior.AllowGet);
         }
-        public static Boolean IsNumeric(string valor)
-        {
-            int result;
-            return int.TryParse(valor, out result);
-        }
+
         public ActionResult BATACLUB_INSERTAR_CUPONES(int operacion, string promocion, string dscto, string pares, string fecha, string mesCumple, string genero, string[] tienda, string[] tienda2, string anio)
         {
             Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
@@ -1321,11 +1318,15 @@ namespace CapaPresentacion.Controllers
         {
             string _mensaje = "";
             DateTime _temp;
-            var regex = "\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*";
+            
             if (registro == null)
             {
                 _mensaje += "No hay datos para registrar.";
                 return Json(new { resultado = 0, mensaje = _mensaje });
+            }
+            if (String.IsNullOrEmpty(registro.Genero))
+            {
+                _mensaje += "Seleccione genero." + Environment.NewLine;
             }
             if (String.IsNullOrEmpty(registro.Nombres))
             {
@@ -1335,7 +1336,7 @@ namespace CapaPresentacion.Controllers
             {
                 _mensaje += "Ingrese apellido paterno por favor" + Environment.NewLine;
             }
-            if (registro.Dni == null || registro.Dni == "" || registro.Dni.Length != 8 || !IsNumeric(registro.Dni))
+            if (!IsDni(registro.Dni))
             {
                 _mensaje += "Ingrese dni válido por favor" + Environment.NewLine;
             }
@@ -1343,13 +1344,13 @@ namespace CapaPresentacion.Controllers
             {
                 _mensaje += "Ingrese celular por favor" + Environment.NewLine;
             }
-            if (String.IsNullOrEmpty(registro.CorreoElectronico) && !System.Text.RegularExpressions.Regex.IsMatch(registro.CorreoElectronico, regex))
+            if (!IsCorreo(registro.CorreoElectronico))
             {
-                _mensaje += "Ingrese un correo electronico valido por favor." + Environment.NewLine;
+                _mensaje += "Ingrese un correo electronico válido por favor." + Environment.NewLine;
             }
-            if (String.IsNullOrEmpty(registro.CorreoElectronico2) && !System.Text.RegularExpressions.Regex.IsMatch(registro.CorreoElectronico2, regex))
+            if (!IsCorreo(registro.CorreoElectronico2))
             {
-                _mensaje += "Ingrese un correo electronico valido por favor." + Environment.NewLine;
+                _mensaje += "Ingrese un correo electronico de confirmacion válido por favor." + Environment.NewLine;
             }
             if (registro.CorreoElectronico != registro.CorreoElectronico2)
             {
@@ -1402,10 +1403,10 @@ namespace CapaPresentacion.Controllers
             {
                 if (dni == null || dni == "" || dni.Length != 8 || !IsNumeric(dni))
                 {
-                    return Json(new { estado = 0, mensaje = "Ingrese un DNI valido por favor" });
+                    return Json(new { estado = 0, mensaje = "Ingrese un DNI válido por favor" });
                 }
                 string _mensaje = "";
-                Ent_BataClub_Registro cliente = ValidarDNI(dni, (operacion == "actualizar" ? null : "0") , ref _mensaje);
+                Ent_BataClub_Registro cliente = ValidarDNI(dni, "0" , ref _mensaje);
                 return Json(new { estado = 1 ,  cliente = cliente });
             }
             catch (Exception ex)
@@ -1413,6 +1414,19 @@ namespace CapaPresentacion.Controllers
                 return Json(new { estado = 0, mensaje = "Error al consultar DNI" + Environment.NewLine + ex.Message });
             }
            
+        }
+        public ActionResult EnviarCorreo(string dni)
+        {
+            try
+            {
+                string _mensaje = "";
+                Ent_BataClub_Registro cliente = ValidarDNI(dni, null, ref _mensaje);
+                return Json(new { estado = 1, mensaje = "Mensaje enviado."});
+            }
+            catch (Exception ex)
+            {
+                return Json(new { estado = 0, mensaje = "Error al enviar el mensaje." });
+            }
         }
         public static string actualiza_cliente(Ent_BataClub_Registro registro, string tda, ref string correo_envio, ref string _telef_envia , ref string result)
         {
@@ -1532,6 +1546,9 @@ namespace CapaPresentacion.Controllers
                         cliente.ApellidoPaterno = datacliente.apellidoPater;
                         cliente.ApellidoMaterno = datacliente.apellidoMater;
                         cliente.Miembro = datacliente.miembro_bataclub;
+                        cliente.Celular = datacliente.telefono;
+                        cliente.CorreoElectronico = datacliente.correo;
+                        cliente.CorreoElectronico2 = datacliente.correo;
                     }
                     else
                     {
@@ -1627,7 +1644,7 @@ namespace CapaPresentacion.Controllers
                 var regex = "\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*";
                 if (!System.Text.RegularExpressions.Regex.IsMatch(correo, regex))
                 {
-                    return Json(new { resultado = 0, mensaje = "Ingrese un correo electronico valido por favor." });
+                    return Json(new { resultado = 0, mensaje = "Ingrese un correo electronico válido por favor." });
                 }
                 if (Session[_session_boleta_encuesta] == null)
                 {
@@ -1662,6 +1679,57 @@ namespace CapaPresentacion.Controllers
             return values;
         }
         #endregion
+        #region Helpers
+        public static Boolean IsNumeric(string valor)
+        {
+            if (String.IsNullOrEmpty(valor))
+            {
+                return false;
+            }
+            int result;
+            return int.TryParse(valor, out result);
+        }
+        public static Boolean IsCorreo(string valor)
+        {
 
+            var regex = @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z"; ;
+            if (String.IsNullOrEmpty(valor))
+            {
+                return false;
+            }
+            else
+            {
+                if (System.Text.RegularExpressions.Regex.IsMatch(valor, regex))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        public static Boolean IsDni (string valor)
+        {
+            if (!IsNumeric(valor))
+            {
+                return false;
+            }
+            if (valor.Length == 8)
+            {
+                return true;
+            }
+            return false;
+        }
+        //public bool IsCorreo(string emailaddress)
+        //{
+        //    try
+        //    {
+        //        MailAddress m = new MailAddress(emailaddress);
+        //        return true;
+        //    }
+        //    catch (FormatException)
+        //    {
+        //        return false;
+        //    }
+        //}
+        #endregion
     }
 }

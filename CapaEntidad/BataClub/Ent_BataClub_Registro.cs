@@ -13,9 +13,9 @@ namespace CapaEntidad.BataClub
         public string ApellidoPaterno { get; set; } = "";
         public string ApellidoMaterno { get; set; } = "";
         public string Dni{ get; set; } = "";
-        public string Celular{ get; set; }
-        public string CorreoElectronico{ get; set; }
-        public string CorreoElectronico2{ get; set; }
+        public string Celular { get; set; } = "";
+        public string CorreoElectronico{ get; set; } = "";
+        public string CorreoElectronico2{ get; set; } = "";
         public string FechaNacimiento{ get; set; }
         public string Departamento{ get; set; }
         public string Provincia{ get; set; }

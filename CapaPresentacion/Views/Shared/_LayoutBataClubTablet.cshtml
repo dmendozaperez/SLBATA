@@ -51,6 +51,7 @@
 </head>
 <body>
     @RenderBody()
+
     @*<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>*@
     <script src="~/Scripts/jquery-1.10.2.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
@@ -124,16 +125,12 @@
         //})(jQuery);
         function showPleaseWait() {
             if (document.querySelector("#pleaseWaitDialog") == null) {
-                var modalLoading = '<div class="modal" id="pleaseWaitDialog" data-backdrop="static" tabindex="-1" data-keyboard="false" role="dialog">\
+                var modalLoading = '<div class="modal" style="width:100px; padding:5px;"  id="pleaseWaitDialog" data-backdrop="static" tabindex="-1" data-keyboard="false" role="dialog">\
             <div class="modal-dialog modal-dialog-centered">\
                 <div class="modal-content">\
-                    <div class="modal-header">\
-                        <h4 class="modal-title">Cargando...</h4>\
-                    </div>\
-                    <div class="modal-body">\
-                        <div class="progress" style="margin-bottom:0;">\
-                          <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"  style="width: 100%"></div>\
-                          </div>\
+                    <div class="modal-body text-center">\
+                        <div class="spinner-grow" role="status">\
+                          <span class="sr-only">Loading...</span>\
                         </div>\
                     </div>\
                 </div>\
@@ -150,7 +147,24 @@
         function hidePleaseWait() {
             $("#pleaseWaitDialog").modal("hide");
         }
+
+        (function ($) {
+            $.fn.inputFilter = function (inputFilter) {
+                return this.on("input keydown keyup mousedown mouseup select contextmenu drop", function () {
+                    if (inputFilter(this.value)) {
+                        this.oldValue = this.value;
+                        this.oldSelectionStart = this.selectionStart;
+                        this.oldSelectionEnd = this.selectionEnd;
+                    } else if (this.hasOwnProperty("oldValue")) {
+                        this.value = this.oldValue;
+                        this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+                    }
+                });
+            };
+        }(jQuery));
+
     </script>
+
     @RenderSection("Scripts", false)
 </body>
 </html>
