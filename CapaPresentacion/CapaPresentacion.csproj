@@ -576,7 +576,6 @@
     <Content Include="EncryptaData\Encripta.dll" />
     <Content Include="favicon.ico" />
     <Content Include="Files\Barcode Lib\BarcodeLib.Barcode.CrystalReports.dll" />
-    <Content Include="Files\BataClub\fondo_prueba.png" />
     <Content Include="Files\RuletaBata\-10 TODA LA TIENDA.png" />
     <Content Include="Files\RuletaBata\-20 ACCESORIOS.png" />
     <Content Include="Files\RuletaBata\-20 NS.png" />
@@ -1654,6 +1653,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Content\TarjetaCss\" />
     <Folder Include="Cupones\" />
+    <Folder Include="Files\BataClub\" />
     <Folder Include="Files\Comunicado\Calzacuero\" />
     <Folder Include="Files\Comunicado\Emcomer\" />
     <Folder Include="Files\Comunicado\Tiendas Especializadas\" />
@@ -1750,6 +1750,9 @@
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>favicon.ico</ApplicationIcon>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
