@@ -1,6 +1,7 @@
 ﻿@using CapaEntidad.BataClub
 @{
     Layout = "~/Views/Shared/_LayoutBataClubTablet.cshtml";
+    ViewBag.Title = "Registro BataClub";
 }
 @model Ent_BataClub_Registro
 @section Styles {
@@ -153,7 +154,7 @@
                 <div class="col-md-6">
                     <div class="form-group form-group-lg">
                         <label for="exampleFormControlInput1" class="label-form-custom">Fecha de nacimiento</label>
-                        <input type="text" class="form-control form-control-lg input-lg-reg" value="" name="FechaNacimiento" id="FechaNacimiento" placeholder="Coloca tu fecha de nacimiento...">
+                        <input type="text" class="form-control form-control-lg input-lg-reg" readonly name="FechaNacimiento" id="FechaNacimiento" placeholder="Coloca tu fecha de nacimiento...">
                     </div>
                 </div>
             </div>
@@ -195,9 +196,9 @@
                     <button type="button" data-vista="principal" data-operacion="registrar" class="btn btn-danger btn-lg action">REGISTRAR DATOS</button>
                 </div>
             </div>
-            <div class="row justified-content-rigth my-4">
-                <div class="col-md-1 align-self-end">
-                    <a class="btn btn btn-outline-info" href="@Url.Action("TabletPrincipal" , "BataClub")"><i class="glyphicon glyphicon-home"></i>Inicio</a>
+            <div class="row justify-content-center my-4">
+                <div class="col-md-3 text-center">
+                    <a class="btn btn-primary btn-lg-v" href="@Url.Action("TabletPrincipal" , "BataClub")"><i class="fa fa-home"></i>&nbsp;Inicio</a>
                 </div>
             </div>
         </form>

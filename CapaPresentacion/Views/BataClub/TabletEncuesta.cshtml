@@ -1,6 +1,7 @@
 ﻿@using CapaEntidad.BataClub
 @{
     Layout = "~/Views/Shared/_LayoutBataClubTablet.cshtml";
+    ViewBag.Title = "Registro de encuesta de satisfación";
 }
 @section Styles {
 
@@ -23,8 +24,8 @@
             }
 
             .label-encuesta {
-                font-size: 22px;
-                font-weight: bold;
+                font-size: 20px;
+                font-weight: 600;
             }
         }
 
@@ -63,7 +64,7 @@
 
             .label-encuesta {
                 font-size: 22px;
-                font-weight: bold;
+                font-weight: 600;
             }
         }
 
@@ -91,7 +92,7 @@
 
             .label-encuesta {
                 font-size: 22px;
-                font-weight: bold;
+                font-weight: 600;
             }
         }
 
@@ -160,9 +161,9 @@
                     <button type="button" data-vista="encuesta" data-operacion="registrarEncuesta" class="btn btn-danger btn-lg action">ENVIAR ENCUESTA</button>
                 </div>
             </div>
-            <div class="row justified-content-rigth my-4">
-                <div class="col-md-1 align-self-end">
-                    <a class="btn btn btn-outline-info" href="@Url.Action("TabletPrincipal" , "BataClub")"><i class="glyphicon glyphicon-home"></i>Inicio</a>
+            <div class="row justify-content-center my-4">
+                <div class="col-md-3 text-center">
+                    <a class="btn btn-primary btn-lg-v" href="@Url.Action("TabletPrincipal" , "BataClub")"><i class="fa fa-home"></i>&nbsp;Inicio</a>
                 </div>
             </div>
         </div>
@@ -231,6 +232,5 @@
                 }
             });
         })
-
     </script>
 }

@@ -1,6 +1,7 @@
 ﻿@using CapaEntidad.BataClub
 @{
     Layout = "~/Views/Shared/_LayoutBataClubTablet.cshtml";
+    ViewBag.Title = "Valida miembro Bata Club";
 }
 @section Styles {
     <style>
@@ -132,8 +133,8 @@
                 </div>
             </div>
             <div class="row justify-content-center my-4">
-                <div class="col-md-1 text-center">
-                    <a class="btn btn btn-outline-secondary" href="@Url.Action("TabletPrincipal" , "BataClub")"><i class="glyphicon glyphicon-home"></i>Inicio</a>
+                <div class="col-md-3 text-center">
+                    <a class="btn btn-primary btn-lg-v" href="@Url.Action("TabletPrincipal" , "BataClub")"><i class="fa fa-home"></i>&nbsp;Inicio</a>
                 </div>
             </div>
         </div>
@@ -163,7 +164,7 @@
                 $("#dni-pre").addClass("is-invalid");
                 return;
             }
-            showPleaseWait();            
+            showPleaseWait();
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("RegistrarActualizar", "BataClub")',
@@ -171,19 +172,62 @@
                 success: function (data) {
                     hidePleaseWait();
                     if (data.estado == 1) {
-
+                        /******/
                         if (data.cliente.Miembro) {
-                            swal({
-                                title: "Bienvenido",
-                                text: "Hola " + data.cliente.Nombres + " " + data.cliente.ApellidoPaterno + " " + data.cliente.ApellidoMaterno + " Ya eres miembro Bata Club",
-                                icon: "success",
-                            });
+                            if (data.cliente.Nombres != null) {
+                                _nombres = data.cliente.Nombres + " " + data.cliente.ApellidoPaterno + " " + data.cliente.ApellidoMaterno;
+                            }
+                            if (operacion == "actualizar") {
+                                swal({
+                                    title: "Bienvenido",
+                                    text: "Hola." + _nombres + " Ya eres miembro Bata Club.\n¿Deseas recibir un correo con un enlace para actualizar tus datos?",
+                                    icon: "info",
+                                    buttons: { cancel: "No", yes: "Si" },
+                                }).then((value) => {
+                                    if (value == "yes") {
+                                        showPleaseWait();
+                                        $.ajax({
+                                            type: "POST",
+                                            url: '@Url.Action("EnviarCorreo", "BataClub")',
+                                            data: { dni: dni, operacion: operacion },
+                                            success: function (data) {
+                                                hidePleaseWait();
+                                                if (data.estado == 1) {
+                                                    swal({
+                                                        title: "Exito",
+                                                        text: data.mensaje,
+                                                        icon: "success",
+                                                    });
+                                                } else {
+                                                    swal({
+                                                        title: "Error",
+                                                        text: data.mensaje,
+                                                        icon: "error",
+                                                        dangerMode: true,
+                                                    });
+                                                }
+                                            },
+                                            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                                                hidePleaseWait();
+                                                var error = eval("(" + XMLHttpRequest.responseText + ")");
+                                                swal(error.Message);
+                                            }
+                                        });
+                                    }
+                                });
+                            } else {
+                                swal({
+                                    title: "Bienvenido",
+                                    text: "Hola " + _nombres + " Ya eres miembro Bata Club",
+                                    icon: "success",
+                                });
+                            }
                         }
                         else {
                             if (operacion == "actualizar") {
                                 if (data.cliente.Existe) {
                                     if (data.cliente.Nombres != null) {
-                                        _nombres = data.cliente.Nombres + " " + data.cliente.ApellidoPaterno + " " + data.cliente.ApellidoMaterno;                                        
+                                        _nombres = data.cliente.Nombres + " " + data.cliente.ApellidoPaterno + " " + data.cliente.ApellidoMaterno;
                                     }
                                     swal({
                                         title: "Bienvenido",
@@ -242,7 +286,7 @@
                                             $("#preRegistro").submit();
                                         }
                                     });
-                                }                                
+                                }
                             } else {
                                 if (data.cliente.Nombres != null) {
                                     $("#nombres").val(data.cliente.Nombres);
