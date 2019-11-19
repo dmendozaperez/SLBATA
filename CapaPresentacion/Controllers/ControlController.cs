@@ -91,7 +91,13 @@ namespace CapaPresentacion.Controllers
                     IsPersistent = model.Recordar
                 }, identity);
 
-
+                if (model.Usuario.Substring(0, 2) == "50") { 
+                    HttpCookie cookie = new HttpCookie("TiendaBata");
+                    HttpContext.Response.Cookies.Remove("TiendaBata");
+                    cookie.Value = model.Usuario;
+                    cookie.Expires = DateTime.Now.AddDays(60);
+                    HttpContext.Response.SetCookie(cookie);
+                }
                 if (return_action.Length == 0)
                 {
 

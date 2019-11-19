@@ -51,9 +51,12 @@
                 border-radius: .3rem;
                 height: 65px;
             }
+            .invalid-feedback   {
+                font-size:120%;
+            }
         }
 
-        @@media (min-width: 992px) {
+        @@media (min-width: 992px) {    
             .content-override {
                 padding-top: 5%;
             }
@@ -92,6 +95,9 @@
             <div class="row justify-content-center">
                 <div class="col-md-7 text-center">
                     <input type="search" id="boletaEncuesta" class="form-control form-control-lg input-lg" placeholder="Ej. B001-0123" />
+                    <div class="invalid-feedback">
+                        Por favor ingrese un comprobante válido.
+                    </div>
                 </div>
             </div>
             <div class="row justify-content-center">
@@ -111,12 +117,18 @@
 @section Scripts {
 <script>
     $(document).ready(function () {
+        $('#boletaEncuesta').focus();
         $('form').submit(function (e) {
             e.preventDefault();
             e.returnValue = false;
             var boleta = $("#boletaEncuesta").val();
             if (boleta.length > 0) {
                 ValidarBoleta(boleta);
+            }
+            else
+            {
+                $("#boletaEncuesta").addClass("is-invalid");
+                return;
             }
         });
     });

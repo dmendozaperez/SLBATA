@@ -61,6 +61,7 @@ namespace CapaPresentacion.Controllers
         private string _BataClub_Cupon_Pares = "_BataClub_Cupon_Pares";
         private string _BataClub_Promociones_estado = "_BataClub_Promociones_estado";
         private string _BataClub_Promociones_grafica = "_BataClub_Promociones_grafica";
+        
 
         // GET: BataClub
         #region Bataclub/Index
@@ -1254,20 +1255,27 @@ namespace CapaPresentacion.Controllers
         #region BataClub/Tablet
         public ActionResult TabletPrincipal()
         {
-            //Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
-            //string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
-            //string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
-            //string return_view = actionName + "|" + controllerName;
-
-            //if (_usuario == null)
-            //{
-            //    return RedirectToAction("Login", "Control", new { returnUrl = return_view });
-            //}
-            //else
-            //{
-                return View();
-            //}
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
+            HttpCookie cookie = HttpContext.Request.Cookies.Get("TiendaBata");
+            if (cookie == null)
+            {                
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+            }
+            else
+            {
+                if (!String.IsNullOrEmpty(cookie.Value))
+                {
+                    return View();
+                }
+                else
+                {
+                    return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+                }
+            }
         }
+
         public ActionResult TabletPreRegistro()
         {
             return View();
@@ -1318,8 +1326,10 @@ namespace CapaPresentacion.Controllers
         {
             string _mensaje = "";
             DateTime _temp;
-            
-            if (registro == null)
+
+            HttpCookie cookie = HttpContext.Request.Cookies.Get("TiendaBata");
+
+            if (registro == null || cookie == null)
             {
                 _mensaje += "No hay datos para registrar.";
                 return Json(new { resultado = 0, mensaje = _mensaje });
@@ -1388,7 +1398,7 @@ namespace CapaPresentacion.Controllers
                 string _cor = "";
                 string _tel = "";
                 string _res = "";
-                string _desc =  actualiza_cliente(registro, "50143",ref _cor,ref _tel , ref _res);
+                string _desc =  actualiza_cliente(registro, cookie.Value, ref _cor,ref _tel , ref _res);
                 if (_res != "0")
                 {
                     return Json(new { resultado = 0, mensaje = _mensaje + Environment.NewLine + _desc });
@@ -1601,8 +1611,9 @@ namespace CapaPresentacion.Controllers
             Session[_session_boleta_encuesta] = null;
             try
             {
+                HttpCookie cookie = HttpContext.Request.Cookies.Get("TiendaBata");
                 int posGuion = boleta.IndexOf("-");
-                string serie = (posGuion > -1 ? boleta.Substring(0, posGuion) : (Session["Tienda"] == null ? "x" : Session["Tienda"].ToString().Substring(2)));
+                string serie = (posGuion > -1 ? boleta.Substring(0, posGuion) : (cookie == null ? "x" : cookie.Value.Substring(2)));
                 string strnumero = (posGuion > -1 ? boleta.Substring(posGuion + 1) : boleta);
                 int numero = 0;
                 if (IsNumeric(strnumero))
@@ -1632,12 +1643,9 @@ namespace CapaPresentacion.Controllers
         {
             try
             {
-                Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
-                string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
-                string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
-                string return_view = actionName + "|" + controllerName;
+                HttpCookie cookie = HttpContext.Request.Cookies.Get("TiendaBata");
                 string _mensaje = "";
-                if (_usuario == null)
+                if (cookie == null)
                 {
                     return Json(new { resultado = 0, mensaje = "No hay usuario Logeado." });
                 }
@@ -1651,10 +1659,10 @@ namespace CapaPresentacion.Controllers
                     return Json(new { resultado = 0, mensaje = "No existe informacion del comprobante de pago, por favor, vuelva a ingresar." });
                 }
                 Ent_BataClub_Encuesta _encuesta = (Ent_BataClub_Encuesta)Session[_session_boleta_encuesta];
-                _encuesta.COD_TDA_ENC = (Session["Tienda"] == null ? "" : Session["Tienda"].ToString());
+                _encuesta.COD_TDA_ENC = cookie.Value;
                 _encuesta.CORREO = correo;
                 _encuesta.DNI = "";
-                _encuesta.USUARIO = _usuario.usu_id.ToString();
+                //_encuesta.USUARIO = _usuario.usu_id.ToString();
                 _encuesta.respuestas = respuestas;
                 bool res = datTab.BATACLUB_SET_ENCUESTA(_encuesta, ref _mensaje);
                 if (!res)
