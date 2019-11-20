@@ -83,6 +83,8 @@
         <input type="hidden" value="" name="Nombres" id="nombres"/>
         <input type="hidden" value="" name="ApellidoPaterno" id="apepat" />
         <input type="hidden" value="" name="ApellidoMaterno" id="apemat" />
+        <input type="hidden" value="" name="CorreoElectronico" id="correoe" />
+        <input type="hidden" value="" name="CorreoElectronico2" id="correoe2" />
         <div class="content-override" id="preregistro" data-val-fnd="0.5">
             <div class="row justify-content-center mb-4">
                 <div class="col-lg-3 col-md-8 col-sm-10 text-center">
@@ -274,6 +276,8 @@
                                         $("#nombres").val(data.cliente.Nombres);
                                         $("#apepat").val(data.cliente.ApellidoPaterno);
                                         $("#apemat").val(data.cliente.ApellidoMaterno);
+                                        $("#correoe").val(data.cliente.CorreoElectronico);
+                                        $("#correoe2").val(data.cliente.CorreoElectronico);
                                     }
                                     swal({
                                         title: "Bienvenido",
@@ -292,6 +296,8 @@
                                     $("#nombres").val(data.cliente.Nombres);
                                     $("#apepat").val(data.cliente.ApellidoPaterno);
                                     $("#apemat").val(data.cliente.ApellidoMaterno);
+                                    $("#correoe").val(data.cliente.CorreoElectronico);
+                                    $("#correoe2").val(data.cliente.CorreoElectronico);
                                 }
                                 $("#preRegistro").off('submit');
                                  $("#preRegistro").submit();
