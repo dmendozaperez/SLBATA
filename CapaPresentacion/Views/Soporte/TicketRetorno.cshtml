@@ -1,0 +1,101 @@
+﻿@{ 
+    ViewBag.Title = "Ticket Retorno - Reimpresion";
+}
+<link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />
+<p class="text-danger">Envio de reimpresión de tickets de retorno a tienda.</p>
+
+<div class="box box-body box-primary">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="dwtda">Tienda:</label>
+                @Html.DropDownList("dwtda", new SelectList(ViewBag.tienda, "cbo_codigo", "cbo_descripcion", null), new { @class = "form-control selectpicker", @data_live_search = "true", @id = "dwtda", @name = "dwtda", @data_actions_box = "true" })
+            </div>            
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="dwtda">Código de cupón:</label>
+                <input type="text" class="form-control" name="cupon" id="cupon"/>
+            </div>
+        </div>
+        <div class="col-md-5" style="padding-top:24px">
+            <button class="btn btn-primary accion" data-ope="reimpresion">Enviar reimpresión</button>
+            <button class="btn btn-default accion" data-ope="consultar">Consultar Cupon</button>
+        </div>
+    </div>
+</div>
+<div id="infoTr">
+
+</div>
+
+<script src="~/Scripts/bootstrap-select.min.js"></script>
+<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $(".accion").click(function () {
+            var ope = $(this).attr("data-ope") == "consultar" ? true : false;
+            var tienda = $("#dwtda").val();
+            var cupon = $("#cupon").val();
+            waitingDialog.show('Espere un momento por favor');
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("PRUEBA_TK", "Soporte")',
+                data: { tienda: tienda , codigo :cupon , consulta : ope },
+                success: function (data) {
+                    waitingDialog.hide();
+                    if (data.estado == 1) {
+                        var _infoTr = '<div class="box box-body box-danger">\
+                                <h5><strong>Información del Cupón</strong></h5>\
+                                <div class="row">\
+                                    <div class="col-md-4">\
+                                        <div class="list-group">\
+                                            <div class="list-group-item list-group-item-info"><strong>General</strong></div>\
+                                            <div class="list-group-item"><strong>Codigo:</strong>&nbsp;<span style="float:right; font-weight:600">' + data.tr.codigo + '</span></div>\
+                                            <div class="list-group-item"><span>Impreso:</span>&nbsp;<span style="float:right">' + (data.tr.impreso ? 'No' : 'Si') + '</span></div>\
+                                            <div class="list-group-item"><span>Estado:</span>&nbsp;<span style="float:right">' + data.tr.estado + '</span></div>\
+                                            <div class="list-group-item"><span>Monto dscto:</span>&nbsp;<span style="float:right">' + data.tr.montoDscto + '</span></div>\
+                                        </div>\
+                                    </div>\
+                                    <div class="col-md-4">\
+                                        <div class="list-group">\
+                                            <div class="list-group-item list-group-item-danger"><strong>Generación</strong></div>\
+                                            <div class="list-group-item"><span>Tienda:</span>&nbsp;<span style="float:right;">' + data.tr.tiendaGen + '</span></div>\
+                                            <div class="list-group-item"><span>Serie-Número:</span>&nbsp;<span style="float:right">' + data.tr.serieGen + '-' + data.tr.numeroGen + '</span></div>\
+                                            <div class="list-group-item"><span>Fecha:</span>&nbsp;<span style="float:right">' + data.tr.fechaGen + '</span></div>\
+                                            <div class="list-group-item"><span>Monto:</span>&nbsp;<span style="float:right">' + data.tr.montoGen + '</span></div>\
+                                        </div>\
+                                    </div>\
+                                    <div class="col-md-4">\
+                                        <div class="list-group">\
+                                            <div class="list-group-item list-group-item-success"><strong>Consumo</strong></div>\
+                                            <div class="list-group-item"><span>Tienda:</span>&nbsp;<span style="float:right;">' + data.tr.tiendaUso + '</span></div>\
+                                            <div class="list-group-item"><span>Serie-Número:</span>&nbsp;<span style="float:right">' + data.tr.serieUso + '-' + data.tr.numeroUso + '</span></div>\
+                                            <div class="list-group-item"><span>Fecha:</span>&nbsp;<span style="float:right">' + data.tr.fechaUso + '</span></div>\
+                                            <div class="list-group-item"><span>Monto:</span>&nbsp;<span style="float:right">' + data.tr.montoUso + '</span></div>\
+                                        </div>\
+                                    </div>\
+                                </div>\
+                            </div>\
+'
+                        $("#infoTr").html(_infoTr);
+                    } else {
+                        swal({
+                            title: "Error",
+                            text: data.mensaje,
+                            icon: "error",
+                            dangerMode: true,
+                        });
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    waitingDialog.hide();
+                    var error = eval("(" + XMLHttpRequest.responseText + ")");
+                    swal(error.Message);
+                }
+            });
+
+        });
+    });
+</script>

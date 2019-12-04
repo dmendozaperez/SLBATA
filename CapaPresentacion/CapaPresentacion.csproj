@@ -1648,6 +1648,7 @@
     <Content Include="Views\BataClub\TabletRegistro.cshtml" />
     <Content Include="Views\BataClub\TabletPreEncuesta.cshtml" />
     <Content Include="Views\BataClub\TabletEncuesta.cshtml" />
+    <Content Include="Views\Soporte\TicketRetorno.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

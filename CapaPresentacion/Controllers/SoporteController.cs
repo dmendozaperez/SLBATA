@@ -27,7 +27,7 @@ namespace CapaPresentacion.Controllers
         private string _session_doc_transac_doc_private = "_session_doc_transac_doc_private"; //gft
         private string _session_soporte_tienda_peru = "_session_soporte_tienda_peru";//gft
         private Dat_ListaTienda dat_lista_tienda = new Dat_ListaTienda();
-        // private Dat_Combo tienda = new Dat_Combo();//gft
+        private Dat_Combo tienda = new Dat_Combo();//gft
 
         // GET: Soporte
         public ActionResult Index()
@@ -307,5 +307,59 @@ namespace CapaPresentacion.Controllers
         }
         #endregion
 
+        #region Ticket Retorno
+        public ActionResult TicketRetorno()
+        {
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
+
+            if (_usuario == null)
+            {
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+            }
+            else
+            {
+                ViewBag.Tienda = tienda.get_ListaTiendaXstore(true);
+                return View();
+            }
+        }
+        public ActionResult PRUEBA_TK(string tienda , string codigo , bool consulta)
+        {
+            Dat_Ticket_Retorno datTR = new Dat_Ticket_Retorno();
+            string _mensaje = "";
+
+            if (consulta)
+            {
+                if (String.IsNullOrEmpty(codigo))
+                {
+                    _mensaje = "Ingrese un codigo de cupon para consultar.";
+                }
+            }else
+            {
+                if (String.IsNullOrEmpty(tienda))
+                {
+                    _mensaje = "Seleccione tienda para enviar una re-impresion de ticket de retorno";
+                }
+            }
+
+            if (_mensaje == "")
+            {
+                Ent_Ticket_Retorno _ret = datTR.PRUEBA_TK(new Ent_Ticket_Retorno() { tiendaGen = tienda, codigo = codigo }, consulta,ref _mensaje);
+                if (_ret != null)
+                {
+                    return Json(new { estado = 1 , mensaje = "Operacion " + (consulta ? "consultar " : "enviar re-impresion") + " realizada con exito"  , tr = _ret });
+                }
+                else
+                {
+                    return Json(new { estado = 0, mensaje = _mensaje });
+                }
+            }else
+            {
+                return Json(new { estado = 0, mensaje = _mensaje });
+            }
+        }
+        #endregion
     }
 }
