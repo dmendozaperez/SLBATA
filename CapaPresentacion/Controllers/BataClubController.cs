@@ -139,8 +139,13 @@ namespace CapaPresentacion.Controllers
                 return View();
             }
         }
-        public ActionResult updateChartData(string anio, int informe, int mes = 0, string fecini = null, string fecfin = null, string prom = "", string sup = "")
+        public ActionResult updateChartData(string anio, int informe, int mes = 0, string fecini = null, string fecfin = null, string prom = "", string sup = "", string fecini_canal = null, string fecfin_canal = null)
         {
+            if (fecini!=null)
+            { 
+                if (fecini.Length == 0) fecini = null;
+                if (fecfin.Length == 0) fecfin = null;
+            }
             Ent_BataClub_DashBoard dashboard  = (Ent_BataClub_DashBoard)Session["_dashboardData"];
             if ( informe == 5 || informe == 7 || informe==8)
             {
@@ -150,7 +155,7 @@ namespace CapaPresentacion.Controllers
             {
                 dashboard = (Ent_BataClub_DashBoard)Session["_dashboardData"];
 
-                dashboard = datDash.GET_INFO_DASHBOARD(ref dashboard, anio, informe, mes, fecini, fecfin, prom);
+                dashboard = datDash.GET_INFO_DASHBOARD(ref dashboard, anio, informe, mes, fecini, fecfin, prom,fecini_canal,fecfin_canal);
                 Session["_dashboardData"] = dashboard;
             }
             Ent_BataClub_Chart_Data chartDS = null;
