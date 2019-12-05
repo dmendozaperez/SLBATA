@@ -12,9 +12,9 @@ namespace CapaDato.BataClub
 {
     public class Dat_BataClub_Dashboard
     {
-        public Ent_BataClub_DashBoard GET_INFO_DASHBOARD(ref Ent_BataClub_DashBoard dashboard_session, string anio = "2019" , int informe = 0, int mes = 0,object fechaIni = null , object fechaFin = null , string prom = "", object fechaIni_canal = null, object fechaFin_canal = null) // 0 = TODO | 1 = GENERAL | 2 = REGISTRADOS | 3 = MIEMBROS | 4 = CANALES
+        public Ent_BataClub_DashBoard GET_INFO_DASHBOARD(ref Ent_BataClub_DashBoard dashboard_session, string anio = "2019" , int informe = 0, int mes = 0,object fechaIni = null , object fechaFin = null , string prom = "") // 0 = TODO | 1 = GENERAL | 2 = REGISTRADOS | 3 = MIEMBROS | 4 = CANALES
         {
-            string sqlquery = "USP_BATACLUB_DASHBOARD_D";
+            string sqlquery = "USP_BATACLUB_DASHBOARD";
             Ent_BataClub_DashBoard info = null;
             try
             {
@@ -38,13 +38,6 @@ namespace CapaDato.BataClub
                             cmd.Parameters.AddWithValue("@fecha_ini", Convert.ToDateTime(fechaIni));
                             cmd.Parameters.AddWithValue("@fecha_fin", Convert.ToDateTime(fechaFin));
                         }
-
-                        if (fechaIni_canal != null && fechaFin_canal != null)
-                        {
-                            cmd.Parameters.AddWithValue("@fecha_ini_canal", Convert.ToDateTime(fechaIni_canal));
-                            cmd.Parameters.AddWithValue("@fecha_fin_canal", Convert.ToDateTime(fechaFin_canal));
-                        }
-
                         cmd.Parameters.AddWithValue("@prom", prom);//@prom
                         using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                         {

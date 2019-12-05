@@ -19,30 +19,21 @@ namespace CapaDato.Control
             string sqlquery = "[USP_Modificar_Aplicacion]";
             try
             {
-
                 using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
                 {
-                    try
+                    if (cn.State == 0) cn.Open();
+                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
                     {
-                        if (cn.State == 0) cn.Open();
-                        using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
-                        {
-                            cmd.CommandTimeout = 0;
-                            cmd.CommandType = CommandType.StoredProcedure;
-                            cmd.Parameters.AddWithValue("@apl_id", apl.apl_id);
-                            cmd.Parameters.AddWithValue("@apl_nombre", apl.apl_nombre);
-                            cmd.Parameters.AddWithValue("@apl_orden", apl.apl_orden);
-                            cmd.Parameters.AddWithValue("@apl_controller", apl.apl_controller);
-                            cmd.Parameters.AddWithValue("@apl_action", apl.apl_action);
-                            cmd.ExecuteNonQuery();
-                            valida = true;
-                        }
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@apl_id", apl.apl_id);
+                        cmd.Parameters.AddWithValue("@apl_nombre", apl.apl_nombre);                      
+                        cmd.Parameters.AddWithValue("@apl_orden", apl.apl_orden);                       
+                        cmd.Parameters.AddWithValue("@apl_controller", apl.apl_controller);
+                        cmd.Parameters.AddWithValue("@apl_action", apl.apl_action);
+                        cmd.ExecuteNonQuery();
+                        valida = true;
                     }
-                    catch (Exception)
-                    {                        
-                    }
-                    if (cn != null)
-                        if (cn.State == ConnectionState.Open) cn.Close();
                 }
 
             }
@@ -60,29 +51,19 @@ namespace CapaDato.Control
             {
                 using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
                 {
-                    try
+                    if (cn.State == 0) cn.Open();
+                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
                     {
-                        if (cn.State == 0) cn.Open();
-                        using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
-                        {
-                            cmd.CommandTimeout = 0;
-                            cmd.CommandType = CommandType.StoredProcedure;
-                            cmd.Parameters.AddWithValue("@apl_id", apl.apl_id);
-                            cmd.Parameters.AddWithValue("@apl_nombre", apl.apl_nombre);
-                            cmd.Parameters.AddWithValue("@apl_orden", apl.apl_orden);
-                            cmd.Parameters.AddWithValue("@apl_controller", apl.apl_controller);
-                            cmd.Parameters.AddWithValue("@apl_action", apl.apl_action);
-                            cmd.ExecuteNonQuery();
-                            valida = true;
-                        }
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@apl_id", apl.apl_id);
+                        cmd.Parameters.AddWithValue("@apl_nombre", apl.apl_nombre);                     
+                        cmd.Parameters.AddWithValue("@apl_orden", apl.apl_orden);                        
+                        cmd.Parameters.AddWithValue("@apl_controller", apl.apl_controller);
+                        cmd.Parameters.AddWithValue("@apl_action", apl.apl_action);
+                        cmd.ExecuteNonQuery();
+                        valida = true;
                     }
-                    catch
-                    {
-                        
-                    }
-                    if (cn != null)
-                        if (cn.State == ConnectionState.Open) cn.Close();
-
                 }
 
             }
@@ -100,41 +81,30 @@ namespace CapaDato.Control
             {
                 using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
                 {
-
-                    try
+                    if (cn.State == 0) cn.Open();
+                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
                     {
-                        if (cn.State == 0) cn.Open();
-                        using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        SqlDataReader dr = cmd.ExecuteReader();
+
+                        if (dr.HasRows)
                         {
-                            cmd.CommandTimeout = 0;
-                            cmd.CommandType = CommandType.StoredProcedure;
-                            SqlDataReader dr = cmd.ExecuteReader();
+                            list = new List<Ent_Aplicacion>();
 
-                            if (dr.HasRows)
+                            while (dr.Read())
                             {
-                                list = new List<Ent_Aplicacion>();
-
-                                while (dr.Read())
-                                {
-                                    Ent_Aplicacion apl = new Ent_Aplicacion();
-                                    apl.apl_id = dr["apl_id"].ToString();
-                                    apl.apl_nombre = dr["apl_nombre"].ToString();
-                                    apl.apl_orden = dr["apl_orden"].ToString();
-                                    apl.apl_action = dr["apl_action"].ToString();
-                                    apl.apl_controller = dr["apl_controller"].ToString();
-                                    list.Add(apl);
-                                }
+                                Ent_Aplicacion apl = new Ent_Aplicacion();
+                                apl.apl_id =dr["apl_id"].ToString();
+                                apl.apl_nombre = dr["apl_nombre"].ToString();
+                                apl.apl_orden = dr["apl_orden"].ToString();
+                                apl.apl_action = dr["apl_action"].ToString();
+                                apl.apl_controller = dr["apl_controller"].ToString();
+                                list.Add(apl);
                             }
-
                         }
-                    }
-                    catch (Exception)
-                    {
-                       
-                    }
-                    if (cn != null)
-                        if (cn.State == ConnectionState.Open) cn.Close();
 
+                    }
                 }
             }
             catch
