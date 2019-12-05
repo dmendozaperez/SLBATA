@@ -95,7 +95,7 @@ namespace CapaPresentacion.Controllers
                     HttpCookie cookie = new HttpCookie("TiendaBata");
                     HttpContext.Response.Cookies.Remove("TiendaBata");
                     cookie.Value = model.Usuario;
-                    cookie.Expires = DateTime.Now.AddDays(60);
+                    cookie.Expires = DateTime.Now.AddDays(240);
                     HttpContext.Response.SetCookie(cookie);
                 }
                 if (return_action.Length == 0)

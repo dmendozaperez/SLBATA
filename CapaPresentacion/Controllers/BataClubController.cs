@@ -119,7 +119,8 @@ namespace CapaPresentacion.Controllers
                 //{
                 //    Session["_dashboardData"] = datDash.GET_INFO_DASHBOARD();
                 //}
-                Session["_dashboardData"] = datDash.GET_INFO_DASHBOARD();
+                Ent_BataClub_DashBoard dashboard_session = null;
+                Session["_dashboardData"] = datDash.GET_INFO_DASHBOARD( ref dashboard_session);
 
                 Ent_BataClub_DashBoard dashboard = (Ent_BataClub_DashBoard)Session["_dashboardData"];
                 ViewBag.general = dashboard.General;
@@ -140,14 +141,16 @@ namespace CapaPresentacion.Controllers
         }
         public ActionResult updateChartData(string anio, int informe, int mes = 0, string fecini = null, string fecfin = null, string prom = "", string sup = "")
         {
-            Ent_BataClub_DashBoard dashboard = null;
-            if (informe == 5 || informe == 7)
+            Ent_BataClub_DashBoard dashboard  = (Ent_BataClub_DashBoard)Session["_dashboardData"];
+            if ( informe == 5 || informe == 7 || informe==8)
             {
                 dashboard = (Ent_BataClub_DashBoard)Session["_dashboardData"];
             }
             else
             {
-                dashboard = datDash.GET_INFO_DASHBOARD(anio, informe, mes, fecini, fecfin, prom);
+                dashboard = (Ent_BataClub_DashBoard)Session["_dashboardData"];
+
+                dashboard = datDash.GET_INFO_DASHBOARD(ref dashboard, anio, informe, mes, fecini, fecfin, prom);
                 Session["_dashboardData"] = dashboard;
             }
             Ent_BataClub_Chart_Data chartDS = null;
