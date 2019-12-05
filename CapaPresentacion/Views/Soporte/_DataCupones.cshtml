@@ -1,0 +1,156 @@
+﻿<table id="datatableTr" class="table table-hover dataTable table-striped table-responsive">
+    <thead>
+        <tr style="background-color:#3d566e; color:#ecf0f1">
+            <th>Cupón</th>
+            <th>Estado</th>
+            <th>Dscto</th>
+            <th>Impreso</th>
+            <th>Tda Gen</th>
+            <th>Fec Gen</th>
+            <th>Monto Gen</th>
+            <th>S-N Gen</th>
+            <th>Tda Uso</th>
+            <th>Fec Uso</th>
+            <th>Monto Uso</th>
+            <th>S-N Uso</th>
+            <th>Imprimir</th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach:"></tbody>
+    <tfoot>
+        <tr>
+            <th>Cupón</th>
+            <th>Estado</th>
+            <th>Dscto</th>
+            <th>Impreso</th>
+            <th>Tda Gen</th>
+            <th>Fec Gen</th>
+            <th>Monto Gen</th>
+            <th>S-N Gen</th>
+            <th>Tda Uso</th>
+            <th>Fec Uso</th>
+            <th>Monto Uso</th>
+            <th>S-N Uso</th>
+            <th>Imprimir</th>
+        </tr>
+    </tfoot>
+</table>
+
+ <script>
+     $(document).ready(function () {
+         $('.dataTable').DataTable({
+             "language": {
+                 "url": "../Scripts/DataTables/Spanish.json"
+             },
+             "bProcessing": false,
+             "bServerSide": true,
+             "bAutoWidth": false,
+             "sAjaxSource": '@Url.Action("getTablaCuponesRetorno", "Soporte")',
+             //"fnServerParams": function (aoData) {
+             //},
+             //"fnServerData": function ( sSource, aoData, fnCallback ) {
+             //    //$.getJSON( sSource, aoData, function (json) {
+             //    //    $('#lblConsumidos')[0].textContent = "" + json.variable1;
+             //    //    $('#lblDisponibles')[0].textContent = "" + json.variable2;
+             //    //    $('#lblCaducados')[0].textContent = "" + json.variable3;
+             //    //    fnCallback(json)
+             //    //} );
+             //},
+             "columnDefs": [{
+                 "targets": [0,2,3,4,6,7,8,10,11,12],
+                 "orderable": false
+             }],
+             "bdestroy": true,
+             "start": 0,
+             "order": [5,"desc"],
+             "bDeferRender": true,
+             "aoColumns": [
+
+                     { "sName": "codigo", "mData": "codigo" },
+                     { "sName": "estado", "mData": "estado", "class": "text-center" },
+                     { "sName": "montoDscto", "mData": "montoDscto", "class": "text-center" },
+                     {
+                         "render": function (data, type, full) {
+                             if (full.impreso) {
+                                 return "<i class='fa fa-check text-success'></i>";
+                             } else {
+                                 return "";
+                             }
+                         }, "class":"text-center"
+                     },
+                     { "sName": "tiendaGen", "mData": "tiendaGen" },
+                     { "sName": "fechaGen", "mData": "fechaGen" },
+                     { "sName": "montoGen", "mData": "montoGen", "class": "text-center" },
+                     {
+                         "render": function (data, type, full) {
+                             return full.serieGen + "-" + full.numeroGen;
+                         }
+                     },
+                     { "sName": "tiendaUso", "mData": "tiendaUso" },
+                     { "sName": "fechaUso", "mData": "fechaUso" },
+                     { "sName": "montoUso", "mData": "montoUso" },
+                     {
+                         "render": function (data, type, full) {
+                             return full.serieUso + "-" + full.numeroUso;
+                         }
+                     },
+                     {
+                         "render": function (data, type, full) {
+                             return '<button title="Enviar impresion a tienda" class="btn btn-default btn-sm reimprimir" data-tienda="' + full.tiendaGen + '"  data-cupon="' + full.codigo + '"><i class="glyphicon glyphicon-print"></i></button>';
+                         }, "class": "boton-td"
+                     }
+             ]
+         });
+
+         $('.dataTable').on('click', '.reimprimir', function (e) {
+             var cupon = $(this).attr('data-cupon');
+             var tienda = $(this).attr('data-tienda');
+             swal({
+                 title: "Ticket de Retorno",
+                 text: "¿Desea enviar una reimpresión del ticket de retorno para la tienda : " + tienda + "?",
+                 icon: "warning",
+                 buttons: true,
+                 dangerMode: true,
+             }).then((cambiar) => {
+                 if (cambiar) {
+                     waitingDialog.show('Espere un momento por favor.');
+                     var cupon = $(this).attr('data-cupon');
+                     $.ajax({
+                         type: "Post",
+                         url: '@Url.Action("REIMPRESION_TR", "Soporte")',
+                         //contentType: "application/json; charset=utf-8",
+                         data: { cupon: cupon },
+                         //dataType: "json",
+                         success: function (data) {
+                             waitingDialog.hide();
+                             if (data.estado == 1) {
+                                 swal({
+                                     title: "Ticket de retorno",
+                                     text: "Impresión enviada",
+                                     icon: "success",
+                                 });
+                             } else {
+                                 swal({
+                                     title: "Error",
+                                     text: data.mensaje,
+                                     icon: "error",
+                                     dangerMode: true,
+                                 });
+                             }
+                         },
+                         error: function (xhr) {
+                             waitingDialog.hide();
+                             toastr.error(xhr, 'Mensaje');
+                         }
+                     });
+                 }
+             });
+
+
+
+            
+
+         });
+
+     });  
+ </script>
