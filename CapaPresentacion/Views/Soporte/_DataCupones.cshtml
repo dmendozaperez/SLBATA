@@ -96,7 +96,11 @@
                      },
                      {
                          "render": function (data, type, full) {
-                             return '<button title="Enviar impresion a tienda" class="btn btn-default btn-sm reimprimir" data-tienda="' + full.tiendaGen + '"  data-cupon="' + full.codigo + '"><i class="glyphicon glyphicon-print"></i></button>';
+                             if (full.estado == "DS") {
+                                 return '<button title="Enviar impresion a tienda" class="btn btn-default btn-sm reimprimir" data-tienda="' + full.tiendaGen + '"  data-cupon="' + full.codigo + '"><i class="glyphicon glyphicon-print"></i></button>';
+                             } else {
+                                 return ""
+                             }                             
                          }, "class": "boton-td"
                      }
              ]
