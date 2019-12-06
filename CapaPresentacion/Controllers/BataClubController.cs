@@ -390,7 +390,31 @@ namespace CapaPresentacion.Controllers
             }
             return chartDS;
         }
-
+        private string _session_det_canal_excel = "_session_det_canal_excel";
+        public JsonResult CanalDetExcel_Data(string fecini_canal = null, string fecfin_canal = null)
+        {
+            Dat_BataClub_Dashboard canal_excel = new Dat_BataClub_Dashboard();
+            List<Ent_Bataclub_Canales_Excel> lista = canal_excel.get_canales_excel(3, Convert.ToDateTime(fecini_canal), Convert.ToDateTime(fecfin_canal));
+            Boolean valida_lista = false;
+            if (lista!=null)
+            {
+                if (lista.Count>0)
+                {
+                    valida_lista = true;
+                    Session[_session_det_canal_excel] = lista;
+                }
+            }           
+            return Json(new { estado = (valida_lista) ? "1" : "-1", desmsg = (valida_lista) ? "Exportando el Excel." : "Hubo un Error ó No hay Datos para exportar." });
+            
+        }
+        public FileContentResult ExportarCanalDetExcel()
+        {            
+                List<Ent_Bataclub_Canales_Excel> lista = (List<Ent_Bataclub_Canales_Excel>)Session[_session_det_canal_excel]; 
+                string[] columns = { "Canal", "Tienda", "Dni", "Nombres", "Correo", "Miem_Bataclub", "Fec_Registro", "Fec_Miembro" };
+                byte[] filecontent = ExcelExportHelper.ExportExcel(lista, "Lista de Canales Detallado", true, columns);
+                string nom_excel = "Lista de Canales x Rango de Fecha Detallado";
+                return File(filecontent, ExcelExportHelper.ExcelContentType, nom_excel + ".xlsx");                                      
+        }
         public FileContentResult RegTraConTdaExcel()
         {
             if (Session[_session_det_tdas_sup_excel] == null)

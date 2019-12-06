@@ -242,26 +242,55 @@
             <div class="box box-default">
                 <div class="box-header with-border">
                     <i class="fa fa-pie-chart"></i>
-                    <h3 class="box-title">Canales  x  Año</h3>
-                    <div class="box-tools pull-right" style="top: 3px;">
+                    <h3 class="box-title">Canales  x  Rango de Fecha</h3>
+                    @*<div class="box-tools pull-right" style="top: 3px;">
                         @Html.DropDownList("anioC", new SelectList(ViewBag.anios, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "form-control form-control-sm selectpicker anio", @id = "anioC", @name = "anioC", @data_informe = 3 })
-                    </div>
+                    </div>*@
                 </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <p class="text-center text-bold" id="tituloCanalesChar">
-                            </p>
-                            <div class="chart-responsive">
-                                <canvas id="canalChart" height="280"></canvas>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-inline">
+                                    <div class="form-group date">
+                                        @*<label>Inicio: </label>&nbsp;&nbsp;*@
+                                        <div class="input-group input-group-sm">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            <input type="text" class="form-control pull-right" id="fechaIni_canal">
+                                        </div>
+                                        
+                                    </div>&nbsp;&nbsp;&nbsp;
+                                    <div class="form-group date">
+                                        @*<label>Fin: </label>&nbsp;&nbsp;*@
+                                        <div class="input-group input-group-sm">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            <input type="text" class="form-control pull-right" id="fechaFin_canal">
+                                        </div>
+                                    </div>&nbsp;&nbsp;&nbsp;
+                                    <button type="button" class="btn btn-primary btn-sm" title="Mostrar" id="btnMostrarCharBarcanal"><i class="fa fa-search"></i></button>
+                                    <button type="button" class="btn btn-primary btn-sm" title="Exportar a Excel" id="btnMostrarCharBarcanal_excel"><i class="glyphicon glyphicon-export">Exportar</i></button>
+                                    @*<a href="@Url.Action("RegTraConTdaExcel","BataClub")" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-export"></i>&nbsp;&nbsp;Exportar</a>*@
+                                </div>
+
                             </div>
-                            <!-- ./chart-responsive -->
                         </div>
-                        <!-- /.col -->
-                    </div>
-                    <!-- /.row -->
-                </div>               
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p class="text-center text-bold" id="tituloCanalesChar">
+                                    </p>
+                                    <div class="chart-responsive">
+                                        <canvas id="canalChart" height="280"></canvas>
+                                    </div>
+                                    <!-- ./chart-responsive -->
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                            <!-- /.row -->
+                        </div>               
             </div>
         </div>
     </div>
@@ -523,10 +552,10 @@
         if (data != null) {
             getChartInformeMensual(6, canvas, data);
             var totaltranSup = sum(data.datasets[0].data).toLocaleString('es-PE');
-            var totalregSup = sum(data.datasets[1].data).toLocaleString('es-PE');            
+            var totalregSup = sum(data.datasets[1].data).toLocaleString('es-PE');
             var totalConSup = sum(data.datasets[2].data).toLocaleString('es-PE');
             var title = '<strong style="color: rgb(42, 152, 102)">T: ' + totaltranSup + '</strong>&nbsp;&nbsp;' +
-                '<strong style="color: rgb(90, 90, 90)">P: ' + totalregSup + '</strong>&nbsp;&nbsp;&nbsp;&nbsp;' +                
+                '<strong style="color: rgb(90, 90, 90)">P: ' + totalregSup + '</strong>&nbsp;&nbsp;&nbsp;&nbsp;' +
                 '<strong style="color: rgb(243, 156, 18, 1)">C: ' + totalConSup + '</strong>&nbsp;&nbsp;'
             $("#tituloBarCharSuperv").html(title);
         }
@@ -552,7 +581,7 @@
         }
         var title2 = '<strong class="pull-left">#: ' + tiendas.length + '</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+
         '<strong style="color: rgb(42, 152, 102)">T: ' + totaltdaTranSup.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;' +
-            '<strong style="color: rgb(90, 90, 90)">R: ' + totaltdaRegSup.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;&nbsp;&nbsp;' +                
+            '<strong style="color: rgb(90, 90, 90)">R: ' + totaltdaRegSup.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;&nbsp;&nbsp;' +
                 '<strong style="color: rgb(243, 156, 18)">C: ' + totaltdaConSup.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;'
         $("#totalesTiendas").html(title2);
     }
@@ -572,7 +601,7 @@
         } else {
             strmes = myChartPS.chart.config.data.labels[mes - 1]
             tbody += '<tr><th>' + strmes + '</th></tr>'
-            
+
         }
         for (var i = 0; i < proms.length; i++) {
             tbody += '<tr class="prom-det-tda"  data-tot-pares="' + proms[i].pares.toLocaleString('es-PE') + '"  data-tot-soles="' + proms[i].soles.toLocaleString('es-PE') + '"  data-prom="' + proms[i].promocion + '"  data-anio-prom="' + anio + '" data-mes-prom="' + mes + '" data-strmes-prom="' + strmes + '"  ><td class="text"><span>' + proms[i].promocion + '</span></td><td><span class="badge bg-pares">' + proms[i].pares.toLocaleString('es-PE') + '</span></td><td><span class="badge bg-soles">' + proms[i].soles.toLocaleString('es-PE') + '</span></td></tr>'
@@ -604,9 +633,75 @@
             maxDate: new Date(),
         }).datepicker("setDate", "0");
 
+        $('#fechaIni_canal').datepicker({
+            format: "dd-mm-yyyy",
+            autoclose: true,
+            maxDate: new Date(),
+        }).datepicker("setDate", firstDay);
+        $('#fechaFin_canal').datepicker({
+            format: "dd-mm-yyyy",
+            autoclose: true,
+            maxDate: new Date(),
+        }).datepicker("setDate", "0");
+
         $("#btnMostrarCharBarSup").click(function () {
             updateCharts(0, 6, null, $('#fechaIni').val(), $('#fechaFin').val());
         });
+        $("#btnMostrarCharBarcanal").click(function () {
+            updateCharts(0, 3, null,null,null,null, $('#fechaIni_canal').val(), $('#fechaFin_canal').val());
+        });
+        $("#btnMostrarCharBarcanal_excel").click(function () {
+            upload_canales_rango($('#fechaIni_canal').val(), $('#fechaFin_canal').val());
+        });
+
+        /*descargar archivo excel canales x rango de fecha*/
+        function upload_canales_rango(fecini_canal, fecfin_canal)
+        {
+            waitingDialog.show('Espere un momento por favor');
+            var msg_titulo = 'Mensaje ';
+            $.ajax({
+                type: 'POST',
+                data: { fecini_canal: fecini_canal, fecfin_canal: fecfin_canal },
+                dataType: 'json',
+                url: '@Url.Action("CanalDetExcel_Data")',
+                success: function (data) {
+                    var estado = data.estado;
+                    var desmsg = data.desmsg;
+                    if (estado == "1")
+                    {
+                       
+                        window.location = '@Url.Action("ExportarCanalDetExcel")';
+                        toastr.success(desmsg, msg_titulo);
+                    }
+                    else
+                    {
+                        toastr.error(desmsg, msg_titulo);
+                       
+                    }
+                    waitingDialog.hide();
+                    //window.location = '<%= Url.Action("DownloadFile", "Home") %>?fileId=' + fileId;
+                },
+                error: function (xhr) {
+                    waitingDialog.hide();
+                    toastr.error(xhr, msg_titulo);
+                }
+            });
+
+
+            @*window.location.href = '@Url.Action("CanalDetExcel", "BataClub")?fecini_canal=' + fecini_canal + "&fecfin_canal=" + fecfin_canal;*@
+
+            //waitingDialog.show('Descargando Archivo');
+            @*$.ajax({
+                type: 'POST',
+                data: { fecini_canal: fecini_canal, fecfin_canal: fecfin_canal },
+                url: '@Url.Action("CanalDetExcel")',
+                success: function () {
+
+                    //waitingDialog.hide();
+                   // window.location = '@Url.Action("Download")?strIdLote=' + IdLte;
+                }
+            });*@
+        }
 
         getChartMensualRegMiem(document.getElementById('barChart'), JSON.parse('@Html.Raw(ViewBag.chartDS)'), JSON.parse('@Html.Raw(ViewBag.totalesGeneros)'));
         getChartCanales(document.getElementById('canalChart'), JSON.parse('@Html.Raw(ViewBag.chartDonut)'));
@@ -680,7 +775,7 @@
                 } else if (informe == 4){
                     anio = $("#anioPS").val()
                 }
-            
+
             updateCharts(anio, informe);
         });
 
@@ -692,7 +787,7 @@
             var totPares = $(this).attr('data-tot-pares');//data-tot-pares
             var totSoles = $(this).attr('data-tot-soles');//data-tot-pares
             //swal(anio + " " + mes + " " + prom);
-            
+
             waitingDialog.show('Espere un momento por favor');
             $.ajax({
                 type: "POST",
@@ -706,7 +801,7 @@
                     '<table id="promDetTda" class="table table-hover table-condensed dt-lista-tdas table-striped table-responsive">' +
                     '<thead><tr style="background-color:#3d566e; color:#ecf0f1"><th>Promocion</th><th>Pares</th><th>Soles</th></tr></thead><tbody data-bind="foreach:">';
                     for (var i = 0; i < data.promsDetPromTda.length; i++) {
-                        table += '<tr><td>' + data.promsDetPromTda[i].tienda + '</td><td><span class="badge bg-pares">' + data.promsDetPromTda[i].pares + '</span></td><td><span class="badge bg-soles">' + data.promsDetPromTda[i].soles + '</span></td></tr>'                       
+                        table += '<tr><td>' + data.promsDetPromTda[i].tienda + '</td><td><span class="badge bg-pares">' + data.promsDetPromTda[i].pares + '</span></td><td><span class="badge bg-soles">' + data.promsDetPromTda[i].soles + '</span></td></tr>'
                     }
                     table += '</tbody><tfoot><tr><th>Promocion</th><th>Pares</th><th>Soles</th></tr></tfoot></table>'
                     $("#listTdaProm").html(table);
@@ -730,14 +825,14 @@
                     swal(error.Message);
                 }
             });
-        }); 
+        });
 
-        function updateCharts(anio , informe, mes, fecini,fecfin , prom) {
+        function updateCharts(anio, informe, mes, fecini, fecfin, prom, fecini_canal, fecfin_canal) {
             waitingDialog.show('Espere un momento por favor');
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("updateChartData", "BataClub")',
-                data: { anio: anio, informe: informe, mes: (mes == null || mes == '' ? 0 : mes), fecini: fecini, fecfin: fecfin , prom : prom },
+                data: { anio: anio, informe: informe, mes: (mes == null || mes == '' ? 0 : mes), fecini: fecini, fecfin: fecfin, prom: prom, fecini_canal: fecini_canal, fecfin_canal: fecfin_canal },
                 success: function (data) {
                     if (informe == 2) {
                         myChart.destroy();

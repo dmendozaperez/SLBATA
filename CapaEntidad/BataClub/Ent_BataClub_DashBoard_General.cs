@@ -86,4 +86,16 @@ namespace CapaEntidad.BataClub
         public decimal transac { get; set; }
         public decimal consumido { get; set; }
     }
+
+    public class Ent_Bataclub_Canales_Excel
+    {
+        public string Canal { get; set; }
+        public string Tienda { get; set; }
+        public string Dni { get; set; }
+        public string Nombres { get; set; }
+        public string Correo { get; set; }
+        public string Miem_Bataclub { get; set; }
+        public string Fec_Registro { get; set; }
+        public string Fec_Miembro { get; set; }
+    }
 }
