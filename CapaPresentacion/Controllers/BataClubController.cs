@@ -139,9 +139,14 @@ namespace CapaPresentacion.Controllers
                 return View();
             }
         }
-        public ActionResult updateChartData(string anio, int informe, int mes = 0, string fecini = null, string fecfin = null, string prom = "", string sup = "")
+        public ActionResult updateChartData(string anio, int informe, int mes = 0, string fecini = null, string fecfin = null, string prom = "", string sup = "", string fecini_canal = null, string fecfin_canaL = null)
         {
             Ent_BataClub_DashBoard dashboard  = (Ent_BataClub_DashBoard)Session["_dashboardData"];
+            if (fecini!=null)
+            { 
+                if (fecini.Length == 0) fecini = null;
+                if (fecfin.Length == 0) fecfin = null;
+            }
             if ( informe == 5 || informe == 7 || informe==8)
             {
                 dashboard = (Ent_BataClub_DashBoard)Session["_dashboardData"];
@@ -150,7 +155,7 @@ namespace CapaPresentacion.Controllers
             {
                 dashboard = (Ent_BataClub_DashBoard)Session["_dashboardData"];
 
-                dashboard = datDash.GET_INFO_DASHBOARD(ref dashboard, anio, informe, mes, fecini, fecfin, prom);
+                dashboard = datDash.GET_INFO_DASHBOARD(ref dashboard, anio, informe, mes, fecini, fecfin, prom, fecini_canal, fecfin_canaL);
                 Session["_dashboardData"] = dashboard;
             }
             Ent_BataClub_Chart_Data chartDS = null;
@@ -377,6 +382,14 @@ namespace CapaPresentacion.Controllers
                         backgroundColor = Enumerable.Repeat("rgba(243, 156, 18, 0.8)", dashboard.listSupervisorTot.Count).ToArray(),
                         borderWidth = "1",
                         data = dashboard.listSupervisorTot.Select(s => s.consumido).ToArray()
+                    }),
+
+                     (new Ent_BataClub_Chart_DataSet()
+                    {
+                        label = "MIEMBROS",
+                        backgroundColor = Enumerable.Repeat("rgba(230, 101, 101, 0.8)", dashboard.listSupervisorTot.Count).ToArray(),
+                        borderWidth = "1",
+                        data = dashboard.listSupervisorTot.Select(s => s.bataclub).ToArray()
                     })
                 };
 
@@ -425,7 +438,7 @@ namespace CapaPresentacion.Controllers
         public decimal consumido { get; set; }
              */
             List<Ent_BataClub_DashBoard_TiendasSupervisor> lista = (List<Ent_BataClub_DashBoard_TiendasSupervisor>)Session[_session_det_tdas_sup_excel];
-            string[] columns = { "supervisor", "tienda", "registros", "transac", "consumido" };
+            string[] columns = { "supervisor", "tienda", "registros", "transac", "consumido","bataclub" };
             byte[] filecontent = ExcelExportHelper.ExportExcel(lista, "", false, columns);
             string nom_excel = "Lista de tiendas RTCxST";
             return File(filecontent, ExcelExportHelper.ExcelContentType, nom_excel + ".xlsx");

@@ -78,7 +78,10 @@
         background-color: #33b87b !important;
         color: #fff !important;
     }
-
+    .bg-bataclub{
+        background-color: #E66565 !important;
+        color: #fff !important;
+    }
     .bg-consumido{
         background-color: #f39c12 !important;
         color: #fff  !important;
@@ -194,7 +197,7 @@
                                 <strong id="tituloBarChar"></strong>
                             </p>
                             <div class="chart">
-                                <canvas id="barChart" style="height: 250px;"></canvas>
+                                <canvas id="barChart" style="height: 262px;"></canvas>
                             </div>
                             <!-- /.chart-responsive -->
                         </div>
@@ -242,7 +245,9 @@
             <div class="box box-default">
                 <div class="box-header with-border">
                     <i class="fa fa-pie-chart"></i>
-                    <h3 class="box-title">Canales  x  Rango de Fecha</h3>
+                    <h3 class="box-title">Canales x Fecha</h3>
+                    <button type="button" class="btn btn-primary btn-sm" title="Mostrar" id="btnMostrarCharBarcanal"><i class="fa fa-search"></i></button>
+                    <button type="button" class="btn btn-success btn-sm" title="Exportar a Excel" id="btnMostrarCharBarcanal_excel"><i class="glyphicon glyphicon-export">Exportar</i></button>
                     @*<div class="box-tools pull-right" style="top: 3px;">
                         @Html.DropDownList("anioC", new SelectList(ViewBag.anios, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "form-control form-control-sm selectpicker anio", @id = "anioC", @name = "anioC", @data_informe = 3 })
                     </div>*@
@@ -270,14 +275,19 @@
                                             </div>
                                             <input type="text" class="form-control pull-right" id="fechaFin_canal">
                                         </div>
-                                    </div>&nbsp;&nbsp;&nbsp;
-                                    <button type="button" class="btn btn-primary btn-sm" title="Mostrar" id="btnMostrarCharBarcanal"><i class="fa fa-search"></i></button>
-                                    <button type="button" class="btn btn-primary btn-sm" title="Exportar a Excel" id="btnMostrarCharBarcanal_excel"><i class="glyphicon glyphicon-export">Exportar</i></button>
+                                    </div>                                    
                                     @*<a href="@Url.Action("RegTraConTdaExcel","BataClub")" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-export"></i>&nbsp;&nbsp;Exportar</a>*@
                                 </div>
+                                
 
                             </div>
                         </div>
+                        @*<div class="row">
+                            <div class="col-md-12">
+                                <button type="button" class="btn btn-primary btn-sm" title="Mostrar" id="btnMostrarCharBarcanal"><i class="fa fa-search"></i></button>
+                                <button type="button" class="btn btn-primary btn-sm" title="Exportar a Excel" id="btnMostrarCharBarcanal_excel"><i class="glyphicon glyphicon-export">Exportar</i></button>
+                            </div>
+                        </div>*@
                             <div class="row">
                                 <div class="col-md-12">
                                     <p class="text-center text-bold" id="tituloCanalesChar">
@@ -387,12 +397,12 @@
                             <p class="text-center" id="tituloBarCharSuperv">
                             </p>
                             <div class="chart">
-                                <canvas id="barChartSuperv" style="height: 270px;"></canvas>
+                                <canvas id="barChartSuperv" style="height: 290px;"></canvas>
                             </div>
                             <!-- /.chart-responsive -->
                         </div>
                         <div class="col-md-4">
-                            <div class="table-wrapper-scroll-y my-custom-scrollbar" style="height:270px">
+                            <div class="table-wrapper-scroll-y my-custom-scrollbar" style="height:320px">
                                 <table id="tiendasDetalle" class="table table-hover"></table>
                             </div>
                             <p id="totalesTiendas" class="pull-right" style="padding-right:15px; padding-top:7px"></p>
@@ -554,12 +564,15 @@
             var totaltranSup = sum(data.datasets[0].data).toLocaleString('es-PE');
             var totalregSup = sum(data.datasets[1].data).toLocaleString('es-PE');
             var totalConSup = sum(data.datasets[2].data).toLocaleString('es-PE');
+            var totalBataclub = sum(data.datasets[3].data).toLocaleString('es-PE');
+
             var title = '<strong style="color: rgb(42, 152, 102)">T: ' + totaltranSup + '</strong>&nbsp;&nbsp;' +
                 '<strong style="color: rgb(90, 90, 90)">P: ' + totalregSup + '</strong>&nbsp;&nbsp;&nbsp;&nbsp;' +
-                '<strong style="color: rgb(243, 156, 18, 1)">C: ' + totalConSup + '</strong>&nbsp;&nbsp;'
+                '<strong style="color: rgb(243, 156, 18, 1)">C: ' + totalConSup + '</strong>&nbsp;&nbsp;&nbsp;' +
+                '<strong style="color: rgb(230, 101, 101, 1)">B: ' + totalBataclub + '</strong>&nbsp;&nbsp;'
             $("#tituloBarCharSuperv").html(title);
         }
-        var tbody = '<tr><th class="col-md-9">Tiendas</th><th class="col-md-1">Tran</th><th class="col-md-1">Reg</th><th class="col-md-1">Cons</th></tr>';
+        var tbody = '<tr><th class="col-md-9">Tiendas</th><th class="col-md-1">Tran</th><th class="col-md-1">Reg</th><th class="col-md-1">Cons</th><th class="col-md-1">BA</th></tr>';
         var ultimoSup = "";
         for (var i = 0; i < tiendas.length; i++) {
             var sup = tiendas[i].supervisor;
@@ -567,22 +580,25 @@
                 tbody += '<tr><th colspan="3">' + sup + '</th></tr>';
                 ultimoSup = sup;
             }
-            tbody += '<tr><td class="text"><span>' + tiendas[i].tienda + '</span></td><td><span class="badge bg-transac">' + tiendas[i].transac + '</span></td><td><span class="badge bg-registros">' + tiendas[i].registros + '</span></td><td><span class="badge bg-consumido">' + tiendas[i].consumido + '</span></td></tr>'
+            tbody += '<tr><td class="text"><span>' + tiendas[i].tienda + '</span></td><td><span class="badge bg-transac">' + tiendas[i].transac + '</span></td><td><span class="badge bg-registros">' + tiendas[i].registros + '</span></td><td><span class="badge bg-consumido">' + tiendas[i].consumido + '</span></td><td><span class="badge bg-bataclub">' + tiendas[i].bataclub + '</span></td></tr>'
         }
         $("#tiendasDetalle").html(tbody);
 
         var totaltdaRegSup = 0;
         var totaltdaTranSup = 0;
         var totaltdaConSup = 0;
+        var totaltdaBASup = 0;
         for (var i = 0; i < tiendas.length; i++) {
             totaltdaRegSup += parseFloat(tiendas[i].registros);
             totaltdaTranSup += parseFloat(tiendas[i].transac);
             totaltdaConSup += parseFloat(tiendas[i].consumido);
+            totaltdaBASup += parseFloat(tiendas[i].bataclub);
         }
         var title2 = '<strong class="pull-left">#: ' + tiendas.length + '</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+
         '<strong style="color: rgb(42, 152, 102)">T: ' + totaltdaTranSup.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;' +
             '<strong style="color: rgb(90, 90, 90)">R: ' + totaltdaRegSup.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;&nbsp;&nbsp;' +
-                '<strong style="color: rgb(243, 156, 18)">C: ' + totaltdaConSup.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;'
+                '<strong style="color: rgb(243, 156, 18)">C: ' + totaltdaConSup.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;' +
+                '<strong style="color: rgb(230, 101, 101)">B: ' + totaltdaBASup.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;'
         $("#totalesTiendas").html(title2);
     }
     function getChartMensualPS(canvas, data, proms, mes , anio) {
@@ -860,5 +876,21 @@
                 }
             });
         }
+    });
+</script>
+<script>
+    var gSite = ''
+    var gVisible = 'F'
+    var gVisibleS = 'F'
+    $(document).ready(function () {
+        $("body").toggleClass('sidebar-collapse');
+        var pathname = window.location.pathname;
+        var res = pathname.split("/")
+
+        if (res[1].toString() != "Dashboard") {
+            gSite = "/" + res[1].toString();
+        }
+        //if ($("#NombreUsuario").val() == 'Invitado')
+        //    setInterval('ContinuarConexion()', 5000);
     });
 </script>
