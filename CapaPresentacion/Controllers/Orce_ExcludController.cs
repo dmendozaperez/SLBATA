@@ -22,6 +22,10 @@ namespace CapaPresentacion.Controllers
         string _session_atribuo_actual = "_session_atribuo_actual";
         string _session_lista_orce = "_session_lista_orce";
         string _session_lista_atributos = "_session_lista_atributos";
+        string _session_tdas_xstore = "_session_tdas_xstore";
+        string _session_cant_art_excel = "_session_cant_art_excel";
+        string _session_cant_art_atr = "_session_cant_art_atr";
+
         public ActionResult Index()
         {
             Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
@@ -94,20 +98,35 @@ namespace CapaPresentacion.Controllers
                      m.ORC_FECHA_ING.ToString().Contains(param.sSearch.ToUpper()));
             }
             //Manejador de orden
-            var sortIdx = Convert.ToInt32(Request["iSortCol_0"]);
-            Func<Ent_Orce_Inter_Cab , int> orderingFunction =
-                (
-                    m => m.ORC_COD
-                );
-            Func<Ent_Orce_Inter_Cab, string> orderingFunction2 =
-                (
-                    m => m.ORC_FECHA_ACT
-                );
-            var sortDirection = Request["sSortDir_0"];
-            if (sortDirection == "asc")
-                filteredMembers = sortIdx == 0 ? filteredMembers.OrderBy(orderingFunction) : filteredMembers.OrderBy(orderingFunction2);
-            else
-                filteredMembers = sortIdx == 0 ? filteredMembers.OrderByDescending(orderingFunction) : filteredMembers.OrderByDescending(orderingFunction2);
+            var sortIdx = Convert.ToInt32(Request["iSortCol_0"]);           
+            var sortDirection = Request["sSortDir_0"];          
+
+            if (param.iSortingCols > 0)
+            {
+                if (sortDirection == "asc")
+                {
+                    if (sortIdx == 0)
+                    {
+                        filteredMembers = filteredMembers.OrderBy(o => o.ORC_COD);
+                    }
+                    else if(sortIdx == 3)
+                    {
+                        filteredMembers = filteredMembers.OrderBy(o => Convert.ToDateTime(o.ORC_FECHA_ING));
+                    }
+                }
+                else
+                {
+                    if (sortIdx == 0)
+                    {
+                        filteredMembers = filteredMembers.OrderByDescending(o => o.ORC_COD);
+                    }
+                    else if (sortIdx == 3)
+                    {
+                        filteredMembers = filteredMembers.OrderByDescending(o => Convert.ToDateTime(o.ORC_FECHA_ING));
+                    }
+                }
+            }
+
             var displayMembers = filteredMembers
                 .Skip(param.iDisplayStart)
                 .Take(param.iDisplayLength);
@@ -220,7 +239,7 @@ namespace CapaPresentacion.Controllers
             if (liststoreConf == null)
             {
                 liststoreConf = new List<Ent_Orce_Inter_Art>();
-            }
+            }            
             return Json(new { estado = 1, articulos = liststoreConf });
         }
         public ActionResult getListaArtAjax(string cod_atr)
@@ -236,41 +255,69 @@ namespace CapaPresentacion.Controllers
 
         public ActionResult Nuevo()
         {
+            List<Ent_Tda_Xstore> tdas = datOE.tiendatipo_xstore();
+            Session[_session_tdas_xstore] = tdas;
+            ViewBag.listCadena = tdas.Select(s => new { s.cod_cadena, s.des_cadena }).Distinct();
+
             Session[_session_lista_articulos] = null;
-            ViewBag.listCadena = datOE.get_cadena();
+            Session[_session_cant_art_excel] = null;
+            Session[_session_cant_art_atr] = null;
+          //  Session[_session_atribuo_actual] = null;
+
+            //ViewBag.listCadena = datOE.get_cadena();
             ViewBag.listAtr = datOE.get_atributos();
 
-            List<Ent_Combo> list = new List<Ent_Combo>();
-            ViewBag.listTdaCadena = list;
+            ViewBag.listTipoTda = new List<Ent_Tda_Xstore>();
+            ViewBag.listTdaCadena = new List<Ent_Tda_Xstore>();
+
 
             Ent_Orce_Inter_Cab model = new Ent_Orce_Inter_Cab();
             model.TIENDAS = new List<Ent_Orce_Inter_Det_Tda>();
+            
             return View(model);
         }
         public ActionResult Editar(int id)
         {
-            Session[_session_lista_articulos] = null;
-            ViewBag.listCadena = datOE.get_cadena();
-            ViewBag.listAtr = datOE.get_atributos();
+            List<Ent_Tda_Xstore> tdas = datOE.tiendatipo_xstore();
+            Session[_session_tdas_xstore] = tdas;
 
-            List <Ent_Orce_Inter_Det_Tda> tdas = datOE.get_lista_det_tdas(id.ToString());
-            List<Ent_Combo> tdas_cadena = datOE.get_tda_cadena(String.Join("," , tdas.Select(s => s.ORC_DET_TDA_CAD).Distinct()));
+            Session[_session_lista_articulos] = null;
+            Session[_session_cant_art_excel] = null;
+            Session[_session_cant_art_atr] = null;
+            ViewBag.listCadena = tdas.Select(s => new { s.cod_cadena, s.des_cadena }).Distinct();
+
+            List<Ent_Orce_Inter_Det_Tda> _detTdas = datOE.get_lista_det_tdas(id.ToString());
+            
+            var tipoTdas = tdas.Where(w => _detTdas.Select(s => s.ORC_DET_TDA).Contains(w.cod_entid)).Select(s => s.tiptda_cod).Distinct();
+
+            ViewBag.listTipoTda = tdas.Where(w => _detTdas.Select(s => s.ORC_DET_TDA_CAD).Contains(w.cod_cadena)).Select(s => new { s.tiptda_cod, s.tiptda_des }).Distinct().ToList();
+            ViewBag.listTdaCadena = tdas.Where(w =>
+                _detTdas.Select(s => s.ORC_DET_TDA_CAD).Contains(w.cod_cadena) && 
+                tipoTdas.Contains(w.tiptda_cod)
+            ).Select(s => new { s.cod_entid, s.des_entid }).Distinct().ToList();
+
+
+            ViewBag.listAtr = datOE.get_atributos();
+            ViewBag.tipoTdaSelected = tipoTdas;
 
             Ent_Orce_Inter_Cab model = new Ent_Orce_Inter_Cab();
             model = ((List<Ent_Orce_Inter_Cab>)Session[_session_lista_orce]).Where(d => d.ORC_COD == id).First();
-            model.TIENDAS = tdas;
-            ViewBag.listTdaCadena = tdas_cadena;
+            model.TIENDAS = _detTdas;
+            
             Session[_session_lista_articulos] = datOE.get_lista_det_art(model.ORC_COD.ToString());
             Session[_session_atribuo_actual] = model.ORC_ATRIBUTO;
             return View(model);
         }
-        public ActionResult get_tda_cadena(string cadenas)
+
+        public ActionResult get_tipo_cadena(string cadenas)
         {
-            List<Ent_Combo> list = datOE.get_tda_cadena(cadenas);
-            if (list == null)
-            {
-                list = new List<Ent_Combo>();
-            }
+            var list = ((List<Ent_Tda_Xstore>)Session[_session_tdas_xstore]).Where(w =>  String.Join(",",cadenas).Contains(w.cod_cadena)).Select(s => new { s.tiptda_cod, s.tiptda_des }).Distinct().ToList();
+            return Json(list);
+        }
+
+        public ActionResult get_tda_cadena(string cadenas , string tipos)
+        {
+            var list = ((List<Ent_Tda_Xstore>)Session[_session_tdas_xstore]).Where(w => String.Join(",", cadenas).Contains(w.cod_cadena) && String.Join(",", tipos).Contains(w.tiptda_cod)).Select(s => new { s.cod_entid, s.des_entid }).Distinct().ToList();
             return Json(list);
         }
 
@@ -283,6 +330,8 @@ namespace CapaPresentacion.Controllers
             }
             Session[_session_lista_articulos] = list;
             Session[_session_atribuo_actual] = atributo;
+            //Session[_session_cant_art_atr] = list.Count();
+            Session[_session_cant_art_excel] = null;
             return (list);
         }
 
@@ -294,17 +343,19 @@ namespace CapaPresentacion.Controllers
         }
         public ActionResult JsonExcelArticulos(string articulos)
         {
-            List<Ent_Orce_Inter_Art> listArtExcel = null;
+            List<Ent_Orce_Inter_Art> listArtExcel = null;            
             try
             {
                 listArtExcel = new List<Ent_Orce_Inter_Art>();
                 listArtExcel = JsonConvert.DeserializeObject<List<Ent_Orce_Inter_Art>>(articulos.ToUpper());
+                listArtExcel.Select(s => { s.GENERAR = true; return s; }).ToList();
+                Session[_session_cant_art_excel] = listArtExcel.Count();
                 if (listArtExcel.Where(d => String.IsNullOrEmpty(d.ARTICULO) || String.IsNullOrEmpty(d.VALOR.ToString())).ToList().Count > 0)
                 {
                     return Json(new { estado = 0, resultados = "El archivo no tiene el formato correcto. Los nombres de las columnas deben ser 'ARTICULO' Y 'VALOR' y no deben existir campos vacios." });
                 }else
                 {
-                    Session[_session_lista_articulos] = unirListas(listArtExcel).Union(listArtExcel).ToList();
+                    Session[_session_lista_articulos] = listArtExcel.Union(unirListas(listArtExcel)).ToList();
                     return Json(new { estado = 1, resultados = "ok" });
                 }                
             }
@@ -313,12 +364,16 @@ namespace CapaPresentacion.Controllers
                 return Json(new { estado = 0, resultados = ex.Message });
             }
         }
-        public ActionResult getArtAjax(Ent_jQueryDataTableParams param, string atributo , string _art_mod , bool ordenar, bool _all_check ,bool _all_check_val )
+        public ActionResult getArtAjax(Ent_jQueryDataTableParams param, string atributo , string _art_mod , bool ordenar, bool _all_check ,bool _all_check_val , bool _all_check_gen , bool _all_checkG ,string _art_mod_gen = "")
         {
-            /*verificar si esta null*/
-            if (Session[_session_lista_articulos] == null || Session[_session_atribuo_actual].ToString() != atributo )
+            if (atributo != "-1")
             {
                 Session[_session_lista_articulos] = get_articulos_atr(atributo);
+            }
+            if (Session[_session_lista_articulos] == null)
+            {
+                List<Ent_Orce_Inter_Art> _listNull = new List<Ent_Orce_Inter_Art>();
+                Session[_session_lista_articulos] = _listNull;
             }
 
             if (_art_mod != "")
@@ -327,10 +382,22 @@ namespace CapaPresentacion.Controllers
                 listArt.Where(w => w.ARTICULO == _art_mod).Select(a => { a.VALOR = !a.VALOR ; return a; }).ToList();
                 Session[_session_lista_articulos] = listArt;
             }
+            if (_art_mod_gen != "")
+            {
+                List<Ent_Orce_Inter_Art> listArt = (List<Ent_Orce_Inter_Art>)Session[_session_lista_articulos];
+                listArt.Where(w => w.ARTICULO == _art_mod_gen).Select(a => { a.GENERAR = !a.GENERAR; return a; }).ToList();
+                Session[_session_lista_articulos] = listArt;
+            }
             if (_all_check)
             {
                 List<Ent_Orce_Inter_Art> lista = (List<Ent_Orce_Inter_Art>)Session[_session_lista_articulos];
                 lista.Select(a => { a.VALOR = _all_check_val; return a; }).ToList();
+                Session[_session_lista_articulos] = lista;
+            }
+            if (_all_checkG)
+            {
+                List<Ent_Orce_Inter_Art> lista = (List<Ent_Orce_Inter_Art>)Session[_session_lista_articulos];
+                lista.Select(a => { a.GENERAR = _all_check_gen; return a; }).ToList();
                 Session[_session_lista_articulos] = lista;
             }
             IQueryable<Ent_Orce_Inter_Art> membercol = ((List<Ent_Orce_Inter_Art>)Session[_session_lista_articulos]).AsQueryable();  //lista().AsQueryable();
@@ -360,7 +427,21 @@ namespace CapaPresentacion.Controllers
                 else
                     filteredMembers = filteredMembers.OrderByDescending(orderingFunction);
             }
-                
+
+            var nroReg = filteredMembers.Count();
+            var nroExcel = 0;
+            if (Session[_session_cant_art_excel] != null)
+            {
+                nroExcel = (int)Session[_session_cant_art_excel];
+            }            
+            var nroGenerar = filteredMembers.Count(c => c.GENERAR == true);
+            var nroTrue = filteredMembers.Count(c => c.VALOR == true);
+            var nroFalse = filteredMembers.Count(c => c.VALOR == false);
+            // param.variable1 = lblConsumidos;
+
+            int[] cants;
+            cants = new int[] { nroReg, nroExcel, nroGenerar , nroTrue , nroFalse };          
+            
             var displayMembers = filteredMembers
                 .Skip(param.iDisplayStart)
                 .Take(param.iDisplayLength);
@@ -369,16 +450,17 @@ namespace CapaPresentacion.Controllers
                             select new
                             {
                                 a.ARTICULO,
-                                a.VALOR
+                                a.VALOR,
+                                a.GENERAR
                             };
-
             //Se devuelven los resultados por json
             return Json(new
             {
                 sEcho = param.sEcho,
                 iTotalRecords = totalCount,
                 iTotalDisplayRecords = filteredMembers.Count(),
-                aaData = result
+                aaData = result,
+                variable1 = String.Join("|", cants)
             }, JsonRequestBehavior.AllowGet);
         }
 

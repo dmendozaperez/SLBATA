@@ -37,6 +37,7 @@ namespace CapaEntidad.OrceExlud
         public string ARTICULO { get; set; }
         public string ATRIBUTO { get; set; }
         public bool VALOR { get; set; }
+        public bool GENERAR { get; set; }
     }
     public class Ent_Orce_Exclud_Atributo
     {
@@ -49,4 +50,14 @@ namespace CapaEntidad.OrceExlud
         public string FECHA_CREACION {get;set;}
         public string FECHA_MODIFICA { get; set; }
     }
+    public class Ent_Tda_Xstore
+    {
+        public string cod_entid     {get;set;}
+        public string des_entid     {get;set;}
+        public string tiptda_cod    {get;set;}
+        public string tiptda_des    {get;set;}
+        public string cod_cadena    {get;set;}
+        public string des_cadena { get; set; }
+    }
+
 }

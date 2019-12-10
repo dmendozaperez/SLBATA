@@ -124,6 +124,10 @@
             "fnServerParams": function (aoData) {
                 aoData.push({ "name": "actualizar", "value": actualizar });
             },
+            "columnDefs": [{
+                "targets": [1, 2, 4, 5, 6, 7, 8, 9, 10, 11],
+                "orderable": false
+            }],
             "bdestroy": true,
             "start": 0,
             "order": [0, "desc"],
@@ -234,11 +238,11 @@
                 success: function (data) {
                     waitingDialog.hide();
                     if (data.estado == 1) {
-                        var table = '<table class="table table-hover table-condensed dt-lista-art table-striped table-responsive"><thead><tr style="background-color:#3d566e; color:#ecf0f1"><th>Articulo</th><th>Valor</th></tr></thead><tbody data-bind="foreach:">';
+                        var table = '<table class="table table-hover table-condensed dt-lista-art table-striped table-responsive"><thead><tr style="background-color:#3d566e; color:#ecf0f1"><th>Articulo</th><th>Valor</th><th>Generar</th></tr></thead><tbody data-bind="foreach:">';
                         for (var i = 0; i < data.articulos.length; i++) {
-                            table += '<tr><td>' + data.articulos[i].ARTICULO + '</td><td>' + data.articulos[i].VALOR.toString().toUpperCase() + '</td></tr>'
+                            table += '<tr><td>' + data.articulos[i].ARTICULO + '</td><td>' + data.articulos[i].VALOR.toString().toUpperCase() + '</td><td>' + (data.articulos[i].GENERAR ? '<i class="fa fa-check"></i>' : "" ) + '</td></tr>'
                         }
-                        table += '</tbody><tfoot><tr><th>Articulo</th><th>Valor</th></tr></tfoot></table>'
+                        table += '</tbody><tfoot><tr><th>Articulo</th><th>Valor</th><th>Generar</th></tr></tfoot></table>'
                         $("#listaDetArt").html(table);
                         $("#desc_orce_art").html(cod_orce + ". " + des_orce);
                         $("#maAtributoArt").html("Atributo" + ": " + ma_atributo);

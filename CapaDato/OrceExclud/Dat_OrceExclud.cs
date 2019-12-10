@@ -192,6 +192,7 @@ namespace CapaDato.OrceExclud
                                 ART.ARTICULO = dr["ORC_DET_ART"].ToString();
                                 ART.ORC_DET_ART_COD = Convert.ToInt32( dr["ORC_DET_ART_COD"].ToString());
                                 ART.VALOR = Convert.ToBoolean(dr["ORC_DET_EST"].ToString());
+                                ART.GENERAR = (dr["ORC_DET_GEN"].ToString() == "" ? false : Convert.ToBoolean(dr["ORC_DET_GEN"].ToString())) ;
                                 list.Add(ART);
                             }
                         }
@@ -229,6 +230,7 @@ namespace CapaDato.OrceExclud
                                 ART.ARTICULO = dr["ARTICULO"].ToString();
                                 ART.ATRIBUTO = dr["ATRIBUTO"].ToString();
                                 ART.VALOR = Convert.ToBoolean(dr["VALOR"].ToString());
+                                ART.GENERAR = false;
                                 list.Add(ART);
                             }
                         }
@@ -284,7 +286,7 @@ namespace CapaDato.OrceExclud
         }
         public int ORCE_INTERFACE_EXCLUD_ACT(int codigo, string descripcion, string atributo, string estado_orce, decimal usu_id, int estado, List<Ent_Orce_Inter_Art> listArticulos, string tdaCadena, ref string mensaje)
         {
-            string sqlquery = "USP_ORCE_INTERFACE_EXCLUD_ACT";
+            string sqlquery = "USP_ORCE_INTERFACE_EXCLUD_ACT_PRUEBA";
             int f = 0;
             DataTable TMP_ORCE_INTERFACE_ART = null;
             DataTable TMP_ORCE_INTERFACE_DET_TDA = null;
@@ -344,9 +346,10 @@ namespace CapaDato.OrceExclud
             DataTable dtRet = new DataTable();
             dtRet.Columns.Add("ORC_DET_ART");
             dtRet.Columns.Add("ORC_DET_EST");
+            dtRet.Columns.Add("ORC_DET_GEN");
             foreach (var item in listArticulos)
             {
-                dtRet.Rows.Add(item.ARTICULO, ( item.VALOR.ToString().ToUpper() == "TRUE" ? 1 : 0));
+                dtRet.Rows.Add(item.ARTICULO, ( item.VALOR.ToString().ToUpper() == "TRUE" ? 1 : 0) , item.GENERAR);
             }
             return dtRet;
         }
@@ -390,6 +393,43 @@ namespace CapaDato.OrceExclud
             }
             return list;
         }
-
+        public List<Ent_Tda_Xstore> tiendatipo_xstore()
+        {
+            List<Ent_Tda_Xstore> list = null;
+            string sqlquery = "select * from v_tiendatipo_xstore";
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+                    if (cn.State == 0) cn.Open();
+                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.Text;
+                        SqlDataReader dr = cmd.ExecuteReader();
+                        if (dr.HasRows)
+                        {
+                            list = new List<Ent_Tda_Xstore>();
+                            while (dr.Read())
+                            {
+                                Ent_Tda_Xstore tda = new Ent_Tda_Xstore();
+                                tda.cod_entid = dr["cod_entid"].ToString();
+                                tda.des_entid = dr["des_entid"].ToString();
+                                tda.tiptda_cod = dr["tiptda_cod"].ToString();
+                                tda.tiptda_des = dr["tiptda_des"].ToString();
+                                tda.cod_cadena = dr["cod_cadena"].ToString();
+                                tda.des_cadena = dr["des_cadena"].ToString();
+                                list.Add(tda);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                list = null;
+            }
+            return list;
+        }
     }
 }
