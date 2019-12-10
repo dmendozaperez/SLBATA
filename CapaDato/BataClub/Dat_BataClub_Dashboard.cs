@@ -12,9 +12,57 @@ namespace CapaDato.BataClub
 {
     public class Dat_BataClub_Dashboard
     {
-        public Ent_BataClub_DashBoard GET_INFO_DASHBOARD(ref Ent_BataClub_DashBoard dashboard_session, string anio = "2019" , int informe = 0, int mes = 0,object fechaIni = null , object fechaFin = null , string prom = "") // 0 = TODO | 1 = GENERAL | 2 = REGISTRADOS | 3 = MIEMBROS | 4 = CANALES
+        public List<Ent_Bataclub_Canales_Excel> get_canales_excel(Int32 informe,DateTime fecini_canal,DateTime fecfin_canal)
         {
-            string sqlquery = "USP_BATACLUB_DASHBOARD";
+            List<Ent_Bataclub_Canales_Excel> list=null;
+            string sqlquery = "[USP_BATACLUB_DASHBOARD_D]";
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@INFORME", informe);
+                        cmd.Parameters.AddWithValue("@fecha_ini_canal", fecini_canal);
+                        cmd.Parameters.AddWithValue("@fecha_fin_canal", fecfin_canal);
+                        cmd.Parameters.AddWithValue("@canal_excel", true);
+                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                        {
+                            DataTable dt = new DataTable();
+                            da.Fill(dt);
+                            if (dt!=null)
+                            {
+                                list = new List<Ent_Bataclub_Canales_Excel>();
+                                list = (from DataRow dr in dt.Rows
+                                        select new Ent_Bataclub_Canales_Excel()
+                                        {
+                                            Canal = dr["canal"].ToString(),
+                                            Tienda = dr["tienda"].ToString(),
+                                            Dni = dr["dni"].ToString(),
+                                            Nombres = dr["nombres"].ToString(),
+                                            Correo = dr["correo"].ToString(),
+                                            Miem_Bataclub = dr["miem_bataclub"].ToString(),
+                                            Fec_Registro = dr["fec_registro"].ToString(),// (dr["fec_registro"] ==DBNull.Value)? (string?)null : Convert.ToString(dr["fec_registro"]),
+                                            Fec_Miembro = dr["fec_miembro"].ToString(),//(dr["fec_miembro"] == DBNull.Value) ? (string?)null : Convert.ToDateTime(dr["fec_miembro"]),
+                                        }
+                                      ).ToList();
+                            }
+                        }
+
+                    }
+                }
+            }
+            catch
+            {
+                
+            }
+            return list;
+        }
+        public Ent_BataClub_DashBoard GET_INFO_DASHBOARD(ref Ent_BataClub_DashBoard dashboard_session, string anio = "2019" , int informe = 0, int mes = 0,object fechaIni = null , object fechaFin = null , string prom = "", object fechaIni_canal = null, object fechaFin_canal = null) // 0 = TODO | 1 = GENERAL | 2 = REGISTRADOS | 3 = MIEMBROS | 4 = CANALES
+        {
+            string sqlquery = "USP_BATACLUB_DASHBOARD_D";
             Ent_BataClub_DashBoard info = null;
             try
             {
@@ -38,6 +86,13 @@ namespace CapaDato.BataClub
                             cmd.Parameters.AddWithValue("@fecha_ini", Convert.ToDateTime(fechaIni));
                             cmd.Parameters.AddWithValue("@fecha_fin", Convert.ToDateTime(fechaFin));
                         }
+
+                        if (fechaIni_canal != null && fechaFin_canal != null)
+                        {
+                            cmd.Parameters.AddWithValue("@fecha_ini_canal", Convert.ToDateTime(fechaIni_canal));
+                            cmd.Parameters.AddWithValue("@fecha_fin_canal", Convert.ToDateTime(fechaFin_canal));
+                        }
+
                         cmd.Parameters.AddWithValue("@prom", prom);//@prom
                         using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                         {
@@ -167,6 +222,7 @@ namespace CapaDato.BataClub
                                                               registros = Convert.ToInt32(dr["REGISTROS"].ToString()),
                                                               transac = Convert.ToInt32(dr["TRANSAC"].ToString()),
                                                               consumido = Convert.ToInt32(dr["CONSUMIDO"].ToString()),
+                                                              bataclub = Convert.ToInt32(dr["MIEM_BATACLUB"].ToString()),
                                                           }).ToList();
                                 info.listTiendasSupervTot = (from DataRow dr in ds.Tables[(informe == 0 ? 7 : 1)].Rows
                                                           select new Ent_BataClub_DashBoard_TiendasSupervisor()
@@ -176,6 +232,7 @@ namespace CapaDato.BataClub
                                                               registros = Convert.ToInt32(dr["REGISTROS"].ToString()),
                                                               transac = Convert.ToInt32(dr["TRANSAC"].ToString()),
                                                               consumido = Convert.ToInt32(dr["CONSUMIDO"].ToString()),
+                                                              bataclub = Convert.ToInt32(dr["MIEM_BATACLUB"].ToString()),
                                                           }).ToList();
                             }
                             if (new[] { 7 }.Contains(informe))
