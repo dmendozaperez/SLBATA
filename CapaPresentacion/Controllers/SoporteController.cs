@@ -26,9 +26,11 @@ namespace CapaPresentacion.Controllers
         private string _session_doc_transac_private = "_session_doc_transac_private"; //gft
         private string _session_doc_transac_doc_private = "_session_doc_transac_doc_private"; //gft
         private string _session_soporte_tienda_peru = "_session_soporte_tienda_peru";//gft
+        private string _session_cupones_retorno = "_session_cupones_retorno";
+
         private Dat_ListaTienda dat_lista_tienda = new Dat_ListaTienda();
         private Dat_Combo tienda = new Dat_Combo();//gft
-
+        Dat_Ticket_Retorno datTR = new Dat_Ticket_Retorno();
         // GET: Soporte
         public ActionResult Index()
         {
@@ -46,7 +48,7 @@ namespace CapaPresentacion.Controllers
                 return RedirectToAction("Login", "Control", new { returnUrl = return_view });
             }
             else
-            { 
+            {
                 ViewBag.tienda = tiendaconfig.Listar();
                 return View();
             }
@@ -54,7 +56,7 @@ namespace CapaPresentacion.Controllers
         [HttpPost]
         public ActionResult getconfigtda(string codtda)
         {
-                   
+
             var config = tiendaconfig.get_config(codtda);
 
             if (config != null)
@@ -125,7 +127,7 @@ namespace CapaPresentacion.Controllers
             return listguia;
         }
 
-        public PartialViewResult _envioTable(string hidden, string fec_ini,string fec_fin, string dwtda)
+        public PartialViewResult _envioTable(string hidden, string fec_ini, string fec_fin, string dwtda)
         {
             if (dwtda == null)
             { return PartialView(); }
@@ -145,7 +147,7 @@ namespace CapaPresentacion.Controllers
             }
 
             //Traer registros
-            IQueryable<Ent_Documento_Transac> membercol = ((List<Ent_Documento_Transac>)(Session[_session_doc_transac_private])).AsQueryable();  
+            IQueryable<Ent_Documento_Transac> membercol = ((List<Ent_Documento_Transac>)(Session[_session_doc_transac_private])).AsQueryable();
 
             //Manejador de filtros
             int totalCount = membercol.Count();
@@ -264,7 +266,7 @@ namespace CapaPresentacion.Controllers
             //  JsonResult jRespuesta = null;
             Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
             str = datGuia.Envio_chk(cadena, _usuario.usu_id);
-           // var serializer = new JavaScriptSerializer();
+            // var serializer = new JavaScriptSerializer();
             //jRespuesta = Json(serializer.Deserialize<List<Ent_Documento_TransacDoc>>(strJson), JsonRequestBehavior.AllowGet);
 
             return str;
@@ -288,18 +290,18 @@ namespace CapaPresentacion.Controllers
                 Ent_Acceso_BD.port = ora_conexion.port_ora;
                 Ent_Acceso_BD.sid = ora_conexion.sid_ora;//B143-00062168
                 Dat_Ora_Data dat_ora = new Dat_Ora_Data();
-                DataTable dt = dat_ora.get_documento("B143-62168" ,ref _mensaje);
+                DataTable dt = dat_ora.get_documento("B143-62168", ref _mensaje);
 
                 ViewBag.Mensaje = _mensaje;
-                if (dt==null)
+                if (dt == null)
                 {
                     ViewBag.TranSeq = 0;
                     ViewBag.Total = 0;
                 }
                 else
-                { 
-                ViewBag.TranSeq = dt.Rows[0]["TRANS_SEQ"].ToString();
-                ViewBag.Total = dt.Rows[0]["TOTAL"].ToString();
+                {
+                    ViewBag.TranSeq = dt.Rows[0]["TRANS_SEQ"].ToString();
+                    ViewBag.Total = dt.Rows[0]["TOTAL"].ToString();
                 }
             }
             return View();
@@ -321,41 +323,167 @@ namespace CapaPresentacion.Controllers
             }
             else
             {
+                Session[_session_cupones_retorno] = null;
                 ViewBag.Tienda = tienda.get_ListaTiendaXstore(true);
                 return View();
             }
         }
-        public ActionResult PRUEBA_TK(string tienda , string codigo , bool consulta)
+        public PartialViewResult _DataCupones(string dwtda, string cupon, string fechaIni, string fechaFin)
         {
-            Dat_Ticket_Retorno datTR = new Dat_Ticket_Retorno();
-            string _mensaje = "";
-
-            if (consulta)
+            if (!String.IsNullOrEmpty(cupon))
             {
-                if (String.IsNullOrEmpty(codigo))
-                {
-                    _mensaje = "Ingrese un codigo de cupon para consultar.";
-                }
-            }else
-            {
-                if (String.IsNullOrEmpty(tienda))
-                {
-                    _mensaje = "Seleccione tienda para enviar una re-impresion de ticket de retorno";
-                }
+                dwtda = "";
             }
 
-            if (_mensaje == "")
+            return PartialView(listaTablaCupones(dwtda, cupon, fechaIni, fechaFin));
+        }
+        public List<Ent_Ticket_Retorno> listaTablaCupones(string dwtda, string cupon, string fechaIni, string fechaFin)
+        {
+            List<Ent_Ticket_Retorno> listguia = datTR.get_lista_cupones_retorno(dwtda, cupon, fechaIni, fechaFin);
+            Session[_session_cupones_retorno] = listguia;
+            return listguia;
+        }
+
+        public ActionResult getTablaCuponesRetorno(Ent_jQueryDataTableParams param)
+        {
+            /*verificar si esta null*/
+            if (Session[_session_cupones_retorno] == null)
             {
-                Ent_Ticket_Retorno _ret = datTR.PRUEBA_TK(new Ent_Ticket_Retorno() { tiendaGen = tienda, codigo = codigo }, consulta,ref _mensaje);
-                if (_ret != null)
+                List<Ent_Ticket_Retorno> listdoc = new List<Ent_Ticket_Retorno>();
+                Session[_session_cupones_retorno] = listdoc;
+            }
+
+            //Traer registros
+            IQueryable<Ent_Ticket_Retorno> membercol = ((List<Ent_Ticket_Retorno>)(Session[_session_cupones_retorno])).AsQueryable();
+
+            //Manejador de filtros
+            int totalCount = membercol.Count();
+
+            IEnumerable<Ent_Ticket_Retorno> filteredMembers = membercol;
+
+            if (!string.IsNullOrEmpty(param.sSearch))
+            {
+                filteredMembers = membercol
+                    .Where(m =>
+                    m.codigo.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    m.estado.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    m.tiendaGen.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    m.fechaGen.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    m.tiendaUso.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    m.fechaUso.ToUpper().Contains(param.sSearch.ToUpper()));
+            }
+
+            //Manejador de orden
+            var sortIdx = Convert.ToInt32(Request["iSortCol_0"]);
+
+            var sortDirection = Request["sSortDir_0"];
+            if (param.iSortingCols > 0)
+            {
+                if (sortDirection == "asc")
                 {
-                    return Json(new { estado = 1 , mensaje = "Operacion " + (consulta ? "consultar " : "enviar re-impresion") + " realizada con exito"  , tr = _ret });
+                    if (sortIdx == 1)
+                    {
+                        filteredMembers = filteredMembers.OrderBy(o => o.estado);
+                    }
+                    else if (sortIdx == 5)
+                    {
+                        filteredMembers = filteredMembers.OrderBy(o => Convert.ToDateTime(o.fechaGen));
+                    }
+                    else if (sortIdx == 9)
+                    {
+                        filteredMembers = filteredMembers.OrderBy(o => Convert.ToDateTime(o.fechaUso));
+                    }
+
+
                 }
                 else
                 {
-                    return Json(new { estado = 0, mensaje = _mensaje });
+                    if (sortIdx == 1)
+                    {
+                        filteredMembers = filteredMembers.OrderByDescending(o => o.estado);
+                    }
+                    else if (sortIdx == 5)
+                    {
+                        filteredMembers = filteredMembers.OrderByDescending(o => Convert.ToDateTime(o.fechaGen));
+                    }
+                    else if (sortIdx == 9)
+                    {
+                        filteredMembers = filteredMembers.OrderByDescending(o => Convert.ToDateTime(o.fechaUso));
+                    }
                 }
-            }else
+            }
+            var displayMembers = filteredMembers
+                .Skip(param.iDisplayStart)
+                .Take(param.iDisplayLength);
+
+            var result = from a in displayMembers
+                         select new
+                         {
+                             a.codigo,
+                             a.estado,
+                             a.montoDscto,
+                             a.impreso,
+                             a.tiendaGen,
+                             a.fechaGen,
+                             a.montoGen,
+                             a.serieGen,
+                             a.numeroGen,
+                             a.tiendaUso,
+                             a.fechaUso,
+                             a.montoUso,
+                             a.serieUso,
+                             a.numeroUso,
+                         };
+            var numvariable1 = filteredMembers.Count(n => n.estado.ToUpper() == "CONSUMIDO");
+            var numvariable2 = filteredMembers.Count(n => n.estado.ToUpper() == "DISPONIBLE");
+            var numvariable3 = filteredMembers.Count(n => n.estado.ToUpper() == "CADUCADO");
+            // param.variable1 = lblConsumidos;
+            param.variable1 = numvariable1.ToString();
+            param.variable2 = numvariable2.ToString();
+            param.variable3 = numvariable3.ToString();
+            //Se devuelven los resultados por json
+            return Json(new
+            {
+                sEcho = param.sEcho,
+                iTotalRecords = totalCount,
+                iTotalDisplayRecords = filteredMembers.Count(),
+                aaData = result,
+                variable1 = param.variable1,
+                variable2 = param.variable2,
+                variable3 = param.variable3
+            }, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult REIMPRESION_TR(string cupon)
+        {
+
+            string _mensaje = "";
+            bool _upd = false;
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+
+
+            if (String.IsNullOrEmpty(cupon))
+            {
+                _mensaje = "Cupon inválido.";
+            }
+            if (_usuario == null)
+            {
+                _mensaje = "No hay un usuario logeado.";
+            }
+
+
+            if (_mensaje == "")
+            {
+                _upd = datTR.REIMPRESION_TR(cupon, DateTime.Now.ToString("dd-MM-yyyy hh:mm:ss") + " Usuario: " + _usuario.usu_nombre, ref _mensaje);
+                if (_upd)
+                {
+                    return Json(new { estado = 1, mensaje = "Reimpresión enviada" });
+                }
+                else
+                {
+                    return Json(new { estado = 0, mensaje = "Error" });
+                }
+            }
+            else
             {
                 return Json(new { estado = 0, mensaje = _mensaje });
             }
