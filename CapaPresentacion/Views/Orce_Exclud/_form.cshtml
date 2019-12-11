@@ -30,6 +30,9 @@
     background-color: #fff;
     border: 1px solid #ddd;
     }
+    .bootstrap-select>.dropdown-toggle.bs-placeholder, .bootstrap-select>.dropdown-toggle.bs-placeholder:active, .bootstrap-select>.dropdown-toggle.bs-placeholder:focus, .bootstrap-select>.dropdown-toggle.bs-placeholder:hover {
+    color: #fff;
+    }
 </style>
 <script src="~/Scripts/bootstrap-select.min.js"></script>
 <script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
@@ -45,7 +48,7 @@
         <div class="form-group form-group-sm">
             <label class="col-md-2 control-label" for="txtCodigo">Codigo:</label>
             <div class="col-md-3">
-                @Html.TextBox("codigo", Model.ORC_COD, new { @class = "form-control", @id = "codigo", @readonly = "readonly" })
+                @Html.TextBox("codigo", (Model.ORC_COD == 0 ? (object)ViewBag.idOrce : Model.ORC_COD), new { @class = "form-control", @id = "codigo", @readonly = "readonly" })
             </div>
         </div>
         <div class="form-group form-group-sm">
@@ -57,20 +60,20 @@
         <div class="form-group form-group-sm">
             <label class="col-md-2 control-label" for="ddlCadena">Cadena:</label>
             <div class="col-md-3">
-                @Html.DropDownList("cadena", new MultiSelectList(ViewBag.listCadena, "cod_cadena", "des_cadena", (Model.TIENDAS == null ? null : Model.TIENDAS.Select(s => s.ORC_DET_TDA_CAD).Distinct())), new { @class = "form-control selectpicker", @id = "cadena", @data_live_search = "true", @multiple = "multiple", @data_actions_box = "true", @data_selected_text_format = "count > 2", @onchange = "ListarTipoTienda()" })
+                @Html.DropDownList("cadena", new MultiSelectList(ViewBag.listCadena, "cod_cadena", "des_cadena", (Model.TIENDAS == null ? null : Model.TIENDAS.Select(s => s.ORC_DET_TDA_CAD).Distinct())), new { @class = "form-control selectpicker", @id = "cadena", @data_live_search = "true", @multiple = "multiple", @data_actions_box = "true", @data_selected_text_format = "count > 2", @onchange = "ListarTipoTienda()" , @data_style="btn-danger" })
             </div>
         </div>
         <div class="form-group form-group-sm">
             <label class="col-md-2 control-label" for="ddlTdaCadena">Tipo de tienda:</label>
             <div class="col-md-3">
-                @Html.DropDownList("tipoTda", new MultiSelectList(ViewBag.listTipoTda, "tiptda_cod", "tiptda_des", (ViewBag.tipoTdaSelected == null ? null : ViewBag.tipoTdaSelected )), new { @class = "form-control selectpicker", @id = "tipoTda", @data_live_search = "true", @multiple = "multiple", @data_actions_box = "true", @data_selected_text_format = "count > 2", @onchange = "ListarTienda();" })
+                @Html.DropDownList("tipoTda", new MultiSelectList(ViewBag.listTipoTda, "tiptda_cod", "tiptda_des", (ViewBag.tipoTdaSelected == null ? null : ViewBag.tipoTdaSelected )), new { @class = "form-control selectpicker", @id = "tipoTda", @data_live_search = "true", @multiple = "multiple", @data_actions_box = "true", @data_selected_text_format = "count > 2", @onchange = "ListarTienda();", @data_style = "btn-danger" })
             </div>
         </div>
 
         <div class="form-group form-group-sm">
             <label class="col-md-2 control-label" for="ddlTdaCadena">Tienda:</label>
             <div class="col-md-3">
-                @Html.DropDownList("tdaCadena", new MultiSelectList(ViewBag.listTdaCadena, "cod_entid", "des_entid", (Model.TIENDAS == null ? null : Model.TIENDAS.Select(s => s.ORC_DET_TDA))), new { @class = "form-control selectpicker", @id = "tdaCadena", @data_live_search = "true", @multiple = "multiple", @data_actions_box = "true", @data_selected_text_format = "count > 2" })
+                @Html.DropDownList("tdaCadena", new MultiSelectList(ViewBag.listTdaCadena, "cod_entid", "des_entid", (Model.TIENDAS == null ? null : Model.TIENDAS.Select(s => s.ORC_DET_TDA))), new { @class = "form-control selectpicker", @id = "tdaCadena", @data_live_search = "true", @multiple = "multiple", @data_actions_box = "true", @data_selected_text_format = "count > 2", @data_style = "btn-danger" })
             </div>
         </div>
         <div class="form-group form-group-sm">
@@ -155,10 +158,11 @@
     var _all_check_val = false;
     var _all_checkG = false;
     var _all_check_gen = false;
+    var check_excel = false;
+    var v_check_excel = false;
     var cants = "";
     var _atributo = "-1";
-    $(document).ready(function () {
-        waitingDialog.show('Espere un momento por favor');
+    $(document).ready(function () {        
         $('input[type="file"]').change(function () {
             ExportToTable();
         });
@@ -167,12 +171,12 @@
                 "url": "../Scripts/DataTables/Spanish.json",
                 //"bProcessing" : '<div class="spinner"></div>'
             },
-            "columnDefs":[{
-                "targets": [1,2],
+            "columnDefs": [{
+                "targets": [1, 2],
                 "orderable": false
             }],
-            "fnServerData": function ( sSource, aoData, fnCallback ) {
-                $.getJSON( sSource, aoData, function (json) {
+            "fnServerData": function (sSource, aoData, fnCallback) {
+                $.getJSON(sSource, aoData, function (json) {
                     cants = "" + json.variable1;
                     var _cants = cants.split("|");
                     var _html = '<ul class="list-group">\
@@ -188,21 +192,29 @@
                                         <strong>Total Articulos:</strong>\
                                     </li>\
                                 </ul>'
+                    var _tot_exec = "";
+                    if (_cants[1] > 0) {
+                        _tot_exec = 'Total Articulos (Excel):&nbsp;&nbsp;<a class="btn btn-success btn-sm" href="javascript:checkExcel();" title="Generar articulos excel" ><i class="fa fa-check"></i></a>'
+                    } else {
+                        _tot_exec = 'Total Articulos (Excel):';
+                    }
 
                     var _html2 = '<ul class="list-group">\
                                     <li class="list-group-item">\
                                         <span class="badge">' + _cants[1] + '</span>\
-                                        Total Articulos (Excel):\
+                                        '+ _tot_exec + '\
                                     </li>\
                                     <li class="list-group-item">\
                                         <span class="badge">' + _cants[2] + '</span>\
                                         Total Articulos (Generar):\
                                     </li>\
                                   </ul>'
+
+
                     $("#resumen").html(_html);
                     $("#resumen2").html(_html2);
                     fnCallback(json)
-                } );
+                });
             },
             //"bProcessing": true,
             "bServerSide": true,
@@ -216,7 +228,9 @@
                     { "name": "_all_check_val", "value": _all_check_val },
                     { "name": "_all_checkG", "value": _all_checkG },
                     { "name": "_all_check_gen", "value": _all_check_gen },
-                    { "name": "_art_mod_gen", "value": _art_mod_gen }
+                    { "name": "_art_mod_gen", "value": _art_mod_gen },
+                    { "name": "check_excel", "value": check_excel },
+                    { "name": "v_check_excel", "value": v_check_excel }
                     );
             },
             "bdestroy": true,
@@ -227,7 +241,7 @@
                     { "sName": "ARTICULO", "mData": "ARTICULO" },
                     {
                         "render": function (data, type, full) {
-                            if (full.VALOR == true  ) {
+                            if (full.VALOR == true) {
                                 return "<div class='checkbox' style='height: 13px;'><label><input style='margin-top: 0px;' onClick='actualizarValorArt(\"" + full.ARTICULO + "\");' type='checkbox'  checked> TRUE</label></div>"
                             } else {
                                 return "<div class='checkbox' style='height: 13px;'><label><input style='margin-top: 0px;'  onClick='actualizarValorArt(\"" + full.ARTICULO + "\");' type='checkbox'  > FALSE</label></div>"
@@ -240,6 +254,8 @@
                         }, "className": "content-center-text"
                     }
             ]
+        }).ajaxComplete(function () {
+            waitingDialog.hide();
         });
         $('#check_all').change(function () {
             _all_check = true;
@@ -261,9 +277,14 @@
             $('.table').DataTable().ajax.reload(null, false);
             _all_checkG = false;
         });
-    }).ajaxComplete(function () {
-        waitingDialog.hide();
+
+
     });
+    function checkExcel() {
+        check_excel = true;
+        $('.table').DataTable().ajax.reload(null, false);
+        check_excel = false;
+    };
     function actualizarValorArt(articulo)
     {
         _art_mod = articulo;

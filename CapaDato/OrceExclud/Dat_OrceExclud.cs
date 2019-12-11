@@ -230,7 +230,7 @@ namespace CapaDato.OrceExclud
                                 ART.ARTICULO = dr["ARTICULO"].ToString();
                                 ART.ATRIBUTO = dr["ATRIBUTO"].ToString();
                                 ART.VALOR = Convert.ToBoolean(dr["VALOR"].ToString());
-                                ART.GENERAR = false;
+                                ART.GENERAR = true;
                                 list.Add(ART);
                             }
                         }
