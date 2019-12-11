@@ -417,7 +417,7 @@ namespace CapaPresentacion.Controllers
             if (check_excel)
             {
                 List<Ent_Orce_Inter_Art> lista = (List<Ent_Orce_Inter_Art>)Session[_session_lista_articulos];
-                lista.Select(a => { a.GENERAR = true; return a; }).ToList();
+                lista.Where(w=>((string[])Session[_session_art_excel]).Contains(w.ARTICULO)).Select(a => { a.GENERAR = true; return a; }).ToList();
                 Session[_session_lista_articulos] = lista;
             }
             IQueryable<Ent_Orce_Inter_Art> membercol = ((List<Ent_Orce_Inter_Art>)Session[_session_lista_articulos]).AsQueryable();  //lista().AsQueryable();
