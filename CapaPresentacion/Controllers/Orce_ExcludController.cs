@@ -199,13 +199,14 @@ namespace CapaPresentacion.Controllers
             {
                 filteredMembers = membercol
                     .Where(m => m.COD_ATR.ToUpper().Contains(param.sSearch.ToUpper()) ||
-                     m.DES_ATR.ToString().Contains(param.sSearch.ToUpper()));
+                     m.DES_ATR.ToString().Contains(param.sSearch.ToUpper()) ||
+                     m.FECHA_CREACION.ToString().Contains(param.sSearch.ToUpper()));
             }
             //Manejador de orden
             var sortIdx = Convert.ToInt32(Request["iSortCol_0"]);
-            Func<Ent_Orce_Exclud_Atributo, string> orderingFunction =
+            Func<Ent_Orce_Exclud_Atributo, DateTime> orderingFunction =
                 (
-                    m => m.COD_ATR
+                    m => Convert.ToDateTime( m.FECHA_CREACION)
                 );
             var sortDirection = Request["sSortDir_0"];
             if (sortDirection == "asc")
