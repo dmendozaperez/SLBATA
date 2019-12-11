@@ -433,6 +433,7 @@ namespace CapaPresentacion.Controllers
                              a.montoUso,
                              a.serieUso,
                              a.numeroUso,
+                             a.nroReimp,
                          };
             var numvariable1 = filteredMembers.Count(n => n.estado.ToUpper() == "CONSUMIDO");
             var numvariable2 = filteredMembers.Count(n => n.estado.ToUpper() == "DISPONIBLE");

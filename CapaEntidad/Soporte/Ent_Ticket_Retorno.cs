@@ -24,6 +24,6 @@ namespace CapaEntidad.Soporte
         public string mensaje { get; set; }
         public string imp_log { get; set; }
         public decimal montoDscto { get; set; }
-
+        public int nroReimp { get; set; }
     }
 }

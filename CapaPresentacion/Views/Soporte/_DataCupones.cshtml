@@ -96,8 +96,8 @@
                      },
                      {
                          "render": function (data, type, full) {
-                             if (full.estado == "DS") {
-                                 return '<button title="Enviar impresion a tienda" class="btn btn-default btn-sm reimprimir" data-documento="' + full.serieGen + '-' + full.numeroGen + '" data-tienda="' + full.tiendaGen + '"  data-cupon="' + full.codigo + '"><i class="glyphicon glyphicon-print"></i></button>';
+                             if (full.estado != "CO") {
+                                 return '<button title="Enviar impresion a tienda" class="btn btn-default btn-sm reimprimir" data-nro-reimp="' + full.nroReimp + '" data-documento="' + full.serieGen + '-' + full.numeroGen + '" data-tienda="' + full.tiendaGen + '"  data-cupon="' + full.codigo + '"><i class="glyphicon glyphicon-print"></i></button>';
                              } else {
                                  return ""
                              }                             
@@ -110,10 +110,10 @@
              var cupon = $(this).attr('data-cupon');
              var tienda = $(this).attr('data-tienda');
              var documento = $(this).attr('data-documento');
-     
+             var nroReimp = $(this).attr('data-nro-reimp');
              swal({
                  title: "Ticket de Retorno",
-                 text: "¿Desea enviar una reimpresión del ticket de retorno?\nTienda : " + tienda + "\nDocumento: " + documento + "\nCupon: "+ cupon +"",
+                 text: "¿Desea enviar una reimpresión del ticket de retorno?\nVeces Reimpresa: " + nroReimp + "   \nTienda : " + tienda + "\nDocumento: " + documento + "\nCupon: " + cupon + "",
                  icon: "warning",
                  buttons: true,
                  dangerMode: true,

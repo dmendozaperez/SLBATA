@@ -81,6 +81,7 @@ namespace CapaDato.Soporte
                                               fechaUso = (dr["CUP_RTN_FECHA_USO"].ToString() == "" ? "" : Convert.ToDateTime(dr["CUP_RTN_FECHA_USO"]).ToString("dd-MM-yyyy")),
                                               montoUso = dr["CUP_RTN_TOTAL_USO"].ToString() == "" ? 0 : Convert.ToDecimal(dr["CUP_RTN_TOTAL_USO"]),
                                               montoDscto = Convert.ToDecimal(dr["MONTO_DSCTO"]),
+                                              nroReimp = Convert.ToInt32(dr["CUP_RTN_NRO_REIM"]),
                                           }).ToList();
                             }
                         }
