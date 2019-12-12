@@ -23,15 +23,12 @@
         background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 25%, rgba(255,255,255,0.9) 75%, rgba(255,255,255,0) 100%);
     }
     .list-group-item {
-    position: relative;
-    display: block;
-    padding: 5px 10px;
-    margin-bottom: -1px;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    }
-    .bootstrap-select>.dropdown-toggle.bs-placeholder, .bootstrap-select>.dropdown-toggle.bs-placeholder:active, .bootstrap-select>.dropdown-toggle.bs-placeholder:focus, .bootstrap-select>.dropdown-toggle.bs-placeholder:hover {
-    color: #fff;
+        position: relative;
+        display: block;
+        padding: 5px 10px;
+        margin-bottom: -1px;
+        background-color: #fff;
+        border: 1px solid #ddd;
     }
 </style>
 <script src="~/Scripts/bootstrap-select.min.js"></script>
@@ -60,20 +57,20 @@
         <div class="form-group form-group-sm">
             <label class="col-md-2 control-label" for="ddlCadena">Cadena:</label>
             <div class="col-md-3">
-                @Html.DropDownList("cadena", new MultiSelectList(ViewBag.listCadena, "cod_cadena", "des_cadena", (Model.TIENDAS == null ? null : Model.TIENDAS.Select(s => s.ORC_DET_TDA_CAD).Distinct())), new { @class = "form-control selectpicker", @id = "cadena", @data_live_search = "true", @multiple = "multiple", @data_actions_box = "true", @data_selected_text_format = "count > 2", @onchange = "ListarTipoTienda()" , @data_style="btn-danger" })
+                @Html.DropDownList("cadena", new MultiSelectList(ViewBag.listCadena, "cod_cadena", "des_cadena", (Model.TIENDAS == null ? null : Model.TIENDAS.Select(s => s.ORC_DET_TDA_CAD).Distinct())), new { @class = "form-control selectpicker", @id = "cadena", @data_live_search = "true", @multiple = "multiple", @data_actions_box = "true", @data_selected_text_format = "count > 2", @onchange = "ListarTipoTienda()" })
             </div>
         </div>
         <div class="form-group form-group-sm">
             <label class="col-md-2 control-label" for="ddlTdaCadena">Tipo de tienda:</label>
             <div class="col-md-3">
-                @Html.DropDownList("tipoTda", new MultiSelectList(ViewBag.listTipoTda, "tiptda_cod", "tiptda_des", (ViewBag.tipoTdaSelected == null ? null : ViewBag.tipoTdaSelected )), new { @class = "form-control selectpicker", @id = "tipoTda", @data_live_search = "true", @multiple = "multiple", @data_actions_box = "true", @data_selected_text_format = "count > 2", @onchange = "ListarTienda();", @data_style = "btn-danger" })
+                @Html.DropDownList("tipoTda", new MultiSelectList(ViewBag.listTipoTda, "tiptda_cod", "tiptda_des", (ViewBag.tipoTdaSelected == null ? null : ViewBag.tipoTdaSelected )), new { @class = "form-control selectpicker", @id = "tipoTda", @data_live_search = "true", @multiple = "multiple", @data_actions_box = "true", @data_selected_text_format = "count > 2", @onchange = "ListarTienda();" })
             </div>
         </div>
 
         <div class="form-group form-group-sm">
             <label class="col-md-2 control-label" for="ddlTdaCadena">Tienda:</label>
             <div class="col-md-3">
-                @Html.DropDownList("tdaCadena", new MultiSelectList(ViewBag.listTdaCadena, "cod_entid", "des_entid", (Model.TIENDAS == null ? null : Model.TIENDAS.Select(s => s.ORC_DET_TDA))), new { @class = "form-control selectpicker", @id = "tdaCadena", @data_live_search = "true", @multiple = "multiple", @data_actions_box = "true", @data_selected_text_format = "count > 2", @data_style = "btn-danger" })
+                @Html.DropDownList("tdaCadena", new MultiSelectList(ViewBag.listTdaCadena, "cod_entid", "des_entid", (Model.TIENDAS == null ? null : Model.TIENDAS.Select(s => s.ORC_DET_TDA))), new { @class = "form-control selectpicker", @id = "tdaCadena", @data_live_search = "true", @multiple = "multiple", @data_actions_box = "true", @data_selected_text_format = "count > 2"})
             </div>
         </div>
         <div class="form-group form-group-sm">
@@ -461,11 +458,14 @@
     function NuevoGrabar(est_orce, op) {
         var _titulo = "";
         
-
+        var _res = cants.split("|");
+        var text = (est_orce == "P" ? "¿Desea generar interface?" : "¿Desea generar y enviar interface?");
+        text += "\n\nTrue:  " + _res[3] + "\nFalse:  " + _res[4] + "\nTotal Articulos:  " + _res[0]
+        text += "\n\nTotal Articulos Excel:  " + _res[1] + "\nGenerar:  " + _res[2] 
 
         swal({
             title: (est_orce == "P" ? "Generar Interface" : "Generar y enviar Interface"),
-            text: (est_orce == "P" ? "¿Desea generar interface?" : "¿Desea generar y enviar interface?"),
+            text: text,
             icon: "warning",
             buttons: true,
             dangerMode: true,

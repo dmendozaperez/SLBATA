@@ -83,7 +83,11 @@
             },
             "bdestroy": true,
             "start": 0,
-            "order": [0, "desc"],
+            "order": [4, "desc"],
+            "columnDefs": [{
+                "targets": [0, 1, 2,3,5],
+                "orderable": false
+            }],
             "bDeferRender": true,
             "aoColumns": [
                   { "sName": "COD_ATR", "mData": "COD_ATR" },
