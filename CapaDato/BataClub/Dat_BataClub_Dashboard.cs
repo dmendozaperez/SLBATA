@@ -60,7 +60,8 @@ namespace CapaDato.BataClub
             }
             return list;
         }
-        public Ent_BataClub_DashBoard GET_INFO_DASHBOARD(ref Ent_BataClub_DashBoard dashboard_session, string anio = "2019" , int informe = 0, int mes = 0,object fechaIni = null , object fechaFin = null , string prom = "", object fechaIni_canal = null, object fechaFin_canal = null) // 0 = TODO | 1 = GENERAL | 2 = REGISTRADOS | 3 = MIEMBROS | 4 = CANALES
+        public Ent_BataClub_DashBoard GET_INFO_DASHBOARD(ref Ent_BataClub_DashBoard dashboard_session, string anio = "2019" , int informe = 0, int mes = 0,object fechaIni = null , object fechaFin = null , string prom = "", 
+            object fechaIni_canal = null, object fechaFin_canal = null, object fechaIni_com = null, object fechaFin_com = null) // 0 = TODO | 1 = GENERAL | 2 = REGISTRADOS | 3 = MIEMBROS | 4 = CANALES
         {
             string sqlquery = "USP_BATACLUB_DASHBOARD_D";
             Ent_BataClub_DashBoard info = null;
@@ -91,6 +92,12 @@ namespace CapaDato.BataClub
                         {
                             cmd.Parameters.AddWithValue("@fecha_ini_canal", Convert.ToDateTime(fechaIni_canal));
                             cmd.Parameters.AddWithValue("@fecha_fin_canal", Convert.ToDateTime(fechaFin_canal));
+                        }
+
+                        if (fechaIni_com != null && fechaFin_com != null)
+                        {
+                            cmd.Parameters.AddWithValue("@fecha_ini_com", Convert.ToDateTime(fechaIni_com));
+                            cmd.Parameters.AddWithValue("@fecha_fin_com", Convert.ToDateTime(fechaFin_com));
                         }
 
                         cmd.Parameters.AddWithValue("@prom", prom);//@prom
@@ -235,15 +242,30 @@ namespace CapaDato.BataClub
                                                               bataclub = Convert.ToInt32(dr["MIEM_BATACLUB"].ToString()),
                                                           }).ToList();
                             }
-                            if (new[] { 7 }.Contains(informe))
-                                info.listDetPromTda = (from DataRow dr in ds.Tables[(informe == 0 ? 7 : informe == 4 ? 1 : 0)].Rows
-                                                    select new Ent_BataClub_DashBoard_Proms()
+                            if (new[] { 0,7 }.Contains(informe))
+                                info.listComprasTot = (from DataRow dr in ds.Tables[(informe == 0 ? 8 : informe == 4 ? 1 : 0)].Rows
+                                                    group dr by
+                                                    new
                                                     {
-                                                        promocion = dr["PROMOCION"].ToString(),
-                                                        tienda = dr["TIENDA"].ToString(),
-                                                        pares = Convert.ToInt32(dr["PARES"].ToString()),
-                                                        soles = Convert.ToInt32(dr["SOLES"].ToString())
+                                                        tipo = dr["TIPO"].ToString()
+                                                    }
+                                                    into G                                                    
+                                                    select new Ent_BataClub_DashBoard_Compras()
+                                                    {
+                                                        tipo =G.Key.tipo,                                                      
+                                                        monto =G.Sum(r=>Convert.ToDecimal(r["MONTO"])),
+                                                        
                                                     }).ToList();
+
+                            info.listTipoComprasTot= (from DataRow dr in ds.Tables[(informe == 0 ? 8 : informe == 4 ? 1 : 0)].Rows
+                                                      select new Ent_BataClub_DashBoard_Tipo_Compras()
+                                                      {
+                                                          transac = Convert.ToInt32(dr["TRANSAC"]),
+                                                          prom = dr["PROM"].ToString(),
+                                                          monto = Convert.ToInt32(dr["MONTO"]),
+                                                          tipo = dr["TIPO"].ToString()
+                                                      }).ToList();
+
                         }
                     }
                     if (cn != null)

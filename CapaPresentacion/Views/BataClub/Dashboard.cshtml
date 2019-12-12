@@ -9,6 +9,10 @@
     ViewBag.totalesGeneros = JsonConvert.SerializeObject(ViewBag.totalesGeneros, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
     ViewBag.BarChartTranReg = JsonConvert.SerializeObject(ViewBag.BarChartTranReg, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
     ViewBag.DetallesTiendaSuperv = JsonConvert.SerializeObject(ViewBag.DetallesTiendaSuperv, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+
+    ViewBag.BarChartCompras = JsonConvert.SerializeObject(ViewBag.BarChartCompras, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+    ViewBag.DetallesTipoCompra = JsonConvert.SerializeObject(ViewBag.DetallesTipoCompra, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+
 }
 <style>
     .chart {
@@ -415,6 +419,71 @@
             <!-- /.box -->
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <i class="fa fa-bar-chart-o"></i>
+                    <h3 class="box-title">Compras BataClub</h3>
+
+                    <div class="box-tools pull-right" style="top: 3px;">
+                        @*@Html.DropDownList("anioPS", new SelectList(ViewBag.anios, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "form-control form-control-sm selectpicker anio", @id = "anioPS", @name = "anioPS", @data_informe = 4 })*@
+
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-inline">
+                                <div class="form-group date">
+                                    <label>Inicio: </label>&nbsp;&nbsp;
+                                    <div class="input-group input-group-sm">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input type="text" class="form-control pull-right" id="fechaIni_com">
+                                    </div>
+                                </div>&nbsp;&nbsp;&nbsp;
+                                <div class="form-group date">
+                                    <label>Fin: </label>&nbsp;&nbsp;
+                                    <div class="input-group input-group-sm">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input type="text" class="form-control pull-right" id="fechaFin_com">
+                                    </div>
+                                </div>&nbsp;&nbsp;&nbsp;
+                                <button type="button" class="btn btn-primary btn-sm" title="Mostrar" id="btnMostrarCharBarSup"><i class="fa fa-search"></i></button>
+                                @*<a href="@Url.Action("RegTraConTdaExcel","BataClub")" class="btn btn-success btn-sm pull-right"><i class="glyphicon glyphicon-export"></i>&nbsp;&nbsp;Exportar</a>*@
+                            </div>
+
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-8">
+                            <p class="text-center" id="tituloBarCharSuperv">
+                            </p>
+                            <div class="chart">
+                                <canvas id="barChart_com" style="height: 290px;"></canvas>
+                            </div>
+                            <!-- /.chart-responsive -->
+                        </div>
+                        <div class="col-md-4">
+                            <div class="table-wrapper-scroll-y my-custom-scrollbar" style="height:320px">
+                                <table id="tiendasDetalle" class="table table-hover"></table>
+                            </div>
+                            <p id="totalesTiendas" class="pull-right" style="padding-right:15px; padding-top:7px"></p>
+                        </div>
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- ./box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
     <strong class="text-red"></strong>
 </section>
 <div class="modal fade" id="modalPromDetTda" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -601,6 +670,49 @@
                 '<strong style="color: rgb(230, 101, 101)">B: ' + totaltdaBASup.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;'
         $("#totalesTiendas").html(title2);
     }
+    function getChartCompras(canvas, data, tiendas) {
+        if (data != null) {
+            getChartInformeMensual(6, canvas, data);
+            var totaltranSup = sum(data.datasets[0].data).toLocaleString('es-PE');
+            var totalregSup = sum(data.datasets[1].data).toLocaleString('es-PE');
+            var totalConSup = sum(data.datasets[2].data).toLocaleString('es-PE');
+            var totalBataclub = sum(data.datasets[3].data).toLocaleString('es-PE');
+
+            var title = '<strong style="color: rgb(42, 152, 102)">T: ' + totaltranSup + '</strong>&nbsp;&nbsp;' +
+                '<strong style="color: rgb(90, 90, 90)">P: ' + totalregSup + '</strong>&nbsp;&nbsp;&nbsp;&nbsp;' +
+                '<strong style="color: rgb(243, 156, 18, 1)">C: ' + totalConSup + '</strong>&nbsp;&nbsp;&nbsp;' +
+                '<strong style="color: rgb(230, 101, 101, 1)">B: ' + totalBataclub + '</strong>&nbsp;&nbsp;'
+            $("#tituloBarCharSuperv").html(title);
+        }
+        var tbody = '<tr><th class="col-md-9">Tiendas</th><th class="col-md-1">Tran</th><th class="col-md-1">Reg</th><th class="col-md-1">Cons</th><th class="col-md-1">BA</th></tr>';
+        var ultimoSup = "";
+        for (var i = 0; i < tiendas.length; i++) {
+            var sup = tiendas[i].supervisor;
+            if (sup != ultimoSup) {
+                tbody += '<tr><th colspan="3">' + sup + '</th></tr>';
+                ultimoSup = sup;
+            }
+            tbody += '<tr><td class="text"><span>' + tiendas[i].tienda + '</span></td><td><span class="badge bg-transac">' + tiendas[i].transac + '</span></td><td><span class="badge bg-registros">' + tiendas[i].registros + '</span></td><td><span class="badge bg-consumido">' + tiendas[i].consumido + '</span></td><td><span class="badge bg-bataclub">' + tiendas[i].bataclub + '</span></td></tr>'
+        }
+        $("#tiendasDetalle").html(tbody);
+
+        var totaltdaRegSup = 0;
+        var totaltdaTranSup = 0;
+        var totaltdaConSup = 0;
+        var totaltdaBASup = 0;
+        for (var i = 0; i < tiendas.length; i++) {
+            totaltdaRegSup += parseFloat(tiendas[i].registros);
+            totaltdaTranSup += parseFloat(tiendas[i].transac);
+            totaltdaConSup += parseFloat(tiendas[i].consumido);
+            totaltdaBASup += parseFloat(tiendas[i].bataclub);
+        }
+        var title2 = '<strong class="pull-left">#: ' + tiendas.length + '</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+        '<strong style="color: rgb(42, 152, 102)">T: ' + totaltdaTranSup.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;' +
+            '<strong style="color: rgb(90, 90, 90)">R: ' + totaltdaRegSup.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;&nbsp;&nbsp;' +
+                '<strong style="color: rgb(243, 156, 18)">C: ' + totaltdaConSup.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;' +
+                '<strong style="color: rgb(230, 101, 101)">B: ' + totaltdaBASup.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;'
+        $("#totalesTiendas").html(title2);
+    }
     function getChartMensualPS(canvas, data, proms, mes , anio) {
         if (data != null) {
             getChartInformeMensual(4, canvas, data);
@@ -649,6 +761,18 @@
             maxDate: new Date(),
         }).datepicker("setDate", "0");
 
+        $('#fechaIni_com').datepicker({
+            format: "dd-mm-yyyy",
+            autoclose: true,
+            maxDate: new Date(),
+        }).datepicker("setDate", firstDay);
+
+        $('#fechaFin_com').datepicker({
+            format: "dd-mm-yyyy",
+            autoclose: true,
+            maxDate: new Date(),
+        }).datepicker("setDate", "0");
+
         $('#fechaIni_canal').datepicker({
             format: "dd-mm-yyyy",
             autoclose: true,
@@ -685,14 +809,14 @@
                     var desmsg = data.desmsg;
                     if (estado == "1")
                     {
-                       
+
                         window.location = '@Url.Action("ExportarCanalDetExcel")';
                         toastr.success(desmsg, msg_titulo);
                     }
                     else
                     {
                         toastr.error(desmsg, msg_titulo);
-                       
+
                     }
                     waitingDialog.hide();
                     //window.location = '<%= Url.Action("DownloadFile", "Home") %>?fileId=' + fileId;
@@ -723,6 +847,9 @@
         getChartCanales(document.getElementById('canalChart'), JSON.parse('@Html.Raw(ViewBag.chartDonut)'));
         getChartMensualPS(document.getElementById('barChartPS'), JSON.parse('@Html.Raw(ViewBag.chartMesParesSoles)'), JSON.parse('@Html.Raw(ViewBag.promsPS)'), null, $("#anioPS").val());
         getChartSuperv(document.getElementById('barChartSuperv'), JSON.parse('@Html.Raw(ViewBag.BarChartTranReg)'), JSON.parse('@Html.Raw(ViewBag.DetallesTiendaSuperv)'));
+
+        getChartCompras(document.getElementById('barChart_com'), JSON.parse('@Html.Raw(ViewBag.BarChartCompras)'), JSON.parse('@Html.Raw(ViewBag.DetallesTipoCompra)'));
+
         //document.getElementById('barChartPS').onclick = function (evt) {
         //    var activePoints = myChartPS.getElementsAtEvent(evt);
         //    //if (activePoints[0]) {

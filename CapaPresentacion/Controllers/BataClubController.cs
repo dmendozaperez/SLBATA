@@ -132,7 +132,12 @@ namespace CapaPresentacion.Controllers
                 ViewBag.anios = datCbo.get_lista_anios(2015);
 
                 ViewBag.BarChartTranReg = informeBarChartData(dashboard, 6);
+                ViewBag.BarChartCompras = informeBarChartData(dashboard, 7);
+
                 ViewBag.DetallesTiendaSuperv = dashboard.listTiendasSupervTot;
+
+                ViewBag.DetallesTipoCompra = dashboard.listTipoComprasTot;
+
                 Session[_session_det_tdas_sup] = dashboard.listTiendasSupervTot;
                 Session[_session_par_sol_mes_excel] = dashboard.listPromsPS;
                 Session[_session_det_tdas_sup_excel] = dashboard.listTiendasSupervTot;
@@ -142,6 +147,18 @@ namespace CapaPresentacion.Controllers
         public ActionResult updateChartData(string anio, int informe, int mes = 0, string fecini = null, string fecfin = null, string prom = "", string sup = "", string fecini_canal = null, string fecfin_canaL = null)
         {
             Ent_BataClub_DashBoard dashboard  = (Ent_BataClub_DashBoard)Session["_dashboardData"];
+
+            if (dashboard==null)
+            {
+                /*retornar al login*/
+                Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+                string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+                string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+                string return_view = actionName + "|" + controllerName;
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });                
+            }
+                
+
             if (fecini!=null)
             { 
                 if (fecini.Length == 0) fecini = null;
@@ -396,7 +413,45 @@ namespace CapaPresentacion.Controllers
                 chartDS.labels = dashboard.listSupervisorTot.Select(s => s.supervisor).ToArray();
                 chartDS.labelsTooltip = new string[] { "Hola", "Hola", "Hola", "Hola", "Hola", "Hola", "Hola", "HOLA" };
             }
-            return chartDS;
+            else if (informe == 7)
+            {
+                chartDS.datasets = new List<Ent_BataClub_Chart_DataSet>() {
+                    (new Ent_BataClub_Chart_DataSet()
+                    {
+                        label = "TRANSACCIONES",
+                        backgroundColor = Enumerable.Repeat("rgba(0, 166, 90,0.8)", dashboard.listComprasTot.Count).ToArray(),
+                        borderWidth = "1",
+                        data = dashboard.listComprasTot.Select(s => s.transac).ToArray()
+                    }),
+                    (new Ent_BataClub_Chart_DataSet()
+                    {
+                        label = "MONTO",
+                        backgroundColor = Enumerable.Repeat("rgba(180, 180, 180,0.8)", dashboard.listComprasTot.Count).ToArray(), // new string[] { "rgba(180, 180, 180,0.7)" },
+                        borderWidth = "1",
+                        data = dashboard.listComprasTot.Select(s => s.monto).ToArray()
+                    }),
+
+                    //(new Ent_BataClub_Chart_DataSet()
+                    //{
+                    //    label = "CONSUMIDOS",
+                    //    backgroundColor = Enumerable.Repeat("rgba(243, 156, 18, 0.8)", dashboard.listSupervisorTot.Count).ToArray(),
+                    //    borderWidth = "1",
+                    //    data = dashboard.listSupervisorTot.Select(s => s.consumido).ToArray()
+                    //}),
+
+                    // (new Ent_BataClub_Chart_DataSet()
+                    //{
+                    //    label = "MIEMBROS",
+                    //    backgroundColor = Enumerable.Repeat("rgba(230, 101, 101, 0.8)", dashboard.listSupervisorTot.Count).ToArray(),
+                    //    borderWidth = "1",
+                    //    data = dashboard.listSupervisorTot.Select(s => s.bataclub).ToArray()
+                    //})
+                };
+
+                chartDS.labels = dashboard.listComprasTot.Select(s => s.tipo).ToArray();
+                chartDS.labelsTooltip = new string[] { "Hola", "Hola", "Hola", "Hola", "Hola", "Hola", "Hola", "HOLA" };
+            }
+                return chartDS;
         }
         private string _session_det_canal_excel = "_session_det_canal_excel";
         public JsonResult CanalDetExcel_Data(string fecini_canal = null, string fecfin_canal = null)
