@@ -716,5 +716,40 @@ namespace CapaDato.BataClub
             return list_client_return;
 
         }
+        public List<Ent_BataClub_Orce_Promotion> GET_ORCE_PROMOTION()
+        {
+            List<Ent_BataClub_Orce_Promotion> list = null;
+
+            string sqlquery = "[USP_GET_ORCE_PROMOTION]";
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+                    if (cn.State == 0) cn.Open();
+                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        SqlDataReader dr = cmd.ExecuteReader();
+                        if (dr.HasRows)
+                        {
+                            list = new List<Ent_BataClub_Orce_Promotion>();
+                            while (dr.Read())
+                            {
+                                Ent_BataClub_Orce_Promotion det_tdas = new Ent_BataClub_Orce_Promotion();
+                                det_tdas.ORCE_COD_PROM = dr["ORCE_COD_PROM"].ToString();
+                                det_tdas.ORCE_DES_PROM = dr["ORCE_DES_PROM"].ToString();
+                                list.Add(det_tdas);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                list = null;
+            }
+            return list;
+        }
     }
 }
