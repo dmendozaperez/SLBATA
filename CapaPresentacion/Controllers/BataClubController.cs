@@ -41,6 +41,9 @@ namespace CapaPresentacion.Controllers
         private string _session_lista_cupones_excel = "_session_lista_cupones_excel";
 
         private string _session_det_tdas_sup = "_session_det_tdas_sup";
+        //DetallesTipoCompra
+        private string _session_DetallesTipoCompra = "_session_DetallesTipoCompra";
+
         private string _session_det_tdas_sup_excel = "_session_det_tdas_sup_excel";
         private string _session_par_sol_mes_excel = "_session_par_sol_mes_excel";
 
@@ -138,13 +141,15 @@ namespace CapaPresentacion.Controllers
 
                 ViewBag.DetallesTipoCompra = dashboard.listTipoComprasTot;
 
+                Session[_session_DetallesTipoCompra] = dashboard.listTipoComprasTot;
+
                 Session[_session_det_tdas_sup] = dashboard.listTiendasSupervTot;
                 Session[_session_par_sol_mes_excel] = dashboard.listPromsPS;
                 Session[_session_det_tdas_sup_excel] = dashboard.listTiendasSupervTot;
                 return View();
             }
         }
-        public ActionResult updateChartData(string anio, int informe, int mes = 0, string fecini = null, string fecfin = null, string prom = "", string sup = "", string fecini_canal = null, string fecfin_canaL = null)
+        public ActionResult updateChartData(string anio, int informe, int mes = 0, string fecini = null, string fecfin = null, string prom = "", string sup = "", string fecini_canal = null, string fecfin_canaL = null, string fecini_com = null, string fecfin_com = null)
         {
             Ent_BataClub_DashBoard dashboard  = (Ent_BataClub_DashBoard)Session["_dashboardData"];
 
@@ -164,7 +169,7 @@ namespace CapaPresentacion.Controllers
                 if (fecini.Length == 0) fecini = null;
                 if (fecfin.Length == 0) fecfin = null;
             }
-            if ( informe == 5 || informe == 7 || informe==8)
+            if ( informe == 5 || informe == 7 || informe==8 || informe == 9)
             {
                 dashboard = (Ent_BataClub_DashBoard)Session["_dashboardData"];
             }
@@ -172,7 +177,9 @@ namespace CapaPresentacion.Controllers
             {
                 dashboard = (Ent_BataClub_DashBoard)Session["_dashboardData"];
 
-                dashboard = datDash.GET_INFO_DASHBOARD(ref dashboard, anio, informe, mes, fecini, fecfin, prom, fecini_canal, fecfin_canaL);
+                if (informe == 10) informe = 7;
+
+                dashboard = datDash.GET_INFO_DASHBOARD(ref dashboard, anio, informe, mes, fecini, fecfin, prom, fecini_canal, fecfin_canaL,fecini_com,fecfin_com);
                 Session["_dashboardData"] = dashboard;
             }
             Ent_BataClub_Chart_Data chartDS = null;
@@ -294,6 +301,14 @@ namespace CapaPresentacion.Controllers
                     tiendas = JsonConvert.SerializeObject(((List<Ent_BataClub_DashBoard_TiendasSupervisor>)Session[_session_det_tdas_sup]).Where(w => w.supervisor == sup), Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore })
                 });
                 Session[_session_det_tdas_sup_excel] = ((List<Ent_BataClub_DashBoard_TiendasSupervisor>)Session[_session_det_tdas_sup]).Where(w => w.supervisor == sup).ToList();
+            }
+            else if (informe==9)
+            {
+                jsonResult = Json(new
+                {
+
+                    tipo = JsonConvert.SerializeObject(((List<Ent_BataClub_DashBoard_Tipo_Compras>)Session[_session_DetallesTipoCompra]).Where(w => w.tipo == sup), Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore })
+                });
             }
             return jsonResult;
         }

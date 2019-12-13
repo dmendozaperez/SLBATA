@@ -453,7 +453,7 @@
                                         <input type="text" class="form-control pull-right" id="fechaFin_com">
                                     </div>
                                 </div>&nbsp;&nbsp;&nbsp;
-                                <button type="button" class="btn btn-primary btn-sm" title="Mostrar" id="btnMostrarCharBarSup"><i class="fa fa-search"></i></button>
+                                <button type="button" class="btn btn-primary btn-sm" title="Mostrar" id="btnMostrarCharBarCom"><i class="fa fa-search"></i></button>
                                 @*<a href="@Url.Action("RegTraConTdaExcel","BataClub")" class="btn btn-success btn-sm pull-right"><i class="glyphicon glyphicon-export"></i>&nbsp;&nbsp;Exportar</a>*@
                             </div>
 
@@ -705,6 +705,7 @@
             var title = '<strong style="color: rgb(42, 152, 102)">T: ' + totaltrancom + '</strong>&nbsp;&nbsp;' +
                 '<strong style="color: rgb(90, 90, 90)">M: ' + totalmtocom + '</strong>&nbsp;&nbsp;'             
             $("#tituloBarCharCompra").html(title);
+        }
 
             var tbody = '<tr><th class="col-md-9">Prom.</th><th class="col-md-1">Monto</th><th class="col-md-1">Transac</th></tr>';
             var ultimoCom = "";
@@ -731,7 +732,7 @@
                     //'<strong style="color: rgb(243, 156, 18)">C: ' + totaltdaConSup.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;' +
                     //'<strong style="color: rgb(230, 101, 101)">B: ' + totaltdaBASup.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;'
             $("#totalesCompras").html(title2);
-        }
+      
      
     }
     function getChartMensualPS(canvas, data, proms, mes , anio) {
@@ -814,6 +815,10 @@
         $("#btnMostrarCharBarcanal_excel").click(function () {
             upload_canales_rango($('#fechaIni_canal').val(), $('#fechaFin_canal').val());
         });
+        $("#btnMostrarCharBarCom").click(function () {
+            updateCharts(0, 10, null, null, null, null,null,null, $('#fechaIni_com').val(), $('#fechaFin_com').val());
+        });
+        //btnMostrarCharBarCom
 
         /*descargar archivo excel canales x rango de fecha*/
         function upload_canales_rango(fecini_canal, fecfin_canal)
@@ -938,9 +943,9 @@
                     $.ajax({
                         type: "POST",
                         url: '@Url.Action("updateChartData", "BataClub")',
-                        data: { informe: 8, sup: myBarChartCO.chart.config.data.labels[activeIndex] },
+                        data: { informe: 9, sup: myBarChartCO.chart.config.data.labels[activeIndex] },
                         success: function (data) {
-                            getChartSuperv(null, null, JSON.parse(data.tipo)); //(JSON.parse('Html.Raw(ViewBag.DetallesTiendaSuperv)')).filter(w=>w.supervisor == myBarChartTR.chart.config.data.labels[activeIndex]));
+                            getChartCompras(null, null, JSON.parse(data.tipo)); //(JSON.parse('Html.Raw(ViewBag.DetallesTiendaSuperv)')).filter(w=>w.supervisor == myBarChartTR.chart.config.data.labels[activeIndex]));
                         },
                         error: function (XMLHttpRequest, textStatus, errorThrown) {
                             waitingDialog.hide();
@@ -1016,12 +1021,12 @@
             });
         });
 
-        function updateCharts(anio, informe, mes, fecini, fecfin, prom, fecini_canal, fecfin_canal) {
+        function updateCharts(anio, informe, mes, fecini, fecfin, prom, fecini_canal, fecfin_canal, fecini_com, fecfin_com) {
             waitingDialog.show('Espere un momento por favor');
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("updateChartData", "BataClub")',
-                data: { anio: anio, informe: informe, mes: (mes == null || mes == '' ? 0 : mes), fecini: fecini, fecfin: fecfin, prom: prom, fecini_canal: fecini_canal, fecfin_canal: fecfin_canal },
+                data: { anio: anio, informe: informe, mes: (mes == null || mes == '' ? 0 : mes), fecini: fecini, fecfin: fecfin, prom: prom, fecini_canal: fecini_canal, fecfin_canal: fecfin_canal, fecini_com: fecini_com, fecfin_com: fecfin_com },
                 success: function (data) {
                     if (informe == 2) {
                         myChart.destroy();
@@ -1037,8 +1042,9 @@
                     } else if (informe == 6) {
                         myBarChartTR.destroy();
                         getChartSuperv(document.getElementById('barChartSuperv'), JSON.parse(data.result), data.tiendas );
-                    } else if (informe == 7) {
-
+                    } else if (informe == 8) {
+                        myBarChartCO.destroy();
+                        getChartCompras(document.getElementById('barChart_com'), JSON.parse(data.result), data.tipo);
                     }
                     waitingDialog.hide();
                 },
