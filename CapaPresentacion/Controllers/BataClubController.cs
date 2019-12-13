@@ -132,7 +132,7 @@ namespace CapaPresentacion.Controllers
                 ViewBag.anios = datCbo.get_lista_anios(2015);
 
                 ViewBag.BarChartTranReg = informeBarChartData(dashboard, 6);
-                ViewBag.BarChartCompras = informeBarChartData(dashboard, 7);
+                ViewBag.BarChartCompras = informeBarChartData(dashboard, 7); //informeCompras(dashboard);  // informeBarChartData(dashboard, 7);
 
                 ViewBag.DetallesTiendaSuperv = dashboard.listTiendasSupervTot;
 
@@ -334,6 +334,21 @@ namespace CapaPresentacion.Controllers
             chartDSDonut.datasets = new List<Ent_BataClub_Chart_DataSet>() { dsBCDonut };
             return chartDSDonut;
         }
+        public Ent_BataClub_Chart_Data informeCompras(Ent_BataClub_DashBoard dashboard)
+        {
+            Ent_BataClub_Chart_Data chartDSDonut = new Ent_BataClub_Chart_Data();
+            Ent_BataClub_Chart_DataSet dsBCDonut = (new Ent_BataClub_Chart_DataSet()
+            {
+                backgroundColor = new string[] { "rgba(66, 186, 192, 0.9)",
+                        "rgba(211, 126, 114,0.9)",
+                        "rgba(255, 206, 86, 0.8)",
+                        "rgba(75, 192, 192, 0.8)"},
+                data = dashboard.listComprasTot.Select(s => s.transac).ToArray()
+            });
+            chartDSDonut.labels = dashboard.listComprasTot.Select(s => s.tipo).ToArray();
+            chartDSDonut.datasets = new List<Ent_BataClub_Chart_DataSet>() { dsBCDonut };
+            return chartDSDonut;
+        }
         public Ent_BataClub_Chart_Data informeBarChartData(Ent_BataClub_DashBoard dashboard, int informe)
         {
             Ent_BataClub_Chart_Data chartDS = new Ent_BataClub_Chart_Data();
@@ -419,14 +434,14 @@ namespace CapaPresentacion.Controllers
                     (new Ent_BataClub_Chart_DataSet()
                     {
                         label = "TRANSACCIONES",
-                        backgroundColor = Enumerable.Repeat("rgba(0, 166, 90,0.8)", dashboard.listComprasTot.Count).ToArray(),
+                        backgroundColor = Enumerable.Repeat("rgba(60, 141, 188,0.8)", dashboard.listComprasTot.Count).ToArray(),
                         borderWidth = "1",
                         data = dashboard.listComprasTot.Select(s => s.transac).ToArray()
                     }),
                     (new Ent_BataClub_Chart_DataSet()
                     {
                         label = "MONTO",
-                        backgroundColor = Enumerable.Repeat("rgba(180, 180, 180,0.8)", dashboard.listComprasTot.Count).ToArray(), // new string[] { "rgba(180, 180, 180,0.7)" },
+                        backgroundColor = Enumerable.Repeat("rgba(221, 75, 57,0.8)", dashboard.listComprasTot.Count).ToArray(), // new string[] { "rgba(180, 180, 180,0.7)" },
                         borderWidth = "1",
                         data = dashboard.listComprasTot.Select(s => s.monto).ToArray()
                     }),

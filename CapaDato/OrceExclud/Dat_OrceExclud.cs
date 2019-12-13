@@ -286,7 +286,7 @@ namespace CapaDato.OrceExclud
         }
         public int ORCE_INTERFACE_EXCLUD_ACT(int codigo, string descripcion, string atributo, string estado_orce, decimal usu_id, int estado, List<Ent_Orce_Inter_Art> listArticulos, string tdaCadena, ref string mensaje)
         {
-            string sqlquery = "USP_ORCE_INTERFACE_EXCLUD_ACT_PRUEBA";
+            string sqlquery = "USP_ORCE_INTERFACE_EXCLUD_ACT";
             int f = 0;
             DataTable TMP_ORCE_INTERFACE_ART = null;
             DataTable TMP_ORCE_INTERFACE_DET_TDA = null;

@@ -12,7 +12,6 @@
 
     ViewBag.BarChartCompras = JsonConvert.SerializeObject(ViewBag.BarChartCompras, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
     ViewBag.DetallesTipoCompra = JsonConvert.SerializeObject(ViewBag.DetallesTipoCompra, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-
 }
 <style>
     .chart {
@@ -463,7 +462,7 @@
                     <br />
                     <div class="row">
                         <div class="col-md-8">
-                            <p class="text-center" id="tituloBarCharSuperv">
+                            <p class="text-center" id="tituloBarCharCompra">
                             </p>
                             <div class="chart">
                                 <canvas id="barChart_com" style="height: 290px;"></canvas>
@@ -472,9 +471,9 @@
                         </div>
                         <div class="col-md-4">
                             <div class="table-wrapper-scroll-y my-custom-scrollbar" style="height:320px">
-                                <table id="tiendasDetalle" class="table table-hover"></table>
+                                <table id="ComprasDetalle" class="table table-hover"></table>
                             </div>
-                            <p id="totalesTiendas" class="pull-right" style="padding-right:15px; padding-top:7px"></p>
+                            <p id="totalesCompras" class="pull-right" style="padding-right:15px; padding-top:7px"></p>
                         </div>
                     </div>
                     <!-- /.row -->
@@ -483,7 +482,7 @@
             </div>
             <!-- /.box -->
         </div>
-    </div>
+    </div>  
     <strong class="text-red"></strong>
 </section>
 <div class="modal fade" id="modalPromDetTda" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -520,6 +519,7 @@
     var myDoughnutChart;
     var myChartPS;
     var myBarChartTR;
+    var myBarChartCO
     function sum(input) {
 
         if (toString.call(input) !== "[object Array]")
@@ -583,7 +583,34 @@
         } else if (informe == 6) {
             myBarChartTR = _chart;
         }
+        else if (informe=7){
+            myBarChartCO = _chart;
+        }
     }
+    // function getChartCompras(canvas , data) {
+    //    myDoughnutChart = new Chart(canvas, {
+    //        type: 'doughnut',
+    //        data: data,
+    //        pie:{
+    //            show:true,
+    //        },
+    //        options: {
+    //            legend: {
+    //                position: 'bottom'
+    //            },
+    //            tooltips: {
+    //                backgroundColor: 'rgba(237, 237, 237,0.8)',
+    //                bodyFontColor: 'rgba(46, 46, 46, 0.9)',
+    //                borderWidth: 1,
+    //                borderColor: 'rgba(158, 158, 158, 1)',
+    //                titleFontColor: 'rgba(73, 73, 73,0.8)'
+    //            },
+               
+    //        }
+    //    });
+    //    var total = sum(data.datasets[0].data);
+    //    $("#tituloComprasChar").html("Total: " + total.toLocaleString('es-PE'));
+    //}
     function getChartCanales(canvas , data) {
         myDoughnutChart = new Chart(canvas, {
             type: 'doughnut',
@@ -670,48 +697,42 @@
                 '<strong style="color: rgb(230, 101, 101)">B: ' + totaltdaBASup.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;'
         $("#totalesTiendas").html(title2);
     }
-    function getChartCompras(canvas, data, tiendas) {
+    function getChartCompras(canvas, data, tipo) {
         if (data != null) {
-            getChartInformeMensual(6, canvas, data);
-            var totaltranSup = sum(data.datasets[0].data).toLocaleString('es-PE');
-            var totalregSup = sum(data.datasets[1].data).toLocaleString('es-PE');
-            var totalConSup = sum(data.datasets[2].data).toLocaleString('es-PE');
-            var totalBataclub = sum(data.datasets[3].data).toLocaleString('es-PE');
+            getChartInformeMensual(7, canvas, data);
+            var totaltrancom = sum(data.datasets[0].data).toLocaleString('es-PE');
+            var totalmtocom = sum(data.datasets[1].data).toLocaleString('es-PE');    
+            var title = '<strong style="color: rgb(42, 152, 102)">T: ' + totaltrancom + '</strong>&nbsp;&nbsp;' +
+                '<strong style="color: rgb(90, 90, 90)">M: ' + totalmtocom + '</strong>&nbsp;&nbsp;'             
+            $("#tituloBarCharCompra").html(title);
 
-            var title = '<strong style="color: rgb(42, 152, 102)">T: ' + totaltranSup + '</strong>&nbsp;&nbsp;' +
-                '<strong style="color: rgb(90, 90, 90)">P: ' + totalregSup + '</strong>&nbsp;&nbsp;&nbsp;&nbsp;' +
-                '<strong style="color: rgb(243, 156, 18, 1)">C: ' + totalConSup + '</strong>&nbsp;&nbsp;&nbsp;' +
-                '<strong style="color: rgb(230, 101, 101, 1)">B: ' + totalBataclub + '</strong>&nbsp;&nbsp;'
-            $("#tituloBarCharSuperv").html(title);
-        }
-        var tbody = '<tr><th class="col-md-9">Tiendas</th><th class="col-md-1">Tran</th><th class="col-md-1">Reg</th><th class="col-md-1">Cons</th><th class="col-md-1">BA</th></tr>';
-        var ultimoSup = "";
-        for (var i = 0; i < tiendas.length; i++) {
-            var sup = tiendas[i].supervisor;
-            if (sup != ultimoSup) {
-                tbody += '<tr><th colspan="3">' + sup + '</th></tr>';
-                ultimoSup = sup;
+            var tbody = '<tr><th class="col-md-9">Prom.</th><th class="col-md-1">Monto</th><th class="col-md-1">Transac</th></tr>';
+            var ultimoCom = "";
+            for (var i = 0; i < tipo.length; i++) {
+                var com = tipo[i].tipo;
+                if (com != ultimoCom) {
+                    tbody += '<tr><th colspan="3">' + com + '</th></tr>';
+                    ultimoCom = com;
+                }
+                tbody += '<tr><td class="text"><span>' + tipo[i].prom + '</span></td><td><span class="badge bg-transac">' + tipo[i].monto + '</span></td><td><span class="badge bg-registros">' + tipo[i].transac + '</span></td></tr>'
             }
-            tbody += '<tr><td class="text"><span>' + tiendas[i].tienda + '</span></td><td><span class="badge bg-transac">' + tiendas[i].transac + '</span></td><td><span class="badge bg-registros">' + tiendas[i].registros + '</span></td><td><span class="badge bg-consumido">' + tiendas[i].consumido + '</span></td><td><span class="badge bg-bataclub">' + tiendas[i].bataclub + '</span></td></tr>'
-        }
-        $("#tiendasDetalle").html(tbody);
+            $("#ComprasDetalle").html(tbody);
 
-        var totaltdaRegSup = 0;
-        var totaltdaTranSup = 0;
-        var totaltdaConSup = 0;
-        var totaltdaBASup = 0;
-        for (var i = 0; i < tiendas.length; i++) {
-            totaltdaRegSup += parseFloat(tiendas[i].registros);
-            totaltdaTranSup += parseFloat(tiendas[i].transac);
-            totaltdaConSup += parseFloat(tiendas[i].consumido);
-            totaltdaBASup += parseFloat(tiendas[i].bataclub);
+            var totaltipoReg = 0;
+            var totaltipoMonto = 0;
+            
+            for (var i = 0; i < tipo.length; i++) {
+                totaltipoReg += parseFloat(tipo[i].transac);
+                totaltipoMonto += parseFloat(tipo[i].monto);
+            }
+            var title2 = '<strong class="pull-left">#: ' + tipo.length + '</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+            '<strong style="color: rgb(42, 152, 102)">M: ' + totaltipoMonto.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;' +
+                '<strong style="color: rgb(90, 90, 90)">T: ' + totaltipoReg.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;'
+                    //'<strong style="color: rgb(243, 156, 18)">C: ' + totaltdaConSup.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;' +
+                    //'<strong style="color: rgb(230, 101, 101)">B: ' + totaltdaBASup.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;'
+            $("#totalesCompras").html(title2);
         }
-        var title2 = '<strong class="pull-left">#: ' + tiendas.length + '</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
-        '<strong style="color: rgb(42, 152, 102)">T: ' + totaltdaTranSup.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;' +
-            '<strong style="color: rgb(90, 90, 90)">R: ' + totaltdaRegSup.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;&nbsp;&nbsp;' +
-                '<strong style="color: rgb(243, 156, 18)">C: ' + totaltdaConSup.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;' +
-                '<strong style="color: rgb(230, 101, 101)">B: ' + totaltdaBASup.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;'
-        $("#totalesTiendas").html(title2);
+     
     }
     function getChartMensualPS(canvas, data, proms, mes , anio) {
         if (data != null) {
@@ -847,6 +868,7 @@
         getChartCanales(document.getElementById('canalChart'), JSON.parse('@Html.Raw(ViewBag.chartDonut)'));
         getChartMensualPS(document.getElementById('barChartPS'), JSON.parse('@Html.Raw(ViewBag.chartMesParesSoles)'), JSON.parse('@Html.Raw(ViewBag.promsPS)'), null, $("#anioPS").val());
         getChartSuperv(document.getElementById('barChartSuperv'), JSON.parse('@Html.Raw(ViewBag.BarChartTranReg)'), JSON.parse('@Html.Raw(ViewBag.DetallesTiendaSuperv)'));
+       // getChartCompras(document.getElementById('ComprasChart'), JSON.parse('@Html.Raw(ViewBag.ChartCompras)'));
 
         getChartCompras(document.getElementById('barChart_com'), JSON.parse('@Html.Raw(ViewBag.BarChartCompras)'), JSON.parse('@Html.Raw(ViewBag.DetallesTipoCompra)'));
 
@@ -895,6 +917,30 @@
                         data: { informe: 8, sup: myBarChartTR.chart.config.data.labels[activeIndex] },
                         success: function (data) {
                             getChartSuperv(null, null,JSON.parse(data.tiendas)); //(JSON.parse('Html.Raw(ViewBag.DetallesTiendaSuperv)')).filter(w=>w.supervisor == myBarChartTR.chart.config.data.labels[activeIndex]));
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            waitingDialog.hide();
+                            var error = eval("(" + XMLHttpRequest.responseText + ")");
+                            swal(error.Message);
+                        }
+                    })
+                }
+            } catch (e) {
+
+            }
+        };
+
+        document.getElementById("barChart_com").onclick = function (e) {
+            try {
+                var activeIndex = myBarChartCO.tooltip._lastActive[0]._index;
+                var clickCoordinates = Chart.helpers.getRelativePosition(e, myBarChartCO.chart);
+                if (clickCoordinates.y >= 36) {
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("updateChartData", "BataClub")',
+                        data: { informe: 8, sup: myBarChartCO.chart.config.data.labels[activeIndex] },
+                        success: function (data) {
+                            getChartSuperv(null, null, JSON.parse(data.tipo)); //(JSON.parse('Html.Raw(ViewBag.DetallesTiendaSuperv)')).filter(w=>w.supervisor == myBarChartTR.chart.config.data.labels[activeIndex]));
                         },
                         error: function (XMLHttpRequest, textStatus, errorThrown) {
                             waitingDialog.hide();

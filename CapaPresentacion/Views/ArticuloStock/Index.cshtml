@@ -368,7 +368,7 @@
         document.getElementById('listTienda').innerHTML = '';
 
         var total = 0;
-
+        var acum = 0;
         var codArticulo = $('#txtArticulo').val();
         var CodDepartamento = $("#dwDep").val();
         var Codprovincia = $("#dwProv").val();
@@ -393,7 +393,7 @@
         //border2 =''
 
         var CabeceraResultados = '<div style="background:#FFFFFF;padding: 5px 5px 5px 5px;border:2px;margin-left: 0px;margin-right: 0px;margin-bottom: 10px;"><div class="row"><div class="col-md-3"><p style="font-size:large"><label class="label label-warning"><i class="fa fa-tags"></i> RIMS :&nbsp;&nbsp;<strong>CATEGORIA_VALOR</strong></label></p></div><div class="col-md-3"><p style="font-size:large"><label class="label label-warning"><i class="fa fa-tags"></i> STANDAR :&nbsp;&nbsp;<strong>STANDAR_VALOR</strong></label></p></div><div class="col-md-2"><p style="font-size:large"><label class="label label-warning"><i class="fa fa-tags"></i> PRECIO PLANILLA:&nbsp;&nbsp;<strong>S/ PRECIO_VALOR</strong></label></p> </div></div></div>';
-        var ConstHtmlTienda = '<br/><div id="lugar" style="background:#FFFFFF;' + border2 + '" ><div ' + css + '  style="background:#FFFFFF;" ><div class="col-sm-12"><div><h4><strong>VariableTienda</strong></h4><p><i class="fa fa-map-marker"></i>&nbsp;&nbsp;DireccionTienda&nbsp;&nbsp;&nbsp;<i class="fa fa-phone"></i>&nbsp;&nbsp;TelefonoTienda</p></div><table><tr><td><table><tr><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs" style="width:100%;">Tallas:</button></div></td><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-success btn-xs" style="width:100%;">Total:</button></div></td>ListvariableTalla</tr><tr><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs" style="width:100%;">Cantidad:</button></div></td></td><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-success btn-xs" style="width:100%;">VTotal</button></div></td>ListvariableCantidad</tr></table></td><td><table><tbody><tr><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-info btn-xs" style="width:100%;" title="Venta Acumulada">V. A.</button></div></td></tr><tr><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-info btn-xs" title = "Cantidad Venta Acumulada" style="width:100%;">0</button></div></td></tr></tbody></table></td></tr></table></div><br/></div></div>';
+        var ConstHtmlTienda = '<br/><div id="lugar" style="background:#FFFFFF;' + border2 + '" ><div ' + css + '  style="background:#FFFFFF;" ><div class="col-sm-12"><div><h4><strong>VariableTienda</strong></h4><p><i class="fa fa-map-marker"></i>&nbsp;&nbsp;DireccionTienda&nbsp;&nbsp;&nbsp;<i class="fa fa-phone"></i>&nbsp;&nbsp;TelefonoTienda</p></div><table><tr><td><table><tr><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs" style="width:100%;">Tallas:</button></div></td><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-success btn-xs" style="width:100%;">Total:</button></div></td>ListvariableTalla</tr><tr><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs" style="width:100%;">Cantidad:</button></div></td></td><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-success btn-xs" style="width:100%;">VTotal</button></div></td>ListvariableCantidad</tr></table></td><td><table><tbody><tr><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-info btn-xs" style="width:100%;" title="Venta Acumulada">V. A.</button></div></td></tr><tr><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-info btn-xs" title = "Cantidad Venta Acumulada" style="width:100%;">VACUM</button></div></td></tr></tbody></table></td></tr></table></div><br/></div></div>';
         var ConstTalla = '<td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs"  style="width:100%;" title="ver Sustituto" onclick="MostrarArticuloSustituto(this)" data-id="codTienda" data-tda="desTiendaS" data-modal="codTalla" data-art="codArticulo"  >variableTalla <span class="glyphicon glyphicon-eye-open"></span></button></div></td>'
         var ConstCantidad = '<td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs" style="width:100%;text-align:center;">variableCantidad</button></div></td>'
         var listTalla = '';
@@ -425,7 +425,7 @@
                     var standar = '';
                     var precio = '';
                     var TelefonoTienda = '';
-
+                    var length = Object.keys(valors).length - 1;
                     categoria = valors[0].Rims;
                     standar = valors[0].Standar;
                     precio = valors[0].Precio;
@@ -437,6 +437,9 @@
                     document.getElementById("infoProducto").innerHTML = CabeceraResultados;
 
                     $.each(valors, function (index, item) {
+
+                       
+
                         codTienda = item.Codigo_tienda;
                         NombreArticulo = item.Descripcion;
                         strUrlImagen = item.Url_Imagen;                        
@@ -454,24 +457,41 @@
                                 strhtml = strhtml.replace("ListvariableCantidad", listCantidad);
                                 strhtml = strhtml.replace("VTotal", total.toString());
 
-                                $.each(pares_acumulados, function (_index, _item) {
-                                    var tda_pa = _item.TIENDA;
-                                    var pa = _item.PARES_ACUM;
-                                    if (tda_pa == consTienda) {
-                                        strhtml = strhtml.replace('>0<', '>' + pa + '<');
-                                    }
-                                });
+                                //var as1 = $(pares_acumulados).filter(function (i, n) { return n.TIENDA === codTienda });
 
+                                //if (as1.length>0)
+                                //    {
+                                //    acum = as1[0].PARES_ACUM;
+                                //}
+
+                                strhtml = strhtml.replace("VACUM", acum.toString());
+
+                        //        $.each(pares_acumulados, function (_index, _item) {
+                        //            var tda_pa = _item.TIENDA;
+                        //            var pa = _item.PARES_ACUM;
+                        //            if (tda_pa == consTienda) {
+                        //                strhtml = strhtml.replace('>0<', '>' + pa + '<');
+                        //            }
+                        //        });
+
+                              
 
                                 divFinal += strhtml;
                                 listTalla = '';
                                 listCantidad = '';
                                 total = 0;
+                                acum = 0;
                             }
                             consTienda = codTienda;
                         }
 
                         total += item.Cantidad;
+
+                        var as = $(pares_acumulados).filter(function (i, n) { return n.TIENDA === codTienda});
+                        if (as.length > 0)
+                            {
+                            acum = as[0].PARES_ACUM;
+                        }
                         nombreTienda = item.Nombre_Tienda;
                         DireccionTienda = item.Direccion_Tienda;
                         talla = item.Talla;
@@ -490,6 +510,7 @@
                         listCantidad = listCantidad.replace("variableCantidad", cantidad);
 
 
+
                     });
 
                     if (codTienda != '') {
@@ -498,6 +519,7 @@
                         ConstHtmlTienda = ConstHtmlTienda.replace("ListvariableTalla", listTalla);
                         ConstHtmlTienda = ConstHtmlTienda.replace("ListvariableCantidad", listCantidad);
                         ConstHtmlTienda = ConstHtmlTienda.replace("VTotal", total.toString());
+                        ConstHtmlTienda = ConstHtmlTienda.replace("VACUM", acum.toString());
                         divFinal += ConstHtmlTienda;
                         document.getElementById('imagenCatalogo').src = strUrlImagen;
                         document.getElementById("listTienda").innerHTML = divFinal;

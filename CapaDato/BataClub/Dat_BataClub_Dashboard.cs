@@ -254,7 +254,8 @@ namespace CapaDato.BataClub
                                                     {
                                                         tipo =G.Key.tipo,                                                      
                                                         monto =G.Sum(r=>Convert.ToDecimal(r["MONTO"])),
-                                                        
+                                                        transac = G.Sum(r => Convert.ToDecimal(r["TRANSAC"])),
+
                                                     }).ToList();
 
                             info.listTipoComprasTot= (from DataRow dr in ds.Tables[(informe == 0 ? 8 : informe == 4 ? 1 : 0)].Rows
