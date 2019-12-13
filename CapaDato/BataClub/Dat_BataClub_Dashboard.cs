@@ -243,6 +243,7 @@ namespace CapaDato.BataClub
                                                           }).ToList();
                             }
                             if (new[] { 0,7 }.Contains(informe))
+                            {
                                 info.listComprasTot = (from DataRow dr in ds.Tables[(informe == 0 ? 8 : informe == 4 ? 1 : 0)].Rows
                                                     group dr by
                                                     new
@@ -266,7 +267,7 @@ namespace CapaDato.BataClub
                                                           monto = Convert.ToInt32(dr["MONTO"]),
                                                           tipo = dr["TIPO"].ToString()
                                                       }).ToList();
-
+                             }
                         }
                     }
                     if (cn != null)
