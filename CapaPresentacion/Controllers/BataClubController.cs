@@ -169,6 +169,19 @@ namespace CapaPresentacion.Controllers
                 if (fecini.Length == 0) fecini = null;
                 if (fecfin.Length == 0) fecfin = null;
             }
+
+            if (fecini_canal != null)
+            {
+                if (fecini_canal.Length == 0) fecini_canal = null;
+                if (fecfin_canaL.Length == 0) fecfin_canaL = null;
+            }
+
+            if (fecini_com != null)
+            {
+                if (fecini_com.Length == 0) fecini_com = null;
+                if (fecfin_com.Length == 0) fecfin_com = null;
+            }
+
             if ( informe == 5 || informe == 7 || informe==8 || informe == 9)
             {
                 dashboard = (Ent_BataClub_DashBoard)Session["_dashboardData"];
@@ -241,56 +254,61 @@ namespace CapaPresentacion.Controllers
             }
             else if (informe == 7)
             {
-                Ent_BataClub_DashBoard lista_prom = new Ent_BataClub_DashBoard();
-                if (mes == 0)
-                {
-                    lista_prom.listDetPromTda = (from dr in dashboard.dtventa_bataclub.AsEnumerable().
-                                            Where(myRow => myRow.Field<string>("PROMOCION") == prom && myRow.Field<int>("ANIO") == Convert.ToInt32(anio))
-                                                     //where dr.Field<string>("ANIO") == anio
-                                                     //&& (int)dr["MES"] == mes
-                                                 group dr by
-                                                 new
-                                                 {
-                                                     promocion = dr["PROMOCION"].ToString(),
-                                                     tienda = dr["TIENDA"].ToString()
-                                                 }
-                                        into G
-                                                 select new Ent_BataClub_DashBoard_Proms()
-                                                 {
-                                                     promocion = G.Key.promocion,
-                                                     tienda = G.Key.tienda,
-                                                     pares = G.Sum(r => Convert.ToInt32(r["PARES"])),
-                                                     soles = G.Sum(r => Convert.ToInt32(r["SOLES"])),
-                                                 }
-                                        ).OrderByDescending(c => c.soles).ToList();
-                }
-                else
-                {
-                    lista_prom.listDetPromTda = (from dr in dashboard.dtventa_bataclub.AsEnumerable().
-                                           Where(myRow => myRow.Field<string>("PROMOCION") == prom && myRow.Field<int>("ANIO") == Convert.ToInt32(anio)
-                                                      && myRow.Field<int>("MES") == mes)
-                                                     //where dr.Field<string>("ANIO") == anio
-                                                     //&& (int)dr["MES"] == mes
-                                                 group dr by
-                                                 new
-                                                 {
-                                                     promocion = dr["PROMOCION"].ToString(),
-                                                     tienda = dr["TIENDA"].ToString()
-                                                 }
-                                       into G
-                                                 select new Ent_BataClub_DashBoard_Proms()
-                                                 {
-                                                     promocion = G.Key.promocion,
-                                                     tienda = G.Key.tienda,
-                                                     pares = G.Sum(r => Convert.ToInt32(r["PARES"])),
-                                                     soles = G.Sum(r => Convert.ToInt32(r["SOLES"])),
-                                                 }
-                                       ).OrderByDescending(c => c.soles).ToList();
-                }
+                chartDS = new Ent_BataClub_Chart_Data();
+                chartDS = informeBarChartData(dashboard, 7);
+                Session[_session_DetallesTipoCompra] = dashboard.listTipoComprasTot;
+                //Session[_session_det_tdas_sup_excel] = dashboard.listTiendasSupervTot;
+                jsonResult = Json(new { result = JsonConvert.SerializeObject(chartDS, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }), tipo = dashboard.listTipoComprasTot });
+                //Ent_BataClub_DashBoard lista_prom = new Ent_BataClub_DashBoard();
+                //if (mes == 0)
+                //{
+                //    lista_prom.listDetPromTda = (from dr in dashboard.dtventa_bataclub.AsEnumerable().
+                //                            Where(myRow => myRow.Field<string>("PROMOCION") == prom && myRow.Field<int>("ANIO") == Convert.ToInt32(anio))
+                //                                     //where dr.Field<string>("ANIO") == anio
+                //                                     //&& (int)dr["MES"] == mes
+                //                                 group dr by
+                //                                 new
+                //                                 {
+                //                                     promocion = dr["PROMOCION"].ToString(),
+                //                                     tienda = dr["TIENDA"].ToString()
+                //                                 }
+                //                        into G
+                //                                 select new Ent_BataClub_DashBoard_Proms()
+                //                                 {
+                //                                     promocion = G.Key.promocion,
+                //                                     tienda = G.Key.tienda,
+                //                                     pares = G.Sum(r => Convert.ToInt32(r["PARES"])),
+                //                                     soles = G.Sum(r => Convert.ToInt32(r["SOLES"])),
+                //                                 }
+                //                        ).OrderByDescending(c => c.soles).ToList();
+                //}
+                //else
+                //{
+                //    lista_prom.listDetPromTda = (from dr in dashboard.dtventa_bataclub.AsEnumerable().
+                //                           Where(myRow => myRow.Field<string>("PROMOCION") == prom && myRow.Field<int>("ANIO") == Convert.ToInt32(anio)
+                //                                      && myRow.Field<int>("MES") == mes)
+                //                                     //where dr.Field<string>("ANIO") == anio
+                //                                     //&& (int)dr["MES"] == mes
+                //                                 group dr by
+                //                                 new
+                //                                 {
+                //                                     promocion = dr["PROMOCION"].ToString(),
+                //                                     tienda = dr["TIENDA"].ToString()
+                //                                 }
+                //                       into G
+                //                                 select new Ent_BataClub_DashBoard_Proms()
+                //                                 {
+                //                                     promocion = G.Key.promocion,
+                //                                     tienda = G.Key.tienda,
+                //                                     pares = G.Sum(r => Convert.ToInt32(r["PARES"])),
+                //                                     soles = G.Sum(r => Convert.ToInt32(r["SOLES"])),
+                //                                 }
+                //                       ).OrderByDescending(c => c.soles).ToList();
+                //}
 
-                dashboard.listDetPromTda = lista_prom.listDetPromTda;
+                //dashboard.listDetPromTda = lista_prom.listDetPromTda;
 
-                jsonResult = Json(new { promsDetPromTda = dashboard.listDetPromTda });
+                //jsonResult = Json(new { tipo = dashboard.listComprasTot });
 
             }
             else if (informe == 8)
@@ -304,6 +322,7 @@ namespace CapaPresentacion.Controllers
             }
             else if (informe==9)
             {
+               
                 jsonResult = Json(new
                 {
 
