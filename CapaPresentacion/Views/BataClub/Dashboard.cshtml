@@ -1042,7 +1042,7 @@
                     } else if (informe == 6) {
                         myBarChartTR.destroy();
                         getChartSuperv(document.getElementById('barChartSuperv'), JSON.parse(data.result), data.tiendas );
-                    } else if (informe == 8) {
+                    } else if (informe == 8 || informe == 10) {
                         myBarChartCO.destroy();
                         getChartCompras(document.getElementById('barChart_com'), JSON.parse(data.result), data.tipo);
                     }
