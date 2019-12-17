@@ -1650,6 +1650,8 @@
     <Content Include="Views\BataClub\TabletEncuesta.cshtml" />
     <Content Include="Views\Soporte\TicketRetorno.cshtml" />
     <Content Include="Views\Soporte\_DataCupones.cshtml" />
+    <Content Include="Views\Orce_Exclud\Cupones.cshtml" />
+    <Content Include="Views\Orce_Exclud\GenerarCupones.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

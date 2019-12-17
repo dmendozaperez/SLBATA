@@ -36,6 +36,7 @@ namespace CapaEntidad.BataClub
         public string FechaFin { get; set; }
         public bool PromActiva { get; set; }
         public int nroCupones { get; set; }
+        public string Coupon_Code { get; set; }
     }
     public class Ent_BataClub_ListTdasProm
     {

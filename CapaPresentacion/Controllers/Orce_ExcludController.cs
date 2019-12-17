@@ -566,5 +566,23 @@ namespace CapaPresentacion.Controllers
             }            
             return File(filecontent, ExcelExportHelper.ExcelContentType, nom_excel + ".xlsx");
         }
+        #region Cupones Orce
+        public ActionResult Cupones()
+        {
+            return View();
+        }
+        public ActionResult GenerarCupones()
+        {
+            return View();
+        }
+        public ActionResult GenerarCuponesOrce(string prefx)
+        {
+            string _mensaje = "";
+            bool res = false;
+            res = datOE.ORCE_CUPONES_BATACLUB_REFRESH(prefx,ref _mensaje);
+            return Json(new { estado = res, mensaje = _mensaje });
+        }
+        #endregion
+
     }
 }
