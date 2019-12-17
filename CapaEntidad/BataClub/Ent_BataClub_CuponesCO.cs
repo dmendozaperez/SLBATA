@@ -21,6 +21,12 @@ namespace CapaEntidad.BataClub
         public string mesCumple { get; set; }
         public bool miemBataClub { get; set; }
     }
+    public class Ent_BataClub_Orce_Promotion
+    {
+        public string ORCE_COD_PROM { get; set; }
+        public string ORCE_DES_PROM { get; set; }
+    }
+
     public class Ent_BataClub_Promociones
     {
         public string Codigo { get; set; }
@@ -30,6 +36,7 @@ namespace CapaEntidad.BataClub
         public string FechaFin { get; set; }
         public bool PromActiva { get; set; }
         public int nroCupones { get; set; }
+        public string Coupon_Code { get; set; }
     }
     public class Ent_BataClub_ListTdasProm
     {

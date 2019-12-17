@@ -88,17 +88,28 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-3" style="padding-left: 25px;">
+        <div class="col-sm-2" style="padding-left: 25px;">
+            <div class="form-group">
+                <label for="fecini" style="color: #3d566e;">Fecha Inicio</label>
+                <div class="input-group">
+                    <input type="text" name="fechaI" id="fechaI" class="form-control" value="@ViewBag.fechaI" placeholder="dd-mm-aaaa" style="height: 33.979166px;">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" id="btdpI" type="button"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div><!-- /input-group -->
+            </div>
+        </div>
+        <div class="col-sm-2" style="padding-left: 25px;">
             <div class="form-group">
                 <label for="fecnac" style="color: #3d566e;">Fecha Final</label>
                 <div class="input-group">
-                    <input type="text" name="fecha" id="fecha" class="form-control" value="@ViewBag.fecha" placeholder="dd-mm-aaaa" style="height: 33.979166px;">
+                    <input type="text" name="fechaF" id="fechaF" class="form-control" value="@ViewBag.fechaF" placeholder="dd-mm-aaaa" style="height: 33.979166px;">
                     <span class="input-group-btn">
                         <button class="btn btn-default" id="btdp" type="button"><i class="glyphicon glyphicon-calendar"></i></button>
                     </span>
                 </div><!-- /input-group -->
             </div>
-            </div>
+        </div>
         <div class="col-sm-1" style="padding-left: 25px; margin-right: inherit; width: 130px;">
             <label for="segape" style="color: #3d566e;">Pares Máx.</label>
             <div class="form-group">
@@ -113,6 +124,12 @@
                         <input id="pares" type="text" class="form-control" name="pares" placeholder="Pares Máx" >
                     }                      
                 </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="tienda">Promocion Orce:</label>
+                @Html.DropDownList("promOrce", new SelectList(ViewBag.listOP, "ORCE_COD_PROM", "ORCE_DES_PROM", null), new { @class = "form-control selectpicker", @id = "promOrce", @data_live_search = "true", @data_actions_box = "true" })
             </div>
         </div>
     </div>
@@ -249,10 +266,19 @@
         {
             <text>$("#cadena2").selectpicker('selectAll');</text>
         }
-        $("#btdp").click(function () {
-            $("#fecha").datepicker('show')
+        $("#btdpI").click(function () {
+            $("#fechaI").datepicker('show')
         });
-        $('#fecha').datepicker({
+        $('#fechaI').datepicker({
+            format: "dd-mm-yyyy",
+            autoclose: true,
+            maxDate: new Date(),
+        });
+
+        $("#btdp").click(function () {
+            $("#fechaF").datepicker('show')
+        });
+        $('#fechaF').datepicker({
             format: "dd-mm-yyyy",
             autoclose: true,
             maxDate: new Date(),
@@ -271,7 +297,9 @@
                     var promocion = $("#promocion").val();
                     //promocion = (promocion == null ? "" : promocion);
                     var dscto = $("#dscto").val(); //== null ? -1 : $("#dscto").val();
-                    var fecha = $("#fecha").val(); //== null ? "" : $("#fecha").val();
+                    var fechaF = $("#fechaF").val(); //== null ? "" : $("#fecha").val();
+                    var fechaI = $("#fechaI").val(); //== null ? "" : $("#fecha").val();
+                    var prefix = $("#promOrce").val(); //== null ? "" : $("#fecha").val();
                     var pares = $("#pares").val(); //== null ? -1 : $("#pares").val();
                     var mesCumple = $("#mesCumple").val();
                     var genero = $("input[name='genero']:checked").val(); //$("#genero").val();
@@ -285,7 +313,10 @@
                     $.ajax({
                         type: "POST",
                         url: '@Url.Action("BATACLUB_INSERTAR_CUPONES", "BataClub")',
-                        data: { operacion: operacion, promocion: promocion, dscto: dscto, fecha: fecha, pares: pares, mesCumple: mesCumple, genero: genero, tienda: tienda , tienda2 : tienda2 , anio : anio},
+                        data: {
+                            operacion: operacion, promocion: promocion, dscto: dscto, fechaF: fechaF, pares: pares, mesCumple: mesCumple,
+                            genero: genero, tienda: tienda, tienda2: tienda2, anio: anio, fechaI: fechaI, prefix: prefix
+                        },
                         dataType: "json",
                         success: function (data) {
                             waitingDialog.hide();

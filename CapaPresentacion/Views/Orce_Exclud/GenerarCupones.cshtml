@@ -1,0 +1,71 @@
+﻿@{
+    ViewBag.Title = "Generar Cupones Orce";
+}
+
+<p class="text-danger">Generar cupones Orce en SQL Server.</p>
+<div class="box box-body box-primary">
+    @*<div class="row">
+        <div class="col-md-10">            
+            <a href="@Url.Action("Index" , "Orce_Exclud")" class="btn btn-default"><i class="glyphicon glyphicon-arrow-left"></i>&nbsp;&nbsp;Salir</a>
+        </div>
+    </div>
+    <br />*@
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-inline">
+                <div class="form-group">
+                    <label for="">Prefijo : </label>
+                    <input type="text" maxlength="5" class="form-control" id="preOrce" name="preOrce">
+                    <span id="helpPreOrce" class="help-block text-danger hidden">Este campo es obligario.</span>
+                </div>
+                <button type="button" id="enviar" class="btn btn-primary">Generar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#enviar').click(function () {
+            var prefx = $("#preOrce").val();
+            if (prefx == "" || prefx.length != 5) {                
+                swal({
+                    title: "Error",
+                    text: "El campo prefijo debe contener minimo 5 carcteres.",
+                    icon: "error",
+                    dangerMode :true
+                })
+                return;
+            }
+            waitingDialog.show('Espere un momento por favor');
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GenerarCuponesOrce", "Orce_Exclud")',
+                data: { prefx: prefx},
+                success: function (data) {
+                    waitingDialog.hide();
+                    if (data.estado == 1) {
+                        swal({
+                            title: "Ok",
+                            text: "Operacion realizada con éxito.\nCupones ORCE generados.",
+                            icon: "success"
+                        })
+                    } else {
+                        swal({
+                            title: "Error",
+                            text: data.mensaje,
+                            icon: "error",
+                            dangerMode: true,
+                        });
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    waitingDialog.hide();
+                    var error = eval("(" + XMLHttpRequest.responseText + ")");
+                    swal(error.Message);
+                }
+            });
+        });
+    });
+</script>

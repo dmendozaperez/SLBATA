@@ -431,5 +431,29 @@ namespace CapaDato.OrceExclud
             }
             return list;
         }
+
+        public bool ORCE_CUPONES_BATACLUB_REFRESH(string prefx , ref string _error)
+        {
+            string sqlquery = "ORCE_CUPONES_BATACLUB_REFRESH";
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+                    if (cn.State == 0) cn.Open();
+                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@COUPON_CODE", prefx);
+                        cmd.ExecuteNonQuery();
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;   
+            }
+        }
     }
 }

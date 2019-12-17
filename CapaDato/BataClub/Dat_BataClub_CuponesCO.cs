@@ -81,6 +81,7 @@ namespace CapaDato.BataClub
                                 prom.FechaFin = Convert.ToDateTime(dr["FechaFin"]).ToString("dd-MM-yyyy");
                                 prom.PromActiva = Convert.ToBoolean(dr["PromActiva"]);
                                 prom.nroCupones = Convert.ToInt32(dr["Num_Cupon"]);
+                                prom.Coupon_Code = Convert.ToString(dr["Coupon_Code"]);
                                 list.Add(prom);
                             }
                         }
@@ -484,13 +485,20 @@ namespace CapaDato.BataClub
             //return oLista;
             return strJson;
         }
-        public List<Ent_BataClub_Cupones> BATACLUB_INSERTAR_CUPONES(int operacion, decimal por_desc , DateTime fecha_fin , decimal pares , string prom_des, decimal usu_id , List<Ent_BataClub_Cupones> clientes , string mesCumple , string genero, string tiendas , string tiendas2 , string anio, ref string _prom_id , ref string mensaje)
+        public List<Ent_BataClub_Cupones> BATACLUB_INSERTAR_CUPONES(int operacion, decimal por_desc , DateTime fecha_fin , 
+            decimal pares , string prom_des, decimal usu_id , List<Ent_BataClub_Cupones> clientes , string mesCumple , string genero, 
+            string tiendas , string tiendas2 , string anio, DateTime fecha_ini , string prefix , ref string _prom_id , ref string mensaje)
         {
-            string sqlquery = (operacion == 2 ? "USP_BATACLUB_INSERTAR_CUPONES" : "USP_BATACLUB_INSERTAR_CUPONES_GRUPO");         
+            string sqlquery = "USP_BATACLUB_INSERTAR_CUPONES_GRUPO"; // (operacion == 2 ? "USP_BATACLUB_INSERTAR_CUPONES" : "USP_BATACLUB_INSERTAR_CUPONES_GRUPO");         
             DataTable tmpcupones = new DataTable();
+            string clientesArray = "";
             if (operacion == 2)
             {
-                tmpcupones = _toDTListCli(clientes);
+                try
+                {
+                    clientesArray = String.Join(",", clientes.Select(s => s.dniCliente).ToArray());
+                }
+                catch { clientesArray = ""; }
             }                
             List<Ent_BataClub_Cupones> list = null;
             try
@@ -502,13 +510,15 @@ namespace CapaDato.BataClub
                     {
                         cmd.CommandTimeout = 0;
                         cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@operacion", operacion);
                         cmd.Parameters.AddWithValue("@pordes", por_desc);
+                        cmd.Parameters.AddWithValue("@fecini", fecha_ini);
                         cmd.Parameters.AddWithValue("@fecfin", fecha_fin);
                         cmd.Parameters.AddWithValue("@paresmax", pares);
                         cmd.Parameters.AddWithValue("@prom_des", prom_des);
                         if (operacion == 2)
                         {
-                            cmd.Parameters.AddWithValue("@tmpcupones", tmpcupones);
+                            cmd.Parameters.AddWithValue("@dni_str", clientesArray);
                         }
                         cmd.Parameters.AddWithValue("@usu_id", usu_id);                        
                         if (operacion == 1)
@@ -518,18 +528,16 @@ namespace CapaDato.BataClub
                             cmd.Parameters.AddWithValue("@Tiendas", tiendas);
                             cmd.Parameters.AddWithValue("@tdas_reg", tiendas2);
                             cmd.Parameters.AddWithValue("@anio", anio);
+                        }
+                        cmd.Parameters.AddWithValue("@COUPON_CODE_PREFIX", prefix);
+                        cmd.Parameters.Add("@ID_PROM", SqlDbType.VarChar, 5).Direction = ParameterDirection.Output;
 
-                            cmd.Parameters.Add("@ID_PROM", SqlDbType.VarChar,5).Direction = ParameterDirection.Output;
-                        }                        
                         SqlDataAdapter da = new SqlDataAdapter(cmd);
                         DataTable dtCupones = new DataTable();
                         da.Fill(dtCupones);
                         if (dtCupones.Rows.Count > 0)
                         {
-                            if (operacion == 1)
-                            {
-                                _prom_id = cmd.Parameters["@ID_PROM"].Value.ToString();
-                            }                            
+                            _prom_id = cmd.Parameters["@ID_PROM"].Value.ToString();                                                        
                             list = new List<Ent_BataClub_Cupones>();
                             list = (from DataRow dr in dtCupones.Rows
                                     select new Ent_BataClub_Cupones() {
@@ -715,6 +723,43 @@ namespace CapaDato.BataClub
  
             return list_client_return;
 
+        }
+        public List<Ent_BataClub_Orce_Promotion> GET_ORCE_PROMOTION(int op = 0 , string cod = "")
+        {
+            List<Ent_BataClub_Orce_Promotion> list = null;
+
+            string sqlquery = "[USP_GET_ORCE_PROMOTION]";
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+                    if (cn.State == 0) cn.Open();
+                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@OP", op);
+                        cmd.Parameters.AddWithValue("@Coupon_Code", cod);
+                        SqlDataReader dr = cmd.ExecuteReader();
+                        if (dr.HasRows)
+                        {
+                            list = new List<Ent_BataClub_Orce_Promotion>();
+                            while (dr.Read())
+                            {
+                                Ent_BataClub_Orce_Promotion det_tdas = new Ent_BataClub_Orce_Promotion();
+                                det_tdas.ORCE_COD_PROM = dr["ORCE_COD_PROM"].ToString();
+                                det_tdas.ORCE_DES_PROM = dr["ORCE_DES_PROM"].ToString();
+                                list.Add(det_tdas);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                list = null;
+            }
+            return list;
         }
     }
 }
