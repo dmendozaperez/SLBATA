@@ -182,7 +182,7 @@ namespace CapaPresentacion.Controllers
                 if (fecfin_com.Length == 0) fecfin_com = null;
             }
 
-            if ( informe == 5 || informe == 7 || informe==8 || informe == 9)
+            if ( informe == 5 || informe == 7 || informe==8 || informe == 9 || informe == 11)
             {
                 dashboard = (Ent_BataClub_DashBoard)Session["_dashboardData"];
             }
@@ -328,6 +328,59 @@ namespace CapaPresentacion.Controllers
 
                     tipo = JsonConvert.SerializeObject(((List<Ent_BataClub_DashBoard_Tipo_Compras>)Session[_session_DetallesTipoCompra]).Where(w => w.tipo == sup), Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore })
                 });
+            }
+            else if (informe==11)
+            {
+                Ent_BataClub_DashBoard lista_prom = new Ent_BataClub_DashBoard();
+                if (mes == 0)
+                {
+                    lista_prom.listDetPromTda = (from dr in dashboard.dtventa_bataclub.AsEnumerable().
+                                            Where(myRow => myRow.Field<string>("PROMOCION") == prom && myRow.Field<int>("ANIO") == Convert.ToInt32(anio))
+                                                     //where dr.Field<string>("ANIO") == anio
+                                                     //&& (int)dr["MES"] == mes
+                                                 group dr by
+                                                 new
+                                                 {
+                                                     promocion = dr["PROMOCION"].ToString(),
+                                                     tienda = dr["TIENDA"].ToString()
+                                                 }
+                                        into G
+                                                 select new Ent_BataClub_DashBoard_Proms()
+                                                 {
+                                                     promocion = G.Key.promocion,
+                                                     tienda = G.Key.tienda,
+                                                     pares = G.Sum(r => Convert.ToInt32(r["PARES"])),
+                                                     soles = G.Sum(r => Convert.ToInt32(r["SOLES"])),
+                                                 }
+                                        ).OrderByDescending(c => c.soles).ToList();
+                }
+                else
+                {
+                    lista_prom.listDetPromTda = (from dr in dashboard.dtventa_bataclub.AsEnumerable().
+                                           Where(myRow => myRow.Field<string>("PROMOCION") == prom && myRow.Field<int>("ANIO") == Convert.ToInt32(anio)
+                                                      && myRow.Field<int>("MES") == mes)
+                                                     //where dr.Field<string>("ANIO") == anio
+                                                     //&& (int)dr["MES"] == mes
+                                                 group dr by
+                                                 new
+                                                 {
+                                                     promocion = dr["PROMOCION"].ToString(),
+                                                     tienda = dr["TIENDA"].ToString()
+                                                 }
+                                       into G
+                                                 select new Ent_BataClub_DashBoard_Proms()
+                                                 {
+                                                     promocion = G.Key.promocion,
+                                                     tienda = G.Key.tienda,
+                                                     pares = G.Sum(r => Convert.ToInt32(r["PARES"])),
+                                                     soles = G.Sum(r => Convert.ToInt32(r["SOLES"])),
+                                                 }
+                                       ).OrderByDescending(c => c.soles).ToList();
+                }
+
+                dashboard.listDetPromTda = lista_prom.listDetPromTda;
+
+                jsonResult = Json(new { promsDetPromTda = dashboard.listDetPromTda });
             }
             return jsonResult;
         }
@@ -1897,5 +1950,13 @@ namespace CapaPresentacion.Controllers
         //    }
         //}
         #endregion
+
+        #region<BATACLUB CLIENTES REGISTROS Y MIEMBROS>
+        public ActionResult Index_ClientesBataClub()
+        {
+            return View();
+        }
+        #endregion
+
     }
 }

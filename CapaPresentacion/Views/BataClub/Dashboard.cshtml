@@ -986,7 +986,7 @@
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("updateChartData", "BataClub")',
-                data: { anio: anio, informe: 7, mes: (mes == null || mes == '' ? 0 : mes), prom: prom },
+                data: { anio: anio, informe: 11, mes: (mes == null || mes == '' ? 0 : mes), prom: prom },
                 success: function (data) {
                     var totalPares = 0;
                     var totalSoles = 0;
