@@ -25,6 +25,11 @@ namespace CapaEntidad.BataClub
     {
         public string ORCE_COD_PROM { get; set; }
         public string ORCE_DES_PROM { get; set; }
+        public int CAMPAIGN_ID { get;set;}
+        public int PROMOTION_ID { get; set; }
+        public int DEAL_ID { get; set; }
+        public int COUPON_GEN_COUNT { get; set; }
+        public string PROMOTION_NAME { get; set; }
     }
 
     public class Ent_BataClub_Promociones

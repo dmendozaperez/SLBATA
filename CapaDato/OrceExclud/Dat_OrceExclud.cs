@@ -7,6 +7,7 @@ using System.Data;
 using CapaEntidad.Util;
 using System.Data.SqlClient;
 using CapaEntidad.OrceExlud;
+using CapaEntidad.BataClub;
 
 namespace CapaDato.OrceExclud
 {
@@ -432,9 +433,10 @@ namespace CapaDato.OrceExclud
             return list;
         }
 
-        public bool ORCE_CUPONES_BATACLUB_REFRESH(string prefx , ref string _error)
+        public Ent_BataClub_Orce_Promotion ORCE_CUPONES_BATACLUB_REFRESH(string prefx , ref string _error)
         {
             string sqlquery = "ORCE_CUPONES_BATACLUB_REFRESH";
+            Ent_BataClub_Orce_Promotion orceProm = null;
             try
             {
                 using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
@@ -445,15 +447,41 @@ namespace CapaDato.OrceExclud
                         cmd.CommandTimeout = 0;
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@COUPON_CODE", prefx);
-                        cmd.ExecuteNonQuery();
-                        return true;
+                        cmd.Parameters.Add("@NRO_CUPONES", SqlDbType.Decimal).Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add("@MENSAJE", SqlDbType.VarChar , -1).Direction = ParameterDirection.Output;
+                        SqlDataAdapter da = new SqlDataAdapter(cmd);
+                        DataTable dt = new DataTable();
+                        decimal nroCupones = 0;
+                        string _mensaje = "";
+                        da.Fill(dt);
+                        nroCupones = Convert.ToDecimal(cmd.Parameters["@NRO_CUPONES"].Value);
+                        _mensaje = Convert.ToString(cmd.Parameters["@MENSAJE"].Value);
+                        _error = _mensaje;
+                        if (_mensaje == "")
+                        {
+                            if (dt != null)
+                            {
+                                if (dt.Rows.Count > 0)
+                                {
+                                    orceProm = new Ent_BataClub_Orce_Promotion();
+                                    orceProm.PROMOTION_ID= Convert.ToInt32(dt.Rows[0]["PROMOTION_ID"]);
+                                    orceProm.DEAL_ID= Convert.ToInt32(dt.Rows[0]["DEAL_ID"]);
+                                    orceProm.CAMPAIGN_ID= Convert.ToInt32(dt.Rows[0]["CAMPAIGN_ID"]);
+                                    orceProm.COUPON_GEN_COUNT= Convert.ToInt32(dt.Rows[0]["COUPON_GEN_COUNT"]);
+                                    orceProm.PROMOTION_NAME = Convert.ToString(dt.Rows[0]["PROMOTION_NAME"]);
+                                    orceProm.ORCE_COD_PROM= Convert.ToString(dt.Rows[0]["COUPON_CODE"]);
+                                }
+                            }
+                        }                        
                     }
                 }
             }
             catch (Exception ex)
             {
-                return false;   
+                orceProm = null;
+                _error = ex.ToString();
             }
+            return orceProm;
         }
     }
 }
