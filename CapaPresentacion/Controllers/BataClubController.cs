@@ -959,6 +959,10 @@ namespace CapaPresentacion.Controllers
                 ViewBag.fechaI = DateTime.Now.ToString("dd-MM-yyyy");
                 ViewBag.pares = pares;
                 List<Ent_BataClub_Orce_Promotion> listOP = datProm.GET_ORCE_PROMOTION(0, coupon_code);
+                if (listOP == null)
+                {
+                    listOP = new List<Ent_BataClub_Orce_Promotion>();
+                }
                 ViewBag.listOP = listOP;
                 return View();
             }
@@ -992,6 +996,10 @@ namespace CapaPresentacion.Controllers
                 ViewBag.anios = anios;
 
                 List<Ent_BataClub_Orce_Promotion> listOP = datProm.GET_ORCE_PROMOTION(1);
+                if (listOP == null)
+                {
+                    listOP = new List<Ent_BataClub_Orce_Promotion>();
+                }
                 ViewBag.listOP = listOP;
 
                 return View();
@@ -1077,6 +1085,12 @@ namespace CapaPresentacion.Controllers
             {
                 _error += "La lista de clientes está vacia" + Environment.NewLine;
             }
+
+            if (String.IsNullOrEmpty(prefix.Trim()))
+            {
+                _error += "Seleccione promocion ORCE." + Environment.NewLine;
+            }
+
             if (String.IsNullOrEmpty(fechaF.Trim()))
             {
                 _error += "Ingrese fecha fin por favor." + Environment.NewLine;
