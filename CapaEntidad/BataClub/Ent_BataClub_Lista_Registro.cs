@@ -17,11 +17,11 @@ namespace CapaEntidad.BataClub
         public string apellido_mat { get; set; }
         public string genero { get; set; }
         public string correo { get; set; }
-        public DateTime? fec_nac { get; set; }
+        public string fec_nac { get; set; }
         public string telefono { get; set; }
         public string ubicacion { get; set; }
-        public DateTime? fec_registro { get; set; }
-        public DateTime? miem_bataclub_fecha { get; set; }
+        public string fec_registro { get; set; }
+        public string miem_bataclub_fecha { get; set; }
         public string miem_bataclub { get; set; }
 
     }

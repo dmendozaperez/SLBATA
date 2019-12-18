@@ -1651,6 +1651,7 @@
     <Content Include="Views\Soporte\TicketRetorno.cshtml" />
     <Content Include="Views\Soporte\_DataCupones.cshtml" />
     <Content Include="Views\BataClub\Index_ClientesBataClub.cshtml" />
+    <Content Include="Views\BataClub\_Lista_ClientesBataClub.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
