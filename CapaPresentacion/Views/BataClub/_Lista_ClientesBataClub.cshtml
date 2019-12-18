@@ -1,0 +1,104 @@
+﻿<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.min.css" />
+<table id="example" class="table table-hover dataTable  table-striped table-responsive">
+    <thead>
+        <tr style="background-color:#3d566e; color:#ecf0f1">
+            <th>Canal</th>
+            <th>Tienda</th>
+            <th>DNI</th>
+            <th>Pri.Nom</th>
+            <th>Seg.Nom</th>
+            <th>Ape.Pat</th>
+            <th>Ape.Mat</th>
+            <th>Genero</th>
+            <th>Correo</th>
+            <th>Fec.Nac</th>
+            <th>Telefono</th>
+            <th>Ubi.</th>
+            <th>Fec.Reg</th>
+            <th>Fec.Bat</th>
+            <th style="background-color:#f26363">Miembro</th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach:"></tbody>
+    <tfoot>
+        <tr>
+            <th>Canal</th>
+            <th>Tienda</th>
+            <th>DNI</th>
+            <th>Pri.Nom</th>
+            <th>Seg.Nom</th>
+            <th>Ape.Pat</th>
+            <th>Ape.Mat</th>
+            <th>Genero</th>
+            <th>Correo</th>
+            <th>Fec.Nac</th>
+            <th>Telefono</th>
+            <th>Ubi.</th>
+            <th>Fec.Reg</th>
+            <th>Fec.Bat</th>
+            <th>Miembro</th>
+        </tr>
+    </tfoot>
+</table>
+<script src='https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js'></script>
+<script src='//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js'></script>
+<script src='//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js'></script>
+<script src='//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js'></script>
+<script src='//cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js'></script>
+<script>
+        $(document).ready(function () {
+            $('.table').dataTable({
+                "language": {
+                    "url": "../Scripts/DataTables/Spanish.json"
+                },
+                "bServerSide": true,
+                "bAutoWidth": false,
+                "sAjaxSource": '@Url.Action("getListarCliBa", "BataClub")',
+                "bdestroy": true,
+                "bFilter": false,
+                "start": 0,
+                //"bPaginate": false,
+                "orderable": false,
+                //"order": [0, "asc"],
+                "bDeferRender": true,
+                "aoColumns": [
+                       { "sName": "canal", "mData": "canal" },
+                       { "sName": "tienda", "mData": "tienda" },
+                       { "sName": "dni", "mData": "dni" },
+                       { "sName": "primer_nombre", "mData": "primer_nombre" },
+                       { "sName": "segundo_nombre", "mData": "segundo_nombre" },
+                       { "sName": "apellido_pat", "mData": "apellido_pat" },
+                       { "sName": "apellido_mat", "mData": "apellido_mat" },
+                       { "sName": "genero", "mData": "genero" },
+                       { "sName": "correo", "mData": "correo" },
+                       { "sName": "fec_nac", "mData": "fec_nac", "sClass": "right", "type": "date-dd-mmm-yyyy" },
+                       { "sName": "telefono", "mData": "telefono" },
+                       { "sName": "ubicacion", "mData": "ubicacion" },
+                       { "sName": "fec_registro", "mData": "fec_registro"},
+                       { "sName": "miem_bataclub_fecha", "mData": "miem_bataclub_fecha", "sClass": "right", "type": "date-dd-mmm-yyyy" },
+                       { "sName": "miem_bataclub", "mData": "miem_bataclub" },                                           
+                ],
+                dom: 'Bfrtip',
+                buttons: [
+               {
+                   extend: 'excelHtml5',
+                   title: 'Bataclub_xls'
+               },
+               {
+                   extend: 'csvHtml5',
+                   title: 'BataClub_csv'
+               },
+               {
+                   extend: 'pdfHtml5',
+                   title: 'BataClub_pdf'
+               },
+               'copyHtml5',
+                ]
+            });
+        
+
+        });
+
+
+
+</script>

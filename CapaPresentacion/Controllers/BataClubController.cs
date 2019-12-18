@@ -1966,9 +1966,134 @@ namespace CapaPresentacion.Controllers
         #endregion
 
         #region<BATACLUB CLIENTES REGISTROS Y MIEMBROS>
+        private string _session_lista_registro_private = "_session_lista_registro_private";
+        private Dat_BataClub_Lista_Registro dat_lst_reg = null;
         public ActionResult Index_ClientesBataClub()
         {
             return View();
+        }
+        public PartialViewResult _Lista_ClientesBataClub(string fechaIni, string fechaFin, string dni, string email)
+        {
+
+            List<Ent_BataClub_Lista_Registro> listar_cli = lista_cli_reg_bataclub(Convert.ToDateTime(fechaIni),Convert.ToDateTime(fechaFin), dni, email);
+
+            return PartialView(listar_cli);
+        }
+        public List<Ent_BataClub_Lista_Registro> lista_cli_reg_bataclub(DateTime fec_ini, DateTime fec_fin, string dni, string correo)
+        {
+            List<Ent_BataClub_Lista_Registro> listar = null;
+            try
+            {
+                dat_lst_reg = new Dat_BataClub_Lista_Registro();
+                listar = dat_lst_reg.lista_registro(fec_ini, fec_fin, dni, correo);
+                Session[_session_lista_registro_private] = listar;
+            }
+            catch (Exception exc)
+            {
+             
+            }
+            return listar;
+        }
+        public ActionResult getListarCliBa(Ent_jQueryDataTableParams param)
+        {
+
+            /*verificar si esta null*/
+            if (Session[_session_lista_registro_private] == null)
+            {
+                List<Ent_BataClub_Lista_Registro> listdoc = new List<Ent_BataClub_Lista_Registro>();
+                Session[_session_lista_registro_private] = listdoc;
+            }
+
+            //Traer registros
+            IQueryable<Ent_BataClub_Lista_Registro> membercol = ((List<Ent_BataClub_Lista_Registro>)(Session[_session_lista_registro_private])).AsQueryable();  //lista().AsQueryable();
+
+            //Manejador de filtros
+            int totalCount = membercol.Count();
+            IEnumerable<Ent_BataClub_Lista_Registro> filteredMembers = membercol;
+
+            if (!string.IsNullOrEmpty(param.sSearch))
+            {
+                filteredMembers = membercol
+                    .Where(m => m.correo.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                     m.dni.ToUpper().Contains(param.sSearch.ToUpper()));
+            }
+            //Manejador de orden
+            var sortIdx = Convert.ToInt32(Request["iSortCol_0"]);
+            //Func<Ent_BataClub_Lista_Registro, string> orderingFunction =
+            //(
+            //m => sortIdx == 12 ? Convert.ToDateTime(m.fec_registro) :
+            // "";
+            //);
+            var sortDirection = Request["sSortDir_0"];
+            if (param.iSortingCols > 0)
+            {
+                if (sortDirection == "asc")
+                {
+                    if (sortIdx == 0)
+                    {
+                        filteredMembers = filteredMembers.OrderBy(o => Convert.ToDateTime(o.fec_registro));
+                    }
+                    else if (sortIdx == 12)
+                    {
+                        filteredMembers = filteredMembers.OrderBy(o => Convert.ToDateTime(o.fec_registro));
+                    }
+                    else if (sortIdx==9)
+                    {
+                        filteredMembers = filteredMembers.OrderBy(o => (o.fec_nac.Length==0)? (DateTime?)null:Convert.ToDateTime(o.fec_nac));
+                    }
+                }
+                else
+                {
+                    if (sortIdx == 0)
+                    {
+                        filteredMembers = filteredMembers.OrderByDescending(o => Convert.ToDateTime(o.fec_registro));
+                    }
+                    else if (sortIdx == 12)
+                    {
+                        filteredMembers = filteredMembers.OrderByDescending(o => Convert.ToDateTime(o.fec_registro));
+                    }
+                    else if (sortIdx == 9)
+                    {
+                        filteredMembers = filteredMembers.OrderBy(o => (o.fec_nac.Length == 0) ? (DateTime?)null : Convert.ToDateTime(o.fec_nac));
+                    }
+                }
+            }
+
+
+            //if (sortDirection == "asc")
+            //    filteredMembers = filteredMembers.OrderBy(orderingFunction);
+            //else
+            //    filteredMembers = filteredMembers.OrderByDescending(orderingFunction);
+            var displayMembers = filteredMembers
+                .Skip(param.iDisplayStart)
+                .Take(param.iDisplayLength);
+            var result = from a in displayMembers
+                         select new
+                         {
+                             a.canal,
+                             a.tienda,
+                             a.dni,
+                             a.primer_nombre,
+                             a.segundo_nombre,
+                             a.apellido_pat,
+                             a.apellido_mat,
+                             a.genero,
+                             a.correo,
+                             a.fec_nac,
+                             a.telefono,
+                             a.ubicacion,
+                             a.fec_registro,
+                             a.miem_bataclub_fecha,
+                             a.miem_bataclub
+                         };
+            //Se devuelven los resultados por json
+            return Json(new
+            {
+                sEcho = param.sEcho,
+                iTotalRecords = totalCount,
+                iTotalDisplayRecords = filteredMembers.Count(),
+                aaData = result
+            }, JsonRequestBehavior.AllowGet);
         }
         #endregion
 

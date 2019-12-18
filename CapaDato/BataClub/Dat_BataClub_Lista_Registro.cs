@@ -46,11 +46,11 @@ namespace CapaDato.BataClub
                                           apellido_mat = dr["apellido_mat"].ToString(),
                                           genero = dr["genero"].ToString(),
                                           correo = dr["correo"].ToString(),
-                                          fec_nac =  (dr["fec_nac"]== DBNull.Value) ? (DateTime?)null : ((DateTime)(dr["fec_nac"])),
+                                          fec_nac =  dr["fec_nac"].ToString(),//== DBNull.Value) ? (DateTime?)null : ((DateTime)(dr["fec_nac"])),
                                           telefono = dr["telefono"].ToString(),
                                           ubicacion = dr["ubicacion"].ToString(),
-                                          fec_registro = (dr["fec_registro"] == DBNull.Value) ? (DateTime?)null : ((DateTime)(dr["fec_registro"])), 
-                                          miem_bataclub_fecha =(dr["miem_bataclub_fecha"] == DBNull.Value) ? (DateTime?)null : ((DateTime)(dr["miem_bataclub_fecha"])), 
+                                          fec_registro = dr["fec_registro"].ToString(),// == DBNull.Value) ? (string?)null : ((dr["fec_registro"].ToString())), 
+                                          miem_bataclub_fecha =dr["miem_bataclub_fecha"].ToString(),// == DBNull.Value) ? (DateTime?)null : ((DateTime)(dr["miem_bataclub_fecha"])), 
                                           miem_bataclub = dr["miem_bataclub"].ToString(),                                          
                                       }).ToList();
                         }

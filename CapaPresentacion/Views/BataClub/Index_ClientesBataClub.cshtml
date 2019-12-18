@@ -1,7 +1,101 @@
-﻿
+﻿@using CapaEntidad.BataClub
+@model IEnumerable<Ent_BataClub_Lista_Registro>
 @{
-    ViewBag.Title = "Index_ClientesBataClub";
+    ViewBag.Title = "Lista de Registros BataClub";
+    AjaxOptions options = new AjaxOptions
+    {
+        HttpMethod = "GET",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "lista",
+        OnComplete = "waitingDialog.hide();",
+        OnBegin = "waitingDialog.show('Espere un momento por favor');",
+        OnFailure = "waitingDialog.hide();"
+    };
 }
+<p class="text-danger">Consulta de Clientes Registros, por rango de fecha de registro,dni ó Email</p>
+<div class="box box-body box-primary">
+    @using (Ajax.BeginForm("_Lista_ClientesBataClub", options))
+    {
+        <div class="row">
 
-<h2>Index_ClientesBataClub</h2>
+            <form id="form1">               
+                <div class="col-sm-2">
+                    <label for="segape">Fecha Inicio</label>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div id="datepickerini" class="input-group date" data-date-format="dd-mm-yyyy">
+                                <input id="fechaIni" name="fechaIni" value="" class="form-control custom-input" placeholder="dd-mm-yyyy" type="text" oninvalid="InvalidMsg(this,'Ingrese la fecha inicial')" required="required" />
+                                <span class="input-group-addon  bg-white"><img src="~/Content/images/wall-calendar-with-lines.svg" height="20" width="20"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <label for="fecnac">Fecha Final</label>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div id="datepickerfin" class="input-group date" data-date-format="dd-mm-yyyy">
+                                <input id="fechaFin" name="fechaFin" value="" class="form-control custom-input" placeholder="dd-mm-yyyy" type="text" oninvalid="InvalidMsg(this,'Ingrese la fecha final')" required="required" />
+                                <span class="input-group-addon  bg-white"><img src="~/Content/images/wall-calendar-with-lines.svg" height="20" width="20"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <label for="segape">D.N.I</label>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div id="numdoc" class="input-group">
+                                <input id="dni" name="dni" value="" data-toggle="tooltip" maxlength="8" title="ingrese el dni. Ejm: 49122113" class="form-control custom-input" type="text"  minlength="8" placeholder="Ejm.: 49122113" />
+                                @*<span class="input-group-addon  bg-white"><img src="~/Content/images/wall-calendar-with-lines.svg" height="20" width="20"></span>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <label for="segape">Email</label>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div id="email" class="input-group">
+                                <input id="email" name="email" value="" class="form-control custom-input" type="text" />
+                                @*<span class="input-group-addon  bg-white"><img src="~/Content/images/wall-calendar-with-lines.svg" height="20" width="20"></span>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
+                <div class="col-sm-1">
+                    <label></label><br />
+                    <button type="submit" title="Consultar" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </button>                    
+                </div>
+            </form>
+
+        </div>       
+    }
+
+    <div class="box-body" id="lista" style="overflow-x: auto;">
+        @{Html.RenderPartial("_Lista_ClientesBataClub", Model);}
+    </div>
+    <br />
+
+
+</div>
+<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var date = new Date();
+        var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+        $('#fechaIni').datepicker({
+            format: "dd-mm-yyyy",
+            autoclose: true,
+            maxDate: new Date(),
+        }).datepicker("setDate", firstDay);
+        $('#fechaFin').datepicker({
+            format: "dd-mm-yyyy",
+            autoclose: true,
+            maxDate: new Date(),
+        }).datepicker("setDate", "0");
+    });
+</script>
