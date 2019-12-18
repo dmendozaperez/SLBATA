@@ -225,9 +225,9 @@ namespace Data.Crystal.Reporte
             return lista;
         }
 
-        public DataTable get_reportePromociones(string cadena, string fecIni, string fecFin,string filtro)
+        public DataTable get_reportePromociones(string cadena, string fecIni, string fecFin,string filtro, string tipo)
         {
-            string sqlquery = "USP_REPORTE_PROMOCIONES";
+            string sqlquery = (tipo == "RESUMIDO" ? "USP_REPORTE_PROMOCIONES" : "USP_REPORTE_PROMOCIONES_DETALLE");
             DataTable dt = new DataTable(); ;
             try
             {           

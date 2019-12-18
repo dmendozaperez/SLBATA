@@ -52,7 +52,14 @@
                 </div>
             </div>
         </div>
-        
+        <div class="col-sm-2">
+            <label for="txtTda">Cadena</label>
+            <div class="form-group">
+                <div id="div_tda" class="form-group">
+                    @Html.DropDownList("dwTipo", new SelectList(ViewBag.TipoReporte, "cbo_codigo", "cbo_descripcion", "RESUMIDO"), new { @class = "selectpicker", @id = "dwTipo", @name = "dwTipo" })
+                </div>
+            </div>
+        </div>
         
           
     </div>
@@ -133,6 +140,7 @@
             var fecFin = ($("#fecfin").val()).split('-');
             var strIni = fecIni[2] + fecIni[1] + fecIni[0];
             var strFin = fecFin[2] + fecFin[1] + fecFin[0];
+            var tipo = $('#dwTipo').val();
 
             var cfiltro = $('#dwFil').val();
 
@@ -140,7 +148,8 @@
                 cod_cadena: cdna,
                 fecIni: strIni,
                 FecFin: strFin,
-                filtro: cfiltro
+                filtro: cfiltro,
+                tipo: tipo
             }
 
             waitingDialog.show('Espere un momento por favor');

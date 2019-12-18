@@ -1089,6 +1089,9 @@ namespace CapaPresentacion.Controllers
                 Dat_Prom_Filtro prom_filtro = new Dat_Prom_Filtro();
 
                 ViewBag.Filtro = prom_filtro.lista_prom_fltro();
+                
+                ViewBag.TipoReporte = new List<Ent_Combo>() { new Ent_Combo() { cbo_codigo = "RESUMIDO", cbo_descripcion = "RESUMIDO" } ,
+                    new Ent_Combo() { cbo_codigo = "DETALLADO", cbo_descripcion = "DETALLADO" }};
 
 
                 return View();
@@ -1096,15 +1099,15 @@ namespace CapaPresentacion.Controllers
 
         }
 
-        public ActionResult ExportDataPromociones(string cod_cadena, string fecIni, string FecFin,string filtro)
+        public ActionResult ExportDataPromociones(string cod_cadena, string fecIni, string FecFin,string filtro, string tipo)
         {
             var oJRespuesta = new JsonResponse();
             DataTable dt = new DataTable();
             Data_Planilla pl = new Data_Planilla();
-            dt = pl.get_reportePromociones(cod_cadena, fecIni, FecFin,filtro);
+            dt = pl.get_reportePromociones(cod_cadena, fecIni, FecFin,filtro , tipo);
             dt.TableName = "Promociones";
             Session["Promociones"] = dt;
-       
+            Session["TipoReportePromociones"] = tipo;
             oJRespuesta.Success = true;
             oJRespuesta.Message = "1";
 
@@ -1118,13 +1121,14 @@ namespace CapaPresentacion.Controllers
 
             var oJRespuesta = new JsonResponse();
             dt = Session["Promociones"] as DataTable;
+            string tipo  = Session["TipoReportePromociones"].ToString();
             using (XLWorkbook wb = new XLWorkbook())
             {
                 wb.Worksheets.Add(dt);
                 using (MemoryStream stream = new MemoryStream())
                 {
                     wb.SaveAs(stream);
-                    return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Promociones.xlsx");
+                    return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Promociones - "+ tipo + ".xlsx");
                 }
             }
         }
