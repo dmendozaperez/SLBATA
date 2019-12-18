@@ -27,43 +27,59 @@
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>
     $(document).ready(function () {
+
         $('#enviar').click(function () {
             var prefx = $("#preOrce").val();
-            if (prefx == "" || prefx.length != 5) {                
+            if (prefx == "" || prefx.length != 5) {
                 swal({
                     title: "Error",
                     text: "El campo prefijo debe contener minimo 5 carcteres.",
                     icon: "error",
-                    dangerMode :true
+                    dangerMode: true
                 })
                 return;
             }
-            waitingDialog.show('Espere un momento por favor');
-            $.ajax({
-                type: "POST",
-                url: '@Url.Action("GenerarCuponesOrce", "Orce_Exclud")',
-                data: { prefx: prefx},
-                success: function (data) {
-                    waitingDialog.hide();
-                    if (data.estado == 1) {
-                        swal({
-                            title: "Ok",
-                            text: "Operacion realizada con éxito.\nCupones ORCE generados.",
-                            icon: "success"
-                        })
-                    } else {
-                        swal({
-                            title: "Error",
-                            text: data.mensaje,
-                            icon: "error",
-                            dangerMode: true,
-                        });
-                    }
-                },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    waitingDialog.hide();
-                    var error = eval("(" + XMLHttpRequest.responseText + ")");
-                    swal(error.Message);
+
+
+            swal({
+                title: "Cupones ORCE",
+                text: "Desea generar los cupones ORCE para la promocion " + prefx + "?",
+                icon: "info",
+                buttons: { cancel: "No", yes: "Si" },
+            }).then((value) => {
+                if (value == "yes") {
+                    waitingDialog.show('Espere un momento por favor');
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("GenerarCuponesOrce", "Orce_Exclud")',
+                        data: { prefx: prefx },
+                        success: function (data) {
+                            waitingDialog.hide();
+                            if (data.estado == 1) {
+                                swal({
+                                    title: "Ok",
+                                    text: "Operacion realizada con éxito.\nCupones ORCE generados.\n\nNro de Cupones Generados: " + data.orceProm.COUPON_GEN_COUNT +
+                                        "\nCAMPAIGN_ID: " + data.orceProm.CAMPAIGN_ID +
+                                        "\nPROMOTION_ID: " + data.orceProm.PROMOTION_ID +
+                                        "\nPROMOTION_NAME: " + data.orceProm.PROMOTION_NAME +
+                                        "\nCOUPON_CODE: " + data.orceProm.ORCE_COD_PROM,
+                                    icon: "success"
+                                })
+                            } else {
+                                swal({
+                                    title: "Error",
+                                    text: data.mensaje,
+                                    icon: "error",
+                                    dangerMode: true,
+                                });
+                            }
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            waitingDialog.hide();
+                            var error = eval("(" + XMLHttpRequest.responseText + ")");
+                            swal(error.Message);
+                        }
+                    });
                 }
             });
         });

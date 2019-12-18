@@ -991,7 +991,7 @@ namespace CapaPresentacion.Controllers
                 anios.Insert(0, new Ent_Combo() { cbo_codigo = "0", cbo_descripcion = "TODOS" });
                 ViewBag.anios = anios;
 
-                List<Ent_BataClub_Orce_Promotion> listOP = datProm.GET_ORCE_PROMOTION(0);
+                List<Ent_BataClub_Orce_Promotion> listOP = datProm.GET_ORCE_PROMOTION(1);
                 ViewBag.listOP = listOP;
 
                 return View();

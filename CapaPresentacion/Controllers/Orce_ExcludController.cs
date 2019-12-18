@@ -11,6 +11,7 @@ using CapaEntidad.OrceExlud;
 using Newtonsoft.Json;
 using CapaEntidad.Control;
 using CapaPresentacion.Bll;
+using CapaEntidad.BataClub;
 
 namespace CapaPresentacion.Controllers
 {
@@ -578,9 +579,24 @@ namespace CapaPresentacion.Controllers
         public ActionResult GenerarCuponesOrce(string prefx)
         {
             string _mensaje = "";
-            bool res = false;
-            res = datOE.ORCE_CUPONES_BATACLUB_REFRESH(prefx,ref _mensaje);
-            return Json(new { estado = res, mensaje = _mensaje });
+            Ent_BataClub_Orce_Promotion res = new Ent_BataClub_Orce_Promotion();
+            try
+            {
+                res = datOE.ORCE_CUPONES_BATACLUB_REFRESH(prefx, ref _mensaje);
+                if (_mensaje != "")
+                {
+                    return Json(new { estado = false, mensaje = _mensaje });
+                }else
+                {
+                    return Json(new { estado = true, orceProm = res, mensaje = _mensaje });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { estado = false, mensaje = ex.Message });
+            }
+            
+            
         }
         #endregion
 
