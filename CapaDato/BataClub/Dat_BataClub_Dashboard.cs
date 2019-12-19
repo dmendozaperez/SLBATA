@@ -15,7 +15,7 @@ namespace CapaDato.BataClub
         public List<Ent_Bataclub_Canales_Excel> get_canales_excel(Int32 informe,DateTime fecini_canal,DateTime fecfin_canal)
         {
             List<Ent_Bataclub_Canales_Excel> list=null;
-            string sqlquery = "[USP_BATACLUB_DASHBOARD_D]";
+            string sqlquery = "[USP_BATACLUB_DASHBOARD]";
             try
             {
                 using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
