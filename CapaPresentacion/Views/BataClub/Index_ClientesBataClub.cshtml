@@ -85,6 +85,7 @@
 <script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
 <script type="text/javascript">
     $(document).ready(function () {
+        $("body").toggleClass('sidebar-collapse');
         var date = new Date();
         var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
         $('#fechaIni').datepicker({

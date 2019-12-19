@@ -1,4 +1,14 @@
 ﻿<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.min.css" />
+<style>
+    .boton-td {
+        padding-top: 3px !important;
+        padding-bottom: 3px !important;
+    }
+        .modal-body {
+        max-height: calc(100vh - 212px);
+        overflow-y: auto;
+    }
+</style>
 <table id="example" class="table table-hover dataTable  table-striped table-responsive">
     <thead>
         <tr style="background-color:#3d566e; color:#ecf0f1">
@@ -17,6 +27,7 @@
             <th>Fec.Reg</th>
             <th>Fec.Bat</th>
             <th style="background-color:#f26363">Miembro</th>
+            <th>Detalles</th>
         </tr>
     </thead>
     <tbody data-bind="foreach:"></tbody>
@@ -37,9 +48,32 @@
             <th>Fec.Reg</th>
             <th>Fec.Bat</th>
             <th>Miembro</th>
+            <th>Detalles</th>
         </tr>
     </tfoot>
 </table>
+<div class="modal fade" id="modalListaProms" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <div class="row">
+                    <div class="col-md-8">
+                        <p style="font-size:medium" class="text-primary modal-title" id="myModalLabel"><strong class="text-danger" id="desc_proms"></strong></p>
+                        <p style="font-size:medium" class="text-primary modal-title" id="myModalLabel"><b>Lista de Promociones: &nbsp;</b></p>
+                    </div>
+                </div>
+            </div>
+            <div style="font-size:small ;overflow-x: auto;" class="modal-body" id="listaDetProms" >
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src='https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js'></script>
 <script src='//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js'></script>
 <script src='//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js'></script>
@@ -60,6 +94,10 @@
                 //"bPaginate": false,
                 "orderable": false,
                 //"order": [0, "asc"],
+                "columnDefs": [{
+                    "targets": [ 2, 3,4,5,6,7,8,9,10,11,15],
+                    "orderable": false
+                }],
                 "bDeferRender": true,
                 "aoColumns": [
                        { "sName": "canal", "mData": "canal" },
@@ -76,7 +114,12 @@
                        { "sName": "ubicacion", "mData": "ubicacion" },
                        { "sName": "fec_registro", "mData": "fec_registro"},
                        { "sName": "miem_bataclub_fecha", "mData": "miem_bataclub_fecha", "sClass": "right", "type": "date-dd-mmm-yyyy" },
-                       { "sName": "miem_bataclub", "mData": "miem_bataclub" },                                           
+                       { "sName": "miem_bataclub", "mData": "miem_bataclub" },
+                       {
+                           "render": function (data, type, full) {
+                               return '<button title="Ver detalles" class="btn btn-default btn-sm detalles" data-dni="' + full.dni + '" data-des-prom="' + full.Descripcion + '"><i class="glyphicon glyphicon-list"></i></button>';
+                           }, "sClass": "boton-td"
+                       },
                 ],
                 dom: 'Bfrtip',
                 buttons: [
@@ -95,8 +138,90 @@
                'copyHtml5',
                 ]
             });
-        
 
+            $('.table').on('click', '.detalles', function (e) {
+                waitingDialog.show('Espere un momento por favor');
+                var dni = $(this).attr('data-dni');
+                $.ajax({
+                    type: "Post",
+                    url: '@Url.Action("BATACLUB_CONSULTA_CLIENTES_PROMOCION", "BataClub")',
+                    //contentType: "application/json; charset=utf-8",
+                    data: { dni: dni },
+                    //dataType: "json",
+                    success: function (data) {
+                        waitingDialog.hide();
+                        if (data.estado == 1) {
+                            if (data.proms.length == 0) {
+                                swal("No hay promociones para este cliente.");
+                            } else {
+                                var table = '' +
+                                    '<table id="" class="table table-hover table-condensed dt-lista-tdas table-striped table-responsive">\
+                                    <thead>\
+                                        <tr style="background-color:#3d566e; color:#ecf0f1">\
+                                            <th>Promocion</th>\
+                                            <th>Barra</th>\
+                                            <th>Estado</th>\
+                                            <th>Fecha Ini</th>\
+                                            <th>Fecha Fin</th>\
+                                            <th>Tienda</th>\
+                                            <th>Doc</th>\
+                                            <th>Ndoc</th>\
+                                            <th>Fecha Doc</th>\
+                                        </tr>\
+                                    </thead>\
+                                    <tbody data-bind="foreach:">';
+                                for (var i = 0; i < data.proms.length; i++) {
+                                    table += '<tr><td>' + data.proms[i].Promocion + '</td>\
+                                                <td>' + data.proms[i].Barra + '</td>\
+                                                <td>' + data.proms[i].Estado + '</td>\
+                                                <td>' + data.proms[i].cup_fecha_ini + '</td>\
+                                                <td>' + data.proms[i].cup_fecha_fin + '</td>\
+                                                <td>' + data.proms[i].Tienda + '</td>\
+                                                <td>' + data.proms[i].Doc + '</td>\
+                                                <td>' + data.proms[i].Ndoc + '</td>\
+                                                <td>' + data.proms[i].FecDoc + '</td>'
+                                }
+                                table += '</tbody>\
+                                    <tfoot>\
+                                        <tr>\
+                                            <th>Promocion</th>\
+                                            <th>Barra</th>\
+                                            <th>Estado</th>\
+                                            <th>Fecha Ini</th>\
+                                            <th>Fecha Fin</th>\
+                                            <th>Tienda</th>\
+                                            <th>Doc</th>\
+                                            <th>Ndoc</th>\
+                                            <th>Fecha Doc</th>\
+                                        </tr>\
+                                    </tfoot>\
+                                    </table>'
+
+                                $("#listaDetProms").html(table);
+                                $("#desc_proms").html(dni);
+                                $(".dt-lista-tdas").DataTable({
+                                    "language": {
+                                        "url": "../Scripts/DataTables/Spanish.json"
+                                    }
+                                });
+                                $("#modalListaProms").modal({ backdrop: 'static', keyboard: false });
+                            }
+                        } else {
+                            swal({
+                                title: "Error",
+                                text: data.mensaje,
+                                icon: "error",
+                                dangerMode: true,
+                            });
+                        }
+                    },
+                    error: function (xhr) {
+                        waitingDialog.hide();
+                        toastr.error(xhr, 'Mensaje');
+                    }
+                });
+
+            });
         });
 
 

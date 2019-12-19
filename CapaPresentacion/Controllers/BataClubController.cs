@@ -1360,6 +1360,23 @@ namespace CapaPresentacion.Controllers
             return list;
         }
 
+        public ActionResult BATACLUB_CONSULTA_CLIENTES_PROMOCION(string dni)
+        {
+            try
+            {
+                 List<Ent_Cliente_Promocion> proms = datCli.BATACLUB_CONSULTA_CLIENTES_PROMOCION(dni);
+                if (proms == null)
+                {
+                    proms = new List<Ent_Cliente_Promocion>();
+                }
+                return Json(new { estado = 1, proms = proms });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { estado = 0 , mensaje = ex.Message});
+            }
+        }
+
         public ActionResult getTableClienteAjax(Ent_jQueryDataTableParams param)
         {
             /*verificar si esta null*/
@@ -2029,32 +2046,26 @@ namespace CapaPresentacion.Controllers
             {
                 if (sortDirection == "asc")
                 {
-                    if (sortIdx == 0)
-                    {
-                        filteredMembers = filteredMembers.OrderBy(o => Convert.ToDateTime(o.fec_registro));
-                    }
-                    else if (sortIdx == 12)
-                    {
-                        filteredMembers = filteredMembers.OrderBy(o => Convert.ToDateTime(o.fec_registro));
-                    }
-                    else if (sortIdx==9)
-                    {
-                        filteredMembers = filteredMembers.OrderBy(o => (o.fec_nac.Length==0)? (DateTime?)null:Convert.ToDateTime(o.fec_nac));
+                    switch (sortIdx)
+                    {                        
+                        case 0: filteredMembers = filteredMembers.OrderBy(o => o.canal);break;
+                        case 1: filteredMembers = filteredMembers.OrderBy(o => o.tienda); break;
+                        case 12: filteredMembers = filteredMembers.OrderBy(o => Convert.ToDateTime(o.fec_registro)); break;
+                        case 13: filteredMembers = filteredMembers.OrderBy(o => Convert.ToDateTime(o.miem_bataclub_fecha)); break;
+                        case 14: filteredMembers = filteredMembers.OrderBy(o => o.miem_bataclub); break;
+                        default: break;
                     }
                 }
                 else
                 {
-                    if (sortIdx == 0)
+                    switch (sortIdx)
                     {
-                        filteredMembers = filteredMembers.OrderByDescending(o => Convert.ToDateTime(o.fec_registro));
-                    }
-                    else if (sortIdx == 12)
-                    {
-                        filteredMembers = filteredMembers.OrderByDescending(o => Convert.ToDateTime(o.fec_registro));
-                    }
-                    else if (sortIdx == 9)
-                    {
-                        filteredMembers = filteredMembers.OrderBy(o => (o.fec_nac.Length == 0) ? (DateTime?)null : Convert.ToDateTime(o.fec_nac));
+                        case 0: filteredMembers = filteredMembers.OrderByDescending(o => o.canal); break;
+                        case 1: filteredMembers = filteredMembers.OrderByDescending(o => o.tienda); break;
+                        case 12: filteredMembers = filteredMembers.OrderByDescending(o => Convert.ToDateTime(o.fec_registro)); break;
+                        case 13: filteredMembers = filteredMembers.OrderByDescending(o => Convert.ToDateTime(o.miem_bataclub_fecha)); break;
+                        case 14: filteredMembers = filteredMembers.OrderByDescending(o => o.miem_bataclub); break;
+                        default: break;
                     }
                 }
             }

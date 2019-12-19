@@ -85,5 +85,58 @@ namespace CapaDato.BataClub
             return listar;
         }
 
+        public List<Ent_Cliente_Promocion> BATACLUB_CONSULTA_CLIENTES_PROMOCION(string dni)
+        {
+            string sqlquery = "USP_BATACLUB_CONSULTA_CLIENTES_PROMOCION";
+            List<Ent_Cliente_Promocion> listar = null;
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+                    try
+                    {
+                        if (cn.State == 0) cn.Open();
+                        using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                        {
+                            cmd.CommandTimeout = 0;
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.AddWithValue("@DNI", dni);
+                            using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                            {
+                                DataTable dt = new DataTable();
+                                da.Fill(dt);
+                                listar = new List<Ent_Cliente_Promocion>();
+                                listar = (from DataRow dr in dt.Rows
+                                          select new Ent_Cliente_Promocion()
+                                          {
+                                              Promocion = dr["Promocion"].ToString(),
+                                              Barra = dr["Barra"].ToString(),
+                                              Estado = dr["Estado"].ToString(),
+                                              cup_fecha_ini = dr["cup_fecha_ini"] == null || dr["cup_fecha_ini"].ToString() == "" ? "" : Convert.ToDateTime(dr["cup_fecha_ini"]).ToString("dd/MM/yyyy"),
+                                              cup_fecha_fin = dr["cup_fecha_fin"] == null || dr["cup_fecha_fin"].ToString() == "" ? "" : Convert.ToDateTime(dr["cup_fecha_fin"]).ToString("dd/MM/yyyy"),
+                                              Tienda = dr["Tienda"].ToString(),
+                                              Doc = dr["Doc"].ToString(),
+                                              Ndoc = dr["Ndoc"].ToString(),
+                                              FecDoc = dr["FecDoc"] == null || dr["FecDoc"].ToString() == "" ? "" : Convert.ToDateTime(dr["FecDoc"]).ToString("dd/MM/yyyy hh:mm:ss"),
+                                          }).ToList();
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        var mensaje = ex.Message;
+                        listar = null;
+                    }
+                    if (cn != null)
+                        if (cn.State == ConnectionState.Open) cn.Close();
+                }
+            }
+            catch (Exception)
+            {
+                listar = null;
+            }
+            return listar;
+        }
+
     }
 }

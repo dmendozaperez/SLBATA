@@ -42,4 +42,17 @@ namespace CapaEntidad.BataClub
         public string des_entid { get; set; }
         public string cod_cadena { get; set; }
     }
+
+    public class Ent_Cliente_Promocion
+    {
+        public string Promocion { get; set; }
+        public string Barra { get; set; }
+        public string Estado { get; set;}
+        public string cup_fecha_ini { get; set; }
+        public string cup_fecha_fin { get; set; }
+        public string Tienda { get; set; }
+        public string Doc { get; set; }
+        public string Ndoc { get; set; }
+        public string FecDoc { get; set; }
+    }
 }
