@@ -1987,6 +1987,8 @@ namespace CapaPresentacion.Controllers
         private Dat_BataClub_Lista_Registro dat_lst_reg = null;
         public ActionResult Index_ClientesBataClub()
         {
+            ViewBag.Depto = datUbi.get_lista_Departamento();
+            Session[_session_lista_registro_private] = null;
             return View();
         }
         public PartialViewResult _Lista_ClientesBataClub(string fechaIni, string fechaFin, string dni, string email)
@@ -2003,6 +2005,7 @@ namespace CapaPresentacion.Controllers
             {
                 dat_lst_reg = new Dat_BataClub_Lista_Registro();
                 listar = dat_lst_reg.lista_registro(fec_ini, fec_fin, dni, correo);
+                ViewBag.Depto = datUbi.get_lista_Departamento();
                 Session[_session_lista_registro_private] = listar;
             }
             catch (Exception exc)
@@ -2051,7 +2054,7 @@ namespace CapaPresentacion.Controllers
                         case 0: filteredMembers = filteredMembers.OrderBy(o => o.canal);break;
                         case 1: filteredMembers = filteredMembers.OrderBy(o => o.tienda); break;
                         case 12: filteredMembers = filteredMembers.OrderBy(o => Convert.ToDateTime(o.fec_registro)); break;
-                        case 13: filteredMembers = filteredMembers.OrderBy(o => Convert.ToDateTime(o.miem_bataclub_fecha)); break;
+                        case 13: filteredMembers = filteredMembers.OrderBy(o => (o.miem_bataclub_fecha == "" ? new DateTime() : Convert.ToDateTime(o.miem_bataclub_fecha))); break;
                         case 14: filteredMembers = filteredMembers.OrderBy(o => o.miem_bataclub); break;
                         default: break;
                     }
@@ -2063,7 +2066,7 @@ namespace CapaPresentacion.Controllers
                         case 0: filteredMembers = filteredMembers.OrderByDescending(o => o.canal); break;
                         case 1: filteredMembers = filteredMembers.OrderByDescending(o => o.tienda); break;
                         case 12: filteredMembers = filteredMembers.OrderByDescending(o => Convert.ToDateTime(o.fec_registro)); break;
-                        case 13: filteredMembers = filteredMembers.OrderByDescending(o => Convert.ToDateTime(o.miem_bataclub_fecha)); break;
+                        case 13: filteredMembers = filteredMembers.OrderByDescending(o => (o.miem_bataclub_fecha == "" ? new DateTime() : Convert.ToDateTime(o.miem_bataclub_fecha))); break;
                         case 14: filteredMembers = filteredMembers.OrderByDescending(o => o.miem_bataclub); break;
                         default: break;
                     }
@@ -2106,7 +2109,38 @@ namespace CapaPresentacion.Controllers
                 aaData = result
             }, JsonRequestBehavior.AllowGet);
         }
-        #endregion
-
+        public ActionResult ModificarCliente(Ent_BataClub_Registro registro)
+        {
+            string _mensaje = "";
+            try
+            {
+                Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+                if (!IsCorreo(registro.CorreoElectronico))
+                {
+                    _mensaje += "Ingrese un correo electronico válido por favor." + Environment.NewLine;
+                }
+                if (_mensaje == "")
+                {
+                    registro.Ubigeo = registro.Departamento + registro.Provincia + registro.Distrito;
+                    registro.Canal = "07";
+                    Dat_BataClub_Lista_Registro dato = new Dat_BataClub_Lista_Registro();
+                                      
+                    bool b = dato.Modificar_Cliente_Bataclub(registro, _usuario.usu_id.ToString(), ref _mensaje);
+                    return Json(new { estado = b, mensaje = _mensaje == "" ? "Cliente BataClub modificado con éxito." : _mensaje });
+                }
+                else
+                {
+                    return Json(new {estado = false, mensaje = _mensaje });
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                _mensaje = ex.Message;
+                return Json(new { estado = false, mensaje = _mensaje });
+            }
+            
+        }
+            #endregion
     }
 }
