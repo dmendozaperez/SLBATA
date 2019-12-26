@@ -22,6 +22,8 @@ namespace CapaEntidad.BataClub
 
         public List<Ent_BataClub_DashBoard_Compras> listComprasTot { get; set; }
         public List<Ent_BataClub_DashBoard_Tipo_Compras> listTipoComprasTot { get; set; }
+
+        public List<Ent_BataClub_DashBoard_Compras_Cliente> listComprasCliTot { get; set; }
         public DataTable dtventa_bataclub { get; set; }
 
     }
@@ -90,6 +92,12 @@ namespace CapaEntidad.BataClub
         public decimal consumido { get; set; }
         public Decimal bataclub { get; set; }
     }
+    public class Ent_BataClub_Compras_CL_Excel
+    {
+        public string dni { get; set; }
+        public string correo { get; set; }
+        public Decimal compras { get; set; }
+    }
     public class Ent_Bataclub_Canales_Excel
     {
         public string Canal { get; set; }
@@ -115,5 +123,10 @@ namespace CapaEntidad.BataClub
         public Decimal transac { get; set; }
         public string tipo { get; set; }
 
+    }
+    public class Ent_BataClub_DashBoard_Compras_Cliente
+    {
+        public string com_des { get; set; }
+        public decimal nclientes { get; set; }
     }
 }

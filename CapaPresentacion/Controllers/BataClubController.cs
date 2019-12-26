@@ -44,6 +44,8 @@ namespace CapaPresentacion.Controllers
         //DetallesTipoCompra
         private string _session_DetallesTipoCompra = "_session_DetallesTipoCompra";
 
+        private string _session_CompraCliente = "_session_CompraCliente";
+
         private string _session_det_tdas_sup_excel = "_session_det_tdas_sup_excel";
         private string _session_par_sol_mes_excel = "_session_par_sol_mes_excel";
 
@@ -139,6 +141,8 @@ namespace CapaPresentacion.Controllers
 
                 ViewBag.DetallesTiendaSuperv = dashboard.listTiendasSupervTot;
 
+                ViewBag.chartComCL = informeCompraCl(dashboard);
+
                 ViewBag.DetallesTipoCompra = dashboard.listTipoComprasTot;
 
                 Session[_session_DetallesTipoCompra] = dashboard.listTipoComprasTot;
@@ -149,7 +153,7 @@ namespace CapaPresentacion.Controllers
                 return View();
             }
         }
-        public ActionResult updateChartData(string anio, int informe, int mes = 0, string fecini = null, string fecfin = null, string prom = "", string sup = "", string fecini_canal = null, string fecfin_canaL = null, string fecini_com = null, string fecfin_com = null)
+        public ActionResult updateChartData(string anio, int informe, int mes = 0, string fecini = null, string fecfin = null, string prom = "", string sup = "", string fecini_canal = null, string fecfin_canaL = null, string fecini_com = null, string fecfin_com = null, string fecini_com_cl = null, string fecfin_com_cl = null)
         {
             Ent_BataClub_DashBoard dashboard  = (Ent_BataClub_DashBoard)Session["_dashboardData"];
 
@@ -182,6 +186,12 @@ namespace CapaPresentacion.Controllers
                 if (fecfin_com.Length == 0) fecfin_com = null;
             }
 
+            if (fecini_com_cl != null)
+            {
+                if (fecini_com_cl.Length == 0) fecini_com_cl = null;
+                if (fecfin_com_cl.Length == 0) fecfin_com_cl = null;
+            }
+
             if ( informe == 5 || informe == 7 || informe==8 || informe == 9 || informe == 11)
             {
                 dashboard = (Ent_BataClub_DashBoard)Session["_dashboardData"];
@@ -191,8 +201,8 @@ namespace CapaPresentacion.Controllers
                 dashboard = (Ent_BataClub_DashBoard)Session["_dashboardData"];
 
                 if (informe == 10) informe = 7;
-
-                dashboard = datDash.GET_INFO_DASHBOARD(ref dashboard, anio, informe, mes, fecini, fecfin, prom, fecini_canal, fecfin_canaL,fecini_com,fecfin_com);
+                
+                dashboard = datDash.GET_INFO_DASHBOARD(ref dashboard, anio, informe, mes, fecini, fecfin, prom, fecini_canal, fecfin_canaL,fecini_com,fecfin_com, fecini_com_cl, fecfin_com_cl);
                 Session["_dashboardData"] = dashboard;
             }
             Ent_BataClub_Chart_Data chartDS = null;
@@ -381,6 +391,15 @@ namespace CapaPresentacion.Controllers
                 dashboard.listDetPromTda = lista_prom.listDetPromTda;
 
                 jsonResult = Json(new { promsDetPromTda = dashboard.listDetPromTda });
+
+            }
+            else if (informe==12)
+            {
+                
+                    chartDS = new Ent_BataClub_Chart_Data();
+                    chartDS = informeCompraCl(dashboard);
+                    jsonResult = Json(JsonConvert.SerializeObject(chartDS, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
+                
             }
             return jsonResult;
         }
@@ -418,6 +437,21 @@ namespace CapaPresentacion.Controllers
                 data = dashboard.listCanles.Select(s => s.REGISTROS).ToArray()
             });
             chartDSDonut.labels = dashboard.listCanles.Select(s => s.CANAL).ToArray();
+            chartDSDonut.datasets = new List<Ent_BataClub_Chart_DataSet>() { dsBCDonut };
+            return chartDSDonut;
+        }
+        public Ent_BataClub_Chart_Data informeCompraCl(Ent_BataClub_DashBoard dashboard)
+        {
+            Ent_BataClub_Chart_Data chartDSDonut = new Ent_BataClub_Chart_Data();
+            Ent_BataClub_Chart_DataSet dsBCDonut = (new Ent_BataClub_Chart_DataSet()
+            {
+                backgroundColor = new string[] { "rgba(99, 143, 197, 0.9)",
+                        "rgba(221, 75, 57,0.9)",
+                        "rgba(255, 206, 86, 0.8)",
+                        "rgba(75, 192, 192, 0.8)"},
+                data = dashboard.listComprasCliTot.Select(s => s.nclientes).ToArray()
+            });
+            chartDSDonut.labels = dashboard.listComprasCliTot.Select(s => s.com_des).ToArray();
             chartDSDonut.datasets = new List<Ent_BataClub_Chart_DataSet>() { dsBCDonut };
             return chartDSDonut;
         }
@@ -556,6 +590,7 @@ namespace CapaPresentacion.Controllers
                 return chartDS;
         }
         private string _session_det_canal_excel = "_session_det_canal_excel";
+        private string _session_com_cl_excel = "_session_com_cl_excel";
         public JsonResult CanalDetExcel_Data(string fecini_canal = null, string fecfin_canal = null)
         {
             Dat_BataClub_Dashboard canal_excel = new Dat_BataClub_Dashboard();
@@ -572,6 +607,22 @@ namespace CapaPresentacion.Controllers
             return Json(new { estado = (valida_lista) ? "1" : "-1", desmsg = (valida_lista) ? "Exportando el Excel." : "Hubo un Error ó No hay Datos para exportar." });
             
         }
+        public JsonResult Compras_CL_Excel_Data(string fecini_com_cl = null, string fecfin_com_cl = null)
+        {
+            Dat_BataClub_Dashboard canal_excel = new Dat_BataClub_Dashboard();
+            List<Ent_BataClub_Compras_CL_Excel> lista = canal_excel.get_compras_excel(12, Convert.ToDateTime(fecini_com_cl), Convert.ToDateTime(fecfin_com_cl));
+            Boolean valida_lista = false;
+            if (lista != null)
+            {
+                if (lista.Count > 0)
+                {
+                    valida_lista = true;
+                    Session[_session_com_cl_excel] = lista;
+                }
+            }
+            return Json(new { estado = (valida_lista) ? "1" : "-1", desmsg = (valida_lista) ? "Exportando el Excel." : "Hubo un Error ó No hay Datos para exportar." });
+
+        }
         public FileContentResult ExportarCanalDetExcel()
         {            
                 List<Ent_Bataclub_Canales_Excel> lista = (List<Ent_Bataclub_Canales_Excel>)Session[_session_det_canal_excel]; 
@@ -579,6 +630,14 @@ namespace CapaPresentacion.Controllers
                 byte[] filecontent = ExcelExportHelper.ExportExcel(lista, "Lista de Canales Detallado", true, columns);
                 string nom_excel = "Lista de Canales x Rango de Fecha Detallado";
                 return File(filecontent, ExcelExportHelper.ExcelContentType, nom_excel + ".xlsx");                                      
+        }
+        public FileContentResult ExportaComClExcel()
+        {
+            List<Ent_BataClub_Compras_CL_Excel> lista = (List<Ent_BataClub_Compras_CL_Excel>)Session[_session_com_cl_excel];
+            string[] columns = { "dni", "correo", "compras" };
+            byte[] filecontent = ExcelExportHelper.ExportExcel(lista, "Lista de Compras Clientes", true, columns);
+            string nom_excel = "Lista_de_Compra_Cliente";
+            return File(filecontent, ExcelExportHelper.ExcelContentType, nom_excel + ".xlsx");
         }
         public FileContentResult RegTraConTdaExcel()
         {
