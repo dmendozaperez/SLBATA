@@ -1,4 +1,4 @@
-﻿<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.min.css" />
+﻿
 <style>
     .boton-td {
         padding-top: 3px !important;
@@ -27,7 +27,8 @@
             <th>Fec.Reg</th>
             <th>Fec.Bat</th>
             <th style="background-color:#f26363">Miembro</th>
-            <th>Detalles</th>
+            <th>Editar</th>
+            <th>Cupones</th>            
         </tr>
     </thead>
     <tbody data-bind="foreach:"></tbody>
@@ -48,7 +49,8 @@
             <th>Fec.Reg</th>
             <th>Fec.Bat</th>
             <th>Miembro</th>
-            <th>Detalles</th>
+            <th>Editar</th>
+            <th>Cupones</th>           
         </tr>
     </tfoot>
 </table>
@@ -74,11 +76,6 @@
     </div>
 </div>
 
-<script src='https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js'></script>
-<script src='//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js'></script>
-<script src='//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js'></script>
-<script src='//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js'></script>
-<script src='//cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js'></script>
 <script>
         $(document).ready(function () {
             $('.table').dataTable({
@@ -89,7 +86,7 @@
                 "bAutoWidth": false,
                 "sAjaxSource": '@Url.Action("getListarCliBa", "BataClub")',
                 "bdestroy": true,
-                "bFilter": false,
+                //"bFilter": false,
                 "start": 0,
                 //"bPaginate": false,
                 "orderable": false,
@@ -115,27 +112,26 @@
                        { "sName": "fec_registro", "mData": "fec_registro"},
                        { "sName": "miem_bataclub_fecha", "mData": "miem_bataclub_fecha", "sClass": "right", "type": "date-dd-mmm-yyyy" },
                        { "sName": "miem_bataclub", "mData": "miem_bataclub" },
+                        {
+                            "render": function (data, type, full) {
+                                return '<button title="Editar" class="btn btn-success btn-sm editar" data-dni="' + full.dni + '" ' +
+                                    ' data-nom1="' + full.primer_nombre + '"' +
+                                    ' data-nom2="' + full.segundo_nombre + '"' +
+                                    ' data-apep="' + full.apellido_pat + '"' +
+                                    ' data-apem="' + full.apellido_mat + '"' +
+                                    ' data-genero="' + full.genero + '"' +
+                                    ' data-correo="' + full.correo + '"' +
+                                    ' data-telefono="' + full.telefono + '"' +
+                                    ' data-ubi="' + full.ubicacion + '"' +
+                                    ' data-fnac="' + full.fec_nac + '"' +
+                                    ' ><i class="glyphicon glyphicon-edit"></i></button>';
+                            }, "sClass": "boton-td"
+                        },
                        {
                            "render": function (data, type, full) {
-                               return '<button title="Ver detalles" class="btn btn-default btn-sm detalles" data-dni="' + full.dni + '" data-des-prom="' + full.Descripcion + '"><i class="glyphicon glyphicon-list"></i></button>';
+                               return '<button title="Ver detalles" class="btn btn-info btn-sm detalles" data-dni="' + full.dni + '" data-des-prom="' + full.Descripcion + '"><i class="glyphicon glyphicon-tags"></i></button>';
                            }, "sClass": "boton-td"
                        },
-                ],
-                dom: 'Bfrtip',
-                buttons: [
-               {
-                   extend: 'excelHtml5',
-                   title: 'Bataclub_xls'
-               },
-               {
-                   extend: 'csvHtml5',
-                   title: 'BataClub_csv'
-               },
-               {
-                   extend: 'pdfHtml5',
-                   title: 'BataClub_pdf'
-               },
-               'copyHtml5',
                 ]
             });
 
@@ -222,8 +218,90 @@
                 });
 
             });
-        });
+            /*  /._./  */
+            $('.table').on('click', '.editar', function (e) {
+               // waitingDialog.show('Espere un momento por favor');
+                var dni = $(this).attr('data-dni');
+                var nom1 = $(this).attr('data-nom1');
+                var nom2 = $(this).attr('data-nom2');
+                var apep = $(this).attr('data-apep');
+                var apem = $(this).attr('data-apem');
+                var gen = $(this).attr('data-genero');
+                var correo = $(this).attr('data-correo');
+                var telefono = $(this).attr('data-telefono');
+                var ubi = $(this).attr('data-ubi');
+                var fnac = $(this).attr('data-fnac');
 
+                $("#Dni").val(dni);
+                $("#femenino").prop("checked", (gen == "F" ?  true : false ));
+                $("#masculino").prop("checked", (gen == "M" ? true : false));
+                $("#Nombres1").val(nom1);
+                $("#Nombres2").val(nom2);
+                $("#ApellidoPaterno").val(apep);
+                $("#ApellidoMaterno").val(apem);
+                $("#CorreoElectronico").val(correo);
+                $("#celular").val(telefono);
+                //$("#FechaNacimiento").val(fnac);
+                //$("#FechaNacimiento").datepicker("refresh");
+                $('#FechaNacimiento').datepicker("setDate", fnac);
+
+                //queryDate = '2009-11-01';
+
+                //var parsedDate = $.datepicker.parseDate('dd/mm/yyyy', fnac);
+
+                //$('#FechaNacimiento').datepicker('setDate', parsedDate);
+
+                if (ubi.length == 6) {
+                    valP = ubi.substring(2, 4);
+                    valD = ubi.substring(4, 6);
+                    $("#depto").val(ubi.substring(0, 2));                    
+                    $("#depto").selectpicker('refresh');
+                    SelectDep("1", "prov");
+                }                
+                $("#cabecera_editar").html(dni);
+                $("#modalEditar").modal({ backdrop: 'static', keyboard: false });
+            });
+        });
+    var valP = "01";
+    var valD = "01";
+    function SelectDep(action, afect) {
+        var operacion = action;
+        var iddep = $("#depto").val();
+        var idpro = $("#prov").val();
+        var select = afect;
+        $("#" + select + "").html("");
+        $("#" + select + "").selectpicker('refresh');
+        if (operacion == 1) {
+            $("#dist").html("");
+            $("#dist").selectpicker('refresh');
+        }
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("get_otro_select", "BataClub")',
+            data: { operacion: operacion, iddep: iddep, idpro: idpro },
+            success: function (data) {
+                var options = "";
+                for (var i = 0; i < data.result.length; i++) {
+                    options += "<option value='" + data.result[i].cbo_codigo + "'>" + data.result[i].cbo_descripcion + "</option>"
+                }
+                $("#" + select + "").html(options);
+                $("#" + select + "").selectpicker({ title: 'Seleccione ' + (operacion == 1 ? "Provicia" : "Distrito") });
+                //$("#" + select + "").selectpicker('val', "01");
+                //$("#" + select + "").val('01');
+                $("#" + select + "").selectpicker('refresh');
+                $("#" + select + "").val(operacion == 1 ? (valP == null || valP == "" ? "01" : valP) : (valD == null || valD == "" ? "01" : valD));
+                $("#" + select + "").selectpicker('refresh');
+                if (operacion == "1") {
+                    SelectDep("2", "dist" );
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                //waitingDialog.hide();
+                var error = eval("(" + XMLHttpRequest.responseText + ")");
+                swal(error.Message);
+            }
+        });
+    }
 
 
 </script>
