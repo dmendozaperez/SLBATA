@@ -12,6 +12,9 @@
 
     ViewBag.BarChartCompras = JsonConvert.SerializeObject(ViewBag.BarChartCompras, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
     ViewBag.DetallesTipoCompra = JsonConvert.SerializeObject(ViewBag.DetallesTipoCompra, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+
+    ViewBag.chartComCL = JsonConvert.SerializeObject(ViewBag.chartComCL, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+
 }
 <style>
     .chart {
@@ -423,7 +426,7 @@
             <div class="box">
                 <div class="box-header with-border">
                     <i class="fa fa-bar-chart-o"></i>
-                    <h3 class="box-title">Compras BataClub</h3>
+                    <h3 class="box-title">Compras Cupones y Regular</h3>
 
                     <div class="box-tools pull-right" style="top: 3px;">
                         @*@Html.DropDownList("anioPS", new SelectList(ViewBag.anios, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "form-control form-control-sm selectpicker anio", @id = "anioPS", @name = "anioPS", @data_informe = 4 })*@
@@ -483,6 +486,79 @@
             <!-- /.box -->
         </div>
     </div>  
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <i class="fa fa-pie-chart"></i>
+                    <h3 class="box-title">Compras Clientes  </h3>
+
+                    <div class="box-tools pull-right" style="top: 3px;">
+                        @*@Html.DropDownList("anioPS", new SelectList(ViewBag.anios, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "form-control form-control-sm selectpicker anio", @id = "anioPS", @name = "anioPS", @data_informe = 4 })*@
+
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-3"></div>
+                            <div class="form-inline">
+                                <div class="form-group date">
+                                    <label>Inicio: </label>&nbsp;&nbsp;
+                                    <div class="input-group input-group-sm">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input type="text" class="form-control pull-right" id="fechaIni_com_cl">
+                                    </div>
+                                </div>&nbsp;&nbsp;&nbsp;
+                                <div class="form-group date">
+                                    <label>Fin: </label>&nbsp;&nbsp;
+                                    <div class="input-group input-group-sm">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input type="text" class="form-control pull-right" id="fechaFin_com_cl">
+                                    </div>
+                                </div>&nbsp;&nbsp;&nbsp;
+                                <button type="button" class="btn btn-primary btn-sm" title="Mostrar" id="btnMostrarCharBarCom_CL"><i class="fa fa-search"></i></button>
+                                <button type="button" class="btn btn-success btn-sm" title="Exportar a Excel" id="btnMostrarCharBarCom_CL_excel"><i class="glyphicon glyphicon-export">Exportar</i></button>
+                                @*<a href="@Url.Action("RegTraConTdaExcel","BataClub")" class="btn btn-success btn-sm pull-right"><i class="glyphicon glyphicon-export"></i>&nbsp;&nbsp;Exportar</a>*@
+                            </div>
+
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-3">
+
+                        </div>
+                        <div class="col-md-5">
+                            <p class="text-center" id="tituloBarCharCompra_CL">
+                            </p>
+                            <div class="chart-responsive">
+                                <canvas id="Chart_compras_CL" height="220"></canvas>
+                            </div>
+                            @*<div class="chart">
+                                <canvas id="barChart_com" style="height: 290px;"></canvas>
+                            </div>*@
+                            <!-- /.chart-responsive -->
+                        </div>
+                        @*<div class="col-md-4">
+                            <div class="table-wrapper-scroll-y my-custom-scrollbar" style="height:320px">
+                                <table id="ComprasDetalle" class="table table-hover"></table>
+                            </div>
+                            <p id="totalesCompras" class="pull-right" style="padding-right:15px; padding-top:7px"></p>
+                        </div>*@
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- ./box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>  
     <strong class="text-red"></strong>
 </section>
 <div class="modal fade" id="modalPromDetTda" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -519,7 +595,8 @@
     var myDoughnutChart;
     var myChartPS;
     var myBarChartTR;
-    var myBarChartCO
+    var myBarChartCO;
+    var myChartComCL;
     function sum(input) {
 
         if (toString.call(input) !== "[object Array]")
@@ -605,7 +682,7 @@
     //                borderColor: 'rgba(158, 158, 158, 1)',
     //                titleFontColor: 'rgba(73, 73, 73,0.8)'
     //            },
-               
+
     //        }
     //    });
     //    var total = sum(data.datasets[0].data);
@@ -631,6 +708,28 @@
         var total = sum(data.datasets[0].data);
         $("#tituloCanalesChar").html("Total: " + total.toLocaleString('es-PE'));
     }
+
+    function getChartCompra_CL(canvas, data) {
+        myChartComCL = new Chart(canvas, {
+            type: 'doughnut',
+            data: data,
+            options: {
+                legend: {
+                    position: 'bottom'
+                },
+                tooltips: {
+                    backgroundColor: 'rgba(237, 237, 237,0.8)',
+                    bodyFontColor: 'rgba(46, 46, 46, 0.9)',
+                    borderWidth: 1,
+                    borderColor: 'rgba(158, 158, 158, 1)',
+                    titleFontColor: 'rgba(73, 73, 73,0.8)'
+                },
+            }
+        });
+        var total = sum(data.datasets[0].data);
+        $("#tituloBarCharCompra_CL").html("Total: " + total.toLocaleString('es-PE'));
+    }
+
     function getChartMensualRegMiem(canvas, data, totalesGenero) {
         getChartInformeMensual(2,canvas, data);
         var totRegistrados = sum(data.datasets[0].data);
@@ -701,9 +800,9 @@
         if (data != null) {
             getChartInformeMensual(7, canvas, data);
             var totaltrancom = sum(data.datasets[0].data).toLocaleString('es-PE');
-            var totalmtocom = sum(data.datasets[1].data).toLocaleString('es-PE');    
+            var totalmtocom = sum(data.datasets[1].data).toLocaleString('es-PE');
             var title = '<strong style="color: rgb(42, 152, 102)">T: ' + totaltrancom + '</strong>&nbsp;&nbsp;' +
-                '<strong style="color: rgb(90, 90, 90)">M: ' + totalmtocom + '</strong>&nbsp;&nbsp;'             
+                '<strong style="color: rgb(90, 90, 90)">M: ' + totalmtocom + '</strong>&nbsp;&nbsp;'
             $("#tituloBarCharCompra").html(title);
         }
 
@@ -721,7 +820,7 @@
 
             var totaltipoReg = 0;
             var totaltipoMonto = 0;
-            
+
             for (var i = 0; i < tipo.length; i++) {
                 totaltipoReg += parseFloat(tipo[i].transac);
                 totaltipoMonto += parseFloat(tipo[i].monto);
@@ -732,8 +831,8 @@
                     //'<strong style="color: rgb(243, 156, 18)">C: ' + totaltdaConSup.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;' +
                     //'<strong style="color: rgb(230, 101, 101)">B: ' + totaltdaBASup.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;'
             $("#totalesCompras").html(title2);
-      
-     
+
+
     }
     function getChartMensualPS(canvas, data, proms, mes , anio) {
         if (data != null) {
@@ -795,6 +894,18 @@
             maxDate: new Date(),
         }).datepicker("setDate", "0");
 
+        $('#fechaIni_com_cl').datepicker({
+            format: "dd-mm-yyyy",
+            autoclose: true,
+            maxDate: new Date(),
+        }).datepicker("setDate", firstDay);
+
+        $('#fechaFin_com_cl').datepicker({
+            format: "dd-mm-yyyy",
+            autoclose: true,
+            maxDate: new Date(),
+        }).datepicker("setDate", "0");
+
         $('#fechaIni_canal').datepicker({
             format: "dd-mm-yyyy",
             autoclose: true,
@@ -818,8 +929,49 @@
         $("#btnMostrarCharBarCom").click(function () {
             updateCharts(0, 10, null, null, null, null,null,null, $('#fechaIni_com').val(), $('#fechaFin_com').val());
         });
+
+        $("#btnMostrarCharBarCom_CL").click(function () {
+            updateCharts(0,12, null, null, null, null, null, null, null, null, $('#fechaIni_com_cl').val(), $('#fechaFin_com_cl').val());
+        });
+
+        $("#btnMostrarCharBarCom_CL_excel").click(function () {
+            upload_com_cl_rango($('#fechaIni_com_cl').val(), $('#fechaFin_com_cl').val());
+        });
+
+        
+
         //btnMostrarCharBarCom
 
+        /*descargar archivo excel compras clientes x rango de fecha*/
+        function upload_com_cl_rango(fecini_com_cl, fecfin_com_cl) {
+            waitingDialog.show('Espere un momento por favor');
+            var msg_titulo = 'Mensaje ';
+            $.ajax({
+                type: 'POST',
+                data: { fecini_com_cl: fecini_com_cl, fecfin_com_cl: fecfin_com_cl },
+                dataType: 'json',
+                url: '@Url.Action("Compras_CL_Excel_Data")',
+                success: function (data) {
+                    var estado = data.estado;
+                    var desmsg = data.desmsg;
+                    if (estado == "1") {
+
+                        window.location = '@Url.Action("ExportaComClExcel")';
+                        toastr.success(desmsg, msg_titulo);
+                    }
+                    else {
+                        toastr.error(desmsg, msg_titulo);
+
+                    }
+                    waitingDialog.hide();
+                    //window.location = '<%= Url.Action("DownloadFile", "Home") %>?fileId=' + fileId;
+                },
+                error: function (xhr) {
+                    waitingDialog.hide();
+                    toastr.error(xhr, msg_titulo);
+                }
+            });
+        }
         /*descargar archivo excel canales x rango de fecha*/
         function upload_canales_rango(fecini_canal, fecfin_canal)
         {
@@ -874,6 +1026,8 @@
         getChartMensualPS(document.getElementById('barChartPS'), JSON.parse('@Html.Raw(ViewBag.chartMesParesSoles)'), JSON.parse('@Html.Raw(ViewBag.promsPS)'), null, $("#anioPS").val());
         getChartSuperv(document.getElementById('barChartSuperv'), JSON.parse('@Html.Raw(ViewBag.BarChartTranReg)'), JSON.parse('@Html.Raw(ViewBag.DetallesTiendaSuperv)'));
        // getChartCompras(document.getElementById('ComprasChart'), JSON.parse('@Html.Raw(ViewBag.ChartCompras)'));
+
+        getChartCompra_CL(document.getElementById('Chart_compras_CL'), JSON.parse('@Html.Raw(ViewBag.chartComCL)'));
 
         getChartCompras(document.getElementById('barChart_com'), JSON.parse('@Html.Raw(ViewBag.BarChartCompras)'), JSON.parse('@Html.Raw(ViewBag.DetallesTipoCompra)'));
 
@@ -1021,12 +1175,12 @@
             });
         });
 
-        function updateCharts(anio, informe, mes, fecini, fecfin, prom, fecini_canal, fecfin_canal, fecini_com, fecfin_com) {
+        function updateCharts(anio, informe, mes, fecini, fecfin, prom, fecini_canal, fecfin_canal, fecini_com, fecfin_com, fecini_com_cl, fecfin_com_cl) {
             waitingDialog.show('Espere un momento por favor');
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("updateChartData", "BataClub")',
-                data: { anio: anio, informe: informe, mes: (mes == null || mes == '' ? 0 : mes), fecini: fecini, fecfin: fecfin, prom: prom, fecini_canal: fecini_canal, fecfin_canal: fecfin_canal, fecini_com: fecini_com, fecfin_com: fecfin_com },
+                data: { anio: anio, informe: informe, mes: (mes == null || mes == '' ? 0 : mes), fecini: fecini, fecfin: fecfin, prom: prom, fecini_canal: fecini_canal, fecfin_canal: fecfin_canal, fecini_com: fecini_com, fecfin_com: fecfin_com, fecini_com_cl: fecini_com_cl, fecfin_com_cl: fecfin_com_cl },
                 success: function (data) {
                     if (informe == 2) {
                         myChart.destroy();
@@ -1045,6 +1199,9 @@
                     } else if (informe == 8 || informe == 10) {
                         myBarChartCO.destroy();
                         getChartCompras(document.getElementById('barChart_com'), JSON.parse(data.result), data.tipo);
+                    } else if (informe == 12 ) {
+                        myChartComCL.destroy();
+                        getChartCompra_CL(document.getElementById('Chart_compras_CL'), JSON.parse(data));
                     }
                     waitingDialog.hide();
                 },
