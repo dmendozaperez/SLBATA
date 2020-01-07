@@ -103,7 +103,7 @@ namespace CapaDato.BataClub
             }
             return list;
         }
-        public Ent_BataClub_DashBoard GET_INFO_DASHBOARD(ref Ent_BataClub_DashBoard dashboard_session, string anio = "2019" , int informe = 0, int mes = 0,object fechaIni = null , object fechaFin = null , string prom = "", 
+        public Ent_BataClub_DashBoard GET_INFO_DASHBOARD(ref Ent_BataClub_DashBoard dashboard_session, string anio = "2020" , int informe = 0, int mes = 0,object fechaIni = null , object fechaFin = null , string prom = "", 
             object fechaIni_canal = null, object fechaFin_canal = null, object fechaIni_com = null, object fechaFin_com = null, object fechaIni_com_cl = null, object fechaFin_com_cl = null) // 0 = TODO | 1 = GENERAL | 2 = REGISTRADOS | 3 = MIEMBROS | 4 = CANALES
         {
             string sqlquery = "USP_BATACLUB_DASHBOARD";
