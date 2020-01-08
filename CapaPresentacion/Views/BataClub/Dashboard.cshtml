@@ -15,6 +15,7 @@
 
     ViewBag.chartComCL = JsonConvert.SerializeObject(ViewBag.chartComCL, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
+    ViewBag.chartIncompletos = JsonConvert.SerializeObject(ViewBag.chartIncompletos, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 }
 <style>
     .chart {
@@ -105,6 +106,7 @@
     }
 </style>
 <link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />  
+<link href="~/Content/magic-check.css" rel="stylesheet" />
 <section class="content">
     <!-- Info boxes -->
     <div class="row">
@@ -487,7 +489,7 @@
         </div>
     </div>  
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-8">
             <div class="box">
                 <div class="box-header with-border">
                     <i class="fa fa-pie-chart"></i>
@@ -501,8 +503,7 @@
                 <!-- /.box-header -->
                 <div class="box-body">
                     <div class="row">
-                        <div class="col-md-12">
-                            <div class="col-md-3"></div>
+                        <div class="col-md-9">                          
                             <div class="form-inline">
                                 <div class="form-group date">
                                     <label>Inicio: </label>&nbsp;&nbsp;
@@ -523,6 +524,7 @@
                                     </div>
                                 </div>&nbsp;&nbsp;&nbsp;
                                 <button type="button" class="btn btn-primary btn-sm" title="Mostrar" id="btnMostrarCharBarCom_CL"><i class="fa fa-search"></i></button>
+                                &nbsp;&nbsp;
                                 <button type="button" class="btn btn-success btn-sm" title="Exportar a Excel" id="btnMostrarCharBarCom_CL_excel"><i class="glyphicon glyphicon-export">Exportar</i></button>
                                 @*<a href="@Url.Action("RegTraConTdaExcel","BataClub")" class="btn btn-success btn-sm pull-right"><i class="glyphicon glyphicon-export"></i>&nbsp;&nbsp;Exportar</a>*@
                             </div>
@@ -531,14 +533,14 @@
                     </div>
                     <br />
                     <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-md-2">
 
                         </div>
-                        <div class="col-md-5">
+                        <div class="col-md-6">
                             <p class="text-center" id="tituloBarCharCompra_CL">
                             </p>
                             <div class="chart-responsive">
-                                <canvas id="Chart_compras_CL" height="220"></canvas>
+                                <canvas id="Chart_compras_CL" height="300"></canvas>
                             </div>
                             @*<div class="chart">
                                 <canvas id="barChart_com" style="height: 290px;"></canvas>
@@ -557,6 +559,57 @@
                 <!-- ./box-body -->
             </div>
             <!-- /.box -->
+        </div>
+        <div class="col-md-4">
+            <div class="box box-default">
+                <div class="box-header with-border">
+                    <i class="fa fa-pie-chart"></i>
+                    <h3 class="box-title">Clientes Datos Incompletos</h3>
+                    @*<button type="button" class="btn btn-primary btn-sm" title="Mostrar" id="btnMostrarCharBarcanal"><i class="fa fa-search"></i></button>*@
+                    @*<button type="button" class="btn btn-success btn-sm" title="Exportar a Excel" id="btnMostrarCharBarcanal_excel"><i class="glyphicon glyphicon-export">Exportar</i></button>*@                 
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group">                              
+                                <div>
+                                    <input class="magic-radio" type="radio" name="radio" id="rdb_fn" checked>
+                                    <label for="rdb_fn"> Fecha de Nacimiento</label>
+                                    
+                                </div>
+                                @*<button type="button" class="btn btn-success btn-sm" title="Exportar a Excel" id="btnMostrarCharBarcanal_excel"><i class="glyphicon glyphicon-export">Exportar</i></button>*@                 
+                                <div>
+                                    <input class="magic-radio" type="radio" name="radio" id="rdb_gen">
+                                    <label for="rdb_gen">Genero</label>
+                                </div>
+                                <div>
+                                    <input class="magic-radio" type="radio" name="radio" id="rdb_ubi">
+                                    <label for="rdb_ubi">Ubicacion</label>
+                                </div>
+                               
+
+                            </div>
+                            
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-success btn-sm" title="Exportar a Excel" id="btnDataIncom_excel"><i class="glyphicon glyphicon-export">Exportar</i></button>                 
+                        </div>
+                    </div>                  
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p class="text-center text-bold" id="tituloCanalesChar">
+                            </p>
+                            <div class="chart-responsive">
+                                <canvas id="incompletoChart" height="290"></canvas>
+                            </div>
+                            <!-- ./chart-responsive -->
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+                </div>
+            </div>
         </div>
     </div>  
     <strong class="text-red"></strong>
@@ -593,6 +646,7 @@
 <script type="text/javascript">
     var myChart;
     var myDoughnutChart;
+    var myIncompletoChart;
     var myChartPS;
     var myBarChartTR;
     var myBarChartCO;
@@ -707,6 +761,27 @@
         });
         var total = sum(data.datasets[0].data);
         $("#tituloCanalesChar").html("Total: " + total.toLocaleString('es-PE'));
+    }
+
+    function getChartIncompleto(canvas, data) {
+        myIncompletoChart = new Chart(canvas, {
+            type: 'doughnut',
+            data: data,
+            options: {
+                legend: {
+                    position: 'bottom'
+                },
+                tooltips: {
+                    backgroundColor: 'rgba(237, 237, 237,0.8)',
+                    bodyFontColor: 'rgba(46, 46, 46, 0.9)',
+                    borderWidth: 1,
+                    borderColor: 'rgba(158, 158, 158, 1)',
+                    titleFontColor: 'rgba(73, 73, 73,0.8)'
+                },
+            }
+        });
+        //var total = sum(data.datasets[0].data);
+        //$("#tituloCanalesChar").html("Total: " + total.toLocaleString('es-PE'));
     }
 
     function getChartCompra_CL(canvas, data) {
@@ -869,6 +944,7 @@
         //totales pendientes
     }
     $(document).ready(function () {
+
         var date = new Date();
         var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
         $('#fechaIni').datepicker({
@@ -937,10 +1013,67 @@
         $("#btnMostrarCharBarCom_CL_excel").click(function () {
             upload_com_cl_rango($('#fechaIni_com_cl').val(), $('#fechaFin_com_cl').val());
         });
+        $("#btnDataIncom_excel").click(function () {
+            //alert('ok');
+            if ($("#rdb_fn").is(':checked')) {
+                upload_data_incompleto('FN');                
+            } else if ($("#rdb_gen").is(':checked')) {
+                upload_data_incompleto('GE');
+            } else if ($("#rdb_ubi").is(':checked')) {
+                upload_data_incompleto('UB');
+            };
+        });
+        //btnDataIncom_excel
 
-        
+        $("#rdb_fn").change(function () {
+            updateCharts(0, 13, null, null, null, null,null,null,null,null,null,null,'FN');
+            //alert('ok1');// upload_com_cl_rango($('#fechaIni_com_cl').val(), $('#fechaFin_com_cl').val());
+        });
+        $("#rdb_gen").change(function () {
+            //alert('ok2');// upload_com_cl_rango($('#fechaIni_com_cl').val(), $('#fechaFin_com_cl').val());
+            updateCharts(0, 13, null, null, null, null, null, null, null, null, null, null, 'GE');
+        });
+        $("#rdb_ubi").change(function () {
+            //alert('ok3');// upload_com_cl_rango($('#fechaIni_com_cl').val(), $('#fechaFin_com_cl').val());
+            updateCharts(0, 13, null, null, null, null, null, null, null, null, null, null, 'UB');
+        });
+
+        //$("#btnMostrarCharBarCom_CL_excel").click(function () {
+        //    upload_com_cl_rango($('#fechaIni_com_cl').val(), $('#fechaFin_com_cl').val());
+        //});
+
 
         //btnMostrarCharBarCom
+        /*descargar archivo excel compras clientes x rango de fecha*/
+        function upload_data_incompleto(opcion_data_in) {
+            waitingDialog.show('Espere un momento por favor');
+            var msg_titulo = 'Mensaje ';
+            $.ajax({
+                type: 'POST',
+                data: { opcion_data_in: opcion_data_in },
+                dataType: 'json',
+                url: '@Url.Action("DataIncompleto_Excel")',
+                success: function (data) {
+                    var estado = data.estado;
+                    var desmsg = data.desmsg;
+                    if (estado == "1") {
+
+                        window.location = '@Url.Action("ExportarDataIncompleto_Excel")';
+                        toastr.success(desmsg, msg_titulo);
+                    }
+                    else {
+                        toastr.error(desmsg, msg_titulo);
+
+                    }
+                    waitingDialog.hide();
+                    //window.location = '<%= Url.Action("DownloadFile", "Home") %>?fileId=' + fileId;
+                },
+                error: function (xhr) {
+                    waitingDialog.hide();
+                    toastr.error(xhr, msg_titulo);
+                }
+            });
+        }
 
         /*descargar archivo excel compras clientes x rango de fecha*/
         function upload_com_cl_rango(fecini_com_cl, fecfin_com_cl) {
@@ -1004,21 +1137,6 @@
                     toastr.error(xhr, msg_titulo);
                 }
             });
-
-
-            @*window.location.href = '@Url.Action("CanalDetExcel", "BataClub")?fecini_canal=' + fecini_canal + "&fecfin_canal=" + fecfin_canal;*@
-
-            //waitingDialog.show('Descargando Archivo');
-            @*$.ajax({
-                type: 'POST',
-                data: { fecini_canal: fecini_canal, fecfin_canal: fecfin_canal },
-                url: '@Url.Action("CanalDetExcel")',
-                success: function () {
-
-                    //waitingDialog.hide();
-                   // window.location = '@Url.Action("Download")?strIdLote=' + IdLte;
-                }
-            });*@
         }
 
         getChartMensualRegMiem(document.getElementById('barChart'), JSON.parse('@Html.Raw(ViewBag.chartDS)'), JSON.parse('@Html.Raw(ViewBag.totalesGeneros)'));
@@ -1030,6 +1148,8 @@
         getChartCompra_CL(document.getElementById('Chart_compras_CL'), JSON.parse('@Html.Raw(ViewBag.chartComCL)'));
 
         getChartCompras(document.getElementById('barChart_com'), JSON.parse('@Html.Raw(ViewBag.BarChartCompras)'), JSON.parse('@Html.Raw(ViewBag.DetallesTipoCompra)'));
+
+        getChartIncompleto(document.getElementById('incompletoChart'), JSON.parse('@Html.Raw(ViewBag.chartIncompletos)'));
 
         //document.getElementById('barChartPS').onclick = function (evt) {
         //    var activePoints = myChartPS.getElementsAtEvent(evt);
@@ -1175,12 +1295,12 @@
             });
         });
 
-        function updateCharts(anio, informe, mes, fecini, fecfin, prom, fecini_canal, fecfin_canal, fecini_com, fecfin_com, fecini_com_cl, fecfin_com_cl) {
+        function updateCharts(anio, informe, mes, fecini, fecfin, prom, fecini_canal, fecfin_canal, fecini_com, fecfin_com, fecini_com_cl, fecfin_com_cl, opcion_data_in) {
             waitingDialog.show('Espere un momento por favor');
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("updateChartData", "BataClub")',
-                data: { anio: anio, informe: informe, mes: (mes == null || mes == '' ? 0 : mes), fecini: fecini, fecfin: fecfin, prom: prom, fecini_canal: fecini_canal, fecfin_canal: fecfin_canal, fecini_com: fecini_com, fecfin_com: fecfin_com, fecini_com_cl: fecini_com_cl, fecfin_com_cl: fecfin_com_cl },
+                data: { anio: anio, informe: informe, mes: (mes == null || mes == '' ? 0 : mes), fecini: fecini, fecfin: fecfin, prom: prom, fecini_canal: fecini_canal, fecfin_canal: fecfin_canal, fecini_com: fecini_com, fecfin_com: fecfin_com, fecini_com_cl: fecini_com_cl, fecfin_com_cl: fecfin_com_cl, opcion_data_in: opcion_data_in },
                 success: function (data) {
                     if (informe == 2) {
                         myChart.destroy();
@@ -1202,7 +1322,11 @@
                     } else if (informe == 12 ) {
                         myChartComCL.destroy();
                         getChartCompra_CL(document.getElementById('Chart_compras_CL'), JSON.parse(data));
+                    } else if (informe == 13) {
+                        myIncompletoChart.destroy();
+                        getChartIncompleto(document.getElementById('incompletoChart'), JSON.parse(data));
                     }
+
                     waitingDialog.hide();
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {

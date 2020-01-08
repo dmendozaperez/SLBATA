@@ -570,6 +570,8 @@
     <Content Include="Content\images\txt.jpg" />
     <Content Include="Content\images\wall-calendar-with-lines.svg" />
     <Content Include="Content\images\xls.jpg" />
+    <Content Include="Content\magic-check.css" />
+    <Content Include="Content\magic-check.min.css" />
     <Content Include="Content\sweetalert.css" />
     <Content Include="Content\toastr.css" />
     <Content Include="Content\toastr.min.css" />

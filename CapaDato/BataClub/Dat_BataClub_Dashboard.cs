@@ -60,6 +60,48 @@ namespace CapaDato.BataClub
             }
             return list;
         }
+        public List<Ent_BataClub_Datos_Incompletos_Excel> get_datos_incompletos_excel(Int32 informe,string opcion_data_in)
+        {
+            List<Ent_BataClub_Datos_Incompletos_Excel> list = null;
+            string sqlquery = "[USP_BATACLUB_DASHBOARD]";
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@INFORME", informe);
+                        cmd.Parameters.AddWithValue("@opcion_data_in", opcion_data_in);                        
+                        cmd.Parameters.AddWithValue("@opcion_data_in_excel", true);
+                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                        {
+                            DataTable dt = new DataTable();
+                            da.Fill(dt);
+                            if (dt != null)
+                            {
+                                list = new List<Ent_BataClub_Datos_Incompletos_Excel>();
+                                list = (from DataRow dr in dt.Rows
+                                        select new Ent_BataClub_Datos_Incompletos_Excel()
+                                        {
+                                            dni = dr["DNI"].ToString(),
+                                            nombres = dr["NOMBRES"].ToString(),
+                                            correo = dr["CORREO"].ToString(),                                            
+                                        }
+                                      ).ToList();
+                            }
+                        }
+
+                    }
+                }
+            }
+            catch
+            {
+
+            }
+            return list;
+        }
         public List<Ent_BataClub_Compras_CL_Excel> get_compras_excel(Int32 informe, DateTime fecini_com_cl, DateTime fecfin_com_cl)
         {
             List<Ent_BataClub_Compras_CL_Excel> list = null;
@@ -104,7 +146,7 @@ namespace CapaDato.BataClub
             return list;
         }
         public Ent_BataClub_DashBoard GET_INFO_DASHBOARD(ref Ent_BataClub_DashBoard dashboard_session, string anio = "2019" , int informe = 0, int mes = 0,object fechaIni = null , object fechaFin = null , string prom = "", 
-            object fechaIni_canal = null, object fechaFin_canal = null, object fechaIni_com = null, object fechaFin_com = null, object fechaIni_com_cl = null, object fechaFin_com_cl = null) // 0 = TODO | 1 = GENERAL | 2 = REGISTRADOS | 3 = MIEMBROS | 4 = CANALES
+            object fechaIni_canal = null, object fechaFin_canal = null, object fechaIni_com = null, object fechaFin_com = null, object fechaIni_com_cl = null, object fechaFin_com_cl = null,String opcion_data_in="FN") // 0 = TODO | 1 = GENERAL | 2 = REGISTRADOS | 3 = MIEMBROS | 4 = CANALES
         {
             string sqlquery = "USP_BATACLUB_DASHBOARD";
             Ent_BataClub_DashBoard info = null;
@@ -149,6 +191,7 @@ namespace CapaDato.BataClub
                         }
 
                         cmd.Parameters.AddWithValue("@prom", prom);//@prom
+                        cmd.Parameters.AddWithValue("@opcion_data_in", opcion_data_in);//@prom
                         using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                         {
                             DataSet ds = new DataSet();
@@ -325,6 +368,15 @@ namespace CapaDato.BataClub
                                                                  com_des = dr["COMP_DES"].ToString(),
                                                                  nclientes =Convert.ToInt32(dr["NCLIENTES"]),                                                                 
                                                              }).ToList();
+                            }
+                            if (new[] { 0, 13 }.Contains(informe))
+                            {
+                                info.listincompletos= (from DataRow dr in ds.Tables[(informe == 0 ? 10 : 0)].Rows
+                                                          select new Ent_BataClub_Dashboard_Datos_Incompletos()
+                                                          {
+                                                              campo = dr["CAMPO"].ToString(),
+                                                              porc = Convert.ToInt32(dr["PORC"]),
+                                                          }).ToList();
                             }
 
                         }

@@ -19,11 +19,10 @@ namespace CapaEntidad.BataClub
         public List<Ent_BataClub_DashBoard_Supervisor> listSupervisorTot { get; set; }
         public List<Ent_BataClub_DashBoard_TiendasSupervisor> listTiendasSupervTot { get; set; }
         public List<Ent_BataClub_DashBoard_Proms> listDetPromTda { get; set; }
-
         public List<Ent_BataClub_DashBoard_Compras> listComprasTot { get; set; }
         public List<Ent_BataClub_DashBoard_Tipo_Compras> listTipoComprasTot { get; set; }
-
         public List<Ent_BataClub_DashBoard_Compras_Cliente> listComprasCliTot { get; set; }
+        public List<Ent_BataClub_Dashboard_Datos_Incompletos> listincompletos { get; set; }
         public DataTable dtventa_bataclub { get; set; }
 
     }
@@ -48,6 +47,18 @@ namespace CapaEntidad.BataClub
         public string CANAL { get; set; }
         public decimal REGISTROS { get; set; }
         public decimal PORC { get; set; }
+    }
+    public class Ent_BataClub_Dashboard_Datos_Incompletos
+    {
+        public string campo { get; set; }
+        public Decimal porc { get; set; }
+
+    }
+    public class Ent_BataClub_Datos_Incompletos_Excel
+    {
+        public string dni { get; set; }
+        public string nombres { get; set; }
+        public string correo { get; set; }
     }
     public class Ent_BataClub_Chart_Data
     {
