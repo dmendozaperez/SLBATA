@@ -140,4 +140,10 @@ namespace CapaEntidad.BataClub
         public string com_des { get; set; }
         public decimal nclientes { get; set; }
     }
+    public class Ent_BataClub_Dashboard_PSM
+    {
+        public string marca { get; set; }
+        public decimal pares { get; set; }
+        public decimal soles { get; set; }
+    }
 }

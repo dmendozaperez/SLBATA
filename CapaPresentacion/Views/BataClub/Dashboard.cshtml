@@ -613,6 +613,71 @@
         </div>
     </div>  
     <strong class="text-red"></strong>
+
+    <div class="row">
+        <div class="col-md-8">
+          
+                <div class="box">
+                    <div class="box-header with-border">
+                        <i class="fa fa-bar-chart-o"></i>
+                        <h3 class="box-title">Pares/Soles x Marca</h3>
+                        <div class="box-tools pull-right" style="top: 3px;">
+                            @*@Html.DropDownList("anioPS", new SelectList(ViewBag.anios, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "form-control form-control-sm selectpicker anio", @id = "anioPS", @name = "anioPS", @data_informe = 4 })*@
+
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-inline">
+                                    <div class="form-group date">
+                                        <label>Inicio: </label>&nbsp;&nbsp;
+                                        <div class="input-group input-group-sm">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            <input type="text" class="form-control pull-right" id="fechaIniPSM">
+                                        </div>
+                                    </div>&nbsp;&nbsp;&nbsp;
+                                    <div class="form-group date">
+                                        <label>Fin: </label>&nbsp;&nbsp;
+                                        <div class="input-group input-group-sm">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            <input type="text" class="form-control pull-right" id="fechaFinPSM">
+                                        </div>
+                                    </div>&nbsp;&nbsp;&nbsp;
+                                    <button type="button" class="btn btn-primary btn-sm" title="Mostrar" id="btnMostrarCharBarPSM"><i class="fa fa-search"></i></button>
+                                    @*<a href="@Url.Action("RegTraConTdaExcel","BataClub")" class="btn btn-success btn-sm pull-right"><i class="glyphicon glyphicon-export"></i>&nbsp;&nbsp;Exportar</a>*@
+                                </div>
+
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p class="text-center" id="tituloBarCharPSM">
+                                </p>
+                                <div class="chart">
+                                    <canvas id="barChartPSM" style="height: 290px;"></canvas>
+                                </div>
+                                <!-- /.chart-responsive -->
+                            </div>
+                        </div>
+                        <!-- /.row -->
+                    </div>
+                    <!-- ./box-body -->
+                    <div id="PSM-load" class="overlay hidden">
+                        <i class="fa fa-refresh fa-spin"></i>
+                    </div>
+                </div>
+                <!-- /.box -->
+        </div>
+    </div>
+
+
 </section>
 <div class="modal fade" id="modalPromDetTda" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -640,6 +705,8 @@
         </div>
     </div>
 </div>
+
+
 <script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
 <script src="@Url.Content("~/Scripts/bootstrap-select.min.js")"></script>
 
@@ -651,6 +718,12 @@
     var myBarChartTR;
     var myBarChartCO;
     var myChartComCL;
+
+    var cargando = '<div class="overlay">\
+                        <i class="fa fa-refresh fa-spin"></i>\
+                    </div>'
+
+
     function sum(input) {
 
         if (toString.call(input) !== "[object Array]")
@@ -943,8 +1016,90 @@
         $("#totalesPromociones").html(title2);
         //totales pendientes
     }
-    $(document).ready(function () {
 
+    
+
+
+    /** Ini Pares/soles x Marca **/
+    function GetChartPSM() {
+        $("#PSM-load").removeClass("hidden");
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetChartPSM", "BataClub")',
+            data: { fechaini: $('#fechaIniPSM').val(), fechafin : $('#fechaFin').val()},
+            success: function (data) {
+                //quitar mensaje cargando
+                // ini chart
+                var _data = JSON.parse(data.result);
+                try {
+                    _c.destroy();
+                } catch (e) {
+
+                }
+                
+                _c = new Chart(document.getElementById('barChartPSM'), {
+                    type: 'bar',
+                    data: _data,
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                }
+                            }],
+                            xAxes: [{
+                                ticks: {
+                                    callback: function (value) {
+                                        if (value.length > 7 && 5 == 6) {
+                                            return value.substr(0, 7) + "..."; //truncate
+                                        } else {
+                                            return value
+                                        }
+                                    }
+                                }
+                            }],
+                        },
+                        tooltips: {
+                            mode: 'index',
+                            intersect: false,
+                            backgroundColor: 'rgba(237, 237, 237,0.8)',
+                            bodyFontColor: 'rgba(73, 73, 73,0.8)',
+                            borderWidth: 1,
+                            borderColor: 'rgba(158, 158, 158, 1)',
+                            titleFontColor: 'rgba(73, 73, 73,0.8)',
+                            callbacks: {
+                                title: function (tooltipItems, data) {
+                                    //if (informe == 6){
+                                    var idx = tooltipItems[0].index;
+                                    return _data.labels[idx]; //do something with title
+                                    //}
+                                },
+                            }
+                        },
+                        maintainAspectRatio: false
+                    }
+                });
+                var title = '<strong style="color: rgb(147, 97, 228)">P: ' + sum(_data.datasets[0].data).toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;&nbsp;&nbsp;' +
+                '<strong style="color: rgb(80, 230, 161)">S/ ' + sum(_data.datasets[1].data).toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;'
+                $("#tituloBarCharPSM").html(title);
+
+                $("#PSM-load").addClass("hidden");
+
+                // fin chart
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                $("#PSM-load").addClass("hidden");
+                var error = eval("(" + XMLHttpRequest.responseText + ")");
+                swal(error.Message);
+            }
+        });
+    }
+
+
+    /** Fin Pares/soles x Marca **/
+
+    $(document).ready(function () {
+        
         var date = new Date();
         var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
         $('#fechaIni').datepicker({
@@ -953,6 +1108,17 @@
             maxDate: new Date(),
         }).datepicker("setDate", firstDay);
         $('#fechaFin').datepicker({
+            format: "dd-mm-yyyy",
+            autoclose: true,
+            maxDate: new Date(),
+        }).datepicker("setDate", "0");
+
+        $('#fechaIniPSM').datepicker({
+            format: "dd-mm-yyyy",
+            autoclose: true,
+            maxDate: new Date(),
+        }).datepicker("setDate", firstDay);
+        $('#fechaFinPSM').datepicker({
             format: "dd-mm-yyyy",
             autoclose: true,
             maxDate: new Date(),
@@ -992,6 +1158,21 @@
             autoclose: true,
             maxDate: new Date(),
         }).datepicker("setDate", "0");
+
+
+        /** Ini Pares/soles x Marca **/
+
+        GetChartPSM();
+
+        $("#btnMostrarCharBarPSM").click(function () {
+            GetChartPSM();
+        });
+
+        /** Fin Pares/soles x Marca **/
+
+
+
+
 
         $("#btnMostrarCharBarSup").click(function () {
             updateCharts(0, 6, null, $('#fechaIni').val(), $('#fechaFin').val());

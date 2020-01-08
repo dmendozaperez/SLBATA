@@ -122,7 +122,8 @@ namespace CapaPresentacion.Controllers
             {
                 //if (Session["_dashboardData"] == null)
                 //{
-                //    Session["_dashboardData"] = datDash.GET_INFO_DASHBOARD();
+                //    Ent_BataClub_DashBoard dashboard_session = null;
+                //    Session["_dashboardData"] = datDash.GET_INFO_DASHBOARD(ref dashboard_session);
                 //}
                 Ent_BataClub_DashBoard dashboard_session = null;
                 Session["_dashboardData"] = datDash.GET_INFO_DASHBOARD(ref dashboard_session);
@@ -153,8 +154,35 @@ namespace CapaPresentacion.Controllers
                 Session[_session_par_sol_mes_excel] = dashboard.listPromsPS;
                 Session[_session_det_tdas_sup_excel] = dashboard.listTiendasSupervTot;
                 return View();
+
+
+
             }
         }
+
+        public ActionResult GetChartPSM (string fechaini = null , string fechafin = null)
+        {
+            Ent_BataClub_Chart_Data chartDS = new Ent_BataClub_Chart_Data();
+            List<Ent_BataClub_Dashboard_PSM> chartPSM = datDash.GetChartPSM(fechaini , fechafin);
+            chartDS.datasets = new List<Ent_BataClub_Chart_DataSet>() {
+                (new Ent_BataClub_Chart_DataSet()
+                {
+                    label = "PARES",
+                    backgroundColor = Enumerable.Repeat("rgba(147, 97, 228, 0.8)", chartPSM.Count).ToArray(), // new string[] { "rgba(180, 180, 180,0.7)" },
+                    borderWidth = "1",
+                    data = chartPSM.Select(s => s.pares).ToArray()
+                }),
+                (new Ent_BataClub_Chart_DataSet()
+                {
+                    label = "SOLES",
+                    backgroundColor = Enumerable.Repeat("rgb(80, 230, 161 , 0.8)", chartPSM.Count).ToArray(),
+                    borderWidth = "1",
+                    data = chartPSM.Select(s => s.soles).ToArray()
+                }) };
+            chartDS.labels = chartPSM.Select(s => s.marca).ToArray();
+            return Json(new { result = JsonConvert.SerializeObject(chartDS, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }) });
+        }
+
         public ActionResult updateChartData(string anio, int informe, int mes = 0, string fecini = null, string fecfin = null, string prom = "", string sup = "", string fecini_canal = null, string fecfin_canaL = null, string fecini_com = null, string fecfin_com = null, string fecini_com_cl = null, string fecfin_com_cl = null, string opcion_data_in = "FN")
         {
             Ent_BataClub_DashBoard dashboard = (Ent_BataClub_DashBoard)Session["_dashboardData"];

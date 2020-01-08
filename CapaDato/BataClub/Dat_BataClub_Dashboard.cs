@@ -145,7 +145,7 @@ namespace CapaDato.BataClub
             }
             return list;
         }
-        public Ent_BataClub_DashBoard GET_INFO_DASHBOARD(ref Ent_BataClub_DashBoard dashboard_session, string anio = "2019" , int informe = 0, int mes = 0,object fechaIni = null , object fechaFin = null , string prom = "", 
+        public Ent_BataClub_DashBoard GET_INFO_DASHBOARD(ref Ent_BataClub_DashBoard dashboard_session, string anio = "2020" , int informe = 0, int mes = 0,object fechaIni = null , object fechaFin = null , string prom = "", 
             object fechaIni_canal = null, object fechaFin_canal = null, object fechaIni_com = null, object fechaFin_com = null, object fechaIni_com_cl = null, object fechaFin_com_cl = null,String opcion_data_in="FN") // 0 = TODO | 1 = GENERAL | 2 = REGISTRADOS | 3 = MIEMBROS | 4 = CANALES
         {
             string sqlquery = "USP_BATACLUB_DASHBOARD";
@@ -392,5 +392,48 @@ namespace CapaDato.BataClub
             return info;
 
         }
+
+        public List<Ent_BataClub_Dashboard_PSM> GetChartPSM(string fechaini = null, string fechafin = null)
+        {
+            string sqlquery = "USP_BATACLUB_DASHBOARD_PSM";
+            List<Ent_BataClub_Dashboard_PSM> info = null;
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+                    if (cn.State == 0) cn.Open();
+                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        if (fechaini != null && fechafin != null)
+                        {
+                            cmd.Parameters.AddWithValue("@fecha_ini", Convert.ToDateTime(fechaini));
+                            cmd.Parameters.AddWithValue("@fecha_fin", Convert.ToDateTime(fechafin));
+                        }
+                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                        {
+                            DataTable dt = new DataTable();
+                            da.Fill(dt);
+                            info = (from DataRow dr in dt.Rows
+                                                   select new Ent_BataClub_Dashboard_PSM()
+                                                   {
+                                                       pares = Convert.ToDecimal(dr["PARES"].ToString()),
+                                                       soles = Convert.ToDecimal(dr["SOLES"].ToString()),
+                                                       marca = Convert.ToString(dr["MARCA"])
+                                                   }).ToList();
+                        }
+                    }
+                    if (cn != null)
+                        if (cn.State == ConnectionState.Open) cn.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                info = null;
+            }
+            return info;
+        }
+
     }
 }
