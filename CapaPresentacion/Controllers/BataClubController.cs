@@ -132,7 +132,7 @@ namespace CapaPresentacion.Controllers
                 ViewBag.general = datDash.BATACLUB_DASHBOARD_GENERAL(); // Informacion general.
                 //ViewBag.chartDS = informeBarChartData(dashboard, 2); // Barras mensual regsitros/miembros
                 //ViewBag.totalesGeneros = dashboard.listMesGenero;
-                ViewBag.chartDonut = informeCanales(dashboard); // Donut anual canales
+                //ViewBag.chartDonut = informeCanales(dashboard); // Donut anual canales
                 ViewBag.chartMesParesSoles = informeBarChartData(dashboard, 4);
                 ViewBag.promsPS = dashboard.listPromsPS;
                 ViewBag.anios = datCbo.get_lista_anios(2015);
@@ -230,6 +230,26 @@ namespace CapaPresentacion.Controllers
                 genero = JsonConvert.SerializeObject(chartPSM.genero, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore })
             });
         }
+
+        public ActionResult GetChartCxF(string fechaini = null, string fechafin = null , bool canal = false )
+        {
+            Ent_BataClub_Chart_Data chartDS = new Ent_BataClub_Chart_Data();
+            List<Ent_BataClub_Dashboard_Canales> data = datDash.BATACLUB_DASHBOARD_CANALES_FECHA(fechaini, fechafin , canal);
+
+            Ent_BataClub_Chart_DataSet ds = (new Ent_BataClub_Chart_DataSet()
+            {
+                backgroundColor = new string[] { "rgba(99, 143, 197, 0.9)",
+                        "rgba(221, 75, 57,0.9)",
+                        "rgba(255, 206, 86, 0.8)",
+                        "rgba(75, 192, 192, 0.8)"},
+                data = data.Select(s => s.REGISTROS).ToArray()
+            });
+
+            chartDS.labels = data.Select(s => s.CANAL).ToArray();
+            chartDS.datasets = new List<Ent_BataClub_Chart_DataSet>() { ds };
+            return Json(new { chartDS = JsonConvert.SerializeObject(chartDS, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }) });
+        }
+
         public ActionResult updateChartData(string anio, int informe, int mes = 0, string fecini = null, string fecfin = null, string prom = "", string sup = "", string fecini_canal = null, string fecfin_canaL = null, string fecini_com = null, string fecfin_com = null, string fecini_com_cl = null, string fecfin_com_cl = null, string opcion_data_in = "FN")
         {
             Ent_BataClub_DashBoard dashboard = (Ent_BataClub_DashBoard)Session["_dashboardData"];

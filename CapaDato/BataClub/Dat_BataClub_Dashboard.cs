@@ -15,7 +15,7 @@ namespace CapaDato.BataClub
         public List<Ent_Bataclub_Canales_Excel> get_canales_excel(Int32 informe,DateTime fecini_canal,DateTime fecfin_canal)
         {
             List<Ent_Bataclub_Canales_Excel> list=null;
-            string sqlquery = "[USP_BATACLUB_DASHBOARD_COPY]";
+            string sqlquery = "[USP_BATACLUB_DASHBOARD_CANALES_FECHA]";
             try
             {
                 using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
@@ -24,7 +24,6 @@ namespace CapaDato.BataClub
                     {
                         cmd.CommandTimeout = 0;
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@INFORME", informe);
                         cmd.Parameters.AddWithValue("@fecha_ini_canal", fecini_canal);
                         cmd.Parameters.AddWithValue("@fecha_fin_canal", fecfin_canal);
                         cmd.Parameters.AddWithValue("@canal_excel", true);
@@ -234,20 +233,20 @@ namespace CapaDato.BataClub
                             //                              registros = Convert.ToDecimal(dr["REGISTROS"].ToString()),
                             //                          }).ToList();
                             //}
-                            if (new[] { 0, 3 }.Contains(informe))
-                            { 
-                                info.listCanles = (from DataRow dr in ds.Tables[informe == 0 ? 0 : 0].Rows
-                                                    select new Ent_BataClub_Dashboard_Canales()
-                                                    {
-                                                        CANAL = dr["CANAL"].ToString(),
-                                                        REGISTROS = Convert.ToDecimal(dr["REGISTROS"]),
-                                                        PORC = Convert.ToDecimal(dr["PORC"])
-                                                    }).ToList();
-                            }
+                                //if (new[] { 0, 3 }.Contains(informe))
+                                //{ 
+                                //    info.listCanles = (from DataRow dr in ds.Tables[informe == 0 ? 0 : 0].Rows
+                                //                        select new Ent_BataClub_Dashboard_Canales()
+                                //                        {
+                                //                            CANAL = dr["CANAL"].ToString(),
+                                //                            REGISTROS = Convert.ToDecimal(dr["REGISTROS"]),
+                                //                            PORC = Convert.ToDecimal(dr["PORC"])
+                                //                        }).ToList();
+                                //}
                             DataTable dt_venta_bc = null;
                             if (new[] { 0, 4 }.Contains(informe))
                             { 
-                                dt_venta_bc = ds.Tables[(informe == 0 ? 1 : 0)];
+                                dt_venta_bc = ds.Tables[(informe == 0 ? 0 : 0)];
                                 info.dtventa_bataclub = dt_venta_bc;
                                 info.listMesParesSoles = (from dr in dt_venta_bc.AsEnumerable()// ds.Tables[(informe == 0 ? 5 : 0)].AsEnumerable()
                                                           group dr by
@@ -313,7 +312,7 @@ namespace CapaDato.BataClub
                             }
                             if (new[] { 0, 6 }.Contains(informe))
                             {
-                                info.listSupervisorTot = (from DataRow dr in ds.Tables[(informe == 0 ? 2 :  0)].Rows
+                                info.listSupervisorTot = (from DataRow dr in ds.Tables[(informe == 0 ? 1 :  0)].Rows
                                                           select new Ent_BataClub_DashBoard_Supervisor()
                                                           {
                                                               supervisor = dr["SUPERVISOR"].ToString(),
@@ -322,7 +321,7 @@ namespace CapaDato.BataClub
                                                               consumido = Convert.ToInt32(dr["CONSUMIDO"].ToString()),
                                                               bataclub = Convert.ToInt32(dr["MIEM_BATACLUB"].ToString()),
                                                           }).ToList();
-                                info.listTiendasSupervTot = (from DataRow dr in ds.Tables[(informe == 0 ? 3 : 1)].Rows
+                                info.listTiendasSupervTot = (from DataRow dr in ds.Tables[(informe == 0 ? 2 : 1)].Rows
                                                           select new Ent_BataClub_DashBoard_TiendasSupervisor()
                                                           {
                                                               supervisor = dr["SUPERVISOR"].ToString(),
@@ -335,7 +334,7 @@ namespace CapaDato.BataClub
                             }
                             if (new[] { 0,7 }.Contains(informe))
                             {
-                                info.listComprasTot = (from DataRow dr in ds.Tables[(informe == 0 ? 4 :0)].Rows
+                                info.listComprasTot = (from DataRow dr in ds.Tables[(informe == 0 ? 3 :0)].Rows
                                                     group dr by
                                                     new
                                                     {
@@ -350,7 +349,7 @@ namespace CapaDato.BataClub
 
                                                     }).ToList();
 
-                            info.listTipoComprasTot= (from DataRow dr in ds.Tables[(informe == 0 ? 4 :  0)].Rows
+                            info.listTipoComprasTot= (from DataRow dr in ds.Tables[(informe == 0 ? 3 :  0)].Rows
                                                       select new Ent_BataClub_DashBoard_Tipo_Compras()
                                                       {
                                                           transac = Convert.ToInt32(dr["TRANSAC"]),
@@ -362,7 +361,7 @@ namespace CapaDato.BataClub
 
                             if (new[] { 0, 12 }.Contains(informe))
                             {
-                                info.listComprasCliTot = (from DataRow dr in ds.Tables[(informe == 0 ? 5 : 0)].Rows
+                                info.listComprasCliTot = (from DataRow dr in ds.Tables[(informe == 0 ? 4 : 0)].Rows
                                                              select new Ent_BataClub_DashBoard_Compras_Cliente()
                                                              {                                                                 
                                                                  com_des = dr["COMP_DES"].ToString(),
@@ -371,7 +370,7 @@ namespace CapaDato.BataClub
                             }
                             if (new[] { 0, 13 }.Contains(informe))
                             {
-                                info.listincompletos= (from DataRow dr in ds.Tables[(informe == 0 ? 6 : 0)].Rows
+                                info.listincompletos= (from DataRow dr in ds.Tables[(informe == 0 ? 5 : 0)].Rows
                                                           select new Ent_BataClub_Dashboard_Datos_Incompletos()
                                                           {
                                                               campo = dr["CAMPO"].ToString(),
@@ -550,6 +549,93 @@ namespace CapaDato.BataClub
                                         PORC_SOLES_BATA = Convert.ToDecimal(dr["PORC_SOLES_BATA"]),
                                         PORC_PARES_BATA = Convert.ToDecimal(dr["PORC_PARES_BATA"]),
                                     }).FirstOrDefault();
+                        }
+                    }
+                    if (cn != null)
+                        if (cn.State == ConnectionState.Open) cn.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                info = null;
+            }
+            return info;
+        }
+        public List<Ent_BataClub_Dashboard_Canales> BATACLUB_DASHBOARD_CANALES_FECHA(string fechaini = null, string fechafin = null , bool excel = false)
+        {
+            string sqlquery = "USP_BATACLUB_DASHBOARD_CANALES_FECHA";
+            List<Ent_BataClub_Dashboard_Canales> info = null;
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+                    if (cn.State == 0) cn.Open();
+                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        if (fechaini != null && fechafin != null)
+                        {
+                            cmd.Parameters.AddWithValue("@fecha_ini_canal", Convert.ToDateTime(fechaini));
+                            cmd.Parameters.AddWithValue("@fecha_fin_canal", Convert.ToDateTime(fechafin));
+                        }
+                        cmd.Parameters.AddWithValue("@canal_excel", excel);
+                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                        {
+                            DataTable dt = new DataTable();
+                            da.Fill(dt);
+                            info = new List<Ent_BataClub_Dashboard_Canales>();
+                            info = (from DataRow dr in dt.Rows
+                                    select new Ent_BataClub_Dashboard_Canales()
+                                    {
+                                        CANAL = Convert.ToString(dr["CANAL"]),
+                                        REGISTROS = Convert.ToDecimal(dr["REGISTROS"]),
+                                        PORC = Convert.ToDecimal(dr["PORC"]),
+                                    }).ToList();
+                        }
+                    }
+                    if (cn != null)
+                        if (cn.State == ConnectionState.Open) cn.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                info = null;
+            }
+            return info;
+        }
+        public List<Ent_BataClub_Dashboard_PSPM> BATACLUB_DASHBOARD_PARES_SOLES_MES(string anio)
+        {
+            string sqlquery = "USP_BATACLUB_DASHBOARD_PARES_SOLES_MES";
+            List<Ent_BataClub_Dashboard_PSPM> info = null;
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+                    if (cn.State == 0) cn.Open();
+                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@ANIO", anio);
+                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                        {
+                            DataTable dt = new DataTable();
+                            da.Fill(dt);
+                            info = new List<Ent_BataClub_Dashboard_PSPM>();
+                            info = (from DataRow dr in dt.Rows
+                                    select new Ent_BataClub_Dashboard_PSPM()
+                                    {
+                                        COD_ENTID = Convert.ToString(dr["COD_ENTID"]),
+                                        TIENDA = Convert.ToString(dr["TIENDA"]),
+                                        ANIO = Convert.ToString(dr["ANIO"]),
+                                        MES = Convert.ToString(dr["MES"]),
+                                        MES_STR = Convert.ToString(dr["MES_STR"]),
+                                        PARES = Convert.ToDecimal(dr["PARES"]),
+                                        SOLES = Convert.ToDecimal(dr["SOLES"]),
+                                        PROMOCION = Convert.ToString(dr["PROMOCION"]),
+                                    }).ToList();                           
+                            
                         }
                     }
                     if (cn != null)

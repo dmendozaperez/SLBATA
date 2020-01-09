@@ -158,4 +158,17 @@ namespace CapaEntidad.BataClub
         public decimal PORC_PARES_BATA     {get;set;}
         public decimal PORC_SOLES_BATA { get; set; }
     }
+
+    public class Ent_BataClub_Dashboard_PSPM
+    {
+        /* Pares, soles , promoicion,meses */
+        public string COD_ENTID { get; set; }
+        public string TIENDA { get; set; }
+        public string ANIO { get; set; }
+        public string MES { get; set; }
+        public string MES_STR { get; set; }
+        public decimal PARES { get; set; }
+        public decimal SOLES { get; set; }
+        public string PROMOCION { get; set; }
+    }
 }

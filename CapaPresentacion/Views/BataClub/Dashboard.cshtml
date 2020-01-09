@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "BataClub - Dashboard";
     //ViewBag.chartDS = JsonConvert.SerializeObject(ViewBag.chartDS, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-    ViewBag.chartDonut = JsonConvert.SerializeObject(ViewBag.chartDonut, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+    //ViewBag.chartDonut = JsonConvert.SerializeObject(ViewBag.chartDonut, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
     ViewBag.chartMesParesSoles = JsonConvert.SerializeObject(ViewBag.chartMesParesSoles, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
     ViewBag.promsPS = JsonConvert.SerializeObject(ViewBag.promsPS, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
     //ViewBag.totalesGeneros = JsonConvert.SerializeObject(ViewBag.totalesGeneros, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
@@ -23,9 +23,11 @@
         overflow: hidden;
         width: 100%;
     }
-    .chart svg, .chart canvas {
-        width: 100% !important;
-    }
+
+        .chart svg, .chart canvas {
+            width: 100% !important;
+        }
+
     .col-xs-5ths,
     .col-sm-5ths,
     .col-md-5ths,
@@ -61,51 +63,60 @@
             float: left;
         }
     }
+
     .my-custom-scrollbar {
         position: relative;
         height: 200px;
         overflow: auto;
     }
+
     .table-wrapper-scroll-y {
         display: block;
     }
-    .bg-soles{
+
+    .bg-soles {
         background-color: #d7f04d !important;
         color: #464646 !important;
     }
-    .bg-pares{
+
+    .bg-pares {
         background-color: #a06457 !important;
         color: #fff !important;
     }
-    .bg-registros{
+
+    .bg-registros {
         background-color: #e6e6e6 !important;
         color: #444 !important;
     }
-    .bg-transac{
+
+    .bg-transac {
         background-color: #33b87b !important;
         color: #fff !important;
     }
-    .bg-bataclub{
+
+    .bg-bataclub {
         background-color: #E66565 !important;
         color: #fff !important;
     }
-    .bg-consumido{
+
+    .bg-consumido {
         background-color: #f39c12 !important;
-        color: #fff  !important;
+        color: #fff !important;
     }
 
     .table td.text {
-         max-width: 177px;
+        max-width: 177px;
     }
-    .table td.text span {
-       
-    }
+
+        .table td.text span {
+        }
+
     .modal-body {
         max-height: calc(100vh - 212px);
         overflow-y: auto;
     }
 </style>
-<link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />  
+<link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />
 <link href="~/Content/magic-check.css" rel="stylesheet" />
 <section class="content">
     <!-- Info boxes -->
@@ -140,7 +151,7 @@
                     <span class="info-box-text">CLIENTES</span>
                     <span class="info-box-number" id="total_miembros">@((ViewBag.general.MIEMBROS + ViewBag.general.REGISTROS).ToString("N0"))</span>
                     @*<p>Registros:&nbsp;&nbsp;<small>@ViewBag.general.REGISTROS.ToString("N0")</small></p>
-                    <p>Miembros:&nbsp;&nbsp;<small>@ViewBag.general.MIEMBROS.ToString("N0")</small></p>*@
+                        <p>Miembros:&nbsp;&nbsp;<small>@ViewBag.general.MIEMBROS.ToString("N0")</small></p>*@
                 </div>
                 <!-- /.info-box-content -->
             </div>
@@ -151,50 +162,50 @@
         <!-- fix for small devices only -->
         <div class="clearfix visible-sm-block"></div>
         @*<div class="col-sm-4 col-sm-6 col-xs-12">
-            <div class="info-box">
-                <span class="info-box-icon bg-yellow"><i class="fa fa-ticket"></i></span>
-                <div class="info-box-content">
-                    <span class="info-box-text">TRANSACCIONES</span>
-                    <span class="info-box-text">CUPONES</span>
-                    <span class="info-box-number" id="total_transacciones">@ViewBag.general.TRANSAC_CUPON.ToString("N0")</span>
+                <div class="info-box">
+                    <span class="info-box-icon bg-yellow"><i class="fa fa-ticket"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">TRANSACCIONES</span>
+                        <span class="info-box-text">CUPONES</span>
+                        <span class="info-box-number" id="total_transacciones">@ViewBag.general.TRANSAC_CUPON.ToString("N0")</span>
+                    </div>
+                    <!-- /.info-box-content -->
                 </div>
-                <!-- /.info-box-content -->
-            </div>  
-            <!-- /.info-box -->
-        </div>*@
+                <!-- /.info-box -->
+            </div>*@
         @*<div class="col-sm-4 col-sm-6 col-xs-12">
-            <div class="info-box">
-                <span class="info-box-icon bg-aqua"><i class="glyphicon glyphicon glyphicon-tags" ></i></span>
-                <div class="info-box-content">
-                    <span class="info-box-text">PARES</span>
-                    <span class="info-box-number" id="total_miembros">@ViewBag.general.PARES.ToString("N0")</span>
+                <div class="info-box">
+                    <span class="info-box-icon bg-aqua"><i class="glyphicon glyphicon glyphicon-tags" ></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">PARES</span>
+                        <span class="info-box-number" id="total_miembros">@ViewBag.general.PARES.ToString("N0")</span>
+                    </div>
+                    <!-- /.info-box-content -->
                 </div>
-                <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-        </div>*@
+                <!-- /.info-box -->
+            </div>*@
         @*<div class="col-sm-4 col-sm-6 col-xs-12">
-            <div class="info-box">
-                <span class="info-box-icon bg-green"><i class="fa fa-money"></i></span>
-                <div class="info-box-content">
-                    <span class="info-box-text">SOLES</span>
-                    <span class="info-box-number" id="total_miembros">@ViewBag.general.SOLES.ToString("N0")</span>
+                <div class="info-box">
+                    <span class="info-box-icon bg-green"><i class="fa fa-money"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">SOLES</span>
+                        <span class="info-box-number" id="total_miembros">@ViewBag.general.SOLES.ToString("N0")</span>
+                    </div>
+                    <!-- /.info-box-content -->
                 </div>
-                <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-        </div>*@
+                <!-- /.info-box -->
+            </div>*@
     </div>
     <!-- /.row -->
-    <div class="row">   
+    <div class="row">
         <div class="col-md-8">
             <div class="box">
                 <div class="box-header with-border">
-                        <i class="fa fa-bar-chart-o"></i>
-                        <h3 class="box-title">Clientes  x  Mes</h3>
-                    
+                    <i class="fa fa-bar-chart-o"></i>
+                    <h3 class="box-title">Clientes  x  Mes</h3>
+
                     <div class="box-tools pull-right" style="top: 3px;">
-                        @Html.DropDownList("anioIm", new SelectList(ViewBag.anios, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "form-control form-control-sm selectpicker", @id = "anioIm", @name = "anioIm" , @data_informe = 2 })
+                        @Html.DropDownList("anioIm", new SelectList(ViewBag.anios, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "form-control form-control-sm selectpicker", @id = "anioIm", @name = "anioIm", @data_informe = 2 })
                     </div>
                 </div>
                 <!-- /.box-header -->
@@ -257,17 +268,20 @@
                 <div class="box-header with-border">
                     <i class="fa fa-pie-chart"></i>
                     <h3 class="box-title">Canales x Fecha</h3>
-                    <button type="button" class="btn btn-primary btn-sm" title="Mostrar" id="btnMostrarCharBarcanal"><i class="fa fa-search"></i></button>
-                    <button type="button" class="btn btn-success btn-sm" title="Exportar a Excel" id="btnMostrarCharBarcanal_excel"><i class="glyphicon glyphicon-export">Exportar</i></button>
+                    <div class="box-tools pull-right" style="top: 3px;">
+                        <button type="button" class="btn btn-primary btn-sm" title="Mostrar" id="btnMostrarCharBarcanal"><i class="fa fa-search"></i></button>
+                        <button type="button" class="btn btn-success btn-sm" title="Exportar a Excel" id="btnMostrarCharBarcanal_excel"><i class="glyphicon glyphicon-export"></i>&nbsp;&nbsp;Exportar</button>
+                    </div>
                     @*<div class="box-tools pull-right" style="top: 3px;">
-                        @Html.DropDownList("anioC", new SelectList(ViewBag.anios, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "form-control form-control-sm selectpicker anio", @id = "anioC", @name = "anioC", @data_informe = 3 })
-                    </div>*@
+                            @Html.DropDownList("anioC", new SelectList(ViewBag.anios, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "form-control form-control-sm selectpicker anio", @id = "anioC", @name = "anioC", @data_informe = 3 })
+                        </div>*@
                 </div>
-                    <!-- /.box-header -->
-                    <div class="box-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-inline">
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-inline">
+                                <div class="col-md-6">
                                     <div class="form-group date">
                                         @*<label>Inicio: </label>&nbsp;&nbsp;*@
                                         <div class="input-group input-group-sm">
@@ -276,8 +290,10 @@
                                             </div>
                                             <input type="text" class="form-control pull-right" id="fechaIni_canal">
                                         </div>
-                                        
+
                                     </div>&nbsp;&nbsp;&nbsp;
+                                </div>
+                                <div class="col-md-6">
                                     <div class="form-group date">
                                         @*<label>Fin: </label>&nbsp;&nbsp;*@
                                         <div class="input-group input-group-sm">
@@ -286,32 +302,36 @@
                                             </div>
                                             <input type="text" class="form-control pull-right" id="fechaFin_canal">
                                         </div>
-                                    </div>                                    
-                                    @*<a href="@Url.Action("RegTraConTdaExcel","BataClub")" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-export"></i>&nbsp;&nbsp;Exportar</a>*@
+                                    </div>
                                 </div>
-                                
-
+                                @*<a href="@Url.Action("RegTraConTdaExcel","BataClub")" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-export"></i>&nbsp;&nbsp;Exportar</a>*@
                             </div>
+
+
                         </div>
-                        @*<div class="row">
+                    </div>
+                    @*<div class="row">
                             <div class="col-md-12">
                                 <button type="button" class="btn btn-primary btn-sm" title="Mostrar" id="btnMostrarCharBarcanal"><i class="fa fa-search"></i></button>
                                 <button type="button" class="btn btn-primary btn-sm" title="Exportar a Excel" id="btnMostrarCharBarcanal_excel"><i class="glyphicon glyphicon-export">Exportar</i></button>
                             </div>
                         </div>*@
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <p class="text-center text-bold" id="tituloCanalesChar">
-                                    </p>
-                                    <div class="chart-responsive">
-                                        <canvas id="canalChart" height="280"></canvas>
-                                    </div>
-                                    <!-- ./chart-responsive -->
-                                </div>
-                                <!-- /.col -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p class="text-center text-bold" id="tituloCanalesChar">
+                            </p>
+                            <div class="chart-responsive">
+                                <canvas id="canalChart" height="300"></canvas>
                             </div>
-                            <!-- /.row -->
-                        </div>               
+                            <!-- ./chart-responsive -->
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <div id="CxF-load" class="overlay hidden">
+                    <i class="fa fa-refresh fa-spin"></i>
+                </div>
             </div>
         </div>
     </div>
@@ -321,17 +341,17 @@
                 <div class="box-header with-border">
                     <i class="fa fa-bar-chart-o"></i>
                     <h3 class="box-title">Pares/Soles  x  Mes</h3>
-                    
+
                     <div class="box-tools pull-right" style="top: 3px;">
-                        
-                        @Html.DropDownList("anioPS", new SelectList(ViewBag.anios, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "form-control form-control-sm selectpicker anio", @id = "anioPS", @name = "anioPS", @data_informe = 4 })                        
+
+                        @Html.DropDownList("anioPS", new SelectList(ViewBag.anios, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "form-control form-control-sm selectpicker anio", @id = "anioPS", @name = "anioPS", @data_informe = 4 })
                     </div>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
                     <div class="row">
                         <div class="col-md-8">
-                            <p class="text-center"  id="tituloBarCharPS">
+                            <p class="text-center" id="tituloBarCharPS">
                             </p>
                             <div class="chart">
                                 <canvas id="barChartPS" style="height: 300px;"></canvas>
@@ -341,22 +361,22 @@
                         <div class="col-md-4">
                             <div class="row" style="margin-bottom:10px">
                                 <div class="col-sm-12">
-                                    <a href="@Url.Action("ParSolMesExcel","BataClub")" class="btn btn-success btn-sm pull-right" ><i class="glyphicon glyphicon-export"></i>&nbsp;&nbsp;Exportar</a>
-                                </div>                                
+                                    <a href="@Url.Action("ParSolMesExcel","BataClub")" class="btn btn-success btn-sm pull-right"><i class="glyphicon glyphicon-export"></i>&nbsp;&nbsp;Exportar</a>
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="table-wrapper-scroll-y my-custom-scrollbar" style="height:270px">
                                         <table id="promocionesDetalle" class="table table-hover"></table>
                                     </div>
-                                </div>                                
+                                </div>
                             </div>
                             <p id="totalesPromociones" class="pull-right" style="padding-right:15px; padding-top:7px"></p>
                         </div>
                     </div>
                     <!-- /.row -->
                 </div>
-                <!-- ./box-body -->               
+                <!-- ./box-body -->
             </div>
             <!-- /.box -->
         </div>
@@ -368,7 +388,7 @@
                     <i class="fa fa-bar-chart-o"></i>
                     <h3 class="box-title">Registros/Transacciones/Consumos  x  Supervisor/Tienda</h3>
 
-                    <div class="box-tools pull-right" style="top: 3px;">                        
+                    <div class="box-tools pull-right" style="top: 3px;">
                         @*@Html.DropDownList("anioPS", new SelectList(ViewBag.anios, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "form-control form-control-sm selectpicker anio", @id = "anioPS", @name = "anioPS", @data_informe = 4 })*@
 
                     </div>
@@ -396,7 +416,7 @@
                                         <input type="text" class="form-control pull-right" id="fechaFin">
                                     </div>
                                 </div>&nbsp;&nbsp;&nbsp;
-                                <button type="button" class="btn btn-primary btn-sm" title="Mostrar" id="btnMostrarCharBarSup" ><i class="fa fa-search"></i></button>
+                                <button type="button" class="btn btn-primary btn-sm" title="Mostrar" id="btnMostrarCharBarSup"><i class="fa fa-search"></i></button>
                                 <a href="@Url.Action("RegTraConTdaExcel","BataClub")" class="btn btn-success btn-sm pull-right"><i class="glyphicon glyphicon-export"></i>&nbsp;&nbsp;Exportar</a>
                             </div>
 
@@ -490,7 +510,7 @@
             </div>
             <!-- /.box -->
         </div>
-    </div>  
+    </div>
     <div class="row">
         <div class="col-md-8">
             <div class="box">
@@ -506,7 +526,7 @@
                 <!-- /.box-header -->
                 <div class="box-body">
                     <div class="row">
-                        <div class="col-md-9">                          
+                        <div class="col-md-9">
                             <div class="form-inline">
                                 <div class="form-group date">
                                     <label>Inicio: </label>&nbsp;&nbsp;
@@ -546,16 +566,16 @@
                                 <canvas id="Chart_compras_CL" height="300"></canvas>
                             </div>
                             @*<div class="chart">
-                                <canvas id="barChart_com" style="height: 290px;"></canvas>
-                            </div>*@
+                                    <canvas id="barChart_com" style="height: 290px;"></canvas>
+                                </div>*@
                             <!-- /.chart-responsive -->
                         </div>
                         @*<div class="col-md-4">
-                            <div class="table-wrapper-scroll-y my-custom-scrollbar" style="height:320px">
-                                <table id="ComprasDetalle" class="table table-hover"></table>
-                            </div>
-                            <p id="totalesCompras" class="pull-right" style="padding-right:15px; padding-top:7px"></p>
-                        </div>*@
+                                <div class="table-wrapper-scroll-y my-custom-scrollbar" style="height:320px">
+                                    <table id="ComprasDetalle" class="table table-hover"></table>
+                                </div>
+                                <p id="totalesCompras" class="pull-right" style="padding-right:15px; padding-top:7px"></p>
+                            </div>*@
                     </div>
                     <!-- /.row -->
                 </div>
@@ -569,19 +589,19 @@
                     <i class="fa fa-pie-chart"></i>
                     <h3 class="box-title">Clientes Datos Incompletos</h3>
                     @*<button type="button" class="btn btn-primary btn-sm" title="Mostrar" id="btnMostrarCharBarcanal"><i class="fa fa-search"></i></button>*@
-                    @*<button type="button" class="btn btn-success btn-sm" title="Exportar a Excel" id="btnMostrarCharBarcanal_excel"><i class="glyphicon glyphicon-export">Exportar</i></button>*@                 
+                    @*<button type="button" class="btn btn-success btn-sm" title="Exportar a Excel" id="btnMostrarCharBarcanal_excel"><i class="glyphicon glyphicon-export">Exportar</i></button>*@
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
                     <div class="row">
                         <div class="col-md-8">
-                            <div class="form-group">                              
+                            <div class="form-group">
                                 <div>
                                     <input class="magic-radio" type="radio" name="radio" id="rdb_fn" checked>
                                     <label for="rdb_fn"> Fecha de Nacimiento</label>
-                                    
+
                                 </div>
-                                @*<button type="button" class="btn btn-success btn-sm" title="Exportar a Excel" id="btnMostrarCharBarcanal_excel"><i class="glyphicon glyphicon-export">Exportar</i></button>*@                 
+                                @*<button type="button" class="btn btn-success btn-sm" title="Exportar a Excel" id="btnMostrarCharBarcanal_excel"><i class="glyphicon glyphicon-export">Exportar</i></button>*@
                                 <div>
                                     <input class="magic-radio" type="radio" name="radio" id="rdb_gen">
                                     <label for="rdb_gen">Genero</label>
@@ -590,15 +610,15 @@
                                     <input class="magic-radio" type="radio" name="radio" id="rdb_ubi">
                                     <label for="rdb_ubi">Ubicacion</label>
                                 </div>
-                               
+
 
                             </div>
-                            
+
                         </div>
                         <div class="col-md-2">
-                            <button type="button" class="btn btn-success btn-sm" title="Exportar a Excel" id="btnDataIncom_excel"><i class="glyphicon glyphicon-export">Exportar</i></button>                 
+                            <button type="button" class="btn btn-success btn-sm" title="Exportar a Excel" id="btnDataIncom_excel"><i class="glyphicon glyphicon-export">Exportar</i></button>
                         </div>
-                    </div>                  
+                    </div>
                     <div class="row">
                         <div class="col-md-12">
                             <p class="text-center text-bold" id="tituloCanalesChar">
@@ -614,69 +634,69 @@
                 </div>
             </div>
         </div>
-    </div>  
+    </div>
     <strong class="text-red"></strong>
 
     <div class="row">
         <div class="col-md-8">
-          
-                <div class="box">
-                    <div class="box-header with-border">
-                        <i class="fa fa-bar-chart-o"></i>
-                        <h3 class="box-title">Pares/Soles x Marca</h3>
-                        <div class="box-tools pull-right" style="top: 3px;">
-                            @*@Html.DropDownList("anioPS", new SelectList(ViewBag.anios, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "form-control form-control-sm selectpicker anio", @id = "anioPS", @name = "anioPS", @data_informe = 4 })*@
 
-                        </div>
-                    </div>
-                    <!-- /.box-header -->
-                    <div class="box-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-inline">
-                                    <div class="form-group date">
-                                        <label>Inicio: </label>&nbsp;&nbsp;
-                                        <div class="input-group input-group-sm">
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-calendar"></i>
-                                            </div>
-                                            <input type="text" class="form-control pull-right" id="fechaIniPSM">
-                                        </div>
-                                    </div>&nbsp;&nbsp;&nbsp;
-                                    <div class="form-group date">
-                                        <label>Fin: </label>&nbsp;&nbsp;
-                                        <div class="input-group input-group-sm">
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-calendar"></i>
-                                            </div>
-                                            <input type="text" class="form-control pull-right" id="fechaFinPSM">
-                                        </div>
-                                    </div>&nbsp;&nbsp;&nbsp;
-                                    <button type="button" class="btn btn-primary btn-sm" title="Mostrar" id="btnMostrarCharBarPSM"><i class="fa fa-search"></i></button>
-                                    @*<a href="@Url.Action("RegTraConTdaExcel","BataClub")" class="btn btn-success btn-sm pull-right"><i class="glyphicon glyphicon-export"></i>&nbsp;&nbsp;Exportar</a>*@
-                                </div>
+            <div class="box">
+                <div class="box-header with-border">
+                    <i class="fa fa-bar-chart-o"></i>
+                    <h3 class="box-title">Pares/Soles x Marca</h3>
+                    <div class="box-tools pull-right" style="top: 3px;">
+                        @*@Html.DropDownList("anioPS", new SelectList(ViewBag.anios, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "form-control form-control-sm selectpicker anio", @id = "anioPS", @name = "anioPS", @data_informe = 4 })*@
 
-                            </div>
-                        </div>
-                        <br />
-                        <div class="row">
-                            <div class="col-md-12">
-                                <p class="text-center" id="tituloBarCharPSM">
-                                </p>
-                                <div class="chart">
-                                    <canvas id="barChartPSM" style="height: 290px;"></canvas>
-                                </div>
-                                <!-- /.chart-responsive -->
-                            </div>
-                        </div>
-                        <!-- /.row -->
-                    </div>
-                    <!-- ./box-body -->
-                    <div id="PSM-load" class="overlay hidden">
-                        <i class="fa fa-refresh fa-spin"></i>
                     </div>
                 </div>
-                <!-- /.box -->
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-inline">
+                                <div class="form-group date">
+                                    <label>Inicio: </label>&nbsp;&nbsp;
+                                    <div class="input-group input-group-sm">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input type="text" class="form-control pull-right" id="fechaIniPSM">
+                                    </div>
+                                </div>&nbsp;&nbsp;&nbsp;
+                                <div class="form-group date">
+                                    <label>Fin: </label>&nbsp;&nbsp;
+                                    <div class="input-group input-group-sm">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input type="text" class="form-control pull-right" id="fechaFinPSM">
+                                    </div>
+                                </div>&nbsp;&nbsp;&nbsp;
+                                <button type="button" class="btn btn-primary btn-sm" title="Mostrar" id="btnMostrarCharBarPSM"><i class="fa fa-search"></i></button>
+                                @*<a href="@Url.Action("RegTraConTdaExcel","BataClub")" class="btn btn-success btn-sm pull-right"><i class="glyphicon glyphicon-export"></i>&nbsp;&nbsp;Exportar</a>*@
+                            </div>
+
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p class="text-center" id="tituloBarCharPSM">
+                            </p>
+                            <div class="chart">
+                                <canvas id="barChartPSM" style="height: 290px;"></canvas>
+                            </div>
+                            <!-- /.chart-responsive -->
+                        </div>
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- ./box-body -->
+                <div id="PSM-load" class="overlay hidden">
+                    <i class="fa fa-refresh fa-spin"></i>
+                </div>
+            </div>
+            <!-- /.box -->
         </div>
         <div class="col-md-4">
             <div class="box box-default">
@@ -728,7 +748,7 @@
                         <!-- /.col -->
                     </div>
                     <!-- /.row -->
-                    
+
                 </div>
                 <div id="PPS-load" class="overlay hidden">
                     <i class="fa fa-refresh fa-spin"></i>
@@ -750,15 +770,15 @@
                     <div class="col-md-12">
                         @*<p style="font-size:medium" class="text-primary modal-title" id="myModalLabel"><strong class="text-danger" id="desc_orce_art"></strong></p>*@
                         <p style="font-size:medium" class="text-primary modal-title" id="myModalLabel"><b>Lista de Tiendas</b></p>
-                        <p id="tituloPromDetTda" class="text-bold text-danger" ></p>
+                        <p id="tituloPromDetTda" class="text-bold text-danger"></p>
                     </div>
                     @*<div class="col-md-6 text-right">
-                        <span style="font-size:medium" class="label label-danger" id="maAtributoArt"></span>
-                    </div>*@
+                            <span style="font-size:medium" class="label label-danger" id="maAtributoArt"></span>
+                        </div>*@
                 </div>
             </div>
             <div style="font-size:small" class="modal-body" id="listTdaProm">
-                
+
             </div>
             <div class="modal-footer">
                 <p id="totalesPromocionesDetTda"></p>
@@ -780,7 +800,7 @@
     var myBarChartTR;
     var myBarChartCO;
     var myChartComCL;
-    
+
     var cargando = '<div class="overlay">\
                         <i class="fa fa-refresh fa-spin"></i>\
                     </div>'
@@ -849,7 +869,7 @@
         } else if (informe == 6) {
             myBarChartTR = _chart;
         }
-        else if (informe=7){
+        else if (informe = 7) {
             myBarChartCO = _chart;
         }
     }
@@ -877,7 +897,7 @@
     //    var total = sum(data.datasets[0].data);
     //    $("#tituloComprasChar").html("Total: " + total.toLocaleString('es-PE'));
     //}
-    function getChartCanales(canvas , data) {
+    function getChartCanales(canvas, data) {
         myDoughnutChart = new Chart(canvas, {
             type: 'doughnut',
             data: data,
@@ -941,7 +961,7 @@
     }
 
     function getChartMensualRegMiem(canvas, data, totalesGenero) {
-        getChartInformeMensual(2,canvas, data);
+        getChartInformeMensual(2, canvas, data);
         var totRegistrados = sum(data.datasets[0].data);
         var totMiembros = sum(data.datasets[1].data);
         var title = '<strong class="text-light-blue">R: ' + totRegistrados.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;&nbsp;&nbsp;' +
@@ -999,7 +1019,7 @@
             totaltdaConSup += parseFloat(tiendas[i].consumido);
             totaltdaBASup += parseFloat(tiendas[i].bataclub);
         }
-        var title2 = '<strong class="pull-left">#: ' + tiendas.length + '</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+
+        var title2 = '<strong class="pull-left">#: ' + tiendas.length + '</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
         '<strong style="color: rgb(42, 152, 102)">T: ' + totaltdaTranSup.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;' +
             '<strong style="color: rgb(90, 90, 90)">R: ' + totaltdaRegSup.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;&nbsp;&nbsp;' +
                 '<strong style="color: rgb(243, 156, 18)">C: ' + totaltdaConSup.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;' +
@@ -1016,35 +1036,35 @@
             $("#tituloBarCharCompra").html(title);
         }
 
-            var tbody = '<tr><th class="col-md-9">Prom.</th><th class="col-md-1">Monto</th><th class="col-md-1">Transac</th></tr>';
-            var ultimoCom = "";
-            for (var i = 0; i < tipo.length; i++) {
-                var com = tipo[i].tipo;
-                if (com != ultimoCom) {
-                    tbody += '<tr><th colspan="3">' + com + '</th></tr>';
-                    ultimoCom = com;
-                }
-                tbody += '<tr><td class="text"><span>' + tipo[i].prom + '</span></td><td><span class="badge bg-transac">' + tipo[i].monto + '</span></td><td><span class="badge bg-registros">' + tipo[i].transac + '</span></td></tr>'
+        var tbody = '<tr><th class="col-md-9">Prom.</th><th class="col-md-1">Monto</th><th class="col-md-1">Transac</th></tr>';
+        var ultimoCom = "";
+        for (var i = 0; i < tipo.length; i++) {
+            var com = tipo[i].tipo;
+            if (com != ultimoCom) {
+                tbody += '<tr><th colspan="3">' + com + '</th></tr>';
+                ultimoCom = com;
             }
-            $("#ComprasDetalle").html(tbody);
+            tbody += '<tr><td class="text"><span>' + tipo[i].prom + '</span></td><td><span class="badge bg-transac">' + tipo[i].monto + '</span></td><td><span class="badge bg-registros">' + tipo[i].transac + '</span></td></tr>'
+        }
+        $("#ComprasDetalle").html(tbody);
 
-            var totaltipoReg = 0;
-            var totaltipoMonto = 0;
+        var totaltipoReg = 0;
+        var totaltipoMonto = 0;
 
-            for (var i = 0; i < tipo.length; i++) {
-                totaltipoReg += parseFloat(tipo[i].transac);
-                totaltipoMonto += parseFloat(tipo[i].monto);
-            }
-            var title2 = '<strong class="pull-left">#: ' + tipo.length + '</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
-            '<strong style="color: rgb(42, 152, 102)">M: ' + totaltipoMonto.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;' +
-                '<strong style="color: rgb(90, 90, 90)">T: ' + totaltipoReg.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;'
-                    //'<strong style="color: rgb(243, 156, 18)">C: ' + totaltdaConSup.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;' +
-                    //'<strong style="color: rgb(230, 101, 101)">B: ' + totaltdaBASup.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;'
-            $("#totalesCompras").html(title2);
+        for (var i = 0; i < tipo.length; i++) {
+            totaltipoReg += parseFloat(tipo[i].transac);
+            totaltipoMonto += parseFloat(tipo[i].monto);
+        }
+        var title2 = '<strong class="pull-left">#: ' + tipo.length + '</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+        '<strong style="color: rgb(42, 152, 102)">M: ' + totaltipoMonto.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;' +
+            '<strong style="color: rgb(90, 90, 90)">T: ' + totaltipoReg.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;'
+        //'<strong style="color: rgb(243, 156, 18)">C: ' + totaltdaConSup.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;' +
+        //'<strong style="color: rgb(230, 101, 101)">B: ' + totaltdaBASup.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;'
+        $("#totalesCompras").html(title2);
 
 
     }
-    function getChartMensualPS(canvas, data, proms, mes , anio) {
+    function getChartMensualPS(canvas, data, proms, mes, anio) {
         if (data != null) {
             getChartInformeMensual(4, canvas, data);
             var totalPares = sum(data.datasets[0].data).toLocaleString('es-PE');
@@ -1079,7 +1099,7 @@
         //totales pendientes
     }
 
-    
+
 
 
     /** Ini Pares/soles x Marca **/
@@ -1088,7 +1108,7 @@
         $.ajax({
             type: "POST",
             url: '@Url.Action("GetChartPSM", "BataClub")',
-            data: { fechaini: $('#fechaIniPSM').val(), fechafin : $('#fechaFinPSM').val()},
+            data: { fechaini: $('#fechaIniPSM').val(), fechafin: $('#fechaFinPSM').val() },
             success: function (data) {
                 //quitar mensaje cargando
                 // ini chart
@@ -1162,7 +1182,7 @@
         $.ajax({
             type: "POST",
             url: '@Url.Action("GetChartCxM", "BataClub")',
-            data: { anio: $('#anioIm').val()},
+            data: { anio: $('#anioIm').val() },
             success: function (data) {
                 //quitar mensaje cargando
                 // ini chart
@@ -1235,7 +1255,7 @@
                         $("#totalOtro").html(totalesGenero[i].registros.toLocaleString('es-PE'))
                     }
                 }
-               
+
                 $("#CxM-load").addClass("hidden");
 
                 // fin chart
@@ -1247,7 +1267,7 @@
             }
         });
     }
-
+    /** Ini Porcentaje pares Soles **/
     function GetChartPPS() {
         $("#PPS-load").removeClass("hidden");
         $.ajax({
@@ -1281,15 +1301,15 @@
                                     //}
                                 },
                                 label: function (tooltipItem, data) {
-                                    var label =  data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index] || '';
-                                    return data.labels[tooltipItem.index] +  ": " + label + ' %';
+                                    var label = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index] || '';
+                                    return data.labels[tooltipItem.index] + ": " + label + ' %';
                                 }
                             }
                         },
                         maintainAspectRatio: false,
                     }
                 });
-               
+
                 $("#PPS-load").addClass("hidden");
                 // fin chart
             },
@@ -1301,8 +1321,55 @@
         });
     }
 
+    /** Ini Canales x FEcha **/
+    function GetChartCxF(excel) {
+        $("#CxF-load").removeClass("hidden");
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetChartCxF", "BataClub")',
+            data: { fechaini: $('#fechaIni_canal').val(), fechafin: $('#fechaFin_canal').val() , excel : excel },
+            success: function (data) {
+                // ini chart
+                var _data = JSON.parse(data.chartDS);
+                try {
+                    _cCxF.destroy();//
+                } catch (e) { }
+
+                _cCxF = new Chart(document.getElementById("canalChart"), {
+                    type: 'doughnut',
+                    data: _data,
+                    options: {
+                        legend: {
+                            position: 'bottom'
+                        },
+                        tooltips: {
+                            backgroundColor: 'rgba(237, 237, 237,0.8)',
+                            bodyFontColor: 'rgba(46, 46, 46, 0.9)',
+                            borderWidth: 1,
+                            borderColor: 'rgba(158, 158, 158, 1)',
+                            titleFontColor: 'rgba(73, 73, 73,0.8)',                            
+                        },
+                        maintainAspectRatio: false,
+                    }
+                });
+                var total = sum(_data.datasets[0].data);
+                $("#tituloCanalesChar").html("Total: " + total.toLocaleString('es-PE'));
+
+                $("#CxF-load").addClass("hidden");
+                // fin chart
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                $("#CxF-load").addClass("hidden");
+                var error = eval("(" + XMLHttpRequest.responseText + ")");
+                swal(error.Message);
+            }
+        });
+    }
+
+
+
     $(document).ready(function () {
-        
+
         var date = new Date();
         var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
         var gSite = '';
@@ -1382,16 +1449,22 @@
             maxDate: new Date(),
         }).datepicker("setDate", "0");
 
-        /** Ini Pares/soles x Marca **/
-        GetChartPSM();
-        $("#btnMostrarCharBarPSM").click(function () {
-            GetChartPSM();
-        });
-
         /** Ini Clientes x Mes **/
         GetChartCxM();
         $("#anioIm").change(function () {
             GetChartCxM();
+        });
+
+        /** Ini Canales x Fecha **/
+        GetChartCxF(false);
+        $("#btnMostrarCharBarcanal").click(function () {
+            GetChartCxF(false);
+        });
+
+        /** Ini Pares/soles x Marca **/
+        GetChartPSM();
+        $("#btnMostrarCharBarPSM").click(function () {
+            GetChartPSM();
         });
 
         /** Ini Porcentaje Pares Soles **/
@@ -1404,18 +1477,18 @@
         $("#btnMostrarCharBarSup").click(function () {
             updateCharts(0, 6, null, $('#fechaIni').val(), $('#fechaFin').val());
         });
-        $("#btnMostrarCharBarcanal").click(function () {
-            updateCharts(0, 3, null,null,null,null, $('#fechaIni_canal').val(), $('#fechaFin_canal').val());
-        });
+        //$("#btnMostrarCharBarcanal").click(function () {
+        //    updateCharts(0, 3, null, null, null, null, $('#fechaIni_canal').val(), $('#fechaFin_canal').val());
+        //});
         $("#btnMostrarCharBarcanal_excel").click(function () {
             upload_canales_rango($('#fechaIni_canal').val(), $('#fechaFin_canal').val());
         });
         $("#btnMostrarCharBarCom").click(function () {
-            updateCharts(0, 10, null, null, null, null,null,null, $('#fechaIni_com').val(), $('#fechaFin_com').val());
+            updateCharts(0, 10, null, null, null, null, null, null, $('#fechaIni_com').val(), $('#fechaFin_com').val());
         });
 
         $("#btnMostrarCharBarCom_CL").click(function () {
-            updateCharts(0,12, null, null, null, null, null, null, null, null, $('#fechaIni_com_cl').val(), $('#fechaFin_com_cl').val());
+            updateCharts(0, 12, null, null, null, null, null, null, null, null, $('#fechaIni_com_cl').val(), $('#fechaFin_com_cl').val());
         });
 
         $("#btnMostrarCharBarCom_CL_excel").click(function () {
@@ -1424,7 +1497,7 @@
         $("#btnDataIncom_excel").click(function () {
             //alert('ok');
             if ($("#rdb_fn").is(':checked')) {
-                upload_data_incompleto('FN');                
+                upload_data_incompleto('FN');
             } else if ($("#rdb_gen").is(':checked')) {
                 upload_data_incompleto('GE');
             } else if ($("#rdb_ubi").is(':checked')) {
@@ -1434,7 +1507,7 @@
         //btnDataIncom_excel
 
         $("#rdb_fn").change(function () {
-            updateCharts(0, 13, null, null, null, null,null,null,null,null,null,null,'FN');
+            updateCharts(0, 13, null, null, null, null, null, null, null, null, null, null, 'FN');
             //alert('ok1');// upload_com_cl_rango($('#fechaIni_com_cl').val(), $('#fechaFin_com_cl').val());
         });
         $("#rdb_gen").change(function () {
@@ -1514,8 +1587,7 @@
             });
         }
         /*descargar archivo excel canales x rango de fecha*/
-        function upload_canales_rango(fecini_canal, fecfin_canal)
-        {
+        function upload_canales_rango(fecini_canal, fecfin_canal) {
             waitingDialog.show('Espere un momento por favor');
             var msg_titulo = 'Mensaje ';
             $.ajax({
@@ -1526,14 +1598,12 @@
                 success: function (data) {
                     var estado = data.estado;
                     var desmsg = data.desmsg;
-                    if (estado == "1")
-                    {
+                    if (estado == "1") {
 
                         window.location = '@Url.Action("ExportarCanalDetExcel")';
                         toastr.success(desmsg, msg_titulo);
                     }
-                    else
-                    {
+                    else {
                         toastr.error(desmsg, msg_titulo);
 
                     }
@@ -1548,10 +1618,10 @@
         }
 
         //getChartMensualRegMiem(document.getElementById('barChart'), JSON.parse('@Html.Raw(ViewBag.chartDS)'), JSON.parse('@Html.Raw(ViewBag.totalesGeneros)'));
-        getChartCanales(document.getElementById('canalChart'), JSON.parse('@Html.Raw(ViewBag.chartDonut)'));
+        //getChartCanales(document.getElementById('canalChart'), JSON.parse('@Html.Raw(ViewBag.chartDonut)'));
         getChartMensualPS(document.getElementById('barChartPS'), JSON.parse('@Html.Raw(ViewBag.chartMesParesSoles)'), JSON.parse('@Html.Raw(ViewBag.promsPS)'), null, $("#anioPS").val());
         getChartSuperv(document.getElementById('barChartSuperv'), JSON.parse('@Html.Raw(ViewBag.BarChartTranReg)'), JSON.parse('@Html.Raw(ViewBag.DetallesTiendaSuperv)'));
-       // getChartCompras(document.getElementById('ComprasChart'), JSON.parse('@Html.Raw(ViewBag.ChartCompras)'));
+        // getChartCompras(document.getElementById('ComprasChart'), JSON.parse('@Html.Raw(ViewBag.ChartCompras)'));
 
         getChartCompra_CL(document.getElementById('Chart_compras_CL'), JSON.parse('@Html.Raw(ViewBag.chartComCL)'));
 
@@ -1603,7 +1673,7 @@
                         url: '@Url.Action("updateChartData", "BataClub")',
                         data: { informe: 8, sup: myBarChartTR.chart.config.data.labels[activeIndex] },
                         success: function (data) {
-                            getChartSuperv(null, null,JSON.parse(data.tiendas)); //(JSON.parse('Html.Raw(ViewBag.DetallesTiendaSuperv)')).filter(w=>w.supervisor == myBarChartTR.chart.config.data.labels[activeIndex]));
+                            getChartSuperv(null, null, JSON.parse(data.tiendas)); //(JSON.parse('Html.Raw(ViewBag.DetallesTiendaSuperv)')).filter(w=>w.supervisor == myBarChartTR.chart.config.data.labels[activeIndex]));
                         },
                         error: function (XMLHttpRequest, textStatus, errorThrown) {
                             waitingDialog.hide();
@@ -1644,13 +1714,13 @@
         $(".anio").change(function () {
             var informe = $(this).attr("data-informe");
             var anio = "";
-                if (informe == 2) {
-                    anio = $("#anioIm").val()
-                } else if (informe == 3) {
-                    anio = $("#anioC").val()
-                } else if (informe == 4){
-                    anio = $("#anioPS").val()
-                }
+            if (informe == 2) {
+                anio = $("#anioIm").val()
+            } else if (informe == 3) {
+                anio = $("#anioC").val()
+            } else if (informe == 4) {
+                anio = $("#anioPS").val()
+            }
 
             updateCharts(anio, informe);
         });
@@ -1685,7 +1755,7 @@
                         "language": {
                             "url": "../Scripts/DataTables/Spanish.json"
                         },
-                        "order" : [2,"desc"]
+                        "order": [2, "desc"]
                     });
                     var title2 = '<strong class="pull-left">#: ' + data.promsDetPromTda.length + '</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong style="color: rgb(160, 100, 87)">P: ' + totPares.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;&nbsp;&nbsp;' +
                     '<strong style="color: rgb(104, 123, 0)">S/ ' + totSoles.toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;'
@@ -1720,14 +1790,14 @@
                         myChartPS.destroy();
                         getChartMensualPS(document.getElementById('barChartPS'), JSON.parse(data.result), data.promsPS, null, anio);
                     } else if (informe == 5) {
-                        getChartMensualPS(null, null, data.promsPS,mes,anio);
+                        getChartMensualPS(null, null, data.promsPS, mes, anio);
                     } else if (informe == 6) {
                         myBarChartTR.destroy();
-                        getChartSuperv(document.getElementById('barChartSuperv'), JSON.parse(data.result), data.tiendas );
+                        getChartSuperv(document.getElementById('barChartSuperv'), JSON.parse(data.result), data.tiendas);
                     } else if (informe == 8 || informe == 10) {
                         myBarChartCO.destroy();
                         getChartCompras(document.getElementById('barChart_com'), JSON.parse(data.result), data.tipo);
-                    } else if (informe == 12 ) {
+                    } else if (informe == 12) {
                         myChartComCL.destroy();
                         getChartCompra_CL(document.getElementById('Chart_compras_CL'), JSON.parse(data));
                     } else if (informe == 13) {
