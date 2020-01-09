@@ -146,4 +146,16 @@ namespace CapaEntidad.BataClub
         public decimal pares { get; set; }
         public decimal soles { get; set; }
     }
+    public class Ent_BataClub_Dashboard_CxM
+    {
+        public List<Ent_BataClub_DashBoard_Mensual> meses { get; set; }
+        public List<Ent_BataClub_Dashboard_Genero> genero { get; set; }
+    }
+    public class Ent_BataClub_Dashboard_PPS
+    {
+        public decimal PORC_PARES_BATACLUB {get;set;}
+        public decimal PORC_SOLES_BATACLUB {get;set;}
+        public decimal PORC_PARES_BATA     {get;set;}
+        public decimal PORC_SOLES_BATA { get; set; }
+    }
 }
