@@ -74,24 +74,34 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-2">
             <label for="dwCate">Semanas vta. a evaluar</label>
             <div class="form-group">
                 <div class="form-group">
-                    <input name="txtsemana" type="number" id="txtsemana" value="1" style="width:100%" autofocus class="form-control" />
+                    <input name="txtsemana" type="number" id="txtsemana" min="0" value="1" style="width:100%" autofocus class="form-control" />
                 </div>
             </div>
         </div>
 
-        <div class="col-sm-3">
-            <label for="dwCate">Stock Max.</label>
+        <div class="col-sm-2">
+            <label for="dwCate">Stock Min.</label>
             <div class="form-group">
                 <div class="form-group">
-                    <input name="txtpares" type="number" id="txtpares" value="1" style="width:100%" autofocus class="form-control" />
+                    <input name="txtStockMin" type="number" id="txtStockMin" min="0" value="1" style="width:100%" autofocus class="form-control" />
                 </div>
             </div>
         </div>
-        <div class="col-sm-3">
+
+        <div class="col-sm-2">
+            <label for="dwCate">Stock Max.</label>
+            <div class="form-group">
+                <div class="form-group">
+                    <input name="txtStockMax" type="number" id="txtStockMax" min="0" value="1" style="width:100%" autofocus class="form-control" />
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-2">
             <label for="dwCate">Estado</label>
             <div class="form-group">
                 <div class="form-group">
@@ -242,7 +252,8 @@
         var tda =  ($("#dwtda option:not(:selected)").length == 0 && $("#dwtda > option").length > 1 ? "0" : $('#dwtda').val()); // $('#dwtda').val();
         var cadena ="-1";
         var semana =  $('#txtsemana').val();
-        var strpares = $('#txtpares').val();
+        var stkSMin = $('#txtStockMin').val();
+        var stkSMax = $('#txtStockMax').val();
         var strestado = $('#txtEstado').val();
         var grupo = ($("#dwGrupo option:not(:selected)").length == 0 && $("#dwGrupo > option").length > 1 ? "0" : $('#dwGrupo').val());// $('#dwGrupo').val();
         var tipo = $('#dwTipo').val();
@@ -258,12 +269,13 @@
         if (grupo == '' || grupo == null) { grupo = '0' };
         if (cate == '' || cate == null) { cate = '0' };  
         if (semana == '' || semana == null) { semana = '0' };
-        if (strpares == '' || strpares == null) { strpares = '0' };
+        if (stkSMin == '' || stkSMin == null) { stkSMin = '0' };
+        if (stkSMax == '' || stkSMax == null) { stkSMax = '0' };
         if (tda == '' || tda == null) { tda = '0' };
         if(coddis != '-1'){ coddis = coddis.toString();}
         //if(tda != '-1'){ tda = tda.toString();}
 
-        var paresInt = parseInt(strpares);
+        var paresInt = parseInt(stkSMin);
         var semanaInt = parseInt(semana);
 
         grupo = grupo.toString();
@@ -278,7 +290,7 @@
                 url:TeamDetailPostBackURL,
                 dataType: 'json',
                 type: 'POST',
-                data: { cod_cadena: cadena, cod_dis:coddis , cod_tda: tda, nsemana: semana, maxpares: strpares, estado: strestado, grupo: grupo, categoria: cate, tipo: tipo, resumen:resumen },
+                data: { cod_cadena: cadena, cod_dis:coddis , cod_tda: tda, nsemana: semana, maxpares: stkSMax, estado: strestado, grupo: grupo, categoria: cate, tipo: tipo, resumen:resumen,minpares : stkSMin },
                 
                 success: function (data) {
                     //alert('ok');

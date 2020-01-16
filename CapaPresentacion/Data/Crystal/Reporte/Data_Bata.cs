@@ -13,7 +13,7 @@ namespace Data.Crystal.Reporte
 {
     public class Data_Bata
     {
-        public List<Models_Art_Sin_Mov> list_art_sin_mov(string cadena,string cod_dis, string tienda,Int32 nsemana,Int32 maxpares, string estado, string grupo, string categoria, string tipo)
+        public List<Models_Art_Sin_Mov> list_art_sin_mov(string cadena,string cod_dis, string tienda,Int32 nsemana,Int32 maxpares, string estado, string grupo, string categoria, string tipo , Int32 minpares)
         {
             string sqlquery = "USP_XSTORE_REPORTE_ART_SIN_MOVIMIENTOS";
             List<Models_Art_Sin_Mov> lista = null;
@@ -32,12 +32,13 @@ namespace Data.Crystal.Reporte
                             cmd.Parameters.AddWithValue("@cod_distri", cod_dis);
                             cmd.Parameters.AddWithValue("@codtda", tienda);
                             cmd.Parameters.AddWithValue("@nsemanas", nsemana);
-                            cmd.Parameters.AddWithValue("@nstock", maxpares);
+                            //cmd.Parameters.AddWithValue("@nstock", maxpares);
                             cmd.Parameters.AddWithValue("@estado", estado);
                             cmd.Parameters.AddWithValue("@Grupo", grupo);
                             cmd.Parameters.AddWithValue("@Categoria", categoria);
                             cmd.Parameters.AddWithValue("@Tipo", tipo);
-
+                            cmd.Parameters.AddWithValue("@nstockmin", minpares);
+                            cmd.Parameters.AddWithValue("@nstockmax", maxpares);
                             using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                             {
                                 dt = new DataTable();
@@ -46,17 +47,19 @@ namespace Data.Crystal.Reporte
                                 lista = (from DataRow dr in dt.Rows
                                          select new Models_Art_Sin_Mov()
                                          {
-                                             tiend=dr["tiend"].ToString(),
-                                             des_entid= dr["des_entid"].ToString(),
+                                             tiend = dr["tiend"].ToString(),
+                                             des_entid = dr["des_entid"].ToString(),
                                              store_name = dr["storename"].ToString(),
                                              semana_str = dr["semana_str"].ToString(),
                                              cate3 = dr["cate3"].ToString(),
                                              subc3 = dr["subc3"].ToString(),
                                              artic = dr["artic"].ToString(),
-                                             pplan =Convert.ToDecimal(dr["pplan"]),
-                                             pares =Convert.ToInt32(dr["pares"]),
-                                             stock =Convert.ToInt32(dr["stock"]),
-                                             DISTRITOS = dr["DISTRITOS"].ToString()
+                                             pplan = Convert.ToDecimal(dr["pplan"]),
+                                             pares = Convert.ToInt32(dr["pares"]),
+                                             stock = Convert.ToInt32(dr["stock"]),
+                                             DISTRITOS = dr["DISTRITOS"].ToString(),
+                                             ult_fec_ing = dr["fec_ingre"].ToString(),
+                                             pventa = (dr["pventa"] == DBNull.Value  ? 0 : Convert.ToDecimal(dr["pventa"])) ,
                                          }).ToList();
                             }
                         }

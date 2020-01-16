@@ -13,10 +13,12 @@ namespace Models.Crystal.Reporte
         public string store_name { get; set; }
         public string cate3 { get; set; }
         public string subc3 { get; set; }
-        public string artic { get; set; }
-        public Decimal pplan { get; set; }
+        public string artic { get; set; }        
+        public Decimal pplan { get; set; }        
         public Int32 pares { get; set; }
         public Int32 stock { get; set; }
-        public string DISTRITOS { get; set; }    
+        public string DISTRITOS { get; set; }
+        public string ult_fec_ing { get; set; }
+        public decimal pventa { get; set; }
     }
 }
