@@ -187,17 +187,18 @@ namespace Data.Crystal.Reporte
                                              cod_categ = dr["COD_CATEG"].ToString(),
                                              artic = dr["ARTIC"].ToString(),
                                              calid = dr["CALID"].ToString(),
-                                             pplanilla = Convert.ToDecimal(dr["PPLANILLA"]),
+                                             pplanilla = dr["PPLANILLA"] == DBNull.Value ? 0 : Convert.ToDecimal(dr["PPLANILLA"]),
                                              tip_obsol = dr["TIP_OBSOL"].ToString(),
                                              des_obsol = dr["DES_OBSOL"].ToString(),
-                                             stk = Convert.ToDecimal(dr["STK"]),
-                                             vtas4sem = Convert.ToInt32(dr["VTAS4SEM"]),
+                                             stk = dr["STK"] == DBNull.Value ? 0 : Convert.ToDecimal(dr["STK"]),
+                                             vtas4sem = dr["VTAS4SEM"] == DBNull.Value ? 0 : Convert.ToInt32(dr["VTAS4SEM"]),
+                                             pventa = dr["PVENTA"] == DBNull.Value ? 0 :  Convert.ToDecimal(dr["PVENTA"]),
                                          }).ToList();
                             }
                                                     
                         }
                     }
-                    catch 
+                    catch (Exception exc)
                     {
                         lista = null;
 

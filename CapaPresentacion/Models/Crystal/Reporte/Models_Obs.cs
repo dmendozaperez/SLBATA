@@ -20,6 +20,6 @@ namespace Models.Crystal.Reporte
         public string des_obsol { get; set; }
         public decimal stk { get; set; }
         public Decimal vtas4sem { get; set; }
-       
+        public decimal pventa { get; set; }       
     }
 }
