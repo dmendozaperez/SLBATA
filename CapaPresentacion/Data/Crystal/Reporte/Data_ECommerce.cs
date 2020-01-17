@@ -191,7 +191,7 @@ namespace Data.Crystal.Reporte
             return lista;
         }
         #region<agregando vista adinson>
-        public ReporteVentasEcommerce get_ecommerce_reporteventa(string cod_tda, string fecIni, string fecFin)
+        public ReporteVentasEcommerce get_ecommerce_reporteventa(string cod_tda, string fecIni, string fecFin,string tipo)
         {
             ReporteVentasEcommerce lista = null;
             List<Models_VentasEcommerce> lista1 = null;

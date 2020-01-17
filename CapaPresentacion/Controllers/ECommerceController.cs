@@ -375,7 +375,7 @@ namespace CapaPresentacion.Controllers
 
         #region<agregando vista adinson>
         [HttpPost] //VENTA_ECOMMERCE
-        public ActionResult ShowGenericReportTiendasEcommerceInNewWin(string fecIni, string FecFin)
+        public ActionResult ShowGenericReportTiendasEcommerceInNewWin(string fecIni, string FecFin, string tipo)
         {
 
             try
@@ -393,7 +393,7 @@ namespace CapaPresentacion.Controllers
                     CodTda = "-1";
                 }
 
-                ReporteVentasEcommerce ModeloRepVentaEcommerce = ec.get_ecommerce_reporteventa(CodTda, fecIni, FecFin);
+                ReporteVentasEcommerce ModeloRepVentaEcommerce = ec.get_ecommerce_reporteventa(CodTda, fecIni, FecFin, tipo);
 
                 HttpContext.Session["rptSource"] = ModeloRepVentaEcommerce.ListVentaEcommerce;
 
@@ -425,6 +425,8 @@ namespace CapaPresentacion.Controllers
 
         public ActionResult ReporteVentasEcommerce()
         {
+
+            string tipo = (Request.HttpMethod == "POST" ? Request.Params["tipo"] : "1,2,3");
             Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
 
             string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
@@ -436,8 +438,24 @@ namespace CapaPresentacion.Controllers
             }
             else
             {
-                return View();
+                ViewBag._selectTipos = SelectTipos((tipo == null ? " '',R,E" : tipo));
+
             }
+            return View();
+        }
+
+        private List<SelectListItem> SelectTipos(string value = null)
+        {
+            string[] _values = value.Split(',');
+            List<SelectListItem> list = new List<SelectListItem>();
+            list.Add(new SelectListItem() { Text = "TODOS", Value = "" });
+            list.Add(new SelectListItem() { Text = "RECOJO EN TIENDA", Value = "R" });
+            list.Add(new SelectListItem() { Text = "ENVÍO A DOMICILIO", Value = "E" });
+
+            //list.Add(new SelectListItem() { Text = "TODOS", Value = "", Selected = _existe_en_array(_values, "") });
+            //list.Add(new SelectListItem() { Text = "Recojo en tienda", Value = "R", Selected = _existe_en_array(_values, "R") });
+            //list.Add(new SelectListItem() { Text = "Envío a Domicilio", Value = "E", Selected = _existe_en_array(_values, "E") });
+            return list;
         }
 
         #endregion
