@@ -20,5 +20,6 @@ namespace Models.Crystal.Reporte
         public string DISTRITOS { get; set; }
         public string ult_fec_ing { get; set; }
         public decimal pventa { get; set; }
+        public string calidad { get; set; }
     }
 }

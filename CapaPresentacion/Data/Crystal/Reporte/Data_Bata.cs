@@ -13,7 +13,7 @@ namespace Data.Crystal.Reporte
 {
     public class Data_Bata
     {
-        public List<Models_Art_Sin_Mov> list_art_sin_mov(string cadena,string cod_dis, string tienda,Int32 nsemana,Int32 maxpares, string estado, string grupo, string categoria, string tipo , Int32 minpares)
+        public List<Models_Art_Sin_Mov> list_art_sin_mov(string cadena,string cod_dis, string tienda,Int32 nsemana,Int32 maxpares, string estado, string grupo, string categoria, string tipo , Int32 minpares,string calidad)
         {
             string sqlquery = "USP_XSTORE_REPORTE_ART_SIN_MOVIMIENTOS";
             List<Models_Art_Sin_Mov> lista = null;
@@ -38,7 +38,8 @@ namespace Data.Crystal.Reporte
                             cmd.Parameters.AddWithValue("@Categoria", categoria);
                             cmd.Parameters.AddWithValue("@Tipo", tipo);
                             cmd.Parameters.AddWithValue("@nstockmin", minpares);
-                            cmd.Parameters.AddWithValue("@nstockmax", maxpares);
+                            cmd.Parameters.AddWithValue("@nstockmax", maxpares); 
+                            cmd.Parameters.AddWithValue("@Calidad", calidad); 
                             using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                             {
                                 dt = new DataTable();
@@ -60,6 +61,7 @@ namespace Data.Crystal.Reporte
                                              DISTRITOS = dr["DISTRITOS"].ToString(),
                                              ult_fec_ing = dr["fec_ingre"].ToString(),
                                              pventa = (dr["pventa"] == DBNull.Value  ? 0 : Convert.ToDecimal(dr["pventa"])) ,
+                                             calidad = dr["CALID"].ToString()
                                          }).ToList();
                             }
                         }

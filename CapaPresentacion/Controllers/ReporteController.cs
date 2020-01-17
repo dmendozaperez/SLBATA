@@ -613,6 +613,8 @@ namespace CapaPresentacion.Controllers
                 ViewBag.ClCategoria = jRespuesta2;
 
                 //ViewBag.Cadena = datCbo.get_ListaCadena();
+                Ent_ComboList filtros = datCbo.Listar_Filtros_OBS();
+                ViewBag.listCalidad = filtros.Lista_1.Where(d => d.cbo_codigo != "-1");
 
                 return View();
             }
@@ -620,13 +622,13 @@ namespace CapaPresentacion.Controllers
         }
 
         [HttpPost]
-        public ActionResult ShowGenericReportArtSinMovInNewWin(string cod_cadena,string cod_dis, string cod_tda, Int32 nsemana, Int32 maxpares, string estado, string grupo, string categoria, string tipo,string resumen , Int32 minpares)
+        public ActionResult ShowGenericReportArtSinMovInNewWin(string cod_cadena,string cod_dis, string cod_tda, Int32 nsemana, Int32 maxpares, string estado, string grupo, string categoria, string tipo,string resumen , Int32 minpares,string calidad)
         {
             //grupo = "0";categoria = "0";subcategoria = "0";estado = "0";
             Data_Bata pl = new Data_Bata();
             this.HttpContext.Session["ReportName"] = "ReportArtSinMov.rpt";
 
-            List<Models_Art_Sin_Mov> model_Art_sn_mov = pl.list_art_sin_mov(cod_cadena, cod_dis, cod_tda, nsemana, maxpares, estado, grupo, categoria, tipo , minpares);
+            List<Models_Art_Sin_Mov> model_Art_sn_mov = pl.list_art_sin_mov(cod_cadena, cod_dis, cod_tda, nsemana, maxpares, estado, grupo, categoria, tipo , minpares,calidad);
 
             this.HttpContext.Session["rptSource"] = model_Art_sn_mov;
             this.HttpContext.Session["obs_resumen"] = resumen;

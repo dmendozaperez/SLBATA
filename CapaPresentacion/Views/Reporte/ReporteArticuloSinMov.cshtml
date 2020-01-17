@@ -46,7 +46,7 @@
             </div>
         </div>
 
-        <div  class="col-sm-3">
+        <div  class="col-sm-2">
             <label for="txtTda">Tipo.</label>
             <div class="form-group">
                 <div id="divTipo" class="form-group">
@@ -54,7 +54,7 @@
                 </div>
             </div>
         </div>
-        <div  class="col-sm-3">
+        <div  class="col-sm-2">
             <label for="dwGrupo">Grupo</label>
             <div class="form-group">
                 <div id="divgrupo" class="form-group">
@@ -62,7 +62,14 @@
                 </div>
             </div>
         </div>
-
+        <div class="col-sm-2">
+            <label for="txtTda">Calidad</label>
+            <div class="form-group">
+                <div id="divTipo" class="form-group">
+                    @Html.DropDownList("dwCalidad", new SelectList(ViewBag.listCalidad, "cbo_codigo", "cbo_descripcion", "-1"), new { @class = "selectpicker", multiple = "multiple", @id = "dwCalidad", @name = "dwCalidad", @data_actions_box = "true", @data_selected_text_format = "count > 2" })
+                </div>
+            </div>
+        </div>
 
     </div>
     <div class="row">
@@ -237,6 +244,7 @@
 
     }
     $(document).ready(function () {        
+        $("#dwCalidad").selectpicker('selectAll');
         ListarGrupo();
 
     });
@@ -257,6 +265,10 @@
         var strestado = $('#txtEstado').val();
         var grupo = ($("#dwGrupo option:not(:selected)").length == 0 && $("#dwGrupo > option").length > 1 ? "0" : $('#dwGrupo').val());// $('#dwGrupo').val();
         var tipo = $('#dwTipo').val();
+
+        var calidad = ($("#dwCalidad option:not(:selected)").length == 0 && $("#dwCalidad > option").length > 1 ? "0" : $('#dwCalidad').val());// $('#dwGrupo').val();
+
+
         //var str = grupo.toString();
         var cate = ($("#dwCate option:not(:selected)").length == 0 && $("#dwCate > option").length > 1 ? "0" : $('#dwCate').val());// $('#dwCate').val();
         var resumen = 0;
@@ -274,6 +286,7 @@
         if (tda == '' || tda == null) { tda = '0' };
         if(coddis != '-1'){ coddis = coddis.toString();}
         //if(tda != '-1'){ tda = tda.toString();}
+        if (calidad == '' || calidad == null) { calidad = '0' };
 
         var paresInt = parseInt(stkSMin);
         var semanaInt = parseInt(semana);
@@ -281,6 +294,7 @@
         grupo = grupo.toString();
         cate = cate.toString();
         tda = tda.toString();
+        calidad = calidad.toString();
      
         var TeamDetailPostBackURL ="@Url.Action("ShowGenericReportArtSinMovInNewWin", "Reporte")";
         if (tda != '' && tda != null && paresInt > 0 && semanaInt > 0) {
@@ -290,7 +304,7 @@
                 url:TeamDetailPostBackURL,
                 dataType: 'json',
                 type: 'POST',
-                data: { cod_cadena: cadena, cod_dis:coddis , cod_tda: tda, nsemana: semana, maxpares: stkSMax, estado: strestado, grupo: grupo, categoria: cate, tipo: tipo, resumen:resumen,minpares : stkSMin },
+                data: { cod_cadena: cadena, cod_dis:coddis , cod_tda: tda, nsemana: semana, maxpares: stkSMax, estado: strestado, grupo: grupo, categoria: cate, tipo: tipo, resumen:resumen,minpares : stkSMin , calidad : calidad },
                 
                 success: function (data) {
                     //alert('ok');
