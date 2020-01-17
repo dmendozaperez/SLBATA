@@ -155,6 +155,7 @@
 
         var fecIni = ($("#fecini").val());
         var fecFin = ($("#fecfin").val());
+        var tipo = $("#tipo").val();
 
         //tda = tda.toString();
         //dis = dis.toString();
@@ -168,7 +169,7 @@
             dataType: 'json',
             type: 'POST',
             //dataType: "html",
-            data: { fecIni: fecIni, fecFin: fecFin },
+            data: { fecIni: fecIni, fecFin: fecFin, tipo: tipo },
             //cache: false,
             //async: false,
             //dataType: "html",

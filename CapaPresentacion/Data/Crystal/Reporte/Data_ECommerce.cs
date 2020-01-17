@@ -213,6 +213,7 @@ namespace Data.Crystal.Reporte
                         cmd.Parameters.AddWithValue("@fecha_inicio", fecIni);
                         cmd.Parameters.AddWithValue("@fecha_fin", fecFin);
                         cmd.Parameters.AddWithValue("@usuario", cod_tda);
+                        cmd.Parameters.AddWithValue("@tipo_despacho", tipo);
 
                         using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                         {
@@ -235,6 +236,7 @@ namespace Data.Crystal.Reporte
                                           NOM_TIENDA = dr["NOM_TIENDA"].ToString(),
                                           FECHA_INICIO = dr["FECHA_INICIO"].ToString(),
                                           FECHA_FIN = dr["FECHA_FIN"].ToString(),
+                                          TIP_DESPACHO = dr["TIP_DESPACHO"].ToString(),
                                       }).ToList();
                             lista = new ReporteVentasEcommerce();
 
