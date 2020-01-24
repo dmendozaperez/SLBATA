@@ -89,6 +89,7 @@
     <Compile Include="ReportsValeCompra\Reporte_Resultado.cs" />
     <Compile Include="ReportsValeCompra\Reporte_Filtro.cs" />
     <Compile Include="RuletaBata\Ent_RuletaBata.cs" />
+    <Compile Include="Soporte\Ent_Consulta_GuiaError.cs" />
     <Compile Include="Soporte\Ent_Documento_Transac.cs" />
     <Compile Include="Soporte\Ent_Ticket_Retorno.cs" />
     <Compile Include="Soporte\Ent_Tienda_Config.cs" />

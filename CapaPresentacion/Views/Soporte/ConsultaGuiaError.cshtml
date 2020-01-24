@@ -1,0 +1,108 @@
+﻿@using CapaEntidad.Soporte
+@model IEnumerable<Ent_Consulta_GuiaError>
+@using CapaEntidad.Util;
+@{
+    ViewBag.Title = "Consulta de Guía con Errores";
+    AjaxOptions options = new AjaxOptions
+    {
+        HttpMethod = "GET",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "listaGuiaErr",
+        OnComplete = "waitingDialog.hide();",
+        OnBegin = "waitingDialog.show('Espere un momento por favor');",
+        OnFailure = "waitingDialog.hide();"
+    };
+
+}
+
+<link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />
+<style>
+    .swal-text {
+        color: red;
+    }
+
+    .swal-text-default {
+        color: rgba(0, 0, 0, 0.64);
+    }
+</style>
+<p class="text-danger">Consulta de Guia con Errores</p>
+<div class="box box-body box-primary">
+    @using (Ajax.BeginForm("_guia_tableError", options))
+    {
+        <div class="row">
+
+            <form id="form1">
+                <div class="col-sm-3">
+                    <label for="segape">Estados</label>
+                    <div class="form-group">
+                        @*<div id="dwtda" class="form-group">*@
+                        <div class="input-group">
+                            <div id="estado" class="input-group autofocus">
+                                @*@Html.DropDownList("dwtda", new SelectList(ViewBag.Estados, "cbo_codigo", "cbo_descripcion", "-1"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwtda", @name = "dwtda" })*@
+                                @Html.DropDownList("dwestado", (List<SelectListItem>)ViewBag.Estado, new { @class = "form-control selectpicker estado", @data_live_search = "true", @id = "estado" })
+                            </div>
+                        </div>
+                        @*</div>*@
+                    </div>
+                </div>
+
+                <div class="col-sm-2">
+                    <label for="segape">Código de TK Soporte</label>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div id="numguiagroup" class="input-group">
+                                <input id="tk_soporte" name="tk_soporte" value="" class="form-control custom-input" type="text" />
+                                @*<span class="input-group-addon  bg-white"><img src="~/Content/images/wall-calendar-with-lines.svg" height="20" width="20"></span>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-2">
+                    <label></label><br />
+                    <button id="btnSearch" type="submit" title="Consultar" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-search"> Buscar</span>
+                    </button>
+                    @*<a href="@Url.Action("ExportToExcel")" title="Exportar a excel" class="btn btn-primary">Exportar</a>*@
+                </div>
+            </form>
+
+        </div>
+    }
+    <div class="box-body" id="listaGuiaErr" style="overflow-x: auto;">
+        @{Html.RenderPartial("_guia_tableError", Model);}
+    </div>
+    <br />
+
+
+</div>
+<script src="~/Scripts/bootstrap-select.min.js"></script>
+<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<script>
+
+    @*function MostrarListado() {
+
+            var TeamDetailPostBackURL = "@Url.Action("_guia_tableError", "Soporte")";
+
+            var options = { "backdrop": "static", keyboard: true };
+            $.ajax({
+                type: "GET",
+                url: TeamDetailPostBackURL,
+                contentType: "application/json; charset=utf-8",
+                data: {},
+                datatype: "json",
+                cache: true,
+                success: function (data) {
+                    document.getElementById("listaGuiaErr").innerHTML = data;
+
+                },
+                error: function () {
+
+                }
+            });
+
+        }*@
+
+</script>

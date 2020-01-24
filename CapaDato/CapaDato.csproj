@@ -104,6 +104,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Soporte\Dat_ConsultaGuia_Error.cs" />
     <Compile Include="Soporte\Dat_Documento_Transac.cs" />
     <Compile Include="Soporte\Dat_Ticket_Retorno.cs" />
     <Compile Include="Soporte\Dat_Tienda_Config.cs" />

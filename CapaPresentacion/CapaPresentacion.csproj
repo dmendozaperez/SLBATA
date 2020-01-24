@@ -1654,6 +1654,8 @@
     <Content Include="Views\Soporte\_DataCupones.cshtml" />
     <Content Include="Views\BataClub\Index_ClientesBataClub.cshtml" />
     <Content Include="Views\BataClub\_Lista_ClientesBataClub.cshtml" />
+    <Content Include="Views\Soporte\ConsultaGuiaError.cshtml" />
+    <Content Include="Views\Soporte\_guia_tableError.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

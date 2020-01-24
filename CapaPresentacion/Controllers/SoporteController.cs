@@ -13,7 +13,8 @@ using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Script.Serialization;
+using CapaEntidad.ValeCompra;
+
 
 namespace CapaPresentacion.Controllers
 {
@@ -27,6 +28,7 @@ namespace CapaPresentacion.Controllers
         private string _session_doc_transac_doc_private = "_session_doc_transac_doc_private"; //gft
         private string _session_soporte_tienda_peru = "_session_soporte_tienda_peru";//gft
         private string _session_cupones_retorno = "_session_cupones_retorno";
+        private string _session_consulta_guiaerrores = "_session_consulta_guiaerrores"; //aga
 
         private Dat_ListaTienda dat_lista_tienda = new Dat_ListaTienda();
         private Dat_Combo tienda = new Dat_Combo();//gft
@@ -490,5 +492,162 @@ namespace CapaPresentacion.Controllers
             }
         }
         #endregion
+
+        #region Consulta guia errores
+        public ActionResult ConsultaGuiaError() // Inicio.Lista Combo con estados de GUIAS
+        {
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
+            //string nroTK_Soporte = (Request.HttpMethod == "POST" ? Request.Params["nroTK_Soporte"].ToString() : null);
+
+            if (_usuario == null)
+            {
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+            }
+
+            else
+            {
+                Session[_session_consulta_guiaerrores] = null;
+
+                if (_usuario != null) //verifica session diferente de usuario de tienda
+                {
+                    var ListEstado = new List<SelectListItem>() {
+                    new SelectListItem() { Value = "S", Text = "--SELECCIONE--" },
+                    new SelectListItem() { Value = "", Text = "TODOS LOS ESTADOS" },
+                    new SelectListItem() { Value = "A", Text = "ABIERTO" },
+                    new SelectListItem() { Value = "E", Text = "EN PROCESO" },
+                    new SelectListItem() { Value = "C", Text = "CERRADO" },
+                    };
+                    ViewBag.Estado = ListEstado;
+                }
+            }
+            return View();
+        }
+
+        public PartialViewResult _guia_tableError(string dwestado, string tk_soporte) //Lista grid con todo los casos de las GUIAS ,BUSQUEDA
+        {
+            if (dwestado == null)
+            {
+                dwestado = "";
+            }
+            if (tk_soporte == null)
+            {
+                tk_soporte = "";
+            }
+
+            return PartialView(listaGuiaErr(dwestado, tk_soporte));
+        }
+
+        public List<Ent_Consulta_GuiaError> listaGuiaErr(string dwGuiaErr, string nroTK_Soporte)
+        {
+            Dat_ConsultaGuia_Error datGuiaErr = new Dat_ConsultaGuia_Error();
+
+            List<Ent_Consulta_GuiaError> listguiaErr = datGuiaErr.get_lista_guia_error(dwGuiaErr, nroTK_Soporte);
+            Session[_session_consulta_guiaerrores] = listguiaErr;
+            return listguiaErr;
+        }
+
+        public ActionResult getGuiaErrorAjax(Ent_jQueryDataTableParams param)
+        {
+            /*verificar si esta null*/
+            if (Session[_session_consulta_guiaerrores] == null)
+            {
+                List<Ent_Consulta_GuiaError> listdoc = new List<Ent_Consulta_GuiaError>();
+                Session[_session_consulta_guiaerrores] = listdoc;
+
+            }
+
+            //Traer registros
+            IQueryable<Ent_Consulta_GuiaError> membercol = ((List<Ent_Consulta_GuiaError>)(Session[_session_consulta_guiaerrores])).AsQueryable();
+
+            //Manejador de filtros
+            int totalCount = membercol.Count();
+
+            IEnumerable<Ent_Consulta_GuiaError> filteredMembers = membercol;
+
+            //Manejador de orden
+            var sortIdx = Convert.ToInt32(Request["iSortCol_0"]);
+
+            var displayMembers = filteredMembers
+                .Skip(param.iDisplayStart)
+                .Take(param.iDisplayLength);
+
+            var result = from a in displayMembers
+                         select new
+                         {
+                             a.Codigo,
+                             a.Caja,
+                             a.TK_xstore,
+                             a.Tienda,
+                             a.Fec_Documento,
+                             a.Num_Documento,
+                             a.Articulo,
+                             a.Calidad,
+                             a.Cantidad,
+                             a.Fec_Ingreso,
+                             a.Fec_Act,
+                             a.Mantis_Nro,
+                             a.Estado,
+                             a.TK_soporte_Bata
+
+                         };
+
+            //Se devuelven los resultados por json
+            return Json(new
+            {
+                sEcho = param.sEcho,
+                iTotalRecords = totalCount,
+                iTotalDisplayRecords = filteredMembers.Count(),
+                aaData = result
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        //[HttpPost]
+        public ActionResult ActualizarEstadoGuia(int Id, string Tk_soporte, int Cod_mantis, string Estado)
+        {
+            Dat_ConsultaGuia_Error datGuiaErr = new Dat_ConsultaGuia_Error();
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            Int32 respuesta = 0;
+            var oJRespuesta = new JsonResponse();
+
+            if (Estado == "1")
+            {
+                Estado = "E";
+            }
+            else
+            {
+                Estado = "C";
+            }
+
+
+            if (Tk_soporte == "" && Cod_mantis == 0)
+            {
+                oJRespuesta.Message = (respuesta).ToString();
+                oJRespuesta.Data = false;
+                oJRespuesta.Success = false;
+            }
+            else
+
+                respuesta = datGuiaErr.ActualizarGuiaError(Id, Tk_soporte, Cod_mantis, Estado); //Finalizar
+
+            if (respuesta == 1)
+            {
+                oJRespuesta.Message = (respuesta).ToString();
+                oJRespuesta.Data = true;
+                oJRespuesta.Success = true;
+            }
+            else
+            {
+                oJRespuesta.Message = (respuesta).ToString();
+                oJRespuesta.Data = false;
+                oJRespuesta.Success = false;
+            }
+            return Json(oJRespuesta, JsonRequestBehavior.AllowGet);
+
+        }
+        #endregion
+
     }
 }
