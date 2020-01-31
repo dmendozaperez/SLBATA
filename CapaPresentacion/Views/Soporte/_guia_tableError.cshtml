@@ -24,7 +24,7 @@
                 <th>Cantidad</th>
                 <th>Fec.Ingreso</th>
                 <th>Fec.Actualización</th>
-                <th>Nro.Mantis</th>
+                @*<th>Nro.Mantis</th>*@
                 <th>tk. Soporte Bata</th>
                 <th> Estado</th>
                 <th> </th>
@@ -44,7 +44,7 @@
                 <th>Cantidad</th>
                 <th>Fec.Ingreso</th>
                 <th>Fec.Actualización</th>
-                <th>Nro.Mantis</th>
+                @*<th>Nro.Mantis</th>*@
                 <th>tk. Soporte Bata</th>
                 <th> Estado</th>
                 <th> </th>
@@ -98,7 +98,7 @@
                     { "sName": "Cantidad", "mData": "Cantidad" },
                     { "sName": "Fec_Ingreso", "mData": "Fec_Ingreso" },
                     { "sName": "Fec_Act", "mData": "Fec_Act" },
-                    { "sName": "Mantis_Nro", "mData": "Mantis_Nro" },
+                    //{ "sName": "Mantis_Nro", "mData": "Mantis_Nro" },
                     { "sName": "TK_soporte_Bata", "mData": "TK_soporte_Bata" },
                     { "sName": "Estado", "mData": "Estado" },
                                                    {
@@ -171,12 +171,12 @@
         strhtml += '<input type="text" id="TK_soporte_Bata" name="nombre" value="' + TK_soporte_Bata + '" placeholder="Ingrese código de tk de Soporte" class="form-control" required="required" />'
         strhtml += '</td>'
         strhtml += '</tr>'
-        strhtml += '<tr>'
-        strhtml += '<td colspan="1" valign="middle"><label>Nro. de Mantis</label></td>'
-        strhtml += '<td colspan="2">'
-        strhtml += '<input type="text" id="Mantis_Nro" name="nombre" value="' + Mantis_Nro + '" placeholder="Ingrese código de Mantis" class="form-control" required="required" />'
-        strhtml += '</td>'
-        strhtml += '</tr>'
+        //strhtml += '<tr>'
+        //strhtml += '<td colspan="1" valign="middle"><label>Nro. de Mantis</label></td>'
+        //strhtml += '<td colspan="2">'
+        //strhtml += '<input type="text" id="Mantis_Nro" name="nombre" value="' + Mantis_Nro + '" placeholder="Ingrese código de Mantis" class="form-control" required="required" />'
+        //strhtml += '</td>'
+        //strhtml += '</tr>'
         strhtml += '<td colspan="1" valign="middle"><label>Estado</label></td>'
         strhtml += '<td colspan="2">'
         strhtml += Estado
@@ -203,18 +203,18 @@
     function ActualizarGuia(Codigo, Estado) {
 
         var TK_soporte_Bata = $("#TK_soporte_Bata").val();
-        var Mantis_Nro = $("#Mantis_Nro").val();
+        //var Mantis_Nro = $("#Mantis_Nro").val();
 
-        if (Mantis_Nro == "") {
-            Mantis_Nro = 0
-        }
+        //if (Mantis_Nro == "") {
+        //    Mantis_Nro = 0
+        //}
 
         waitingDialog.show('Espere un momento por favor');
 
         var objGuiaError = {
             Id: Codigo,
             Tk_soporte: TK_soporte_Bata,
-            Cod_mantis: Mantis_Nro,
+            //Cod_mantis: Mantis_Nro,
             Estado: Estado
         }
 

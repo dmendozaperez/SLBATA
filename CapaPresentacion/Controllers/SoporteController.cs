@@ -605,24 +605,25 @@ namespace CapaPresentacion.Controllers
         }
 
         //[HttpPost]
-        public ActionResult ActualizarEstadoGuia(int Id, string Tk_soporte, int Cod_mantis, string Estado)
+        public ActionResult ActualizarEstadoGuia(int Id, string Tk_soporte, string Estado)
         {
             Dat_ConsultaGuia_Error datGuiaErr = new Dat_ConsultaGuia_Error();
             Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
             Int32 respuesta = 0;
             var oJRespuesta = new JsonResponse();
 
-            if (Estado == "1")
+            
+            if (Estado == "1" && Tk_soporte != "")
             {
-                Estado = "E";
+                Estado = "E"; // EN PROCESO
             }
-            else
+            if (Estado == "2" && Tk_soporte != "")
             {
-                Estado = "C";
+                Estado = "C"; // CERRADO
             }
 
 
-            if (Tk_soporte == "" && Cod_mantis == 0)
+            if (Tk_soporte == "" )
             {
                 oJRespuesta.Message = (respuesta).ToString();
                 oJRespuesta.Data = false;
@@ -630,7 +631,7 @@ namespace CapaPresentacion.Controllers
             }
             else
 
-                respuesta = datGuiaErr.ActualizarGuiaError(Id, Tk_soporte, Cod_mantis, Estado); //Finalizar
+                respuesta = datGuiaErr.ActualizarGuiaError(Id, Tk_soporte, 0, Estado); //Finalizar
 
             if (respuesta == 1)
             {
