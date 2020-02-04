@@ -251,6 +251,49 @@ namespace Data.Crystal.Reporte
             }
             return lista;
         }
+
+
+        public List<Ent_Combo> get_ListaTienda(string codTienda,int ind_)
+        {
+            List<Ent_Combo> list = null;
+            string sqlquery = "USP_LISTAR_TIENDA";
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexionEcommerce))
+                {
+                    if (cn.State == 0) cn.Open();
+                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@codTienda", codTienda);
+                        cmd.Parameters.AddWithValue("@ind_", ind_);
+                        SqlDataReader dr = cmd.ExecuteReader();
+                        if (dr.HasRows)
+                        {
+                            list = new List<Ent_Combo>();
+                            Ent_Combo combo = new Ent_Combo();
+
+                            while (dr.Read())
+                            {
+                                combo = new Ent_Combo();
+                                combo.cbo_codigo = dr["cod_entid"].ToString();
+                                combo.cbo_descripcion = dr["des_entid"].ToString();
+
+                                list.Add(combo);
+
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                list = null;
+            }
+            return list;
+        }
         #endregion
     }
 }
