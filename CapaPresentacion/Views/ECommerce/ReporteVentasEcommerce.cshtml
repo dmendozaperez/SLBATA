@@ -1,6 +1,6 @@
 ﻿@using CapaEntidad.Util;
 @{
-    ViewBag.Title = "Reporte de Ventas Ecommerce";
+    ViewBag.Title = "Reporte de Ventas";
     AjaxOptions options = new AjaxOptions
     {
         HttpMethod = "GET",
@@ -25,7 +25,7 @@
         height: 800px;
     }
 </style>
-<p class="text-danger">Consulta de reporte de ventas x tienda - ECOMMERCE</p>
+<p class="text-danger">Consulta de reporte de ventas x tienda</p>
 <div class="box box-body box-primary">
     <div class="row">
         <div class="col-sm-3">
@@ -46,27 +46,35 @@
                 </div>
             </div>
         </div>
+
+        @if (ViewBag.usu_tipo == "05") //invitado (solo tiendas)
+        {
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label for="tipo">Tiendas</label>
+                    @Html.DropDownList("tda", new SelectList(ViewBag.tienda, "cbo_codigo", "cbo_descripcion", null), new { @class = "form-control selectpicker", @data_live_search = "true", @id = "tda", @name = "dwtda", @data_actions_box = "true", @disabled = "disabled" })
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label for="tipo">Tiendas</label>
+                    @Html.DropDownList("tda", new SelectList(ViewBag.tienda, "cbo_codigo", "cbo_descripcion", null), new { @class = "form-control selectpicker", @data_live_search = "true", @id = "tda", @name = "dwtda", @data_actions_box = "true" })
+                </div>
+            </div>
+
+        }
+
+
         <div class="col-sm-3">
             <div class="form-group">
                 <label for="tipo">Tipo</label>
                 @Html.DropDownList("tipo", (List<SelectListItem>)ViewBag._selectTipos, new { @class = "form-control selectpicker tipo", @data_live_search = "true", @id = "tipo" })
             </div>
         </div>
-        @*<div class="col-sm-3">
-                <label for="txtTda"></label>
-                <div class="form-group">
 
-                </div>
-            </div>*@
-
-        <div class="col-sm-3">
-            <label for="fecfin"></label>
-            <div class="form-group">
-                <div id="tipodoc" class="form-group">
-
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 <div class="col-sm-3">
@@ -156,6 +164,9 @@
         var fecIni = ($("#fecini").val());
         var fecFin = ($("#fecfin").val());
         var tipo = $("#tipo").val();
+        var tda = $("#tda").val();
+
+        //alert(tda);
 
         //tda = tda.toString();
         //dis = dis.toString();
@@ -169,7 +180,7 @@
             dataType: 'json',
             type: 'POST',
             //dataType: "html",
-            data: { fecIni: fecIni, fecFin: fecFin, tipo: tipo },
+            data: { fecIni: fecIni, fecFin: fecFin, tipo: tipo, tda: tda },
             //cache: false,
             //async: false,
             //dataType: "html",

@@ -26,7 +26,7 @@ namespace CapaPresentacion.Controllers
             string fhasta = (Request.HttpMethod == "POST" ? Request.Params["fhasta"].ToString() : DateTime.Now.ToString("dd/MM/yyyy"));
             string noDocCli = (Request.HttpMethod == "POST" ? Request.Params["noDocCli"].ToString() : null);
             string noDoc = (Request.HttpMethod == "POST" ? Request.Params["noDoc"].ToString() : null);
-            
+
             ViewBag._fdesde = fdesde;
             ViewBag._fhasta = fhasta;
             ViewBag._noDocCli = noDocCli;
@@ -55,7 +55,7 @@ namespace CapaPresentacion.Controllers
                 return RedirectToAction("Login", "Control", new { returnUrl = return_view });
             }
             else
-            { 
+            {
                 return View(listPed);
             }
             //if (Request.HttpMethod == "POST")
@@ -84,7 +84,7 @@ namespace CapaPresentacion.Controllers
             Dat_Cexpress data_Cexpress = null;
 
             /*Datos para devolver*/
-            string error = ""; string cod_urbano="";
+            string error = ""; string cod_urbano = "";
             try
             {
                 string guia_presta = ""; string guia_urb = ""; string name_carrier = "";
@@ -137,7 +137,7 @@ namespace CapaPresentacion.Controllers
                                         guia_urb = ent_urbano.guia;
                                         break;
                                     }
-                               }
+                                }
                             }
                         }
 
@@ -193,17 +193,17 @@ namespace CapaPresentacion.Controllers
             datos.insertar_historial_estados_cv(_historial);
         }*/
 
-        private bool _existe_en_array (string[] array , string match)
+        private bool _existe_en_array(string[] array, string match)
         {
             bool b = false;
             foreach (var item in array)
             {
                 if (!b)
-                b = item == match;                
+                    b = item == match;
             }
             return b;
         }
-        private List<SelectListItem> SelectDestino(string tiendaOrigen, string value=null )
+        private List<SelectListItem> SelectDestino(string tiendaOrigen, string value = null)
         {
 
             DataTable dt = datos.get_tiendas_destino(tiendaOrigen);
@@ -220,16 +220,17 @@ namespace CapaPresentacion.Controllers
                         Selected = row["cod_entid"].ToString() == value
                     });
                 }
-            }else
+            }
+            else
             {
                 list.Add(new SelectListItem() { Text = "Sin resultados", Value = "" });
-            }          
+            }
             return list;
 
         }
         private List<SelectListItem> SelectOrigen(string value = null)
         {
-            
+
             DataTable dt = datos.get_tienda_origenes();
             List<SelectListItem> list = new List<SelectListItem>();
             list.Add(new SelectListItem() { Text = "TODOS", Value = "" });
@@ -244,9 +245,9 @@ namespace CapaPresentacion.Controllers
                 });
             }
             return list;
-            
+
         }
-        private List<SelectListItem> SelectVendedor(string cod_tda,string value = null)
+        private List<SelectListItem> SelectVendedor(string cod_tda, string value = null)
         {
 
             DataTable dt = datos.get_vendedores_tda(cod_tda);
@@ -256,7 +257,7 @@ namespace CapaPresentacion.Controllers
             {
                 list.Add(new SelectListItem()
                 {
-                    Text = row["v_codi"].ToString() + " - "+  row["v_nomb"].ToString(),
+                    Text = row["v_codi"].ToString() + " - " + row["v_nomb"].ToString(),
                     Value = row["v_codi"].ToString(),
                     Selected = row["v_codi"].ToString() == value
 
@@ -264,13 +265,13 @@ namespace CapaPresentacion.Controllers
             }
             return list;
         }
-        private List<ECommerce> selectVentas(DateTime fdesde , DateTime fhasta, string noDocCli,string noDoc)
+        private List<ECommerce> selectVentas(DateTime fdesde, DateTime fhasta, string noDocCli, string noDoc)
         {
             List<ECommerce> ventas = new List<ECommerce>();
-            string _tienda = (Session["Tienda"]==null)?"": Session["Tienda"].ToString();
+            string _tienda = (Session["Tienda"] == null) ? "" : Session["Tienda"].ToString();
 
 
-            List<Ent_ECommerce> ent_ventas =  datos.get_Ventas(fdesde,fhasta,noDocCli, noDoc, _tienda);
+            List<Ent_ECommerce> ent_ventas = datos.get_Ventas(fdesde, fhasta, noDocCli, noDoc, _tienda);
             if (ent_ventas != null)
             {
                 foreach (var item in ent_ventas)
@@ -303,7 +304,7 @@ namespace CapaPresentacion.Controllers
             }
             return ventas;
         }
-        private ECommerce selectVenta(string noDoc , string cod_entid)
+        private ECommerce selectVenta(string noDoc, string cod_entid)
         {
             ECommerce ventas = new ECommerce();
             /*Ent_ECommerce ent_ventas = datos.get_Ventas_por_sn(noDoc , cod_entid);
@@ -375,11 +376,12 @@ namespace CapaPresentacion.Controllers
 
         #region<agregando vista adinson>
         [HttpPost] //VENTA_ECOMMERCE
-        public ActionResult ShowGenericReportTiendasEcommerceInNewWin(string fecIni, string FecFin, string tipo)
+        public ActionResult ShowGenericReportTiendasEcommerceInNewWin(string fecIni, string FecFin, string tipo, string tda)
         {
 
             try
             {
+
                 string CodTda = "";
                 var ec = new Data_Ecommerce();
                 HttpContext.Session["ReportName"] = "VentasEcommerce.rpt";
@@ -390,7 +392,8 @@ namespace CapaPresentacion.Controllers
                 }
                 else
                 {
-                    CodTda = "-1";
+                    //CodTda = "-1";
+                    CodTda = tda;
                 }
 
                 ReporteVentasEcommerce ModeloRepVentaEcommerce = ec.get_ecommerce_reporteventa(CodTda, fecIni, FecFin, tipo);
@@ -404,6 +407,7 @@ namespace CapaPresentacion.Controllers
                     if (ModeloRepVentaEcommerce.ListVentaEcommerce.Count == 0)
                     {
                         _estado = "-1";
+                        //ViewBag.Tienda = ec.get_ListaTienda();
                     }
 
                 }
@@ -428,6 +432,8 @@ namespace CapaPresentacion.Controllers
 
             string tipo = (Request.HttpMethod == "POST" ? Request.Params["tipo"] : "1,2,3");
             Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            //Dat_ECommerce ec = new Dat_ECommerce();
+            var ec = new Data_Ecommerce();
 
             string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
             string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
@@ -439,6 +445,17 @@ namespace CapaPresentacion.Controllers
             else
             {
                 ViewBag._selectTipos = SelectTipos((tipo == null ? " '',R,E" : tipo));
+
+                if (_usuario.usu_tip_id == "05") //INVITADO (TIENDAS)
+                {
+                    ViewBag.Tienda = ec.get_ListaTienda(_usuario.usu_login, 0);
+                }
+                else
+                {
+                    ViewBag.Tienda = ec.get_ListaTienda("", 1);
+                }
+
+                ViewBag.usu_tipo = _usuario.usu_tip_id;
 
             }
             return View();

@@ -1,0 +1,258 @@
+﻿<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.min.css" />
+
+<style type="text/css">
+    .dt-buttons {
+        display: none;
+    }
+
+    #example_filter {
+        display: none;
+    }
+</style>
+<div class="box-body" id="lista" style="overflow-x: auto;">
+    <table id="example" class="table table-hover dataTable  table-striped table-responsive">
+        <thead>
+            <tr style="background-color:#3d566e; color:#ecf0f1">
+                <th>Código</th>
+                <th>Caja</th>
+                <th>tk. xtore</th>
+                <th>Tienda</th>
+                <th>Fec.Documento</th>
+                <th>Nro.Documento</th>
+                <th>Artículo</th>
+                <th>Calidad</th>
+                <th>Cantidad</th>
+                <th>Fec.Ingreso</th>
+                <th>Fec.Actualización</th>
+                @*<th>Nro.Mantis</th>*@
+                <th>tk. Soporte Bata</th>
+                <th> Estado</th>
+                <th> </th>
+            </tr>
+        </thead>
+        <tbody data-bind="foreach:"></tbody>
+        <tfoot>
+            <tr>
+                <th>Código</th>
+                <th>Caja</th>
+                <th>tk. xtore</th>
+                <th>Tienda</th>
+                <th>Fec.Documento</th>
+                <th>Nro.Documento</th>
+                <th>Artículo</th>
+                <th>Calidad</th>
+                <th>Cantidad</th>
+                <th>Fec.Ingreso</th>
+                <th>Fec.Actualización</th>
+                @*<th>Nro.Mantis</th>*@
+                <th>tk. Soporte Bata</th>
+                <th> Estado</th>
+                <th> </th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" ng-app>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
+        </div>
+    </div>
+</div>
+
+<script src='https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js'></script>
+<script src='//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js'></script>
+<script src='//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js'></script>
+<script src='//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js'></script>
+<script src='//cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js'></script>
+
+<script>
+    $(document).ready(function () {
+        //    alert("entro a _guiatable.cshmtl - document ready");
+        $('.table').dataTable({
+            "language": {
+                "url": "../Scripts/DataTables/Spanish.json"
+            },
+            "bProcessing": true, // se agrego para probar
+            "bServerSide": true,
+            "bAutoWidth": false,
+            "sAjaxSource": '@Url.Action("getGuiaErrorAjax", "Soporte")',
+            "fnServerParams": function (aoData) {
+                aoData.push({ "name": "dwestado", "value": $('#dwestado').val() });
+                aoData.push({ "name": "numguia", "value": $.trim($('#numguia').val()) });
+            },
+            "bdestroy": true,
+            "start": 0,
+            "order": [0, "asc"],
+            "bDeferRender": true,
+            "aoColumns": [
+                    { "sName": "Codigo", "mData": "Codigo" },
+                    { "sName": "Caja", "mData": "Caja" },
+                    { "sName": "TK_xstore", "mData": "TK_xstore" },
+                    { "sName": "Tienda", "mData": "Tienda" },
+                    { "sName": "Fec_Documento", "mData": "Fec_Documento" },
+                    { "sName": "Num_Documento", "mData": "Num_Documento" },
+                    { "sName": "Articulo", "mData": "Articulo" },
+                    { "sName": "Calidad", "mData": "Calidad" },
+                    { "sName": "Cantidad", "mData": "Cantidad" },
+                    { "sName": "Fec_Ingreso", "mData": "Fec_Ingreso" },
+                    { "sName": "Fec_Act", "mData": "Fec_Act" },
+                    //{ "sName": "Mantis_Nro", "mData": "Mantis_Nro" },
+                    { "sName": "TK_soporte_Bata", "mData": "TK_soporte_Bata" },
+                    { "sName": "Estado", "mData": "Estado" },
+                                                   {
+                                                       "render": function (data, type, full) {
+                                                           var envio = "'" + full.Codigo + "','" + full.TK_soporte_Bata + "' ,  '" + full.Mantis_Nro + "', '" + full.Estado + "', '" + full.Num_Documento + "'"
+
+                                                           if (full.Estado == 'EN PROCESO') {
+                                                               //return '<div style="display: block;background-color: #41b341;" class="badge badge-pill badge-success disabled"><a class="badge badge-success disabled" style=" background-color: #41b341;"  >'+ full.Estado + '</a></div>';
+                                                               return '<div> <a title="Ver Detalle"  onclick="PopupDetalle(' + envio + ')" target="_blank" class="btn btn-primary btn-sm"> <span class="	glyphicon glyphicon-th-list"></span></a></div>';
+                                                           } else if (full.Estado == "ABIERTO") {
+                                                               //return '<div style="display: block;background-color: #3d566e;" class="badge badge-pill badge-default disabled"><a class="badge badge-default disabled" style=" background-color: #3d566e;"  >'+ full.Estado +'</a></div>';
+                                                               return '<div> <a title="Ver Detalle"  onclick="PopupDetalle(' + envio + ')" target="_blank" class="btn btn-primary btn-sm"> <span class="	glyphicon glyphicon-th-list"></span></a></div>';
+                                                           } else {
+                                                               return "";
+                                                           }
+                                                       }
+                                                   },
+            ],
+            "createdRow": function (row, mData, dataIndex) {
+
+            },
+            dom: 'Bfrtip',
+            buttons: [
+            {
+                extend: 'excelHtml5',
+                title: 'Bataclub_xls'
+            },
+            {
+                extend: 'csvHtml5',
+                title: 'BataClub_csv'
+            },
+            {
+                extend: 'pdfHtml5',
+                title: 'BataClub_pdf'
+            },
+            'copyHtml5',
+            ]
+        });
+    });
+
+
+    $('#form1').on('keypress, click', function () {
+        return false;
+    });
+
+    function PopupDetalle(Codigo, TK_soporte_Bata, Mantis_Nro, Estado, Num_Documento) {
+
+        var strhtml = ''
+        strhtml += '<div class="modal-header modal-header-danger" style="margin-top:0px;margin-bottom:0px;padding-top:2px;padding-bottom:2px;">'
+        strhtml += '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
+        strhtml += '<h5 class="modal-title" id="myModalLabel">'
+        strhtml += '<table style="border-bottom:0px;font-size:14px;width:50%;">'
+        strhtml += '<tr>'
+        strhtml += '<td style="font-size:14px;width:100%;text-align:left;"> Atención de la Guía  :' + Num_Documento + '</td>'
+        strhtml += '</tr>'
+        strhtml += '</table>'
+        strhtml += '</h5>'
+        strhtml += '</div>'
+        strhtml += '<div class="modal-body">'
+        strhtml += '<table class="table table-striped" ID="none">'
+        strhtml += '<tr>'
+        strhtml += '<td colspan="1" valign="middle"><label>ID</label></td>'
+        strhtml += '<td colspan="2">'
+        strhtml += Codigo
+        strhtml += '</td>'
+        strhtml += '</tr>'
+        strhtml += '<tr>'
+        strhtml += '<td colspan="1" valign="middle"><label>tk.Soporte Bata</label></td>'
+        strhtml += '<td colspan="2">'
+        strhtml += '<input type="text" id="TK_soporte_Bata" name="nombre" value="' + TK_soporte_Bata + '" placeholder="Ingrese código de tk de Soporte" class="form-control" required="required" />'
+        strhtml += '</td>'
+        strhtml += '</tr>'
+        //strhtml += '<tr>'
+        //strhtml += '<td colspan="1" valign="middle"><label>Nro. de Mantis</label></td>'
+        //strhtml += '<td colspan="2">'
+        //strhtml += '<input type="text" id="Mantis_Nro" name="nombre" value="' + Mantis_Nro + '" placeholder="Ingrese código de Mantis" class="form-control" required="required" />'
+        //strhtml += '</td>'
+        //strhtml += '</tr>'
+        strhtml += '<td colspan="1" valign="middle"><label>Estado</label></td>'
+        strhtml += '<td colspan="2">'
+        strhtml += Estado
+        strhtml += '</td>'
+        strhtml += '</tr>'
+        strhtml += '</table>'
+        strhtml += '</div>'
+        strhtml += '<div class="modal-footer" style="margin-top:-30px">'
+
+        if (TK_soporte_Bata == "" && Mantis_Nro == "") {
+            strhtml += '<button type="button" class="btn btn-danger"  onclick="ActualizarGuia(' + Codigo + ', 1)" data-dismiss="modal">PROCESAR</button>'
+        } else if (TK_soporte_Bata != "" || Mantis_Nro != "") {
+            strhtml += '<button type="button" class="btn btn-danger"  onclick="ActualizarGuia(' + Codigo + ', 2)" data-dismiss="modal">FINALIZAR</button>'
+        }
+        strhtml += '<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>'
+        strhtml += '</div>'
+        var options = { "backdrop": "static", keyboard: true };
+
+        $('#myModalContent').html(strhtml);
+        $('#myModal').modal(options);
+        $('#myModal').modal('show');
+    }
+
+    function ActualizarGuia(Codigo, Estado) {
+
+        var TK_soporte_Bata = $("#TK_soporte_Bata").val();
+        //var Mantis_Nro = $("#Mantis_Nro").val();
+
+        //if (Mantis_Nro == "") {
+        //    Mantis_Nro = 0
+        //}
+
+        waitingDialog.show('Espere un momento por favor');
+
+        var objGuiaError = {
+            Id: Codigo,
+            Tk_soporte: TK_soporte_Bata,
+            //Cod_mantis: Mantis_Nro,
+            Estado: Estado
+        }
+
+        $.ajax
+          ({
+              url: '../Soporte/ActualizarEstadoGuia',
+              dataType: "json",
+              type: "POST",
+              data: objGuiaError,
+              success: function (data, textStatus, XMLHttpRequest) {
+                  waitingDialog.hide();
+
+                  if ((data.Success).toString() == "true") {
+                      if (data.Message == "1") {
+                          toastr.success("La atencion del ticket fue actualizada", "Mensaje");
+                           
+                          $('#listaGuiaErr').load('@Url.Action("_guia_tableError", "Soporte")', {});
+                          waitingDialog.hide();
+
+                      } else {
+
+                          toastr.success("La atencion del ticket no fue actualizada", "Error");
+                          //MostrarListado();
+                          waitingDialog.hide();
+
+                      }
+
+                  } else {
+                      toastr.error("La atencion del ticket no fue actualizada", "Error");
+                      waitingDialog.hide();
+                  }
+              },
+              error: function (xhr) {
+                  waitingDialog.hide();
+                  toastr.error(xhr, 'Error');
+                  waitingDialog.hide();
+              }
+          })
+    }
+
+ </script>
