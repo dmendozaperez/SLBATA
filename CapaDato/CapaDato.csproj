@@ -84,6 +84,7 @@
     <Compile Include="GestionInterno\Dat_Comunicado.cs" />
     <Compile Include="Interface\Dat_Interface.cs" />
     <Compile Include="Inventario\Dat_Inventario_Consulta.cs" />
+    <Compile Include="Inventario\Dat_MovDoc_Consulta.cs" />
     <Compile Include="Maestros\Dat_Canal.cs" />
     <Compile Include="Maestros\Dat_Orce.cs" />
     <Compile Include="Maestros\Dat_Concepto_Suna.cs" />
@@ -94,6 +95,7 @@
     <Compile Include="Maestros\Dat_Usuario_Tipo.cs" />
     <Compile Include="Menu\Dat_Menu.cs" />
     <Compile Include="OrceExclud\Dat_OrceExclud.cs" />
+    <Compile Include="Orce\Dat_Promotion_Orce.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reporte\Dat_Combo.cs" />
     <Compile Include="ReportsValeCompra\Dat_ReportValeCompra.cs" />

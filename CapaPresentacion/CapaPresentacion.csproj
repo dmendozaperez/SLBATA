@@ -348,6 +348,7 @@
     <Compile Include="Controllers\InventarioController.cs" />
     <Compile Include="Controllers\LoginIntermedioController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
+    <Compile Include="Controllers\OrceController.cs" />
     <Compile Include="Controllers\Orce_ExcludController.cs" />
     <Compile Include="Controllers\ReporteController.cs" />
     <Compile Include="Controllers\ReporteCrystalController.cs" />
@@ -429,6 +430,12 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>TablaProsperidad.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RptsCrystal\TablaProsperidad_Bata.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TablaProsperidad_Bata.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="RptsCrystal\Vendedor.cs">
@@ -1654,6 +1661,12 @@
     <Content Include="Views\Soporte\_DataCupones.cshtml" />
     <Content Include="Views\BataClub\Index_ClientesBataClub.cshtml" />
     <Content Include="Views\BataClub\_Lista_ClientesBataClub.cshtml" />
+    <Content Include="Views\Orce\Promotion.cshtml" />
+    <Content Include="Views\Orce\_Lista_Promotion.cshtml" />
+    <Content Include="Views\Orce\getListaPromOrceTipo.cshtml" />
+    <Content Include="Views\Inventario\ConsultaDocMov.cshtml" />
+    <Content Include="Views\Inventario\_Lista_ConsultaDocMov.cshtml" />
+    <Content Include="Views\Inventario\getListadocmov_det.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1732,6 +1745,10 @@
     <EmbeddedResource Include="RptsCrystal\TablaProsperidad.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>TablaProsperidad.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RptsCrystal\TablaProsperidad_Bata.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>TablaProsperidad_Bata.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="RptsCrystal\Vendedor.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

@@ -22,9 +22,22 @@ namespace CapaPresentacion.AspNetForms
             {
                 string strReportName = System.Web.HttpContext.Current.Session["ReportName"].ToString();
                 var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
-                
+
+
+                List<CapaPresentacion.Models.Crystal.Reporte.Models_Tab_Pros> model_Art_sn_mov=(List<CapaPresentacion.Models.Crystal.Reporte.Models_Tab_Pros>)rptSource;
+
+                string TIENDA_DES = "";
+                string COD_CADENA = "";
+                if (model_Art_sn_mov.Count>0)
+                {
+                    TIENDA_DES = model_Art_sn_mov[0].TIENDA_DES;
+                    COD_CADENA = model_Art_sn_mov[0].COD_CADENA;
+                }
+
 
                 rd = new ReportDocument();
+
+
 
                 string strRptPath = Server.MapPath("~/") + "RptsCrystal//" + strReportName;
                 //Loading Report
@@ -33,6 +46,8 @@ namespace CapaPresentacion.AspNetForms
                 // Setting report data source
                 if (rptSource != null && rptSource.GetType().ToString() != "System.String")
                     rd.SetDataSource(rptSource);
+                rd.SetParameterValue("tienda", TIENDA_DES);
+                
 
                 crv_tabla_prosperidad.ReportSource = rd;
                 crv_tabla_prosperidad.ToolPanelView = CrystalDecisions.Web.ToolPanelViewType.None;

@@ -73,6 +73,7 @@
     <Compile Include="Inventario\Ent_Inventario_Ajuste.cs" />
     <Compile Include="Inventario\Ent_Inventario_Consulta.cs" />
     <Compile Include="Inventario\Ent_Inventario_Tienda.cs" />
+    <Compile Include="Inventario\Ent_MovDoc_Consulta.cs" />
     <Compile Include="Maestros\Ent_Cadena.cs" />
     <Compile Include="Maestros\Ent_Canal.cs" />
     <Compile Include="Maestros\Ent_Concepto_Suna.cs" />
@@ -86,6 +87,7 @@
     <Compile Include="Maestros\Ent_Distrito.cs" />
     <Compile Include="Oracle\Ent_Ora_Conexion.cs" />
     <Compile Include="OrceExlud\Ent_OrceExclud.cs" />
+    <Compile Include="Orce\Ent_Promotion_Orce.cs" />
     <Compile Include="ReportsValeCompra\Reporte_Resultado.cs" />
     <Compile Include="ReportsValeCompra\Reporte_Filtro.cs" />
     <Compile Include="RuletaBata\Ent_RuletaBata.cs" />

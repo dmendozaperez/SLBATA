@@ -1178,6 +1178,15 @@ namespace CapaPresentacion.Controllers
 
             List<CapaPresentacion.Models.Crystal.Reporte.Models_Tab_Pros> model_Art_sn_mov = pl.list_tab_pros(tienda , anio, tipo);
 
+            string TIENDA_DES = "";
+            string COD_CADENA = "";
+            if (model_Art_sn_mov.Count > 0)
+            {                
+                COD_CADENA = model_Art_sn_mov[0].COD_CADENA;
+            }
+
+            this.HttpContext.Session["ReportName"] =(COD_CADENA=="BA")? "TablaProsperidad_Bata.rpt" : "TablaProsperidad.rpt";
+
             this.HttpContext.Session["rptSource"] = model_Art_sn_mov;
 
 

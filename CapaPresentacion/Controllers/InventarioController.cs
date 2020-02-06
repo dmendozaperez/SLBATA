@@ -180,9 +180,23 @@ namespace CapaPresentacion.Controllers
 
         public ActionResult ConsultaMovimiento()
         {
-            ViewBag.Tienda = dat_lista_tienda.get_tienda("PE", "1");
-            Session["Lista_Consulta_Movimiento"] = null;
-            return View();
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
+
+            if (_usuario == null)
+            {
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+            }
+            else
+            {
+                ViewBag.Tienda = dat_lista_tienda.get_tienda("PE", "1");
+                Session["Lista_Consulta_Movimiento"] = null;
+                return View();
+            }
+
+           
         }
 
         public PartialViewResult MostrarResultados(string fec, string dwtda)
@@ -675,5 +689,228 @@ namespace CapaPresentacion.Controllers
             return File(filecontent, ExcelExportHelper.ExcelContentType, nom_excel + ".xlsx");
         }
         #endregion
+
+        #region<CONSULTA DE DOCUMENTO POR FECHA>
+        private Dat_MovDoc_Consulta con_doc = new Dat_MovDoc_Consulta();
+        public ActionResult ConsultaDocMov()
+        {
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
+
+            if (_usuario == null)
+            {
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+            }
+            else
+            {
+                ViewBag.Tienda = datInv.get_ListaTienda();
+                return View();
+            }
+            
+        }
+
+        public PartialViewResult _Lista_ConsultaDocMov(string dwtienda, string fecini, string fecfin, string numdoc)
+        {
+            List<Ent_MovDoc_Consulta> lista_cons_doc = con_doc.lista_movdoc("0", dwtienda, Convert.ToDateTime(fecini),Convert.ToDateTime(fecfin), numdoc);
+            Session[_session_lista_consultadoc_mov] = lista_cons_doc;
+            return PartialView(lista_cons_doc);
+        }
+        private string _session_lista_consultadoc_mov = "_session_lista_consultadoc_mov";
+        private string _session_lista_consultadoc_mov_det = "_session_lista_consultadoc_mov_det";
+        public ActionResult getconsultadocmov(Ent_jQueryDataTableParams param)
+        {
+            /*verificar si esta null*/
+            if (Session[_session_lista_consultadoc_mov] == null)
+            {
+                List<Ent_MovDoc_Consulta> lisprom = new List<Ent_MovDoc_Consulta>();
+                Session[_session_lista_consultadoc_mov] = lisprom;
+            }
+
+            //Traer registros
+            IQueryable<Ent_MovDoc_Consulta> membercol = ((List<Ent_MovDoc_Consulta>)(Session[_session_lista_consultadoc_mov])).AsQueryable();
+
+            //Manejador de filtros
+            int totalCount = membercol.Count();
+            IEnumerable<Ent_MovDoc_Consulta> filteredMembers = membercol;
+
+            if (!string.IsNullOrEmpty(param.sSearch))
+            {
+                filteredMembers = membercol
+                    .Where(m =>
+                     m.tipo_doc.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                     m.tipo_transac.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                     m.num_doc.ToUpper().Contains(param.sSearch.ToUpper()) 
+                     );
+            }
+            //Manejador de orden
+            var sortIdx = Convert.ToInt32(Request["iSortCol_0"]);
+            //Func<Models_Guia, string> orderTO = (m => m.TIENDA_ORI);
+            //Func<Models_Guia, string> orderNumero = (m => m.NUMERO);
+            //Func<Models_Guia, DateTime> orderFecha = (m => Convert.ToDateTime(m.FECHA));
+            //Func<Models_Guia, int> orderPares = (m => Convert.ToInt32(m.PARES));
+            //Func<Models_Guia, double> orderVC = (m => Convert.ToDouble(m.VCALZADO));
+            //Func<Models_Guia, int> orderNC = (m => Convert.ToInt32(m.NOCALZADO));
+            //Func<Models_Guia, double> orderVNC = (m => Convert.ToDouble(m.VNOCALZADO));
+            //Func<Models_Guia, string> orderEstado = (m => m.ESTADO);
+
+            var sortDirection = Request["sSortDir_0"];
+            if (sortDirection == "asc")
+            {
+                switch (sortIdx)
+                {
+                   
+                    case 1: filteredMembers = filteredMembers.OrderBy(o => o.tipo_transac); break;
+                    case 2: filteredMembers = filteredMembers.OrderBy(o => o.tipo_doc); break;
+                    case 3: filteredMembers = filteredMembers.OrderBy(o => o.num_doc); break;
+                    case 4: filteredMembers = filteredMembers.OrderBy(o =>Convert.ToDateTime(o.fecha_doc)); break;
+                    case 5: filteredMembers = filteredMembers.OrderBy(o => o.cant); break;
+                    case 6: filteredMembers = filteredMembers.OrderBy(o => o.tda_ori); break;
+                    case 7: filteredMembers = filteredMembers.OrderBy(o => o.tda_des); break;
+
+                    
+                    default: break;
+                }
+            }
+            else
+            {
+                switch (sortIdx)
+                {
+                    case 1: filteredMembers = filteredMembers.OrderByDescending(o => o.tipo_transac); break;
+                    case 2: filteredMembers = filteredMembers.OrderByDescending(o => o.tipo_doc); break;
+                    case 3: filteredMembers = filteredMembers.OrderByDescending(o => o.num_doc); break;
+                    case 4: filteredMembers = filteredMembers.OrderByDescending(o => Convert.ToDateTime(o.fecha_doc)); break;
+                    case 5: filteredMembers = filteredMembers.OrderByDescending(o => o.cant); break;
+                    case 6: filteredMembers = filteredMembers.OrderByDescending(o => o.tda_ori); break;
+                    case 7: filteredMembers = filteredMembers.OrderByDescending(o => o.tda_des); break;
+
+
+                    default: break;
+                }
+            }
+            var displayMembers = filteredMembers.Skip(param.iDisplayStart).Take(param.iDisplayLength);
+
+            var result = from a in displayMembers
+                         select new
+                         {
+                             a.mc_id,
+                             a.tienda,
+                             a.tipo_transac,
+                             a.tipo_doc,
+                             a.num_doc,
+                             a.fecha_doc,
+                             a.cant,
+                             a.tda_des,
+                             a.tda_ori,                             
+                         };
+            //Se devuelven los resultados por json
+            return Json(new
+            {
+                sEcho = param.sEcho,
+                iTotalRecords = totalCount,
+                iTotalDisplayRecords = filteredMembers.Count(),
+                aaData = result
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        public PartialViewResult getListadocmov_det(string mc_id)
+        {
+
+            List<Ent_MovDoc_Consulta_Detalle> listdoc_det = con_doc.lista_movdoc_det(mc_id);
+
+            /*agrupar articulo para las tallas*/
+            List<Ent_MovDoc_Consulta_Detalle_Articulo> listdoc_det_art =
+            (from grouping in listdoc_det.GroupBy(x => new Tuple<string, string, string, string>(x.articulo, x.calidad, x.linea, x.categoria))
+             select new Ent_MovDoc_Consulta_Detalle_Articulo
+             {
+                 articulo = grouping.Key.Item1,
+                 calidad = grouping.Key.Item2,
+                 linea = grouping.Key.Item3,
+                 categoria = grouping.Key.Item4,
+                 total =listdoc_det.Where(a => a.articulo == grouping.Key.Item1 && a.calidad == grouping.Key.Item2).Sum(s => s.cantidad),
+                 list_talla = (from det_talla in listdoc_det.Where(a=>a.articulo== grouping.Key.Item1 && a.calidad==grouping.Key.Item2).Select(s=>new {s.talla,s.cantidad})
+                                select new Ent_MovDoc_Consulta_Detalle_Articulo_Talla()
+                                {
+                                talla= det_talla.talla,
+                                cantidad= det_talla.cantidad
+                                }).ToList()
+            }).ToList();
+            /*********************************************+*/
+            if (listdoc_det_art == null)
+            {
+                listdoc_det_art = new List<Ent_MovDoc_Consulta_Detalle_Articulo>();
+                //Session[_session_lista_prom_tipo_excel] = listprom_tipo;
+                Session[_session_lista_consultadoc_mov_det] = listdoc_det_art;
+            }
+            else
+            {
+                //Session[_session_lista_prom_tipo_excel] = listprom_tipo;
+                Session[_session_lista_consultadoc_mov_det] = listdoc_det_art;
+            }
+
+            return PartialView(listdoc_det);// View();
+        }
+        public ActionResult getTableconsdocDetAjax(Ent_jQueryDataTableParams param)
+        {
+            /*verificar si esta null*/
+            if (Session[_session_lista_consultadoc_mov_det] == null)
+            {
+                List<Ent_MovDoc_Consulta_Detalle_Articulo> listdoc_det = new List<Ent_MovDoc_Consulta_Detalle_Articulo>();
+                Session[_session_lista_consultadoc_mov_det] = listdoc_det;
+            }
+            //if (!String.IsNullOrEmpty(dniEliminar))
+            //{
+            //    List<Ent_BataClub_Cupones> listAct = (List<Ent_BataClub_Cupones>)(Session[_session_lista_clientes_cupon]);
+            //    listAct.Remove(listAct.Where(w => w.dniCliente == dniEliminar).FirstOrDefault());
+            //    Session[_session_lista_clientes_cupon] = listAct;
+            //}
+            //Traer registros
+            IQueryable<Ent_MovDoc_Consulta_Detalle_Articulo> membercol = ((List<Ent_MovDoc_Consulta_Detalle_Articulo>)(Session[_session_lista_consultadoc_mov_det])).AsQueryable();
+
+            //Manejador de filtros
+            int totalCount = membercol.Count();
+
+            IEnumerable<Ent_MovDoc_Consulta_Detalle_Articulo> filteredMembers = membercol;
+
+            if (!string.IsNullOrEmpty(param.sSearch))
+            {
+                filteredMembers = membercol
+                    .Where(m =>
+                    m.articulo.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    m.linea.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    m.categoria.ToUpper().Contains(param.sSearch.ToUpper())                    
+                    );
+            }
+
+            //Manejador de orden
+            var displayMembers = filteredMembers
+                .Skip(param.iDisplayStart)
+                .Take(param.iDisplayLength);
+
+            var result = from a in displayMembers
+                         select new
+                         {
+                             a.articulo,
+                             a.calidad,
+                             a.linea,
+                             a.categoria,
+                             a.list_talla,
+                             a.total,
+                             //a.talla,
+                             //a.cantidad,
+                         };
+            //Se devuelven los resultados por json
+            return Json(new
+            {
+                sEcho = param.sEcho,
+                iTotalRecords = totalCount,
+                iTotalDisplayRecords = filteredMembers.Count(),
+                aaData = result
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        #endregion
+
     }
 }

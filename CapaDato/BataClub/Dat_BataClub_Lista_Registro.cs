@@ -14,7 +14,7 @@ namespace CapaDato.BataClub
     {
         public List<Ent_BataClub_Lista_Registro> lista_registro(DateTime fec_ini,DateTime fec_fin,string dni,string correo)
         {
-            string sqlquery = "USP_BATACLUB_CONSULTA_CLIENTES_COPY";
+            string sqlquery = "USP_BATACLUB_CONSULTA_CLIENTES";
             List<Ent_BataClub_Lista_Registro> listar = null;
             DataTable dt = null;
             try
@@ -66,7 +66,7 @@ namespace CapaDato.BataClub
         }
         public bool Modificar_Cliente_Bataclub(Ent_BataClub_Registro cliente , string usuario, ref string mensaje)
         {
-            string sqlquery = "USP_INSERTAR_CLIENTE_BATACLUB_COPY";
+            string sqlquery = "USP_INSERTAR_CLIENTE_BATACLUB";
             bool ret = false;   
             try
             {                

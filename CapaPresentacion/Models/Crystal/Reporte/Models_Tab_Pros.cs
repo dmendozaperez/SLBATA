@@ -9,6 +9,8 @@ namespace CapaPresentacion.Models.Crystal.Reporte
     {
         public int ID { get; set; }
         public string TIENDA          {get;set;}
+        public string TIENDA_DES { get; set; }
+        public string COD_CADENA { get; set; }
         public string SEMANA          {get;set;}
         public string TIPO_VALOR_1    {get;set;}
         public int STK_ACTUAL      {get;set;}
@@ -27,6 +29,15 @@ namespace CapaPresentacion.Models.Crystal.Reporte
         public int SOLES_TALY_ACT  {get;set;}
         public int PRECIO_PROM_ANT {get;set;}
         public int PRECIO_PROM_ACT {get;set;}
+
+        public int ROPA_PRESU_ACT { get; set; }
+        public int ROPA_VENTA_ACT { get; set; }
+        public int ROPA_TO_ACT { get; set; }        
+        public int ROPA_TEST_ACT { get; set; }
+        public int ACCE_PRESU_ACT { get; set; }
+        public int ACCE_VENTA_ACT { get; set; }
+        public int ACCE_TO_ACT { get; set; }
+        public int ACCE_TEST_ACT { get; set; }
 
     }
 }

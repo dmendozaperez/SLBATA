@@ -1,0 +1,295 @@
+﻿@*<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.min.css" />*@
+@*<div class="col-md-9"></div>*@
+<style>
+     .boton-td {
+        padding-top: 3px !important;
+        padding-bottom: 3px !important;
+        width:400px;
+    }
+</style>
+@{ 
+    Layout = null;
+}
+<table id="listaprom" class="table dataTable table-hover table-striped table-responsive">
+    <thead>
+        <tr style="background-color:#359adc; color:#ecf0f1">
+            <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TIPO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </th>
+            <th>CAMPAIGN_ID</th>
+            <th>PROMOTION_ID</th>
+            <th>PROMOTION_NAME</th>
+            <th>TIPO_PROMOCION</th>
+            <th>FEC_INICIO</th>
+            <th>FEC_FIN</th>
+            <th>HORA_INICIO</th>
+            <th>HORA_FIN</th>
+            <th>FEC_CREACION</th>
+            <th>USUARIO_CREACION</th>
+            <th>ESTADO</th>
+            <th>ULTIMA_EXPORTACION</th>
+            <th>UBIC_INCLUIDAS</th>
+            <th>UBIC_EXCLUIDAS</th>
+            <th>SEGMENTO_OBJETIVO</th>
+            <th>PROMO_ACTIVADO</th>
+            <th>EXPORTS</th>
+            <th>ID_OFERTA</th>
+            <th>CODIGO_OFERTA</th>
+            <th>CODIGO_CUPON</th>
+            <th>CANT_CUPON_GEN</th>
+            <th>NAME_OFERTA</th>
+            <th>NOMBRE_PDV</th>
+            <th>TIPO_OFERTA</th>
+            <th>CALIF_INCL</th>
+            <th>CALIF_EXCL</th>
+            <th>AWARD_INCL</th>
+            <th>AWARD_EXCL</th>
+            <th>TIPO_PROMO_PREVISTA</th>
+            <th>SUBTOTAL_MIN</th>
+            <th>SUBTOTAL_MAX</th>
+            <th>IMPORTE_MAX_PREMIO</th>
+            <th>DEAL_ACTIVADO</th>
+            <th>ESTILO_UMBRAL</th>
+            <th>TIPO_UMBRAL</th>
+            <th>UMBRAL</th>
+            <th>TIPO_DESCUENTO</th>
+            <th>VALOR_DESCUENTO</th>
+            <th>CANTIDAD_MAXIMA</th>
+            <th>LIMITE_OFERTA</th>
+            <th>DESCUENTO_PRORRATEADO</th>
+
+
+        </tr>
+
+    </thead>
+    <tbody data-bind="foreach:"></tbody>
+    <tfoot>
+        <tr>
+            <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TIPO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+            <th>CAMPAIGN_ID</th>
+            <th>PROMOTION_ID</th>
+            <th>PROMOTION_NAME</th>
+            <th>TIPO_PROMOCION</th>
+            <th>FEC_INICIO</th>
+            <th>FEC_FIN</th>
+            <th>HORA_INICIO</th>
+            <th>HORA_FIN</th>
+            <th>FEC_CREACION</th>
+            <th>USUARIO_CREACION</th>
+            <th>ESTADO</th>
+            <th>ULTIMA_EXPORTACION</th>
+            <th>UBIC_INCLUIDAS</th>
+            <th>UBIC_EXCLUIDAS</th>
+            <th>SEGMENTO_OBJETIVO</th>
+            <th>PROMO_ACTIVADO</th>
+            <th>EXPORTS</th>
+            <th>ID_OFERTA</th>
+            <th>CODIGO_OFERTA</th>
+            <th>CODIGO_CUPON</th>
+            <th>CANT_CUPON_GEN</th>
+            <th>NAME_OFERTA</th>
+            <th>NOMBRE_PDV</th>
+            <th>TIPO_OFERTA</th>
+    <th>CALIF_INCL</th>
+    <th>CALIF_EXCL</th>
+    <th>AWARD_INCL</th>
+    <th>AWARD_EXCL</th>
+    <th>TIPO_PROMO_PREVISTA</th>
+    <th>SUBTOTAL_MIN</th>
+    <th>SUBTOTAL_MAX</th>
+    <th>IMPORTE_MAX_PREMIO</th>
+    <th>DEAL_ACTIVADO</th>
+    <th>ESTILO_UMBRAL</th>
+    <th>TIPO_UMBRAL</th>
+    <th>UMBRAL</th>
+    <th>TIPO_DESCUENTO</th>
+    <th>VALOR_DESCUENTO</th>
+    <th>CANTIDAD_MAXIMA</th>
+    <th>LIMITE_OFERTA</th>
+    <th>DESCUENTO_PRORRATEADO</th>
+        </tr>
+    </tfoot>
+</table>
+
+
+
+<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p style="font-size:medium" class="text-primary modal-title" id="myModalLabel"><strong class="text-danger" id="descPromocionLista"></strong></p>
+                        <p style="font-size:medium" class="text-primary modal-title" id="myModalLabel"><strong class="text-black" id="descPromociontipo"></strong></p>
+                        <p style="font-size:medium" class="text-primary modal-title" id="myModalLabel"><b>Lista de Promocion-Tipo: &nbsp;</b></p>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <a href="@Url.Action("ListaPromTipoExcel","Orce")"  class="btn btn-success btn-sm"><i class="glyphicon glyphicon-export"></i>&nbsp;&nbsp;Exportar Lista</a>
+                    </div>
+                </div>
+            </div>
+            <div style="font-size:small" class="modal-body" id="modalBody1">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src='https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js'></script>
+<script src='//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js'></script>
+<script src='//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js'></script>
+<script src='//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js'></script>
+<script src='//cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js'></script>
+<script>
+    $(document).ready(function () {
+        $('#listaprom').dataTable({
+            "language": {
+                "url": "../Scripts/DataTables/Spanish.json"
+            },
+            "bProcessing": false,
+            "bServerSide": true,
+            "bAutoWidth": false,
+            "sAjaxSource": '@Url.Action("getpromotion_orce", "Orce")',
+            "bdestroy": true,
+            "start": 0,
+            //"searching": true,
+            "sort": true,
+            "order": [],
+            "bDeferRender": true,
+            "aoColumns": [
+                 {                     
+                     "sWidth": "30%",
+                     "render": function (data, type, full) {
+                         var promotion_id = full.PROMOTION_ID;
+                         var deal_id = full.ID_OFERTA
+                         var promotion_name = full.PROMOTION_NAME;
+                         var botones = ' <td><div class="pull-right"><button title="UBICACIONES INCLUIDAS" class="btn btn-success detalles-tipo" onclick="get_detalle(' + promotion_id + ',' + deal_id + ',\'' + promotion_name + '\',1,\'UBICACIONES INCLUIDAS\');" data-tipo="1"   ><span style="font-size:15px; font-weight:bold">1</span></button>&nbsp;<button title="UBICACIONES EXCLUIDAS" class="btn btn-success" onclick="get_detalle(' + promotion_id + ',' + deal_id + ',' + '\'' + promotion_name + '\',2,\'UBICACIONES EXCLUIDAS\');" data-id="1" data-modal="" data-toggle="modal"><span style="font-size:15px; font-weight:bold">2</span></button> &nbsp;<button title="ARTICULOS CALIFICADORES INCLUIDOS" class="btn btn-success" onclick="get_detalle(' + promotion_id + ',' + deal_id + ',' + '\'' + promotion_name + '\',3,\'ARTICULOS CALIFICADORES INCLUIDOS\');" data-id="4" data-modal="" data-toggle="modal"><span style="font-size:15px; font-weight:bold">3</span></button> &nbsp;<button title="ARTICULOS CALIFICADORES EXCLUIDOS" class="btn btn-success" onclick="get_detalle(' + promotion_id + ',' + deal_id + ',' + '\'' + promotion_name + '\',4,\'ARTICULOS CALIFICADORES EXCLUIDOS\');" data-id="0" data-modal="" data-toggle="modal"><span style="font-size:15px; font-weight:bold">4</span></button> &nbsp;<button title="ARTICULOS PREMIO INCLUIDOS" class="btn btn-success" onclick="get_detalle(' + promotion_id + ',' + deal_id + ',' + '\'' + promotion_name + '\',5,\'ARTICULOS PREMIO INCLUIDOS\');" data-id="0" data-modal="" data-toggle="modal"><span style="font-size:15px; font-weight:bold">5</span></button> &nbsp;<button title="ARTICULOS PREMIO EXCLUIDOS" class="btn btn-success" onclick="get_detalle(' + promotion_id + ',' + deal_id + ',' + '\'' + promotion_name + '\',6,\'ARTICULOS PREMIO EXCLUIDOS\');" data-id="1" data-modal="" data-toggle="modal"><span style="font-size:14px; font-weight:bold">6</span></button> &nbsp;</div></td>';
+                         return botones;                        
+                     }, "sClass": "boton-td"
+                 },
+                    { "sName": "CAMPAIGN_ID", "mData": "CAMPAIGN_ID" },
+                    { "sName": "PROMOTION_ID", "mData": "PROMOTION_ID" },
+                    { "sName": "PROMOTION_NAME", "mData": "PROMOTION_NAME" },
+                    { "sName": "TIPO_PROMOCION", "mData": "TIPO_PROMOCION" },
+                    { "sName": "FEC_INICIO", "mData": "FEC_INICIO" },
+                    { "sName": "FEC_FIN", "mData": "FEC_FIN" },
+                    { "sName": "HORA_INICIO", "mData": "HORA_INICIO" },
+                    { "sName": "HORA_FIN", "mData": "HORA_FIN" },
+                    { "sName": "FEC_CREACION", "mData": "FEC_CREACION" },
+                    { "sName": "USUARIO_CREACION", "mData": "USUARIO_CREACION" },
+                    { "sName": "ESTADO", "mData": "ESTADO" },
+                    { "sName": "ULTIMA_EXPORTACION", "mData": "ULTIMA_EXPORTACION" },
+                    { "sName": "UBIC_INCLUIDAS", "mData": "UBIC_INCLUIDAS" },
+                    { "sName": "UBIC_EXCLUIDAS", "mData": "UBIC_EXCLUIDAS" },
+                    { "sName": "SEGMENTO_OBJETIVO", "mData": "SEGMENTO_OBJETIVO" },
+                    { "sName": "PROMO_ACTIVADO", "mData": "PROMO_ACTIVADO" },
+                    { "sName": "EXPORTS", "mData": "EXPORTS" },
+                    { "sName": "ID_OFERTA", "mData": "ID_OFERTA" },
+                    { "sName": "CODIGO_OFERTA", "mData": "CODIGO_OFERTA" },
+                    { "sName": "CODIGO_CUPON", "mData": "CODIGO_CUPON" },
+                    { "sName": "CANT_CUPON_GEN", "mData": "CANT_CUPON_GEN" },
+                    { "sName": "NAME_OFERTA", "mData": "NAME_OFERTA" },
+                    { "sName": "NOMBRE_PDV", "mData": "NOMBRE_PDV" },
+                    { "sName": "TIPO_OFERTA", "mData": "TIPO_OFERTA" },
+                    { "sName": "CALIF_INCL", "mData": "CALIF_INCL" },
+                    { "sName": "CALIF_EXCL", "mData": "CALIF_EXCL" },
+                    { "sName": "AWARD_INCL", "mData": "AWARD_INCL" },
+                    { "sName": "AWARD_EXCL", "mData": "AWARD_EXCL" },
+                    { "sName": "TIPO_PROMO_PREVISTA", "mData": "TIPO_PROMO_PREVISTA" },
+                    { "sName": "SUBTOTAL_MIN", "mData": "SUBTOTAL_MIN" },
+                    { "sName": "SUBTOTAL_MAX", "mData": "SUBTOTAL_MAX" },
+                    { "sName": "IMPORTE_MAX_PREMIO", "mData": "IMPORTE_MAX_PREMIO" },
+                    { "sName": "DEAL_ACTIVADO", "mData": "DEAL_ACTIVADO" },
+                    { "sName": "ESTILO_UMBRAL", "mData": "ESTILO_UMBRAL" },
+                    { "sName": "TIPO_UMBRAL", "mData": "TIPO_UMBRAL" },
+                    { "sName": "UMBRAL", "mData": "UMBRAL" },
+                    { "sName": "TIPO_DESCUENTO", "mData": "TIPO_DESCUENTO" },
+                    { "sName": "VALOR_DESCUENTO", "mData": "VALOR_DESCUENTO" },
+                    { "sName": "CANTIDAD_MAXIMA", "mData": "CANTIDAD_MAXIMA" },
+                    { "sName": "LIMITE_OFERTA", "mData": "LIMITE_OFERTA" },
+                    { "sName": "DESCUENTO_PRORRATEADO", "mData": "DESCUENTO_PRORRATEADO" }
+
+            ]
+
+        });
+
+        //var table = $('#listaprom').DataTable();
+
+        //$('#listaprom tbody').on('click', 'tr', function () {
+        //    var data = table.row(this).data();
+        //    alert('You clicked on ' + data.CAMPAIGN_ID + '\'s row');
+        //});
+
+    });
+
+
+   
+
+
+    function get_detalle(promotion_id, deal_id, promotion_name, tipo,tipodes)
+    {
+        waitingDialog.show('Este proceso, puede tardar unos minutos.', {
+            headerText: 'Espere un momento por favor.',
+            headerClass: 'content2',
+        });
+        var ControllerUrl = "@Url.Action("getListaPromOrceTipo", "Orce")";
+        $.ajax({
+            type: "GET",
+            url: ControllerUrl,
+            contentType: "application/json; charset=utf-8",
+            data: { promotion_id: promotion_id, deal_id: deal_id, tipo: tipo },
+            datatype: "json",
+            cache: true,
+            success: function (data) {
+
+                var options = { "backdrop": "static", keyboard: true };
+                //var descfecha = ' - ' + fecha_des + ''
+                //var descTienda = 'Detalle Tienda: ' + tienda_origen.substring(2, tienda_origen.length) + '' + descfecha
+
+                //$('#myModalLabel').html(descTienda);
+                $("#descPromocionLista").html(promotion_name);
+                $("#descPromociontipo").html(tipodes + ' - ' + tipo);
+                
+
+                $('#modalBody1').html(data);
+                $('#myModal1').modal(options);
+                waitingDialog.hide();
+               
+                $('#tabPromtipo').dataTable({
+                    "language": {
+                        "url": "../Scripts/DataTables/Spanish.json"
+                    },
+                    "bProcessing": true,
+                    "bServerSide": true,
+                    "bAutoWidth": false,
+                    "sAjaxSource": '@Url.Action("getTablePromTipoAjax", "Orce")',
+                    "fnServerParams": function (aoData) {
+                    },
+                    "bdestroy": true,
+                    "start": 0,
+                    //"oSearch": { "sSearch": "" },
+                    "order": [0, "asc"],
+                    "bDeferRender": true,
+                    "aoColumns": [
+                             { "sName": "promotion_id", "mData": "promotion_id" },
+                             { "sName": "deal_id", "mData": "deal_id" },
+                             { "sName": "tipo", "mData": "tipo" },
+                             { "sName": "attribute_name", "mData": "attribute_name" },
+                             { "sName": "attribute_value", "mData": "attribute_value" },
+                    ],
+                    //dom: 'Bfrtip',
+                    //buttons:
+                    //    [
+                    //]
+                });
+            },
+            error: function (xhr) {
+                waitingDialog.hide();
+                toastr.error(xhr, 'Mensaje');
+            }
+        });
+    }
+
+</script>

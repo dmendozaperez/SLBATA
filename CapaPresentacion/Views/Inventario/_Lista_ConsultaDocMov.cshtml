@@ -1,0 +1,341 @@
+﻿@*<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.min.css" />*@
+@*<div class="col-md-9"></div>*@
+<style>
+    .boton-td {
+        padding-top: 3px !important;
+        padding-bottom: 3px !important;
+        width: 400px;
+    }
+</style>
+@{
+    Layout = null;
+}
+<table id="listadoc" class="table dataTable table-hover table-striped table-responsive">
+    <thead>
+        <tr style="background-color:#3d566e; color:#ecf0f1;padding-top: 0px;padding-bottom: 0px;">
+            <th>TIENDA</th>
+            <th>TIPO_TRANSAC</th>
+            <th>TIPO_DOC</th>
+            <th>NUM_DOC</th>
+            <th>FECHA_DOC</th>         
+            <th>CANT.</th>
+            <th>TDA_ORI</th>
+            <th>TDA_DES</th>
+            <th>DETALLES</th>
+        </tr>
+
+    </thead>
+    <tbody data-bind="foreach:"></tbody>
+    <tfoot>
+        <tr>
+            <th>TIENDA</th>
+            <th>TIPO_TRANSAC</th>
+            <th>TIPO_DOC</th>
+            <th>NUM_DOC</th>
+            <th>FECHA_DOC</th>          
+            <th>CANT.</th>
+            <th>TDA_ORI</th>
+            <th>TDA_DES</th>
+            <th>DETALLES</th>
+        </tr>
+    </tfoot>
+</table>
+
+
+
+<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="row">
+                    <div class="col-md-9">
+                        <p style="font-size:medium" class="text-primary modal-title" id="myModalLabel"><b>DETALLES DEL DOCUMENTO: &nbsp;</b></p>
+                        <p style="font-size:small" class="text-primary modal-title" id="myModalLabel"><strong class="text-danger" id="tienda_str"></strong></p>
+                        <p style="font-size:small" class="text-primary modal-title" id="myModalLabel"><strong class="text-black" id="doc_str"></strong></p>                       
+                        <p style="font-size:small" class="text-primary modal-title" id="myModalLabel"><strong class="text-blue" id="cantidad"></strong></p>                       
+                    </div>                   
+                </div>
+            </div>
+            <div style="font-size:small" class="modal-body" id="modalBody1">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src='https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js'></script>
+<script src='//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js'></script>
+<script src='//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js'></script>
+<script src='//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js'></script>
+<script src='//cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js'></script>
+<script>
+    $(document).ready(function () {
+        $('#listadoc').dataTable({
+            "language": {
+                "url": "../Scripts/DataTables/Spanish.json"
+            },
+            "bProcessing": false,
+            "bServerSide": true,
+            "bAutoWidth": false,
+            "sAjaxSource": '@Url.Action("getconsultadocmov", "Inventario")',
+            "bdestroy": true,
+            "start": 0,
+            "targets": [2],
+            "orderable": false,
+            "columnDefs": [{
+                "targets": [0,8],
+                "orderable": false
+            }],
+            //"searching": true,
+            //"sort": true,
+            "order": [],
+            "bDeferRender": true,
+            "aoColumns": [
+                    { "sName": "tienda", "mData": "tienda" },
+                    { "sName": "tipo_transac", "mData": "tipo_transac" },
+                    { "sName": "tipo_doc", "mData": "tipo_doc" },
+                    { "sName": "num_doc", "mData": "num_doc" },
+                    { "sName": "fecha_doc", "mData": "fecha_doc" },
+                    { "sName": "cant", "mData": "cant" },
+                    { "sName": "tda_ori", "mData": "tda_ori" },
+                    { "sName": "tda_des", "mData": "tda_des" },
+                     {
+                         "render": function (data, type, full) {
+                            
+                                var mc_id = full.mc_id;
+                                var tienda = full.tienda;
+                                var tipotransac = full.tipo_transac;
+                                var tipo_doc = full.tipo_doc;
+                                var num_doc = full.num_doc;
+                                var cant = full.cant;
+                                return '<button title="Ver Detalles del Documento." class="btn btn-default btn-sm detalles-cupon"  onclick="get_detalle(' + mc_id + ',\'' + tienda + '\',\'' + tipotransac + '\',\'' + tipo_doc + '\',\'' + num_doc + '\',' + cant + ');" data-cupon="XXXX"  data-cliente="YYYYYY"><i class="glyphicon glyphicon-list"></i></button>';
+                            
+                         }, "class": "boton-td"
+                     }
+            ]
+
+        });
+    
+
+    });
+
+
+
+
+
+    function get_detalle(mc_id, tienda, tipotransac, tipo_doc, num_doc, cant)
+    {
+        waitingDialog.show('Este proceso, puede tardar unos minutos.', {
+            headerText: 'Espere un momento por favor.',
+            headerClass: 'content2',
+        });
+        var ControllerUrl = "@Url.Action("getListadocmov_det", "Inventario")";
+        $.ajax({
+            type: "GET",
+            url: ControllerUrl,
+            contentType: "application/json; charset=utf-8",
+            data: { mc_id: mc_id},
+            datatype: "json",
+            cache: true,
+            success: function (data) {
+
+                var options = { "backdrop": "static", keyboard: true };
+                //var descfecha = ' - ' + fecha_des + ''
+                //var descTienda = 'Detalle Tienda: ' + tienda_origen.substring(2, tienda_origen.length) + '' + descfecha
+
+                $("#tienda_str").html('TIENDA:' + tienda);
+                $("#doc_str").html(tipotransac + '-' + tipo_doc + '-' + num_doc);
+                $("#cantidad").html('TOTAL CANTIDAD: ' +cant );
+
+               // $('#tienda').html('Tienda:' + tienda);
+               // $('#numdoc').html(tipotransac + '-' + tipo_doc + '-' + num_doc);
+                //$("#descPromociontipo").html(tipodes + ' - ' + tipo);
+
+
+                $('#modalBody1').html(data);
+                $('#myModal1').modal(options);
+                waitingDialog.hide();
+
+                $('#tabPromtipo').dataTable({
+                    "language": {
+                        "url": "../Scripts/DataTables/Spanish.json"
+                    },
+                    "bProcessing": true,
+                    "bServerSide": true,
+                    "bAutoWidth": false,
+                    "sAjaxSource": '@Url.Action("getTableconsdocDetAjax", "Inventario")',
+                    "fnServerParams": function (aoData) {
+                    },
+                    "bdestroy": true,
+                    "start": 0,
+                    "sort": false,
+                    //"oSearch": { "sSearch": "" },
+                    "order": [0, "asc"],
+                    //"oSearch":false,
+                    "bDeferRender": true,
+                    "aoColumns": [
+                             { "sName": "articulo", "mData": "articulo" },
+                             { "sName": "calidad", "mData": "calidad" },
+                             { "sName": "linea", "mData": "linea" },
+                             { "sName": "categoria", "mData": "categoria" },
+                             //{ "sName": "talla", "mData": "talla" },
+                             //{ "sName": "cantidad", "mData": "cantidad" },
+                               {
+                                   "sWidth": "30%",
+                                   "render": function (data, type, full) {
+                                       //var promotion_id = "1";
+                                       //var deal_id = "2"
+                                       //var promotion_name = "3";
+                                       var botones_head = '';
+                                       var botones_cant = '';
+                                       var lista = full.list_talla;
+                                       
+                                       //botones_head = '<div class="col-sm-1" style="width:100%;margin-top:2px;margin-bottom:2px;text-align:center;">' + 
+                                       //          '<table>' +
+                                       //          '<tbody>'+
+                                       //          '<tr>' +
+                                       //          '<td>' +
+                                       //          '<div style="margin-top:2px;margin-right:2px;">' +
+                                       //          '<button class="btn btn-white btn-xs" title="Tallas" style="width:100%;">T:</button>' +
+                                       //          '</div>' +
+                                       //          '</td>' + 
+                                       //          '<td>' + 
+                                       //          '<div style="margin-top:2px;margin-right:2px;">'+
+                                       //          '<button class="btn btn-success btn-xs" style="width:100%;">Total</button>' +
+                                       //          '</div>' +
+                                       //          '</td>' +
+                                       //          '<td>' +
+                                       //          '<div style="margin-top:2px;margin-right:2px;">' +
+                                       //          '<button class="btn btn-primary btn-xs" style="width:100%;" title="Talla" data-id="codTienda" data-tda="desTiendaS" data-modal="codTalla" data-art="codArticulo">34</button>' +
+                                       //          '</div>' +
+                                       //          '</td>' +
+                                       //          '<td>' +
+                                       //          '<div style="margin-top:2px;margin-right:2px;">'+
+                                       //          '<button class="btn btn-primary btn-xs" style="width:100%;" title="Talla" data-id="codTienda" data-tda="desTiendaS" data-modal="codTalla" data-art="codArticulo">35</button>' + 
+                                       //          '</div>' +
+                                       //          '</td>' + 
+                                       //          '<td>'+
+                                       //          '<div style="margin-top:2px;margin-right:2px;">'+
+                                       //          '<button class="btn btn-primary btn-xs" style="width:100%;" title="Talla" data-id="codTienda" data-tda="desTiendaS" data-modal="codTalla" data-art="codArticulo">36</button>' +
+                                       //          '</div>' +
+                                       //          '</td>' +
+                                       //          '<td>' + 
+                                       //          '<div style="margin-top:2px;margin-right:2px;">' +
+                                       //          '<button class="btn btn-primary btn-xs" style="width:100%;" title="Talla" data-id="codTienda" data-tda="desTiendaS" data-modal="codTalla" data-art="codArticulo">37</button>' +
+                                       //          '</div>' +
+                                       //          '</td>' +
+                                       //          '</tr>' +
+                                       //          '<tr>' +
+                                       //          '<td>' +
+                                       //          '<div style="margin-top:2px;margin-right:2px;">'+
+                                       //          '<button title="Cantidad" class="btn btn-white btn-xs" style="width:100%;">C:</button>'+
+                                       //          '</div>'+
+                                       //          '</td>'+
+                                       //          '<td>'+
+                                       //          '<div style="margin-top:2px;margin-right:2px;">'+
+                                       //          '<button class="btn btn-success btn-xs" style="width:100%;">10</button>' +
+                                       //          '</div>' +
+                                       //          '</td>' +
+                                       //          '<td>' +
+                                       //          '<div style="margin-top:2px;margin-right:2px;">'+
+                                       //          '<button class="btn btn-info btn-xs" style="width:100%;text-align:center;">2</button>'+
+                                       //          '</div>'+
+                                       //          '</td>'+
+                                       //          '<td>'+
+                                       //          '<div style="margin-top:2px;margin-right:2px;">'+
+                                       //          '<button class="btn btn-info btn-xs" style="width:100%;text-align:center;">3</button>'+
+                                       //          '</div>'+
+                                       //          '</td>' +
+                                       //          '<td>' +
+                                       //          '<div style="margin-top:2px;margin-right:2px;">' +
+                                       //          '<button class="btn btn-info btn-xs" style="width:100%;text-align:center;">3</button>'+
+                                       //          '</div>'+
+                                       //          '</td>'+
+                                       //          '<td>' +
+                                       //          '<div style="margin-top:2px;margin-right:2px;">'+
+                                       //          '<button class="btn btn-info btn-xs" style="width:100%;text-align:center;">2</button>'+
+                                       //          '</div>'+
+                                       //          '</td>'+
+                                       //          '</tr>'+
+                                       //          '</tbody>'+
+                                       //          '</table>'+
+                                       //          '</div>';
+
+                                       botones_head = '<div class="col-sm-1" style="width:100%;margin-top:2px;margin-bottom:2px;text-align:center;">' +
+                                                 '<table>' +
+                                                 '<tbody>' +
+                                                 '<tr>' +
+                                                 '<td>' +
+                                                 '<div style="margin-top:2px;margin-right:2px;">' +
+                                                 '<button class="btn btn-white btn-xs" title="Tallas" style="width:100%;">T:</button>' +
+                                                 '</div>' +
+                                                 '</td>' +
+                                                 '<td>' +
+                                                 '<div style="margin-top:2px;margin-right:2px;">' +
+                                                 '<button class="btn btn-success btn-xs" style="width:100%;">Total</button>' +
+                                                 '</div>' +
+                                                 '</td>';
+                                                 //'<td>';
+                                                 //'</tr>' +
+                                                 //'</tbody>' +
+                                                 //'</table>' +
+                                       //'</div>';
+
+                                       botones_cant ='<tr>' +
+                                                     '<td>' +
+                                                     '<div style="margin-top:2px;margin-right:2px;">'+
+                                                     '<button title="Cantidad" class="btn btn-white btn-xs" style="width:100%;">C:</button>'+
+                                                     '</div>'+
+                                                     '</td>';
+                                       botones_cant +='<td>' +
+                                                      '<div style="margin-top:2px;margin-right:2px;">' +
+                                                      '<button class="btn btn-success btn-xs" style="width:100%;">' + full.total + '</button>' +
+                                                      '</div>' +
+                                                      '</td>';
+
+                                       lista.forEach(function(entry) {
+                                           //  alert(entry.talla);
+                                           botones_head += '<td>' +
+                                                 '<div style="margin-top:2px;margin-right:2px;">' +
+                                                 '<button class="btn btn-primary btn-xs" style="width:100%;" title="Talla" data-id="codTienda" data-tda="desTiendaS" data-modal="codTalla" data-art="codArticulo">' + entry.talla + '</button>' +
+                                                 '</div>' +
+                                                 '</td>';
+                                           botones_cant += '<td>' +
+                                                           '<div style="margin-top:2px;margin-right:2px;">' +
+                                                           '<button class="btn btn-info btn-xs" style="width:100%;text-align:center;">' + entry.cantidad + '</button>' +
+                                                           '</div>' +
+                                                           '</td>';
+                                           //botones_cant += '';
+                                           //botones += '<td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-primary btn-xs"  style="width:100%;" title="Talla"  data-id="codTienda" data-tda="desTiendaS" data-modal="codTalla" data-art="codArticulo"  >2</button></div></td>';
+                                       });
+
+                                       botones_head += botones_cant + '</tr></tr>' +
+                                                '</tbody>' +
+                                                '</table>' +
+                                                '</div>';
+                                       
+                                       //botones += '<td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-info btn-xs" style="width:100%;text-align:center;">variableCantidad</button></div></td>';
+
+                                       //var botones = ' <td><div class="pull-right"><button title="UBICACIONES INCLUIDAS" class="btn btn-success detalles-tipo" onclick="get_detalle(' + promotion_id + ',' + deal_id + ',\'' + promotion_name + '\',1,\'UBICACIONES INCLUIDAS\');" data-tipo="1"   ><span style="font-size:15px; font-weight:bold">1</span></button>&nbsp;<button title="UBICACIONES EXCLUIDAS" class="btn btn-success" onclick="get_detalle(' + promotion_id + ',' + deal_id + ',' + '\'' + promotion_name + '\',2,\'UBICACIONES EXCLUIDAS\');" data-id="1" data-modal="" data-toggle="modal"><span style="font-size:15px; font-weight:bold">2</span></button> &nbsp;<button title="ARTICULOS CALIFICADORES INCLUIDOS" class="btn btn-success" onclick="get_detalle(' + promotion_id + ',' + deal_id + ',' + '\'' + promotion_name + '\',3,\'ARTICULOS CALIFICADORES INCLUIDOS\');" data-id="4" data-modal="" data-toggle="modal"><span style="font-size:15px; font-weight:bold">3</span></button> &nbsp;<button title="ARTICULOS CALIFICADORES EXCLUIDOS" class="btn btn-success" onclick="get_detalle(' + promotion_id + ',' + deal_id + ',' + '\'' + promotion_name + '\',4,\'ARTICULOS CALIFICADORES EXCLUIDOS\');" data-id="0" data-modal="" data-toggle="modal"><span style="font-size:15px; font-weight:bold">4</span></button> &nbsp;<button title="ARTICULOS PREMIO INCLUIDOS" class="btn btn-success" onclick="get_detalle(' + promotion_id + ',' + deal_id + ',' + '\'' + promotion_name + '\',5,\'ARTICULOS PREMIO INCLUIDOS\');" data-id="0" data-modal="" data-toggle="modal"><span style="font-size:15px; font-weight:bold">5</span></button> &nbsp;<button title="ARTICULOS PREMIO EXCLUIDOS" class="btn btn-success" onclick="get_detalle(' + promotion_id + ',' + deal_id + ',' + '\'' + promotion_name + '\',6,\'ARTICULOS PREMIO EXCLUIDOS\');" data-id="1" data-modal="" data-toggle="modal"><span style="font-size:14px; font-weight:bold">6</span></button> &nbsp;</div></td>';
+                                       return botones_head;
+                                   },
+                                   //"sClass": "boton-td"
+                               },
+                    ],
+                    dom: 'Bfrtip',
+                    buttons:
+                        [
+                    ]
+                });
+            },
+            error: function (xhr) {
+                waitingDialog.hide();
+                toastr.error(xhr, 'Mensaje');
+            }
+        });
+    }
+
+</script>

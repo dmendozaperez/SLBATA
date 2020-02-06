@@ -386,6 +386,8 @@ namespace Data.Crystal.Reporte
                                          select new Models_Tab_Pros()
                                          {
                                              ID = Convert.ToInt32( dr["ID"].ToString()),
+                                             TIENDA_DES= dr["TIENDA_DES"].ToString(),
+                                             COD_CADENA = dr["COD_CADENA"].ToString(),
                                              TIENDA = dr["TIENDA"].ToString(),
                                              SEMANA = dr["SEMANA"].ToString(),
                                              TIPO_VALOR_1 = dr["TIPO_VALOR_1"].ToString(),
@@ -404,7 +406,17 @@ namespace Data.Crystal.Reporte
                                              SOLES_TEST_ACT = Convert.ToInt32(dr["SOLES_TEST_ACT"]),
                                              SOLES_TALY_ACT = Convert.ToInt32(dr["SOLES_TALY_ACT"]),
                                              PRECIO_PROM_ANT = Convert.ToInt32(dr["PRECIO_PROM_ANT"]),
-                                             PRECIO_PROM_ACT = Convert.ToInt32(dr["PRECIO_PROM_ACT"])
+                                             PRECIO_PROM_ACT = Convert.ToInt32(dr["PRECIO_PROM_ACT"]),
+
+                                             ROPA_PRESU_ACT= Convert.ToInt32(dr["ROPA_PRESU_ACT"]),
+                                             ROPA_VENTA_ACT = Convert.ToInt32(dr["ROPA_VENTA_ACT"]),
+                                             ROPA_TO_ACT = Convert.ToInt32(dr["ROPA_TO_ACT"]),
+                                             ROPA_TEST_ACT = Convert.ToInt32(dr["ROPA_TEST_ACT"]),
+                                             ACCE_PRESU_ACT = Convert.ToInt32(dr["ACCE_PRESU_ACT"]),
+                                             ACCE_VENTA_ACT = Convert.ToInt32(dr["ACCE_VENTA_ACT"]),
+                                             ACCE_TO_ACT = Convert.ToInt32(dr["ACCE_TO_ACT"]),
+                                             ACCE_TEST_ACT = Convert.ToInt32(dr["ACCE_TEST_ACT"]),
+
                                          }).ToList();
                             }
                         }

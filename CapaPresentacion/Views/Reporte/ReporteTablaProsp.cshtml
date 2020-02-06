@@ -91,6 +91,9 @@
 
 <script src="~/Scripts/BI.js"></script>
 <script>
+    $(document).ready(function () {
+        $("body").toggleClass('sidebar-collapse');
+    });
     function MostrarReporte(e) {
 
         var TeamDetailPostBackURL = "@Url.Action("ShowGenericReportTablaPropInNewWin", "Reporte")";

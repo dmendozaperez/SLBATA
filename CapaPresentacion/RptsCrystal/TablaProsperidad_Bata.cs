@@ -16,14 +16,14 @@ namespace CapaPresentacion.RptsCrystal {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class TablaProsperidad : ReportClass {
+    public class TablaProsperidad_Bata : ReportClass {
         
-        public TablaProsperidad() {
+        public TablaProsperidad_Bata() {
         }
         
         public override string ResourceName {
             get {
-                return "TablaProsperidad.rpt";
+                return "TablaProsperidad_Bata.rpt";
             }
             set {
                 // Do nothing
@@ -41,7 +41,7 @@ namespace CapaPresentacion.RptsCrystal {
         
         public override string FullResourceName {
             get {
-                return "CapaPresentacion.RptsCrystal.TablaProsperidad.rpt";
+                return "CapaPresentacion.RptsCrystal.TablaProsperidad_Bata.rpt";
             }
             set {
                 // Do nothing
@@ -98,9 +98,9 @@ namespace CapaPresentacion.RptsCrystal {
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedTablaProsperidad : Component, ICachedReport {
+    public class CachedTablaProsperidad_Bata : Component, ICachedReport {
         
-        public CachedTablaProsperidad() {
+        public CachedTablaProsperidad_Bata() {
         }
         
         [Browsable(false)]
@@ -137,7 +137,7 @@ namespace CapaPresentacion.RptsCrystal {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            TablaProsperidad rpt = new TablaProsperidad();
+            TablaProsperidad_Bata rpt = new TablaProsperidad_Bata();
             rpt.Site = this.Site;
             return rpt;
         }
