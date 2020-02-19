@@ -118,6 +118,14 @@
         </div>        
     </div>
     <div class="row">
+        <div class="col-sm-2">
+            <label for="dwCate">Semanas de ingreso a evaluar</label>
+            <div class="form-group">
+                <div class="form-group">
+                    <input name="txtSemIng" type="number" id="txtSemIng" min="0" value="0" style="width:100%" autofocus class="form-control" />
+                </div>
+            </div>
+        </div>
         <div class="col-sm-3">
             <label for=""></label>
             <div class="form-group">
@@ -263,6 +271,7 @@
         var stkSMin = $('#txtStockMin').val();
         var stkSMax = $('#txtStockMax').val();
         var strestado = $('#txtEstado').val();
+        var semIng = $('#txtSemIng').val();
         var grupo = ($("#dwGrupo option:not(:selected)").length == 0 && $("#dwGrupo > option").length > 1 ? "0" : $('#dwGrupo').val());// $('#dwGrupo').val();
         var tipo = $('#dwTipo').val();
 
@@ -283,6 +292,7 @@
         if (semana == '' || semana == null) { semana = '0' };
         if (stkSMin == '' || stkSMin == null) { stkSMin = '0' };
         if (stkSMax == '' || stkSMax == null) { stkSMax = '0' };
+        if (semIng == '' || semIng == null) { semIng = '0' };
         if (tda == '' || tda == null) { tda = '0' };
         if(coddis != '-1'){ coddis = coddis.toString();}
         //if(tda != '-1'){ tda = tda.toString();}
@@ -304,7 +314,7 @@
                 url:TeamDetailPostBackURL,
                 dataType: 'json',
                 type: 'POST',
-                data: { cod_cadena: cadena, cod_dis:coddis , cod_tda: tda, nsemana: semana, maxpares: stkSMax, estado: strestado, grupo: grupo, categoria: cate, tipo: tipo, resumen:resumen,minpares : stkSMin , calidad : calidad },
+                data: { cod_cadena: cadena, cod_dis:coddis , cod_tda: tda, nsemana: semana, maxpares: stkSMax, estado: strestado, grupo: grupo, categoria: cate, tipo: tipo, resumen:resumen,minpares : stkSMin , calidad : calidad , semIng : semIng},
                 
                 success: function (data) {
                     //alert('ok');

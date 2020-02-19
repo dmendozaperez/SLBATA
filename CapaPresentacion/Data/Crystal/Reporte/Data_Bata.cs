@@ -13,7 +13,7 @@ namespace Data.Crystal.Reporte
 {
     public class Data_Bata
     {
-        public List<Models_Art_Sin_Mov> list_art_sin_mov(string cadena,string cod_dis, string tienda,Int32 nsemana,Int32 maxpares, string estado, string grupo, string categoria, string tipo , Int32 minpares,string calidad)
+        public List<Models_Art_Sin_Mov> list_art_sin_mov(string cadena,string cod_dis, string tienda,Int32 nsemana,Int32 maxpares, string estado, string grupo, string categoria, string tipo , Int32 minpares,string calidad , string semIng)
         {
             string sqlquery = "USP_XSTORE_REPORTE_ART_SIN_MOVIMIENTOS";
             List<Models_Art_Sin_Mov> lista = null;
@@ -39,7 +39,8 @@ namespace Data.Crystal.Reporte
                             cmd.Parameters.AddWithValue("@Tipo", tipo);
                             cmd.Parameters.AddWithValue("@nstockmin", minpares);
                             cmd.Parameters.AddWithValue("@nstockmax", maxpares); 
-                            cmd.Parameters.AddWithValue("@Calidad", calidad); 
+                            cmd.Parameters.AddWithValue("@Calidad", calidad);
+                            cmd.Parameters.AddWithValue("@nSemanasIng", semIng);
                             using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                             {
                                 dt = new DataTable();
@@ -433,5 +434,121 @@ namespace Data.Crystal.Reporte
             }
             return lista;
         }
+
+        internal List<Key_Category_Performance> dataKey_Category_Performance(string tienda, string anio, string tipo)
+        {
+            string sqlquery = "USP_XSTORE_KEY_CATEGORY_PERFORMANCE";
+            List<Key_Category_Performance> lista = null;
+            DataTable dt = null;
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+                    try
+                    {
+                        using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                        {
+                            cmd.CommandTimeout = 0;
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.AddWithValue("@ANIO", anio);
+                            cmd.Parameters.AddWithValue("@COD_TDA", tienda);
+                            cmd.Parameters.AddWithValue("@PARAM", tipo);
+                            using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                            {
+                                dt = new DataTable();
+                                da.Fill(dt);
+                                lista = new List<Key_Category_Performance>();
+                                lista = (from DataRow dr in dt.Rows
+                                         select new Key_Category_Performance()
+                                         {
+                                           ID            = Convert.ToDecimal(dr["ID"]), //   decimal 
+                                           TIENDA        = Convert.ToString(dr["TIENDA"]),//   string 
+                                           SEMANA        = Convert.ToString(dr["SEMANA"]),//   string 
+                                           MEN_PARES_ANT = Convert.ToInt32(dr["MEN_PARES_ANT"]),//   int    
+                                           MEN_SOLES_ANT = Convert.ToInt32(dr["MEN_SOLES_ANT"]),//   int    
+                                           MEN_STOCK_ANT = Convert.ToInt32(dr["MEN_STOCK_ANT"]),//   int    
+                                           MEN_PARES_ACT = Convert.ToInt32(dr["MEN_PARES_ACT"]),//   int    
+                                           MEN_SOLES_ACT = Convert.ToInt32(dr["MEN_SOLES_ACT"]),//   int    
+                                           MEN_STOCK_ACT = Convert.ToInt32(dr["MEN_STOCK_ACT"]),//   int    
+                                           MEN_CWS       = Convert.ToInt32(dr["MEN_CWS"]),//   int    
+                                           WOM_PARES_ANT = Convert.ToInt32(dr["WOM_PARES_ANT"]),//   int    
+                                           WOM_SOLES_ANT = Convert.ToInt32(dr["WOM_SOLES_ANT"]),//   int    
+                                           WOM_STOCK_ANT = Convert.ToInt32(dr["WOM_STOCK_ANT"]),//   int    
+                                           WOM_PARES_ACT = Convert.ToInt32(dr["WOM_PARES_ACT"]),//   int    
+                                           WOM_SOLES_ACT = Convert.ToInt32(dr["WOM_SOLES_ACT"]),//   int    
+                                           WOM_STOCK_ACT = Convert.ToInt32(dr["WOM_STOCK_ACT"]),//   int    
+                                           WOM_CWS       = Convert.ToInt32(dr["WOM_CWS"]),//   int    
+                                           SCH_PARES_ANT = Convert.ToInt32(dr["SCH_PARES_ANT"]),//   int    
+                                           SCH_SOLES_ANT = Convert.ToInt32(dr["SCH_SOLES_ANT"]),//   int    
+                                           SCH_STOCK_ANT = Convert.ToInt32(dr["SCH_STOCK_ANT"]),//   int    
+                                           SCH_PARES_ACT = Convert.ToInt32(dr["SCH_PARES_ACT"]),//   int    
+                                           SCH_SOLES_ACT = Convert.ToInt32(dr["SCH_SOLES_ACT"]),//   int    
+                                           SCH_STOCK_ACT = Convert.ToInt32(dr["SCH_STOCK_ACT"]),//   int    
+                                           SCH_CWS       = Convert.ToInt32(dr["SCH_CWS"]),//   int    
+                                           KID_PARES_ANT = Convert.ToInt32(dr["KID_PARES_ANT"]),//   int    
+                                           KID_SOLES_ANT = Convert.ToInt32(dr["KID_SOLES_ANT"]),//   int    
+                                           KID_STOCK_ANT = Convert.ToInt32(dr["KID_STOCK_ANT"]),//   int    
+                                           KID_PARES_ACT = Convert.ToInt32(dr["KID_PARES_ACT"]),//   int    
+                                           KID_SOLES_ACT = Convert.ToInt32(dr["KID_SOLES_ACT"]),//   int    
+                                           KID_STOCK_ACT = Convert.ToInt32(dr["KID_STOCK_ACT"]),//   int    
+                                           KID_CWS       = Convert.ToInt32(dr["KID_CWS"]),//   int    
+                                           SPO_PARES_ANT = Convert.ToInt32(dr["SPO_PARES_ANT"]),//   int    
+                                           SPO_SOLES_ANT = Convert.ToInt32(dr["SPO_SOLES_ANT"]),//   int    
+                                           SPO_STOCK_ANT = Convert.ToInt32(dr["SPO_STOCK_ANT"]),//   int    
+                                           SPO_PARES_ACT = Convert.ToInt32(dr["SPO_PARES_ACT"]),//   int    
+                                           SPO_SOLES_ACT = Convert.ToInt32(dr["SPO_SOLES_ACT"]),//   int    
+                                           SPO_STOCK_ACT = Convert.ToInt32(dr["SPO_STOCK_ACT"]),//   int    
+                                           SPO_CWS       = Convert.ToInt32(dr["SPO_CWS"]),//  ] int    
+                                           OTH_PARES_ANT = Convert.ToInt32(dr["OTH_PARES_ANT"]),//   int    
+                                           OTH_SOLES_ANT = Convert.ToInt32(dr["OTH_SOLES_ANT"]),//   int    
+                                           OTH_STOCK_ANT = Convert.ToInt32(dr["OTH_STOCK_ANT"]),//   int    
+                                           OTH_PARES_ACT = Convert.ToInt32(dr["OTH_PARES_ACT"]),//   int    
+                                           OTH_SOLES_ACT = Convert.ToInt32(dr["OTH_SOLES_ACT"]),//   int    
+                                           OTH_STOCK_ACT = Convert.ToInt32(dr["OTH_STOCK_ACT"]),//   int    
+                                           OTH_CWS       = Convert.ToInt32(dr["OTH_CWS"]),//  ] int    
+                                           IND_PARES_ANT = Convert.ToInt32(dr["IND_PARES_ANT"]),//   int    
+                                           IND_SOLES_ANT = Convert.ToInt32(dr["IND_SOLES_ANT"]),//   int    
+                                           IND_STOCK_ANT = Convert.ToInt32(dr["IND_STOCK_ANT"]),//   int    
+                                           IND_PARES_ACT = Convert.ToInt32(dr["IND_PARES_ACT"]),//   int    
+                                           IND_SOLES_ACT = Convert.ToInt32(dr["IND_SOLES_ACT"]),//   int    
+                                           IND_STOCK_ACT = Convert.ToInt32(dr["IND_STOCK_ACT"]),//   int    
+                                           IND_CWS       = Convert.ToInt32(dr["IND_CWS"]),//  ] int    
+                                           ROP_PARES_ANT = Convert.ToInt32(dr["ROP_PARES_ANT"]),//   int    
+                                           ROP_SOLES_ANT = Convert.ToInt32(dr["ROP_SOLES_ANT"]),//   int    
+                                           ROP_STOCK_ANT = Convert.ToInt32(dr["ROP_STOCK_ANT"]),//   int    
+                                           ROP_PARES_ACT = Convert.ToInt32(dr["ROP_PARES_ACT"]),//   int    
+                                           ROP_SOLES_ACT = Convert.ToInt32(dr["ROP_SOLES_ACT"]),//   int    
+                                           ROP_STOCK_ACT = Convert.ToInt32(dr["ROP_STOCK_ACT"]),//   int    
+                                           ROP_CWS       = Convert.ToInt32(dr["ROP_CWS"]),//  ] int    
+                                           ACC_PARES_ANT = Convert.ToInt32(dr["ACC_PARES_ANT"]),//   int    
+                                           ACC_SOLES_ANT = Convert.ToInt32(dr["ACC_SOLES_ANT"]),//   int    
+                                           ACC_STOCK_ANT = Convert.ToInt32(dr["ACC_STOCK_ANT"]),//   int    
+                                           ACC_PARES_ACT = Convert.ToInt32(dr["ACC_PARES_ACT"]),//   int    
+                                           ACC_SOLES_ACT = Convert.ToInt32(dr["ACC_SOLES_ACT"]),//   int    
+                                           ACC_STOCK_ACT = Convert.ToInt32(dr["ACC_STOCK_ACT"]),//   int    
+                                           ACC_CWS       = Convert.ToInt32(dr["ACC_CWS"]),//   int    
+                                           //TIPO_VALOR_1  = Convert.ToString("TIPO_VALOR_1"),//  string
+                                           DES_ENTID = Convert.ToString(dr["TIENDA_DES"]),//  string
+                                           COD_CADENA = Convert.ToString(dr["COD_CADENA"]),//  string
+                                           TIPO_VALOR_2  = Convert.ToString(dr["TIPO_VALOR_2"]),//  string 
+
+                                         }).ToList();
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return lista;
+        }
+
+
     }
 }
