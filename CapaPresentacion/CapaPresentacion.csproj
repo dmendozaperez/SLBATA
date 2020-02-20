@@ -1667,6 +1667,8 @@
     <Content Include="Views\Inventario\ConsultaDocMov.cshtml" />
     <Content Include="Views\Inventario\_Lista_ConsultaDocMov.cshtml" />
     <Content Include="Views\Inventario\getListadocmov_det.cshtml" />
+    <Content Include="Views\Soporte\_guia_tableError.cshtml" />
+    <Content Include="Views\Soporte\ConsultaGuiaError.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
