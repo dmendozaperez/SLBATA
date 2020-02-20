@@ -1,0 +1,134 @@
+﻿
+@using CapaEntidad.Util;
+@{
+    ViewBag.Title = "Reporte Key Category Performance";
+    AjaxOptions options = new AjaxOptions
+    {
+        HttpMethod = "GET",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "lista",
+        OnComplete = "waitingDialog.hide();",
+        OnBegin = "waitingDialog.show('Espere un momento por favor');",
+        OnFailure = "waitingDialog.hide();"
+    };
+
+}
+@*@Scripts.Render("~/bundles/bootstrap-select_Select")*@
+<link href="~/ContentSelect/bootstrap-select.css" rel="stylesheet" />
+<link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />
+@*<link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />*@
+<style>
+    iframe {
+        border: none;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        height: 800px;
+    }
+
+    #lugar {
+        /*border-top-color:  lightsteelblue;*/
+        border-top-color: #E7E5E5;
+        border-right-color: #E7E5E5;
+        border-bottom-color: #E7E5E5;
+        border-left-color: #E7E5E5;
+        /*border-top-width: 5px;
+    border-left-width: 5px;
+    border-bottom-width: 5px;
+    border-right-width: 5px;*/
+        border-style: solid;
+        border-radius: 10px 10px 10px 10px;
+        -moz-border-radius: 10px 10px 10px 10px;
+        -webkit-border-radius: 10px 10px 10px 10px;
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+</style>
+<p class="text-danger">Consulta del reporte Key Category Performance, por filtro Tienda y año.</p>
+<div class="box box-body box-primary">
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="tiendaOrigen">Tienda Origen:</label>
+                @Html.DropDownList("tienda", new SelectList(ViewBag.Tienda, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", @data_live_search = "true", @id = "tienda", @name = "tienda" })
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                <label for="tiendaOrigen">Año:</label>
+                @Html.DropDownList("anio", new SelectList(ViewBag.anios, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", @data_live_search = "true", @id = "anio", @name = "anio" })
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                <label for="tiendaOrigen">Tipo:</label>
+                @Html.DropDownList("tipo", new SelectList(ViewBag.tipo, "cbo_codigo", "cbo_descripcion", "A"), new { @class = "selectpicker", @data_live_search = "true", @id = "tipo", @name = "tipo" })
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group" style="margin-top:24px">
+                <div id="tipodoc" class="form-group">
+                    <button type="button" class="btn btn-primary" onclick="javascript: MostrarReporte()">
+                        <span class="glyphicon glyphicon-th-list"></span>&nbsp;Ver Reporte
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div id="ifrReporte" class="well" style="width: 100%; height: 800px;">
+                <iframe id="load" src="" frameborder="0" marginheight="1" marginwidth="1" scrolling="auto" onload="javascript: waitingDialog.hide();"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/bootstrap-select.min.js"></script>
+<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+
+<script src="~/Scripts/BI.js"></script>
+<script>
+    $(document).ready(function () {
+        $("body").toggleClass('sidebar-collapse');
+    });
+    function MostrarReporte(e) {
+
+        var TeamDetailPostBackURL = "@Url.Action("ShowGenericReportKeyCategoryPerformance", "Reporte")";
+        var tienda = $('#tienda').val();
+        var anio = $('#anio').val();
+        var tipo = $('#tipo').val();
+            waitingDialog.show('Espere un momento por favor');
+            $.ajax({
+                //url: GLB_RUT_APP_REPVENR + "?tda=" + tda + "&grupo=" + grupo + "&cate=" + cate + "&subcate=" + sbCate + "&estado=" + Estado,
+                url: TeamDetailPostBackURL,// '../ReporteCrystal/ShowGenericReportInNewWin',
+                dataType: 'json',
+                type: 'POST',
+                //dataType: "html",
+                data: {tienda : tienda , anio : anio , tipo : tipo},
+                success: function (data) {
+                    //alert('ok');
+                    if (data.estado == "1") {
+                        $('#load').show();
+                        $("#load").attr("src", "../AspNetForms/KeyCategoryPerformance.aspx");
+                    }
+                    else {
+                        $('#load').hide();
+                        waitingDialog.hide();
+                        toastr.error('Hubo un error en el reporte', "Alerta");
+
+                    }
+                    //document.getElementById("ifrReporte").innerHTML = data;
+                    //waitingDialog.hide();
+                    return false;
+                },
+                error: function (request, status, error) {
+                    waitingDialog.hide();
+                }
+            }).done(function () {
+
+            });
+    }
+</script>

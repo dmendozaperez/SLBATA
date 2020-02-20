@@ -622,13 +622,13 @@ namespace CapaPresentacion.Controllers
         }
 
         [HttpPost]
-        public ActionResult ShowGenericReportArtSinMovInNewWin(string cod_cadena,string cod_dis, string cod_tda, Int32 nsemana, Int32 maxpares, string estado, string grupo, string categoria, string tipo,string resumen , Int32 minpares,string calidad)
+        public ActionResult ShowGenericReportArtSinMovInNewWin(string cod_cadena,string cod_dis, string cod_tda, Int32 nsemana, Int32 maxpares, string estado, string grupo, string categoria, string tipo,string resumen , Int32 minpares,string calidad , string semIng)
         {
             //grupo = "0";categoria = "0";subcategoria = "0";estado = "0";
             Data_Bata pl = new Data_Bata();
             this.HttpContext.Session["ReportName"] = "ReportArtSinMov.rpt";
 
-            List<Models_Art_Sin_Mov> model_Art_sn_mov = pl.list_art_sin_mov(cod_cadena, cod_dis, cod_tda, nsemana, maxpares, estado, grupo, categoria, tipo , minpares,calidad);
+            List<Models_Art_Sin_Mov> model_Art_sn_mov = pl.list_art_sin_mov(cod_cadena, cod_dis, cod_tda, nsemana, maxpares, estado, grupo, categoria, tipo , minpares,calidad , semIng);
 
             this.HttpContext.Session["rptSource"] = model_Art_sn_mov;
             this.HttpContext.Session["obs_resumen"] = resumen;
@@ -1186,6 +1186,80 @@ namespace CapaPresentacion.Controllers
             }
 
             this.HttpContext.Session["ReportName"] =(COD_CADENA=="BA")? "TablaProsperidad_Bata.rpt" : "TablaProsperidad.rpt";
+
+            this.HttpContext.Session["rptSource"] = model_Art_sn_mov;
+
+
+            /*error=0;exito=1*/
+            string _estado = (model_Art_sn_mov == null) ? "0" : "1";
+
+            //if (model_planilla==null)
+
+            return Json(new
+            {
+                estado = _estado
+            });
+        }
+
+        public ActionResult KeyCategoryPerformance()
+        {
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
+            if (_usuario == null)
+            {
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+            }
+            else
+            {
+                if (Session["Tienda"] != null)
+                {
+                    ViewBag.Tienda = datCbo.get_ListaTiendaXstore().Where(t => t.cbo_codigo == Session["Tienda"].ToString()).ToList();
+                }
+                else
+                {
+                    ViewBag.Tienda = datCbo.get_ListaTiendaXstore();
+
+                }
+                ViewBag.anios = datCbo.get_lista_anios(2015);
+                List<Ent_Combo> listcbo = new List<Ent_Combo>();
+                Ent_Combo entCombocbo = new Ent_Combo();
+                entCombocbo.cbo_codigo = "A";
+                entCombocbo.cbo_descripcion = "ANUAL";
+                listcbo.Add(entCombocbo);
+                entCombocbo = new Ent_Combo();
+                entCombocbo.cbo_codigo = "S";
+                entCombocbo.cbo_descripcion = "SEMESTRAL";
+                listcbo.Add(entCombocbo);
+                ViewBag.tipo = listcbo;
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ShowGenericReportKeyCategoryPerformance(string tienda, string anio, string tipo)
+        {
+            //grupo = "0";categoria = "0";subcategoria = "0";estado = "0";
+            Data_Bata pl = new Data_Bata();
+            //this.HttpContext.Session["ReportName"] = "KeyCategoryPerformance.rpt";
+
+            List<CapaPresentacion.Models.Crystal.Reporte.Key_Category_Performance> model_Art_sn_mov = pl.dataKey_Category_Performance(tienda, anio, tipo);
+            
+            string COD_CADENA = "";
+            string nom_rpt = "";
+            if (model_Art_sn_mov.Count > 0)
+            {
+                COD_CADENA = model_Art_sn_mov[0].COD_CADENA;
+            }
+            switch (COD_CADENA)
+            {
+                case "BA": nom_rpt = "KeyCategoryPerformance.rpt"; break;
+                case "BG": nom_rpt = "KeyCategoryPerformanceBG.rpt"; break;
+                case "WB": nom_rpt = "KeyCategoryPerformanceWB.rpt"; break;
+            }
+            
+            this.HttpContext.Session["ReportName"] = nom_rpt;
 
             this.HttpContext.Session["rptSource"] = model_Art_sn_mov;
 
