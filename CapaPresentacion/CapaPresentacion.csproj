@@ -281,13 +281,6 @@
     <Compile Include="AspNetForms\GuiaEcommerce.aspx.designer.cs">
       <DependentUpon>GuiaEcommerce.aspx</DependentUpon>
     </Compile>
-    <Compile Include="AspNetForms\KeyCategoryPerformance.aspx.cs">
-      <DependentUpon>KeyCategoryPerformance.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="AspNetForms\KeyCategoryPerformance.aspx.designer.cs">
-      <DependentUpon>KeyCategoryPerformance.aspx</DependentUpon>
-    </Compile>
     <Compile Include="AspNetForms\ReporteObs.aspx.cs">
       <DependentUpon>ReporteObs.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -415,24 +408,6 @@
       <DependentUpon>GuiaElectronica.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="RptsCrystal\KeyCategoryPerformance.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>KeyCategoryPerformance.rpt</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="RptsCrystal\KeyCategoryPerformanceBG.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>KeyCategoryPerformanceBG.rpt</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="RptsCrystal\KeyCategoryPerformanceWB.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>KeyCategoryPerformanceWB.rpt</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="RptsCrystal\PlanillaDet.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -524,7 +499,6 @@
     <Content Include="AspNetForms\ArticuloSinMov.aspx" />
     <Content Include="AspNetForms\CanalVenta.aspx" />
     <Content Include="AspNetForms\GuiaEcommerce.aspx" />
-    <Content Include="AspNetForms\KeyCategoryPerformance.aspx" />
     <Content Include="AspNetForms\ReporteObs.aspx" />
     <Content Include="AspNetForms\RendimientoxCateg.aspx" />
     <Content Include="AspNetForms\TabProsp.aspx" />
@@ -1693,7 +1667,8 @@
     <Content Include="Views\Inventario\ConsultaDocMov.cshtml" />
     <Content Include="Views\Inventario\_Lista_ConsultaDocMov.cshtml" />
     <Content Include="Views\Inventario\getListadocmov_det.cshtml" />
-    <Content Include="Views\Reporte\KeyCategoryPerformance.cshtml" />
+    <Content Include="Views\Soporte\_guia_tableError.cshtml" />
+    <Content Include="Views\Soporte\ConsultaGuiaError.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1756,18 +1731,6 @@
     <EmbeddedResource Include="RptsCrystal\GuiaElectronica.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>GuiaElectronica.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="RptsCrystal\KeyCategoryPerformance.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>KeyCategoryPerformance.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="RptsCrystal\KeyCategoryPerformanceBG.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>KeyCategoryPerformanceBG.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="RptsCrystal\KeyCategoryPerformanceWB.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>KeyCategoryPerformanceWB.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="RptsCrystal\PlanillaDet.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
