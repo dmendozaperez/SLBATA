@@ -837,18 +837,24 @@ namespace CapaPresentacion.Controllers
 
         }
 
-        public PartialViewResult ListaGuiaTienda(string dwtienda, string dwTipo, string dwGrupo, string dwCate, string txtarticulo, string dwCalidad, string[] dwEst, string[] dwTipoCon, string txtGuia)
+        public PartialViewResult ListaGuiaTienda(string dwtienda, string dwTipo, string[] dwGrupo, string[] dwCate, string txtarticulo, string dwCalidad, string[] dwEst, string[] dwTipoCon, string txtGuia)
         {
             dwTipo = dwTipo == "01" ? "S" : "R";
             txtarticulo = txtarticulo.Trim();
-            dwGrupo = dwGrupo == "0" ? "-1" : dwGrupo;
-            dwCate = dwCate == "0" ? "-1" : dwCate;
+            dwGrupo = dwGrupo == null ? new string[] { "-1" } : dwGrupo; // dwGrupo == "0" ? "-1" : dwGrupo;
+            dwCate = dwCate == null ? new string[] { "-1" } : dwCate;// dwCate == "0" ? "-1" : dwCate;
             txtarticulo = txtarticulo == "" ? "-1" : txtarticulo;
             dwCalidad = dwCalidad == null ? "0" : dwCalidad;
             dwEst = dwEst == null ? new string[] { "0" } : dwEst;
             dwTipoCon = dwTipoCon == null ? new string[] { "0" } : dwTipoCon;
 
-            Models_GuiaConten model_vent_comp = listaGuia(dwtienda, dwTipo, dwGrupo, dwCate, txtarticulo, dwCalidad, String.Join(",",dwEst),String.Join(",",dwTipoCon) , txtGuia);
+            string _dwGrupo = String.Join(",", dwGrupo);
+            _dwGrupo = _dwGrupo == "0" ? "-1" : _dwGrupo;
+
+            string _dwCate = String.Join(",", dwCate);
+            _dwCate = _dwCate == "0" ? "-1" : _dwCate;
+
+            Models_GuiaConten model_vent_comp = listaGuia(dwtienda, dwTipo, _dwGrupo, _dwCate, txtarticulo, dwCalidad, String.Join(",",dwEst),String.Join(",",dwTipoCon) , txtGuia);
 
             ViewBag.GuiaDetalle = model_vent_comp.strDetalle;
             Session[_session_listguia_private] = model_vent_comp.listGuia;
