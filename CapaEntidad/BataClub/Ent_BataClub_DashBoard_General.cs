@@ -171,4 +171,22 @@ namespace CapaEntidad.BataClub
         public decimal SOLES { get; set; }
         public string PROMOCION { get; set; }
     }
+
+    public class Ent_BC_Dashboard_Ticket_Promedio
+    {
+        public string GRUPO { get; set; }
+        public  decimal TRANSAC { get; set; }
+        public decimal TOTAL { get; set; }
+        public decimal TICKETPROM { get; set; }
+    }
+    public class Ent_BC_Dashboard_CVB
+    {
+        public string  cod_entid {get;set;}
+        public string  des_entid {get;set;}
+        public decimal anterior {get;set;}
+        public decimal actual {get;set;}
+        public decimal porc { get; set; }
+        public string sem_act { get; set; }
+        public string sem_ant { get; set; }
+    }
 }

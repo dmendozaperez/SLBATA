@@ -115,6 +115,9 @@
         max-height: calc(100vh - 212px);
         overflow-y: auto;
     }
+    .w-select-semana{
+        width:80px !important;
+    }
 </style>
 <link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />
 <link href="~/Content/magic-check.css" rel="stylesheet" />
@@ -197,6 +200,109 @@
             </div>*@
     </div>
     <!-- /.row -->
+    <div class="row">
+        <div class="col-md-4">
+            <div class="box">
+                <div class="box-header with-border">
+                    <i class="fa fa-bar-chart-o"></i>
+                    <h3 class="box-title">Ticket Promedio</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div class="row row-no-gutters">
+                        <div class="col-sm-5">
+                            <div class="form-inline">
+                                <div class="form-group date">                                   
+                                    <div class="input-group input-group-sm">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input type="text" class="form-control pull-right" id="fechaIniTP">
+                                    </div>
+                                </div>&nbsp;&nbsp;&nbsp;
+                            </div>
+                        </div>
+                        <div class="col-sm-5">
+                            <div class="form-inline">
+                                <div class="form-group date">                                    
+                                    <div class="input-group input-group-sm">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input type="text" class="form-control pull-right" id="fechaFinTP">
+                                    </div>
+                                </div>&nbsp;&nbsp;&nbsp;
+                            </div>
+                        </div>
+                        <div class="col-sm-1">
+                            <button type="button" class="btn btn-primary btn-sm" title="Mostrar" id="btnMostrarChartTP"><i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p class="text-center">
+                                <strong id="tituloBarCharTP"></strong>
+                            </p>
+                            <div class="chart">
+                                <canvas id="barChartTP" style="height: 310px;"></canvas>
+                            </div>
+                            <!-- /.chart-responsive -->
+                        </div>
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <div id="TP-load" class="overlay hidden">
+                    <i class="fa fa-refresh fa-spin"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="box">
+                <div class="box-header with-border">
+                    <i class="fa fa-pie-chart"></i>
+                    <h3 class="box-title">Porcentaje de cumplimiento de venta Bata</h3>
+                </div>
+                <div class="box-body"> 
+                    <div class="row row-no-gutters">
+                        <div class="col-sm-12">
+                            <div class="form-inline">
+                                <label for="semanaCVB">Semana: &nbsp;</label>
+                                <div class="form-group form-group-sm">                                    
+                                    @Html.DropDownList("semanaCVB", new SelectList(ViewBag.Semana, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker form-control form-control-sm w-select-semana", @data_live_search = "true", @id = "semanaCVB", @name = "dwSemana" })
+                                </div>&nbsp;&nbsp;&nbsp;
+                                <button type="button" class="btn btn-primary btn-sm" title="Mostrar" id="btnMostrarChartCVB"><i class="fa fa-search"></i></button>
+                                <a href="@Url.Action("GetExcelCVB","BataClub")" class="btn btn-success btn-sm pull-right"><i class="glyphicon glyphicon-export"></i>&nbsp;&nbsp;Exportar</a>
+                            </div>
+                        </div>                      
+                    </div>                   
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p class="text-center">
+                                <strong id="tituloBarCharCVB"></strong>
+                            </p>
+                            <div class="chart">
+                                <canvas id="chartCVB" style="height: 310px;"></canvas>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="table-wrapper-scroll-y my-custom-scrollbar" style="height:320px">
+                                <table id="tiendasDetalleCVB" class="table table-hover table-bordered">                                   
+                                </table>
+                            </div>
+                            <p id="totalesTiendasCVB" class="pull-right" style="padding-right:15px; padding-top:7px"></p>
+                        </div>
+                    </div>
+                </div>
+                <div id="CVB-load" class="overlay hidden">
+                    <i class="fa fa-refresh fa-spin"></i>
+                </div>
+                <!-- /.box-footer -->
+            </div>
+            <!-- /.box -->
+        </div>
+
+    </div>
     <div class="row">
         <div class="col-md-8">
             <div class="box">
@@ -800,7 +906,6 @@
     var myBarChartTR;
     var myBarChartCO;
     var myChartComCL;
-
     var cargando = '<div class="overlay">\
                         <i class="fa fa-refresh fa-spin"></i>\
                     </div>'
@@ -1347,7 +1452,7 @@
                             bodyFontColor: 'rgba(46, 46, 46, 0.9)',
                             borderWidth: 1,
                             borderColor: 'rgba(158, 158, 158, 1)',
-                            titleFontColor: 'rgba(73, 73, 73,0.8)',                            
+                            titleFontColor: 'rgba(73, 73, 73,0.8)',
                         },
                         maintainAspectRatio: false,
                     }
@@ -1365,11 +1470,206 @@
             }
         });
     }
+    /** Ini Ticket Promedio **/
+    function GetChartTP() {
+        $("#TP-load").removeClass("hidden");
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetChartTP", "BataClub")',
+            data: { fechaini: $('#fechaIniTP').val(), fechafin: $('#fechaFinTP').val()},
+            success: function (data) {
+                //quitar mensaje cargando
+                // ini chart
+                var _data = JSON.parse(data.chartDS);
+                try {
+                    _cTP.destroy();
+                } catch (e) {
+
+                }
+                _cTP = new Chart(document.getElementById('barChartTP'), {
+                    type: 'bar',
+                    data: _data,
+                    plugins: [ChartDataLabels],
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                }
+                            }],
+                            xAxes: [{
+                                ticks: {
+                                    callback: function (value) {
+                                        if (value.length > 7 && 5 == 6) {
+                                            return value.substr(0, 7) + "..."; //truncate
+                                        } else {
+                                            return value
+                                        }
+                                    }
+                                }
+                            }],
+                        },
+                        tooltips: {
+                            mode: 'index',
+                            intersect: false,
+                            backgroundColor: 'rgba(237, 237, 237,0.8)',
+                            bodyFontColor: 'rgba(73, 73, 73,0.8)',
+                            borderWidth: 1,
+                            borderColor: 'rgba(158, 158, 158, 1)',
+                            titleFontColor: 'rgba(73, 73, 73,0.8)',
+                            callbacks: {
+                                title: function (tooltipItems, data) {
+                                    //if (informe == 6){
+                                    var idx = tooltipItems[0].index;
+                                    return data.labels[idx]; //do something with title
+                                    //}
+                                },
+                            }
+                        },
+                        maintainAspectRatio: false,
+                        plugins: {
+                            datalabels: {
+                                color: 'white',
+                                font: {
+                                    weigth: 'bold',
+                                    size:17,
+                                },
+                                textAlign: 'end',
+                            }
+                        },
+                        legend: {
+                            display:false,
+                        }
+                    }
+                });
+
+                $("#TP-load").addClass("hidden");
+
+                // fin chart
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                $("#TP-load").addClass("hidden");
+                var error = eval("(" + XMLHttpRequest.responseText + ")");
+                swal(error.Message);
+            }
+        });
+    }
+    /** Ini Cumplimiento Venta Bata **/
+   
+    function GetChartCVB(table, valor) {        
+        
+        $("#CVB-load").removeClass("hidden");
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetChartCVB", "BataClub")',
+            data: { semana: $('#semanaCVB').val(), refresh : table },
+            success: function (data) {
+                var _data = JSON.parse(data.chartDS);
+                var _detalle = data.detalle;
+                if (table == null){
+                    try {
+                        _cCVB.destroy();//
+                    } catch (e) { }
+
+                    _cCVB = new Chart(document.getElementById("chartCVB"), {
+                        type: 'doughnut',
+                        data: _data,
+                        plugins: [ChartDataLabels],
+                        options: {
+                            legend: {
+                                position: 'bottom'
+                            },
+                            tooltips: {
+                                backgroundColor: 'rgba(237, 237, 237,0.8)',
+                                bodyFontColor: 'rgba(46, 46, 46, 0.9)',
+                                borderWidth: 1,
+                                borderColor: 'rgba(158, 158, 158, 1)',
+                                titleFontColor: 'rgba(73, 73, 73,0.8)',
+                            },
+                            maintainAspectRatio: false,
+                            plugins: {
+                                datalabels: {
+                                    color: 'white',
+                                    font: {
+                                        weigth: 'bold',
+                                        size: 16,
+                                    },
+                                    textAlign: 'end',
+                                    display: function (context) {
+                                        return context.dataset.data[context.dataIndex] > 15;
+                                    },
+                                }
+                            },
+                        }
+                    });                
+                }
+
+                var tbody = '<tr>\
+                                <th class="col-md-6">Tiendas</th>\
+                                <th class="col-md-2">V ' + _detalle[0].sem_act + '</th>\
+                                <th class="col-md-2">V ' + _detalle[0].sem_ant + '</th>\
+                                <th class="col-md-2">%</th>\
+                            </tr>';
+                if (valor == null || valor == "+100%") {
+                    tbody += '<tr><th colspan="4"><span class="badge bg-transac">' + '+100%' + '</span></th></tr>';
+                    for (var i = 0; i < _detalle.length; i++) {
+                        var porc = _detalle[i].porc;
+                        if (porc >= 100.0) {
+                            tbody += '<tr>\
+                                        <td class="text"><span>' + _detalle[i].cod_entid + ' - ' + _detalle[i].des_entid + '</span></td>\
+                                        <td>' + _detalle[i].anterior + '</td>\
+                                        <td>' + _detalle[i].actual + '</td>\
+                                        <td>' + _detalle[i].porc + '</td>\
+                                    </tr>'
+                        }
+                    }
+                }
+                if (valor == null || valor == "90% - 100%") {
+                    tbody += '<tr><th colspan="4"><span class="badge bg-consumido">' + 'Entre 90% y 100%' + '</span></th></tr>';
+                    for (var i = 0; i < _detalle.length; i++) {
+                        var porc = _detalle[i].porc;
+                        if (porc >= 90.0 && porc < 100.0) {
+                            tbody += '<tr>\
+                                    <td class="text"><span>' + _detalle[i].cod_entid + ' - ' + _detalle[i].des_entid + '</span></td>\
+                                    <td>' + _detalle[i].anterior + '</td>\
+                                    <td>' + _detalle[i].actual + '</td>\
+                                    <td>' + _detalle[i].porc + '</td>\
+                                </tr>'
+                        }
+                    }
+                }
+                if (valor == null || valor == "-90%") {
+                    tbody += '<tr><th colspan="4"><span class="badge bg-bataclub">' + '-90%' + '</span></th></tr>';
+                    for (var i = 0; i < _detalle.length; i++) {
+                        var porc = _detalle[i].porc;
+                        if (porc < 90.0) {
+                            tbody += '<tr>\
+                                    <td class="text"><span>' + _detalle[i].cod_entid + ' - ' + _detalle[i].des_entid + '</span></td>\
+                                    <td>' + _detalle[i].anterior + '</td>\
+                                    <td>' + _detalle[i].actual + '</td>\
+                                    <td>' + _detalle[i].porc + '</td>\
+                                </tr>'
+                        }
+                    }
+                }
+                $("#tiendasDetalleCVB").html(tbody);
+
+
+                $("#CVB-load").addClass("hidden");
+                    // fin chart
+
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                $("#CVB-load").addClass("hidden");
+                var error = eval("(" + XMLHttpRequest.responseText + ")");
+                swal(error.Message);
+            }        
+        });    
+    }
 
 
 
-    $(document).ready(function () {
-
+    $(document).ready(function () {        
         var date = new Date();
         var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
         var gSite = '';
@@ -1449,6 +1749,18 @@
             maxDate: new Date(),
         }).datepicker("setDate", "0");
 
+        $('#fechaIniTP').datepicker({
+            format: "dd-mm-yyyy",
+            autoclose: true,
+            maxDate: new Date(),
+        }).datepicker("setDate", firstDay);
+        $('#fechaFinTP').datepicker({
+            format: "dd-mm-yyyy",
+            autoclose: true,
+            maxDate: new Date(),
+        }).datepicker("setDate", "0");
+
+
         /** Ini Clientes x Mes **/
         GetChartCxM();
         $("#anioIm").change(function () {
@@ -1472,6 +1784,29 @@
         $("#btnMostrarChartPPS").click(function () {
             GetChartPPS();
         });
+
+        /** Ini Ticket Promedio **/
+        GetChartTP();
+        $("#btnMostrarChartTP").click(function () {
+            GetChartTP();
+        });
+
+        /** Ini Cumplimiento Venta Bata **/
+        GetChartCVB(null,null);
+        $("#btnMostrarChartCVB").click(function () {
+            GetChartCVB(null,null);
+        });
+        document.getElementById("chartCVB").onclick = function (e) {
+            try {
+                var activeIndex = _cCVB.tooltip._lastActive[0]._index;
+                var clickCoordinates = Chart.helpers.getRelativePosition(e, _cCVB.chart);
+                if (clickCoordinates.y >= 36) {
+                    GetChartCVB(1,_cCVB.chart.config.data.labels[activeIndex]);                   
+                }
+            } catch (e) {
+
+            }
+        };
 
 
         $("#btnMostrarCharBarSup").click(function () {

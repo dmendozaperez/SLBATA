@@ -12,6 +12,93 @@ namespace CapaDato.BataClub
 {
     public class Dat_BataClub_Dashboard
     {
+        public List<Ent_BC_Dashboard_CVB> get_info_cump_venta(string cod_semana)
+        {
+            List<Ent_BC_Dashboard_CVB> list = null;
+            string sqlquery = "[USP_BATACLUB_DASHBOARD_CUMPLIMIENTO_VENTA_BATA]";
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@cod_semana", cod_semana);
+                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                        {
+                            DataTable dt = new DataTable();
+                            da.Fill(dt);
+                            if (dt != null)
+                            {
+                                list = new List<Ent_BC_Dashboard_CVB>();
+                                list = (from DataRow dr in dt.Rows
+                                        select new Ent_BC_Dashboard_CVB()
+                                        {
+                                            cod_entid = Convert.ToString(dr["cod_entid"]),
+                                            des_entid = Convert.ToString(dr["des_entid"]),
+                                            anterior = Convert.ToDecimal(dr["anterior"]),
+                                            actual = Convert.ToDecimal(dr["actual"]),
+                                            porc = Convert.ToDecimal(dr["porc"]),
+                                            sem_act = Convert.ToString(dr["sem_act"]),
+                                            sem_ant = Convert.ToString(dr["sem_ant"]),
+                                        }
+                                      ).ToList();
+                            }
+                        }
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                list = null;
+            }
+            return list;
+        }
+
+        public List<Ent_BC_Dashboard_Ticket_Promedio> get_info_ticket_promedio (DateTime fecini, DateTime fecfin)
+        {
+            List<Ent_BC_Dashboard_Ticket_Promedio> list = null;
+            string sqlquery = "[USP_BATACLUB_DASHBOARD_TICKET_PROMEDIO]";
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@FEC_INI", fecini);
+                        cmd.Parameters.AddWithValue("@FEC_FIN", fecfin);
+                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                        {
+                            DataTable dt = new DataTable();
+                            da.Fill(dt);
+                            if (dt != null)
+                            {
+                                list = new List<Ent_BC_Dashboard_Ticket_Promedio>();
+                                list = (from DataRow dr in dt.Rows
+                                        select new Ent_BC_Dashboard_Ticket_Promedio()
+                                        {
+                                            GRUPO = Convert.ToString (dr["GRUPO"]),
+                                            TRANSAC = Convert.ToDecimal(dr["TRANSAC"]),
+                                            TOTAL = Convert.ToDecimal(dr["TOTAL"]),
+                                            TICKETPROM = Convert.ToDecimal(dr["TICKETPROM"]),
+                                        }
+                                      ).ToList();
+                            }
+                        }
+
+                    }
+                }
+            }
+            catch (Exception ex )
+            {
+                list = null;
+            }
+            return list;
+        }
         public List<Ent_Bataclub_Canales_Excel> get_canales_excel(Int32 informe,DateTime fecini_canal,DateTime fecfin_canal)
         {
             List<Ent_Bataclub_Canales_Excel> list=null;

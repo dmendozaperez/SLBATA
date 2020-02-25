@@ -67,7 +67,7 @@ namespace CapaPresentacion.Controllers
         private string _BataClub_Promociones_estado = "_BataClub_Promociones_estado";
         private string _BataClub_Promociones_grafica = "_BataClub_Promociones_grafica";
 
-
+        private string _BC_Dashboard_data_CVB = "_BC_Dashboard_data_CVB";
         // GET: BataClub
         #region Bataclub/Index
         public ActionResult Index()
@@ -148,6 +148,8 @@ namespace CapaPresentacion.Controllers
 
                 ViewBag.DetallesTipoCompra = dashboard.listTipoComprasTot;
 
+                ViewBag.Semana = datCbo.get_ListaSemana();
+
                 Session[_session_DetallesTipoCompra] = dashboard.listTipoComprasTot;
 
                 Session[_session_det_tdas_sup] = dashboard.listTiendasSupervTot;
@@ -205,7 +207,55 @@ namespace CapaPresentacion.Controllers
             chartDS.datasets = new List<Ent_BataClub_Chart_DataSet>() { dsP,dsS };
             return Json(new { chartDS = JsonConvert.SerializeObject(chartDS, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }) });
         }
-
+        public ActionResult GetChartCVB(string semana , string refresh = null)
+        {
+            Ent_BataClub_Chart_Data chartDS = new Ent_BataClub_Chart_Data();
+            List<Ent_BC_Dashboard_CVB> data = new List<Ent_BC_Dashboard_CVB>();
+            if (String.IsNullOrEmpty(refresh))
+            {
+                data = datDash.get_info_cump_venta(semana);
+                data = data.OrderByDescending(o => o.porc).ToList();
+                Session[_BC_Dashboard_data_CVB] = data;
+            }
+            else
+            {
+                if (Session[_BC_Dashboard_data_CVB] == null)
+                {
+                    data = datDash.get_info_cump_venta(semana);
+                    data = data.OrderByDescending(o => o.porc).ToList();
+                    Session[_BC_Dashboard_data_CVB] = data;
+                }
+                else
+                {
+                    data = (List<Ent_BC_Dashboard_CVB>)Session[_BC_Dashboard_data_CVB];
+                }
+            }                        
+            decimal mas100 = data.Count(c => c.porc >= 100);
+            decimal entre90100 = data.Count(c => c.porc >= 90 && c.porc < 100);
+            decimal menos90 = data.Count(c => c.porc < 90);
+            Ent_BataClub_Chart_DataSet dsP = (new Ent_BataClub_Chart_DataSet()
+            {
+                backgroundColor = new string[] { "rgba(230, 101, 101, 0.9)", "rgba(243, 156, 18, 0.9)", "rgba(0, 166, 90,0.9)" },
+                data = new decimal[] { menos90, entre90100, mas100 }
+            });            
+            chartDS.labels = new string[] { "-90%", "90% - 100%" , "+100%" };
+            chartDS.datasets = new List<Ent_BataClub_Chart_DataSet>() { dsP };
+            
+            return Json(new { chartDS = JsonConvert.SerializeObject(chartDS, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }), detalle = data });
+        }
+        public FileContentResult GetExcelCVB()
+        {
+            if (Session[_BC_Dashboard_data_CVB] == null)
+            {
+                List<Ent_BC_Dashboard_CVB> liststoreConf = new List<Ent_BC_Dashboard_CVB>();
+                Session[_BC_Dashboard_data_CVB] = liststoreConf;
+            }
+            List<Ent_BC_Dashboard_CVB> lista = (List<Ent_BC_Dashboard_CVB>)Session[_BC_Dashboard_data_CVB];
+            string[] columns = { "cod_entid", "des_entid", "anterior", "actual", "porc", "sem_act", "sem_ant" };
+            byte[] filecontent = ExcelExportHelper.ExportExcel(lista, "", false, columns);
+            string nom_excel = "Lista de tiendas Cumplimiento Venta Bata - " + lista.Select(s => s.sem_act).FirstOrDefault();
+            return File(filecontent, ExcelExportHelper.ExcelContentType, nom_excel + ".xlsx");
+        }//
         public ActionResult GetChartCxM(string anio = "2020")
         {
             Ent_BataClub_Chart_Data chartDS = new Ent_BataClub_Chart_Data();
@@ -228,6 +278,31 @@ namespace CapaPresentacion.Controllers
             chartDS.labels = chartPSM.meses.Select(s => s.MES_STR).ToArray();
             return Json(new { chartDS = JsonConvert.SerializeObject(chartDS, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }) ,
                 genero = JsonConvert.SerializeObject(chartPSM.genero, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore })
+            });
+        }
+        public ActionResult GetChartTP(string fechaini = null, string fechafin = null)
+        {
+            Ent_BataClub_Chart_Data chartDS = new Ent_BataClub_Chart_Data();
+            List<Ent_BC_Dashboard_Ticket_Promedio> chartPSM = datDash.get_info_ticket_promedio(Convert.ToDateTime(fechaini), Convert.ToDateTime(fechafin));
+            chartDS.datasets = new List<Ent_BataClub_Chart_DataSet>() {
+                (new Ent_BataClub_Chart_DataSet()
+                {
+                    label = "",
+                    backgroundColor =new string[] { "rgb(255, 99, 132,08)" ,"rgb(54, 162, 235,0.8)" },
+                    borderWidth = "1",
+                    data = chartPSM.Select(s=>Math.Round(s.TICKETPROM,2)).ToArray()
+                }) };
+            //(new Ent_BataClub_Chart_DataSet()
+            //{
+            //    label = "BATA",
+            //    backgroundColor = new string[] { "rgb(54, 162, 235,0.8)" },
+            //    borderWidth = "1",
+            //    data = chartPSM.Where(W=>W.GRUPO == "BATA" ).Select(s => Math.Round(s.TICKETPROM,2)).ToArray()
+            //}) };
+            chartDS.labels = chartPSM.Select(s => s.GRUPO).ToArray();
+            return Json(new
+            {
+                chartDS = JsonConvert.SerializeObject(chartDS, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),                
             });
         }
 
