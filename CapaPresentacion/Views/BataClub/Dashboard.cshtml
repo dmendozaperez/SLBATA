@@ -1,5 +1,6 @@
 ﻿@using Newtonsoft.Json
 @using CapaEntidad.BataClub
+@using CapaEntidad.Util
 @{
     ViewBag.Title = "BataClub - Dashboard";
     //ViewBag.chartDS = JsonConvert.SerializeObject(ViewBag.chartDS, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
@@ -8,7 +9,7 @@
     ViewBag.promsPS = JsonConvert.SerializeObject(ViewBag.promsPS, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
     //ViewBag.totalesGeneros = JsonConvert.SerializeObject(ViewBag.totalesGeneros, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
     ViewBag.BarChartTranReg = JsonConvert.SerializeObject(ViewBag.BarChartTranReg, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-    ViewBag.DetallesTiendaSuperv = JsonConvert.SerializeObject(ViewBag.DetallesTiendaSuperv, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+    //ViewBag.DetallesTiendaSuperv = JsonConvert.SerializeObject(ViewBag.DetallesTiendaSuperv, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
     ViewBag.BarChartCompras = JsonConvert.SerializeObject(ViewBag.BarChartCompras, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
     ViewBag.DetallesTipoCompra = JsonConvert.SerializeObject(ViewBag.DetallesTipoCompra, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
@@ -116,7 +117,7 @@
         overflow-y: auto;
     }
     .w-select-semana{
-        width:80px !important;
+        width:175px !important;
     }
 </style>
 <link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />
@@ -269,18 +270,16 @@
                             <div class="form-inline">
                                 <label for="semanaCVB">Semana: &nbsp;</label>
                                 <div class="form-group form-group-sm">                                    
-                                    @Html.DropDownList("semanaCVB", new SelectList(ViewBag.Semana, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker form-control form-control-sm w-select-semana", @data_live_search = "true", @id = "semanaCVB", @name = "dwSemana" })
+                                    @Html.DropDownList("semanaCVB", new SelectList(ViewBag.Semana, "cbo_codigo", "cbo_descripcion", ((List<Ent_Combo>)ViewBag.Semana).Select(s=> s.cbo_codigo).FirstOrDefault() ), new { @class = "selectpicker form-control form-control-sm w-select-semana", @data_live_search = "true", @id = "semanaCVB", @name = "dwSemana" , @multiple = "multiple" })
                                 </div>&nbsp;&nbsp;&nbsp;
                                 <button type="button" class="btn btn-primary btn-sm" title="Mostrar" id="btnMostrarChartCVB"><i class="fa fa-search"></i></button>
                                 <a href="@Url.Action("GetExcelCVB","BataClub")" class="btn btn-success btn-sm pull-right"><i class="glyphicon glyphicon-export"></i>&nbsp;&nbsp;Exportar</a>
                             </div>
                         </div>                      
-                    </div>                   
+                    </div>    
                     <div class="row">
                         <div class="col-md-6">
-                            <p class="text-center">
-                                <strong id="tituloBarCharCVB"></strong>
-                            </p>
+                            <p><span id="tituloBarChartCVB"></span></p>
                             <div class="chart">
                                 <canvas id="chartCVB" style="height: 310px;"></canvas>
                             </div>
@@ -301,8 +300,70 @@
             </div>
             <!-- /.box -->
         </div>
-
     </div>
+    <div class="row">
+        <div class="col-md-8">
+
+            <div class="box">
+                <div class="box-header with-border">
+                    <i class="fa fa-bar-chart-o"></i>
+                    <h3 class="box-title">Venta por categoria (Comparativo)</h3>
+                    <div class="box-tools pull-right" style="top: 3px;">
+                        @*@Html.DropDownList("anioPS", new SelectList(ViewBag.anios, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "form-control form-control-sm selectpicker anio", @id = "anioPS", @name = "anioPS", @data_informe = 4 })*@
+
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-inline">
+                                <div class="form-group date">
+                                    <label>Inicio: </label>&nbsp;&nbsp;
+                                    <div class="input-group input-group-sm">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input type="text" class="form-control pull-right" id="fechaIniVxC">
+                                    </div>
+                                </div>&nbsp;&nbsp;&nbsp;
+                                <div class="form-group date">
+                                    <label>Fin: </label>&nbsp;&nbsp;
+                                    <div class="input-group input-group-sm">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input type="text" class="form-control pull-right" id="fechaFinVxC">
+                                    </div>
+                                </div>&nbsp;&nbsp;&nbsp;
+                                <button type="button" class="btn btn-primary btn-sm" title="Mostrar" id="btnMostrarCharBarVxC"><i class="fa fa-search"></i></button>
+                                @*<a href="@Url.Action("RegTraConTdaExcel","BataClub")" class="btn btn-success btn-sm pull-right"><i class="glyphicon glyphicon-export"></i>&nbsp;&nbsp;Exportar</a>*@
+                            </div>
+
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p id="tituloBarCharVxC"></p>
+                            <div class="chart">
+                                <canvas id="barChartVxC" style="height: 290px;"></canvas>
+                            </div>
+                            <!-- /.chart-responsive -->
+                        </div>
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- ./box-body -->
+                <div id="VxC-load" class="overlay hidden">
+                    <i class="fa fa-refresh fa-spin"></i>
+                </div>
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+
+
     <div class="row">
         <div class="col-md-8">
             <div class="box">
@@ -492,11 +553,9 @@
             <div class="box">
                 <div class="box-header with-border">
                     <i class="fa fa-bar-chart-o"></i>
-                    <h3 class="box-title">Registros/Transacciones/Consumos  x  Supervisor/Tienda</h3>
-
+                    <h3 class="box-title">Registros/Transacciones/Consumos  x  Distrito/Tienda</h3>
                     <div class="box-tools pull-right" style="top: 3px;">
                         @*@Html.DropDownList("anioPS", new SelectList(ViewBag.anios, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "form-control form-control-sm selectpicker anio", @id = "anioPS", @name = "anioPS", @data_informe = 4 })*@
-
                     </div>
                 </div>
                 <!-- /.box-header -->
@@ -522,7 +581,7 @@
                                         <input type="text" class="form-control pull-right" id="fechaFin">
                                     </div>
                                 </div>&nbsp;&nbsp;&nbsp;
-                                <button type="button" class="btn btn-primary btn-sm" title="Mostrar" id="btnMostrarCharBarSup"><i class="fa fa-search"></i></button>
+                                <button type="button" class="btn btn-primary btn-sm" title="Mostrar" id="btnMostrarChartBarDist"><i class="fa fa-search"></i></button>
                                 <a href="@Url.Action("RegTraConTdaExcel","BataClub")" class="btn btn-success btn-sm pull-right"><i class="glyphicon glyphicon-export"></i>&nbsp;&nbsp;Exportar</a>
                             </div>
 
@@ -531,16 +590,16 @@
                     <br />
                     <div class="row">
                         <div class="col-md-8">
-                            <p class="text-center" id="tituloBarCharSuperv">
+                            <p class="text-center" id="tituloBarChartDist">
                             </p>
                             <div class="chart">
-                                <canvas id="barChartSuperv" style="height: 290px;"></canvas>
+                                <canvas id="barChartDist" style="height: 290px;"></canvas>
                             </div>
                             <!-- /.chart-responsive -->
                         </div>
                         <div class="col-md-4">
-                            <div class="table-wrapper-scroll-y my-custom-scrollbar" style="height:320px">
-                                <table id="tiendasDetalle" class="table table-hover"></table>
+                            <div class="table-wrapper-scroll-y my-custom-scrollbar" style="height:290px">
+                                <table id="tiendasDetalle" class="table table-hover table-bordered table-condensed"></table>
                             </div>
                             <p id="totalesTiendas" class="pull-right" style="padding-right:15px; padding-top:7px"></p>
                         </div>
@@ -548,6 +607,9 @@
                     <!-- /.row -->
                 </div>
                 <!-- ./box-body -->
+                <div id="Dist-load" class="overlay hidden">
+                    <i class="fa fa-refresh fa-spin"></i>
+                </div>
             </div>
             <!-- /.box -->
         </div>
@@ -1110,7 +1172,13 @@
                 tbody += '<tr><th colspan="3">' + sup + '</th></tr>';
                 ultimoSup = sup;
             }
-            tbody += '<tr><td class="text"><span>' + tiendas[i].tienda + '</span></td><td><span class="badge bg-transac">' + tiendas[i].transac + '</span></td><td><span class="badge bg-registros">' + tiendas[i].registros + '</span></td><td><span class="badge bg-consumido">' + tiendas[i].consumido + '</span></td><td><span class="badge bg-bataclub">' + tiendas[i].bataclub + '</span></td></tr>'
+            tbody += '<tr>\
+                        <td class="text"><span>' + tiendas[i].tienda + '</span></td>\
+                        <td><span class="badge bg-transac">' + tiendas[i].transac + '</span></td>\
+                        <td><span class="badge bg-registros">' + tiendas[i].registros + '</span></td>\
+                        <td><span class="badge bg-consumido">' + tiendas[i].consumido + '</span></td>\
+                        <td><span class="badge bg-bataclub">' + tiendas[i].bataclub + '</span></td>\
+                      </tr>'
         }
         $("#tiendasDetalle").html(tbody);
 
@@ -1559,6 +1627,7 @@
     function GetChartCVB(table, valor) {        
         
         $("#CVB-load").removeClass("hidden");
+        var semana = $('#semanaCVB').val() == null ? new[] :
         $.ajax({
             type: "POST",
             url: '@Url.Action("GetChartCVB", "BataClub")',
@@ -1570,7 +1639,6 @@
                     try {
                         _cCVB.destroy();//
                     } catch (e) { }
-
                     _cCVB = new Chart(document.getElementById("chartCVB"), {
                         type: 'doughnut',
                         data: _data,
@@ -1585,6 +1653,12 @@
                                 borderWidth: 1,
                                 borderColor: 'rgba(158, 158, 158, 1)',
                                 titleFontColor: 'rgba(73, 73, 73,0.8)',
+                                callbacks: {
+                                    title: function (tooltipItems, data) {
+                                        var idx = tooltipItems[0].index;
+                                        return data.datasets[tooltipItems[0].datasetIndex].label;
+                                    },
+                                }
                             },
                             maintainAspectRatio: false,
                             plugins: {
@@ -1592,7 +1666,7 @@
                                     color: 'white',
                                     font: {
                                         weigth: 'bold',
-                                        size: 16,
+                                        size: 12,
                                     },
                                     textAlign: 'end',
                                     display: function (context) {
@@ -1601,21 +1675,24 @@
                                 }
                             },
                         }
-                    });                
+                    });
+                    $("#tituloBarChartCVB").html("Mostrando resultados para: " + ($('#semanaCVB').val() == null ? "" : $('#semanaCVB').val().toString()));
                 }
 
                 var tbody = '<tr>\
-                                <th class="col-md-6">Tiendas</th>\
-                                <th class="col-md-2">V ' + _detalle[0].sem_act + '</th>\
-                                <th class="col-md-2">V ' + _detalle[0].sem_ant + '</th>\
+                                <th class="col-md-1">Sem</th>\
+                                <th class="col-md-5">Tiendas</th>\
+                                <th class="col-md-2">V.' + 'Anterior' + '</th>\
+                                <th class="col-md-2">V.' + 'Actual' + '</th>\
                                 <th class="col-md-2">%</th>\
                             </tr>';
                 if (valor == null || valor == "+100%") {
-                    tbody += '<tr><th colspan="4"><span class="badge bg-transac">' + '+100%' + '</span></th></tr>';
+                    tbody += '<tr><th colspan="5"><span class="badge bg-transac">' + '+100%' + '</span></th></tr>';
                     for (var i = 0; i < _detalle.length; i++) {
                         var porc = _detalle[i].porc;
                         if (porc >= 100.0) {
                             tbody += '<tr>\
+                                        <td>' + _detalle[i].n_semana + '</td>\
                                         <td class="text"><span>' + _detalle[i].cod_entid + ' - ' + _detalle[i].des_entid + '</span></td>\
                                         <td>' + _detalle[i].anterior + '</td>\
                                         <td>' + _detalle[i].actual + '</td>\
@@ -1625,11 +1702,12 @@
                     }
                 }
                 if (valor == null || valor == "90% - 100%") {
-                    tbody += '<tr><th colspan="4"><span class="badge bg-consumido">' + 'Entre 90% y 100%' + '</span></th></tr>';
+                    tbody += '<tr><th colspan="5"><span class="badge bg-consumido">' + 'Entre 90% y 100%' + '</span></th></tr>';
                     for (var i = 0; i < _detalle.length; i++) {
                         var porc = _detalle[i].porc;
                         if (porc >= 90.0 && porc < 100.0) {
                             tbody += '<tr>\
+                                    <td>' + _detalle[i].n_semana + '</td>\
                                     <td class="text"><span>' + _detalle[i].cod_entid + ' - ' + _detalle[i].des_entid + '</span></td>\
                                     <td>' + _detalle[i].anterior + '</td>\
                                     <td>' + _detalle[i].actual + '</td>\
@@ -1639,11 +1717,12 @@
                     }
                 }
                 if (valor == null || valor == "-90%") {
-                    tbody += '<tr><th colspan="4"><span class="badge bg-bataclub">' + '-90%' + '</span></th></tr>';
+                    tbody += '<tr><th colspan="5"><span class="badge bg-bataclub">' + '-90%' + '</span></th></tr>';
                     for (var i = 0; i < _detalle.length; i++) {
                         var porc = _detalle[i].porc;
                         if (porc < 90.0) {
                             tbody += '<tr>\
+                                    <td>' + _detalle[i].n_semana + '</td>\
                                     <td class="text"><span>' + _detalle[i].cod_entid + ' - ' + _detalle[i].des_entid + '</span></td>\
                                     <td>' + _detalle[i].anterior + '</td>\
                                     <td>' + _detalle[i].actual + '</td>\
@@ -1653,11 +1732,8 @@
                     }
                 }
                 $("#tiendasDetalleCVB").html(tbody);
-
-
                 $("#CVB-load").addClass("hidden");
                     // fin chart
-
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 $("#CVB-load").addClass("hidden");
@@ -1666,7 +1742,216 @@
             }        
         });    
     }
+    /** Ini comparativo venta x categoria **/
+    function GetChartVxC() {
+        $("#VxC-load").removeClass("hidden");
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetChartVxC", "BataClub")',
+            data: { fechaini: $('#fechaIniVxC').val(), fechafin: $('#fechaFinVxC').val() },
+            success: function (data) {
+                //quitar mensaje cargando
+                // ini chart
+                var _data = JSON.parse(data.result);
+                try {
+                    _cVxC.destroy();
+                } catch (e) {
 
+                }
+                _cVxC = new Chart(document.getElementById('barChartVxC'), {
+                    type: 'bar',
+                    data: _data,
+                    plugins: [ChartDataLabels],
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                }
+                            }],
+                            xAxes: [{
+                                ticks: {
+                                    callback: function (value) {
+                                        if (value.length > 7 && 5 == 6) {
+                                            return value.substr(0, 7) + "..."; //truncate
+                                        } else {
+                                            return value
+                                        }
+                                    }
+                                }
+                            }],
+                        },
+                        tooltips: {
+                            mode: 'index',
+                            intersect: false,
+                            backgroundColor: 'rgba(237, 237, 237,0.8)',
+                            bodyFontColor: 'rgba(73, 73, 73,0.8)',
+                            borderWidth: 1,
+                            borderColor: 'rgba(158, 158, 158, 1)',
+                            titleFontColor: 'rgba(73, 73, 73,0.8)',
+                            callbacks: {
+                                title: function (tooltipItems, data) {
+                                    //if (informe == 6){
+                                    var idx = tooltipItems[0].index;
+                                    return data.labels[idx]; //do something with title
+                                    //}
+                                },
+                            }
+                        },
+                        plugins: {
+                            datalabels: {
+                                align: 'end',
+                                anchor: 'end',
+                                color: function (context) {
+                                    return context.dataset.backgroundColor;
+                                },
+                                font:{
+                                    weigth: 'bold',
+                                    size: 12,
+                                },
+                            }
+                        },
+                        maintainAspectRatio: false
+                    }
+                });
+                //var title = '<strong style="color: rgb(147, 97, 228)">P: ' + sum(_data.datasets[0].data).toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;&nbsp;&nbsp;' +
+                //'<strong style="color: rgb(80, 230, 161)">S/ ' + sum(_data.datasets[1].data).toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;'
+                //$("#tituloBarCharVxC").html(title);
+
+                $("#VxC-load").addClass("hidden");
+
+                // fin chart
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                $("#VxC-load").addClass("hidden");
+                var error = eval("(" + XMLHttpRequest.responseText + ")");
+                swal(error.Message);
+            }
+        });
+    }
+
+    /** Ini info Distritos **/
+    function GetChartDist(table, valor) {
+        $("#Dist-load").removeClass("hidden");
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetChartDist", "BataClub")',
+            data: { fechaini: $('#fechaIni').val(), fechafin: $('#fechaFin').val() , refresh : table },
+            success: function (data) {
+                //quitar mensaje cargando
+                // ini chart
+                var _data = JSON.parse(data.result);
+                var _detalle = data.detalles;
+                if (table == null){
+                    try {
+                        _cDist.destroy();
+                    } catch (e) {
+
+                    }
+                    _cDist = new Chart(document.getElementById('barChartDist'), {
+                        type: 'bar',
+                        data: _data,
+                        plugins: [ChartDataLabels],
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true,
+                                    }
+                                }],
+                                xAxes: [{
+                                    ticks: {
+                                        callback: function (value) {
+                                            if (value.length > 7) {
+                                                return value.substr(0, 3); //truncate
+                                            } else {
+                                                return value
+                                            }
+                                        }
+                                    }
+                                }],
+                            },
+                            tooltips: {
+                                mode: 'index',
+                                intersect: false,
+                                backgroundColor: 'rgba(237, 237, 237,0.8)',
+                                bodyFontColor: 'rgba(73, 73, 73,0.8)',
+                                borderWidth: 1,
+                                borderColor: 'rgba(158, 158, 158, 1)',
+                                titleFontColor: 'rgba(73, 73, 73,0.8)',
+                                callbacks: {
+                                    title: function (tooltipItems, data) {
+                                        //if (informe == 6){
+                                        var idx = tooltipItems[0].index;
+                                        return data.labels[idx]; //do something with title
+                                        //}
+                                    },
+                                }
+                            },
+                            plugins: {
+                                datalabels: {
+                                    align: 'end',
+                                    anchor: 'end',
+                                    color: function (context) {
+                                        return context.dataset.backgroundColor;
+                                    },
+                                    font: {
+                                        weigth: 'bold',
+                                        size: 12,
+                                    },
+                                    display: function (context,data) {
+                                        try {
+                                            return context.chart.data.datasets.filter(w=> w._meta[context.chart.id].hidden == null).length == 1;
+                                        } catch (e) {
+                                            console.log(e.message);
+                                            return false;
+                                        }                                    
+                                    }
+                                }
+                            },
+                            maintainAspectRatio: false
+                        }
+                    });
+                }
+                //var title = '<strong style="color: rgb(147, 97, 228)">P: ' + sum(_data.datasets[0].data).toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;&nbsp;&nbsp;' +
+                //'<strong style="color: rgb(80, 230, 161)">S/ ' + sum(_data.datasets[1].data).toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;'
+                //$("#tituloBarCharVxC").html(title);
+                var tbody = '<tr>\
+                                <th class="col-md-6">Tiendas</th>\
+                                <th class="col-md-2">Tran</th>\
+                                <th class="col-md-2">Reg</th>\
+                                <th class="col-md-2">Con</th>\
+                                <th class="col-md-2">Miembros</th>\
+                            </tr>';
+                var ultimo_dist = ""                
+                for (var i = 0; i < _detalle.length; i++) {
+                    if (valor == null || _detalle[i].distrito + ' (' + _detalle[i].supervisor.substring(0, _detalle[i].supervisor.indexOf(" ")) + ')' == valor) {
+                        if (_detalle[i].distrito != ultimo_dist) {
+                            tbody += '<tr><th colspan="5">' + _detalle[i].distrito + ' (' + _detalle[i].supervisor + ')' + '</th></tr>';
+                        }
+                        tbody += '<tr>\
+                                    <td class="text"><span>' + _detalle[i].tienda + '</span></td>\
+                                    <td><span class="badge bg-transac">' + _detalle[i].transac + '</span></td>\
+                                    <td><span class="badge bg-registros">' + _detalle[i].registros + '</span></td>\
+                                    <td><span class="badge bg-consumido">' + _detalle[i].consumido + '</span></td>\
+                                    <td><span class="badge bg-bataclub">' + _detalle[i].bataclub + '</span></td>\
+                                </tr>';
+                        ultimo_dist = _detalle[i].distrito;
+                    }                    
+                }
+                $("#tiendasDetalle").html(tbody);
+
+                $("#Dist-load").addClass("hidden");
+
+                // fin chart
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                $("#Dist-load").addClass("hidden");
+                var error = eval("(" + XMLHttpRequest.responseText + ")");
+                swal(error.Message);
+            }
+        });
+    }
 
 
     $(document).ready(function () {        
@@ -1760,6 +2045,17 @@
             maxDate: new Date(),
         }).datepicker("setDate", "0");
 
+        $('#fechaIniVxC').datepicker({
+            format: "dd-mm-yyyy",
+            autoclose: true,
+            maxDate: new Date(),
+        }).datepicker("setDate", firstDay);
+        $('#fechaFinVxC').datepicker({
+            format: "dd-mm-yyyy",
+            autoclose: true,
+            maxDate: new Date(),
+        }).datepicker("setDate", "0");
+
 
         /** Ini Clientes x Mes **/
         GetChartCxM();
@@ -1807,7 +2103,28 @@
 
             }
         };
+        
+        /** Ini Venta por categoria **/
+        GetChartVxC();
+        $("#btnMostrarCharBarVxC").click(function () {
+            GetChartVxC();
+        });
+        /** Ini info distrito **/
+        GetChartDist(null,null);
+        $("#btnMostrarChartBarDist").click(function () {
+            GetChartDist(null,null);
+        });
+        document.getElementById("barChartDist").onclick = function (e) {
+            try {
+                var activeIndex = _cDist.tooltip._lastActive[0]._index;
+                var clickCoordinates = Chart.helpers.getRelativePosition(e, _cDist.chart);
+                if (clickCoordinates.y >= 36) {
+                    GetChartDist(1, _cDist.chart.config.data.labels[activeIndex]);
+                }
+            } catch (e) {
 
+            }
+        };
 
         $("#btnMostrarCharBarSup").click(function () {
             updateCharts(0, 6, null, $('#fechaIni').val(), $('#fechaFin').val());
@@ -1955,7 +2272,7 @@
         //getChartMensualRegMiem(document.getElementById('barChart'), JSON.parse('@Html.Raw(ViewBag.chartDS)'), JSON.parse('@Html.Raw(ViewBag.totalesGeneros)'));
         //getChartCanales(document.getElementById('canalChart'), JSON.parse('@Html.Raw(ViewBag.chartDonut)'));
         getChartMensualPS(document.getElementById('barChartPS'), JSON.parse('@Html.Raw(ViewBag.chartMesParesSoles)'), JSON.parse('@Html.Raw(ViewBag.promsPS)'), null, $("#anioPS").val());
-        getChartSuperv(document.getElementById('barChartSuperv'), JSON.parse('@Html.Raw(ViewBag.BarChartTranReg)'), JSON.parse('@Html.Raw(ViewBag.DetallesTiendaSuperv)'));
+        //getChartSuperv(document.getElementById('barChartSuperv'), JSON.parse('@Html.Raw(ViewBag.BarChartTranReg)'), JSON.parse('@Html.Raw(ViewBag.DetallesTiendaSuperv)'));
         // getChartCompras(document.getElementById('ComprasChart'), JSON.parse('@Html.Raw(ViewBag.ChartCompras)'));
 
         getChartCompra_CL(document.getElementById('Chart_compras_CL'), JSON.parse('@Html.Raw(ViewBag.chartComCL)'));
@@ -1998,7 +2315,7 @@
 
             }
         };
-        document.getElementById("barChartSuperv").onclick = function (e) {
+        @*document.getElementById("barChartSuperv").onclick = function (e) {
             try {
                 var activeIndex = myBarChartTR.tooltip._lastActive[0]._index;
                 var clickCoordinates = Chart.helpers.getRelativePosition(e, myBarChartTR.chart);
@@ -2020,7 +2337,7 @@
             } catch (e) {
 
             }
-        };
+        };*@
 
         document.getElementById("barChart_com").onclick = function (e) {
             try {

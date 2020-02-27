@@ -16,8 +16,8 @@ namespace CapaEntidad.BataClub
         public List<Ent_BataClub_DashBoard_Mensual> listMesParesSoles { get; set; }
         public List<Ent_BataClub_DashBoard_Proms> listPromsPS { get; set; }
         public List<Ent_BataClub_Dashboard_Genero> listMesGenero { get; set; }
-        public List<Ent_BataClub_DashBoard_Supervisor> listSupervisorTot { get; set; }
-        public List<Ent_BataClub_DashBoard_TiendasSupervisor> listTiendasSupervTot { get; set; }
+        public List<Ent_BataClub_DashBoard_Distritos> listDistritos { get; set; }
+        public List<Ent_BataClub_DashBoard_Tiendas_Distritos> listDistritosTiendas { get; set; }
         public List<Ent_BataClub_DashBoard_Proms> listDetPromTda { get; set; }
         public List<Ent_BataClub_DashBoard_Compras> listComprasTot { get; set; }
         public List<Ent_BataClub_DashBoard_Tipo_Compras> listTipoComprasTot { get; set; }
@@ -86,17 +86,19 @@ namespace CapaEntidad.BataClub
         public string genero { get; set; }
         public decimal registros { get; set; }
     }
-    public class Ent_BataClub_DashBoard_Supervisor
+    public class Ent_BataClub_DashBoard_Distritos
     {
         public string supervisor { get; set; }
+        public string distrito { get; set; }
         public decimal registros { get; set; }
         public decimal transac { get; set; }
         public decimal consumido { get; set; }
         public Decimal bataclub { get; set; }
     }
-    public class Ent_BataClub_DashBoard_TiendasSupervisor
+    public class Ent_BataClub_DashBoard_Tiendas_Distritos
     {
         public string supervisor { get; set; }
+        public string distrito { get; set; }
         public string tienda { get; set; }
         public decimal registros { get; set; }
         public decimal transac { get; set; }
@@ -181,12 +183,19 @@ namespace CapaEntidad.BataClub
     }
     public class Ent_BC_Dashboard_CVB
     {
-        public string  cod_entid {get;set;}
-        public string  des_entid {get;set;}
-        public decimal anterior {get;set;}
-        public decimal actual {get;set;}
+        public string n_semana { get; set; }
+        public string cod_entid { get; set; }
+        public string des_entid { get; set; }
+        public decimal anterior { get; set; }
+        public decimal actual { get; set; }
         public decimal porc { get; set; }
-        public string sem_act { get; set; }
-        public string sem_ant { get; set; }
+        public string semana_ant { get; set; }
+        public string semana_act { get; set; }
+    }
+    public class Ent_BC_Venta_Categoria
+    {
+        public string CATEGORIA { get; set; }
+        public decimal TOTAL_BATACLUB { get; set; }
+        public decimal TOTAL_BATA { get; set; }
     }
 }

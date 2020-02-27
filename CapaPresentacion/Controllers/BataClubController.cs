@@ -68,6 +68,7 @@ namespace CapaPresentacion.Controllers
         private string _BataClub_Promociones_grafica = "_BataClub_Promociones_grafica";
 
         private string _BC_Dashboard_data_CVB = "_BC_Dashboard_data_CVB";
+        private string _BC_Dashboard_Distritos = "_BC_Dashboard_Distritos";
         // GET: BataClub
         #region Bataclub/Index
         public ActionResult Index()
@@ -142,7 +143,7 @@ namespace CapaPresentacion.Controllers
                 ViewBag.BarChartTranReg = informeBarChartData(dashboard, 6);
                 ViewBag.BarChartCompras = informeBarChartData(dashboard, 7); //informeCompras(dashboard);  // informeBarChartData(dashboard, 7);
 
-                ViewBag.DetallesTiendaSuperv = dashboard.listTiendasSupervTot;
+                //ViewBag.DetallesTiendaSuperv = dashboard.listTiendasSupervTot;
 
                 ViewBag.chartComCL = informeCompraCl(dashboard);
 
@@ -152,15 +153,100 @@ namespace CapaPresentacion.Controllers
 
                 Session[_session_DetallesTipoCompra] = dashboard.listTipoComprasTot;
 
-                Session[_session_det_tdas_sup] = dashboard.listTiendasSupervTot;
+               // Session[_session_det_tdas_sup] = dashboard.listTiendasSupervTot;
                 Session[_session_par_sol_mes_excel] = dashboard.listPromsPS;
-                Session[_session_det_tdas_sup_excel] = dashboard.listTiendasSupervTot;
+                //Session[_session_det_tdas_sup_excel] = dashboard.listTiendasSupervTot;
                 return View();
-
-
-
             }
         }
+
+        public ActionResult GetChartDist(string fechaini = null, string fechafin = null , string refresh = null)
+        {
+            Ent_BataClub_Chart_Data chartDS = new Ent_BataClub_Chart_Data();
+            List<Ent_BataClub_DashBoard_Distritos> resumen = new List<Ent_BataClub_DashBoard_Distritos>();
+            List<Ent_BataClub_DashBoard_Tiendas_Distritos> detalles = new List<Ent_BataClub_DashBoard_Tiendas_Distritos>();
+            Ent_BataClub_DashBoard data = new Ent_BataClub_DashBoard(); //datDash.get_info_distritos(Convert.ToDateTime(fechaini), Convert.ToDateTime(fechafin));
+            if (String.IsNullOrEmpty(refresh))
+            {
+                data = datDash.get_info_distritos(Convert.ToDateTime(fechaini), Convert.ToDateTime(fechafin));
+                //data = data.OrderByDescending(o => o.porc).ToList();
+                Session[_BC_Dashboard_Distritos] = data;
+            }
+            else
+            {
+                if (Session[_BC_Dashboard_Distritos] == null)
+                {
+                    data = datDash.get_info_distritos(Convert.ToDateTime(fechaini), Convert.ToDateTime(fechafin));
+                    //data = data.OrderByDescending(o => o.porc).ToList();
+                    Session[_BC_Dashboard_Distritos] = data;
+                }
+                else
+                {
+                    data = (Ent_BataClub_DashBoard)Session[_BC_Dashboard_Distritos];
+                }
+            }
+            resumen = data.listDistritos;
+            detalles = data.listDistritosTiendas;
+            chartDS.datasets = new List<Ent_BataClub_Chart_DataSet>() {
+                    (new Ent_BataClub_Chart_DataSet()
+                    {
+                        label = "TRANSACCIONES",
+                        backgroundColor = Enumerable.Repeat("rgba(0, 166, 90,0.8)", resumen.Count).ToArray(),
+                        borderWidth = "1",
+                        data = resumen.Select(s => s.transac).ToArray()
+                    }),
+                    (new Ent_BataClub_Chart_DataSet()
+                    {
+                        label = "REGISTROS",
+                        backgroundColor = Enumerable.Repeat("rgba(180, 180, 180,0.8)", resumen.Count).ToArray(), // new string[] { "rgba(180, 180, 180,0.7)" },
+                        borderWidth = "1",
+                        data = resumen.Select(s => s.registros).ToArray()
+                    }),
+
+                    (new Ent_BataClub_Chart_DataSet()
+                    {
+                        label = "CONSUMIDOS",
+                        backgroundColor = Enumerable.Repeat("rgba(243, 156, 18, 0.8)", resumen.Count).ToArray(),
+                        borderWidth = "1",
+                        data = resumen.Select(s => s.consumido).ToArray()
+                    }),
+
+                     (new Ent_BataClub_Chart_DataSet()
+                    {
+                        label = "MIEMBROS",
+                        backgroundColor = Enumerable.Repeat("rgba(230, 101, 101, 0.8)", resumen.Count).ToArray(),
+                        borderWidth = "1",
+                        data = resumen.Select(s => s.bataclub).ToArray()
+                    })
+                };
+
+            chartDS.labels = resumen.Select(s => s.distrito + " (" + s.supervisor.Substring(0,s.supervisor.IndexOf(" ")) + ")").ToArray();
+            return Json(new { result = JsonConvert.SerializeObject(chartDS, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }) , detalles  = detalles.OrderBy(o=>o.supervisor).ThenBy(t=>t.distrito).ToList() });
+        }
+
+        public ActionResult GetChartVxC(string fechaini = null, string fechafin = null)
+        {
+            Ent_BataClub_Chart_Data chartDS = new Ent_BataClub_Chart_Data();
+            List<Ent_BC_Venta_Categoria> chartPSM = datDash.get_info_venta_categoria(Convert.ToDateTime(fechaini), Convert.ToDateTime(fechafin));
+            chartDS.datasets = new List<Ent_BataClub_Chart_DataSet>() {
+                (new Ent_BataClub_Chart_DataSet()
+                {
+                    label = "BATA",
+                    backgroundColor = Enumerable.Repeat("rgba(147, 97, 228, 0.8)", chartPSM.Count).ToArray(), // new string[] { "rgba(180, 180, 180,0.7)" },
+                    borderWidth = "1",
+                    data = chartPSM.Select(s => s.TOTAL_BATA).ToArray()
+                }),
+                (new Ent_BataClub_Chart_DataSet()
+                {
+                    label = "BATACLUB",
+                    backgroundColor = Enumerable.Repeat("rgb(80, 230, 161 , 0.8)", chartPSM.Count).ToArray(),
+                    borderWidth = "1",
+                    data = chartPSM.Select(s => s.TOTAL_BATACLUB).ToArray()
+                }) };
+            chartDS.labels = chartPSM.Select(s => s.CATEGORIA).ToArray();
+            return Json(new { result = JsonConvert.SerializeObject(chartDS, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }) });
+        }
+
 
         public ActionResult GetChartPSM (string fechaini = null , string fechafin = null)
         {
@@ -207,40 +293,56 @@ namespace CapaPresentacion.Controllers
             chartDS.datasets = new List<Ent_BataClub_Chart_DataSet>() { dsP,dsS };
             return Json(new { chartDS = JsonConvert.SerializeObject(chartDS, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }) });
         }
-        public ActionResult GetChartCVB(string semana , string refresh = null)
+        public ActionResult GetChartCVB(string[] semana , string refresh = null)
         {
             Ent_BataClub_Chart_Data chartDS = new Ent_BataClub_Chart_Data();
             List<Ent_BC_Dashboard_CVB> data = new List<Ent_BC_Dashboard_CVB>();
             if (String.IsNullOrEmpty(refresh))
             {
-                data = datDash.get_info_cump_venta(semana);
-                data = data.OrderByDescending(o => o.porc).ToList();
+                data = datDash.get_info_cump_venta(String.Join(",",semana));
+                data = data.OrderByDescending(o => o.n_semana).ThenBy(t=>t.porc).ToList();
                 Session[_BC_Dashboard_data_CVB] = data;
             }
             else
             {
                 if (Session[_BC_Dashboard_data_CVB] == null)
                 {
-                    data = datDash.get_info_cump_venta(semana);
-                    data = data.OrderByDescending(o => o.porc).ToList();
+                    data = datDash.get_info_cump_venta(String.Join(",", semana));
+                    data = data.OrderByDescending(o => o.n_semana).ThenBy(t => t.porc).ToList();
                     Session[_BC_Dashboard_data_CVB] = data;
                 }
                 else
                 {
                     data = (List<Ent_BC_Dashboard_CVB>)Session[_BC_Dashboard_data_CVB];
                 }
-            }                        
+            }
+            chartDS.datasets = new List<Ent_BataClub_Chart_DataSet>();
+            string[] n_semanas = data.OrderByDescending(o=>o.n_semana).Select(s => s.n_semana).Distinct().ToArray();
+            /* //Detallado 
+            foreach (string n_sem in n_semanas)
+            {
+                decimal mas100 = data.Where(w=>w.n_semana == n_sem).Count(c => c.porc >= 100);
+                decimal entre90100 = data.Where(w => w.n_semana == n_sem).Count(c => c.porc >= 90 && c.porc < 100);
+                decimal menos90 = data.Where(w => w.n_semana == n_sem).Count(c => c.porc < 90);
+                Ent_BataClub_Chart_DataSet dsP = (new Ent_BataClub_Chart_DataSet()
+                {
+                    label = data.Where(w=>w.n_semana == n_sem).Select(s=>s.semana_ant + " — " + s.semana_act).FirstOrDefault().ToString(),
+                    backgroundColor = new string[] { "rgba(228, 82, 82,0.9)", "rgba(243, 156, 18, 0.9)", "rgba(0, 166, 90,0.9)" },
+                    data = new decimal[] { menos90, entre90100, mas100 }
+                });
+                chartDS.datasets.Add(dsP);
+            }      
+            */
             decimal mas100 = data.Count(c => c.porc >= 100);
             decimal entre90100 = data.Count(c => c.porc >= 90 && c.porc < 100);
             decimal menos90 = data.Count(c => c.porc < 90);
             Ent_BataClub_Chart_DataSet dsP = (new Ent_BataClub_Chart_DataSet()
-            {
-                backgroundColor = new string[] { "rgba(230, 101, 101, 0.9)", "rgba(243, 156, 18, 0.9)", "rgba(0, 166, 90,0.9)" },
+            {                
+                backgroundColor = new string[] { "rgba(228, 82, 82,0.9)", "rgba(243, 156, 18, 0.9)", "rgba(0, 166, 90,0.9)" },
                 data = new decimal[] { menos90, entre90100, mas100 }
-            });            
-            chartDS.labels = new string[] { "-90%", "90% - 100%" , "+100%" };
-            chartDS.datasets = new List<Ent_BataClub_Chart_DataSet>() { dsP };
-            
+            });
+            chartDS.datasets.Add(dsP);
+            chartDS.labels = new string[] { "-90%", "90% - 100%" , "+100%" };            
             return Json(new { chartDS = JsonConvert.SerializeObject(chartDS, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }), detalle = data });
         }
         public FileContentResult GetExcelCVB()
@@ -251,9 +353,9 @@ namespace CapaPresentacion.Controllers
                 Session[_BC_Dashboard_data_CVB] = liststoreConf;
             }
             List<Ent_BC_Dashboard_CVB> lista = (List<Ent_BC_Dashboard_CVB>)Session[_BC_Dashboard_data_CVB];
-            string[] columns = { "cod_entid", "des_entid", "anterior", "actual", "porc", "sem_act", "sem_ant" };
+            string[] columns = { "n_semana", "cod_entid", "des_entid", "anterior", "actual", "porc"};
             byte[] filecontent = ExcelExportHelper.ExportExcel(lista, "", false, columns);
-            string nom_excel = "Lista de tiendas Cumplimiento Venta Bata - " + lista.Select(s => s.sem_act).FirstOrDefault();
+            string nom_excel = "Lista de tiendas Cumplimiento Venta Bata ";
             return File(filecontent, ExcelExportHelper.ExcelContentType, nom_excel + ".xlsx");
         }//
         public ActionResult GetChartCxM(string anio = "2020")
@@ -426,14 +528,14 @@ namespace CapaPresentacion.Controllers
                 jsonResult = Json(new { promsPS = dashboard.listPromsPS });
                 Session[_session_par_sol_mes_excel] = dashboard.listPromsPS;
             }
-            else if (informe == 6)
-            {
-                chartDS = new Ent_BataClub_Chart_Data();
-                chartDS = informeBarChartData(dashboard, 6);
-                Session[_session_det_tdas_sup] = dashboard.listTiendasSupervTot;
-                Session[_session_det_tdas_sup_excel] = dashboard.listTiendasSupervTot;
-                jsonResult = Json(new { result = JsonConvert.SerializeObject(chartDS, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }), tiendas = dashboard.listTiendasSupervTot });
-            }
+            //else if (informe == 6)
+            //{
+            //    chartDS = new Ent_BataClub_Chart_Data();
+            //    chartDS = informeBarChartData(dashboard, 6);
+            //    //Session[_session_det_tdas_sup] = dashboard.listTiendasSupervTot;
+            //    //Session[_session_det_tdas_sup_excel] = dashboard.listTiendasSupervTot;
+            //    jsonResult = Json(new { result = JsonConvert.SerializeObject(chartDS, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }), tiendas = dashboard.listTiendasSupervTot });
+            //}
             else if (informe == 7)
             {
                 chartDS = new Ent_BataClub_Chart_Data();
@@ -444,15 +546,15 @@ namespace CapaPresentacion.Controllers
 
 
             }
-            else if (informe == 8)
-            {
-                jsonResult = Json(new
-                {
+            //else if (informe == 8)
+            //{
+            //    jsonResult = Json(new
+            //    {
 
-                    tiendas = JsonConvert.SerializeObject(((List<Ent_BataClub_DashBoard_TiendasSupervisor>)Session[_session_det_tdas_sup]).Where(w => w.supervisor == sup), Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore })
-                });
-                Session[_session_det_tdas_sup_excel] = ((List<Ent_BataClub_DashBoard_TiendasSupervisor>)Session[_session_det_tdas_sup]).Where(w => w.supervisor == sup).ToList();
-            }
+            //        tiendas = JsonConvert.SerializeObject(((List<Ent_BataClub_DashBoard_TiendasSupervisor>)Session[_session_det_tdas_sup]).Where(w => w.supervisor == sup), Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore })
+            //    });
+            //    Session[_session_det_tdas_sup_excel] = ((List<Ent_BataClub_DashBoard_TiendasSupervisor>)Session[_session_det_tdas_sup]).Where(w => w.supervisor == sup).ToList();
+            //}
             else if (informe == 9)
             {
 
@@ -532,28 +634,28 @@ namespace CapaPresentacion.Controllers
             }
             return jsonResult;
         }
-        public Ent_BataClub_Chart_Data informeSupervisor(Ent_BataClub_DashBoard dashboard)
-        {
-            Ent_BataClub_Chart_Data chartDSDonut = new Ent_BataClub_Chart_Data();
-            Ent_BataClub_Chart_DataSet dsBCDonut = (new Ent_BataClub_Chart_DataSet()
-            {
-                backgroundColor = new string[] {
-                        "rgba(99, 143, 197, 0.9)",
-                        "rgba(221, 75, 57,0.9)",
-                        "rgba(255, 206, 86, 0.8)",
-                        "rgba(44, 122, 192, 0.8)",
-                        "rgba(122, 65, 32,0.9)",
-                        "rgba(245, 123, 56, 0.8)",
-                        "rgba(14, 123, 245, 0.8)",
-                        "rgba(33, 154, 34,0.9)",
-                        "rgba(142, 121, 86, 0.8)",
-                        "rgba(54, 45, 65, 0.8)" },
-                data = dashboard.listSupervisorTot.Select(s => s.registros).ToArray()
-            });
-            chartDSDonut.labels = dashboard.listCanles.Select(s => s.CANAL).ToArray();
-            chartDSDonut.datasets = new List<Ent_BataClub_Chart_DataSet>() { dsBCDonut };
-            return chartDSDonut;
-        }
+        //public Ent_BataClub_Chart_Data informeSupervisor(Ent_BataClub_DashBoard dashboard)
+        //{
+        //    Ent_BataClub_Chart_Data chartDSDonut = new Ent_BataClub_Chart_Data();
+        //    Ent_BataClub_Chart_DataSet dsBCDonut = (new Ent_BataClub_Chart_DataSet()
+        //    {
+        //        backgroundColor = new string[] {
+        //                "rgba(99, 143, 197, 0.9)",
+        //                "rgba(221, 75, 57,0.9)",
+        //                "rgba(255, 206, 86, 0.8)",
+        //                "rgba(44, 122, 192, 0.8)",
+        //                "rgba(122, 65, 32,0.9)",
+        //                "rgba(245, 123, 56, 0.8)",
+        //                "rgba(14, 123, 245, 0.8)",
+        //                "rgba(33, 154, 34,0.9)",
+        //                "rgba(142, 121, 86, 0.8)",
+        //                "rgba(54, 45, 65, 0.8)" },
+        //        data = dashboard.listSupervisorTot.Select(s => s.registros).ToArray()
+        //    });
+        //    chartDSDonut.labels = dashboard.listCanles.Select(s => s.CANAL).ToArray();
+        //    chartDSDonut.datasets = new List<Ent_BataClub_Chart_DataSet>() { dsBCDonut };
+        //    return chartDSDonut;
+        //}
         public Ent_BataClub_Chart_Data informeCanales(Ent_BataClub_DashBoard dashboard)
         {
             Ent_BataClub_Chart_Data chartDSDonut = new Ent_BataClub_Chart_Data();
@@ -656,44 +758,44 @@ namespace CapaPresentacion.Controllers
                 }) };
                 chartDS.labels = dashboard.listMesParesSoles.Select(s => s.MES_STR).ToArray();
             }
-            else if (informe == 6)
-            {
-                chartDS.datasets = new List<Ent_BataClub_Chart_DataSet>() {
-                    (new Ent_BataClub_Chart_DataSet()
-                    {
-                        label = "TRANSACCIONES",
-                        backgroundColor = Enumerable.Repeat("rgba(0, 166, 90,0.8)", dashboard.listSupervisorTot.Count).ToArray(),
-                        borderWidth = "1",
-                        data = dashboard.listSupervisorTot.Select(s => s.transac).ToArray()
-                    }),
-                    (new Ent_BataClub_Chart_DataSet()
-                    {
-                        label = "REGISTROS",
-                        backgroundColor = Enumerable.Repeat("rgba(180, 180, 180,0.8)", dashboard.listSupervisorTot.Count).ToArray(), // new string[] { "rgba(180, 180, 180,0.7)" },
-                        borderWidth = "1",
-                        data = dashboard.listSupervisorTot.Select(s => s.registros).ToArray()
-                    }),
+            //else if (informe == 6)
+            //{
+            //    chartDS.datasets = new List<Ent_BataClub_Chart_DataSet>() {
+            //        (new Ent_BataClub_Chart_DataSet()
+            //        {
+            //            label = "TRANSACCIONES",
+            //            backgroundColor = Enumerable.Repeat("rgba(0, 166, 90,0.8)", dashboard.listSupervisorTot.Count).ToArray(),
+            //            borderWidth = "1",
+            //            data = dashboard.listSupervisorTot.Select(s => s.transac).ToArray()
+            //        }),
+            //        (new Ent_BataClub_Chart_DataSet()
+            //        {
+            //            label = "REGISTROS",
+            //            backgroundColor = Enumerable.Repeat("rgba(180, 180, 180,0.8)", dashboard.listSupervisorTot.Count).ToArray(), // new string[] { "rgba(180, 180, 180,0.7)" },
+            //            borderWidth = "1",
+            //            data = dashboard.listSupervisorTot.Select(s => s.registros).ToArray()
+            //        }),
 
-                    (new Ent_BataClub_Chart_DataSet()
-                    {
-                        label = "CONSUMIDOS",
-                        backgroundColor = Enumerable.Repeat("rgba(243, 156, 18, 0.8)", dashboard.listSupervisorTot.Count).ToArray(),
-                        borderWidth = "1",
-                        data = dashboard.listSupervisorTot.Select(s => s.consumido).ToArray()
-                    }),
+            //        (new Ent_BataClub_Chart_DataSet()
+            //        {
+            //            label = "CONSUMIDOS",
+            //            backgroundColor = Enumerable.Repeat("rgba(243, 156, 18, 0.8)", dashboard.listSupervisorTot.Count).ToArray(),
+            //            borderWidth = "1",
+            //            data = dashboard.listSupervisorTot.Select(s => s.consumido).ToArray()
+            //        }),
 
-                     (new Ent_BataClub_Chart_DataSet()
-                    {
-                        label = "MIEMBROS",
-                        backgroundColor = Enumerable.Repeat("rgba(230, 101, 101, 0.8)", dashboard.listSupervisorTot.Count).ToArray(),
-                        borderWidth = "1",
-                        data = dashboard.listSupervisorTot.Select(s => s.bataclub).ToArray()
-                    })
-                };
+            //         (new Ent_BataClub_Chart_DataSet()
+            //        {
+            //            label = "MIEMBROS",
+            //            backgroundColor = Enumerable.Repeat("rgba(230, 101, 101, 0.8)", dashboard.listSupervisorTot.Count).ToArray(),
+            //            borderWidth = "1",
+            //            data = dashboard.listSupervisorTot.Select(s => s.bataclub).ToArray()
+            //        })
+            //    };
 
-                chartDS.labels = dashboard.listSupervisorTot.Select(s => s.supervisor).ToArray();
-                chartDS.labelsTooltip = new string[] { "Hola", "Hola", "Hola", "Hola", "Hola", "Hola", "Hola", "HOLA" };
-            }
+            //    chartDS.labels = dashboard.listSupervisorTot.Select(s => s.supervisor).ToArray();
+            //    chartDS.labelsTooltip = new string[] { "Hola", "Hola", "Hola", "Hola", "Hola", "Hola", "Hola", "HOLA" };
+            //}
             else if (informe == 7)
             {
                 chartDS.datasets = new List<Ent_BataClub_Chart_DataSet>() {
@@ -813,22 +915,15 @@ namespace CapaPresentacion.Controllers
         }
         public FileContentResult RegTraConTdaExcel()
         {
-            if (Session[_session_det_tdas_sup_excel] == null)
+            if (Session[_BC_Dashboard_Distritos] == null)
             {
-                List<Ent_BataClub_DashBoard_TiendasSupervisor> liststoreConf = new List<Ent_BataClub_DashBoard_TiendasSupervisor>();
-                Session[_session_det_tdas_sup_excel] = liststoreConf;
+                List<Ent_BataClub_DashBoard> liststoreConf = new List<Ent_BataClub_DashBoard>();
+                Session[_BC_Dashboard_Distritos] = liststoreConf;
             }
-            /*
-                        public string supervisor { get; set; }
-        public string tienda { get; set; }
-        public decimal registros { get; set; }
-        public decimal transac { get; set; }
-        public decimal consumido { get; set; }
-             */
-            List<Ent_BataClub_DashBoard_TiendasSupervisor> lista = (List<Ent_BataClub_DashBoard_TiendasSupervisor>)Session[_session_det_tdas_sup_excel];
-            string[] columns = { "supervisor", "tienda", "registros", "transac", "consumido","bataclub" };
+            List<Ent_BataClub_DashBoard_Tiendas_Distritos> lista = ((Ent_BataClub_DashBoard)Session[_BC_Dashboard_Distritos]).listDistritosTiendas.OrderBy(o => o.supervisor).ThenBy(t => t.distrito).ToList();
+            string[] columns = { "supervisor","distrito", "tienda", "registros", "transac", "consumido","bataclub" };
             byte[] filecontent = ExcelExportHelper.ExportExcel(lista, "", false, columns);
-            string nom_excel = "Lista de tiendas RTCxST";
+            string nom_excel = "Lista de tiendas distrito RTCxST";
             return File(filecontent, ExcelExportHelper.ExcelContentType, nom_excel + ".xlsx");
         }//
 

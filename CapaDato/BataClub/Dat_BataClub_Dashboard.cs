@@ -12,6 +12,109 @@ namespace CapaDato.BataClub
 {
     public class Dat_BataClub_Dashboard
     {
+
+        public Ent_BataClub_DashBoard get_info_distritos(DateTime fecini, DateTime fecfin)
+        {
+            string sqlquery = "[USP_BATACLUB_DASHBOARD_DISTRITOS_INFO]";
+            Ent_BataClub_DashBoard data = null;
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@fecha_ini", fecini);
+                        cmd.Parameters.AddWithValue("@fecha_fin", fecfin);
+                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                        {
+                            DataSet ds = new DataSet();
+                            da.Fill(ds);
+                            if (ds != null)
+                            {
+                                data = new Ent_BataClub_DashBoard();
+                                data.listDistritos = new List<Ent_BataClub_DashBoard_Distritos>();
+                                data.listDistritos = (from DataRow dr in ds.Tables[0].Rows
+                                        select new Ent_BataClub_DashBoard_Distritos()
+                                        {
+                                            supervisor = dr["SUPERVISOR"].ToString(),
+                                            distrito = dr["DISTRITO"].ToString(),
+                                            registros = Convert.ToInt32(dr["REGISTROS"].ToString()),
+                                            transac = Convert.ToInt32(dr["TRANSAC"].ToString()),
+                                            consumido = Convert.ToInt32(dr["CONSUMIDO"].ToString()),
+                                            bataclub = Convert.ToInt32(dr["MIEM_BATACLUB"].ToString()),
+                                        }
+                                      ).ToList();
+
+                                data.listDistritosTiendas = new List<Ent_BataClub_DashBoard_Tiendas_Distritos>();
+                                data.listDistritosTiendas = (from DataRow dr in ds.Tables[1].Rows
+                                           select new Ent_BataClub_DashBoard_Tiendas_Distritos()
+                                           {
+                                               supervisor = dr["SUPERVISOR"].ToString(),
+                                               distrito = dr["DISTRITO"].ToString(),
+                                               tienda = dr["TIENDA"].ToString(),
+                                               registros = Convert.ToInt32(dr["REGISTROS"].ToString()),
+                                               transac = Convert.ToInt32(dr["TRANSAC"].ToString()),
+                                               consumido = Convert.ToInt32(dr["CONSUMIDO"].ToString()),
+                                               bataclub = Convert.ToInt32(dr["MIEM_BATACLUB"].ToString()),
+                                           }
+                                      ).ToList();                                
+                            }
+                        }
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                data = null;
+            }
+            return data;
+        }
+
+        public List<Ent_BC_Venta_Categoria> get_info_venta_categoria(DateTime fecini, DateTime fecfin)
+        {
+            List<Ent_BC_Venta_Categoria> list = null;
+            string sqlquery = "[USP_BATACLUB_DASHBOARD_VENTA_CATEGORIA]";
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@fecha_ini", fecini);
+                        cmd.Parameters.AddWithValue("@fecha_fin", fecfin);
+                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                        {
+                            DataTable dt = new DataTable();
+                            da.Fill(dt);
+                            if (dt != null)
+                            {
+                                list = new List<Ent_BC_Venta_Categoria>();
+                                list = (from DataRow dr in dt.Rows
+                                        select new Ent_BC_Venta_Categoria()
+                                        {
+                                            CATEGORIA = Convert.ToString(dr["CATEGORIA"]),
+                                            TOTAL_BATACLUB = Convert.ToDecimal(dr["TOTAL_BATACLUB"]),
+                                            TOTAL_BATA = Convert.ToDecimal(dr["TOTAL_BATA"]),
+                                        }
+                                      ).ToList();
+                            }
+                        }
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                list = null;
+            }
+            return list;
+        }
+
         public List<Ent_BC_Dashboard_CVB> get_info_cump_venta(string cod_semana)
         {
             List<Ent_BC_Dashboard_CVB> list = null;
@@ -35,18 +138,18 @@ namespace CapaDato.BataClub
                                 list = (from DataRow dr in dt.Rows
                                         select new Ent_BC_Dashboard_CVB()
                                         {
+                                            n_semana = Convert.ToString(dr["n_semana"]),
                                             cod_entid = Convert.ToString(dr["cod_entid"]),
                                             des_entid = Convert.ToString(dr["des_entid"]),
                                             anterior = Convert.ToDecimal(dr["anterior"]),
                                             actual = Convert.ToDecimal(dr["actual"]),
                                             porc = Convert.ToDecimal(dr["porc"]),
-                                            sem_act = Convert.ToString(dr["sem_act"]),
-                                            sem_ant = Convert.ToString(dr["sem_ant"]),
+                                            semana_ant = Convert.ToString(dr["semana_ant"]),
+                                            semana_act = Convert.ToString(dr["semana_act"]),
                                         }
                                       ).ToList();
                             }
                         }
-
                     }
                 }
             }
@@ -56,7 +159,6 @@ namespace CapaDato.BataClub
             }
             return list;
         }
-
         public List<Ent_BC_Dashboard_Ticket_Promedio> get_info_ticket_promedio (DateTime fecini, DateTime fecfin)
         {
             List<Ent_BC_Dashboard_Ticket_Promedio> list = null;
@@ -397,31 +499,31 @@ namespace CapaDato.BataClub
                                 //                                  soles = Convert.ToInt32(dr["SOLES"].ToString())
                                 //                              }).ToList();
                             }
-                            if (new[] { 0, 6 }.Contains(informe))
-                            {
-                                info.listSupervisorTot = (from DataRow dr in ds.Tables[(informe == 0 ? 1 :  0)].Rows
-                                                          select new Ent_BataClub_DashBoard_Supervisor()
-                                                          {
-                                                              supervisor = dr["SUPERVISOR"].ToString(),
-                                                              registros = Convert.ToInt32(dr["REGISTROS"].ToString()),
-                                                              transac = Convert.ToInt32(dr["TRANSAC"].ToString()),
-                                                              consumido = Convert.ToInt32(dr["CONSUMIDO"].ToString()),
-                                                              bataclub = Convert.ToInt32(dr["MIEM_BATACLUB"].ToString()),
-                                                          }).ToList();
-                                info.listTiendasSupervTot = (from DataRow dr in ds.Tables[(informe == 0 ? 2 : 1)].Rows
-                                                          select new Ent_BataClub_DashBoard_TiendasSupervisor()
-                                                          {
-                                                              supervisor = dr["SUPERVISOR"].ToString(),
-                                                              tienda = dr["TIENDA"].ToString(),
-                                                              registros = Convert.ToInt32(dr["REGISTROS"].ToString()),
-                                                              transac = Convert.ToInt32(dr["TRANSAC"].ToString()),
-                                                              consumido = Convert.ToInt32(dr["CONSUMIDO"].ToString()),
-                                                              bataclub = Convert.ToInt32(dr["MIEM_BATACLUB"].ToString()),
-                                                          }).ToList();
-                            }
+                            //if (new[] { 0, 6 }.Contains(informe))
+                            //{
+                            //    info.listSupervisorTot = (from DataRow dr in ds.Tables[(informe == 0 ? 1 :  0)].Rows
+                            //                              select new Ent_BataClub_DashBoard_Supervisor()
+                            //                              {
+                            //                                  supervisor = dr["SUPERVISOR"].ToString(),
+                            //                                  registros = Convert.ToInt32(dr["REGISTROS"].ToString()),
+                            //                                  transac = Convert.ToInt32(dr["TRANSAC"].ToString()),
+                            //                                  consumido = Convert.ToInt32(dr["CONSUMIDO"].ToString()),
+                            //                                  bataclub = Convert.ToInt32(dr["MIEM_BATACLUB"].ToString()),
+                            //                              }).ToList();
+                            //    info.listTiendasSupervTot = (from DataRow dr in ds.Tables[(informe == 0 ? 2 : 1)].Rows
+                            //                              select new Ent_BataClub_DashBoard_TiendasSupervisor()
+                            //                              {
+                            //                                  supervisor = dr["SUPERVISOR"].ToString(),
+                            //                                  tienda = dr["TIENDA"].ToString(),
+                            //                                  registros = Convert.ToInt32(dr["REGISTROS"].ToString()),
+                            //                                  transac = Convert.ToInt32(dr["TRANSAC"].ToString()),
+                            //                                  consumido = Convert.ToInt32(dr["CONSUMIDO"].ToString()),
+                            //                                  bataclub = Convert.ToInt32(dr["MIEM_BATACLUB"].ToString()),
+                            //                              }).ToList();
+                            //}
                             if (new[] { 0,7 }.Contains(informe))
                             {
-                                info.listComprasTot = (from DataRow dr in ds.Tables[(informe == 0 ? 3 :0)].Rows
+                                info.listComprasTot = (from DataRow dr in ds.Tables[(informe == 0 ? 1 :0)].Rows
                                                     group dr by
                                                     new
                                                     {
@@ -436,7 +538,7 @@ namespace CapaDato.BataClub
 
                                                     }).ToList();
 
-                            info.listTipoComprasTot= (from DataRow dr in ds.Tables[(informe == 0 ? 3 :  0)].Rows
+                            info.listTipoComprasTot= (from DataRow dr in ds.Tables[(informe == 0 ? 1 :  0)].Rows
                                                       select new Ent_BataClub_DashBoard_Tipo_Compras()
                                                       {
                                                           transac = Convert.ToInt32(dr["TRANSAC"]),
@@ -448,7 +550,7 @@ namespace CapaDato.BataClub
 
                             if (new[] { 0, 12 }.Contains(informe))
                             {
-                                info.listComprasCliTot = (from DataRow dr in ds.Tables[(informe == 0 ? 4 : 0)].Rows
+                                info.listComprasCliTot = (from DataRow dr in ds.Tables[(informe == 0 ? 2 : 0)].Rows
                                                              select new Ent_BataClub_DashBoard_Compras_Cliente()
                                                              {                                                                 
                                                                  com_des = dr["COMP_DES"].ToString(),
@@ -457,7 +559,7 @@ namespace CapaDato.BataClub
                             }
                             if (new[] { 0, 13 }.Contains(informe))
                             {
-                                info.listincompletos= (from DataRow dr in ds.Tables[(informe == 0 ? 5 : 0)].Rows
+                                info.listincompletos= (from DataRow dr in ds.Tables[(informe == 0 ? 3 : 0)].Rows
                                                           select new Ent_BataClub_Dashboard_Datos_Incompletos()
                                                           {
                                                               campo = dr["CAMPO"].ToString(),
