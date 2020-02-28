@@ -21,6 +21,8 @@ using System.Data;
 using System.IO;
 using ClosedXML.Excel;
 using CapaEntidad.ValeCompra;
+using CapaPresentacion.Data.Crystal.Reporte;
+using CapaPresentacion.Models.Crystal.Reporte;
 
 namespace CapaPresentacion.Controllers
 {
@@ -621,6 +623,141 @@ namespace CapaPresentacion.Controllers
 
         }
 
+        #region<REGION REPORTE BETS SELLER>
+        private Dat_DisCadTda discattda = new Dat_DisCadTda();
+        private string _session_dis_cad_tda = "_session_dis_cad_tda"; 
+        public ActionResult ReporteBestSeller()
+        {
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
+            if (_usuario == null)
+            {
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+            }
+            else
+            { 
+                List<Ent_Combo_DisCadTda> combo_discadtda = discattda.list_dis_cad_tda();
+                //Session["Tienda"] = "50143";
+                if (Session["Tienda"] != null)
+                {
+                    combo_discadtda = combo_discadtda.Where(t => t.cod_entid == Session["Tienda"].ToString()).ToList();
+                }
+
+                ViewBag.Distrito=combo_distrito(combo_discadtda);
+                ViewBag.DisCadTda = combo_discadtda;
+
+                Session[_session_dis_cad_tda] = combo_discadtda;
+
+                List<Ent_Combo> listD = new List<Ent_Combo>();
+                Ent_Combo entComboD = new Ent_Combo();
+                entComboD.cbo_codigo = "0";
+                entComboD.cbo_descripcion = "----Todos----";
+                listD.Add(entComboD);
+                ViewBag.Categoria = listD;
+
+                List<Ent_Combo_DisCadTda> list_cad = new List<Ent_Combo_DisCadTda>();
+                Ent_Combo_DisCadTda entCombo_cad = new Ent_Combo_DisCadTda();
+                entCombo_cad.cod_cadena = "-1";
+                entCombo_cad.des_cadena = "----Todos----";
+                list_cad.Add(entCombo_cad);
+
+                List<Ent_Combo_DisCadTda> list_tda = new List<Ent_Combo_DisCadTda>();
+                Ent_Combo_DisCadTda entCombo_tda = new Ent_Combo_DisCadTda();
+                entCombo_tda.cod_entid= "-1";
+                entCombo_tda.des_entid = "----Todos----";
+                list_tda.Add(entCombo_tda);
+
+                string strJson2 = "";
+                JsonResult jRespuesta2 = null;
+                var serializer2 = new JavaScriptSerializer();
+
+                ViewBag.Tipo = datCbo.get_ListaTipoCategoria();
+
+                strJson2 = datCbo.listarStr_ListaGrupoTipo();
+
+
+                jRespuesta2 = Json(serializer2.Deserialize<List<Ent_Combo>>(strJson2).Where(d => d.cbo_codigo != "0"), JsonRequestBehavior.AllowGet);
+                ViewBag.ClGrupo = jRespuesta2;
+
+                strJson2 = datCbo.listarStr_ListaCategoria("");
+                jRespuesta2 = Json(serializer2.Deserialize<List<Ent_Combo>>(strJson2).Where(d => d.cbo_codigo != "0"), JsonRequestBehavior.AllowGet);
+                ViewBag.ClCategoria = jRespuesta2;
+
+          
+
+                ViewBag.Cadena = list_cad;
+                ViewBag.Tienda = list_tda;
+            
+                return View();
+            }
+        }
+        [HttpPost]
+        public ActionResult ShowGenericReportBestSellerInNewWin(string distrito, string cadena,string tienda,string tipo, 
+                                                                string grupo,string categoria,string filas,string fecIni, string FecFin)
+        {
+            string _estado = "";
+            try
+            {
+                Dat_Best_Seller bs = new Dat_Best_Seller();
+
+                this.HttpContext.Session["ReportName"] = "ReporteBestSeller.rpt";
+
+                List<Models_Best_Seller> model_best_seller = bs.get_best_seller(distrito, cadena, Convert.ToDateTime(fecIni), Convert.ToDateTime(FecFin), tienda, Convert.ToInt32(filas), tipo, grupo, categoria);
+
+                //Reporte_Vendedor model_vendedor = pl.get_reporteVendedor(coddis, cod_tda, fecIni, FecFin, calidad);
+
+                this.HttpContext.Session["rptSource"] = model_best_seller;
+                //this.HttpContext.Session["rptSource2"] = model_vendedor.listTotal2;
+
+
+                /*error=0;exito=1;no hay datos=-1*/
+                _estado = (model_best_seller == null) ? "0" : "1";
+
+                if (model_best_seller != null)
+                {
+                    if (model_best_seller.Count() == 0) _estado = "-1";
+                }
+
+            }
+            catch (Exception)
+            {
+                _estado = "-1";
+            }
+            
+
+
+            //if (model_planilla==null)
+
+            return Json(new
+            {
+                estado = _estado
+            });
+        }
+
+        private List<Ent_Combo_DisCadTda> combo_distrito(List<Ent_Combo_DisCadTda> combo_general)
+        {
+            List<Ent_Combo_DisCadTda> listar = null;
+            try
+            {
+                listar = new List<Ent_Combo_DisCadTda>();
+                listar = (from grouping in combo_general.GroupBy(x => new Tuple<string, string>(x.cod_distri, x.des_distri))
+                          select new Ent_Combo_DisCadTda
+                          {
+                              cod_distri = grouping.Key.Item1,
+                              des_distri = grouping.Key.Item2,
+                          }).ToList();                     
+            }
+            catch 
+            {
+
+                
+            }
+            return listar;
+        }
+
+        #endregion
         [HttpPost]
         public ActionResult ShowGenericReportArtSinMovInNewWin(string cod_cadena,string cod_dis, string cod_tda, Int32 nsemana, Int32 maxpares, string estado, string grupo, string categoria, string tipo,string resumen , Int32 minpares,string calidad , string semIng)
         {
@@ -848,6 +985,8 @@ namespace CapaPresentacion.Controllers
             dwEst = dwEst == null ? new string[] { "0" } : dwEst;
             dwTipoCon = dwTipoCon == null ? new string[] { "0" } : dwTipoCon;
 
+            
+
             string _dwGrupo = String.Join(",", dwGrupo);
             _dwGrupo = _dwGrupo == "0" ? "-1" : _dwGrupo;
 
@@ -856,7 +995,23 @@ namespace CapaPresentacion.Controllers
 
             Models_GuiaConten model_vent_comp = listaGuia(dwtienda, dwTipo, _dwGrupo, _dwCate, txtarticulo, dwCalidad, String.Join(",",dwEst),String.Join(",",dwTipoCon) , txtGuia);
 
+            string total_pares = "0";
+            string total_soles_pares = "0";
+            string total_no_calzado = "0";
+            string total_soles_no_calzado = "0";
+
+            total_pares = model_vent_comp.listGuia.Sum(s => Convert.ToDecimal(s.PARES)).ToString();
+            total_soles_pares = model_vent_comp.listGuia.Sum(s => Convert.ToDecimal(s.VCALZADO)).ToString();
+            total_no_calzado = model_vent_comp.listGuia.Sum(s => Convert.ToDecimal(s.NOCALZADO)).ToString();
+            total_soles_no_calzado = model_vent_comp.listGuia.Sum(s => Convert.ToDecimal(s.VNOCALZADO)).ToString();
+
             ViewBag.GuiaDetalle = model_vent_comp.strDetalle;
+
+            ViewBag.total_pares = total_pares;
+            ViewBag.total_soles_pares = total_soles_pares;
+            ViewBag.total_no_calzado = total_no_calzado;
+            ViewBag.total_soles_no_calzado = total_soles_no_calzado;
+
             Session[_session_listguia_private] = model_vent_comp.listGuia;
 
             return PartialView(model_vent_comp.listGuia);

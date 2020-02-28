@@ -91,32 +91,36 @@
                    { "sName": "VNOCALZADO", "mData": "VNOCALZADO", "sClass": "right" },
                    { "sName": "ESTADO", "mData": "ESTADO" },
                    {
-                        "render": function (data, type, full) {
-                            var envio = "'" + full.NUMERO + "'"
+                       "render": function (data, type, full) {
+                           var envio = "'" + full.NUMERO + "'"
 
-                            return '<div> <a title="Ver Detalle"  onclick="verDetalle(' + envio + ')" target="_blank" class="btn btn-primary btn-sm"> <span class="	glyphicon glyphicon-th-list"></span></a></div>';
-                        }
+                           return '<div> <a title="Ver Detalle"  onclick="verDetalle(' + envio + ')" target="_blank" class="btn btn-primary btn-sm"> <span class="	glyphicon glyphicon-th-list"></span></a></div>';
+                       }
                    }
 
 
             ],
-             dom: 'Bfrtip',
-             buttons: [
-            {
-                extend: 'excelHtml5',
-                title: 'Batagui_xls'
-            },
-            {
-                extend: 'csvHtml5',
-                title: 'Batagui_csv'
-            },
-            {
-                extend: 'pdfHtml5',
-                title: 'Batagui_pdf'
-            },
-            'copyHtml5',
-             ]
+            dom: 'Bfrtip',
+            buttons: [
+           {
+               extend: 'excelHtml5',
+               title: 'Batagui_xls'
+           },
+           {
+               extend: 'csvHtml5',
+               title: 'Batagui_csv'
+           },
+           {
+               extend: 'pdfHtml5',
+               title: 'Batagui_pdf'
+           },
+           'copyHtml5',
+            ]
         });
+        $('#total_pares')[0].textContent = @ViewBag.total_pares;
+        $('#total_soles_pares')[0].textContent = @ViewBag.total_soles_pares;
+        $('#total_no_calzado')[0].textContent = @ViewBag.total_no_calzado;
+        $('#total_soles_no_calzado')[0].textContent = @ViewBag.total_soles_no_calzado;
 
     });
 

@@ -86,6 +86,7 @@
     <Compile Include="Inventario\Dat_Inventario_Consulta.cs" />
     <Compile Include="Inventario\Dat_MovDoc_Consulta.cs" />
     <Compile Include="Maestros\Dat_Canal.cs" />
+    <Compile Include="Maestros\Dat_DisCadTda.cs" />
     <Compile Include="Maestros\Dat_Orce.cs" />
     <Compile Include="Maestros\Dat_Concepto_Suna.cs" />
     <Compile Include="Maestros\Dat_Estado.cs" />

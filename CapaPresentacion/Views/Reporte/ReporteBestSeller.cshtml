@@ -1,0 +1,557 @@
+﻿@using CapaEntidad.Util;
+@{
+    ViewBag.Title = "Reporte Best Seller";
+    AjaxOptions options = new AjaxOptions
+    {
+        HttpMethod = "GET",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "lista",
+        OnComplete = "waitingDialog.hide();",
+        OnBegin = "waitingDialog.show('Espere un momento por favor');",
+        OnFailure = "waitingDialog.hide();"
+    };
+
+}
+
+<link href="~/ContentSelect/bootstrap-select.css" rel="stylesheet" />
+<link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />
+
+<style>
+    iframe {
+        border: none;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        height: 800px;
+    }
+</style>
+<p class="text-danger">Reporte Best Seller, por filtro Distrito,Cadena,Tiendas,Tipo,Grupo,Categoria,Top y Fecha de Rango</p>
+<div class="box box-body box-primary">
+
+    <div class="row">
+        <div class="col-sm-2">
+            <label for="dwCate">Distrito</label>
+            <div class="form-group">
+                <div class="form-group">
+                    @Html.DropDownList("dwDis", new SelectList(ViewBag.Distrito, "cod_distri", "des_distri", "-1"), new { @class = "selectpicker", @data_live_search = "true", multiple = "multiple", @id = "dwDis", @name = "dwDis", @onchange = "Listar_Cadena_Tienda()", @data_actions_box = "true", @data_selected_text_format = "count > 2" })                   
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <label for="dwCate">Cadena</label>
+            <div class="form-group">
+                <div id="divcad" class="form-group">
+                    @Html.DropDownList("dwcad", new SelectList(ViewBag.Cadena, "cod_cadena", "des_cadena", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwcad", @name = "dwcad" })
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <label for="dwCate">Tienda</label>
+            <div class="form-group">
+                <div id="divtda" class="form-group">
+                    @Html.DropDownList("dwtda", new SelectList(ViewBag.Tienda, "cod_entid", "des_entid", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwtda", @name = "dwtda" })
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <label for="dwCate">Tipo</label>
+            <div class="form-group">
+                <div id="divtipo" class="form-group">
+                    @Html.DropDownList("dwTipo", new SelectList(ViewBag.Tipo, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", @id = "dwTipo", @name = "dwTipo", style = "width:270px;max-width:270px;", @onchange = "ListarGrupo()" })
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <label for="dwGrupo">Grupo</label>
+            <div class="form-group">
+                <div id="divgrupo" class="form-group">
+                    @Html.DropDownList("dwGrupo", new SelectList(ViewBag.Categoria, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwGrupo", @name = "dwGrupo", @onchange = "ListarCategoria()" })
+                </div>
+            </div>
+        </div>
+       
+    </div>
+    <div class="row">
+      
+      
+        <div class="col-sm-2">
+            <label for="dwCate">Categoria</label>
+            <div class="form-group">
+                <div id="divcateg" class="form-group">
+                    @Html.DropDownList("dwCate", new SelectList(ViewBag.Categoria, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwCate" })
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <label for="dwCate">Visualizar Filas Nro:</label>
+            <div class="form-group">
+                <div class="form-group">
+                    <input name="txttop" type="number" id="txttop" min="0" value="1" style="width:100%" autofocus class="form-control" />
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <label for="fecini">Fec. Ini</label>
+            <div class="form-group">
+                <div id="datepickerini" class="input-group date" data-date-format="dd-mm-yyyy">
+                    <input id="fecini" name="fecini" value="" class="form-control custom-input" placeholder="dd-mm-yyyy" type="text" />
+                    <span class="input-group-addon  bg-white"><img src="~/Content/images/wall-calendar-with-lines.svg" height="20" width="20"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <label for="fecfin">Fec. Fin</label>
+            <div class="form-group">
+                <div id="datepickerfin" class="input-group date" data-date-format="dd-mm-yyyy">
+                    <input id="fecfin" name="fecfin" value="" class="form-control" placeholder="dd-mm-yyyy" type="text" />
+                    <span class="input-group-addon  bg-white"><img src="~/Content/images/wall-calendar-with-lines.svg" height="20" width="20"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <label for="dwEstado"></label>
+            <div class="form-group">
+                <div id="tipodoc" class="form-group">
+                    <button type="button" class="btn btn-primary" onclick="javascript: MostrarReporte()">
+                        <span class="glyphicon glyphicon-th-list"></span>&nbsp;Ver Reporte
+                    </button>
+                </div>
+            </div>
+        </div>      
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div id="ifrReporte" class="well" style="width: 100%; height: 800px;">
+                <iframe id="load" src="" frameborder="0" marginheight="1"
+                        marginwidth="1" scrolling="auto" onload="javascript: waitingDialog.hide();"></iframe>
+            </div>
+
+
+        </div>
+    </div>    
+
+</div>
+<script src="~/Scripts/bootstrap-select.min.js"></script>
+<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+
+<script src="~/Scripts/Linkend/linq.min.js"></script>
+
+<script src="~/Scripts/BI.js"></script>
+<script>
+    $(document).ready(function () {
+
+        var date = new Date();
+        var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+
+        $('#dwDis option').attr("selected", "selected");
+        $('#dwDis').selectpicker('refresh');
+
+        $('#dwCad option').attr("selected", "selected");
+        $('#dwCad').selectpicker('refresh');
+
+
+        ListarCadena();
+        ListarTienda();
+        ListarGrupo();
+
+        $('#fecini').datepicker({
+            format: "dd-mm-yyyy",
+            autoclose: true,
+            maxDate: new Date(),
+        }).datepicker("setDate", firstDay);
+        $('#fecfin').datepicker({
+            format: "dd-mm-yyyy",
+            autoclose: true,
+            maxDate: new Date(),
+        }).datepicker("setDate", "0");
+
+        $('#txttop').val('10');
+
+     
+    });
+    function Listar_Cadena_Tienda() {
+        ListarCadena();
+        ListarTienda();
+    }
+   
+    function ListarCadena() {
+        var dataArray = function () { return @Html.Raw(Json.Encode(ViewBag.DisCadTda)); }();
+       // var dataArray = data.Data;
+        var strTipo = $('#dwDis').val();
+
+        var listar = [];
+
+        if (strTipo != null) {
+
+            if (strTipo == "-1") {
+                var lista_filter = (strTipo == "-1") ? dataArray.filter(obj => obj.cod_distri != strTipo) : dataArray.filter(obj => obj.cod_distri === strTipo || obj.cod_distri == '0');
+                $.each(lista_filter, function (index, item) {
+
+                    listar.push(item);
+                });
+            } else {
+
+                var lista_filter = dataArray.filter(obj => obj.cod_distri == '0');
+                $.each(lista_filter, function (index, item) {
+
+                    listar.push(item);
+                });
+
+                $.each(strTipo, function (index2, item2) {
+
+                    var lista_filter = dataArray.filter(obj => obj.cod_distri === item2);
+                    $.each(lista_filter, function (index, item) {
+
+                        listar.push(item);
+                    });
+
+                });
+            }
+        }
+
+
+        var group_cadena = Enumerable.from(listar)
+        .groupBy(
+        null,
+        null,
+        "{ cod_cadena: $.cod_cadena, des_cadena: $.des_cadena}",
+        "'' + $.cod_cadena + '-' + $.des_cadena"
+        ).toArray();
+
+
+        llenarComboCad("divcad", "dwcad", group_cadena, '0', '', "ListarTienda", '1');
+    }
+    function ListarTienda()
+    {
+        var dataArray = function () { return @Html.Raw(Json.Encode(ViewBag.DisCadTda)); }();
+        // var dataArray = data.Data;
+        var strTipo = $('#dwDis').val();
+        var strCad = $('#dwcad').val();
+
+
+        var listar = [];
+
+        if (strTipo != null && strCad != null) {
+
+            if (strTipo == "-1" || strCad=="-1") {
+                var lista_filter = (strTipo == "-1") ? dataArray.filter(obj => obj.cod_distri != strTipo) : dataArray.filter(obj => obj.cod_distri === strTipo || obj.cod_distri == '0');
+                $.each(lista_filter, function (index, item) {
+
+                    listar.push(item);
+                });
+            } else {
+
+                var lista_filter = dataArray.filter(obj => obj.cod_distri == '0');
+                $.each(lista_filter, function (index, item) {
+
+                    listar.push(item);
+                });
+
+                $.each(strCad, function (index3, item3) {
+
+                    $.each(strTipo, function (index2, item2) {
+
+                        var lista_filter = dataArray.filter(obj => obj.cod_distri === item2 && obj.cod_cadena===item3);
+                        $.each(lista_filter, function (index, item) {
+
+                            listar.push(item);
+                        });
+
+                    });
+                });
+            }
+        }
+
+
+        var group_tienda = Enumerable.from(listar)
+        .groupBy(
+        null,
+        null,
+        "{ cod_entid: $.cod_entid, des_entid: $.des_entid}",
+        "'' + $.cod_entid + '-' + $.des_entid"
+        ).toArray();
+
+
+        llenarComboTda("divtda", "dwtda", group_tienda, '0', '', "", '1');
+    }
+
+    function llenarComboTda(DivId, IdControl, Data, codDefecto, desDefecto, onchangeFuncion, tipo) {
+
+        $('#' + IdControl).find('option').remove();
+
+
+
+        var str = (tipo == '1') ? '<select class="selectpicker" multiple = "multiple"  data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '" data-actions-box="true"  data-selected-text-format="count > 2" >' : '<select class="selectpicker"  data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '"  data-actions-box="true"  data-selected-text-format="count > 2" > ';
+        var ItemNormal = '<option value="codItem">desItem</option>';
+        var colectItemNormal = '';
+
+        //if (codDefecto != '') { str += '<option value="' + codDefecto + '" selected="selected">------' + desDefecto + '------</option>'; }
+
+        if (onchangeFuncion != '') { onchangeFuncion = 'onchange = "' + onchangeFuncion + '()"' }
+        str = str.replace("onchangeFuncion", onchangeFuncion);
+
+        $.each(Data, function (index, item) {
+
+            colectItemNormal = colectItemNormal + ItemNormal
+            var strSelected = '"';
+
+            if (item.cod_entid == codDefecto) {
+                strSelected = '" selected="selected" '
+
+            }
+            strSelected = '" selected="selected" '; // seleccionar todos al cargar
+            colectItemNormal = colectItemNormal.replace("codItem", item.cod_entid + strSelected);
+            colectItemNormal = colectItemNormal.replace("desItem", item.des_entid);
+
+        });
+
+        str += colectItemNormal
+        str += '</select>'
+
+        document.getElementById(DivId).innerHTML = str
+
+        $('.selectpicker').selectpicker({
+            liveSearch: true,
+            showSubtext: true
+        });
+
+    }
+
+    function llenarComboCad(DivId, IdControl, Data, codDefecto, desDefecto, onchangeFuncion, tipo) {
+
+        $('#' + IdControl).find('option').remove();
+
+
+
+        var str = (tipo == '1') ? '<select class="selectpicker" multiple = "multiple"  data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '" data-actions-box="true"  data-selected-text-format="count > 2" >' : '<select class="selectpicker"  data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '"  data-actions-box="true"  data-selected-text-format="count > 2" > ';
+        var ItemNormal = '<option value="codItem">desItem</option>';
+        var colectItemNormal = '';
+
+        //if (codDefecto != '') { str += '<option value="' + codDefecto + '" selected="selected">------' + desDefecto + '------</option>'; }
+
+        if (onchangeFuncion != '') { onchangeFuncion = 'onchange = "' + onchangeFuncion + '()"' }
+        str = str.replace("onchangeFuncion", onchangeFuncion);
+
+        $.each(Data, function (index, item) {
+
+            colectItemNormal = colectItemNormal + ItemNormal
+            var strSelected = '"';
+
+            if (item.cod_entid == codDefecto) {
+                strSelected = '" selected="selected" '
+
+            }
+            strSelected = '" selected="selected" '; // seleccionar todos al cargar
+            colectItemNormal = colectItemNormal.replace("codItem", item.cod_cadena + strSelected);
+            colectItemNormal = colectItemNormal.replace("desItem", item.des_cadena);
+
+        });
+
+        str += colectItemNormal
+        str += '</select>'
+
+        document.getElementById(DivId).innerHTML = str
+
+        $('.selectpicker').selectpicker({
+            liveSearch: true,
+            showSubtext: true
+        });
+
+    }
+
+    function ListarGrupo() {
+
+
+        var data = function () { return @Html.Raw(Json.Encode(ViewBag.ClGrupo)); }();
+
+        var dataArray = data.Data;
+        var strTipo = $('#dwTipo').val();
+        var listar = [];
+
+        if (strTipo != null) {
+            var lista_filter = dataArray.filter(obj => obj.cbo_filter_2 === strTipo);
+            $.each(lista_filter, function (index, item) {
+
+                listar.push(item);
+            });
+        }
+
+        llenarComboAlt("divgrupo", "dwGrupo", listar, '0', '', "ListarCategoria");
+
+        ListarCategoria();
+
+
+    }
+
+    function ListarCategoria() {
+
+        var data = function () { return @Html.Raw(Json.Encode(ViewBag.ClCategoria)); }();
+        var dataArray = data.Data;
+        var strgrupo = $('#dwGrupo').val();
+
+        var strTipo = $('#dwTipo').val();
+        var listar = [];
+        var lista_default = dataArray.filter(obj => obj.cbo_filter === '');
+
+
+        $.each(lista_default, function (index, item) {
+            listar.push(item);
+        });
+
+        if (strgrupo != null) {
+
+            if (strgrupo != '0') {
+                var lista_filteAnt = dataArray.filter(obj => obj.cbo_filter_2 === strTipo);
+
+                $.each(strgrupo, function (index, item) {
+
+                    var lista_filter = lista_filteAnt.filter(obj => obj.cbo_filter === item);
+
+                    $.each(lista_filter, function (index2, item2) {
+
+                        listar.push(item2);
+
+                    });
+                });
+            }
+
+            if (strgrupo == '0') {
+                var lista_filteAnt = dataArray.filter(obj => obj.cbo_filter_2 === strTipo);
+                var lista_filter = lista_filteAnt;
+
+                $.each(lista_filter, function (index, item) {
+
+                    listar.push(item);
+                });
+            }
+        }
+        llenarComboAlt("divcateg", "dwCate", listar, '0', '', "");
+
+
+    }
+
+    function llenarComboAlt(DivId, IdControl, Data, codDefecto, desDefecto, onchangeFuncion) {
+
+        $('#' + IdControl).find('option').remove();
+        var str = '<select class="selectpicker"  multiple = "multiple"  data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '" data-actions-box="true"  data-selected-text-format="count > 2">';
+        var ItemNormal = '<option value="codItem>desItem</option>';
+        var colectItemNormal = '';
+
+        if (onchangeFuncion != '') { onchangeFuncion = 'onchange = "' + onchangeFuncion + '()"' }
+        str = str.replace("onchangeFuncion", onchangeFuncion);
+
+        $.each(Data, function (index, item) {
+
+            colectItemNormal = colectItemNormal + ItemNormal
+            var strSelected = '"';
+
+            if (item.cbo_codigo == codDefecto) {
+                strSelected = '" selected="selected" '
+
+            }
+            strSelected = '" selected="selected" '; // seleccionar todos al cargar
+            colectItemNormal = colectItemNormal.replace("codItem", item.cbo_codigo + strSelected);
+            colectItemNormal = colectItemNormal.replace("desItem", item.cbo_descripcion);
+        });
+
+        str += colectItemNormal
+        str += '</select>'
+
+        document.getElementById(DivId).innerHTML = str
+
+        $('.selectpicker').selectpicker({
+            liveSearch: true,
+            showSubtext: true
+        });
+
+    }
+
+</script>
+<script>
+  
+</script>
+<script>
+    function MostrarReporte(e) {
+        //var dis = $('#dwDis').val(); // ($("#dwDis option:not(:selected)").length == 0 ? "-1" : $('#dwDis').val() ) ;
+        var distrito = $('#dwDis').val();// ($("#dwDis option:not(:selected)").length == 0 && $("#dwDis > option").length > 1 ? "0" : $('#dwDis').val());
+        var cadena = $('#dwcad').val();//($("#dwcad option:not(:selected)").length == 0 && $("#dwcad > option").length > 1 ? "0" : $('#dwcad').val());
+        var tienda = $('#dwtda').val(); //($("#dwtda option:not(:selected)").length == 0 && $("#dwtda > option").length > 1 ? "0" : $('#dwtda').val());
+        var tipo = $('#dwTipo').val();
+        var grupo = $('#dwGrupo').val(); //($("#dwGrupo option:not(:selected)").length == 0 && $("#dwGrupo > option").length > 1 ? "0" : $('#dwGrupo').val());
+        var categoria = $('#dwCate').val();//($("#dwCate option:not(:selected)").length == 0 && $("#dwCate > option").length > 1 ? "0" : $('#dwCate').val()); //$('#dwtda').val();
+        var filas = $('#txttop').val();
+
+        //var Calidad = ($("#dwCalidad option:not(:selected)").length == 0 && $("#dwCalidad > option").length > 1 ? "0" : $('#dwCalidad').val() ) ;// $('#dwCalidad').val();
+        //var fecIni = ($("#fecini").val()).split('-');
+        //var fecFin = ($("#fecfin").val()).split('-');
+        //var strIni = fecIni[2] + fecIni[1] + fecIni[0];
+        //var strFin = fecFin[2] + fecFin[1] + fecFin[0];
+        var strIni = $("#fecini").val();
+        var strFin = $("#fecfin").val();
+
+        if (strIni == '' || strFin == '') {
+            toastr.error('Ingrese le fecha de rango', "Alerta");
+            return;
+        }
+
+        //if (Calidad == '' || Calidad == null) { Calidad = '0' };
+        //Calidad = Calidad.toString();
+
+        distrito = distrito.toString();
+        cadena = cadena.toString();
+        tienda = tienda.toString();
+
+        grupo = grupo.toString();
+        categoria = categoria.toString();
+
+        //dis = dis.toString();
+        var TeamDetailPostBackURL = "@Url.Action("ShowGenericReportBestSellerInNewWin", "Reporte")";
+        //if (tda != '' || tda == null) {
+            waitingDialog.show('Espere un momento por favor');
+            $.ajax({
+                //url: GLB_RUT_APP_REPVENR + "?tda=" + tda + "&grupo=" + grupo + "&cate=" + cate + "&subcate=" + sbCate + "&estado=" + Estado,
+                url: TeamDetailPostBackURL,// '../ReporteCrystal/ShowGenericReportInNewWin',
+                dataType: 'json',
+                type: 'POST',
+                //dataType: "html",
+                data: { distrito: distrito, cadena: cadena, tienda: tienda, tipo: tipo, grupo: grupo, categoria: categoria, filas: filas, fecIni: strIni, fecFin: strFin },
+                //cache: false,
+                //async: false,
+                //dataType: "html",
+                success: function (data) {
+                    //alert('ok');
+                    if (data.estado == "1") {
+                        $('#load').show();
+                        $("#load").attr("src", "../AspNetForms/BestSeller.aspx");
+                    }
+                    else {
+                        if (data.estado == "-1")
+                        {
+                            $('#load').hide();
+                            waitingDialog.hide();
+                            toastr.error('No hay datos para mostrar', "Alerta");
+                        }
+                        else
+                        {
+                            $('#load').hide();
+                            waitingDialog.hide();
+                            toastr.error('Hubo un error en el reporte', "Alerta");
+                        }
+                    }
+                    //document.getElementById("ifrReporte").innerHTML = data;
+                    //waitingDialog.hide();
+                    return false;
+                },
+                error: function (request, status, error) {
+                    waitingDialog.hide();
+                }
+            }).done(function () {
+
+            });
+        //} else {
+
+        //    toastr.error('Debe Ingresar Tienda', "Alerta");
+        //}
+    }
+
+</script>

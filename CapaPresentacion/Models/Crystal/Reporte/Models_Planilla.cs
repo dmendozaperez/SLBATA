@@ -18,6 +18,7 @@ namespace Models.Crystal.Reporte
         public string cate3 { get; set; }
         public string subcat3 { get; set; }
         public decimal pventa { get; set; }
+        public decimal vta_acum { get; set; }
         public decimal tcant { get; set; }
         public decimal valor { get; set; }
         public string med { get; set; }

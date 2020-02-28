@@ -100,6 +100,7 @@
     <Compile Include="Transac\Ent_Documentos_Tda.cs" />
     <Compile Include="Util\Ent_ComboList.cs" />
     <Compile Include="Util\Ent_Combo.cs" />
+    <Compile Include="Util\Ent_Combo_DisCadTda.cs" />
     <Compile Include="Util\JsonRespuesta.cs" />
     <Compile Include="ValeCompra\Ent_Cliente.cs" />
     <Compile Include="Control\Ent_Funcion.cs" />

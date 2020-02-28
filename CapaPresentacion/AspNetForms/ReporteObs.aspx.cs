@@ -15,11 +15,11 @@ namespace CapaPresentacion.AspNetForms
         {
             //if (!this.IsPostBack)
             //{
-                Data.Crystal.Reporte.Data_Bata r = new Data.Crystal.Reporte.Data_Bata();
+               // Data.Crystal.Reporte.Data_Bata r = new Data.Crystal.Reporte.Data_Bata();
                 string strReportName = "ReporteOBS.rpt";
 
-                if (Session["data"] == null)
-                    Session["data"] = r.list_obs("-1", "50390", "R", "-1", "-1", "-1", -1, -1, "-1", "-1");
+                //if (Session["data"] == null)
+                 //   Session["data"] = r.list_obs("-1", "50390", "R", "-1", "-1", "-1", -1, -1, "-1", "-1");
 
                 var rptSource = Session["data"];
 

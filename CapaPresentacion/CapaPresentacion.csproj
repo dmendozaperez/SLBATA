@@ -267,6 +267,13 @@
     <Compile Include="AspNetForms\ArticuloSinMov.aspx.designer.cs">
       <DependentUpon>ArticuloSinMov.aspx</DependentUpon>
     </Compile>
+    <Compile Include="AspNetForms\BestSeller.aspx.cs">
+      <DependentUpon>BestSeller.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AspNetForms\BestSeller.aspx.designer.cs">
+      <DependentUpon>BestSeller.aspx</DependentUpon>
+    </Compile>
     <Compile Include="AspNetForms\CanalVenta.aspx.cs">
       <DependentUpon>CanalVenta.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -280,6 +287,13 @@
     </Compile>
     <Compile Include="AspNetForms\GuiaEcommerce.aspx.designer.cs">
       <DependentUpon>GuiaEcommerce.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AspNetForms\KeyCategoryPerformance.aspx.cs">
+      <DependentUpon>KeyCategoryPerformance.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AspNetForms\KeyCategoryPerformance.aspx.designer.cs">
+      <DependentUpon>KeyCategoryPerformance.aspx</DependentUpon>
     </Compile>
     <Compile Include="AspNetForms\ReporteObs.aspx.cs">
       <DependentUpon>ReporteObs.aspx</DependentUpon>
@@ -364,12 +378,14 @@
     <Compile Include="Data\Crystal\Reporte\Data_ECommerce.cs" />
     <Compile Include="Data\Crystal\Reporte\Data_Bata.cs" />
     <Compile Include="Data\Crystal\Reporte\Data_Planilla.cs" />
+    <Compile Include="Data\Crystal\Reporte\Dat_Best_Seller.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\CanalVenta\CanalVenta.cs" />
     <Compile Include="Models\CanalVenta\Urbano.cs" />
     <Compile Include="Models\Control\LoginViewModel.cs" />
+    <Compile Include="Models\Crystal\Reporte\Models_Best_Seller.cs" />
     <Compile Include="Models\Crystal\Reporte\Models_GuiaEC.cs" />
     <Compile Include="Models\Crystal\Reporte\Models_Rendimiento_Categ.cs" />
     <Compile Include="Models\Crystal\Reporte\Models_Guia.cs" />
@@ -408,10 +424,34 @@
       <DependentUpon>GuiaElectronica.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="RptsCrystal\KeyCategoryPerformance.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>KeyCategoryPerformance.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RptsCrystal\KeyCategoryPerformanceBG.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>KeyCategoryPerformanceBG.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RptsCrystal\KeyCategoryPerformanceWB.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>KeyCategoryPerformanceWB.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="RptsCrystal\PlanillaDet.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PlanillaDet.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RptsCrystal\ReporteBestSeller.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ReporteBestSeller.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="RptsCrystal\ReporteRendCateg.cs">
@@ -497,8 +537,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AspNetForms\ArticuloSinMov.aspx" />
+    <Content Include="AspNetForms\BestSeller.aspx" />
     <Content Include="AspNetForms\CanalVenta.aspx" />
     <Content Include="AspNetForms\GuiaEcommerce.aspx" />
+    <Content Include="AspNetForms\KeyCategoryPerformance.aspx" />
     <Content Include="AspNetForms\ReporteObs.aspx" />
     <Content Include="AspNetForms\RendimientoxCateg.aspx" />
     <Content Include="AspNetForms\TabProsp.aspx" />
@@ -1328,6 +1370,8 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\JsBarcode.all.js" />
+    <Content Include="Scripts\Linkend\linq.js" />
+    <Content Include="Scripts\Linkend\linq.min.js" />
     <Content Include="Scripts\LogStats.js" />
     <Content Include="Scripts\modernizr-1.7.js" />
     <Content Include="Scripts\modernizr-1.7.min.js" />
@@ -1669,6 +1713,8 @@
     <Content Include="Views\Inventario\getListadocmov_det.cshtml" />
     <Content Include="Views\Soporte\_guia_tableError.cshtml" />
     <Content Include="Views\Soporte\ConsultaGuiaError.cshtml" />
+    <Content Include="Views\Reporte\KeyCategoryPerformance.cshtml" />
+    <Content Include="Views\Reporte\ReporteBestSeller.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1732,9 +1778,25 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>GuiaElectronica.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="RptsCrystal\KeyCategoryPerformance.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>KeyCategoryPerformance.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RptsCrystal\KeyCategoryPerformanceBG.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>KeyCategoryPerformanceBG.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RptsCrystal\KeyCategoryPerformanceWB.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>KeyCategoryPerformanceWB.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="RptsCrystal\PlanillaDet.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>PlanillaDet.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RptsCrystal\ReporteBestSeller.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>ReporteBestSeller.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="RptsCrystal\ReporteRendCateg.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
