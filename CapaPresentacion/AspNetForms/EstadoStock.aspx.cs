@@ -1,4 +1,6 @@
-﻿using CrystalDecisions.CrystalReports.Engine;
+﻿using CapaPresentacion.Models.Crystal.Reporte;
+using CapaPresentacion.RptsCrystal;
+using CrystalDecisions.CrystalReports.Engine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,12 +10,12 @@ using System.Web.UI.WebControls;
 
 namespace CapaPresentacion.AspNetForms
 {
-    public partial class BestSeller : System.Web.UI.Page
+    public partial class EstadoStock : System.Web.UI.Page
     {
         ReportDocument rd = null;
         protected void Page_Load(object sender, EventArgs e)
         {
-           
+
         }
         protected void Page_Unload(object sender, EventArgs e)
         {
@@ -29,8 +31,9 @@ namespace CapaPresentacion.AspNetForms
             try
             {
                 string strReportName = System.Web.HttpContext.Current.Session["ReportName"].ToString();
-                var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
+                //var rptSource = System.Web.HttpContext.Current.Session["rptSource"];
 
+                Models_EstadoStock rptSource = (Models_EstadoStock) System.Web.HttpContext.Current.Session["rptSource"]; 
 
                 rd = new ReportDocument();
 
@@ -40,12 +43,20 @@ namespace CapaPresentacion.AspNetForms
 
                 // Setting report data source
                 if (rptSource != null && rptSource.GetType().ToString() != "System.String")
-                    rd.SetDataSource(rptSource);
+                { 
+                    //rd.SetDataSource(rptSource.list_cab);
+                    //rd.SetDataSource(rptSource.list_det);
+                    //rd.SetDataSource(rptSource.list_fin);
+
+                    rd.Database.Tables[0].SetDataSource(rptSource.list_cab);
+                    rd.Database.Tables[1].SetDataSource(rptSource.list_det);
+                    rd.Database.Tables[2].SetDataSource(rptSource.list_fin);
+                }
 
 
-                crv_BestSeller.ReportSource = rd;
-                crv_BestSeller.ToolPanelView = CrystalDecisions.Web.ToolPanelViewType.None;
-                crv_BestSeller.HasToggleGroupTreeButton = false;
+                crv_estado_stk.ReportSource = rd;
+                crv_estado_stk.ToolPanelView = CrystalDecisions.Web.ToolPanelViewType.None;
+                crv_estado_stk.HasToggleGroupTreeButton = false;
 
 
             }

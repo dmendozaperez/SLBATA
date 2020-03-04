@@ -138,6 +138,20 @@
 
 <script src="~/Scripts/BI.js"></script>
 <script>
+    $(function () {
+        var date = new Date();
+        var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+        $("#datepickerini").datepicker({
+            autoclose: true,
+            todayHighlight: true
+        }).datepicker("setDate", firstDay);;
+    });
+    $(function () {
+        $("#datepickerfin").datepicker({
+            autoclose: true,
+            todayHighlight: true
+        }).datepicker("setDate", "0");;
+    });
     $(document).ready(function () {
 
         var date = new Date();
@@ -154,16 +168,16 @@
         ListarTienda();
         ListarGrupo();
 
-        $('#fecini').datepicker({
-            format: "dd-mm-yyyy",
-            autoclose: true,
-            maxDate: new Date(),
-        }).datepicker("setDate", firstDay);
-        $('#fecfin').datepicker({
-            format: "dd-mm-yyyy",
-            autoclose: true,
-            maxDate: new Date(),
-        }).datepicker("setDate", "0");
+        //$('#fecini').datepicker({
+        //    format: "dd-mm-yyyy",
+        //    autoclose: true,
+        //    maxDate: new Date(),
+        //}).datepicker("setDate", firstDay);
+        //$('#fecfin').datepicker({
+        //    format: "dd-mm-yyyy",
+        //    autoclose: true,
+        //    maxDate: new Date(),
+        //}).datepicker("setDate", "0");
 
         $('#txttop').val('10');
 

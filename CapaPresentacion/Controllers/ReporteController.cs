@@ -623,6 +623,62 @@ namespace CapaPresentacion.Controllers
 
         }
 
+        #region<REGION DEL REPORTE DE ESTADO DE STOCK>
+        public ActionResult ReporteEstadoStock()
+        {
+            if (Session["Tienda"] != null)
+            {
+                ViewBag.Tienda = datCbo.get_ListaTiendaXstoreActivo(Session["Tienda"].ToString());
+            }
+            else
+            {
+                ViewBag.Tienda = datCbo.get_ListaTiendaXstoreActivo("");
+            }
+
+            return View();
+        }
+        public ActionResult ShowGenericReportEstadoStockInNewWin(string cod_tda,string fec_ini,string fec_fin)
+        {
+            string _estado = "";
+            try
+            {
+                Dat_EstadoStock stk = new Dat_EstadoStock();
+
+                this.HttpContext.Session["ReportName"] = "ReporteEstadoStock.rpt";
+
+               Models_EstadoStock model_estado_stock  =stk.listar(cod_tda, Convert.ToDateTime(fec_ini), Convert.ToDateTime(fec_fin));
+
+                //Reporte_Vendedor model_vendedor = pl.get_reporteVendedor(coddis, cod_tda, fecIni, FecFin, calidad);
+
+                this.HttpContext.Session["rptSource"] = model_estado_stock;
+                //this.HttpContext.Session["rptSource2"] = model_vendedor.listTotal2;
+
+
+                /*error=0;exito=1;no hay datos=-1*/
+                _estado = (model_estado_stock == null) ? "0" : "1";
+
+                if (model_estado_stock != null)
+                {
+                    if (model_estado_stock.list_cab.Count() == 0) _estado = "-1";
+                }
+
+            }
+            catch (Exception)
+            {
+                _estado = "-1";
+            }
+
+
+
+            //if (model_planilla==null)
+
+            return Json(new
+            {
+                estado = _estado
+            });
+        }
+        #endregion
+
         #region<REGION REPORTE BETS SELLER>
         private Dat_DisCadTda discattda = new Dat_DisCadTda();
         private string _session_dis_cad_tda = "_session_dis_cad_tda"; 
