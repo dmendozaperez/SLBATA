@@ -18,6 +18,9 @@ namespace CapaPresentacion.Models.Crystal.Reporte
         public Decimal uni_no_calzado { get; set; }
         public Decimal sol_calzado { get; set; }
         public Decimal sol_no_calzado { get; set; }
+        public string razon_social { get; set; }
+        public string ruc { get; set; }
+        public string rango_fecha { get; set; }
 
     }
     public class Estado_Stock_Det

@@ -41,7 +41,9 @@ namespace CapaPresentacion.Data.Crystal.Reporte
                                                    uni_no_calzado =Convert.ToDecimal(fila["uni_no_calzado"]),
                                                    sol_calzado =Convert.ToDecimal(fila["sol_calzado"]),
                                                    sol_no_calzado =Convert.ToDecimal(fila["sol_no_calzado"]),
-
+                                                   razon_social= fila["razon_social"].ToString(),
+                                                   ruc = fila["ruc"].ToString(),
+                                                   rango_fecha = fila["rango_fecha"].ToString(),
                                                }
                                              ).ToList();
 
