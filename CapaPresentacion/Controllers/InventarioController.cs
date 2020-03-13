@@ -13,15 +13,17 @@ using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using CapaPresentacion.Data.Crystal.Reporte;
+using CapaPresentacion.Models.Crystal.Reporte;
 
 namespace CapaPresentacion.Controllers
 {
     public class InventarioController : Controller
     {
         private Dat_Inventario_Consulta datInv = new Dat_Inventario_Consulta(); //gft
-        private Dat_ListaTienda dat_lista_tienda = new Dat_ListaTienda(); 
+        private Dat_ListaTienda dat_lista_tienda = new Dat_ListaTienda();
         private string _session_tabla_inventCons_private = "_session_tabla_inventCons_private"; //gft
-        private string _Inventario_Tienda_Combo = "_Inventario_Tienda_Combo"; 
+        private string _Inventario_Tienda_Combo = "_Inventario_Tienda_Combo";
         private string _Inventario_TiendaFecha_Combo = "_Inventario_TiendaFecha_Combo";
         private string _session_lista_articulos_inv = "_session_lista_articulos";
         private string _session_lista_ajuste_inv = "_session_lista_ajuste_inv";
@@ -30,15 +32,15 @@ namespace CapaPresentacion.Controllers
 
         #region Consulta inventario
         //Index
-        public ActionResult Consulta_Inv( )
+        public ActionResult Consulta_Inv()
         {
-            string cod_entid="";
+            string cod_entid = "";
 
             //Combo Tienda
             if (Session["_Inventario_Tienda_Combo"] == null)
             {
                 ViewBag.Tienda = datInv.get_ListaTienda();
-               // ((datInv.get_ListaTienda()).Items[0]).cod_entid
+                // ((datInv.get_ListaTienda()).Items[0]).cod_entid
                 //List<Ent_Inventario_Tienda> list1 = new List<Ent_Inventario_Tienda>()
                 //{
                 //    new Ent_Inventario_Tienda(){  cod_entid = "-1", des_entid="Seleccione Tienda" },
@@ -49,31 +51,32 @@ namespace CapaPresentacion.Controllers
                 Session["_Inventario_TiendaFecha_Combo"] = ViewBag.Fecha;
             }
             else
-            { ViewBag.Tienda = Session["_Inventario_Tienda_Combo"];
-               // cod_entid = ViewBag.Tienda[0].cod_entid.ToString();
-              //  ViewBag.Fecha = datInv.get_ListaFecha(cod_entid);
+            {
+                ViewBag.Tienda = Session["_Inventario_Tienda_Combo"];
+                // cod_entid = ViewBag.Tienda[0].cod_entid.ToString();
+                //  ViewBag.Fecha = datInv.get_ListaFecha(cod_entid);
                 ViewBag.Fecha = Session["_Inventario_TiendaFecha_Combo"];
             }
             return View();
         }
-       
+
         //Table
-        public PartialViewResult _TableConsInv( string articulo, string talla, string dwtda, string dwfec)
+        public PartialViewResult _TableConsInv(string articulo, string talla, string dwtda, string dwfec)
         {
             //xst_inv_fec_aud
-            if (dwtda == null|| dwfec == null)
+            if (dwtda == null || dwfec == null)
             { return PartialView(); }
             else
-            {  return PartialView(listaTablaConsulta(articulo, talla, dwtda, dwfec)); }
+            { return PartialView(listaTablaConsulta(articulo, talla, dwtda, dwfec)); }
         }
 
         public List<Ent_Inventario_Consulta> listaTablaConsulta(string articulo, string talla, string dwtda, string dwfec)
         {
-            List<Ent_Inventario_Consulta> list = datInv.get_ListaInv_Consulta( dwtda, dwfec, articulo, talla);
+            List<Ent_Inventario_Consulta> list = datInv.get_ListaInv_Consulta(dwtda, dwfec, articulo, talla);
             Session[_session_tabla_inventCons_private] = list;
             return list;
         }
-        
+
         public ActionResult getTableInventAjax(Ent_jQueryDataTableParams param)
         {
             /*verificar si esta null*/
@@ -97,10 +100,10 @@ namespace CapaPresentacion.Controllers
                     .Where(m =>
                     m.articulo.ToUpper().Contains(param.sSearch.ToUpper()) ||
                     m.calidad.ToUpper().Contains(param.sSearch.ToUpper()) ||
-                  //  m.des_entid.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    //  m.des_entid.ToUpper().Contains(param.sSearch.ToUpper()) ||
                     m.diferencia.ToUpper().Contains(param.sSearch.ToUpper()) ||
                     m.talla.ToUpper().Contains(param.sSearch.ToUpper()) ||
-                  //  m.fecha_inv.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                    //  m.fecha_inv.ToUpper().Contains(param.sSearch.ToUpper()) ||
                     m.teorico.ToUpper().Contains(param.sSearch.ToUpper()) ||
                     m.fisico.ToUpper().Contains(param.sSearch.ToUpper()));
             }
@@ -141,7 +144,7 @@ namespace CapaPresentacion.Controllers
                              a.talla
                          };
 
-           //Se devuelven los resultados por json
+            //Se devuelven los resultados por json
             return Json(new
             {
                 sEcho = param.sEcho,
@@ -169,12 +172,12 @@ namespace CapaPresentacion.Controllers
         public FileContentResult ExportToExcel()
         {
             List<Ent_Inventario_Consulta> list = (List<Ent_Inventario_Consulta>)Session[_session_tabla_inventCons_private];
-            string[] columns = { "des_entid", "articulo", "calidad", "talla", "teorico", "fisico", "diferencia", "nombres_venta", "fecha_inv"};
+            string[] columns = { "des_entid", "articulo", "calidad", "talla", "teorico", "fisico", "diferencia", "nombres_venta", "fecha_inv" };
             byte[] filecontent = ExcelExportHelper.ExportExcel(list, "Inventario_Consulta", true, columns);
             return File(filecontent, ExcelExportHelper.ExcelContentType, "Inventario_Consulta.xlsx");
         }
 
-    #endregion
+        #endregion
 
         #region ****Movimientos por Fecha*****
 
@@ -196,7 +199,7 @@ namespace CapaPresentacion.Controllers
                 return View();
             }
 
-           
+
         }
 
         public PartialViewResult MostrarResultados(string fec, string dwtda)
@@ -221,12 +224,12 @@ namespace CapaPresentacion.Controllers
                     Session["Lista_Consulta_Movimiento"] = liststoreConf;
                 }
                 List<Ent_Consulta_Movimiento> lista = (List<Ent_Consulta_Movimiento>)Session["Lista_Consulta_Movimiento"];
-                Ent_Consulta_Movimiento ultimo = (Ent_Consulta_Movimiento)lista.OrderByDescending(p => Convert.ToDateTime( p.FECHA)).First();
+                Ent_Consulta_Movimiento ultimo = (Ent_Consulta_Movimiento)lista.OrderByDescending(p => Convert.ToDateTime(p.FECHA)).First();
 
 
                 if (ultimo != null)
-                {                    
-                    return Json(new { estado = 1, fecha = ultimo.FECHA, saldo_calzado = ultimo.SALDO_CALZADO, saldo_no_calzado = ultimo.SALDO_NO_CALZADO});
+                {
+                    return Json(new { estado = 1, fecha = ultimo.FECHA, saldo_calzado = ultimo.SALDO_CALZADO, saldo_no_calzado = ultimo.SALDO_NO_CALZADO });
                 }
                 else
                 {
@@ -235,7 +238,7 @@ namespace CapaPresentacion.Controllers
             }
             catch (Exception ex)
             {
-                return Json(new { estado = 0,  resultados = "Sin Resultados" });
+                return Json(new { estado = 0, resultados = "Sin Resultados" });
             }
         }
 
@@ -311,13 +314,13 @@ namespace CapaPresentacion.Controllers
             }
             List<Ent_Consulta_Movimiento> lista = (List<Ent_Consulta_Movimiento>)Session["Lista_Consulta_Movimiento"];
             string[] columns = { "FECHA", "INI_CALZADO", "INI_NO_CALZADO", "VEN_CALZADO", "VEN_NO_CALZADO", "ING_CALZADO", "ING_NO_CALZADO", "SAL_CALZADO", "SAL_NO_CALZADO", "SALDO_CALZADO", "SALDO_NO_CALZADO" };
-            string[] headers = { "FECHA", "INICIAL", "VENTA", "INGRESO", "SALIDA", "SALDO"};
-            byte[] filecontent = ExcelExportHelper.ExportExcel2(headers, lista, "Inventario: Consulta de Movimientos por Fecha" + Environment.NewLine + "Tienda: " + lista[0].TIENDA ,false,columns);
+            string[] headers = { "FECHA", "INICIAL", "VENTA", "INGRESO", "SALIDA", "SALDO" };
+            byte[] filecontent = ExcelExportHelper.ExportExcel2(headers, lista, "Inventario: Consulta de Movimientos por Fecha" + Environment.NewLine + "Tienda: " + lista[0].TIENDA, false, columns);
             return File(filecontent, ExcelExportHelper.ExcelContentType, "Inventario_Consulta_Movimientos_Fecha.xlsx");
         }
         #endregion
         #region AJUSTE DE INVENTARIO
-        
+
         public ActionResult AjusteInventario()
         {
             Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
@@ -337,12 +340,12 @@ namespace CapaPresentacion.Controllers
             }
         }
 
-        public ActionResult getInvArtAjax(Ent_jQueryDataTableParams param,bool corteInventario, string tienda , string fecha)//, string _art_mod, bool ordenar, bool _all_check, bool _all_check_val)
+        public ActionResult getInvArtAjax(Ent_jQueryDataTableParams param, bool corteInventario, string tienda, string fecha)//, string _art_mod, bool ordenar, bool _all_check, bool _all_check_val)
         {
             /*verificar si esta null*/
             if (corteInventario)
             {
-                List<Ent_Inv_Ajuste_Articulos> list = datInv.getListaTeorico(tienda,Convert.ToDateTime(fecha));
+                List<Ent_Inv_Ajuste_Articulos> list = datInv.getListaTeorico(tienda, Convert.ToDateTime(fecha));
                 Session[_session_lista_articulos_inv] = list;
             }
             if (Session[_session_lista_articulos_inv] == null)
@@ -350,8 +353,8 @@ namespace CapaPresentacion.Controllers
                 List<Ent_Inv_Ajuste_Articulos> list = new List<Ent_Inv_Ajuste_Articulos>();
                 Session[_session_lista_articulos_inv] = list;
             }
-            
-            IQueryable<Ent_Inv_Ajuste_Articulos> membercol =((List<Ent_Inv_Ajuste_Articulos>)Session[_session_lista_articulos_inv]).AsQueryable();  //lista().AsQueryable();
+
+            IQueryable<Ent_Inv_Ajuste_Articulos> membercol = ((List<Ent_Inv_Ajuste_Articulos>)Session[_session_lista_articulos_inv]).AsQueryable();  //lista().AsQueryable();
 
             //displayMembers.Select(a => { a.ESTADO_CONEXION_CAJA_XST = dat_storeTda.PingHost(a.IP); return a; }).ToList();
             //Manejador de filtros
@@ -407,7 +410,7 @@ namespace CapaPresentacion.Controllers
                          select new
                          {
                              a.ARTICULO,
-                             a.CALIDAD  ,
+                             a.CALIDAD,
                              a.MEDIDA,
                              a.TEORICO,
                              a.STOCK,
@@ -431,10 +434,11 @@ namespace CapaPresentacion.Controllers
             {
                 listArtExcel = new List<Ent_Inv_Ajuste_Articulos>();
                 listArtExcel = JsonConvert.DeserializeObject<List<Ent_Inv_Ajuste_Articulos>>(articulos.ToUpper());
-                if (listArtExcel.Where(w=> String.IsNullOrEmpty(w.ARTICULO) || String.IsNullOrEmpty(w.CALIDAD) || String.IsNullOrEmpty(w.MEDIDA) || String.IsNullOrEmpty(w.STOCK.ToString())).ToList().Count > 0 )
+                if (listArtExcel.Where(w => String.IsNullOrEmpty(w.ARTICULO) || String.IsNullOrEmpty(w.CALIDAD) || String.IsNullOrEmpty(w.MEDIDA) || String.IsNullOrEmpty(w.STOCK.ToString())).ToList().Count > 0)
                 {
                     return Json(new { estado = 0, resultados = "El Archivo no tiene el formato correcto ó hay campos vacios.\nVerifique el archivo." });
-                }else
+                }
+                else
                 {
                     listArtExcel = listArtExcel.GroupBy(d => new { d.ARTICULO, d.CALIDAD, d.MEDIDA })
                     .Select(g => new Ent_Inv_Ajuste_Articulos() { STOCK = g.Sum(s => s.STOCK), ARTICULO = g.First().ARTICULO, CALIDAD = g.First().CALIDAD, MEDIDA = g.First().MEDIDA })
@@ -464,25 +468,25 @@ namespace CapaPresentacion.Controllers
 
 
             //decimal valor = 0;
-            foreach (var item in listArtExcel.GroupBy(t=>new { t.ARTICULO,t.CALIDAD,t.MEDIDA}).Select(g=> new  {ARTICULO=g.Key.ARTICULO,MEDIDA=g.Key.MEDIDA,CALIDAD=g.Key.CALIDAD,STOCK=g.Sum(X=>X.STOCK)}))
+            foreach (var item in listArtExcel.GroupBy(t => new { t.ARTICULO, t.CALIDAD, t.MEDIDA }).Select(g => new { ARTICULO = g.Key.ARTICULO, MEDIDA = g.Key.MEDIDA, CALIDAD = g.Key.CALIDAD, STOCK = g.Sum(X => X.STOCK) }))
             {
                 //valor += Convert.ToDecimal(item.STOCK);
-                oldList.Where(o => o.ARTICULO == item.ARTICULO && o.MEDIDA == item.MEDIDA && o.CALIDAD == item.CALIDAD).Select(a => { a.STOCK = item.STOCK; a.DIFERENCIA = item.STOCK - a.TEORICO; return a; }).ToList();                              
+                oldList.Where(o => o.ARTICULO == item.ARTICULO && o.MEDIDA == item.MEDIDA && o.CALIDAD == item.CALIDAD).Select(a => { a.STOCK = item.STOCK; a.DIFERENCIA = item.STOCK - a.TEORICO; return a; }).ToList();
             }
             //decimal valor2 = oldList.Sum(t => t.STOCK).Value;
 
             List<Ent_Inv_Ajuste_Articulos> newExcelList = new List<Ent_Inv_Ajuste_Articulos>();
 
-            foreach (var ritem in oldList )
+            foreach (var ritem in oldList)
             {
                 listArtExcel.Remove(listArtExcel.Where(o => o.ARTICULO == ritem.ARTICULO && o.MEDIDA == ritem.MEDIDA && o.CALIDAD == ritem.CALIDAD).FirstOrDefault());
-            }           
+            }
 
 
             return oldList.Union(listArtExcel).ToList();
         }
 
-        public ActionResult XSTORE_INSERTAR_INVENTARIO (string cod_tda, string inv_des, string inv_fec_inv)
+        public ActionResult XSTORE_INSERTAR_INVENTARIO(string cod_tda, string inv_des, string inv_fec_inv)
         {
             Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
             List<Ent_Inv_Ajuste_Articulos> listArticulos = null;
@@ -519,10 +523,10 @@ namespace CapaPresentacion.Controllers
             }
             else
             {
-                result = datInv.XSTORE_INSERTAR_INVENTARIO(cod_tda, inv_des,Convert.ToDateTime(inv_fec_inv), _usuario.usu_id, listArticulos, ref tot_teorico, ref tot_fisico, ref tot_actual, ref _mensaje);
+                result = datInv.XSTORE_INSERTAR_INVENTARIO(cod_tda, inv_des, Convert.ToDateTime(inv_fec_inv), _usuario.usu_id, listArticulos, ref tot_teorico, ref tot_fisico, ref tot_actual, ref _mensaje);
                 if (result == 1)
                 {
-                    return Json(new { estado = 1, resultado = "", mensaje = "Operacion realizada con éxito.", tot_teorico = tot_teorico , tot_fisico = tot_fisico , tot_actual = tot_actual });
+                    return Json(new { estado = 1, resultado = "", mensaje = "Operacion realizada con éxito.", tot_teorico = tot_teorico, tot_fisico = tot_fisico, tot_actual = tot_actual });
                 }
                 else
                 {
@@ -574,7 +578,7 @@ namespace CapaPresentacion.Controllers
         }
         public PartialViewResult ListaAjustesInv(string tienda)
         {
-            List<Ent_Inventario_Ajuste> lista =  datInv.getListaAjustesInv(tienda);
+            List<Ent_Inventario_Ajuste> lista = datInv.getListaAjustesInv(tienda);
             Session[_session_lista_ajuste_inv] = lista;
             return PartialView();
         }
@@ -596,8 +600,8 @@ namespace CapaPresentacion.Controllers
             if (!string.IsNullOrEmpty(param.sSearch))
             {
                 filteredMembers = membercol
-                    .Where(m => m.TIENDA.ToUpper().Contains(param.sSearch.ToUpper()) 
-                    || m.DESCRIPCION.ToUpper().Contains(param.sSearch.ToUpper()) 
+                    .Where(m => m.TIENDA.ToUpper().Contains(param.sSearch.ToUpper())
+                    || m.DESCRIPCION.ToUpper().Contains(param.sSearch.ToUpper())
                     || m.FECHA_INV.ToUpper().Contains(param.sSearch.ToUpper())
                     || m.CODIGO.ToString().Contains(param.sSearch.ToUpper()));
             }
@@ -683,7 +687,7 @@ namespace CapaPresentacion.Controllers
                 Session[_session_lista_articulos_inv] = liststoreConf;
             }
             List<Ent_Inv_Ajuste_Articulos> lista = (List<Ent_Inv_Ajuste_Articulos>)Session[_session_lista_articulos_inv];
-            string[] columns = { "ARTICULO", "CALIDAD" , "MEDIDA" , "STOCK" , "TEORICO" , "DIFERENCIA" };
+            string[] columns = { "ARTICULO", "CALIDAD", "MEDIDA", "STOCK", "TEORICO", "DIFERENCIA" };
             byte[] filecontent = ExcelExportHelper.ExportExcel(lista, "", false, columns);
             string nom_excel = "Lista de Articulos";
             return File(filecontent, ExcelExportHelper.ExcelContentType, nom_excel + ".xlsx");
@@ -708,12 +712,12 @@ namespace CapaPresentacion.Controllers
                 ViewBag.Tienda = datInv.get_ListaTienda();
                 return View();
             }
-            
+
         }
 
         public PartialViewResult _Lista_ConsultaDocMov(string dwtienda, string fecini, string fecfin, string numdoc)
         {
-            List<Ent_MovDoc_Consulta> lista_cons_doc = con_doc.lista_movdoc("0", dwtienda, Convert.ToDateTime(fecini),Convert.ToDateTime(fecfin), numdoc);
+            List<Ent_MovDoc_Consulta> lista_cons_doc = con_doc.lista_movdoc("0", dwtienda, Convert.ToDateTime(fecini), Convert.ToDateTime(fecfin), numdoc);
             Session[_session_lista_consultadoc_mov] = lista_cons_doc;
             return PartialView(lista_cons_doc);
         }
@@ -741,7 +745,7 @@ namespace CapaPresentacion.Controllers
                     .Where(m =>
                      m.tipo_doc.ToUpper().Contains(param.sSearch.ToUpper()) ||
                      m.tipo_transac.ToUpper().Contains(param.sSearch.ToUpper()) ||
-                     m.num_doc.ToUpper().Contains(param.sSearch.ToUpper()) 
+                     m.num_doc.ToUpper().Contains(param.sSearch.ToUpper())
                      );
             }
             //Manejador de orden
@@ -760,16 +764,16 @@ namespace CapaPresentacion.Controllers
             {
                 switch (sortIdx)
                 {
-                   
+
                     case 1: filteredMembers = filteredMembers.OrderBy(o => o.tipo_transac); break;
                     case 2: filteredMembers = filteredMembers.OrderBy(o => o.tipo_doc); break;
                     case 3: filteredMembers = filteredMembers.OrderBy(o => o.num_doc); break;
-                    case 4: filteredMembers = filteredMembers.OrderBy(o =>Convert.ToDateTime(o.fecha_doc)); break;
+                    case 4: filteredMembers = filteredMembers.OrderBy(o => Convert.ToDateTime(o.fecha_doc)); break;
                     case 5: filteredMembers = filteredMembers.OrderBy(o => o.cant); break;
                     case 6: filteredMembers = filteredMembers.OrderBy(o => o.tda_ori); break;
                     case 7: filteredMembers = filteredMembers.OrderBy(o => o.tda_des); break;
 
-                    
+
                     default: break;
                 }
             }
@@ -802,7 +806,7 @@ namespace CapaPresentacion.Controllers
                              a.fecha_doc,
                              a.cant,
                              a.tda_des,
-                             a.tda_ori,                             
+                             a.tda_ori,
                          };
             //Se devuelven los resultados por json
             return Json(new
@@ -828,14 +832,14 @@ namespace CapaPresentacion.Controllers
                  calidad = grouping.Key.Item2,
                  linea = grouping.Key.Item3,
                  categoria = grouping.Key.Item4,
-                 total =listdoc_det.Where(a => a.articulo == grouping.Key.Item1 && a.calidad == grouping.Key.Item2).Sum(s => s.cantidad),
-                 list_talla = (from det_talla in listdoc_det.Where(a=>a.articulo== grouping.Key.Item1 && a.calidad==grouping.Key.Item2).Select(s=>new {s.talla,s.cantidad})
-                                select new Ent_MovDoc_Consulta_Detalle_Articulo_Talla()
-                                {
-                                talla= det_talla.talla,
-                                cantidad= det_talla.cantidad
-                                }).ToList()
-            }).ToList();
+                 total = listdoc_det.Where(a => a.articulo == grouping.Key.Item1 && a.calidad == grouping.Key.Item2).Sum(s => s.cantidad),
+                 list_talla = (from det_talla in listdoc_det.Where(a => a.articulo == grouping.Key.Item1 && a.calidad == grouping.Key.Item2).Select(s => new { s.talla, s.cantidad })
+                               select new Ent_MovDoc_Consulta_Detalle_Articulo_Talla()
+                               {
+                                   talla = det_talla.talla,
+                                   cantidad = det_talla.cantidad
+                               }).ToList()
+             }).ToList();
             /*********************************************+*/
             if (listdoc_det_art == null)
             {
@@ -879,7 +883,7 @@ namespace CapaPresentacion.Controllers
                     .Where(m =>
                     m.articulo.ToUpper().Contains(param.sSearch.ToUpper()) ||
                     m.linea.ToUpper().Contains(param.sSearch.ToUpper()) ||
-                    m.categoria.ToUpper().Contains(param.sSearch.ToUpper())                    
+                    m.categoria.ToUpper().Contains(param.sSearch.ToUpper())
                     );
             }
 
@@ -909,6 +913,106 @@ namespace CapaPresentacion.Controllers
                 aaData = result
             }, JsonRequestBehavior.AllowGet);
         }
+
+        #endregion
+
+        #region REPORTE DE INVENTARIO DE PLANILLA
+
+        [HttpPost]
+        public ActionResult ShowGenericReportInventarioPlanillaInNewWin(string tda, string fecIni)
+        {
+
+            try
+            {
+
+                string CodTda = "";
+                var ip = new Dat_InventarioPlanilla();
+                HttpContext.Session["ReportName"] = "ReporteInventarioPlanilla.rpt";
+
+                //if (Session["Tienda"] != null)
+                //{
+                //    CodTda = Session["Tienda"].ToString();
+                //}
+                //else
+                //{
+                //    //CodTda = "-1";
+                //    CodTda = tda;
+                //}
+
+                //ReporteVentasEcommerce ModeloRepVentaEcommerce = ec.get_ecommerce_reporteventa(CodTda, fecIni, FecFin, tipo);
+                Models_InventarioPlanilla ModeloInventarioPlanilla = ip.get_InventarioPlanilla(tda, fecIni);
+
+                HttpContext.Session["rptSource"] = ModeloInventarioPlanilla.ListInventarioPlanilla;
+
+                var _estado = (ModeloInventarioPlanilla == null) ? "0" : "1";
+
+                if (ModeloInventarioPlanilla != null)
+                {
+                    if (ModeloInventarioPlanilla.ListInventarioPlanilla.Count == 0)
+                    {
+                        _estado = "-1";
+                        //ViewBag.Tienda = ec.get_ListaTienda();
+                    }
+
+                }
+
+                return Json(new
+                {
+                    estado = _estado
+                });
+
+            }
+            catch (Exception ex)
+            {
+                ex.Message.ToString();
+                throw;
+            }
+        }
+
+        public ActionResult ReporteInventarioPlanilla()
+        {
+            string tipo = (Request.HttpMethod == "POST" ? Request.Params["tipo"] : "1,2,3");
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            //Dat_ECommerce ec = new Dat_ECommerce();
+            var ip = new Dat_InventarioPlanilla();
+
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
+            if (_usuario == null)
+            {
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+            }
+            else
+            {
+
+                ViewBag.Tienda = ip.get_ListaTienda("", 0);
+
+                //ViewBag._selectTipos = SelectTipos((tipo == null ? " '',R,E" : tipo));
+
+                //if (_usuario.usu_tip_id == "05") //INVITADO (TIENDAS)
+                //{
+                //    ViewBag.Tienda = ec.get_ListaTienda(_usuario.usu_login, 0);
+
+                //}
+                //else
+                //{
+                //    ViewBag.Tienda = ec.get_ListaTienda("", 1);
+                //}
+
+                //ViewBag.usu_tipo = _usuario.usu_tip_id;
+
+            }
+            return View();
+        }
+
+
+
+
+
+
+
+
 
         #endregion
 
