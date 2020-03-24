@@ -919,7 +919,7 @@ namespace CapaPresentacion.Controllers
         #region REPORTE DE INVENTARIO DE PLANILLA
 
         [HttpPost]
-        public ActionResult ShowGenericReportInventarioPlanillaInNewWin(string tda, string fecIni)
+        public ActionResult ShowGenericReportInventarioPlanillaInNewWin(string tda, string fecIni,string fecFin)
         {
 
             try
