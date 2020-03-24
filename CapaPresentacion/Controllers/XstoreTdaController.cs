@@ -14,13 +14,16 @@ using CapaEntidad.XstoreTda;
 using CapaEntidad.ValeCompra;
 using System.Web.Script.Serialization;
 using CapaDato.XstoreTda;
+using CapaPresentacion.Data;
 using System.Net.NetworkInformation;
+using CapaPresentacion.Data.Crystal.Reporte;
+using CapaPresentacion.Models.Crystal.Reporte;
 
 namespace CapaPresentacion.Controllers
 {
     public class XstoreTdaController : Controller
     {
-        private Dat_XstoreTienda dat_storeTda = new Dat_XstoreTienda();  
+        private Dat_XstoreTienda dat_storeTda = new Dat_XstoreTienda();
         private string _session_listTdaXstore_private = "_session_listTda_private";
         private string _session_Totalxstore = "_session_totalxstore";
         private string _session_TotalNxstore = "_session_totalNxstore";
@@ -40,7 +43,7 @@ namespace CapaPresentacion.Controllers
                 return RedirectToAction("Login", "Control", new { returnUrl = return_view });
             }
             else
-            {              
+            {
                 return View(lista());
             }
         }
@@ -51,17 +54,17 @@ namespace CapaPresentacion.Controllers
         }
 
         public List<Ent_TiendaConf> lista()
-        {           
+        {
             List<Ent_TiendaConf> liststoreConf = dat_storeTda.List_Tienda_config();
 
 
             int nroXstoreActivo = (from n in liststoreConf
-                                    where n.bol_xstore == "True"
-                                    select n).Count();
+                                   where n.bol_xstore == "True"
+                                   select n).Count();
 
             int nroXstoreInactivo = (from n in liststoreConf
-                                   where n.bol_xstore == "False"
-                                   select n).Count();
+                                     where n.bol_xstore == "False"
+                                     select n).Count();
 
             Session[_session_Totalxstore] = nroXstoreActivo;
             Session[_session_TotalNxstore] = nroXstoreInactivo;
@@ -72,7 +75,7 @@ namespace CapaPresentacion.Controllers
         public ActionResult getTienda(Ent_jQueryDataTableParams param)
         {
             List<Ent_TiendaConf> liststoreConf2 = dat_storeTda.List_Tienda_config();
-            Session[_session_listTdaXstore_private] = liststoreConf2;          
+            Session[_session_listTdaXstore_private] = liststoreConf2;
 
             /*verificar si esta null*/
             if (Session[_session_listTdaXstore_private] == null)
@@ -132,8 +135,8 @@ namespace CapaPresentacion.Controllers
                              a.cod_Jefe,
                              a.consecionario,
                              a.bol_gcorrelativo,
-                             a.bol_xstore  ,
-                             a.outlet                      
+                             a.bol_xstore,
+                             a.outlet
                          };
             //Se devuelven los resultados por json
             return Json(new
@@ -176,7 +179,7 @@ namespace CapaPresentacion.Controllers
         {
             Int32 strTotalXstore = (Int32)Session[_session_Totalxstore];
             Int32 strTotalNXstore = (Int32)Session[_session_TotalNxstore];
-         
+
             Int32 respuesta = 0;
             respuesta = 1;
 
@@ -185,14 +188,14 @@ namespace CapaPresentacion.Controllers
             if (respuesta == 1)
             {
                 oJRespuesta.Message = (strTotalXstore).ToString();
-                oJRespuesta.Data = (strTotalNXstore).ToString();  
+                oJRespuesta.Data = (strTotalNXstore).ToString();
                 oJRespuesta.Success = true;
             }
             else
             {
 
                 oJRespuesta.Message = (strTotalXstore).ToString();
-                oJRespuesta.Data =  (strTotalNXstore).ToString();
+                oJRespuesta.Data = (strTotalNXstore).ToString();
                 oJRespuesta.Success = false;
             }
 
@@ -228,8 +231,8 @@ namespace CapaPresentacion.Controllers
         public string listarStr_DatosTienda(string codTienda)
         {
             string strJson = "";
-            JsonResult jRespuesta = null;        
-            
+            JsonResult jRespuesta = null;
+
             strJson = dat_storeTda.listarStr_DatosTienda(codTienda);
             var serializer = new JavaScriptSerializer();
             jRespuesta = Json(serializer.Deserialize<List<Ent_DatosTienda>>(strJson), JsonRequestBehavior.AllowGet);
@@ -250,12 +253,12 @@ namespace CapaPresentacion.Controllers
         public string listarStr_InterfacexDefecto(string cod_tda)
         {
             string strJson = "";
-          
+
             strJson = dat_storeTda.listarStr_InterfacexDefecto(cod_tda);
             return strJson;
         }
 
-        public ActionResult VentaHistorica(string cod_Tda,string descTienda)
+        public ActionResult VentaHistorica(string cod_Tda, string descTienda)
         {
 
             Ent_Combo cbo = new Ent_Combo();
@@ -278,7 +281,7 @@ namespace CapaPresentacion.Controllers
         #endregion
 
         #region ***CONFIG CONEXION***
-        
+
         public ActionResult ConfigConexion()
         {
             Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
@@ -293,7 +296,7 @@ namespace CapaPresentacion.Controllers
             else
             {
                 return View(listar_config_conexion());
-            }            
+            }
         }
         public Ent_ConfigConexion listar_config_conexion()
         {
@@ -316,7 +319,7 @@ namespace CapaPresentacion.Controllers
             }
             catch (Exception ex)
             {
-                return Json(new { estado = 0 , resultados = ex.Message});
+                return Json(new { estado = 0, resultados = ex.Message });
             }
         }
         public PartialViewResult _listaCajasXst()
@@ -324,7 +327,7 @@ namespace CapaPresentacion.Controllers
             return PartialView(listar_config_conexion());
         }
 
-        public ActionResult getCajasXstAjax(Ent_jQueryDataTableParams param , string sinConexion)
+        public ActionResult getCajasXstAjax(Ent_jQueryDataTableParams param, string sinConexion)
         {
 
             if (Session[_session_cc_caja_xst] == null)
@@ -364,7 +367,7 @@ namespace CapaPresentacion.Controllers
                 .Skip(param.iDisplayStart)
                 .Take(param.iDisplayLength);
 
-           //displayMembers.Select(a => { a.ESTADO_CONEXION_CAJA_XST = dat_storeTda.PingHost(a.IP); return a; }).ToList();
+            //displayMembers.Select(a => { a.ESTADO_CONEXION_CAJA_XST = dat_storeTda.PingHost(a.IP); return a; }).ToList();
 
             var result = from a in displayMembers
                          select new
@@ -384,8 +387,97 @@ namespace CapaPresentacion.Controllers
                 aaData = result
             }, JsonRequestBehavior.AllowGet);
         }
-     
+
         #endregion
+
+
+        [HttpPost]
+        public ActionResult ShowGenericReportInventarioMovimientoInNewWin(string tda, string fecIni, string fecFin)
+        {
+
+            try
+            {
+
+                string CodTda = "";
+                var im = new Dat_Inventario_Movimiento ();
+                HttpContext.Session["ReportName"] = "ReporteInventarioMovimiento.rpt";
+
+                //if (Session["Tienda"] != null)
+                //{
+                //    CodTda = Session["Tienda"].ToString();
+                //}
+                //else
+                //{
+                //    //CodTda = "-1";
+                //    CodTda = tda;
+                //}
+
+                //ReporteVentasEcommerce ModeloRepVentaEcommerce = ec.get_ecommerce_reporteventa(CodTda, fecIni, FecFin, tipo);
+                Models_InventarioMovimiento ModeloInventarioMovimiento = im.get_InventarioMovimiento(tda, fecIni,fecFin);
+
+                HttpContext.Session["rptSource"] = ModeloInventarioMovimiento.ListInventarioMovimiento;
+
+                var _estado = (ModeloInventarioMovimiento == null) ? "0" : "1";
+
+                if (ModeloInventarioMovimiento != null)
+                {
+                    if (ModeloInventarioMovimiento.ListInventarioMovimiento.Count == 0)
+                    {
+                        _estado = "-1";
+                        //ViewBag.Tienda = ec.get_ListaTienda();
+                    }
+
+                }
+
+                return Json(new
+                {
+                    estado = _estado
+                });
+
+            }
+            catch (Exception ex)
+            {
+                ex.Message.ToString();
+                throw;
+            }
+        }
+
+        public ActionResult ReporteInventarioMovimiento()
+        {
+            string tipo = (Request.HttpMethod == "POST" ? Request.Params["tipo"] : "1,2,3");
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            //Dat_ECommerce ec = new Dat_ECommerce();
+            var ip = new Dat_InventarioPlanilla();
+
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
+            if (_usuario == null)
+            {
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+            }
+            else
+            {
+
+                ViewBag.Tienda = ip.get_ListaTienda("", 0);
+
+                //ViewBag._selectTipos = SelectTipos((tipo == null ? " '',R,E" : tipo));
+
+                //if (_usuario.usu_tip_id == "05") //INVITADO (TIENDAS)
+                //{
+                //    ViewBag.Tienda = ec.get_ListaTienda(_usuario.usu_login, 0);
+
+                //}
+                //else
+                //{
+                //    ViewBag.Tienda = ec.get_ListaTienda("", 1);
+                //}
+
+                //ViewBag.usu_tipo = _usuario.usu_tip_id;
+
+            }
+            return View();
+        }
 
 
     }

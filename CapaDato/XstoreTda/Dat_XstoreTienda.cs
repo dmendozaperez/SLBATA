@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Net.NetworkInformation;
 
+
+
 namespace CapaDato.Maestros
 {
     public class Dat_XstoreTienda
@@ -297,7 +299,7 @@ namespace CapaDato.Maestros
             List<Ent_Cajas_Xst> listCajasXst = null;
             try
             {
-                using (SqlConnection cn = new SqlConnection (Ent_Conexion.conexionPosPeru))
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexionPosPeru))
                 {
                     dsResponse = new DataSet();
                     SqlCommand cmd = new SqlCommand(sql, cn);
@@ -314,15 +316,15 @@ namespace CapaDato.Maestros
                                       }).ToList();
                     listCajasXst = new List<Ent_Cajas_Xst>();
                     listCajasXst = (from DataRow dr in dsResponse.Tables[1].Rows
-                                      select new Ent_Cajas_Xst()
-                                      {
-                                          COD_ENTID = dr["COD_ENTID"].ToString(),
-                                          TIENDA = dr["TIENDA"].ToString(),
-                                          NCAJA = dr["NCAJA"].ToString(),
-                                          IP = dr["IP"].ToString(),
-                                          VERSION_XST = dr["VERSION_XST"].ToString(),
-                                          ESTADO_CONEXION_CAJA_XST = PingHost(dr["IP"].ToString())
-                                      }).ToList();
+                                    select new Ent_Cajas_Xst()
+                                    {
+                                        COD_ENTID = dr["COD_ENTID"].ToString(),
+                                        TIENDA = dr["TIENDA"].ToString(),
+                                        NCAJA = dr["NCAJA"].ToString(),
+                                        IP = dr["IP"].ToString(),
+                                        VERSION_XST = dr["VERSION_XST"].ToString(),
+                                        ESTADO_CONEXION_CAJA_XST = PingHost(dr["IP"].ToString())
+                                    }).ToList();
                     configConexion = new Ent_ConfigConexion();
                     configConexion.list_cajas_xst = listCajasXst;
                     configConexion.list_central_xst = listCentralXst;
@@ -379,7 +381,6 @@ namespace CapaDato.Maestros
 
             //return pingable ? 1 : 0;
         }
-       
         #endregion
 
     }

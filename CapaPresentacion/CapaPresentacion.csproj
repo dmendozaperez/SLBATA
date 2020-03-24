@@ -295,6 +295,13 @@
     <Compile Include="AspNetForms\GuiaEcommerce.aspx.designer.cs">
       <DependentUpon>GuiaEcommerce.aspx</DependentUpon>
     </Compile>
+    <Compile Include="AspNetForms\InventarioMovimiento.aspx.cs">
+      <DependentUpon>InventarioMovimiento.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AspNetForms\InventarioMovimiento.aspx.designer.cs">
+      <DependentUpon>InventarioMovimiento.aspx</DependentUpon>
+    </Compile>
     <Compile Include="AspNetForms\InventarioPlanilla.aspx.cs">
       <DependentUpon>InventarioPlanilla.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -395,6 +402,7 @@
     <Compile Include="Data\Crystal\Reporte\Dat_Best_Seller.cs" />
     <Compile Include="Data\Crystal\Reporte\Dat_EstadoStock.cs" />
     <Compile Include="Data\Crystal\Reporte\Dat_InventarioPlanilla.cs" />
+    <Compile Include="Data\Crystal\Reporte\Dat_Inventario_Movimiento.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -404,6 +412,7 @@
     <Compile Include="Models\Crystal\Reporte\Models_Best_Seller.cs" />
     <Compile Include="Models\Crystal\Reporte\Models_EstadoStock.cs" />
     <Compile Include="Models\Crystal\Reporte\Models_GuiaEC.cs" />
+    <Compile Include="Models\Crystal\Reporte\Models_InventarioMovimiento.cs" />
     <Compile Include="Models\Crystal\Reporte\Models_InventarioPlanilla.cs" />
     <Compile Include="Models\Crystal\Reporte\Models_Rendimiento_Categ.cs" />
     <Compile Include="Models\Crystal\Reporte\Models_Guia.cs" />
@@ -476,6 +485,12 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ReporteEstadoStock.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RptsCrystal\ReporteInventarioMovimiento.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ReporteInventarioMovimiento.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="RptsCrystal\ReporteInventarioPlanilla.cs">
@@ -571,6 +586,7 @@
     <Content Include="AspNetForms\CanalVenta.aspx" />
     <Content Include="AspNetForms\EstadoStock.aspx" />
     <Content Include="AspNetForms\GuiaEcommerce.aspx" />
+    <Content Include="AspNetForms\InventarioMovimiento.aspx" />
     <Content Include="AspNetForms\InventarioPlanilla.aspx" />
     <Content Include="AspNetForms\KeyCategoryPerformance.aspx" />
     <Content Include="AspNetForms\ReporteObs.aspx" />
@@ -1749,6 +1765,7 @@
     <Content Include="Views\Reporte\ReporteBestSeller.cshtml" />
     <Content Include="Views\Reporte\ReporteEstadoStock.cshtml" />
     <Content Include="Views\Inventario\ReporteInventarioPlanilla.cshtml" />
+    <Content Include="Views\XstoreTda\ReporteInventarioMovimiento.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1835,6 +1852,10 @@
     <EmbeddedResource Include="RptsCrystal\ReporteEstadoStock.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>ReporteEstadoStock.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RptsCrystal\ReporteInventarioMovimiento.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>ReporteInventarioMovimiento.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="RptsCrystal\ReporteInventarioPlanilla.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
