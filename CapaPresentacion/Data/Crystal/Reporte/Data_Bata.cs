@@ -13,7 +13,7 @@ namespace Data.Crystal.Reporte
 {
     public class Data_Bata
     {
-        public List<Models_Art_Sin_Mov> list_art_sin_mov(string cadena,string cod_dis, string tienda,Int32 nsemana,Int32 maxpares, string estado, string grupo, string categoria, string tipo , Int32 minpares,string calidad , string semIng)
+        public List<Models_Art_Sin_Mov> list_art_sin_mov(/*string cadena,string cod_dis,*/ string tienda,Int32 nsemana,Int32 maxpares, string estado, string grupo, string categoria, string tipo , Int32 minpares,string calidad , string semIng)
         {
             string sqlquery = "USP_XSTORE_REPORTE_ART_SIN_MOVIMIENTOS";
             List<Models_Art_Sin_Mov> lista = null;
@@ -28,8 +28,8 @@ namespace Data.Crystal.Reporte
                         {
                             cmd.CommandTimeout = 0;
                             cmd.CommandType = CommandType.StoredProcedure;
-                            cmd.Parameters.AddWithValue("@cadena", cadena);
-                            cmd.Parameters.AddWithValue("@cod_distri", cod_dis);
+                            //cmd.Parameters.AddWithValue("@cadena", cadena);
+                            //cmd.Parameters.AddWithValue("@cod_distri", cod_dis);
                             cmd.Parameters.AddWithValue("@codtda", tienda);
                             cmd.Parameters.AddWithValue("@nsemanas", nsemana);
                             //cmd.Parameters.AddWithValue("@nstock", maxpares);
@@ -147,7 +147,7 @@ namespace Data.Crystal.Reporte
             }
             return lista;
         }
-        public List<Models_Obs> list_obs (string cod_distri,string codtda,string tipo_cat,string cod_linea,string cod_categ,
+        public List<Models_Obs> list_obs (/*string cod_distri,*/string codtda,string tipo_cat,string cod_linea,string cod_categ,
                                           string calidad,Decimal rprecio1,Decimal rprecio2,string tipo_obs,string rango_obs  )
         {
             List<Models_Obs> lista = null;
@@ -163,7 +163,7 @@ namespace Data.Crystal.Reporte
                         {
                             cmd.CommandTimeout = 0;
                             cmd.CommandType = CommandType.StoredProcedure;
-                            cmd.Parameters.AddWithValue("@cod_distri", cod_distri);
+                            //cmd.Parameters.AddWithValue("@cod_distri", cod_distri);
                             cmd.Parameters.AddWithValue("@codtda", codtda);
                             cmd.Parameters.AddWithValue("@tipo_cat", tipo_cat);
                             cmd.Parameters.AddWithValue("@cod_linea", cod_linea);

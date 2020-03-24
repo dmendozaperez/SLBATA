@@ -1705,12 +1705,12 @@
     <Content Include="Views\CanalVenta\ListaVentas.cshtml" />
     <Content Include="Views\BataClub\Index.cshtml" />
     <Content Include="Views\BataClub\_Table.cshtml" />
-    <Content Include="Views\Contabilidad\Estado_Documento.cshtml" />
-    <Content Include="Views\Contabilidad\_Table.cshtml" />
+    <Content Include="Views\ComunicadoTDA\Contabilidad\Estado_Documento.cshtml" />
+    <Content Include="Views\ComunicadoTDA\Contabilidad\_Table.cshtml" />
     <Content Include="Views\ECommerce\GuiaEC.cshtml" />
     <Content Include="Views\ECommerce\Index.cshtml" />
     <Content Include="Views\ECommerce\Ver.cshtml" />
-    <Content Include="Views\Contabilidad\_popUpDetalle.cshtml" />
+    <Content Include="Views\ComunicadoTDA\Contabilidad\_popUpDetalle.cshtml" />
     <Content Include="Views\BataClub\_popUpGrafica.cshtml" />
     <Content Include="Views\RuletaBata\Index.cshtml" />
     <Content Include="Views\BataClub\_formGenerar.cshtml" />

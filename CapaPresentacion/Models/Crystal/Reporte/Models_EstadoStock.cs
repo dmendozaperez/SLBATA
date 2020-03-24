@@ -29,7 +29,7 @@ namespace CapaPresentacion.Models.Crystal.Reporte
         public string con_id { get; set; }
         public string concepto { get; set; }
         public string numdoc { get; set; }
-        public DateTime fecha { get; set; }
+        public String fecha { get; set; }
         public Decimal ing_calzado { get; set; }
         public Decimal ing_no_calzado { get; set; }
         public Decimal sal_calzado { get; set; }

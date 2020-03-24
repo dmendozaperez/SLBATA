@@ -14,6 +14,7 @@ namespace Models.Crystal.Reporte
     {
         public string semana_str { get; set; }
         public string cod_distri { get; set; }
+        public string des_cadena { get; set; }
         public string cod_entid { get; set; }
         public string des_entid { get; set; }
         public string store_name { get; set; }
