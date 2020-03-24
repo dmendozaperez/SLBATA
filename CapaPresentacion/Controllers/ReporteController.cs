@@ -1278,47 +1278,80 @@ namespace CapaPresentacion.Controllers
             {
                 ViewBag.Title = "Reporte Rendiniento por Categoria";
 
-                Dat_ArticuloStock distrito_list = new Dat_ArticuloStock();
-                Dat_ListaTienda list_tda = new Dat_ListaTienda();
-
+                List<Ent_Combo_DisCadTda> combo_discadtda = discattda.list_dis_cad_tda();
+                //Session["Tienda"] = "50143";
                 if (Session["Tienda"] != null)
                 {
-                    string strJson = "";
-                    JsonResult jRespuesta = null;
-                    var serializer = new JavaScriptSerializer();
-
-                    strJson = datCbo.listarStr_ListaTienda("PE");
-                    jRespuesta = Json(serializer.Deserialize<List<Ent_ListaTienda>>(strJson).Where(t => t.cod_entid == Session["Tienda"].ToString()), JsonRequestBehavior.AllowGet);
-                    ViewBag.ClTienda = jRespuesta;
-                    ViewBag.tda = "0";
-
-                    List<Ent_ListaTienda> listar_tda = serializer.Deserialize<List<Ent_ListaTienda>>(strJson);
-                    var tda = listar_tda.Where(t => t.cod_entid == Session["Tienda"].ToString()).ToList();
-                    ViewBag.Tienda = tda;
-
-                    ViewBag.Distrito = distrito_list.listar_distrito().Where(d => d.cod_dis == tda[0].cod_distri);
+                    combo_discadtda = combo_discadtda.Where(t => t.cod_entid == Session["Tienda"].ToString()).ToList();
                 }
-                else
-                {
-                    ViewBag.tda = "1";
-               
-                    List<Ent_ListaTienda> list = new List<Ent_ListaTienda>();
-                    Ent_ListaTienda entCombo = new Ent_ListaTienda();
-                    entCombo.cod_entid = "-1";
-                    entCombo.des_entid = "----Todos----";
-                    list.Add(entCombo);
-                    ViewBag.Tienda = list;
 
-                    ViewBag.Distrito = distrito_list.listar_distrito().Where(a => a.cod_dis != "-1");
+                ViewBag.Distrito = combo_distrito(combo_discadtda);
+                ViewBag.DisCadTda = combo_discadtda;
 
-                    string strJson = "";
-                    JsonResult jRespuesta = null;
-                    var serializer = new JavaScriptSerializer();
+                Session[_session_dis_cad_tda] = combo_discadtda;
 
-                    strJson = datCbo.listarStr_ListaTienda("PE");
-                    jRespuesta = Json(serializer.Deserialize<List<Ent_ListaTienda>>(strJson).Where(a => a.cod_entid != "0" ) , JsonRequestBehavior.AllowGet);
-                    ViewBag.ClTienda = jRespuesta;
-                }
+
+
+                List<Ent_Combo_DisCadTda> list_cad = new List<Ent_Combo_DisCadTda>();
+                Ent_Combo_DisCadTda entCombo_cad = new Ent_Combo_DisCadTda();
+                entCombo_cad.cod_cadena = "-1";
+                entCombo_cad.des_cadena = "----Todos----";
+                list_cad.Add(entCombo_cad);
+
+                List<Ent_Combo_DisCadTda> list_tda = new List<Ent_Combo_DisCadTda>();
+                Ent_Combo_DisCadTda entCombo_tda = new Ent_Combo_DisCadTda();
+                entCombo_tda.cod_entid = "-1";
+                entCombo_tda.des_entid = "----Todos----";
+                list_tda.Add(entCombo_tda);
+
+
+
+
+
+                ViewBag.Cadena = list_cad;
+                ViewBag.Tienda = list_tda;
+
+                //Dat_ArticuloStock distrito_list = new Dat_ArticuloStock();
+                //Dat_ListaTienda list_tda = new Dat_ListaTienda();
+
+                //if (Session["Tienda"] != null)
+                //{
+                //    string strJson = "";
+                //    JsonResult jRespuesta = null;
+                //    var serializer = new JavaScriptSerializer();
+
+                //    strJson = datCbo.listarStr_ListaTienda("PE");
+                //    jRespuesta = Json(serializer.Deserialize<List<Ent_ListaTienda>>(strJson).Where(t => t.cod_entid == Session["Tienda"].ToString()), JsonRequestBehavior.AllowGet);
+                //    ViewBag.ClTienda = jRespuesta;
+                //    ViewBag.tda = "0";
+
+                //    List<Ent_ListaTienda> listar_tda = serializer.Deserialize<List<Ent_ListaTienda>>(strJson);
+                //    var tda = listar_tda.Where(t => t.cod_entid == Session["Tienda"].ToString()).ToList();
+                //    ViewBag.Tienda = tda;
+
+                //    ViewBag.Distrito = distrito_list.listar_distrito().Where(d => d.cod_dis == tda[0].cod_distri);
+                //}
+                //else
+                //{
+                //    ViewBag.tda = "1";
+
+                //    List<Ent_ListaTienda> list = new List<Ent_ListaTienda>();
+                //    Ent_ListaTienda entCombo = new Ent_ListaTienda();
+                //    entCombo.cod_entid = "-1";
+                //    entCombo.des_entid = "----Todos----";
+                //    list.Add(entCombo);
+                //    ViewBag.Tienda = list;
+
+                //    ViewBag.Distrito = distrito_list.listar_distrito().Where(a => a.cod_dis != "-1");
+
+                //    string strJson = "";
+                //    JsonResult jRespuesta = null;
+                //    var serializer = new JavaScriptSerializer();
+
+                //    strJson = datCbo.listarStr_ListaTienda("PE");
+                //    jRespuesta = Json(serializer.Deserialize<List<Ent_ListaTienda>>(strJson).Where(a => a.cod_entid != "0" ) , JsonRequestBehavior.AllowGet);
+                //    ViewBag.ClTienda = jRespuesta;
+                //}
 
                 List<Ent_Combo> listcbo = new List<Ent_Combo>();
                 Ent_Combo entCombocbo = new Ent_Combo();
