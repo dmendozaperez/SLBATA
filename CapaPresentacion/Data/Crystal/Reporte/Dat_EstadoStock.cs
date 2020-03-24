@@ -54,7 +54,7 @@ namespace CapaPresentacion.Data.Crystal.Reporte
                                                   con_id = fila["con_id"].ToString(),
                                                   concepto= fila["concepto"].ToString(),
                                                   numdoc = fila["numdoc"].ToString(),
-                                                  fecha= Convert.ToDateTime(fila["fecha"]),
+                                                  fecha = fila["fecha"].ToString(),//(fila["fecha"] == System.DBNull.Value) ? (DateTime?)null : Convert.ToDateTime(fila["fecha"]),
                                                   ing_calzado = Convert.ToDecimal(fila["ing_calzado"]),
                                                   ing_no_calzado = Convert.ToDecimal(fila["ing_no_calzado"]),
                                                   sal_calzado = Convert.ToDecimal(fila["sal_calzado"]),
@@ -81,7 +81,7 @@ namespace CapaPresentacion.Data.Crystal.Reporte
                     }
                 }
             }
-            catch
+            catch( Exception exc)
             {
                 
             }

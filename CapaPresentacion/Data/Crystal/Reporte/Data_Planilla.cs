@@ -144,7 +144,7 @@ namespace Data.Crystal.Reporte
             return lista;
         }
 
-        public Reporte_Vendedor get_reporteVendedor(string coddis,string cod_tda, string fecIni, string fecFin, string calidad)
+        public Reporte_Vendedor get_reporteVendedor(/*string coddis,*/string cod_tda, string fecIni, string fecFin, string calidad)
         {
             string sqlquery = "USP_XSTORE_REPORTE_VENDEDORES";
             Reporte_Vendedor lista = null;
@@ -166,7 +166,7 @@ namespace Data.Crystal.Reporte
                             cmd.Parameters.AddWithValue("@codtda", cod_tda);
                             cmd.Parameters.AddWithValue("@FEC_INI", fecIni);
                             cmd.Parameters.AddWithValue("@FEC_FIN", fecFin);
-                            cmd.Parameters.AddWithValue("@coddist", coddis);
+                            //cmd.Parameters.AddWithValue("@coddist", coddis);
                             cmd.Parameters.AddWithValue("@calidad", calidad);
                             using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                             {
@@ -177,6 +177,7 @@ namespace Data.Crystal.Reporte
                                          select new Models_Vendedor()
                                          {
                                              cod_distri=dr["DISTRITO"].ToString(),
+                                             des_cadena = dr["DES_CADENA"].ToString(),
                                              cod_entid = dr["COD_ENTID"].ToString(),
                                              des_entid = dr["DES_ENTID"].ToString(),
                                              store_name = dr["STORE_NAME"].ToString(),
