@@ -12,7 +12,7 @@ namespace CapaDato.Maestros
 {
     public class Dat_Orce
     {
-        public List<Ent_Cadena> lista_cadena()
+        public List<Ent_Cadena> lista_cadena(Boolean add_todos=false)
         {
             List<Ent_Cadena> listar = null;
             string sqlquery = "USP_LISTAR_CADENA_XSTORE";
@@ -32,9 +32,18 @@ namespace CapaDato.Maestros
                             if (dr.HasRows)
                             {
                                 listar = new List<Ent_Cadena>();
+                                Ent_Cadena cad = new Ent_Cadena();
+                                if (add_todos)
+                                {
+                                    cad = new Ent_Cadena();
+                                    cad.codigo = "-1";
+                                    cad.descrip = "-------TODOS-------";
+                                    listar.Add(cad);
+                                }
                                 while (dr.Read())
                                 {
-                                    Ent_Cadena cad = new Ent_Cadena();
+                                   
+                                    cad = new Ent_Cadena();
                                     cad.codigo = dr["codigo"].ToString();
                                     cad.descrip= dr["descrip"].ToString();
                                     listar.Add(cad);

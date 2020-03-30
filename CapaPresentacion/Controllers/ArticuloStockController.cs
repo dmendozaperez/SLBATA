@@ -21,6 +21,7 @@ using System.Text;
 using System.Web.Script.Serialization;
 using CapaDato.Menu;
 using System.Data;
+using CapaDato.Maestros;
 
 namespace CapaPresentacion.Controllers
 {
@@ -208,6 +209,9 @@ namespace CapaPresentacion.Controllers
             string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
             string return_view = actionName + "|" + controllerName;
 
+            List<Ent_Combo> list = new List<Ent_Combo>();
+            Ent_Combo entCombo = new Ent_Combo();
+
             if ((_usuario == null && _acceso == false)||(_usuario == null && _accesoMenu == true))
             {
                 return RedirectToAction("Login", "Control", new { returnUrl = return_view });
@@ -228,6 +232,27 @@ namespace CapaPresentacion.Controllers
                     ViewBag.General = listobj;
                     ViewBag.Usuario = _usuario.usu_nombre;
                     ViewBag.distrito = distrito;
+
+                    Dat_Orce get_orc = new Dat_Orce();
+                    ViewBag.cadena = get_orc.lista_cadena(true);
+
+
+                    list = new List<Ent_Combo>();
+                    entCombo = new Ent_Combo();
+                    entCombo.cbo_codigo = "0";
+                    entCombo.cbo_descripcion = "POR DEFECTO";
+                    list.Add(entCombo);
+
+                    entCombo = new Ent_Combo();
+                    entCombo.cbo_codigo = "1";
+                    entCombo.cbo_descripcion = "POR VENTA ACUMULADA ASCENDENTE";
+                    list.Add(entCombo);
+                    entCombo = new Ent_Combo();
+                    entCombo.cbo_codigo = "2";
+                    entCombo.cbo_descripcion = "POR VENTA ACUMULADA DESCENDENTE";
+                    list.Add(entCombo);
+                    ViewBag.TipoReporte = list;
+
                     return View();
                 }
                 else {
@@ -255,7 +280,27 @@ namespace CapaPresentacion.Controllers
                         ViewBag.General = listobj;
                         ViewBag.Usuario = _usuario.usu_nombre;
 
+                        Dat_Orce get_orc = new Dat_Orce();
+                        ViewBag.cadena = get_orc.lista_cadena(true);
+
                         ViewBag.distrito = distrito;
+
+                       
+                        list = new List<Ent_Combo>();
+                        entCombo = new Ent_Combo();
+                        entCombo.cbo_codigo = "0";
+                        entCombo.cbo_descripcion = "POR DEFECTO";
+                        list.Add(entCombo);
+
+                        entCombo = new Ent_Combo();
+                        entCombo.cbo_codigo = "1";
+                        entCombo.cbo_descripcion = "ASCENDENTE";
+                        list.Add(entCombo);
+                        entCombo = new Ent_Combo();
+                        entCombo.cbo_codigo = "2";
+                        entCombo.cbo_descripcion = "DESCENDENTE";
+                        list.Add(entCombo);
+                        ViewBag.TipoReporte = list;
 
                         return View();
                     }
@@ -313,7 +358,7 @@ namespace CapaPresentacion.Controllers
             return list;
         }
 
-        public string listarStr_ArticuloStock(string codArticulo, string CodDpto, string CodPrv, string CodDist, string codTalla,string coddist_b, /*sostic 06/2019*/ string multicanalidad)
+        public string listarStr_ArticuloStock(string codArticulo, string CodDpto, string CodPrv, string CodDist, string codTalla,string coddist_b, /*sostic 06/2019*/ string multicanalidad,string cadena,string vta_acum)
         {
             string strJson = "";
             JsonResult jRespuesta = null;
@@ -323,7 +368,7 @@ namespace CapaPresentacion.Controllers
                 cod_tda = Session["Tienda"].ToString();
             }
             
-            strJson = datArticuloStock.listarStr_ArticuloStock(codArticulo, CodDpto, CodPrv, CodDist, codTalla, coddist_b, cod_tda,/*sostic 06/2019*/ multicanalidad);
+            strJson = datArticuloStock.listarStr_ArticuloStock(codArticulo, CodDpto, CodPrv, CodDist, codTalla, coddist_b, cod_tda,/*sostic 06/2019*/ multicanalidad, cadena, vta_acum);
             var serializer = new JavaScriptSerializer();
             //jRespuesta = Json(serializer.Deserialize<List<Articulo_Stock_Tienda>>(strJson), JsonRequestBehavior.AllowGet);
 

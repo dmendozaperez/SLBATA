@@ -64,18 +64,36 @@
                     @*</div>*@
                 </div>
             </div>
-            <div class="col-sm-2">
+          
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
                 <label for="dwDistri">Dist.Bata</label>
                 <div class="form-group">
                     @*<div class="input-group">*@
-                        <div id="tipodoc" class="form-group">
-                            @Html.DropDownList("dwDistri", new SelectList(ViewBag.distrito, "cod_dis", "des_dis", "-1"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwDistri", @name = "dwDistri" })
-                        </div>
+                    <div id="tipodoc" class="form-group">
+                        @Html.DropDownList("dwDistri", new SelectList(ViewBag.distrito, "cod_dis", "des_dis", "-1"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwDistri", @name = "dwDistri" })
+                    </div>
                     @*</div>*@
                 </div>
             </div>
+            <div class="col-sm-3">
+                <label for="dwCate">Cadena</label>
+                <div class="form-group">
+                    <div id="divcad" class="form-group">
+                        @Html.DropDownList("dwcad", new SelectList(ViewBag.Cadena, "codigo", "descrip", "-1"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwcad", @name = "dwcad" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <label for="dwCate">Orden</label>
+                <div class="form-group">
+                    <div id="divcad" class="form-group">
+                        @Html.DropDownList("dwvta", new SelectList(ViewBag.TipoReporte, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker",  @data_live_search = "false", @id = "dwvta", @name = "dwvta" })
+                    </div>
+                </div>
+            </div>
         </div>
-
         <div class="row">
             <div class="col-sm-2">
                 <label for="txtArticulo">Articulo&nbsp;<i class="text-info fa fa-info-circle"></i></label>
@@ -376,6 +394,14 @@
         var codtalla = $('#txtTalla').val();
         var coddist_b = $("#dwDistri").val();
 
+        var codcadena = $('#dwcad').val();
+
+        var vta_acum = $('#dwvta').val();
+
+        
+
+        codcadena = codcadena.toString();
+
         /*sostic 06/2019*/
         var multicanalidad = 0;
         if ($('#multicanalidad').is(":checked")) {
@@ -392,7 +418,7 @@
         var border2 = 'padding: 5px 5px 5px 5px;border:2px'
         //border2 =''
 
-        var CabeceraResultados = '<div style="background:#FFFFFF;padding: 5px 5px 5px 5px;border:2px;margin-left: 0px;margin-right: 0px;margin-bottom: 10px;"><div class="row"><div class="col-md-3"><p style="font-size:large"><label class="label label-warning"><i class="fa fa-tags"></i> RIMS :&nbsp;&nbsp;<strong>CATEGORIA_VALOR</strong></label></p></div><div class="col-md-3"><p style="font-size:large"><label class="label label-warning"><i class="fa fa-tags"></i> STANDAR :&nbsp;&nbsp;<strong>STANDAR_VALOR</strong></label></p></div><div class="col-md-2"><p style="font-size:large"><label class="label label-warning"><i class="fa fa-tags"></i> PRECIO PLANILLA:&nbsp;&nbsp;<strong>S/ PRECIO_VALOR</strong></label></p> </div></div></div>';
+        var CabeceraResultados = '<div style="background:#FFFFFF;padding: 5px 5px 5px 5px;border:2px;margin-left: 0px;margin-right: 0px;margin-bottom: 10px;"><div class="row"><div class="col-md-3"><p style="font-size:large"><label class="label label-warning"><i class="fa fa-tags"></i> RIMS :&nbsp;&nbsp;<strong>CATEGORIA_VALOR</strong></label></p></div><div class="col-md-3"><p style="font-size:large"><label class="label label-warning"><i class="fa fa-tags"></i> STANDAR :&nbsp;&nbsp;<strong>STANDAR_VALOR</strong></label></p></div><div class="col-md-2"><p style="font-size:large"><label class="label label-warning"><i class="fa fa-tags"></i> PRECIO PLANILLA:&nbsp;&nbsp;<strong>S/ PRECIO_VALOR</strong></label></p> </div><div class="col-md-2"><p style="font-size:large"><label class="label label-warning"><i class="fa fa-tags"></i> PRECIO ACTUAL:&nbsp;&nbsp;<strong>S/ PRECIO_ACT</strong></label></p> </div></div></div>';
         var ConstHtmlTienda = '<br/><div id="lugar" style="background:#FFFFFF;' + border2 + '" ><div ' + css + '  style="background:#FFFFFF;" ><div class="col-sm-12"><div><h4><strong>VariableTienda</strong></h4><p><i class="fa fa-map-marker"></i>&nbsp;&nbsp;DireccionTienda&nbsp;&nbsp;&nbsp;<i class="fa fa-phone"></i>&nbsp;&nbsp;TelefonoTienda</p></div><table><tr><td><table><tr><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs" style="width:100%;">Tallas:</button></div></td><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-success btn-xs" style="width:100%;">Total:</button></div></td>ListvariableTalla</tr><tr><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs" style="width:100%;">Cantidad:</button></div></td></td><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-success btn-xs" style="width:100%;">VTotal</button></div></td>ListvariableCantidad</tr></table></td><td><table><tbody><tr><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-info btn-xs" style="width:100%;" title="Venta Acumulada">V. A.</button></div></td></tr><tr><td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-info btn-xs" title = "Cantidad Venta Acumulada" style="width:100%;">VACUM</button></div></td></tr></tbody></table></td></tr></table></div><br/></div></div>';
         var ConstTalla = '<td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs"  style="width:100%;" title="ver Sustituto" onclick="MostrarArticuloSustituto(this)" data-id="codTienda" data-tda="desTiendaS" data-modal="codTalla" data-art="codArticulo"  >variableTalla <span class="glyphicon glyphicon-eye-open"></span></button></div></td>'
         var ConstCantidad = '<td><div style="margin-top:2px;margin-right:2px;"><button class="btn btn-white btn-xs" style="width:100%;text-align:center;">variableCantidad</button></div></td>'
@@ -405,7 +431,7 @@
             type: "GET",
             url: ControllerUrl,
             contentType: "application/json; charset=utf-8",
-            data: { codArticulo: codArticulo, CodDpto: CodDepartamento, CodPrv: Codprovincia, CodDist: CodDistrito, codTalla: codtalla, coddist_b: coddist_b,/*sostic 06/2019*/ multicanalidad: multicanalidad },
+            data: { codArticulo: codArticulo, CodDpto: CodDepartamento, CodPrv: Codprovincia, CodDist: CodDistrito, codTalla: codtalla, coddist_b: coddist_b,/*sostic 06/2019*/ multicanalidad: multicanalidad, cadena: codcadena, vta_acum: vta_acum },
             datatype: "json",
             cache: true,
             success: function (data) {
@@ -424,15 +450,18 @@
                     var categoria = '';
                     var standar = '';
                     var precio = '';
+                    var precio_act = '';
                     var TelefonoTienda = '';
                     var length = Object.keys(valors).length - 1;
                     categoria = valors[0].Rims;
                     standar = valors[0].Standar;
                     precio = valors[0].Precio;
+                    precio_act = valors[0].Precio_Act;
 
                     CabeceraResultados = CabeceraResultados.replace("CATEGORIA_VALOR", categoria);
                     CabeceraResultados = CabeceraResultados.replace("STANDAR_VALOR", standar);
                     CabeceraResultados = CabeceraResultados.replace("PRECIO_VALOR", precio.toFixed(2));
+                    CabeceraResultados = CabeceraResultados.replace("PRECIO_ACT", precio_act.toFixed(2));
 
                     document.getElementById("infoProducto").innerHTML = CabeceraResultados;
 
