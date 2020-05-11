@@ -10,6 +10,7 @@ namespace CapaPresentacion.Models.Crystal.Reporte
         public List<Estado_Stock_Cab> list_cab { get; set; }
         public List<Estado_Stock_Det> list_det { get; set; }
         public List<Estado_Stock_Fin> list_fin { get; set; }
+        public List<Variacion_Precio> list_var { get; set; }
     }
     public class Estado_Stock_Cab
     {
@@ -49,5 +50,16 @@ namespace CapaPresentacion.Models.Crystal.Reporte
         public Decimal no_calzado { get; set; }
         public Decimal sol_calzado { get; set; }
         public Decimal sol_no_calzado { get; set; }    
+    }
+    public class Variacion_Precio
+    {
+        public string tienda { get; set; }
+        public string fecha { get; set; }
+        public Decimal vp_ing_sol_calzado { get; set; }
+        public Decimal vp_ing_sol_no_calzado { get; set; }
+        public Decimal vp_sal_sol_calzado { get; set; }
+        public Decimal vp_sal_sol_no_calzado { get; set; }
+
+
     }
 }
