@@ -92,6 +92,7 @@
     <Compile Include="Maestros\Dat_Estado.cs" />
     <Compile Include="Maestros\Dat_ListaTienda.cs" />
     <Compile Include="Maestros\Dat_Prom_Filtro.cs" />
+    <Compile Include="Maestros\Dat_Semana_Personalizado.cs" />
     <Compile Include="Maestros\Dat_Ubigeo.cs" />
     <Compile Include="Maestros\Dat_Usuario_Tipo.cs" />
     <Compile Include="Menu\Dat_Menu.cs" />

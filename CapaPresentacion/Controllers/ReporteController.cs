@@ -731,7 +731,20 @@ namespace CapaPresentacion.Controllers
             }
             else
             {
+                Dat_Semana_Personalizado sem = new Dat_Semana_Personalizado();
+
+                List<Ent_Semana_Personalizado> ent_sem = sem.listar_semanas();
+
+                var sem_d = ent_sem.Where(s => s.sem_defecto == "1").ToList();
+
+                foreach(var fila in sem_d)
+                {
+                    ViewBag.semd = fila.cod_semana;
+                }
+
+                ViewBag.sem = ent_sem;
                 ViewBag.Tienda = datCbo.get_ListaTiendaXstoreActivo("");
+
             }
 
             return View();

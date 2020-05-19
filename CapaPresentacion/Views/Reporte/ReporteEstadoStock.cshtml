@@ -37,12 +37,23 @@
             </div>
         </div>
         <div class="col-sm-3">
+            <label for="segape">Semana</label>
+            <div class="form-group">
+                <div id="tienda" class="form-group">
+                    @Html.DropDownList("dwsemana", new SelectList(ViewBag.sem, "cod_semana", "cod_semana", ViewBag.semd), new { @class = "selectpicker", @data_live_search = "true", @id = "dwsemana", @name = "dwsemana", @enable = "false", @onchange = "select_semana();" })
+                </div>
+            </div>
+        </div>
+       
+    </div>
+    <div class="row">
+        <div class="col-sm-3">
             <label for="segape">Fecha Inicio</label>
             <div class="form-group">
                 <div class="input-group">
                     <div id="datepickerini" class="input-group date" data-date-format="dd-mm-yyyy">
-                        <input id="fecini" name="fecini" value="" class="form-control custom-input" placeholder="dd-mm-yyyy" type="text" oninvalid="InvalidMsg(this,'Ingrese la fecha inicial')" required="required" />
-                        <span class="input-group-addon  bg-white"><img src="~/Content/images/wall-calendar-with-lines.svg" height="20" width="20"></span>
+                        <input id="fecini" name="fecini" style="font-size:14px;font-weight:bold;color:red" value="" class="form-control custom-input" disabled="disabled" placeholder="dd-mm-yyyy" type="text" oninvalid="InvalidMsg(this,'Ingrese la fecha inicial')" required="required" />
+                        <span style="visibility:hidden" class="input-group-addon  bg-white"><img src="~/Content/images/wall-calendar-with-lines.svg" height="20" width="20"></span>
                     </div>
                 </div>
             </div>
@@ -52,8 +63,8 @@
             <div class="form-group">
                 <div class="input-group">
                     <div id="datepickerfin" class="input-group date" data-date-format="dd-mm-yyyy">
-                        <input id="fecfinc" name="fecfinc" value="" class="form-control custom-input" placeholder="dd-mm-yyyy" type="text" oninvalid="InvalidMsg(this,'Ingrese la fecha final')" required="required" />
-                        <span class="input-group-addon  bg-white"><img src="~/Content/images/wall-calendar-with-lines.svg" height="20" width="20"></span>
+                        <input id="fecfinc" name="fecfinc" value="" style="font-size:14px;font-weight:bold;color:red" class="form-control custom-input" disabled="disabled" placeholder="dd-mm-yyyy" type="text" oninvalid="InvalidMsg(this,'Ingrese la fecha final')" required="required" />
+                        <span style="visibility:hidden" class="input-group-addon  bg-white"><img src="~/Content/images/wall-calendar-with-lines.svg" height="20" width="20"></span>
                     </div>
                 </div>
             </div>
@@ -84,9 +95,9 @@
 <script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script> 
 <script>
     //function getMonday(d) {
-    //    d = new Date(d); 
+    //    d = new Date(d);
     //    var day = d.getDay(), diff = d.getDate() - day + (day == 0 ? -6:1);
-    //    // adjust when day is sunday return new Date(d.setDate(diff)); 
+    //    // adjust when day is sunday return new Date(d.setDate(diff));
     //}
     $(function () {
         //var date = new Date();
@@ -102,10 +113,31 @@
             todayHighlight: true
         }).datepicker("setDate", "0");;
     });
+
+    function select_semana() {
+        var dataSem = function () { return @Html.Raw(Json.Encode(ViewBag.sem)); }();
+        var strsemana = $('#dwsemana').val();
+
+        var lista_filter = dataSem.filter(obj => obj.cod_semana == strsemana);
+
+        $.each(lista_filter, function (index, item) {
+            //alert(item.fec_inicio);
+            //alert(item.fec_final);
+            $("#fecini").val(item.fec_inicio);
+            $("#fecfinc").val(item.fec_final);
+
+        });
+        
        
+    }
+
     $(document).ready(function () {
 
+
+
         $("body").toggleClass('sidebar-collapse');
+
+        select_semana();
 
         //var date = new Date();
         //var firstDay = getMonday(date);//  new Date(date.getFullYear(), date.getMonth(), 1);
@@ -121,30 +153,30 @@
         //}).datepicker("setDate", "0");
     });
     function MostrarReporte(e) {
-     
-        
+
+
         var tienda = $('#dwtienda').val();
-        
-        
+
+
         var strIni = $("#fecini").val();
         var strFin = $("#fecfinc").val();
 
-        
 
-               
-        
+
+
+
         var TeamDetailPostBackURL = "@Url.Action("ShowGenericReportEstadoStockInNewWin", "Reporte")";
-        
+
         waitingDialog.show('Espere un momento por favor');
         $.ajax({
-        
+
             url: TeamDetailPostBackURL,
             dataType: 'json',
-            type: 'POST',            
+            type: 'POST',
             data: { cod_tda: tienda, fec_ini: strIni, fec_fin: strFin },
-            
+
             success: function (data) {
-            
+
                 if (data.estado == "1") {
                     $('#load').show();
                     $("#load").attr("src", "../AspNetForms/EstadoStock.aspx");
@@ -163,7 +195,7 @@
                         toastr.error('Hubo un error en el reporte', "Alerta");
                     }
                 }
-            
+
                 return false;
             },
             error: function (request, status, error) {
@@ -172,6 +204,6 @@
         }).done(function () {
 
         });
-        
+
     }
 </script>
