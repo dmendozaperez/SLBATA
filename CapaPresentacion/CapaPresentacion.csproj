@@ -1765,9 +1765,11 @@
     <Content Include="Views\Reporte\ReporteBestSeller.cshtml" />
     <Content Include="Views\Reporte\ReporteEstadoStock.cshtml" />
     <Content Include="Views\Inventario\ReporteInventarioPlanilla.cshtml" />
-    <Content Include="Views\XstoreTda\ReporteInventarioMovimiento.cshtml" />
     <Content Include="Views\Orce_Exclud\Cupones.cshtml" />
     <Content Include="Views\Orce_Exclud\GenerarCupones.cshtml" />
+    <Content Include="Views\ECommerce\StockAlmacen.cshtml" />
+    <Content Include="Views\ECommerce\ConsultaStockEcom.cshtml" />
+    <Content Include="Views\Inventario\ReporteInventarioMovimiento.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

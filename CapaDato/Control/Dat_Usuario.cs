@@ -18,8 +18,9 @@ namespace CapaDato.Control
             string sqlquery = "[USP_Leer_Usuario]";
             Ent_Usuario usuario = null;
             try
-            {
+            {//CONE
                 using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                //using (SqlConnection cn = new SqlConnection("Server = POSPERUBD.BGR.PE; Database = BDPOS; User ID = pos_oracle; Password = Bata2018**; Trusted_Connection = False;"))
                 {
                     if (cn.State == 0) cn.Open();
                     using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
@@ -34,9 +35,9 @@ namespace CapaDato.Control
                         {
                             usuario = new Ent_Usuario();
 
-                            while(dr.Read())
+                            while (dr.Read())
                             {
-                                usuario.usu_id =(decimal)dr["usu_id"];
+                                usuario.usu_id = (decimal)dr["usu_id"];
                                 usuario.usu_nombre = dr["usu_nombre"].ToString();
                                 usuario.usu_contraseña = dr["usu_contraseña"].ToString();
                                 usuario.usu_est_id = dr["usu_est_id"].ToString();

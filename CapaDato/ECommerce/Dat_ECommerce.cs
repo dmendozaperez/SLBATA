@@ -20,12 +20,12 @@ namespace CapaDato.ECommerce
             {
                 using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexionEcommerce))
                 {
-                   // if (cn.State == 0) cn.Open();
+                    // if (cn.State == 0) cn.Open();
                     using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
                     {
                         cmd.CommandTimeout = 0;
-                        cmd.CommandType = CommandType.StoredProcedure;                        
-                        SqlDataAdapter da = new SqlDataAdapter(cmd);                          
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        SqlDataAdapter da = new SqlDataAdapter(cmd);
                         da.Fill(origenes);
                     }
                 }
@@ -65,7 +65,7 @@ namespace CapaDato.ECommerce
         //    }
         //}
 
-        public List<Ent_ECommerce> get_Ventas(DateTime fdesde , DateTime fhasta, string noDocCli , string noDoc,string _tienda )
+        public List<Ent_ECommerce> get_Ventas(DateTime fdesde, DateTime fhasta, string noDocCli, string noDoc, string _tienda)
         {
             List<Ent_ECommerce> list = null;
             string sqlquery = "USP_ECOM_Lista_Ventas";
@@ -127,7 +127,7 @@ namespace CapaDato.ECommerce
         }
 
 
-        public Ent_ECommerce get_Ventas_por_sn(string noDoc , string cod_entid )
+        public Ent_ECommerce get_Ventas_por_sn(string noDoc, string cod_entid)
         {
             Ent_ECommerce ven = null;
             string sqlquery = "USP_Select_Ventas_x_Tda";
@@ -146,12 +146,12 @@ namespace CapaDato.ECommerce
                         DataSet ds = new DataSet();
                         da.Fill(ds);
 
-                        if (ds.Tables.Count>0)
+                        if (ds.Tables.Count > 0)
                         {
                             DataTable dtC = ds.Tables[0];
                             DataTable dtD = ds.Tables[1];
                             //DataTable dtH = ds.Tables[2];
-                            ven = new Ent_ECommerce();                            
+                            ven = new Ent_ECommerce();
                             ven.idPedido = dtC.Rows[0]["Pedido_Id"].ToString();
                             //ven.tiendaOrigen = dtC.Rows[0]["COD_ENTID"].ToString() + " - " + dtC.Rows[0]["des_entida"].ToString();
                             //ven.tiendaDestino = dtC.Rows[0]["FC_ID_TDACVTA"].ToString() + " - " + dtC.Rows[0]["des_entidb"].ToString();
@@ -183,7 +183,7 @@ namespace CapaDato.ECommerce
                             //ven.importeTotal = Convert.ToDecimal(dtC.Rows[0]["FC_TOTAL"].ToString());
                             //ven.nombreTipoCV = dtC.Rows[0]["nombre_tipo_cv"].ToString();
 
-                            List<Ent_DetallesECommerce> listVenD = new List<Ent_DetallesECommerce>();                            
+                            List<Ent_DetallesECommerce> listVenD = new List<Ent_DetallesECommerce>();
                             foreach (DataRow item in dtD.Rows)
                             {
                                 Ent_DetallesECommerce venD = new Ent_DetallesECommerce();
@@ -278,6 +278,51 @@ namespace CapaDato.ECommerce
             }
             return destinos;
         }
+
+        //STOCK ALMACEN 15-05-2020
+        public List<Ent_Stock_Almacen> get_Lista_Stock_Almacen(string cod_almacen, string cod_articulo, string descripcion, string talla)
+        {
+            string sqlquery = "USP_ECOMMERCE_STOCK_ALMACEN";
+            DataTable dt = null;
+            List<Ent_Stock_Almacen> listar = null;
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexionPosPeru))
+                {
+                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@COD_ALMACEN", cod_almacen);
+                        cmd.Parameters.AddWithValue("@COD_ARTICULO", cod_articulo);
+                        cmd.Parameters.AddWithValue("@DESCRIPCION", descripcion);
+                        cmd.Parameters.AddWithValue("@TALLA", talla);
+                        //cmd.Parameters.AddWithValue("@estado", dwest);
+                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                        {
+                            dt = new DataTable();
+                            da.Fill(dt);
+                            listar = new List<Ent_Stock_Almacen>();
+                            listar = (from DataRow dr in dt.Rows
+                                      select new Ent_Stock_Almacen()
+                                      {
+                                          des_almacen = dr["DES_ALMACEN"].ToString(),
+                                          cod_articulo = dr["COD_ARTICULO"].ToString(),
+                                          descripcion = dr["DESCRIPCION"].ToString(),
+                                          talla = dr["TALLA"].ToString(),
+                                          stock = dr["STOCK"].ToString(),
+
+                                      }).ToList();
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                listar = null;
+            }
+            return listar;
+        }
     }
-  
+
 }

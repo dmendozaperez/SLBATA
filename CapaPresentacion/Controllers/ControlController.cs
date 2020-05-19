@@ -136,6 +136,8 @@ namespace CapaPresentacion.Controllers
             Dat_Usuario _usuario = new Dat_Usuario();
             Ent_Usuario _data_user= _usuario.get_login(usuario);
 
+
+
             if ((_data_user.usu_login == "Tienda" || _data_user.usu_login == "TIENDAPOS") && Session["Tienda"]==null) {
                 password = "";
             }

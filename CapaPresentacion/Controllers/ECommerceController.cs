@@ -12,6 +12,7 @@ using CapaDato.ECommerce;
 using CapaDato.ECommerce.Urbano;
 using CapaDato.comercioxpress;
 using Data.Crystal.Reporte;
+using CapaPresentacion.Bll;
 
 namespace CapaPresentacion.Controllers
 {
@@ -474,6 +475,111 @@ namespace CapaPresentacion.Controllers
             //list.Add(new SelectListItem() { Text = "Envío a Domicilio", Value = "E", Selected = _existe_en_array(_values, "E") });
             return list;
         }
+
+        //consulta stock almacen 15/05/2020
+
+        public ActionResult StockAlmacen()
+        {
+            var ec = new Data_Ecommerce();
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
+
+            if (_usuario == null)
+            {
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+            }
+            else
+            {
+                //ViewBag.Tienda = dat_lista_tienda.get_tienda("PE", "1");
+                Session["Lista_stock_almacen"] = null;
+
+                ViewBag.almacen = ec.get_ListaAlmacen_Apoyo();
+
+
+                return View();
+            }
+        }
+
+
+        public PartialViewResult ConsultaStockEcom(string codAlmacen, string numArticulo, string desArticulo , string talArticulo)
+        {
+            return PartialView(get_Lista_Stock_Almacen(codAlmacen, numArticulo, desArticulo, talArticulo));
+        }
+        public List<Ent_Stock_Almacen> get_Lista_Stock_Almacen(string codAlmacen, string numArticulo, string desArticulo, string talArticulo)
+        {
+            List<Ent_Stock_Almacen> lista = datos.get_Lista_Stock_Almacen(codAlmacen, numArticulo, desArticulo,talArticulo);
+            Session["Lista_stock_almacen"] = lista;
+            return lista;
+        }
+
+        public ActionResult ConsultaTablaStock(CapaEntidad.General.Ent_jQueryDataTableParams param)
+        {
+            /*verificar si esta null*/
+            if (Session["Lista_stock_almacen"] == null)
+            {
+                List<Ent_Stock_Almacen> listdoc = new List<Ent_Stock_Almacen>();
+                Session["Lista_stock_almacen"] = listdoc;
+
+            }
+
+            //Traer registros
+            IQueryable<Ent_Stock_Almacen> membercol = ((List<Ent_Stock_Almacen>)(Session["Lista_stock_almacen"])).AsQueryable();
+
+            //Manejador de filtros
+            int totalCount = membercol.Count();
+
+            IEnumerable<Ent_Stock_Almacen> filteredMembers = membercol;
+
+            //Manejador de orden
+            var sortIdx = Convert.ToInt32(Request["iSortCol_0"]);
+
+            var displayMembers = filteredMembers
+                .Skip(param.iDisplayStart)
+                .Take(param.iDisplayLength);
+
+            var result = from a in displayMembers
+                         select new
+                         {
+                             a.des_almacen,
+                             a.cod_articulo,
+                             a.descripcion,
+                             a.talla,
+                             a.stock
+                        
+
+                         };
+
+            //Se devuelven los resultados por json
+            return Json(new
+            {
+                sEcho = param.sEcho,
+                iTotalRecords = totalCount,
+                iTotalDisplayRecords = filteredMembers.Count(),
+                aaData = result
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        public FileContentResult StockArticulosAlmacen()
+        {
+            if (Session["Lista_stock_almacen"] == null)
+            {
+                List<Ent_Stock_Almacen> liststoreConf = new List<Ent_Stock_Almacen>();
+                Session["Lista_stock_almacen"] = liststoreConf;
+            }
+            List<Ent_Stock_Almacen> lista = (List<Ent_Stock_Almacen>)Session["Lista_stock_almacen"];
+            string[] columns = { "ALMACEN", "NUM_ARTICULO", "ARTICULO", "TALLA", "STOCK" };
+            //string[] headers = { "ALMACEN", "NUM_ARTICULO", "ARTICULO", "TALLA", "STOCK"};
+            byte[] filecontent = ExcelExportHelper.ExportExcelStock_Ecom1(lista, "LISTA GENERAL DE STOCK DE ARTICULOS POR ALMACEN",false, columns);
+            //byte[] filecontent = ExcelExportHelper.CreateCSVFile(lista, "LISTA GENERAL DE STOCK DE ARTICULOS POR ALMACEN");
+            return File(filecontent, ExcelExportHelper.ExcelContentType, "StockArticulosAlmacen.xlsx");
+        }
+
+
+
+
+
 
         #endregion
     }

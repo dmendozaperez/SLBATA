@@ -1,0 +1,139 @@
+﻿
+@{
+    ViewBag.Title = "Stock Almacen";
+}
+
+@{AjaxOptions options = new AjaxOptions
+    {
+        HttpMethod = "POST",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "lista",
+        OnComplete = "waitingDialog.hide();",
+        OnBegin = "waitingDialog.show('Espere un momento por favor');",
+        OnFailure = "waitingDialog.hide();"
+    };
+}
+@model IEnumerable<CapaEntidad.ECommerce.Ent_Stock_Almacen>
+
+<style>
+    .dataTables_processing {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 100%;
+        height: 40px;
+        margin-left: -50%;
+        margin-top: -25px;
+        padding-top: 20px;
+        text-align: center;
+        font-size: 1.2em;
+        background-color: white;
+        font-weight: bold;
+        color: cornflowerblue;
+        background: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(255,255,255,0)), color-stop(25%, rgba(255,255,255,0.9)), color-stop(75%, rgba(255,255,255,0.9)), color-stop(100%, rgba(255,255,255,0)));
+        background: -webkit-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 25%, rgba(255,255,255,0.9) 75%, rgba(255,255,255,0) 100%);
+        background: -moz-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 25%, rgba(255,255,255,0.9) 75%, rgba(255,255,255,0) 100%);
+        background: -ms-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 25%, rgba(255,255,255,0.9) 75%, rgba(255,255,255,0) 100%);
+        background: -o-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 25%, rgba(255,255,255,0.9) 75%, rgba(255,255,255,0) 100%);
+        background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 25%, rgba(255,255,255,0.9) 75%, rgba(255,255,255,0) 100%);
+    }
+
+    .boton-td {
+        padding-top: 3px !important;
+        padding-bottom: 3px !important;
+    }
+
+    .modal-body {
+        max-height: calc(100vh - 212px);
+        overflow-y: auto;
+    }
+
+    p.content {
+        min-height: 0 !important;
+        padding: 0 !important;
+        margin-right: auto !important;
+        margin-left: auto !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        color: dodgerblue;
+    }
+</style>
+<link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />
+<style>
+    iframe {
+        border: none;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        height: 800px;
+    }
+</style>
+<p class="text-danger">Consulta de Stock de los Almacenes en General para Ecommerce</p>
+
+<div class="box box-body box-primary">
+    @using (Ajax.BeginForm("ConsultaStockEcom", options))
+    {
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label for="tipo">Almacén</label>
+                    @Html.DropDownList("codAlmacen", new SelectList(ViewBag.almacen, "cbo_codigo", "cbo_descripcion", null), new { @class = "form-control selectpicker", @data_live_search = "true", @id = "codAlmacen", @name = "codAlmacen", @data_actions_box = "true" })
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label>Código de Artículo:</label>
+                    <input type="text" placeholder="No. Articulo : 12345678" name="numArticulo" id="numArticulo" class="form-control" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <label>Descripción:</label>
+                <input type="text" placeholder="Descripción del artículo" name="desArticulo" id="desArticulo" class="form-control" />
+            </div>
+
+            <div class="col-sm-3">
+                <label>Talla:</label>
+                <input type="text" placeholder="Talla del artiículo" name="talArticulo" id="talArticulo" class="form-control" />
+            </div>
+
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="buscar" style="color:transparent">Buscar</label>
+                    <button id="buscar" name="buscar" class="btn btn-primary" onclick="" type="submit"><span class="glyphicon glyphicon-search"></span>&nbsp;Buscar</button>
+                </div>
+            </div>
+
+        </div>
+
+        //{ Html.RenderPartial("ConsultaStockEcom", Model); }
+
+        <div class="box-body" id="lista" style="overflow-x: auto;">
+            @{Html.RenderPartial("ConsultaStockEcom", Model);}
+        </div>
+
+                }
+</div>
+<script src="~/Scripts/bootstrap-select.min.js"></script>
+<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+
+<script src="~/Scripts/BI.js"></script>
+
+<script>
+    $(document).ready(function () {
+
+        //$("body").toggleClass('sidebar-collapse');
+
+        //$('#dwestado option').attr("selected", "selected");
+        //$('#dwestado').selectpicker('refresh');
+
+        //$('#dwtipo option').attr("selected", "selected");
+        //$('#dwtipo').selectpicker('refresh');
+
+        //$('#dwusuario option').attr("selected", "selected");
+        //$('#dwusuario').selectpicker('refresh');
+    });
+</script>
+

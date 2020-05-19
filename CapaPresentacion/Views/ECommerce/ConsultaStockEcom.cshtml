@@ -1,0 +1,109 @@
+﻿
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.min.css" />
+
+<style type="text/css">
+    .dt-buttons {
+        display: none;
+    }
+
+    #example_filter {
+        display: none;
+    }
+</style>
+<div class="box-body" id="lista" style="overflow-x: auto;">
+    <a id="EXCEL" name="excel" class="btn btn-success btn-sm" href="@Url.Action("StockArticulosAlmacen","Ecommerce")" style="margin-bottom:10px"><span class="glyphicon glyphicon-export"></span>&nbsp;Excel</a>
+
+    <table id="example" class="table table-hover dataTable  table-striped table-responsive">
+        <thead>
+            <tr style="background-color:#3d566e; color:#ecf0f1">
+                <th>Almacén</th>
+                <th>Artículo</th>
+                <th>Descripción</th>
+                <th>Talla</th>
+                <th>Stock</th>
+            </tr>
+        </thead>
+        <tbody data-bind="foreach:"></tbody>
+        <tfoot>
+            <tr>
+                <th>Almacén</th>
+                <th>Artículo</th>
+                <th>Descripción</th>
+                <th>Talla</th>
+                <th>Stock</th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" ng-app>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
+        </div>
+    </div>
+</div>
+
+<script src='https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js'></script>
+<script src='//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js'></script>
+<script src='//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js'></script>
+<script src='//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js'></script>
+<script src='//cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js'></script>
+
+<script>
+    $(document).ready(function () {
+        //    alert("entro a _guiatable.cshmtl - document ready");
+        $('.table').dataTable({
+            "language": {
+                "url": "../Scripts/DataTables/Spanish.json"
+            },
+            "bProcessing": true, // se agrego para probar
+            "bServerSide": true,
+            "bAutoWidth": false,
+            "sAjaxSource": '@Url.Action("ConsultaTablaStock", "Ecommerce")',
+            "fnServerParams": function (aoData) {
+                aoData.push({ "name": "cboAlmacen", "value": $.trim($('#tda').val()) });
+                aoData.push({ "name": "codArticulo", "value": $('#numArticulo').val() });
+                aoData.push({ "name": "desArticulo", "value": $('#desArticulo').val() });
+                aoData.push({ "name": "TalArticulo", "value": $.trim($('#talArticulo').val()) });
+            },
+            "bdestroy": true,
+            "start": 0,
+            "order": [0, "asc"],
+            "bDeferRender": true,
+            "aoColumns": [
+                    { "sName": "Almacen", "mData": "des_almacen" },
+                    { "sName": "Articulo", "mData": "cod_articulo" },
+                    { "sName": "Descripcion", "mData": "descripcion" },
+                    { "sName": "Talla", "mData": "talla" },
+                    { "sName": "Stock", "mData": "stock" },
+
+                                                    //{
+                                                    //    "render": function (data, type, full) {
+                                                    //    }
+                                                    //},
+            ],
+            "createdRow": function (row, mData, dataIndex) {
+
+            },
+            dom: 'Bfrtip',
+            buttons: [
+            {
+                extend: 'excelHtml5',
+                title: 'Bataclub_xls'
+            },
+            {
+                extend: 'csvHtml5',
+                title: 'BataClub_csv'
+            },
+            {
+                extend: 'pdfHtml5',
+                title: 'BataClub_pdf'
+            },
+            'copyHtml5',
+            ]
+        });
+    });
+
+
+</script>

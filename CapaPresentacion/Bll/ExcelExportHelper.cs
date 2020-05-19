@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Web;
 
@@ -150,7 +151,7 @@ namespace CapaPresentacion.Bll
 
         #region Excel 2 headers
 
-        public static byte[] ExportExcel2( DataTable dataTable, string header = "" , string heading = "", bool showSrNo = false, params string[] columnsToTake)
+        public static byte[] ExportExcel2(DataTable dataTable, string header = "", string heading = "", bool showSrNo = false, params string[] columnsToTake)
         {
 
             byte[] result = null;
@@ -172,7 +173,7 @@ namespace CapaPresentacion.Bll
                 }
                 if (header == "ConsultaMovimiento")
                 {
-                    workSheet.Cells["B" + 3].Value = "FECHA";                    
+                    workSheet.Cells["B" + 3].Value = "FECHA";
                     workSheet.Cells["B" + 3].Style.Font.Size = 12;
 
                     workSheet.Cells["C" + 3].Value = "INICIAL";
@@ -206,7 +207,7 @@ namespace CapaPresentacion.Bll
                     workSheet.SelectedRange[3, 11, 3, 12].Merge = true;
 
                     workSheet.Cells["A" + startRowFrom].LoadFromDataTable(dataTable, true);
-                }              
+                }
 
                 // autofit width of cells with small content  
 
@@ -216,8 +217,6 @@ namespace CapaPresentacion.Bll
                     int columnIndex = 1;
                     foreach (DataColumn column in dataTable.Columns)
                     {
-
-
 
                         //ExcelRange columnCells = workSheet.Cells[workSheet.Dimension.Start.Row, columnIndex, workSheet.Dimension.End.Row, columnIndex];
                         //int maxLength = columnCells.Max(cell => cell.Value.ToString().Count());
@@ -240,7 +239,7 @@ namespace CapaPresentacion.Bll
                     r.Style.Fill.BackgroundColor.SetColor(System.Drawing.ColorTranslator.FromHtml("#dcdcdc"));
                 }
 
-                using (ExcelRange r = workSheet.Cells[startRowFrom - 1, 1, startRowFrom-1, 11])
+                using (ExcelRange r = workSheet.Cells[startRowFrom - 1, 1, startRowFrom - 1, 11])
                 {
                     //r.Style.Font.Color.SetColor(System.Drawing.Color.White);
                     r.Style.Font.Bold = true;
@@ -251,7 +250,7 @@ namespace CapaPresentacion.Bll
                 // format cells - add borders 
                 if (dataTable.Rows.Count > 0)
                 {
-                    using (ExcelRange r = workSheet.Cells[startRowFrom + 1 -2 , 1, startRowFrom + dataTable.Rows.Count, dataTable.Columns.Count])
+                    using (ExcelRange r = workSheet.Cells[startRowFrom + 1 - 2, 1, startRowFrom + dataTable.Rows.Count, dataTable.Columns.Count])
                     {
                         r.Style.Border.Top.Style = ExcelBorderStyle.Thin;
                         r.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
@@ -292,11 +291,135 @@ namespace CapaPresentacion.Bll
 
             return result;
         }
-        public static byte[] ExportExcel2<T>(string[] header,List<T> data, string Heading = "", bool showSlno = false, params string[] ColumnsToTake)
+
+        public static byte[] ExportExcel2<T>(string[] header, List<T> data, string Heading = "", bool showSlno = false, params string[] ColumnsToTake)
         {
-            return ExportExcel2(ListToDataTable<T>(data) , "ConsultaMovimiento", Heading, showSlno, ColumnsToTake);
+            return ExportExcel2(ListToDataTable<T>(data), "ConsultaMovimiento", Heading, showSlno, ColumnsToTake);
         }
 
+        public static byte[] ExportExcelStock_Ecom1<T>(List<T> data, string Heading = "", bool showSlno = false, params string[] ColumnsToTake)
+        {
+            return ExportExcelStock_ECOM2(ListToDataTable<T>(data), "StockAlmacen", Heading, showSlno, ColumnsToTake);
+        }
+
+        //nuevo
+        public static byte[] ExportExcelStock_ECOM2(DataTable dataTable, string header = "", string heading = "", bool showSrNo = false, params string[] columnsToTake)
+        {
+
+            byte[] result = null;
+            using (ExcelPackage package = new ExcelPackage())
+            {
+                ExcelWorksheet workSheet = package.Workbook.Worksheets.Add(String.Format("{0} Data", ""));
+                int startRowFrom = String.IsNullOrEmpty(heading) ? 1 : 4;
+                //int startRowFrom = 0;
+
+                if (showSrNo)
+                {
+                    DataColumn dataColumn = dataTable.Columns.Add("#", typeof(int));
+                    dataColumn.SetOrdinal(0);
+                    int index = 1;
+                    foreach (DataRow item in dataTable.Rows)
+                    {
+                        item[0] = index;
+                        index++;
+                    }
+                }
+                if (header == "StockAlmacen")
+                {
+                    workSheet.Cells["A" + startRowFrom].LoadFromDataTable(dataTable, true);
+                }
+
+                // autofit width of cells with small content  
+
+                if (dataTable.Rows.Count > 0)
+                {
+
+                    int columnIndex = 1;
+                    foreach (DataColumn column in dataTable.Columns)
+                    {
+
+                        columnIndex++;
+                    }
+                }
+
+                if (dataTable.Rows.Count > 0)
+                {
+                    using (ExcelRange r = workSheet.Cells[startRowFrom + 1 - 2, 1, startRowFrom + dataTable.Rows.Count, dataTable.Columns.Count])
+                    {
+                        r.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        r.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                        r.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        r.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+
+                        r.Style.Border.Top.Color.SetColor(System.Drawing.Color.Black);
+                        r.Style.Border.Bottom.Color.SetColor(System.Drawing.Color.Black);
+                        r.Style.Border.Left.Color.SetColor(System.Drawing.Color.Black);
+                        r.Style.Border.Right.Color.SetColor(System.Drawing.Color.Black);
+                    }
+                }
+
+
+                if (!String.IsNullOrEmpty(heading))
+                {
+                    workSheet.Cells["A1"].Value = heading;
+                    workSheet.Cells["A1"].Style.Font.Size = 20;
+                    
+                    workSheet.InsertColumn(1, 1);
+                    workSheet.InsertRow(1, 1);
+                    workSheet.Column(1).Width = 5;
+                }
+                workSheet.DeleteRow(startRowFrom);
+                result = package.GetAsByteArray();
+            }
+
+            return result;
+        }
+
+
+        //public void CreateCSVFile(ref DataTable dt, string strFilePath)
+        //{
+        //    try
+        //    {
+        //        // Create the CSV file to which grid data will be exported.
+        //        System.IO.StreamWriter sw = new StreamWriter(strFilePath, false);
+        //        // First we will write the headers.
+        //        //DataTable dt = m_dsProducts.Tables[0];
+        //        int iColCount = dt.Columns.Count;
+        //        for (int i = 0; i < iColCount; i++)
+        //        {
+        //            sw.Write(dt.Columns[i]);
+        //            if (i < iColCount - 1)
+        //            {
+        //                sw.Write(",");
+        //            }
+        //        }
+        //        sw.Write(sw.NewLine);
+
+        //        // Now write all the rows.
+
+        //        foreach (DataRow dr in dt.Rows)
+        //        {
+        //            for (int i = 0; i < iColCount; i++)
+        //            {
+        //                if (!Convert.IsDBNull(dr[i]))
+        //                {
+        //                    sw.Write(dr[i].ToString());
+        //                }
+        //                if (i < iColCount - 1)
+        //                {
+        //                    sw.Write(",");
+        //                }
+        //            }
+
+        //            sw.Write(sw.NewLine);
+        //        }
+        //        sw.Close();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
         #endregion
         public static byte[] ExportExcel3(DataTable _dataTable, string heading = "", bool showSrNo = false, params string[] columnsToTake)
         {
@@ -326,7 +449,7 @@ namespace CapaPresentacion.Bll
                         index++;
                     }
                 }
-                
+
                 foreach (DataRow item in dataTable.Rows)
                 {
                     item[3] = (Convert.ToBoolean(item[3]) ? "TRUE" : "FALSE");
