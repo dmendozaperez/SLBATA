@@ -89,6 +89,24 @@ namespace CapaPresentacion.Data.Crystal.Reporte
                                                   vp_sal_sol_no_calzado = Convert.ToDecimal(fila["vp_sal_sol_no_calzado"]),
                                               }
                                             ).ToList();
+
+                            listar.list_ins = (from DataRow fila in ds.Tables[4].Rows
+                                               select new Insumos()
+                                               {
+                                                   tienda = fila["tienda"].ToString(),
+                                                   tcan_in = Convert.ToDecimal(fila["tcan_in"]),
+                                                   tsol_in = Convert.ToDecimal(fila["tsol_in"]),
+                                               }
+                                            ).ToList();
+
+                            listar.list_saldos = (from DataRow fila in ds.Tables[5].Rows
+                                               select new Estado_Stock_Saldos()
+                                               {
+                                                   tienda = fila["tienda"].ToString(),
+                                                   SF_SOLES_CALZADO = Convert.ToDecimal(fila["SF_SOLES_CALZADO"]),
+                                                   SF_SOLES_NO_CALZADO = Convert.ToDecimal(fila["SF_SOLES_NO_CALZADO"]),
+                                               }
+                                          ).ToList();
                         }
                     }
                 }

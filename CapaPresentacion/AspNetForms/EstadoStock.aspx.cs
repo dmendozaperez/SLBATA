@@ -52,6 +52,8 @@ namespace CapaPresentacion.AspNetForms
                     rd.Database.Tables[1].SetDataSource(rptSource.list_det);
                     rd.Database.Tables[2].SetDataSource(rptSource.list_fin);
                     rd.Database.Tables[3].SetDataSource(rptSource.list_var);
+                    rd.Database.Tables[4].SetDataSource(rptSource.list_ins);
+                    rd.Database.Tables[5].SetDataSource(rptSource.list_saldos);
                 }
 
 
