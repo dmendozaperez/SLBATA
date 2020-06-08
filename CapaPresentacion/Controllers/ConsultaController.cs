@@ -366,48 +366,47 @@ namespace CapaPresentacion.Controllers
             string fhasta = (Request.HttpMethod == "POST" ? Request.Params["fhasta"].ToString() : DateTime.Now.ToString("dd/MM/yyyy"));
             string noDocCli = (Request.HttpMethod == "POST" ? Request.Params["noDocCli"].ToString() : null);
             string noDoc = (Request.HttpMethod == "POST" ? Request.Params["noDoc"].ToString() : null);
-
-            ViewBag._fdesde = fdesde;
-            ViewBag._fhasta = fhasta;
-            ViewBag._noDocCli = noDocCli;
-            ViewBag._noDoc = noDoc;
-
-            List<ChatShop> listPed = new List<ChatShop>();
-
-            listPed = selectVentas(Convert.ToDateTime(fdesde), Convert.ToDateTime(fhasta), noDocCli, noDoc);
-            /*Parametros para el reporte*/
-
-            if (Request.HttpMethod == "POST")
-            {
-                this.HttpContext.Session["rptSource"] = listPed;
-                this.HttpContext.Session["pDesde"] = fdesde;
-                this.HttpContext.Session["pHasta"] = fhasta;
-
-            }
+            string CodTda = "";
 
             Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
 
             string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
             string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
             string return_view = actionName + "|" + controllerName;
+
             if (_usuario == null)
             {
                 return RedirectToAction("Login", "Control", new { returnUrl = return_view });
             }
             else
             {
+                ViewBag._fdesde = fdesde;
+                ViewBag._fhasta = fhasta;
+                ViewBag._noDocCli = noDocCli;
+                ViewBag._noDoc = noDoc;
+
+                List<ChatShop> listPed = new List<ChatShop>();
+
+                if (Session["Tienda"] != null)
+                {
+                    CodTda = Session["Tienda"].ToString();
+                }
+
+                listPed = selectVentas(Convert.ToDateTime(fdesde), Convert.ToDateTime(fhasta), noDocCli, noDoc, CodTda);
                 return View(listPed);
+
             }
+
         }
 
-        private List<ChatShop> selectVentas(DateTime fdesde, DateTime fhasta, string noDocCli, string noDoc)
+        private List<ChatShop> selectVentas(DateTime fdesde, DateTime fhasta, string noDocCli, string noDoc, string CodTda)
         {
             List<ChatShop> ventas = new List<ChatShop>();
             Dat_ChatShop datos = new Dat_ChatShop();
 
             string _tienda = (Session["Tienda"] == null) ? "" : Session["Tienda"].ToString();
 
-            List<Ent_ChatShop> ent_ventas = datos.get_VentasChatShop(fdesde, fhasta, noDocCli, noDoc);
+            List<Ent_ChatShop> ent_ventas = datos.get_VentasChatShop(fdesde, fhasta, noDocCli, noDoc, CodTda);
             if (ent_ventas != null)
             {
                 foreach (var item in ent_ventas)

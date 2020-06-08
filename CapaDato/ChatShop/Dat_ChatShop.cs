@@ -13,7 +13,7 @@ namespace CapaDato.ChatShop
 {
     public class Dat_ChatShop
     {
-        public List<Ent_ChatShop> get_VentasChatShop(DateTime fdesde, DateTime fhasta, string noDocCli, string noDoc)
+        public List<Ent_ChatShop> get_VentasChatShop(DateTime fdesde, DateTime fhasta, string noDocCli, string noDoc, string CodTda)
         {
             List<Ent_ChatShop> list = null;
             string sqlquery = "USP_CHATSHOP_LISTA_VENTAS_COURIER";
@@ -31,6 +31,7 @@ namespace CapaDato.ChatShop
                         cmd.Parameters.AddWithValue("@FECHA_FIN", fhasta.ToString("yyyyMMdd"));
                         cmd.Parameters.AddWithValue("@RUC", noDocCli);
                         cmd.Parameters.AddWithValue("@NRO_DOCUMENTO", noDoc);
+                        cmd.Parameters.AddWithValue("@COD_TIENDA", CodTda);
                         SqlDataReader dr = cmd.ExecuteReader();
                         if (dr.HasRows)
                         {
@@ -67,8 +68,6 @@ namespace CapaDato.ChatShop
             return list;
 
         }
-
-
         public Ent_ChatShop get_Ventas_por_ChatShop(string Tienda, string CodInterno)
         {
             Ent_ChatShop ven = null;
