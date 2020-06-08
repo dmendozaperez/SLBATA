@@ -53,6 +53,8 @@
     <Compile Include="BataClub\Ent_BataClub_Lista_Registro.cs" />
     <Compile Include="CanalVenta\Ent_Chaski.cs" />
     <Compile Include="CanalVenta\Ent_VentaCanal.cs" />
+    <Compile Include="ChatShop\Ent_ChatShop.cs" />
+    <Compile Include="ChatShop\Ent_Chazki.cs" />
     <Compile Include="Contabilidad\Ent_Contabilidad_EstadoDocumento.cs" />
     <Compile Include="Control\Ent_Aplicacion.cs" />
     <Compile Include="Control\Ent_Tienda.cs" />
