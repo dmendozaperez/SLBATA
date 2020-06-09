@@ -1,0 +1,407 @@
+﻿@using CapaEntidad.Util;
+@{AjaxOptions options = new AjaxOptions
+    {
+        HttpMethod = "GET",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "lista",
+        OnComplete = "waitingDialog.hide();",
+        OnBegin = "waitingDialog.show('Espere un momento por favor');",
+        OnFailure = "waitingDialog.hide();"
+    };
+}
+@model IEnumerable<CapaPresentacion.Models.ChatShop.ChatShop>
+@{
+    ViewBag.Title = "Consulta de Pedidos ChatShop";
+}
+
+<script src="~/Scripts/bootstrap-select.min.js"></script>
+<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+
+<script src="~/Scripts/BI.js"></script>
+<style>
+    iframe {
+        border: none;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        height: 800px;
+    }
+</style>
+
+@using (Html.BeginForm("ChatShop", "Consulta", FormMethod.Post, new { @id = "Formulario" }))
+{
+    @*@Html.Hidden("CodInterno", null, new { @id = "CodInterno" })
+        @Html.Hidden("IdTienda", null, new { @id = "IdTienda" })
+        @Html.Hidden("NroDocumento", null, new { @id = "NroDocumento" })
+        @Html.Hidden("Ubigeo", null, new { @id = "Ubigeo" })
+        @Html.Hidden("Ruc", null, new { @id = "Ruc" })
+        @Html.Hidden("Cliente", null, new { @id = "Cliente" })
+        @Html.Hidden("Telefono", null, new { @id = "Telefono" })
+        @Html.Hidden("Direccion", null, new { @id = "Direccion" })
+        @Html.Hidden("Referencia", null, new { @id = "Referencia" })*@
+
+    <div class="box box-body box-primary">
+        <div class="row">
+            <div class="col-md-12">
+                <button name="buscar" class="btn btn-primary" onclick="SetearParametros();" type="submit"><span class="glyphicon glyphicon-search"></span>&nbsp;Buscar</button>
+
+            </div>
+        </div>
+        <br />
+        <div class="row">
+
+            <div class="col-md-6">
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="fdesde">Desde:</label>
+                            <input type="text" name="fdesde" class="form-control datepicker" value="@ViewBag._fdesde" id="fdesde">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="fhasta">Hasta:</label>
+                            <input type="text" name="fhasta" class="form-control datepicker" value="@ViewBag._fhasta" id="fhasta">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group ">
+                    <label>Cliente:</label>
+                    <input type="text" placeholder="No. Documento : 12345678" name="noDocCli" id="noDocCli" class="form-control" value="@ViewBag._noDocCli" />
+
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label>No Documento:</label>
+                <input type="text" placeholder="Serie-Número:  B123-87654321" name="noDoc" id="noDoc" class="form-control" value="@ViewBag._noDoc" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <table id="example" class="table table-hover table-striped table-responsive dataTable">
+                    <thead>
+                        <tr style="background-color:#3d566e; color:#ecf0f1">
+                            <th>Documento</th>
+                            <th>Fecha</th>
+                            <th>Tienda</th>
+                            <th>Cliente</th>
+                            <th>DNI/RUC</th>
+                            <th>Dirección</th>
+                            <th>Referencia</th>
+                            <th>Cod.Interno</th>
+                            <th>Teléfono</th>
+                            <th>Tipo</th>
+                            <th>Importe</th>
+                            <th>Guia de Courier</th>
+                            <th>Estado</th>
+                            <th>Ubigeo</th>
+                            <th>Courier</th>
+                            <th>Guia</th>
+                        </tr>
+                    </thead>
+                    <tbody data-bind="foreach:">
+                        @foreach (var row in Model)
+                        {
+                            <tr>
+                                <td width="70px">@row.NroDocumento</td>
+                                <td>@row.Fecha</td>
+                                <td>@row.Tienda</td>
+                                <td>@row.Cliente</td>
+                                <td>@row.Ruc</td>
+                                <td>@row.Direccion</td>
+                                <td>@row.Referencia</td>
+                                <td>@row.CodInterno</td>
+                                <th>@row.Telefono</th>
+                                <td>@row.Tipo</td>
+                                <td>@row.Importe</td>
+                                <th>@row.CodSeguimiento</th>
+                                <th>@row.Estado</th>
+                                <th>@row.Ubigeo</th>
+                                <td width="70px" class="p-0">
+                                    <ul class="list-inline" style="margin-bottom: 0px;">
+                                        <li>
+                                            @*<i class="fa fa-truck" aria-hidden="true"></i>*@
+
+                                            <a class="btn btn-primary btn-sm" title="Llamar" onclick="EnviaCourier_2('@row.CodInterno','@row.Tienda','@row.NroDocumento','@row.CodSeguimiento','@row.Ubigeo','@row.Ruc','@row.Cliente','@row.Telefono','@row.Direccion','@row.Referencia');"><span class="fa fa-phone" aria-hidden="true"></span></a>
+
+                                        </li>
+                                    </ul>
+                                </td>
+                                <td width="70px" class="p-0">
+                                    <ul class="list-inline" style="margin-bottom: 0px;">
+                                        <li>
+                                            @*<i class="fa fa-truck" aria-hidden="true"></i>*@
+
+                                            <a class="btn btn-primary btn-sm" title="Descargar" onclick="ImprimirGuia('@row.CodSeguimiento','@row.Ubigeo','@row.Ruc','@row.Cliente','@row.Direccion','@row.Referencia');"><span class="fa fa-arrow-circle-down" aria-hidden="true"></span></a>
+
+                                        </li>
+                                    </ul>
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div id="ifrReporte" class="well" style="width: 100%; height: 800px;">
+                    <iframe id="load" src="" frameborder="0" marginheight="1" marginwidth="1" scrolling="auto" onload="javascript: waitingDialog.hide();"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div class="row">
+    <img id="itf" class="hidden" />
+</div>
+<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js"></script>
+<script src="@Url.Content("~/Scripts/JsBarcode.all.js")"></script>
+
+<script>
+
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "columnDefs": [
+                    {
+                        "targets": [2],
+                        "visible": false,
+                        "searchable": false
+                    },
+                    {
+                        "targets": [5],
+                        "visible": false,
+                        "searchable": false
+                    },
+                {
+                    "targets": [6],
+                    "visible": false,
+                    "searchable": false
+                },
+            {
+                "targets": [7],
+                "visible": false,
+                "searchable": false
+            },
+                   {
+                       "targets": [8],
+                       "visible": false,
+                       "searchable": false
+                   },
+            {
+                "targets": [13],
+                "visible": false,
+                "searchable": false
+            }
+
+            ]
+        });
+    });
+
+
+    $(document).ready(function () {
+        $('.dataTable').DataTable();
+
+
+        $('.datepicker').datepicker({
+            format: "dd/mm/yyyy",
+            startDate: "01/04/2019",
+            autoclose: true
+        });
+    });
+
+    function SetearParametros(e) {
+    }
+
+    @*function EnviaCourier(CodInterno, Tienda, NroDocumento, CodSeguimiento, Ubigeo, Ruc, Cliente, Telefono, Direccion, Referencia) {
+        //alert(CodInterno);
+        //alert(Ubigeo);
+        //alert(Ruc);
+        //alert(Telefono);
+        alert(CodSeguimiento);
+
+        if (CodSeguimiento == '') {
+            // Ejecuta el envío
+            //alert("Procesando.");
+            var form = $("#Formulario");
+            document.getElementById("CodInterno").value = CodInterno;
+            document.getElementById("IdTienda").value = Tienda;
+            document.getElementById("NroDocumento").value = NroDocumento;
+            document.getElementById("Ubigeo").value = Ubigeo;
+            document.getElementById("Ruc").value = Ruc;
+            document.getElementById("Cliente").value = Cliente;
+            document.getElementById("Telefono").value = Telefono;
+            document.getElementById("Direccion").value = Direccion;
+            document.getElementById("Referencia").value = Referencia;
+
+            form.attr("action", "@Url.Action("Envia_Courier", "Consulta")");
+            form.submit();
+        } else {
+            alert("El pedido ya ha sido enviado anteriormente.");
+
+            toastr.success("El pedido ya ha sido enviado anterirmente", "Error");
+            //MostrarListado();
+            waitingDialog.hide();
+        }
+
+    }*@
+
+    function EnviaCourier_2(CodInterno, Tienda, NroDocumento, CodSeguimiento, Ubigeo, Ruc, Cliente, Telefono, Direccion, Referencia) {
+
+        //alert(CodInterno);
+        //alert(CodSeguimiento);
+
+        if (CodSeguimiento == '') {
+            waitingDialog.show('Espere un momento por favor...');
+
+            var objGuiaError = {
+                CodInterno: CodInterno,
+                IdTienda: Tienda,
+                NroDocumento: NroDocumento,
+                CodSeguimiento: CodSeguimiento,
+                Ubigeo: Ubigeo,
+                Ruc: Ruc,
+                Cliente: Cliente,
+                Telefono: Telefono,
+                Direccion: Direccion,
+                Referencia: Referencia
+            }
+
+            $.ajax
+              ({
+                  url: '../Consulta/Envia_Courier',
+                  dataType: "json",
+                  type: "POST",
+                  data: objGuiaError,
+                  success: function (data, textStatus, XMLHttpRequest) {
+                      waitingDialog.hide();
+
+                      if ((data.Success).toString() == "true") {
+                          if (data.Message == "1") {
+                              toastr.success("Se realizó satisfactoriamente el llamado al courier", "Mensaje");
+
+                              waitingDialog.hide();
+                              location.reload(true);
+
+                          } else {
+                              toastr.success("No se realizó el llamado de courier", "Error");
+                              //MostrarListado();
+                              waitingDialog.hide();
+                          }
+
+                      } else {
+                          toastr.error("No se realizó el llamado de courier", "Error");
+                          waitingDialog.hide();
+                      }
+                  },
+                  error: function (xhr) {
+                      waitingDialog.hide();
+                      toastr.error(xhr, 'Error');
+                      waitingDialog.hide();
+                  }
+              })
+
+        } else {
+
+            toastr.error("El pedido ya ha sido enviado anteriormente", "Error");
+            waitingDialog.hide();
+        }
+    }
+    @*@row.NroDocumento','@row.CodSeguimiento','@row.Ubigeo','@row.Ruc','@row.Cliente','@row.Direccion','@row.Referencia'*@
+
+    function ImprimirGuia(CodSeguimiento, Ubigeo, Ruc, Cliente, Direccion, Referencia) {
+
+        //alert(CodSeguimiento);
+        //alert(Ubigeo);
+        //alert(Ruc);
+        //alert(Cliente);
+        //alert(Direccion);
+        //alert(Referencia);
+
+        if (CodSeguimiento != "") {
+            var guia = CodSeguimiento
+            var cliente = Cliente
+            var _direccion = Direccion
+            var _referencia = Referencia
+            var ubigeo = Ubigeo
+
+            /**/
+            JsBarcode("#itf", guia);
+            const img = document.querySelector('img#itf');
+            var doc = new jsPDF();
+            var fsT = 11;
+            var fsD = 12;
+
+            doc.setFont('courier');
+            doc.setFontType('bold');
+            doc.addImage(img.src, 'png', 67, 10, 0, 0);
+
+            doc.setFontSize(fsT);
+            doc.text(20, 60, 'Destinatario: ');
+            doc.setFontSize(fsD);
+            doc.text(55, 60, cliente);
+
+            doc.setFontSize(fsT);
+            doc.text(20, 70, 'Direccion: ');
+            doc.setFontSize(fsD);
+            var direccion = _direccion;
+            var lineaDireccion = doc.splitTextToSize(direccion, 150)
+            doc.text(55, 70, lineaDireccion);
+
+            doc.setFontSize(fsT);
+            doc.text(20, 85, 'Referencia: ');
+            doc.setFontSize(fsD);
+            var referencia = _referencia;
+            var lineaReferencia = doc.splitTextToSize(referencia, 150)
+            doc.text(55, 85, lineaReferencia);
+
+            doc.setFontSize(fsT);
+            doc.text(20, 100, 'Ubigeo: ');
+            doc.setFontSize(fsD);
+            doc.text(55, 100, ubigeo);
+            /****/
+            var mt2 = 150;
+
+            doc.addImage(img.src, 'png', 67, 10 + mt2, 0, 0);
+
+            doc.setFontSize(fsT);
+            doc.text(20, 60 + mt2, 'Destinatario: ');
+            doc.setFontSize(fsD);
+            doc.text(55, 60 + mt2, cliente);
+
+            doc.setFontSize(fsT);
+            doc.text(20, 70 + mt2, 'Direccion: ');
+            doc.setFontSize(fsD);
+            doc.text(55, 70 + mt2, lineaDireccion);
+
+            doc.setFontSize(fsT);
+            doc.text(20, 85 + mt2, 'Referencia: ');
+            doc.setFontSize(fsD);
+            doc.text(55, 85 + mt2, lineaReferencia);
+
+            doc.setFontSize(fsT);
+            doc.text(20, 100 + mt2, 'Ubigeo: ');
+            doc.setFontSize(fsD);
+            doc.text(55, 100 + mt2, ubigeo);
+
+            doc.save('GuiaCourier_' + guia + '.pdf');
+
+            toastr.success("Se generó satisfactoriamente la Guia de Courier", "Mensaje");
+            waitingDialog.hide();
+
+        } else {
+            toastr.error("Falta generar el código Guía de Courier , ", "Error");
+            waitingDialog.hide();
+        }
+    }
+</script>
