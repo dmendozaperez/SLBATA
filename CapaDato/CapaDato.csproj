@@ -67,6 +67,7 @@
     <Compile Include="BataClub\Dat_BataClub_Lista_Registro.cs" />
     <Compile Include="BataClub\Dat_BataClub_Tablet.cs" />
     <Compile Include="CanalVenta\Dat_CanalVenta.cs" />
+    <Compile Include="ChatShop\Dat_ChatShop.cs" />
     <Compile Include="Comunicado\Modulo.cs" />
     <Compile Include="Contabilidad\Dat_Contabilidad_EstadoDocumento.cs" />
     <Compile Include="Control\Dat_Aplicacion.cs" />

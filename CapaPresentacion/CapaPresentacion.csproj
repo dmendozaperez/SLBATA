@@ -57,10 +57,18 @@
       <HintPath>..\packages\ClosedXML.0.93.1\lib\net40\ClosedXML.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
-    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
-    <Reference Include="CrystalDecisions.Shared, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
-    <Reference Include="CrystalDecisions.Web, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.CrystalReports.Engine">
+      <HintPath>c:\program files (x86)\sap businessobjects\crystal reports for .net framework 4.0\common\sap businessobjects enterprise xi 4.0\win32_x86\dotnet\CrystalDecisions.CrystalReports.Engine.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportSource">
+      <HintPath>c:\program files (x86)\sap businessobjects\crystal reports for .net framework 4.0\common\sap businessobjects enterprise xi 4.0\win32_x86\dotnet\CrystalDecisions.ReportSource.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.Shared">
+      <HintPath>c:\program files (x86)\sap businessobjects\crystal reports for .net framework 4.0\common\sap businessobjects enterprise xi 4.0\win32_x86\dotnet\CrystalDecisions.Shared.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.Web">
+      <HintPath>c:\program files (x86)\sap businessobjects\crystal reports for .net framework 4.0\common\sap businessobjects enterprise xi 4.0\win32_x86\dotnet\CrystalDecisions.Web.dll</HintPath>
+    </Reference>
     <Reference Include="DevExpress.Charts.v15.1.Core, Version=15.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Dashboard.v15.1.Core, Version=15.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Dashboard.v15.1.Web, Version=15.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
@@ -168,9 +176,9 @@
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="NReco.PdfGenerator, Version=1.1.12.0, Culture=neutral, PublicKeyToken=231663d50a41b451, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\NReco.PdfGenerator.dll</HintPath>
+    <Reference Include="NReco.PdfGenerator, Version=1.1.15.0, Culture=neutral, PublicKeyToken=231663d50a41b451, processorArchitecture=MSIL">
+      <HintPath>..\packages\NReco.PdfGenerator.1.1.15\lib\net20\NReco.PdfGenerator.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
@@ -408,6 +416,8 @@
     </Compile>
     <Compile Include="Models\CanalVenta\CanalVenta.cs" />
     <Compile Include="Models\CanalVenta\Urbano.cs" />
+    <Compile Include="Models\ChatShop\ChatShop.cs" />
+    <Compile Include="Models\ChatShop\Chazki.cs" />
     <Compile Include="Models\Control\LoginViewModel.cs" />
     <Compile Include="Models\Crystal\Reporte\Models_Best_Seller.cs" />
     <Compile Include="Models\Crystal\Reporte\Models_EstadoStock.cs" />
@@ -1436,7 +1446,6 @@
     <Content Include="Scripts\toastr.min.js" />
     <Content Include="Scripts\waitingfor.js" />
     <Content Include="Scripts\_references.js" />
-    <None Include="Service References\BataClub\BataEcommerce.wsdl" />
     <None Include="Service References\BataClub\BataEcommerce.disco" />
     <Content Include="Service References\BataClub\CapaPresentacion.BataClub.Ent_Cliente_BataClub.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -1465,6 +1474,7 @@
     <Content Include="Service References\comercioxpress\CapaPresentacion.comercioxpress.response.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
+    <None Include="Service References\BataClub\BataEcommerce.wsdl" />
     <None Include="Service References\comercioxpress\configuration91.svcinfo" />
     <None Include="Service References\comercioxpress\configuration.svcinfo" />
     <None Include="Service References\comercioxpress\Reference.svcmap">
@@ -1721,7 +1731,6 @@
     <Content Include="Views\Inventario\MostrarResultados.cshtml" />
     <Content Include="Views\ComunicadoTDA\Index.cshtml" />
     <Content Include="Views\ComunicadoTDA\_comTable.cshtml" />
-    <None Include="Service References\SunatReniec\Sunat_Reniec_PE.wsdl" />
     <Content Include="Views\XstoreTda\ConfigConexion.cshtml" />
     <Content Include="Views\XstoreTda\_listaCajasXst.cshtml" />
     <Content Include="Views\BataClub\Cliente.cshtml" />
@@ -1770,6 +1779,8 @@
     <Content Include="Views\ECommerce\StockAlmacen.cshtml" />
     <Content Include="Views\ECommerce\ConsultaStockEcom.cshtml" />
     <Content Include="Views\Inventario\ReporteInventarioMovimiento.cshtml" />
+    <None Include="Service References\SunatReniec\Sunat_Reniec_PE.wsdl" />
+    <Content Include="Views\Consulta\ChatShop.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
