@@ -179,48 +179,82 @@
                    {
                        "render": function (data, type, full) {
                            var envio = "'" + full.cod_Entid + "','" + full.des_Entid + "'"
+                            
 
-                           if (full.bol_xstore == 'True') {
-                               return '<div> <a title="Xstore Activado"  onclick="PopupDesactivarTienda(' + envio + ')" target="_blank" class="btn btn-success btn-sm"> <span class="glyphicon glyphicon-off"></span></a></div>';
-                           } else {
-                               return '<div> <a title="Xstore Desactivo"  onclick="PopupActivarTienda(' + envio + ')" target="_blank" class="btn btn-default btn-sm"> <span class="glyphicon glyphicon-off"></span></a></div>';
+                           if (full.cod_Entid != 'EC') {                                                          
+                               if (full.bol_xstore == 'True') {
+                                   return '<div> <a title="Xstore Activado"  onclick="PopupDesactivarTienda(' + envio + ')" target="_blank" class="btn btn-success btn-sm"> <span class="glyphicon glyphicon-off"></span></a></div>';
+                               } else {
+                                   return '<div> <a title="Xstore Desactivo"  onclick="PopupActivarTienda(' + envio + ')" target="_blank" class="btn btn-default btn-sm"> <span class="glyphicon glyphicon-off"></span></a></div>';
+                               }
+                           }
+                           else
+                           {
+                               return '<div>  <label for="segape"></label></div>';
                            }
                        }
                    },
                    {
                        "render": function (data, type, full) {
-                           var envio = "'" + full.cod_Entid + "','" + full.des_Entid + "','" + full.direccion + "','" + full.cod_Jefe + "','" + full.consecionario + "','" + full.outlet + "'"
 
-                           return '<div> <a title="enviar Interface"  onclick="PopupInterfacexDefecto(' + envio + ')" target="_blank" class="btn btn-warning btn-sm"> <span class="glyphicon glyphicon-send"></span></a></div>';
+                           if (full.cod_Entid != 'EC') {
+                               var envio = "'" + full.cod_Entid + "','" + full.des_Entid + "','" + full.direccion + "','" + full.cod_Jefe + "','" + full.consecionario + "','" + full.outlet + "'"
+
+                               return '<div> <a title="enviar Interface"  onclick="PopupInterfacexDefecto(' + envio + ')" target="_blank" class="btn btn-warning btn-sm"> <span class="glyphicon glyphicon-send"></span></a></div>';
+                           }
+                           else {
+                               return '<div>  <label for="segape"></label></div>';
+                           }
+
+                           
                        }
                    },
                    {
                        "render": function (data, type, full) {
-                           var envio = "'" + full.cod_Entid + "','" + full.des_Entid + "','" + full.direccion + "','" + full.cod_Jefe + "','" + full.consecionario + "','" + full.outlet + "'"
+                           if (full.cod_Entid != 'EC') {
+                               var envio = "'" + full.cod_Entid + "','" + full.des_Entid + "','" + full.direccion + "','" + full.cod_Jefe + "','" + full.consecionario + "','" + full.outlet + "'"
 
-                           return '<div> <a title="Ver Detalle"  onclick="PopupDetalle(' + envio + ')" target="_blank" class="btn btn-primary btn-sm"> <span class="	glyphicon glyphicon-th-list"></span></a></div>';
+                               return '<div> <a title="Ver Detalle"  onclick="PopupDetalle(' + envio + ')" target="_blank" class="btn btn-primary btn-sm"> <span class="	glyphicon glyphicon-th-list"></span></a></div>';
+                           }
+                           else {
+                               return '<div>  <label for="segape"></label></div>';
+                           }
                        }
                    },
                     {
                         "render": function (data, type, full) {
-                            var envio = "'" + full.cod_Entid + "','" + full.des_Entid + "'";
 
-                            if (full.bol_xstore == 'True') {
-                                return '<div> <a title="XCenter Detalle"  onclick="PopupDetalleXcenter(' + envio + ')" target="_blank" class="btn btn-danger btn-sm"> <span class="glyphicon glyphicon-briefcase"></span></a></div>';
-                            } else {
-                                return '<div> <a title="XCenter Detalle"  class="btn btn-default btn-sm"> <span class="glyphicon glyphicon-list-alt"></span></a></div>';
+                            if (full.cod_Entid != 'EC') {
+
+                                var envio = "'" + full.cod_Entid + "','" + full.des_Entid + "'";
+
+                                if (full.bol_xstore == 'True') {
+                                    return '<div> <a title="XCenter Detalle"  onclick="PopupDetalleXcenter(' + envio + ')" target="_blank" class="btn btn-danger btn-sm"> <span class="glyphicon glyphicon-briefcase"></span></a></div>';
+                                } else {
+                                    return '<div> <a title="XCenter Detalle"  class="btn btn-default btn-sm"> <span class="glyphicon glyphicon-list-alt"></span></a></div>';
+                                }
+                            }
+                            else {
+                                return '<div>  <label for="segape"></label></div>';
                             }
                         }
                     },
                     {
                         "render": function (data, type, full) {
+
+                            if (full.cod_Entid != 'EC') {
+
                                 var envio = "'" + full.cod_Entid + "','" + full.des_Entid + "'"
 
-                            if (full.bol_gcorrelativo == '1') {
+                                if (full.bol_gcorrelativo == '1') {
 
-                                return '<div> <a title="Correlativos ya generados" target="_blank" class="btn btn-default btn-sm"> <span class="fa fa-cogs"></span></a></div>';
-                            } else {
-                                return '<div> <a title="Generar correlativos"  onclick="PopupGenerarCorrelativo(' + envio + ')" target="_blank" class="btn btn-primary btn-sm"> <span class="fa fa-cogs"></span></a></div>';
+                                    return '<div> <a title="Correlativos ya generados" target="_blank" class="btn btn-default btn-sm"> <span class="fa fa-cogs"></span></a></div>';
+                                } else {
+                                    return '<div> <a title="Generar correlativos"  onclick="PopupGenerarCorrelativo(' + envio + ')" target="_blank" class="btn btn-primary btn-sm"> <span class="fa fa-cogs"></span></a></div>';
+                                }
+                            }
+                            else {
+                                return '<div>  <label for="segape"></label></div>';
                             }
                         }
                     },
@@ -241,14 +275,21 @@
                    },
                    {
                        "render": function (data, type, full) {
-                           var envio = "'" + full.cod_Entid + "','" + full.des_Entid + "','" + full.direccion + "','" + full.cod_Jefe + "','" + full.consecionario + "'"
+
+                           if (full.cod_Entid != 'EC') {
+
+                               var envio = "'" + full.cod_Entid + "','" + full.des_Entid + "','" + full.direccion + "','" + full.cod_Jefe + "','" + full.consecionario + "'"
 
 
-                           if (full.bol_xstore == 'True') {
-                               return '<div> <a title="enviar stock"  onclick="PopupGenerarStock(' + envio + ')" target="_blank" class="btn btn-info btn-sm"> <span class="glyphicon glyphicon-barcode"></span></a></div>';
+                               if (full.bol_xstore == 'True') {
+                                   return '<div> <a title="enviar stock"  onclick="PopupGenerarStock(' + envio + ')" target="_blank" class="btn btn-info btn-sm"> <span class="glyphicon glyphicon-barcode"></span></a></div>';
 
-                           } else {
-                               return '<div> <a title="Debe activar la tienda"  target="_blank" class="btn btn-default btn-sm"> <span class="glyphicon glyphicon-barcode"></span></a></div>';
+                               } else {
+                                   return '<div> <a title="Debe activar la tienda"  target="_blank" class="btn btn-default btn-sm"> <span class="glyphicon glyphicon-barcode"></span></a></div>';
+                               }
+                           }
+                           else {
+                               return '<div>  <label for="segape"></label></div>';
                            }
                        }
                    }
@@ -387,7 +428,7 @@
                     },
                      {
                          "render": function (data, type, full) {
-                             var envio = "'" + full.cod_Entid + "','" + full.des_Entid + "','" + full.direccion + "','" + full.cod_Jefe + "','" + full.consecionario + "'"
+                             var envio = "/'" + full.cod_Entid + "'/,'" + full.des_Entid + "','" + full.direccion + "','" + full.cod_Jefe + "','" + full.consecionario + "'"
 
 
                              if (full.bol_xstore == 'True') {
