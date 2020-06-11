@@ -118,19 +118,35 @@
                 </div>
             </div>
             @*sostic 06/2019*@
-            <div class="col-sm-3">
+            @*<div class="col-sm-3">
                 <label for="">Multicanalidad</label>
                 <div class="form-group">
                     <input type="checkbox" value="1" name="multicanalidad" id="multicanalidad" />
                 </div>
+            </div>*@
+            <div class="col-md-7" style="padding-left: 25px;">
+                <div id="prm" class="col-sm-5" disabled>
+                    <label for="segape" style="color: #3d566e;">Tipo de Canal</label>
+                    <div class="form-group">
+                        <label class="radio-inline"><input type="radio" name="opt" id="opttodos" checked>Todos</label>
+                        <label class="radio-inline"><input type="radio" name="opt" id="optmulti">Multicanalidad</label>
+                        <label class="radio-inline"><input type="radio" name="opt" id="optchat">ChatShop</label>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <label></label><br />
+                    <button type="submit" title="Consultar" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </button>
+                </div>
             </div>
             @*sostic 06/2019*@
-            <div class="col-sm-2">
+            @*<div class="col-sm-2">
                 <label></label><br />
                 <button  type="submit" title="Consultar" class="btn btn-primary">
                     <span class="glyphicon glyphicon-search"></span>
                 </button>
-            </div>
+            </div>*@
         </div>
 }
   
@@ -403,10 +419,19 @@
         codcadena = codcadena.toString();
 
         /*sostic 06/2019*/
-        var multicanalidad = 0;
-        if ($('#multicanalidad').is(":checked")) {
-            multicanalidad = 1;
-        }
+        var tipocanal = '0';
+
+        if (document.getElementById('opttodos').checked) tipocanal = '0'
+        if (document.getElementById('optmulti').checked) tipocanal = '1'
+        if (document.getElementById('optchat').checked) tipocanal = '2'
+
+
+        //if ($('#multicanalidad').is(":checked")) {
+        //    multicanalidad = 1;
+        //}
+
+
+
         /*sostic 06/2019*/
 
         codArticulo = codArticulo.replace(/^\s+|\s+$/g, "")
@@ -431,7 +456,7 @@
             type: "GET",
             url: ControllerUrl,
             contentType: "application/json; charset=utf-8",
-            data: { codArticulo: codArticulo, CodDpto: CodDepartamento, CodPrv: Codprovincia, CodDist: CodDistrito, codTalla: codtalla, coddist_b: coddist_b,/*sostic 06/2019*/ multicanalidad: multicanalidad, cadena: codcadena, vta_acum: vta_acum },
+            data: { codArticulo: codArticulo, CodDpto: CodDepartamento, CodPrv: Codprovincia, CodDist: CodDistrito, codTalla: codtalla, coddist_b: coddist_b,/*sostic 06/2019*/ tipocanal: tipocanal, cadena: codcadena, vta_acum: vta_acum },
             datatype: "json",
             cache: true,
             success: function (data) {

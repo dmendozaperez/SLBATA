@@ -287,7 +287,7 @@ namespace CapaDato.ReportsValeCompra
         }
 
         public string listarStr_ArticuloStock(string Cod_Articulo, string Cod_Dpto, string Cod_Prv, string Cod_Dist, 
-                                              string codTalla,String coddist_b,string cod_tda,/*sostic 06/2019*/ string multicanalidad,string cadena,string vta_acum)
+                                              string codTalla,String coddist_b,string cod_tda,/*sostic 06/2019*/ string tipocanal, string cadena,string vta_acum)
         {
             string strJson = "";
             try
@@ -334,9 +334,9 @@ namespace CapaDato.ReportsValeCompra
                 ocod_acum.Value = vta_acum;
 
                 /*sostic 06/2019*/
-                SqlParameter omulticanalidad = oComando.Parameters.Add("@multicanalidad", SqlDbType.Bit);
+                SqlParameter omulticanalidad = oComando.Parameters.Add("@tipocanal", SqlDbType.VarChar);
                 omulticanalidad.Direction = ParameterDirection.Input;
-                omulticanalidad.Value = Convert.ToInt16(multicanalidad);// ( == null ? 0 :1);
+                omulticanalidad.Value = tipocanal;// ( == null ? 0 :1);
                                                                         /*sostic 06/2019*/
 
 
