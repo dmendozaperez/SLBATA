@@ -93,7 +93,7 @@ namespace CapaDato.ChatShop
                             //DataTable dtC = ds.Tables[0];
                             DataTable dtD = ds.Tables[0]; //data articulos
                             DataTable dtIC = ds.Tables[1]; //data chaski
-                            //DataTable dtID = ds.Tables[2]; //data direccion cliente
+                            DataTable dtID = ds.Tables[2]; //data direccion cliente
                             ven = new Ent_ChatShop();
                             /*ARTICULOS*/
                             List<Ent_DetallesVentaCanal_2> listVenD = new List<Ent_DetallesVentaCanal_2>();
@@ -131,19 +131,21 @@ namespace CapaDato.ChatShop
                                 ven.informacionTiendaEnvio = ic;
                             }
                             /*CLENTE DESTINO*/
-                            //if (dtID.Rows.Count > 0) //des
-                            //{
-                            //    Ent_Informacion_Tienda_Destinatario_2 id = new Ent_Informacion_Tienda_Destinatario_2();
-                            //    id.id = Convert.ToInt32(dtID.Rows[0]["id"]);
-                            //    id.nroDocumento = dtID.Rows[0]["nroDocumento"].ToString();
-                            //    id.email = dtID.Rows[0]["email"].ToString();
-                            //    id.referencia = dtID.Rows[0]["referencia"].ToString();
-                            //    id.telefono = dtID.Rows[0]["telefono"].ToString();
-                            //    id.direccion_entrega = dtID.Rows[0]["direccion_entrega"].ToString();
-                            //    id.cod_entid = dtID.Rows[0]["cod_entid"].ToString();
+                            if (dtID.Rows.Count > 0) //des
+                            {
+                                Ent_Informacion_Tienda_Destinatario_2 id = new Ent_Informacion_Tienda_Destinatario_2();
+                              
+                                //id.id = Convert.ToInt32(dtID.Rows[0]["id"]);
+                                //id.nroDocumento = dtID.Rows[0]["nroDocumento"].ToString();
+                                //id.email = dtID.Rows[0]["email"].ToString();
+                                id.referencia = dtID.Rows[0]["FC_REFERE"].ToString();
+                                id.telefono = dtID.Rows[0]["fc_lcon"].ToString();
+                                id.direccion_entrega = dtID.Rows[0]["FC_DCLI"].ToString();
+                                id.cod_entid = dtID.Rows[0]["COD_ENTID"].ToString();
+                                id.ubigeo = dtID.Rows[0]["FC_UBI"].ToString();
 
-                            //    ven.informacionTiendaDestinatario = id;
-                            //}
+                                ven.informacionTiendaDestinatario = id;
+                            }
 
                             //ven.historialEstados = listHist;
                         }

@@ -431,7 +431,7 @@ namespace CapaPresentacion.Controllers
             return ventas;
         }
 
-        public ActionResult Envia_Courier(string IdTienda, string CodInterno, string NroDocumento, string Ubigeo, string Ruc, string Cliente, string Telefono, string Direccion, string Referencia)
+        public ActionResult Envia_Courier(string IdTienda, string CodInterno, string NroDocumento,string Ruc, string Cliente)
         {
             /*delivery CHASKI*/
 
@@ -444,29 +444,16 @@ namespace CapaPresentacion.Controllers
 
 
             string[] desUbigeo = null;
-            desUbigeo = datos2.get_des_ubigeo(Ubigeo);
+            desUbigeo = datos2.get_des_ubigeo(cvCzk.informacionTiendaDestinatario.ubigeo);
 
 
             if (cvCzk.informacionTiendaEnvio != null)
             {
                 /* DATA CHASKI : PRODUCCION*/
 
-                Ent_Chazki chazki = new Ent_Chazki();
-                chazki.storeId = cvCzk.informacionTiendaEnvio.chaski_storeId; // "10411"; // proporcionado por chazki
-                chazki.branchId = cvCzk.informacionTiendaEnvio.chaski_branchId; // proporcionado por chazki
-                chazki.deliveryTrackCode = NroDocumento;
-                chazki.proofPayment = "Ninguna"; // por definir la evindencia que será entregada al cliente
-                chazki.deliveryCost = 0;
-                chazki.mode = "Regular"; //pendiente definir el modo con el que se va a trabajar el canal de venta.
-                chazki.time = "";
-                chazki.paymentMethod = "Pagado";
-                chazki.country = "PE";
-
-                /* DATA CHASKI : TEST*/
-
                 //Ent_Chazki chazki = new Ent_Chazki();
-                //chazki.storeId = "10411";
-                //chazki.branchId = "CCSC-B187";
+                //chazki.storeId = cvCzk.informacionTiendaEnvio.chaski_storeId; // "10411"; // proporcionado por chazki
+                //chazki.branchId = cvCzk.informacionTiendaEnvio.chaski_branchId; // proporcionado por chazki
                 //chazki.deliveryTrackCode = NroDocumento;
                 //chazki.proofPayment = "Ninguna"; // por definir la evindencia que será entregada al cliente
                 //chazki.deliveryCost = 0;
@@ -474,6 +461,19 @@ namespace CapaPresentacion.Controllers
                 //chazki.time = "";
                 //chazki.paymentMethod = "Pagado";
                 //chazki.country = "PE";
+
+                /* DATA CHASKI : TEST*/
+
+                Ent_Chazki chazki = new Ent_Chazki();
+                chazki.storeId = "10411";
+                chazki.branchId = "CCSC-B187";
+                chazki.deliveryTrackCode = NroDocumento;
+                chazki.proofPayment = "Ninguna"; // por definir la evindencia que será entregada al cliente
+                chazki.deliveryCost = 0;
+                chazki.mode = "Regular"; //pendiente definir el modo con el que se va a trabajar el canal de venta.
+                chazki.time = "";
+                chazki.paymentMethod = "Pagado";
+                chazki.country = "PE";
 
 
                 /* DATA ARTICULO*/
@@ -501,7 +501,7 @@ namespace CapaPresentacion.Controllers
                 chazki.lastName = "";
                 chazki.email = "servicio.clientes.peru@bata.com";
 
-                chazki.phone = Telefono;
+                chazki.phone = cvCzk.informacionTiendaDestinatario.telefono;
                 int CadRuc = Ruc.Length;
 
                 if (CadRuc > 8)
@@ -523,8 +523,8 @@ namespace CapaPresentacion.Controllers
                 addressClient.nivel_2 = desUbigeo[0]; //(cvCzk.tipo == "3" ? (cvCzk.ubigeoCliente.ToString() == "" ? cvCzk.ubigeoTienda.Substring(0, 2) : cvCzk.ubigeoCliente.Substring(0, 2)) : cvCzk.ubigeoTienda.Substring(0, 2));
                 addressClient.nivel_3 = desUbigeo[1]; //(cvCzk.tipo == "3" ? (cvCzk.ubigeoCliente.ToString() == "" ? cvCzk.ubigeoTienda.Substring(2, 2) : cvCzk.ubigeoCliente.Substring(2, 2)) : cvCzk.ubigeoTienda.Substring(2, 2));
                 addressClient.nivel_4 = desUbigeo[2]; //(cvCzk.tipo == "3" ? (cvCzk.ubigeoCliente.ToString() == "" ? cvCzk.ubigeoTienda.Substring(4) : cvCzk.ubigeoCliente.Substring(4)) : cvCzk.ubigeoTienda.Substring(4));
-                addressClient.name = Direccion;
-                addressClient.reference = Referencia;
+                addressClient.name = cvCzk.informacionTiendaDestinatario.direccion_entrega;
+                addressClient.reference = cvCzk.informacionTiendaDestinatario.referencia;
                 addressClient.alias = "No Alias";
                 Ent_Position_2 position = new Ent_Position_2();
                 position.latitude = 0;
@@ -539,15 +539,15 @@ namespace CapaPresentacion.Controllers
                 Response_Registro rpta = new Response_Registro();
                 using (var http = new HttpClient())
                 {
-                    http.DefaultRequestHeaders.Add("chazki-api-key", cvCzk.informacionTiendaEnvio.chaski_api_key); //PRODUCCION
-                    //http.DefaultRequestHeaders.Add("chazki-api-key", "KfXfqgEBhfMK4T8Luw8ba91RynMtjzTY"); //TEST
+                    //http.DefaultRequestHeaders.Add("chazki-api-key", cvCzk.informacionTiendaEnvio.chaski_api_key); //PRODUCCION
+                    http.DefaultRequestHeaders.Add("chazki-api-key", "KfXfqgEBhfMK4T8Luw8ba91RynMtjzTY"); //TEST
 
                     HttpContent content = new StringContent(jsonChazki);
                     content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-                    var request = http.PostAsync("https://integracion.chazki.com:8443/chazkiServices/delivery/create/deliveryService", content); //PRODUCCION
+                    //var request = http.PostAsync("https://integracion.chazki.com:8443/chazkiServices/delivery/create/deliveryService", content); //PRODUCCION
 
-                    //var request = http.PostAsync("https://sandboxintegracion.chazki.com:8443/chazkiServices/delivery/create/deliveryService", content); //TEST
+                    var request = http.PostAsync("https://sandboxintegracion.chazki.com:8443/chazkiServices/delivery/create/deliveryService", content); //TEST
 
                     var response = request.Result.Content.ReadAsStringAsync().Result;
                     rpta = JsonConvert.DeserializeObject<Response_Registro>(response);
@@ -654,11 +654,51 @@ namespace CapaPresentacion.Controllers
                     _id.telefono = ent_ventas.informacionTiendaDestinatario.telefono;
                     _id.direccion_entrega = ent_ventas.informacionTiendaDestinatario.direccion_entrega;
                     _id.cod_entid = ent_ventas.informacionTiendaDestinatario.cod_entid;
+                    _id.ubigeo = ent_ventas.informacionTiendaDestinatario.ubigeo;
                 }
                 _cnvta.informacionTiendaDestinatario = _id;
             }
             return ventas;
         }
+
+
+        [HttpPost]
+        public ActionResult ImprimirCodigo(string Cliente, string Tienda, string CodInterno, string CodSeguimiento)
+        {
+            try
+            {
+                List<GuiaElectronica> _ge = new List<GuiaElectronica>();
+                GuiaElectronica ge = new GuiaElectronica();
+
+                //CanalVenta _cv = selectVenta(serie_numero, cod_entid, fc_nint);
+                //ge.guia = _cv.guia_electronica;
+                //ge.cliente = (_cv.tipo == "3" ? _cv.cliente : _cv.tiendaOrigen);
+                //ge.direccion = (_cv.tipo == "3" ? _cv.direccionCliente : _cv.direccionA);
+                //ge.referencia = (_cv.tipo == "3" ? _cv.referenciaCliente : "Sin Referencia");
+                //ge.ubigeo = (_cv.tipo == "3" ? _cv.ubigeoCliente : _cv.ubigeoTienda);
+                //_ge.Add(ge);
+
+
+                ChatShop cvCzk = selectVenta(Tienda, CodInterno);
+
+                ge.guia = CodSeguimiento;
+                ge.cliente = Cliente;
+                ge.direccion = cvCzk.informacionTiendaDestinatario.direccion_entrega;
+                ge.referencia = cvCzk.informacionTiendaDestinatario.referencia;
+                ge.ubigeo = cvCzk.informacionTiendaDestinatario.ubigeo;
+                ge.telefono = cvCzk.informacionTiendaDestinatario.telefono;
+                _ge.Add(ge);
+               
+                return Json(new { estado = 1, guia = CodSeguimiento, cliente = Cliente, direccion = ge.direccion, referencia = ge.referencia, ubigeo = ge.ubigeo ,telefono = ge.telefono });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { estado = 0 });
+            }
+        }
+
+
+
 
     }
 

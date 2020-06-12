@@ -64,6 +64,9 @@ namespace CapaEntidad.ChatShop
         public string telefono { get; set; }
         public string email { get; set; }
         public string nroDocumento { get; set; }
+        public string ubigeo { get; set; }
+
+
 
     }
 }

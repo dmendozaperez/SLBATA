@@ -10,6 +10,9 @@
     };
 }
 @model IEnumerable<CapaPresentacion.Models.ChatShop.ChatShop>
+@*@model CapaPresentacion.Models.ChatShop.ChatShop*@
+
+
 @{
     ViewBag.Title = "Consulta de Pedidos ChatShop";
 }
@@ -33,10 +36,10 @@
 
 @using (Html.BeginForm("ChatShop", "Consulta", FormMethod.Post, new { @id = "Formulario" }))
 {
-    @*@Html.Hidden("CodInterno", null, new { @id = "CodInterno" })
-        @Html.Hidden("IdTienda", null, new { @id = "IdTienda" })
-        @Html.Hidden("NroDocumento", null, new { @id = "NroDocumento" })
-        @Html.Hidden("Ubigeo", null, new { @id = "Ubigeo" })
+    @Html.Hidden("CodInterno", null, new { @id = "fc_nint" })
+    @Html.Hidden("IdTienda", null, new { @id = "cod_entid" })
+    @Html.Hidden("NroDocumento", null, new { @id = "serie_numero" })
+    @*@Html.Hidden("Ubigeo", null, new { @id = "Ubigeo" })
         @Html.Hidden("Ruc", null, new { @id = "Ruc" })
         @Html.Hidden("Cliente", null, new { @id = "Cliente" })
         @Html.Hidden("Telefono", null, new { @id = "Telefono" })
@@ -94,17 +97,17 @@
                             <th>Documento</th>
                             <th>Fecha</th>
                             <th>Tienda</th>
+                            <th>Cod.Interno</th>
                             <th>Cliente</th>
                             <th>DNI/RUC</th>
-                            <th>Dirección</th>
-                            <th>Referencia</th>
-                            <th>Cod.Interno</th>
-                            <th>Teléfono</th>
+                            @*<th>Dirección</th>
+                                <th>Referencia</th>*@
+                            @*<th>Teléfono</th>*@
                             <th>Tipo</th>
                             <th>Importe</th>
                             <th>Guia de Courier</th>
                             <th>Estado</th>
-                            <th>Ubigeo</th>
+                            @*<th>Ubigeo</th>*@
                             <th>Courier</th>
                             <th>Guia</th>
                         </tr>
@@ -116,23 +119,23 @@
                                 <td width="70px">@row.NroDocumento</td>
                                 <td>@row.Fecha</td>
                                 <td>@row.Tienda</td>
+                                <td>@row.CodInterno</td>
                                 <td>@row.Cliente</td>
                                 <td>@row.Ruc</td>
-                                <td>@row.Direccion</td>
-                                <td>@row.Referencia</td>
-                                <td>@row.CodInterno</td>
-                                <th>@row.Telefono</th>
+                                @*<td>@row.Direccion</td>
+                                    <td>@row.Referencia</td>*@
+                                @*<th>@row.Telefono</th>*@
                                 <td>@row.Tipo</td>
                                 <td>@row.Importe</td>
                                 <th>@row.CodSeguimiento</th>
                                 <th>@row.Estado</th>
-                                <th>@row.Ubigeo</th>
+                                @*<th>@row.Ubigeo</th>*@
                                 <td width="70px" class="p-0">
                                     <ul class="list-inline" style="margin-bottom: 0px;">
                                         <li>
                                             @*<i class="fa fa-truck" aria-hidden="true"></i>*@
 
-                                            <a class="btn btn-primary btn-sm" title="Llamar" onclick="EnviaCourier_2('@row.CodInterno','@row.Tienda','@row.NroDocumento','@row.CodSeguimiento','@row.Ubigeo','@row.Ruc','@row.Cliente','@row.Telefono','@row.Direccion','@row.Referencia');"><span class="fa fa-phone" aria-hidden="true"></span></a>
+                                            <a class="btn btn-primary btn-sm" title="Llamar" onclick="EnviaCourier_2('@row.CodInterno','@row.Tienda','@row.NroDocumento','@row.CodSeguimiento','@row.Ruc','@row.Cliente');"><span class="fa fa-phone" aria-hidden="true"></span></a>
 
                                         </li>
                                     </ul>
@@ -142,7 +145,7 @@
                                         <li>
                                             @*<i class="fa fa-truck" aria-hidden="true"></i>*@
 
-                                            <a class="btn btn-primary btn-sm" title="Descargar" onclick="ImprimirGuia('@row.CodSeguimiento','@row.Ubigeo','@row.Ruc','@row.Cliente','@row.Direccion','@row.Referencia','@row.Telefono');"><span class="fa fa-arrow-circle-down" aria-hidden="true"></span></a>
+                                            <a class="btn btn-primary btn-sm" title="Descargar" id="guiaE" onclick="ImprimirGuia('@row.Cliente','@row.Tienda','@row.CodInterno','@row.NroDocumento','@row.CodSeguimiento');"><span class="fa fa-arrow-circle-down" aria-hidden="true"></span></a>
 
                                         </li>
                                     </ul>
@@ -170,6 +173,7 @@
 
 <script>
 
+
     $(document).ready(function () {
         $('#example').DataTable({
             "columnDefs": [
@@ -179,31 +183,10 @@
                         "searchable": false
                     },
                     {
-                        "targets": [5],
+                        "targets": [3],
                         "visible": false,
                         "searchable": false
-                    },
-                {
-                    "targets": [6],
-                    "visible": false,
-                    "searchable": false
-                },
-            {
-                "targets": [7],
-                "visible": false,
-                "searchable": false
-            },
-                   {
-                       "targets": [8],
-                       "visible": false,
-                       "searchable": false
-                   },
-            {
-                "targets": [13],
-                "visible": false,
-                "searchable": false
-            }
-
+                    }
             ]
         });
     });
@@ -256,7 +239,7 @@
 
     }*@
 
-    function EnviaCourier_2(CodInterno, Tienda, NroDocumento, CodSeguimiento, Ubigeo, Ruc, Cliente, Telefono, Direccion, Referencia) {
+    function EnviaCourier_2(CodInterno, Tienda, NroDocumento, CodSeguimiento, Ruc, Cliente) {
 
         //alert(CodInterno);
         //alert(CodSeguimiento);
@@ -269,12 +252,9 @@
                 IdTienda: Tienda,
                 NroDocumento: NroDocumento,
                 CodSeguimiento: CodSeguimiento,
-                Ubigeo: Ubigeo,
                 Ruc: Ruc,
                 Cliente: Cliente,
-                Telefono: Telefono,
-                Direccion: Direccion,
-                Referencia: Referencia
+
             }
 
             $.ajax
@@ -319,111 +299,135 @@
         }
     }
 
-    function ImprimirGuia(CodSeguimiento, Ubigeo, Ruc, Cliente, Direccion, Referencia,Telefono) {
+    function ImprimirGuia(Cliente, Tienda, CodInterno, NroDocumento, CodSeguimiento) {
 
-        //alert(CodSeguimiento);
-        //alert(Ubigeo);
-        //alert(Ruc);
         //alert(Cliente);
-        //alert(Direccion);
-        //alert(Referencia);
+        //alert(Tienda);
+        //alert(CodInterno);
+        //alert(NroDocumento);
 
         if (CodSeguimiento != "") {
-            var guia = CodSeguimiento
-            var cliente = Cliente
-            var _direccion = Direccion
-            var _referencia = Referencia
-            var ubigeo = Ubigeo
-            var _telefono = Telefono
-            var _empresa = "Bata Perú"
+            var _cliente = Cliente;
+            var _Tienda = Tienda
+            var _CodInterno = CodInterno
+            var _NroDocumento = NroDocumento
+            //var _referencia = Referencia
+            //var ubigeo = Ubigeo
+            //var _telefono = Telefono
+            //var _empresa = "Bata Perú"
 
-            /**/
-            JsBarcode("#itf", guia);
-            const img = document.querySelector('img#itf');
-            var doc = new jsPDF();
-            var fsT = 11;
-            var fsD = 12;
+            waitingDialog.show('Espere un momento por favor');
+            $.ajax({
+                type: "POST",                                              // tipo de request que estamos generando
+                url: '@Url.Action("ImprimirCodigo", "Consulta")',                    // URL al que vamos a hacer el pedido
+                data: { Cliente: _cliente, Tienda: _Tienda, CodInterno: _CodInterno, NroDocumento: _NroDocumento, CodSeguimiento: CodSeguimiento },    // data es un arreglo JSON que contiene los parámetros que
+                // van a ser recibidos por la función del servidor           // tipo de contenido
+                //dataType: "json",                                              // si es asincrónico o no
+                success: function (data) {
+                    validadoBataClub = true;
+                    waitingDialog.hide();
+                    if (data.estado == 1) {
+                        var guia = data.guia
+                        var cliente = data.cliente
+                        var _direccion = data.direccion
+                        var _referencia = data.referencia
+                        var ubigeo = data.ubigeo
+                        var _telefono = data.telefono
+                        var _empresa = "Bata Perú"
 
-            doc.setFont('courier');
-            doc.setFontType('bold');
-            doc.addImage(img.src, 'png', 67, 10, 0, 0);
+                        /**/
+                        JsBarcode("#itf", guia);
+                        const img = document.querySelector('img#itf');
+                        var doc = new jsPDF();
+                        var fsT = 11;
+                        var fsD = 12;
 
-            doc.setFontSize(fsT);
-            doc.text(20, 60, 'Destinatario: ');
-            doc.setFontSize(fsD);
-            doc.text(55, 60, cliente);
+                        doc.setFont('courier');
+                        doc.setFontType('bold');
+                        doc.addImage(img.src, 'png', 67, 10, 0, 0);
 
-            doc.setFontSize(fsT);
-            doc.text(20, 70, 'Direccion: ');
-            doc.setFontSize(fsD);
-            var direccion = _direccion;
-            var lineaDireccion = doc.splitTextToSize(direccion, 150)
-            doc.text(55, 70, lineaDireccion);
 
-            doc.setFontSize(fsT);
-            doc.text(20, 85, 'Referencia: ');
-            doc.setFontSize(fsD);
-            var referencia = _referencia;
-            var lineaReferencia = doc.splitTextToSize(referencia, 150)
-            doc.text(55, 85, lineaReferencia);
+                        doc.setFontSize(fsT);
+                        doc.text(20, 60, 'Destinatario: ');
+                        doc.setFontSize(fsD);
+                        doc.text(55, 60, cliente);
 
-            doc.setFontSize(fsT);
-            doc.text(20, 100, 'Ubigeo: ');
-            doc.setFontSize(fsD);
-            doc.text(55, 100, ubigeo);
+                        doc.setFontSize(fsT);
+                        doc.text(20, 70, 'Dirección: ');
+                        doc.setFontSize(fsD);
+                        var direccion = _direccion;
+                        var lineaDireccion = doc.splitTextToSize(direccion, 150)
+                        doc.text(55, 70, lineaDireccion);
 
-            doc.setFontSize(fsT);
-            doc.text(20, 115, 'Teléfono: ');
-            doc.setFontSize(fsD);
-            doc.text(55, 115, _telefono);
+                        doc.setFontSize(fsT);
+                        doc.text(20, 85, 'Referencia: ');
+                        doc.setFontSize(fsD);
+                        var referencia = _referencia;
+                        var lineaReferencia = doc.splitTextToSize(referencia, 150)
+                        doc.text(55, 85, lineaReferencia);
 
-            doc.setFontSize(fsT);
-            doc.text(20, 128, 'Remitente: ');
-            doc.setFontSize(fsD);
-            doc.text(55, 128, _empresa);
-            /****/
-            var mt2 = 150;
+                        doc.setFontSize(fsT);
+                        doc.text(20, 100, 'Ubigeo: ');
+                        doc.setFontSize(fsD);
+                        doc.text(55, 100, ubigeo);
 
-            doc.addImage(img.src, 'png', 67, 10 + mt2, 0, 0);
+                        doc.setFontSize(fsT);
+                        doc.text(20, 115, 'Teléfono: ');
+                        doc.setFontSize(fsD);
+                        doc.text(55, 115, _telefono);
 
-            doc.setFontSize(fsT);
-            doc.text(20, 60 + mt2, 'Destinatario: ');
-            doc.setFontSize(fsD);
-            doc.text(55, 60 + mt2, cliente);
+                        doc.setFontSize(fsT);
+                        doc.text(20, 128, 'Remitente: ');
+                        doc.setFontSize(fsD);
+                        doc.text(55, 128, _empresa);
+                        /****/
+                        var mt2 = 150;
 
-            doc.setFontSize(fsT);
-            doc.text(20, 70 + mt2, 'Direccion: ');
-            doc.setFontSize(fsD);
-            doc.text(55, 70 + mt2, lineaDireccion);
+                        doc.addImage(img.src, 'png', 67, 10 + mt2, 0, 0);
 
-            doc.setFontSize(fsT);
-            doc.text(20, 85 + mt2, 'Referencia: ');
-            doc.setFontSize(fsD);
-            doc.text(55, 85 + mt2, lineaReferencia);
+                        doc.setFontSize(fsT);
+                        doc.text(20, 60 + mt2, 'Destinatario: ');
+                        doc.setFontSize(fsD);
+                        doc.text(55, 60 + mt2, cliente);
 
-            doc.setFontSize(fsT);
-            doc.text(20, 100 + mt2, 'Ubigeo: ');
-            doc.setFontSize(fsD);
-            doc.text(55, 100 + mt2, ubigeo);
+                        doc.setFontSize(fsT);
+                        doc.text(20, 70 + mt2, 'Dirección: ');
+                        doc.setFontSize(fsD);
+                        doc.text(55, 70 + mt2, lineaDireccion);
 
-            doc.setFontSize(fsT);
-            doc.text(20, 115 + mt2, 'Telefono: ');
-            doc.setFontSize(fsD);
-            doc.text(55, 115 + mt2, _telefono);
+                        doc.setFontSize(fsT);
+                        doc.text(20, 85 + mt2, 'Referencia: ');
+                        doc.setFontSize(fsD);
+                        doc.text(55, 85 + mt2, lineaReferencia);
 
-            doc.setFontSize(fsT);
-            doc.text(20, 128 + mt2, 'Remitente: ');
-            doc.setFontSize(fsD);
-            doc.text(55, 128 + mt2, _empresa);
+                        doc.setFontSize(fsT);
+                        doc.text(20, 100 + mt2, 'Ubigeo: ');
+                        doc.setFontSize(fsD);
+                        doc.text(55, 100 + mt2, ubigeo);
 
-            doc.save('GuiaCourier_' + guia + '.pdf');
+                        doc.setFontSize(fsT);
+                        doc.text(20, 115 + mt2, 'Teléfono: ');
+                        doc.setFontSize(fsD);
+                        doc.text(55, 115 + mt2, _telefono);
 
-            toastr.success("Se generó satisfactoriamente la Guia de Courier", "Mensaje");
-            waitingDialog.hide();
+                        doc.setFontSize(fsT);
+                        doc.text(20, 128 + mt2, 'Remitente: ');
+                        doc.setFontSize(fsD);
+                        doc.text(55, 128 + mt2, _empresa);
 
-        } else {
-            toastr.error("Falta generar el código Guía de Courier", "Error");
-            waitingDialog.hide();
+                        doc.save('GuiaCourier_' + guia + '.pdf');
+
+                        toastr.success("Se generó satisfactoriamente la Guia de Courier", "Mensaje");
+                        waitingDialog.hide();
+
+                    } else {
+                        toastr.error("Falta generar el código Guía de Courier", "Error");
+                        waitingDialog.hide();
+                    }
+                }
+            })
         }
     }
+
 </script>
+

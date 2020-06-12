@@ -64,6 +64,7 @@ namespace CapaPresentacion.Models.ChatShop
         public string direccion { get; set; }
         public string referencia { get; set; }
         public string ubigeo { get; set; }
+        public string telefono { get; set; }
     }
     public class Informacion_Tienda_envio
     {
@@ -91,6 +92,7 @@ namespace CapaPresentacion.Models.ChatShop
         public string telefono { get; set; }
         public string email { get; set; }
         public string nroDocumento { get; set; }
+        public string ubigeo { get; set; }
 
     }
 
