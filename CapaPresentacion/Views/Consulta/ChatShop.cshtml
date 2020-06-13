@@ -10,18 +10,20 @@
     };
 }
 @model IEnumerable<CapaPresentacion.Models.ChatShop.ChatShop>
-@*@model CapaPresentacion.Models.ChatShop.ChatShop*@
-
 
 @{
     ViewBag.Title = "Consulta de Pedidos ChatShop";
 }
 
-<script src="~/Scripts/bootstrap-select.min.js"></script>
-<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+
+<link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js"></script>
+
 <script src="@Url.Content("~/Scripts/JsBarcode.all.js")"></script>
+
+<script src="~/Scripts/bootstrap-select.min.js"></script>
+<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
 
 <script src="~/Scripts/BI.js"></script>
 <style>
@@ -33,6 +35,7 @@
         height: 800px;
     }
 </style>
+
 
 @using (Html.BeginForm("ChatShop", "Consulta", FormMethod.Post, new { @id = "Formulario" }))
 {
@@ -50,7 +53,7 @@
         <div class="row">
             <div class="col-md-12">
                 <button name="buscar" class="btn btn-primary" onclick="SetearParametros();" type="submit"><span class="glyphicon glyphicon-search"></span>&nbsp;Buscar</button>
-
+                @*<button type="button" class="btn btn-info" onclick="javascript: MostrarReporte()"><span class="glyphicon glyphicon-th-list"></span>&nbsp;Ver Reporte</button>*@
             </div>
         </div>
         <br />
@@ -74,7 +77,6 @@
                 </div>
             </div>
 
-
         </div>
         <div class="row">
             <div class="col-md-4">
@@ -91,23 +93,19 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                <table id="example" class="table table-hover table-striped table-responsive dataTable">
+                <table class="table table-hover table-striped table-responsive dataTable">
                     <thead>
                         <tr style="background-color:#3d566e; color:#ecf0f1">
-                            <th>Documento</th>
+                            <th>Cod.Interno</th>
+                            <th>Boleta/Factura</th>
                             <th>Fecha</th>
                             <th>Tienda</th>
-                            <th>Cod.Interno</th>
                             <th>Cliente</th>
                             <th>DNI/RUC</th>
-                            @*<th>Dirección</th>
-                                <th>Referencia</th>*@
-                            @*<th>Teléfono</th>*@
                             <th>Tipo</th>
                             <th>Importe</th>
                             <th>Guia de Courier</th>
                             <th>Estado</th>
-                            @*<th>Ubigeo</th>*@
                             <th>Courier</th>
                             <th>Guia</th>
                         </tr>
@@ -116,80 +114,68 @@
                         @foreach (var row in Model)
                         {
                             <tr>
-                                <td width="70px">@row.NroDocumento</td>
+                                <td width="70px">@row.CodInterno</td>
+                                <td>@row.NroDocumento</td>
                                 <td>@row.Fecha</td>
                                 <td>@row.Tienda</td>
-                                <td>@row.CodInterno</td>
                                 <td>@row.Cliente</td>
                                 <td>@row.Ruc</td>
-                                @*<td>@row.Direccion</td>
-                                    <td>@row.Referencia</td>*@
-                                @*<th>@row.Telefono</th>*@
                                 <td>@row.Tipo</td>
                                 <td>@row.Importe</td>
-                                <th>@row.CodSeguimiento</th>
-                                <th>@row.Estado</th>
-                                @*<th>@row.Ubigeo</th>*@
+                                <td>@row.CodSeguimiento</td>
+                                <td>@row.Estado</td>
                                 <td width="70px" class="p-0">
                                     <ul class="list-inline" style="margin-bottom: 0px;">
                                         <li>
-                                            @*<i class="fa fa-truck" aria-hidden="true"></i>*@
-
                                             <a class="btn btn-primary btn-sm" title="Llamar" onclick="EnviaCourier_2('@row.CodInterno','@row.Tienda','@row.NroDocumento','@row.CodSeguimiento','@row.Ruc','@row.Cliente');"><span class="fa fa-phone" aria-hidden="true"></span></a>
-
                                         </li>
                                     </ul>
                                 </td>
+
                                 <td width="70px" class="p-0">
                                     <ul class="list-inline" style="margin-bottom: 0px;">
                                         <li>
-                                            @*<i class="fa fa-truck" aria-hidden="true"></i>*@
-
                                             <a class="btn btn-primary btn-sm" title="Descargar" id="guiaE" onclick="ImprimirGuia('@row.Cliente','@row.Tienda','@row.CodInterno','@row.NroDocumento','@row.CodSeguimiento');"><span class="fa fa-arrow-circle-down" aria-hidden="true"></span></a>
-
                                         </li>
                                     </ul>
                                 </td>
-
                             </tr>
                         }
                     </tbody>
                 </table>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div id="ifrReporte" class="well" style="width: 100%; height: 800px;">
-                    <iframe id="load" src="" frameborder="0" marginheight="1" marginwidth="1" scrolling="auto" onload="javascript: waitingDialog.hide();"></iframe>
+        @*<div class="row">
+                <div class="col-md-12">
+                    <div id="ifrReporte" class="well" style="width: 100%; height: 800px;">
+                        <iframe id="load" src="" frameborder="0" marginheight="1" marginwidth="1" scrolling="auto" onload="javascript: waitingDialog.hide();"></iframe>
+                    </div>
                 </div>
-            </div>
-        </div>
+            </div>*@
     </div>
 }
 <div class="row">
     <img id="itf" class="hidden" />
 </div>
 
-
 <script>
 
-
-    $(document).ready(function () {
-        $('#example').DataTable({
-            "columnDefs": [
-                    {
-                        "targets": [2],
-                        "visible": false,
-                        "searchable": false
-                    },
-                    {
-                        "targets": [3],
-                        "visible": false,
-                        "searchable": false
-                    }
-            ]
-        });
-    });
+    //$(document).ready(function () {
+    //    $('.dataTable').DataTable({
+    //        "columnDefs": [
+    //                //{
+    //                //    "targets": [2],
+    //                //    "visible": false,
+    //                //    "searchable": false
+    //                //},
+    //                {
+    //                    "targets": [3],
+    //                    "visible": false,
+    //                    "searchable": false
+    //                }
+    //        ]
+    //    });
+    //});
 
 
     $(document).ready(function () {
@@ -304,7 +290,7 @@
         //alert(Cliente);
         //alert(Tienda);
         //alert(CodInterno);
-        //alert(NroDocumento);
+        //alert(CodSeguimiento);
 
         if (CodSeguimiento != "") {
             var _cliente = Cliente;
@@ -430,4 +416,7 @@
     }
 
 </script>
+
+
+
 

@@ -93,7 +93,7 @@ namespace CapaDato.ChatShop
                             //DataTable dtC = ds.Tables[0];
                             DataTable dtD = ds.Tables[0]; //data articulos
                             DataTable dtIC = ds.Tables[1]; //data chaski
-                            DataTable dtID = ds.Tables[2]; //data direccion cliente
+                            DataTable dtID = ds.Tables[2]; //data direccion cliente 
                             ven = new Ent_ChatShop();
                             /*ARTICULOS*/
                             List<Ent_DetallesVentaCanal_2> listVenD = new List<Ent_DetallesVentaCanal_2>();
