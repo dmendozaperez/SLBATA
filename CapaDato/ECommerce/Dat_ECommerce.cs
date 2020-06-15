@@ -323,6 +323,86 @@ namespace CapaDato.ECommerce
             }
             return listar;
         }
+
+
+        //LISTA PEDIDOS PRESTASHOP
+
+        public List<Ent_Prestashop> get_Lista_Pedidos_Prestashop(DateTime Fecha_Ini, DateTime Fecha_Fin)
+        {
+            string sqlquery = "USP_GET_PEDIDOS_CARRITO";
+            DataTable dt = null;
+            List<Ent_Prestashop> listar = null;
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexionEcommerce))
+                {
+                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@FECHAINI", Fecha_Ini);
+                        cmd.Parameters.AddWithValue("@FECHAFIN", Fecha_Fin);
+                        cmd.Parameters.AddWithValue("@ESTADO", "TODO");
+                        //cmd.Parameters.AddWithValue("@estado", dwest);
+                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                        {
+                            dt = new DataTable();
+                            da.Fill(dt);
+                            listar = new List<Ent_Prestashop>();
+                            listar = (from DataRow dr in dt.Rows
+                                      select new Ent_Prestashop()
+                                      {
+                                          Id_Orden = dr["ID_ORDEN"].ToString(),
+                                          Fec_Pedido = dr["FECHA_PED"] == null || dr["FECHA_PED"].ToString() == "" ? "" : Convert.ToDateTime(dr["FECHA_PED"]).ToString("dd/MM/yyyy"),
+                                          Est_Sis_Fact = dr["ESTADO_SIST_FACT"].ToString(),
+                                          Presta_Estado = dr["PRESTA_ESTADO"] == null || dr["PRESTA_ESTADO"].ToString() == "" ? "" : (dr["PRESTA_ESTADO"]).ToString(),
+                                          Presta_Estado_Name = dr["PRESTA_ESTADO_NAME"].ToString(), 
+
+                                          Presta_FecIng = dr["PRESTA_FECING"] == null || dr["PRESTA_FECING"].ToString() == "" ? "" : Convert.ToDateTime(dr["PRESTA_FECING"]).ToString("dd/MM/yyyy"),
+                                          Fecha_Facturacion = dr["fecha_facturacion"] == null || dr["fecha_facturacion"].ToString() == "" ? "" : Convert.ToDateTime(dr["fecha_facturacion"]).ToString("dd/MM/yyyy"),
+
+                                          Comprobante = dr["comprobante"].ToString(),
+                                          Name_Carrier = dr["name_carrier"].ToString(),
+                                          Almacen = dr["almacen"].ToString(),
+                                          Ubigeo_Ent = dr["ubigeo_ent"].ToString(),
+                                          Ubicacion = dr["ubicacion"].ToString(),
+                                          Semana = dr["semana"].ToString(),
+                                          ArticuloId = dr["ARTICULOID"].ToString(),
+                                          Talla = dr["TALLA"].ToString(),
+                                          Cantidad = dr["CANTIDAD"].ToString(),
+                                          //String.Format("{0:0.00}", 123.4567m); 
+                                          Precio_Vta =  string.Format("{0:0.00}", dr["PrecioVta"]),
+                                          Precio_Original = string.Format("{0:0.00}", dr["PrecioOriginal"]),
+                                          Cod_Linea3 = dr["cod_line3"].ToString(),
+                                          Des_Linea3 = dr["des_line3"].ToString(),
+                                          Cod_Cate3 = dr["cod_cate3"].ToString(),
+                                          Des_Cate3 = dr["des_cate3"].ToString(),
+                                          Cod_Subc3 = dr["cod_subc3"].ToString(),
+                                          Des_Subc3 = dr["des_subc3"].ToString(),
+                                          Cod_Marc3 = dr["cod_marc3"].ToString(),
+                                          Des_Marca = dr["des_marca"].ToString(),
+                                          Precio_Planilla = string.Format("{0:0.00 }",dr["PrecioPlanilla"]),
+                                          Costo = string.Format("{0:0.00 }", dr["Costo"]),
+                                          CC = dr["C"].ToString(),
+                                          C5 = dr["5"].ToString(),
+                                          CB = dr["B"].ToString(),
+                                          CW = dr["W"].ToString(),
+                                          C1 = dr["1"].ToString(),
+
+                                      }).ToList();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                listar = null;
+            }
+            return listar;
+        }
+
+
+
     }
 
 }

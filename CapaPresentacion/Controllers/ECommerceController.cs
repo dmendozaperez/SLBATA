@@ -507,6 +507,7 @@ namespace CapaPresentacion.Controllers
         {
             return PartialView(get_Lista_Stock_Almacen(codAlmacen, numArticulo, desArticulo, talArticulo));
         }
+
         public List<Ent_Stock_Almacen> get_Lista_Stock_Almacen(string codAlmacen, string numArticulo, string desArticulo, string talArticulo)
         {
             List<Ent_Stock_Almacen> lista = datos.get_Lista_Stock_Almacen(codAlmacen, numArticulo, desArticulo,talArticulo);
@@ -577,10 +578,129 @@ namespace CapaPresentacion.Controllers
         }
 
 
+        //CONSULTA PEDIDOS PRESTASHOP
 
+        public ActionResult Prestashop()
+        {
+            var ec = new Data_Ecommerce();
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
 
+            if (_usuario == null)
+            {
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+            }
+            else
+            {
+                //ViewBag.Tienda = dat_lista_tienda.get_tienda("PE", "1");
+                Session["Lista_Pedidos_Prestashop"] = null;
 
+              
+                return View();
+            }
+        }
 
+        public PartialViewResult _TablePrestashop(DateTime fecini, DateTime fecfin)
+        {
+            return PartialView(get_Lista_Prestashop(fecini, fecfin));
+        }
+
+        public List<Ent_Prestashop> get_Lista_Prestashop(DateTime fecini, DateTime fecfin)
+        {
+            List<Ent_Prestashop> lista = datos.get_Lista_Pedidos_Prestashop(fecini, fecfin);
+            Session["Lista_Pedidos_Prestashop"] = lista;
+            return lista;
+        }
+
+        public ActionResult ConsultaTabla_Prestashop(CapaEntidad.General.Ent_jQueryDataTableParams param)
+        {
+            /*verificar si esta null*/
+            if (Session["Lista_Pedidos_Prestashop"] == null)
+            {
+                List<Ent_Prestashop> listdoc = new List<Ent_Prestashop>();
+                Session["Lista_Pedidos_Prestashop"] = listdoc;
+
+            }
+
+            //Traer registros
+            IQueryable<Ent_Prestashop> membercol = ((List<Ent_Prestashop>)(Session["Lista_Pedidos_Prestashop"])).AsQueryable();
+
+            //Manejador de filtros
+            int totalCount = membercol.Count();
+
+            IEnumerable<Ent_Prestashop> filteredMembers = membercol;
+
+            //Manejador de orden
+            var sortIdx = Convert.ToInt32(Request["iSortCol_0"]);
+
+            var displayMembers = filteredMembers
+                .Skip(param.iDisplayStart)
+                .Take(param.iDisplayLength);
+
+            var result = from a in displayMembers
+                         select new
+                         {
+                             a.Id_Orden,
+                             a.Fec_Pedido,
+                             a.Est_Sis_Fact,
+                             a.Presta_Estado,
+                             a.Presta_Estado_Name,
+                             a.Presta_FecIng,
+                             a.Fecha_Facturacion,
+                             a.Comprobante,
+                             a.Name_Carrier,
+                             a.Almacen,
+                             a.Ubigeo_Ent,
+                             a.Ubicacion,
+                             a.Semana,
+                             a.ArticuloId,
+                             a.Talla,
+                             a.Cantidad,
+                             a.Precio_Vta,
+                             a.Precio_Original,
+                             a.Cod_Linea3,
+                             a.Des_Linea3,
+                             a.Cod_Cate3,
+                             a.Des_Cate3,
+                             a.Cod_Subc3,
+                             a.Des_Subc3,
+                             a.Cod_Marc3,
+                             a.Des_Marca,
+                             a.Precio_Planilla,
+                             a.Costo,
+                             a.CC,
+                             a.C5,
+                             a.CB,
+                             a.CW,
+                             a.C1
+                         };
+
+            //Se devuelven los resultados por json
+            return Json(new
+            {
+                sEcho = param.sEcho,
+                iTotalRecords = totalCount,
+                iTotalDisplayRecords = filteredMembers.Count(),
+                aaData = result
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        public FileContentResult DetallePrestashop()
+        {
+            if (Session["Lista_Pedidos_Prestashop"] == null)
+            {
+                List<Ent_Prestashop> liststoreConf = new List<Ent_Prestashop>();
+                Session["Lista_Pedidos_Prestashop"] = liststoreConf;
+            }
+            List<Ent_Prestashop> lista = (List<Ent_Prestashop>)Session["Lista_Pedidos_Prestashop"];
+            string[] columns = { "ID_ORDER", "FECHA_PED", "ESTADO_SIST_FACT", "PRESTA_ESTADO", "PRESTA_ESTADO_NAME", "PRESTA_FECING", "FECHA_FACTURACION","COMPROBANTE","NAME_CARRIER","ALMACEN","UBIGEO","UBICACION","SEMANA","ARTICULO_ID","TALLA","CANTIDAD","PRECIO_VTA","PRECIO_ORIGINAL","COD_LINE3","DES_LINE3","COD_CATE3","DES_CATE3","COD_SUBC3","DES_SUBC3","COD_MARC3","DES_MARCA","PRECIO_PLANILLA","COSTO","C","5","B","W","1"};
+            //string[] headers = { "ALMACEN", "NUM_ARTICULO", "ARTICULO", "TALLA", "STOCK"};
+            byte[] filecontent = ExcelExportHelper.ExportExcel_Prestashop(lista, "INFORME GENERAL DE PEDIDOS - PRESTASHOP", false, columns);
+            //byte[] filecontent = ExcelExportHelper.CreateCSVFile(lista, "LISTA GENERAL DE STOCK DE ARTICULOS POR ALMACEN");
+            return File(filecontent, ExcelExportHelper.ExcelContentType, "InformacionPrestashop.xlsx");
+        }
         #endregion
     }
 }

@@ -363,7 +363,7 @@ namespace CapaPresentacion.Bll
                 {
                     workSheet.Cells["A1"].Value = heading;
                     workSheet.Cells["A1"].Style.Font.Size = 20;
-                    
+
                     workSheet.InsertColumn(1, 1);
                     workSheet.InsertRow(1, 1);
                     workSheet.Column(1).Width = 5;
@@ -570,5 +570,99 @@ namespace CapaPresentacion.Bll
             }
             return dataTable;
         }
+
+        public static byte[] ExportExcel_Prestashop<T>(List<T> data, string Heading = "", bool showSlno = false, params string[] ColumnsToTake)
+        {
+            return ExportExcelStock_PRESTA(ListToDataTable<T>(data), "PRESTA", Heading, showSlno, ColumnsToTake);
+        }
+
+        public static byte[] ExportExcelStock_PRESTA(DataTable dataTable, string header = "", string heading = "", bool showSrNo = false, params string[] columnsToTake)
+        {
+
+
+            for (int i = 0; i< dataTable.Rows.Count; i++)
+            {
+                if ( dataTable.Rows[i]["PRESTA_FECING"].ToString() == "01/01/1900")
+                {
+                    dataTable.Rows[i]["PRESTA_FECING"] = "";
+                }
+
+                if (dataTable.Rows[i]["fecha_facturacion"].ToString() == "01/01/1900")
+                {
+                    dataTable.Rows[i]["fecha_facturacion"] = "";
+                }
+            }
+
+
+            byte[] result = null;
+            using (ExcelPackage package = new ExcelPackage())
+            {
+                ExcelWorksheet workSheet = package.Workbook.Worksheets.Add(String.Format("{0} Data", ""));
+                int startRowFrom = String.IsNullOrEmpty(heading) ? 1 : 4;
+                //int startRowFrom = 0;
+
+                if (showSrNo)
+                {
+                    DataColumn dataColumn = dataTable.Columns.Add("#", typeof(int));
+                    dataColumn.SetOrdinal(0);
+                    int index = 1;
+                    foreach (DataRow item in dataTable.Rows)
+                    {
+                        item[0] = index;
+                        index++;
+                    }
+                }
+                if (header == "PRESTA")
+                {
+                    workSheet.Cells["A" + startRowFrom].LoadFromDataTable(dataTable, true);
+                }
+
+                // autofit width of cells with small content  
+
+                if (dataTable.Rows.Count > 0)
+                {
+
+                    int columnIndex = 1;
+                    foreach (DataColumn column in dataTable.Columns)
+                    {
+
+                        columnIndex++;
+                    }
+                }
+
+                if (dataTable.Rows.Count > 0)
+                {
+                    using (ExcelRange r = workSheet.Cells[startRowFrom + 1 - 2, 1, startRowFrom + dataTable.Rows.Count, dataTable.Columns.Count])
+                    {
+                        r.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        r.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                        r.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        r.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+
+                        r.Style.Border.Top.Color.SetColor(System.Drawing.Color.Black);
+                        r.Style.Border.Bottom.Color.SetColor(System.Drawing.Color.Black);
+                        r.Style.Border.Left.Color.SetColor(System.Drawing.Color.Black);
+                        r.Style.Border.Right.Color.SetColor(System.Drawing.Color.Black);
+                    }
+                }
+
+
+                if (!String.IsNullOrEmpty(heading))
+                {
+                    workSheet.Cells["A1"].Value = heading;
+                    workSheet.Cells["A1"].Style.Font.Size = 20;
+
+                    workSheet.InsertColumn(1, 1);
+                    workSheet.InsertRow(1, 1);
+                    workSheet.Column(1).Width = 5;
+                }
+                workSheet.DeleteRow(startRowFrom);
+                result = package.GetAsByteArray();
+            }
+
+            return result;
+        }
+
+
     }
 }

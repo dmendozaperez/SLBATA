@@ -1,0 +1,213 @@
+﻿
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.min.css" />
+
+<style type="text/css">
+    .dt-buttons {
+        display: none;
+    }
+
+    #example_filter {
+        display: none;
+    }
+</style>
+<div class="box-body" id="lista" style="overflow-x: auto;">
+    <a id="EXCEL" name="excel" class="btn btn-success btn-sm" href="@Url.Action("DetallePrestashop","Ecommerce")" style="margin-bottom:10px"><span class="glyphicon glyphicon-export"></span>&nbsp;Excel</a>
+
+    <table id="example" class="table table-hover dataTable  table-striped table-responsive">
+        <thead>
+            <tr style="background-color:#3d566e; color:#ecf0f1">
+                <th>Orden</th>
+                <th>Fec.Pedido</th>
+                <th>Estado Sist Facturación</th>
+                <th>Cod.Estado Prestashop</th>
+                <th>Des.Estado Prestashop</th>
+                <th>Fec.Ing.Prestashop</th>
+                <th>Fec.Facturación</th>
+                <th>Comprobante</th>
+                <th>Tipo -Courier</th>
+                <th>Almacén</th>
+                <th>Ubigeo</th>
+                <th>Ubicación</th>
+                <th>Semana</th>
+                <th>Artículo</th>
+                <th>Talla</th>
+                <th>Cantidad</th>
+                <th>Precio Vta.</th>
+                <th>Precio Original.</th>
+                <th>Cod. Linea 3</th>
+                <th>Des. Linea 3</th>
+                <th>Cod. Cat. 3</th>
+                <th>Des. Cat. 3</th>
+                <th>Cod. Subc 3</th>
+                <th>Des. Subc 3</th>
+                <th>Cod. Marc 3</th>
+                <th>Des. Marc 3</th>
+                <th>Precio Planilla</th>
+                <th>Costo</th>
+                <th>A.C</th>
+                <th>A.5</th>
+                <th>A.B</th>
+                <th>A.W</th>
+                <th>A.1</th>
+            </tr>
+        </thead>
+        <tbody data-bind="foreach:"></tbody>
+        <tfoot>
+            <tr>
+                <td width="100px">Id Orden</td>
+                <td>Fec.Pedido</td>
+                <td>Est. Sistema Facturación</td>
+                <td>Cod.Estado Prestashop</td>
+                <td>Des.Estado Prestashop</td>
+                <td>Fec.Ing.Prestashop</td>
+                <td>Fec.Facturación</td>
+                <td>Comprobante</td>
+                <td>Tipo -Courier</td>
+                <td>Almacén</td>
+                <td>Ubigeo</td>
+                <td>Ubicacion</td>
+                <td>Semana</td>
+                <td>Artículo</td>
+                <td>Talla</td>
+                <td>Cantidad</td>
+                <td>Precio Vta.</td>
+                <td>Precio Original.</td>
+                <td>Cod. Linea 3</td>
+                <td>Des. Linea 3</td>
+                <td>Cod. Cat. 3</td>
+                <td>Des. Cat. 3</td>
+                <td>Cod. Subc 3</td>
+                <td>Des. Subc 3</td>
+                <td>Cod. Marc 3</td>
+                <td>Des. Marc 3</td>
+                <td>Precio Planilla</td>
+                <td>Costo</td>
+                <td>A.C</td>
+                <td>A.5</td>
+                <td>A.B</td>
+                <td>A.W</td>
+                <td>A.1</td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" ng-app>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
+        </div>
+    </div>
+</div>
+
+<script src='https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js'></script>
+<script src='//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js'></script>
+<script src='//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js'></script>
+<script src='//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js'></script>
+<script src='//cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js'></script>
+
+<script>
+    $(document).ready(function () {
+        //    alert("entro a _guiatable.cshmtl - document ready");
+        $('.table').dataTable({
+            "language": {
+                "url": "../Scripts/DataTables/Spanish.json"
+            },
+            "bProcessing": true, // se agrego para probar
+            "bServerSide": true,
+            "bAutoWidth": false,
+            "sAjaxSource": '@Url.Action("ConsultaTabla_Prestashop", "Ecommerce")',
+            "fnServerParams": function (aoData) {
+                aoData.push({ "name": "fecini", "value": $.trim($('#fecini').val()) });
+                aoData.push({ "name": "fecfin", "value": $('#fecfin').val() });
+            },
+            "bdestroy": true,
+            "start": 0,
+            "order": [0, "asc"],
+            "bDeferRender": true,
+            "aoColumns": [
+                    { "sName": "Id_Orden", "mData": "Id_Orden" },
+                    { "sName": "Fec_Pedido", "mData": "Fec_Pedido" },
+
+
+
+                    { "sName": "Est_Sis_Fact", "mData": "Est_Sis_Fact" },
+                    { "sName": "Presta_Estado", "mData": "Presta_Estado" },
+                    { "sName": "Presta_Estado_Name", "mData": "Presta_Estado_Name" },
+                     {
+                         "render": function (data, type, full) {
+
+                             if (full.Presta_FecIng == '01/01/1900') {
+                                 return "";
+                             } else {
+                                 return full.Presta_FecIng;
+                             }
+
+                         }
+                     },
+                    //{ "sName": "Presta_FecIng", "mData": "Presta_FecIng" },
+                                         {
+                                             "render": function (data, type, full) {
+
+                                                 if (full.Fecha_Facturacion == '01/01/1900') {
+                                                     return "";
+                                                 } else {
+                                                     return full.Fecha_Facturacion;
+                                                 }
+
+                                             }
+                                         },
+
+                    //{ "sName": "Fecha_Facturacion", "mData": "Fecha_Facturacion" },
+                    { "sName": "Comprobante", "mData": "Comprobante" },
+                    { "sName": "Name_Carrier", "mData": "Name_Carrier" },
+                    { "sName": "Almacen", "mData": "Almacen" },
+                    { "sName": "Ubigeo_Ent", "mData": "Ubigeo_Ent" },
+                    { "sName": "Ubicacion", "mData": "Ubicacion" },
+                    { "sName": "Semana", "mData": "Semana" },
+                    { "sName": "ArticuloId", "mData": "ArticuloId" },
+                    { "sName": "Talla", "mData": "Talla" },
+                    { "sName": "Cantidad", "mData": "Cantidad" },
+                    { "sName": "Precio_Vta", "mData": "Precio_Vta" },
+                    { "sName": "Precio_Original", "mData": "Precio_Original" },
+                    { "sName": "Cod_Linea3", "mData": "Cod_Linea3" },
+                    { "sName": "Des_Linea3", "mData": "Des_Linea3" },
+                    { "sName": "Cod_Cate3", "mData": "Cod_Cate3" },
+                    { "sName": "Des_Cate3", "mData": "Des_Cate3" },
+                    { "sName": "Cod_Subc3", "mData": "Cod_Subc3" },
+                    { "sName": "Des_Subc3", "mData": "Des_Subc3" },
+                    { "sName": "Cod_Marc3", "mData": "Cod_Marc3" },
+                    { "sName": "Des_Marca", "mData": "Des_Marca" },
+                    { "sName": "Precio_Planilla", "mData": "Precio_Planilla" },
+                    { "sName": "Costo", "mData": "Costo" },
+                    { "sName": "CC", "mData": "CC" },
+                    { "sName": "C5", "mData": "C5" },
+                    { "sName": "CB", "mData": "CB" },
+                    { "sName": "CW", "mData": "CW" },
+                    { "sName": "Stock", "mData": "C1" },
+
+            ],
+            "createdRow": function (row, mData, dataIndex) {
+
+            },
+            dom: 'Bfrtip',
+            buttons: [
+            {
+                extend: 'excelHtml5',
+                title: 'Bataclub_xls'
+            },
+            {
+                extend: 'csvHtml5',
+                title: 'BataClub_csv'
+            },
+            {
+                extend: 'pdfHtml5',
+                title: 'BataClub_pdf'
+            },
+            'copyHtml5',
+            ]
+        });
+    });
+
+
+</script>

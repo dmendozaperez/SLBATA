@@ -64,6 +64,7 @@
     <Compile Include="ECommerce\Ent_Etiqueta.cs" />
     <Compile Include="ECommerce\Ent_GuiaCexpress.cs" />
     <Compile Include="ECommerce\Ent_GuiaUrbano.cs" />
+    <Compile Include="ECommerce\Ent_Prestashop.cs" />
     <Compile Include="ECommerce\Ent_Producto.cs" />
     <Compile Include="ECommerce\Ent_Stock_Almacen.cs" />
     <Compile Include="ECommerce\Ent_Urbano.cs" />

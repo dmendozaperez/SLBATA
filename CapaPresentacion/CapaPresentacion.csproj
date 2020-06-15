@@ -1781,6 +1781,8 @@
     <Content Include="Views\Inventario\ReporteInventarioMovimiento.cshtml" />
     <None Include="Service References\SunatReniec\Sunat_Reniec_PE.wsdl" />
     <Content Include="Views\Consulta\ChatShop.cshtml" />
+    <Content Include="Views\ECommerce\Prestashop.cshtml" />
+    <Content Include="Views\ECommerce\_TablePrestashop.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
