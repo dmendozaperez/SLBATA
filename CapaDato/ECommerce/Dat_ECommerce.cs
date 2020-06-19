@@ -356,7 +356,7 @@ namespace CapaDato.ECommerce
                                           Fec_Pedido = dr["FECHA_PED"] == null || dr["FECHA_PED"].ToString() == "" ? "" : Convert.ToDateTime(dr["FECHA_PED"]).ToString("dd/MM/yyyy"),
                                           Est_Sis_Fact = dr["ESTADO_SIST_FACT"].ToString(),
                                           Presta_Estado = dr["PRESTA_ESTADO"] == null || dr["PRESTA_ESTADO"].ToString() == "" ? "" : (dr["PRESTA_ESTADO"]).ToString(),
-                                          Presta_Estado_Name = dr["PRESTA_ESTADO_NAME"].ToString(), 
+                                          Presta_Estado_Name = dr["PRESTA_ESTADO_NAME"].ToString(),
 
                                           Presta_FecIng = dr["PRESTA_FECING"] == null || dr["PRESTA_FECING"].ToString() == "" ? "" : Convert.ToDateTime(dr["PRESTA_FECING"]).ToString("dd/MM/yyyy"),
                                           Fecha_Facturacion = dr["fecha_facturacion"] == null || dr["fecha_facturacion"].ToString() == "" ? "" : Convert.ToDateTime(dr["fecha_facturacion"]).ToString("dd/MM/yyyy"),
@@ -368,11 +368,13 @@ namespace CapaDato.ECommerce
                                           Ubicacion = dr["ubicacion"].ToString(),
                                           Semana = dr["semana"].ToString(),
                                           ArticuloId = dr["ARTICULOID"].ToString(),
+
                                           Talla = dr["TALLA"].ToString(),
-                                          Cantidad = dr["CANTIDAD"].ToString(),
-                                          //String.Format("{0:0.00}", 123.4567m); 
-                                          Precio_Vta =  string.Format("{0:0.00}", dr["PrecioVta"]),
-                                          Precio_Original = string.Format("{0:0.00}", dr["PrecioOriginal"]),
+                                          Cantidad = Convert.ToInt32(dr["CANTIDAD"]),
+
+                                          Precio_Vta = Math.Round(Convert.ToDecimal(dr["PrecioVta"]), 2),
+                                          Precio_Original = Math.Round(Convert.ToDecimal(dr["PrecioOriginal"]), 2),
+
                                           Cod_Linea3 = dr["cod_line3"].ToString(),
                                           Des_Linea3 = dr["des_line3"].ToString(),
                                           Cod_Cate3 = dr["cod_cate3"].ToString(),
@@ -381,14 +383,15 @@ namespace CapaDato.ECommerce
                                           Des_Subc3 = dr["des_subc3"].ToString(),
                                           Cod_Marc3 = dr["cod_marc3"].ToString(),
                                           Des_Marca = dr["des_marca"].ToString(),
-                                          Precio_Planilla = string.Format("{0:0.00 }",dr["PrecioPlanilla"]),
-                                          Costo = string.Format("{0:0.00 }", dr["Costo"]),
-                                          CC = dr["C"].ToString(),
-                                          C5 = dr["5"].ToString(),
-                                          CB = dr["B"].ToString(),
-                                          CW = dr["W"].ToString(),
-                                          C1 = dr["1"].ToString(),
 
+                                          Precio_Planilla = Math.Round(Convert.ToDecimal(dr["PrecioPlanilla"]), 2),
+                                          Costo = Math.Round(Convert.ToDecimal(dr["Costo"]), 2),
+
+                                          Alm_C = Convert.ToInt32(dr["C"]),
+                                          Alm_5 = Convert.ToInt32(dr["5"]),
+                                          Alm_B = Convert.ToInt32(dr["B"]),
+                                          Alm_W = Convert.ToInt32(dr["W"]),
+                                          Alm_1 = Convert.ToInt32(dr["1"]),
                                       }).ToList();
                         }
                     }

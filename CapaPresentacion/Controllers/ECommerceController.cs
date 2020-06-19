@@ -670,11 +670,11 @@ namespace CapaPresentacion.Controllers
                              a.Des_Marca,
                              a.Precio_Planilla,
                              a.Costo,
-                             a.CC,
-                             a.C5,
-                             a.CB,
-                             a.CW,
-                             a.C1
+                             a.Alm_C,
+                             a.Alm_5,
+                             a.Alm_B,
+                             a.Alm_W,
+                             a.Alm_1
                          };
 
             //Se devuelven los resultados por json
