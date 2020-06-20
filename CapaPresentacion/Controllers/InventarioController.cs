@@ -1007,17 +1007,6 @@ namespace CapaPresentacion.Controllers
         }
 
 
-
-
-
-
-
-
-
-        #endregion
-
-
-
         /*reporte inventario movimiento*/
 
         public ActionResult ShowGenericReportInventarioMovimientoInNewWin(string tda, string fecIni, string fecFin)
@@ -1107,11 +1096,7 @@ namespace CapaPresentacion.Controllers
             return View();
         }
 
-
-
-
-
-
+        #endregion
 
     }
 }

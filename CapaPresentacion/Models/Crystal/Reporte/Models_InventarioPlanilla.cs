@@ -22,5 +22,8 @@ namespace CapaPresentacion.Models.Crystal.Reporte
         public decimal VALOR { get; set; }
         public string TALLA { get; set; }
         public string FECHA { get; set; }
+        public string CATEG { get; set; }
+        public string SUBCATEG { get; set; }
+        public string TIPO { get; set; }
     }
 }

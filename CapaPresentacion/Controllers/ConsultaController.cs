@@ -442,10 +442,15 @@ namespace CapaPresentacion.Controllers
 
             var oJRespuesta = new JsonResponse();
 
-
             string[] desUbigeo = null;
             desUbigeo = datos2.get_des_ubigeo(cvCzk.informacionTiendaDestinatario.ubigeo);
-
+            if (desUbigeo == null)
+            {
+                oJRespuesta.Message = ("2").ToString();
+                oJRespuesta.Data = false;
+                oJRespuesta.Success = false;
+                return Json(oJRespuesta, JsonRequestBehavior.AllowGet);
+            }
 
             if (cvCzk.informacionTiendaEnvio != null)
             {
@@ -561,7 +566,7 @@ namespace CapaPresentacion.Controllers
                     //datos.insertar_ge_cv(IdTienda, CodInterno, NroDocumento, rpta.codeDelivery);
                     datos.insertar_ge_chatshop(IdTienda, CodInterno, NroDocumento, rpta.codeDelivery);
 
-                    TempData["Success"] = "Pedido generado correctamente: " + rpta.codeDelivery;
+                    //TempData["Success"] = "Pedido generado correctamente: " + rpta.codeDelivery;
                 }
                 else if (rpta.response == 99)
                 {
@@ -569,7 +574,7 @@ namespace CapaPresentacion.Controllers
                     oJRespuesta.Data = false;
                     oJRespuesta.Success = false;
 
-                    TempData["Error"] = "Error al generar pedido. Error en el servidor" + " | " + rpta.descriptionResponse + " | " + rpta.codeDelivery + " | " + "Intentelo mas tarde.";
+                    //TempData["Error"] = "Error al generar pedido. Error en el servidor" + " | " + rpta.descriptionResponse + " | " + rpta.codeDelivery + " | " + "Intentelo mas tarde.";
                 }
                 else
                 {

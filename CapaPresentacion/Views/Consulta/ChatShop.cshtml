@@ -12,7 +12,7 @@
 @model IEnumerable<CapaPresentacion.Models.ChatShop.ChatShop>
 
 @{
-    ViewBag.Title = "Consulta de Pedidos ChatShop";
+    ViewBag.Title = "Pedidos ChatShop";
 }
 
 
@@ -49,6 +49,7 @@
         @Html.Hidden("Direccion", null, new { @id = "Direccion" })
         @Html.Hidden("Referencia", null, new { @id = "Referencia" })*@
 
+    <p class="text-danger">Consulta de pedidos facturados por el canal de ventas ChatShop</p>
     <div class="box box-body box-primary">
         <div class="row">
             <div class="col-md-12">
@@ -118,12 +119,32 @@
                                 <td>@row.NroDocumento</td>
                                 <td>@row.Fecha</td>
                                 <td>@row.Tienda</td>
-                                <td>@row.Cliente</td>
+                                <td width="500px">@row.Cliente</td>
                                 <td>@row.Ruc</td>
                                 <td>@row.Tipo</td>
                                 <td>@row.Importe</td>
-                                <td>@row.CodSeguimiento</td>
-                                <td>@row.Estado</td>
+                                @*<td>@row.CodSeguimiento</td>*@
+                                @*<td>@row.Estado</td>*@
+                                @if (@row.CodSeguimiento != "")
+                                {
+                                    <td width="160px"><span class="glyphicon glyphicon-barcode" title="Código de Guía"></span>&nbsp;@row.CodSeguimiento</td>
+                                }
+                                else
+                                {
+                                    <td width="160px"><span class="glyphicon glyphicon-question-sign" title="Falta Código de Guia"></span>&nbsp;@row.CodSeguimiento</td>
+                                }
+
+
+                                @if (@row.Estado == "DELIVERY DESPACHADO")
+                                {
+                                    <td><span class="glyphicon glyphicon-ok"></span>&nbsp;@row.Estado</td>
+                                }
+                                else
+                                {
+                                    <td><span class="glyphicon glyphicon-list-alt"></span>&nbsp;@row.Estado</td>
+                                }
+
+
                                 <td width="70px" class="p-0">
                                     <ul class="list-inline" style="margin-bottom: 0px;">
                                         <li>
@@ -252,27 +273,33 @@
                   success: function (data, textStatus, XMLHttpRequest) {
                       waitingDialog.hide();
 
+
                       if ((data.Success).toString() == "true") {
                           if (data.Message == "1") {
+
                               toastr.success("Se realizó satisfactoriamente el llamado al courier", "Mensaje");
+                              setInterval(function () {
+                                  waitingDialog.hide();
+                              }, 40000);
 
-                              waitingDialog.hide();
                               location.reload(true);
-
-                          } else {
-                              toastr.success("No se realizó el llamado de courier", "Error");
-                              //MostrarListado();
-                              waitingDialog.hide();
                           }
 
                       } else {
-                          toastr.error("No se realizó el llamado de courier", "Error");
-                          waitingDialog.hide();
+                          if (data.Message == "2") {
+                              toastr.error("No se llamó al courier,falta definir el código de Ubigeo o código Postal", "Error");
+                              //MostrarListado();
+                              waitingDialog.hide();
+                          } if (data.Message == "99") {
+                              toastr.error("Error en el servidor no se puedo realizar el llamado de courier ,porfavor intentelo mas tarde", "Error");
+                              waitingDialog.hide();
+
+                          }
                       }
                   },
                   error: function (xhr) {
                       waitingDialog.hide();
-                      toastr.error(xhr, 'Error');
+                      toastr.error("No se realizó el llamado de courier", "Error");
                       waitingDialog.hide();
                   }
 
@@ -405,18 +432,14 @@
 
                         toastr.success("Se generó satisfactoriamente la Guia de Courier", "Mensaje");
                         waitingDialog.hide();
-
-                    } else {
-                        toastr.error("Falta generar el código Guía de Courier", "Error");
-                        waitingDialog.hide();
                     }
                 }
+
             })
+        } else {
+            toastr.error("Falta generar el código Guía de Courier", "Error");
+            waitingDialog.hide();
         }
     }
 
 </script>
-
-
-
-

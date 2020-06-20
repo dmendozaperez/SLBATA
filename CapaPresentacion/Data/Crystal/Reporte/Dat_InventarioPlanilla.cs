@@ -53,6 +53,9 @@ namespace CapaPresentacion.Data.Crystal.Reporte
                                           VALOR = string.IsNullOrEmpty(dr["VALOR"].ToString()) ? 0 : Convert.ToDecimal(dr["VALOR"].ToString()),
                                           TALLA = dr["TALLA"].ToString(),
                                           FECHA = dr["FECHA"].ToString(),
+                                          CATEG = dr["CATEG"].ToString(),
+                                          SUBCATEG = dr["SUBCATEG"].ToString(),
+                                          TIPO = dr["TIPO"].ToString(),
                                       }).ToList();
                             lista = new Models_InventarioPlanilla();
 
