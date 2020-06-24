@@ -109,17 +109,18 @@
                             <th>Estado</th>
                             <th>Courier</th>
                             <th>Guia</th>
+                            <th>Seguimiento</th>
                         </tr>
                     </thead>
                     <tbody data-bind="foreach:">
                         @foreach (var row in Model)
                         {
                             <tr>
-                                <td width="70px">@row.CodInterno</td>
+                                <td width="40px">@row.CodInterno</td>
                                 <td>@row.NroDocumento</td>
                                 <td>@row.Fecha</td>
                                 <td>@row.Tienda</td>
-                                <td width="500px">@row.Cliente</td>
+                                <td width="400px">@row.Cliente</td>
                                 <td>@row.Ruc</td>
                                 <td>@row.Tipo</td>
                                 <td>@row.Importe</td>
@@ -127,11 +128,11 @@
                                 @*<td>@row.Estado</td>*@
                                 @if (@row.CodSeguimiento != "")
                                 {
-                                    <td width="160px"><span class="glyphicon glyphicon-barcode" title="Código de Guía"></span>&nbsp;@row.CodSeguimiento</td>
+                                    <td width="200px"><span class="glyphicon glyphicon-barcode" title="Código de Guía"></span>&nbsp;@row.CodSeguimiento</td>
                                 }
                                 else
                                 {
-                                    <td width="160px"><span class="glyphicon glyphicon-question-sign" title="Falta Código de Guia"></span>&nbsp;@row.CodSeguimiento</td>
+                                    <td width="200px"><span class="glyphicon glyphicon-question-sign" title="Falta Código de Guia"></span>&nbsp;@row.CodSeguimiento</td>
                                 }
 
 
@@ -143,6 +144,16 @@
                                 {
                                     <td><span class="glyphicon glyphicon-list-alt"></span>&nbsp;@row.Estado</td>
                                 }
+
+                                @*@if (@row.Estado == "DELIVERY DESPACHADO")
+                                    {
+                                        <td><span class="glyphicon glyphicon-ok"></span>&nbsp;@row.Estado</td>
+                                    }
+                                    else
+                                    {
+                                        <td><span class="glyphicon glyphicon-list-alt"></span>&nbsp;@row.Estado</td>
+                                    }*@
+
 
 
                                 <td width="70px" class="p-0">
@@ -160,6 +171,28 @@
                                         </li>
                                     </ul>
                                 </td>
+
+
+                                @if (@row.CodSeguimiento == "")
+                                {
+                                    <td width="70px" class="p-0">
+                                        <ul class="list-inline" style="margin-bottom: 0px;">
+                                            <li>
+                                                <a class="btn btn-primary btn-sm" title="Ver" id="link" onclick="msj();"><span class="fa fa-eye-slash" aria-hidden="true"></span></a>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td width="70px" class="p-0">
+                                        <ul class="list-inline" style="margin-bottom: 0px;">
+                                            <li>
+                                                <a class="btn btn-primary btn-sm" title="Ver" id="link" href="https://atari.chazki.com/#/public/seguimiento/1/@row.NroDocumento" target="_blank"><span class="fa fa-eye" aria-hidden="true"></span></a>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                }
                             </tr>
                         }
                     </tbody>
@@ -180,24 +213,6 @@
 </div>
 
 <script>
-
-    //$(document).ready(function () {
-    //    $('.dataTable').DataTable({
-    //        "columnDefs": [
-    //                //{
-    //                //    "targets": [2],
-    //                //    "visible": false,
-    //                //    "searchable": false
-    //                //},
-    //                {
-    //                    "targets": [3],
-    //                    "visible": false,
-    //                    "searchable": false
-    //                }
-    //        ]
-    //    });
-    //});
-
 
     $(document).ready(function () {
         $('.dataTable').DataTable();
@@ -245,6 +260,12 @@
         }
 
     }*@
+
+    function msj() {
+        toastr.error("No hay datos para realizar el seguimiento", "Error");
+    }
+
+
 
     function EnviaCourier_2(CodInterno, Tienda, NroDocumento, CodSeguimiento, Ruc, Cliente) {
 
