@@ -1009,7 +1009,7 @@ namespace CapaPresentacion.Controllers
 
         /*reporte inventario movimiento*/
 
-        public ActionResult ShowGenericReportInventarioMovimientoInNewWin(string tda, string fecIni, string fecFin)
+        public ActionResult ShowGenericReportInventarioMovimientoInNewWin(string tda, DateTime fecIni, DateTime fecFin)
         {
 
             try
