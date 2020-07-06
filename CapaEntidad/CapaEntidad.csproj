@@ -56,6 +56,7 @@
     <Compile Include="ChatShop\Ent_ChatShop.cs" />
     <Compile Include="ChatShop\Ent_Chazki.cs" />
     <Compile Include="Contabilidad\Ent_Contabilidad_EstadoDocumento.cs" />
+    <Compile Include="Contabilidad\Ent_Folder_Documento.cs" />
     <Compile Include="Control\Ent_Aplicacion.cs" />
     <Compile Include="Control\Ent_Tienda.cs" />
     <Compile Include="ECommerce\Cliente.cs" />

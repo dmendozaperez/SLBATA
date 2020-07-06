@@ -70,6 +70,7 @@
     <Compile Include="ChatShop\Dat_ChatShop.cs" />
     <Compile Include="Comunicado\Modulo.cs" />
     <Compile Include="Contabilidad\Dat_Contabilidad_EstadoDocumento.cs" />
+    <Compile Include="Contabilidad\Dat_Folder_Documento.cs" />
     <Compile Include="Control\Dat_Aplicacion.cs" />
     <Compile Include="Control\Dat_Funcion.cs" />
     <Compile Include="Control\Dat_Roles.cs" />

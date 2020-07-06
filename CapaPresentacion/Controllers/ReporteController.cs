@@ -725,29 +725,46 @@ namespace CapaPresentacion.Controllers
         #region<REGION DEL REPORTE DE ESTADO DE STOCK>
         public ActionResult ReporteEstadoStock()
         {
-            if (Session["Tienda"] != null)
+
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
+            //Session["Tienda"] = "50143";
+
+            if (_usuario == null)
             {
-                ViewBag.Tienda = datCbo.get_ListaTiendaXstoreActivo(Session["Tienda"].ToString());
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
             }
             else
             {
+
                 Dat_Semana_Personalizado sem = new Dat_Semana_Personalizado();
 
                 List<Ent_Semana_Personalizado> ent_sem = sem.listar_semanas();
 
                 var sem_d = ent_sem.Where(s => s.sem_defecto == "1").ToList();
 
-                foreach(var fila in sem_d)
+                foreach (var fila in sem_d)
                 {
                     ViewBag.semd = fila.cod_semana;
                 }
 
                 ViewBag.sem = ent_sem;
-                ViewBag.Tienda = datCbo.get_ListaTiendaXstoreActivo("");
 
+                if (Session["Tienda"] != null)
+                {
+                    ViewBag.Tienda = datCbo.get_ListaTiendaXstoreActivo(Session["Tienda"].ToString());
+                }
+                else
+                {
+                    
+                    ViewBag.Tienda = datCbo.get_ListaTiendaXstoreActivo("");
+
+                }
+
+                return View();
             }
-
-            return View();
         }
         public ActionResult ShowGenericReportEstadoStockInNewWin(string cod_tda,string fec_ini,string fec_fin)
         {
