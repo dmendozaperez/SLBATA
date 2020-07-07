@@ -647,6 +647,7 @@ namespace CapaPresentacion.Controllers
                              a.Est_Sis_Fact,
                              a.Presta_Estado,
                              a.Presta_Estado_Name,
+                             a.Presta_Est_Ped_Tienda,
                              a.Presta_FecIng,
                              a.Fecha_Facturacion,
                              a.Comprobante,

@@ -13,6 +13,7 @@ namespace CapaEntidad.ECommerce
         public string Est_Sis_Fact { get; set; }
         public string Presta_Estado { get; set; }
         public string Presta_Estado_Name { get; set; }
+        public string Presta_Est_Ped_Tienda { get; set; }
         public string Presta_FecIng { get; set; }
         public string Fecha_Facturacion { get; set; }
         public string Comprobante { get; set; }
@@ -41,6 +42,9 @@ namespace CapaEntidad.ECommerce
         public Int32 Alm_B { get; set; }
         public Int32 Alm_W { get; set; }
         public Int32 Alm_1 { get; set; }
+
+
+
 
     }
 }

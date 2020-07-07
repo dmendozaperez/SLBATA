@@ -357,6 +357,7 @@ namespace CapaDato.ECommerce
                                           Est_Sis_Fact = dr["ESTADO_SIST_FACT"].ToString(),
                                           Presta_Estado = dr["PRESTA_ESTADO"] == null || dr["PRESTA_ESTADO"].ToString() == "" ? "" : (dr["PRESTA_ESTADO"]).ToString(),
                                           Presta_Estado_Name = dr["PRESTA_ESTADO_NAME"].ToString(),
+                                          Presta_Est_Ped_Tienda = dr["PRESTA_EST_PED_TIENDA"].ToString(),
 
                                           Presta_FecIng = dr["PRESTA_FECING"] == null || dr["PRESTA_FECING"].ToString() == "" ? "" : Convert.ToDateTime(dr["PRESTA_FECING"]).ToString("dd/MM/yyyy"),
                                           Fecha_Facturacion = dr["fecha_facturacion"] == null || dr["fecha_facturacion"].ToString() == "" ? "" : Convert.ToDateTime(dr["fecha_facturacion"]).ToString("dd/MM/yyyy"),
