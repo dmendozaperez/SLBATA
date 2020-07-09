@@ -1,0 +1,44 @@
+﻿@{
+    Layout = null;
+}
+<table id="tabCupsProm" class="table dataTable table-hover table-striped table-responsive">
+    <thead>
+        <tr>
+            <th>BARRA</th>
+            <th>ESTADO</th>            
+        </tr>
+    </thead>
+    <tbody data-bind="foreach:"></tbody>
+    <tfoot>
+        <tr>
+            <th>BARRA</th>
+            <th>ESTADO</th>            
+        </tr>
+    </tfoot>
+</table>
+<script>
+    $(document).ready(function () {
+        //waitingDialog.show('Espere un momento por favor');
+        var dniEliminar = "";
+        $('#tabCupsProm').DataTable({
+            "dom": 't',
+            "language": {
+                "url": "../Scripts/DataTables/Spanish.json"
+            },
+            "bFilter": false,
+            "bProcessing": false,
+            "bServerSide": true,
+            "bAutoWidth": false,
+            "sAjaxSource": '@Url.Action("getTableCuponCompartirAjax", "Bata")',          
+            "bdestroy": true,
+            "start": 0,
+            "sort": false,
+            "order": [],
+            "bDeferRender": true,
+            "aoColumns": [
+                    { "sName": "barra", "mData": "barra" },
+                    { "sName": "estado", "mData": "estado" },                    
+            ]
+        });
+    });
+</script>

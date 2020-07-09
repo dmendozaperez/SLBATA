@@ -1,0 +1,284 @@
+﻿@using CapaEntidad.Contabilidad;
+@model IEnumerable<Ent_Contabilidad_EstadoDocumento>
+@{
+    ViewBag.Title = "Consulta de Boletas,Facturas,Nota de Credito y Debito";
+    AjaxOptions options = new AjaxOptions
+    {
+        HttpMethod = "GET",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "listaTable",
+        OnComplete = "waitingDialog.hide();",
+        OnBegin = " ListaTiendasClick(); waitingDialog.show('Espere un momento por favor');",
+        OnFailure = "waitingDialog.hide();"
+    };
+}
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+<link href="~/ContentSelect/bootstrap-multiselect.css" rel="stylesheet" />
+
+<p class="text-danger">Consulta de Documentos, filtro por tienda y fecha de transaccion</p>
+<div class="box box-body box-primary">
+    @using (Ajax.BeginForm("_Table", options))
+    {
+        <form id="form1">
+
+            <div class="row">
+                <div class="col-sm-pull-6" style="padding-left: 25px;">
+                    <label for="segape">Cod Tda.</label>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div id="tda" class="input-group autofocus" required>
+                                @Html.DropDownList("dwtda", new SelectList(ViewBag.Tienda, "cod_entid", "des_entid", "-1"), new { @multiple = "multiple", @class = "multiselect", @data_live_search = "true", @id = "dwtda", @name = "dwtda" , @onchange = "CallChangefunc(this.value)" })
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="hidden" name="hidden" value="">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2" style="padding-left: 25px; margin-right: inherit;">
+                    <label for="segape">Fecha Inicio</label>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div id="datepickerini" class="input-group date" data-date-format="dd-mm-yyyy">
+                                <input id="fec_ini" name="fec_ini" value="" class="form-control custom-input" placeholder="dd-mm-yyyy" type="text" oninvalid="InvalidMsg(this,'Ingrese la fecha inicial')" required="required" />
+                                <span class="input-group-addon  bg-white"><img src="~/Content/images/wall-calendar-with-lines.svg" height="20" width="20"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2" style="padding-left: 25px;">
+                    <label for="fecnac">Fecha Final</label>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div id="datepickerfin" class="input-group date" data-date-format="dd-mm-yyyy">
+                                <input id="fec_fin" name="fec_fin" value="" class="form-control custom-input" placeholder="dd-mm-yyyy" type="text" oninvalid="InvalidMsg(this,'Ingrese la fecha final')" required="required" />
+                                <span class="input-group-addon  bg-white"><img src="~/Content/images/wall-calendar-with-lines.svg" height="20" width="20"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2" style="padding-left: 25px; width: 105px; margin-top: 5px; margin-bottom: 10px;">
+                    <label></label><br />
+                    <button id="btnSearch" type="submit" title="Consultar" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-search"> Buscar</span>
+                    </button>
+                </div>
+            </div>
+
+        </form>
+
+    }
+    <div class="box-body" id="listaTable" style="padding-bottom: 40px; overflow-x: auto;">
+        @{Html.RenderPartial("_Table", Model);}
+    </div>
+
+</div>
+
+
+@*<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="padding-top: 150px;">
+        <div id="myModalContent1" class="modal-content" style="height:190px">
+            <div style="background-color:#607d8b; color:white; height:48.77px;" class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h5 class="modal-title" id="myModalLabel" style="font: icon; font-weight: 600;"></h5>
+            </div>
+            <div id="modalBody1" class="modal-body">
+
+            </div>
+        </div>
+    </div>
+</div>*@
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="~/ScriptsSelect/bootstrap-multiselect.js"></script>
+
+<script>
+    $(function () {
+        $('#dwtda').multiselect({
+            includeSelectAllOption: true,
+            enableFiltering: true,
+            enableCaseInsensitiveFiltering: true,
+            filterPlaceholder: 'Buscar Tienda...',
+            onDropdownShown: function (even) {
+                this.$filter.find('.multiselect-search').focus()
+            }
+        });
+    });
+
+    //$(document).ready(function () {
+    //    $(function () {
+    //        $("#btnpop").click(function (e) {
+    //            e.preventDefault();
+    //            waitingDialog.show('Espere un momento por favor');
+
+    
+    //            setTimeout(function () {
+    //                setTimeout(function () { waitingDialog.hide(); }, 5);
+    //              //  window.location = url;
+    //            }, 0);
+
+    //        });
+    //    });
+    //});
+
+    function CallChangefunc(val) {
+        $.trim($('#hidden').val(""));      
+        ListaTiendasSelect();
+    }
+
+    function ListaTiendasClick() {
+       // console.log("ListaTiendasClick");
+        $.trim($('#hidden').val(""));
+        var strcadena = $.trim($('#dwtda').val());
+        if (strcadena == null || strcadena == "") { toastr.error("Debe seleccionar al menos una tienda.", "Mensaje");}
+    }
+
+    function ListaTiendasSelect() {
+      //  console.log("ListaTiendasSelect");
+        var strcadena = $.trim($('#dwtda').val());
+        document.getElementById("hidden").value = strcadena;
+    }
+</script>
+
+<script>
+    $(function () {
+        $("#datepickerini").datepicker({
+            autoclose: true,
+            todayHighlight: true
+        }).datepicker("setDate", "0");;
+    });
+    $(function () {
+        $("#datepickerfin").datepicker({
+            autoclose: true,
+            todayHighlight: true
+        }).datepicker("setDate", "0");;
+    });
+</script>
+
+
+
+<script>
+
+    //$(document).ready(function () {
+        $(function () {
+            $("#btnpop").click(function (e) {
+                console.log("adfa");
+                e.preventDefault();
+                waitingDialog.show('Espere un momento por favor');
+
+
+                setTimeout(function () {
+                    setTimeout(function () { waitingDialog.hide(); }, 3);
+                    window.location = url;
+                }, 0);
+
+            });
+        });
+    //});
+
+
+    function PopupDetalle(ruc, login_ws, clave_ws, tipodoc, numero, tipo_doc, folio) {
+      //  waitingDialog.show('Espere un momento por favor');
+        var ControllerUrl = "@Url.Action("_popUpDetalle", "Contabilidad")";
+
+        $.ajax({
+            type: "GET",
+            url: ControllerUrl,
+            contentType: "application/json; charset=utf-8",
+            data: { ruc: ruc, login_ws: login_ws, clave_ws: clave_ws, tipodoc: tipodoc, folio: folio },
+            datatype: "json",
+            cache: true,
+            success: function (data) {
+                if (data) {
+                  //  waitingDialog.hide();
+                    var options = { "backdrop": "static", keyboard: true };
+                    var descTienda = tipo_doc + ' - ' + folio
+
+                    $('#myModalLabel').html(descTienda);
+                    $('#modalBody1').html(data);
+                    $('#myModal1').modal(options);
+
+                    $('#TableDeta').dataTable({
+                        "language": {
+                            "url": "../Scripts/DataTables/Spanish.json"
+                        },
+                        "bProcessing": false,
+                        "bServerSide": true,
+                        "bAutoWidth": false,
+                        "sAjaxSource": '@Url.Action("getDetalleAjax", "Contabilidad")',
+                        "fnServerParams": function (aoData) {
+
+                        },
+                        "bdestroy": true,
+                        "start": 0,
+                        //"oSearch": { "sSearch": "" },
+                        "order": false,
+                        //"bPaginate": false,
+                        "bFilter": false,
+                        "bInfo": false,
+                        "bDeferRender": false,
+                        "aoColumns": [
+                              //  { "sName": "PDF", "mData": "PDF" },
+                                {
+                                    //Label del estado de los documentos ->estado
+                                    "render": function (data, type, full) {
+                                        var dato = full.PDF
+                                        var est = full.ESTADO
+                                        console.log(full.ESTADO);
+                                        console.log(full.PDF);
+                                        if (est === "No existe") {
+                                            return '<p>No existe</p>';
+                                        }
+                                        else
+                                        {
+                                            return '<p><a href="' + dato + '" target="_blank" >Abrir PDF</a></p>';
+                                        }
+
+                                    }
+                                },
+                                { "sName": "ESTADO", "mData": "ESTADO" },
+
+
+                        ],
+                        dom: 'Bfrtip',
+                        buttons: [
+                        {
+                            extend: 'excelHtml5',
+                            title: 'Bataclub_xls'
+                        },
+                        {
+                            extend: 'csvHtml5',
+                            title: 'BataClub_csv'
+                        },
+                        {
+                            extend: 'pdfHtml5',
+                            title: 'BataClub_pdf'
+                        },
+                        'copyHtml5',
+                        ]
+                    });
+
+                    //if ($('#mymodal1').data('bs.modal', null).context.readyState == "complete" && $('#TableDeta').data('bs.modal', null).context.readyState=="complete")
+                    //{
+                    //    console.log("sdfdssdssss");
+                    //   // $('#myModal1').modal('show');
+                    //}
+
+                    $('#myModal1').modal('show');
+
+                }
+
+            },
+            error: function (xhr) {
+                waitingDialog.hide();
+                toastr.error(xhr, 'Mensaje');
+            }
+        });
+
+
+    }
+
+
+</script>

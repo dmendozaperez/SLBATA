@@ -1,0 +1,167 @@
+﻿
+<style type="text/css">
+    .dt-buttons {
+        display: none;
+    }
+
+    #TableDeta_filter {
+        display: none;
+    }
+
+     #TableDeta_info {
+        display: none;
+    }    
+     #TableDeta_paginate {
+        display: none;
+    }
+</style>
+
+<table id="example" class="table table-hover dataTable table-striped table-responsive">
+    <thead>
+        <tr style="background-color:#3d566e; color:#ecf0f1">
+            <th>Tienda</th>
+            <th>Fecha</th>
+            <th>Tipo de documento</th>
+            <th>Serie</th>
+            <th>Número</th>
+            <th>Total</th>
+            <th>Estado</th>
+            @*<th>RUC</th>*@
+            @*<th>Login ws</th>
+            <th>Clave ws</th>
+            <th>Tipo Doc</th>*@
+            @*<th>Folio</th>*@
+            <th>Detalle</th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach:"></tbody>
+    <tfoot>
+        <tr>
+            <th>Tienda</th>
+            <th>Fecha</th>
+            <th>Tipo de documento</th>
+            <th>Serie</th>
+            <th>Número</th>
+            <th>Total</th>
+            <th>Estado</th>
+            @*<th>RUC</th>*@
+            @*<th>Login ws</th>
+            <th>Clave ws</th>
+            <th>Tipo Doc</th>*@
+            @*<th>Folio</th>*@
+            <th>Detalle</th>
+        </tr>
+    </tfoot>
+</table>
+
+<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="padding-top: 150px;">
+            <div id="myModalContent1" class="modal-content" style="height:190px">
+                <div style="background-color:#607d8b; color:white; height:48.77px;" class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h5 class="modal-title" id="myModalLabel" style="font: icon; font-weight: 600;"></h5>
+                </div>
+                <div id="modalBody1" class="modal-body">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+
+    $(document).ready(function () {
+        $('.table').dataTable({
+            "language": {
+                "url": "../Scripts/DataTables/Spanish.json"
+            },
+            "bProcessing": true, // se agrego para probar
+            "bServerSide": true,
+            "bAutoWidth": false,
+            "sAjaxSource": '@Url.Action("getDetAjax","Contabilidad")',
+            "fnServerParams": function (aoData) {
+
+            },
+            "bdestroy": true,
+            "start": 0,
+            "ordering": true,
+            //"order": [3, "desc"],
+            "bDeferRender": true,
+            "aoColumns": [
+                    { "sName": "tienda", "mData": "tienda" },
+                    { "sName": "fecha", "mData": "fecha" },
+                    { "sName": "tipo_doc", "mData": "tipo_doc" },
+                    { "sName": "serie", "mData": "serie" },
+                    { "sName": "numero", "mData": "numero" },
+                    { "sName": "total", "mData": "total" },
+                    //{ "sName": "estado", "mData": "estado" }
+                    { 
+                        //Label del estado de los documentos ->estado
+                        "render": function (data, type, full) {
+                            if (full.estado == 'FINALIZADO') {
+                                return '<div style="display: block;background-color: #41b341;" class="badge badge-pill badge-success disabled"><a class="badge badge-success disabled" style=" background-color: #41b341;"  >FINALIZADO</a></div>';
+                            } else {
+                                return '<div style="display: block;background-color:  #d9534f;" class="badge badge-pill badge-danger disabled"><a class="badge badge-danger disabled" style=" background-color: #d9534f;"  >CANCELADO</a></div>';
+                            }
+                        }
+                    },
+                    {      //Botón de detalle - PopUp
+                        "render": function (data, type, full) {
+                            // data-target="#myModal1"  target="_blank" 
+                            var envio = "'" + full.ruc + "','" + full.login_ws + "','" + full.clave_ws + "','" + full.tipodoc + "','" + full.numero + "','" + full.tipo_doc + "','" + full.folio + "'"
+                            return '<div> <a title="Ver Detalle" id="btnpop" type="button" onclick="PopupDetalle(' + envio + ')"  class="btn btn-primary btn-sm"> <span class="glyphicon glyphicon-th-list" type="button"></span></a></div>';
+                        }
+                    }
+            ],
+            dom: 'Bfrtip',
+            buttons: [
+            {
+                extend: 'excelHtml5',
+                title: 'Bataclub_xls'
+            },
+            {
+                extend: 'csvHtml5',
+                title: 'BataClub_csv'
+            },
+            {
+                extend: 'pdfHtml5',
+                title: 'BataClub_pdf'
+            },
+            'copyHtml5',
+            ]
+        });
+
+    });
+</script>
+
+<script>
+    //$(document).ready(function () {
+
+
+    //    $(function () {
+    //        $("#btnpop").click(function (e) {
+    //            e.preventDefault();
+    //            waitingDialog.show('Espere un momento por favor');
+
+    
+    //            setTimeout(function () {
+    //                setTimeout(function () { waitingDialog.hide(); }, 30);
+    //                window.location = url;
+    //            }, 0);
+
+    //        });
+    //    });
+
+    //    $("#myModal1").on('hidden.bs.modal', function () {
+    //        $('#myModalLabel').html("");
+    //        $('#modalBody1').html("");
+    //    });
+
+    //    //$("#closbtn").click(function () {
+    //    //    // debugger;
+    //    //    waitingDialog.hide();
+    //    //    $('#myModal').modal('hide');
+    //    //});
+
+    //});
+</script>
