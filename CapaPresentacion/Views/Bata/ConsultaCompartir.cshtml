@@ -1,0 +1,440 @@
+﻿
+@{
+    ViewBag.Title = "Consulta y Acciones de Cupones Compartir";
+}
+<p class="text-danger">Muestra la lista de clientes compartir. Agregar cliente o Reeenviar correo y editar correo para en reenvio de correo.</p>
+<link href="~/ContentSelect/bootstrap-select.css" rel="stylesheet" />
+<style>
+    .table thead {
+        background-color: #5799bf;
+        color: #fff;
+    }
+     .boton-xs-td{
+        padding-top: 5px !important;
+        padding-bottom: 5px !important;
+    }
+</style>
+<div class="box box-body box-primary">
+    <div class="row">
+        <div class="col-md-12">
+            @*<a href="@Url.Action("CrearPromocion", "BataClub")" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i>&nbsp;Crear nueva promocion</a>*@
+            <button type="submit" id="btnaceptar" onclick="nuevo();" name="btnaceptar" title="Agregar" class="btn btn-primary" data-modal="" data-toggle="modal"><i class="glyphicon glyphicon-plus"></i>Agregar Clientes Compartir</button>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-sm-4">
+            <label for="segape">Buscar por dni ó Correo</label>
+            <div class="form-group">
+                <div class="input-group">
+                    <input id="txtbuscar" type="text" focus="true" autofocus  class="form-control" />
+                    <span class="input-group-btn">
+                        <button class="btn btn-success" type="submit" onclick="buscardata();"  title="Consultar">
+                            <span class="fa fa-search"></span>&nbsp;&nbsp;Buscar...
+                        </button>
+                    </span>
+                </div>              
+            </div>
+        </div>
+
+  
+    </div>
+    
+    <div class="row">
+        <div class="box-body" id="lista">
+            <table id="tbcompartir" class="table dataTable table-hover table-striped table-responsive">
+                <thead>
+                    <tr>
+                        <th>DNI</th>
+                        <th>CORREO</th>
+                        <th>ENVIO EMAIL</th>
+                        <th>TIENDA</th>
+                        <th>FECHA ING.</th>
+                        <th>FECHA ENV.</th>
+                        <th>ACCIONES.</th>
+                    </tr>
+                </thead>
+                <tbody data-bind="foreach:"></tbody>
+                <tfoot>
+                    <tr>
+                        <th>DNI</th>
+                        <th>CORREO</th>
+                        <th>ENVIO EMAIL</th>
+                        <th>TIENDA</th>
+                        <th>FECHA ING.</th>
+                        <th>FECHA ENV.</th>
+                        <th>ACCIONES.</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" ng-app>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalResultCupones" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header modal-header-danger">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Cliente Compartir</h4>
+            </div>
+            <div style="font-size:small" class="modal-body" id="divListaCupones">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/ScriptsSelect/bootstrap-select.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+    var buscar = '';
+    function buscardata() {
+        actualizar = "1";
+        buscar = $('#txtbuscar').val();
+        waitingDialog.show('Espere un momento por favor');
+        $('#tbcompartir').DataTable().ajax.reload(function () { waitingDialog.hide(); }, false);
+        actualizar = "";
+    }
+    $("#txtbuscar").keyup(function (event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            buscardata();
+        }
+    });
+</script>
+<script>
+    var actualizar = "";
+    $(document).ready(function () {
+
+        $('#tbcompartir').DataTable({
+          
+            "language": {
+                "url": "../Scripts/DataTables/Spanish.json"
+            },
+            "bServerSide": true,
+            "bAutoWidth": false,
+            "sAjaxSource": '@Url.Action("getListaCompartirAjax", "Bata")',
+            "fnServerParams": function (aoData) {
+                aoData.push({ "name": "actualizar", "value": actualizar });
+                aoData.push({ "name": "buscar", "value": buscar });
+                
+            },
+            "bdestroy": true,
+            "start": 0,
+            "columnDefs": [{
+                "targets": [ 2, 3,4,5,6],
+                "orderable": false                    
+            }],
+            "processing": true,           
+            "bFilter": false,
+            "bDeferRender": true,
+            "aoColumns": [
+                  { "sName": "dni", "mData": "dni" },
+                  { "sName": "correo", "mData": "correo" },
+                  { "sName": "envio_email", "mData": "envio_email" },
+                  { "sName": "tienda", "mData": "tienda" },
+                  { "sName": "fecha_ing", "mData": "fecha_ing" },
+                  { "sName": "fecha_ing", "mData": "fecha_env" },
+                  {
+                      "render": function (data, type, full) {                        
+                          var btn_editar = '<button type="submit" title="Editar Correo y envio" onclick="editar(\'' + full.dni + '\',\'' + full.correo + '\',\'' + full.cod_tda + '\');" class="btn btn-xs btn-default btn-tabla editar-fila"><span class="fa fa-pencil text-primary"></span></button>';
+                          var btn_reenvio = ("&nbsp;").repeat(3) + '<button type="submit" title="Reenviar correo" onclick="grabar_cliente(\'' + full.dni + '\',\'' + full.correo + '\',\'' + full.cod_tda + '\',1,\'3\');" class="btn btn-xs btn-default btn-tabla editar-fila"><span class="fa fa-envelope text-success"></span></button>';
+                          var btn_detalle = ("&nbsp;").repeat(2) + '<button title="Ver Cupones" class="btn btn-xs btn-default btn-tabla ver-fac" onclick="datalle(\'' + full.dni + '\',\'' + full.correo + '\',\'' + full.cod_tda + '\');"  data-liqId="" data-venId="" style="margin-left: 3.5px;"><span class="fa fa-file-text-o text-success"></span></button>';
+                          return btn_editar + btn_reenvio + btn_detalle;
+                      }, "class": "boton-xs-td"
+                  }
+            ]
+        });
+
+    });
+</script>
+<script>
+    var estado;
+    function datalle(dni, correo, cod_tda) {
+        waitingDialog.show('Este proceso, puede tardar unos minutos.', {
+            headerText: 'Espere un momento por favor.',
+            headerClass: 'content2',
+        });      
+        $.ajax({
+            type: "Post",
+            url: '@Url.Action("getListaCupPromCompartir", "Bata")',           
+            data: { dni: dni },            
+            success: function (data) {
+                var titulo = 'Dni: ' + dni;
+                $("#divListaCupones").html(data);
+                $("#myModalLabel").html(titulo);
+                //$("#descPromocionLista").html(desProm);
+                $("#modalResultCupones").modal({ backdrop: 'static', keyboard: false });
+                waitingDialog.hide();
+            },
+            error: function (xhr) {
+                waitingDialog.hide();
+                toastr.error(xhr, 'Mensaje');
+            }
+        });
+    }
+    function nuevo() {
+        estado = '1';
+            waitingDialog.show('Espere un momento por favor');
+            var TeamDetailPostBackURL ="@Url.Action("NuevoCompartir", "Bata")";
+
+            var options = { "backdrop": "static", keyboard: true };
+            $.ajax({
+                type: "GET",
+                url: TeamDetailPostBackURL,
+                contentType: "application/json; charset=utf-8",
+                data: {},
+                datatype: "json",
+                cache: true,
+                success: function (data) {
+                    waitingDialog.hide();
+                    $('#myModalContent').html(data);
+                    $('#myModal').modal(options);
+                    defecto('','','');
+                    $('#myModal').modal('show');                 
+                },
+                error: function () {
+                    waitingDialog.hide();                
+                    alert("Dynamic content load failed.");
+
+                }
+            });
+    }
+    function editar(dni, correo, cod_tda) {
+        estado = '2';
+        waitingDialog.show('Espere un momento por favor');
+        var TeamDetailPostBackURL ="@Url.Action("NuevoCompartir", "Bata")";
+
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: TeamDetailPostBackURL,
+            contentType: "application/json; charset=utf-8",
+            data: {},
+            datatype: "json",
+            cache: true,
+            success: function (data) {
+                waitingDialog.hide();
+                $('#myModalContent').html(data);
+                $('#myModal').modal(options);
+                defecto(dni, correo, cod_tda);
+                $('#myModal').modal('show');                 
+            },
+            error: function () {
+                waitingDialog.hide();                
+                alert("Dynamic content load failed.");
+
+            }
+        });
+    }
+
+    function defecto(dni,correo,cod_tda) {
+        if (estado == "1") {
+            document.getElementById("envio").disabled = true;
+            document.getElementById("envio").checked = true;
+            $("#dni").focus();
+        }
+        else {
+            document.getElementById("envio").checked = true;
+            $('#dwtienda').val(cod_tda);
+            $('#dni').prop("disabled", true);
+            $("#dwtienda").prop("disabled", true);
+            $('#dwtienda').selectpicker('refresh');
+            $('#dni').val(dni);
+            $('#correo').val(correo);
+        }
+    }
+</script>
+<script>
+    function validar_email(email) {
+        //var expr = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+        var regex = /^([a-zA-Z0-9_\.\-])+\@@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+        return regex.test(email) ? true : false;
+    }
+    function OnNuevo_Grabar() {
+        var msg_titulo = 'Mensaje BataWeb!';
+        var dni = $("#dni").val();
+        var correo = $("#correo").val();
+        var tienda = $('#dwtienda').val();
+            
+        if (dni.trim().trimLeft().trimRight().length == 0) {
+            toastr.error("Ingrese el numero de Dni o Roc.", "Aviso");
+            $('#dni').focus();
+            return;
+        }
+        if (correo.length == 0) {
+            toastr.error("Ingrese el Correo", "Aviso");
+            $('#correo').focus();
+            return;
+        }
+        if (tienda == "-1") {
+            toastr.error("Seleccione una tienda", "Aviso");
+            $('#dwtienda').focus();
+            return;
+        }
+        if (!validar_email(correo)) {                
+            toastr.error("El correo ingresado no es valido.", "Aviso");
+            $('#correo').focus();
+            return;
+        }
+        var envio = 0;
+        if ($('#envio').is(':checked')) {
+            envio = 1;
+        }
+
+        if (estado=="1"){
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("valida_dni", "Bata")',
+                data: { dni: dni },
+                success: function (data) {
+                    waitingDialog.hide();
+                    if (data.estado == 0) {
+                        grabar_cliente(dni, correo, tienda, envio,estado);
+                    }
+                    else {                 
+                        toastr.error(data.mensaje, "Alerta");
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    toastr.error("Error al consultar.", "Alerta");
+                }
+            });
+        }
+        else{
+            grabar_cliente(dni, correo, tienda, envio, estado);
+        }
+
+       
+
+    }
+    function grabar_cliente(dni, correo, tienda,envio ,estado) {
+        var msg = '';
+
+        if (envio == 0) {
+            msg = "Se Grabo con exito los datos.\nNo se enviara los cupones al siguiente destino .\n\ncorreo: " + correo.toString()
+        } else {
+            msg = "Se Grabo con exito los datos.\nSi enviara los cupones al siguiente destino .\n\ncorreo: " + correo.toString()
+        }
+
+        var str_title = "Guardar datos del cliente";
+        var str_text = "";
+
+        switch(estado)
+        {
+            case "1":
+                str_text = "¿Está seguro de guardar los datos " + ((envio == 0) ? "" : "y enviar el correo de cupones") + "?"
+                break;
+            case "2":
+                str_text = "¿Está seguro de modificar los datos " + ((envio == 0) ? "" : "y enviar el correo de cupones") + "?"
+                break;
+            case "3":
+                str_title = "Reenviar Cupones";
+                str_text = "¿Reenviar al correo " + correo + "?"
+                break;
+        }        
+        //if (estado == 3) estado == 2;
+
+        var msg_titulo = 'Mensaje BataWeb!';
+        swal({
+            title: str_title,
+            text: str_text,
+            icon: "warning",
+            buttons: ["No", "Si"],
+            dangerMode: true,
+        }).then((cambiar) => {
+            if (cambiar) {
+                waitingDialog.show("Espere un momento por favor.")
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("NuevoCompartir", "Bata")',
+                    data: { dni: dni, correo: correo, tienda: tienda,envio:envio },
+                    success: function (data) {
+                        if (data.estado == "1") {
+                            buscar = dni;
+                            if (estado == 1) {
+                                swal({
+                                    title: "Ok",
+                                    text: msg,
+                                    icon: "success"
+                                }
+                                ).then((value) => {
+                                    $('body').removeClass('modal-open');
+                                    $('#myModal').modal('hide');
+
+                                    $('.modal-backdrop').remove();
+
+                                    actualizar = "1";
+                                    //$('#tbcompartir').DataTable().ajax.reload();
+                                    $('#tbcompartir').DataTable().ajax.reload(function () { waitingDialog.hide(); toastr.success(data.desmsg, msg_titulo); }, false);
+                                    actualizar = "";
+
+                                    //waitingDialog.hide();
+                                    //toastr.success(data.desmsg, msg_titulo);
+                                });
+                            }
+                            if (estado == 2 || estado == 3) {
+                                if (estado == 2) {
+                                    swal({
+                                        title: "Ok",
+                                        text: msg,
+                                        icon: "success"
+                                    }
+                               ).then((value) => {
+                                   $('body').removeClass('modal-open');
+                                   $('#myModal').modal('hide');
+
+                                   $('.modal-backdrop').remove();
+
+                                   actualizar = "1";
+                                  // $('#tbcompartir').DataTable().ajax.reload();
+                                   $('#tbcompartir').DataTable().ajax.reload(function () { waitingDialog.hide(); toastr.success(data.desmsg, msg_titulo); }, false);
+                                   actualizar = "";
+
+                                   //waitingDialog.hide();
+                                   
+                               });
+                                } else {
+                                   
+
+                                    $('body').removeClass('modal-open');
+                                    $('#myModal').modal('hide');
+
+                                    $('.modal-backdrop').remove();
+                                    //waitingDialog.show("Espere un momento por favor.")
+                                    actualizar = "1";
+                                    //$('#tbcompartir').DataTable().ajax.reload();
+                                   // $('#tbcompartir').DataTable().ajax.reload(function () { waitingDialog.hide(); toastr.success('Se envio los cupones al correo seleccionado', msg_titulo); }, false);
+                                    actualizar = "";
+                                    toastr.success('Se envio los cupones al correo: ' + correo, msg_titulo)
+                                    
+                                    //waitingDialog.hide();
+                                }
+                               
+                            }
+
+
+                        } else {
+                            toastr.error(data.mensaje);
+                            waitingDialog.hide();
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        waitingDialog.hide();
+                        toastr.error("Error al consultar.", "Alerta");
+                    }
+                });
+            }
+        });
+    }
+</script>

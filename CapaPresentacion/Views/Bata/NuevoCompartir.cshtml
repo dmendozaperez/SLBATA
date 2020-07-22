@@ -1,0 +1,48 @@
+﻿@{
+    Layout = null;
+}
+@Scripts.Render("~/bundles/bootstrap-select")
+@Styles.Render("~/Content/Bootstrap-Select/css")
+<link rel="stylesheet" type="text/css" href="~/Content/bootstrap-select.css" />
+<div class="modal-content">
+    <div class="modal-header modal-header-danger">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Cliente Compartir</h4>
+    </div>
+    <div class="modal-body">
+        <table class="table table-striped">
+            <tr>
+                <td><label for="dni">Dni</label></td>
+                <td>
+                    <input type="number" id="dni"  maxlength="12" focus="true"  value="" placeholder="Ingrese el Dni" autofocus class="form-control"  />
+                </td>
+            </tr>
+            <tr>
+                <td><label for="correo">Correo</label></td>
+                <td>
+                    <input type="email" maxlength="155" id="correo" placeholder="Ingese el Correo" class="form-control" />
+                </td>
+            </tr>
+            <tr>
+                <td><label for="controller">Tienda</label></td>
+                <td>
+                    @Html.DropDownList("dwtienda", new SelectList(ViewBag.tienda, "cod_entid", "des_entid", "-1"), new { @class = "selectCountry form-control", @data_live_search = "true", @id = "dwtienda" })
+                </td>
+            </tr>         
+            <tr>
+                <td><label for="controller"></label></td>
+                <td>
+                    <div class="col-sm-12 checkbox text-red text-bold">
+                        <label>
+                            <input type="checkbox" name="envio" id="envio" value="1" /> Enviar correo de Cupones Compartir
+                        </label>
+                    </div>
+                </td>
+            </tr>         
+        </table>
+    </div>
+    <div class="modal-footer" style="margin-top:-30px">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+        <input type="submit" onclick="OnNuevo_Grabar();" class="btn btn-primary" id="btnSubmit" value="Aceptar" />
+    </div>
+</div>

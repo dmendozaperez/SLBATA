@@ -1,0 +1,28 @@
+﻿
+<table id="TableDeta" class="table table-hover dataTable  table-striped table-responsive table-bordered" style="border: #3d566e; border-style: solid; border-width: thick;">
+    <thead>
+        <tr style="background-color:#3d566e; color:#ecf0f1">
+            <th style="width:450px">PDF</th>
+            <th style="width:114.44px">Estado</th>
+        </tr>
+    </thead>
+    <tbody  data-bind="foreach:">
+        @*@using CapaEntidad.Contabilidad
+        @model IEnumerable<Ent_Contabilidad_EstadoDocumento_Det>
+
+        @foreach (Ent_Contabilidad_EstadoDocumento_Det item in Model)
+        {
+            <tr>
+                <td><p><a href="@item.PDF.ToString()">Haga click aquí</a></p></td>
+                <td>@item.ESTADO.ToString()</td>
+            </tr>
+        }*@
+    </tbody>
+    @*<tfoot>
+        <tr>
+            <th>PDF</th>
+            <th>Estado</th>
+        </tr>
+    </tfoot>*@
+</table>
+

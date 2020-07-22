@@ -373,6 +373,7 @@
     <Compile Include="Controllers\AnalisisMovController.cs" />
     <Compile Include="Controllers\AplicacionController.cs" />
     <Compile Include="Controllers\BataClubController.cs" />
+    <Compile Include="Controllers\BataController.cs" />
     <Compile Include="Controllers\CanalVentaController.cs" />
     <Compile Include="Controllers\CEController.cs" />
     <Compile Include="Controllers\ComunicadoController.cs" />
@@ -1783,6 +1784,12 @@
     <Content Include="Views\Consulta\ChatShop.cshtml" />
     <Content Include="Views\ECommerce\Prestashop.cshtml" />
     <Content Include="Views\ECommerce\_TablePrestashop.cshtml" />
+    <Content Include="Views\Bata\ConsultaCompartir.cshtml" />
+    <Content Include="Views\Bata\NuevoCompartir.cshtml" />
+    <Content Include="Views\Contabilidad\Estado_Documento.cshtml" />
+    <Content Include="Views\Contabilidad\_popUpDetalle.cshtml" />
+    <Content Include="Views\Contabilidad\_Table.cshtml" />
+    <Content Include="Views\Bata\getListaCupPromCompartir.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
