@@ -221,7 +221,7 @@ namespace CapaPresentacion.Controllers
                 if (_accesoMenu == true)
                 {
 
-                    var distrito = datArticuloStock.listar_distrito();
+                    var distrito = datArticuloStock.listar_distrito(Session["PAIS"].ToString()); /*Filtra por pais -bataweb ecuador*/
 
                     var lista = datArticuloStock.listar_Departamento();
                     var obj = lista[0];
@@ -252,6 +252,8 @@ namespace CapaPresentacion.Controllers
                     entCombo.cbo_descripcion = "POR VENTA ACUMULADA DESCENDENTE";
                     list.Add(entCombo);
                     ViewBag.TipoReporte = list;
+                    ViewBag.Pais = Session["PAIS"];
+                    
 
                     return View();
                 }
@@ -269,7 +271,7 @@ namespace CapaPresentacion.Controllers
                     if (valida_rol)
                     {
 
-                        var distrito = datArticuloStock.listar_distrito();
+                        var distrito = datArticuloStock.listar_distrito(Session["PAIS"].ToString());/*Filtra por pais -bataweb ecuador*/
 
                         var lista = datArticuloStock.listar_Departamento();
                         var obj = lista[0];
@@ -368,7 +370,7 @@ namespace CapaPresentacion.Controllers
                 cod_tda = Session["Tienda"].ToString();
             }
             
-            strJson = datArticuloStock.listarStr_ArticuloStock(codArticulo, CodDpto, CodPrv, CodDist, codTalla, coddist_b, cod_tda,/*sostic 06/2019*/ tipocanal, cadena, vta_acum);
+            strJson = datArticuloStock.listarStr_ArticuloStock(codArticulo, CodDpto, CodPrv, CodDist, codTalla, coddist_b, cod_tda,/*sostic 06/2019*/ tipocanal, cadena, vta_acum,Session["PAIS"].ToString());
             var serializer = new JavaScriptSerializer();
             //jRespuesta = Json(serializer.Deserialize<List<Articulo_Stock_Tienda>>(strJson), JsonRequestBehavior.AllowGet);
 
