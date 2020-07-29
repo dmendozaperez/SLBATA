@@ -49,7 +49,7 @@ namespace CapaPresentacion.Data.Crystal.Reporte
                                           FECHA = dr["FECHA"].ToString(),
                                           HORA = dr["HORA"].ToString(),
                                           NUMDOC = dr["NUMDOC"].ToString(),
-                                          ARTICULO = dr["NUMDOC"].ToString(),
+                                          ARTICULO = dr["ARTICULO"].ToString(),
                                           CALIDAD = dr["CALIDAD"].ToString(),
                                           TALLA = dr["TALLA"].ToString(),
                                           STK_MED_PER = dr["STK_MED_PER"].ToString(),
@@ -61,6 +61,7 @@ namespace CapaPresentacion.Data.Crystal.Reporte
                                           FEC_INI = dr["FEC_INI"].ToString(),
                                           FEC_FIN = dr["FEC_FIN"].ToString(),
                                           HORA_2 = dr["HORA_2"].ToString(),
+                                          //update 29/07/2020
 
                                       }).ToList();
                             lista = new Models_InventarioMovimiento();
