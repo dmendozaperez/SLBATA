@@ -158,7 +158,9 @@ namespace CapaPresentacion.Controllers
                         _data_user.usu_ip = strIp;
 
                         Session[Ent_Constantes.NameSessionUser] = _data_user;
+                        Session["PAIS"] = _data_user.usu_pais;
 
+                  
                         _valida = true;
                     }
                     else

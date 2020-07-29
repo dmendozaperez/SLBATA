@@ -28,43 +28,53 @@
         border: 2px;
     }
 </style>
-<p class="text-danger">Consulta del stock de un articulo en las tiendas, por filtro departamento, provincia, distrito, distrito Bata , codigo de articulo,Articulo y/o talla.</p>
-<div class="box box-body box-primary">
- 
-@using (Ajax.BeginForm("Edit", new AjaxOptions { OnBegin = "ValidarMostrarArticulo();" }))
+@if (ViewBag.Pais == "PE")
 {
+    <p class="text-danger">Consulta del stock de un articulo en las tiendas, por filtro departamento, provincia, distrito, distrito Bata , codigo de articulo,Articulo y/o talla.</p>
+}
+else
+{
+    <p class="text-danger">Consulta del stock de un articulo en las tiendas, por filtro codigo de articulo,Articulo y/o talla.</p>
+}
+<div class="box box-body box-primary">
+
+    @using (Ajax.BeginForm("Edit", new AjaxOptions { OnBegin = "ValidarMostrarArticulo();" }))
+    {
         <div class="row">
-            <div class="col-sm-3">
-                <label for="dwDep">Depto.</label>
-                <div class="form-group">
-                    @*<div class="input-group">*@
+            @if (ViewBag.Pais == "PE")
+            {
+                <div class="col-sm-3">
+                    <label for="dwDep">Depto.</label>
+                    <div class="form-group">
+                        @*<div class="input-group">*@
                         <div id="tipodoc" class="form-group">
                             @Html.DropDownList("dwDep", new SelectList(ViewBag.listDepartamento, "Dep_Id", "Dep_Descripcion", "-1"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwDep", @name = "dwDep", @onchange = "ListarProvincia()" })
                         </div>
-                    @*</div>*@
+                        @*</div>*@
+                    </div>
                 </div>
-            </div>
-            <div class="col-sm-3">
-                <label for="dwProv">Prov.</label>
-                <div class="form-group" id="divprov">
-                    @*<div class="input-group">*@
+
+                <div class="col-sm-3">
+                    <label for="dwProv">Prov.</label>
+                    <div class="form-group" id="divprov">
+                        @*<div class="input-group">*@
                         <div id="divprov1" class="form-group">
                             @Html.DropDownList("dwProv", new SelectList(ViewBag.General, "Dep_Id", "Dep_Descripcion", "-1"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwProv", @name = "dwProv", @onchange = "ListarDistrito()" })
                         </div>
-                    @*</div>*@
+                        @*</div>*@
+                    </div>
                 </div>
-            </div>
-            <div class="col-sm-3">
-                <label for="dwDistrito">Dist.</label>
-                <div class="form-group" id="divdis">
-                    @*<div class="input-group">*@
+                <div class="col-sm-3">
+                    <label for="dwDistrito">Dist.</label>
+                    <div class="form-group" id="divdis">
+                        @*<div class="input-group">*@
                         <div id="tipodoc" class="form-group">
                             @Html.DropDownList("dwDistrito", new SelectList(ViewBag.General, "Dep_Id", "Dep_Descripcion", "-1"), new { @class = "selectpicker", @data_live_search = "true", @id = "dwDistrito", @name = "dwDistrito" })
                         </div>
-                    @*</div>*@
+                        @*</div>*@
+                    </div>
                 </div>
-            </div>
-          
+            }
         </div>
         <div class="row">
             <div class="col-sm-3">
@@ -89,7 +99,7 @@
                 <label for="dwCate">Orden</label>
                 <div class="form-group">
                     <div id="divcad" class="form-group">
-                        @Html.DropDownList("dwvta", new SelectList(ViewBag.TipoReporte, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker",  @data_live_search = "false", @id = "dwvta", @name = "dwvta" })
+                        @Html.DropDownList("dwvta", new SelectList(ViewBag.TipoReporte, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "selectpicker", @data_live_search = "false", @id = "dwvta", @name = "dwvta" })
                     </div>
                 </div>
             </div>
@@ -99,9 +109,9 @@
                 <label for="txtArticulo">Articulo&nbsp;<i class="text-info fa fa-info-circle"></i></label>
                 <div class="form-group">
                     @*<div class="input-group">*@
-                        <div id="numdoc" class="form-group">
-                            <input id="txtArticulo" data-toggle="tooltip" title="Codigo de articulo de 7 digitos. Ejm: 8896992" name="txtArticulo" value="" maxlength="8" placeholder="Ejm: 1234567" autofocus class="form-control" type="text"  />
-                        </div>
+                    <div id="numdoc" class="form-group">
+                        <input id="txtArticulo" data-toggle="tooltip" title="Codigo de articulo de 7 digitos. Ejm: 8896992" name="txtArticulo" value="" maxlength="8" placeholder="Ejm: 1234567" autofocus class="form-control" type="text" />
+                    </div>
                     @*</div>*@
                 </div>
             </div>
@@ -109,9 +119,9 @@
                 <label for="txtTalla">Talla</label>
                 <div class="form-group">
                     @*<div class="input-group">*@
-                        <div id="numdoc" class="form-group">
-                            <input id="txtTalla" name="txtTalla" value="" maxlength="4" autofocus class="form-control" type="text" />
-                        </div>
+                    <div id="numdoc" class="form-group">
+                        <input id="txtTalla" name="txtTalla" value="" maxlength="4" autofocus class="form-control" type="text" />
+                    </div>
 
                     @*</div>*@
 
@@ -119,20 +129,25 @@
             </div>
             @*sostic 06/2019*@
             @*<div class="col-sm-3">
-                <label for="">Multicanalidad</label>
-                <div class="form-group">
-                    <input type="checkbox" value="1" name="multicanalidad" id="multicanalidad" />
-                </div>
-            </div>*@
-            <div class="col-md-7" style="padding-left: 25px;">
-                <div id="prm" class="col-sm-5" disabled>
-                    <label for="segape" style="color: #3d566e;">Tipo de Canal</label>
+                    <label for="">Multicanalidad</label>
                     <div class="form-group">
-                        <label class="radio-inline"><input type="radio" name="opt" id="opttodos" checked>Todos</label>
-                        <label class="radio-inline"><input type="radio" name="opt" id="optmulti">Multicanalidad</label>
-                        <label class="radio-inline"><input type="radio" name="opt" id="optchat">ChatShop</label>
+                        <input type="checkbox" value="1" name="multicanalidad" id="multicanalidad" />
                     </div>
-                </div>
+                </div>*@
+
+            <div class="col-md-7" style="padding-left: 25px;">
+                @if (ViewBag.Pais == "PE") /*filtros solo para Bataweb Perú*/
+                {
+                    <div id="prm" class="col-sm-5" disabled>
+                        <label for="segape" style="color: #3d566e;">Tipo de Canal</label>
+                        <div class="form-group">
+                            <label class="radio-inline"><input type="radio" name="opt" id="opttodos" checked>Todos</label>
+
+                            <label class="radio-inline"><input type="radio" name="opt" id="optmulti">Multicanalidad</label>
+                            <label class="radio-inline"><input type="radio" name="opt" id="optchat">ChatShop</label>
+                        </div>
+                    </div>
+                }
                 <div class="col-sm-2">
                     <label></label><br />
                     <button type="submit" title="Consultar" class="btn btn-primary">
@@ -140,16 +155,17 @@
                     </button>
                 </div>
             </div>
+
             @*sostic 06/2019*@
             @*<div class="col-sm-2">
-                <label></label><br />
-                <button  type="submit" title="Consultar" class="btn btn-primary">
-                    <span class="glyphicon glyphicon-search"></span>
-                </button>
-            </div>*@
+                    <label></label><br />
+                    <button  type="submit" title="Consultar" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </button>
+                </div>*@
         </div>
-}
-  
+    }
+
     <div class="modal-header modal-header-danger" onclick="visualizarImagen()" style="margin-top:0px;margin-bottom:0px;padding-top:2px;padding-bottom:2px;overflow-x:auto; ">
 
         <table style="border-bottom:0px;font-size:14px;width:100%;">
@@ -157,7 +173,7 @@
                 <td style="font-size:14px;width:10px;text-align:left;">
                     <div>
                         <span id="bocuP" style="display:none" class="glyphicon glyphicon-eye-close"></span>
-                        <span id="bverP"  class="glyphicon glyphicon-picture"></span>
+                        <span id="bverP" class="glyphicon glyphicon-picture"></span>
                     </div>
                 </td>
                 <td style="font-size:14px;width:98%;text-align:left;"><h5 class="modal-title" id="myModalLabel"><div id="DivNombre"> &nbsp;Stock de Articulo</div></h5></td>
@@ -187,6 +203,8 @@
     </div>
 </div>
 <div><input id="NombreUsuario" type="hidden" value="@ViewBag.Usuario" /></div>
+<div><input id="Pais" type="hidden" value="@ViewBag.Pais" /></div>
+
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" ng-app>
     <div class="modal-dialog">
         <div class="modal-content">
@@ -196,7 +214,7 @@
 </div>
 
 @*<script src="~/Scripts/bootstrap.min.js"></script>
-<script src="~/ScriptsSelect/bootstrap-select.js"></script>*@
+    <script src="~/ScriptsSelect/bootstrap-select.js"></script>*@
 <script src="~/Scripts/bootstrap-select.min.js"></script>
 <script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
 <script src="~/Scripts/BI.js"></script>
@@ -218,18 +236,18 @@
 
 
     function visualizarImagen() {
-        
+
         if (gVisible == 'F') {
             gVisible = 'V';
             mostrarDivFast('tdImagen');
             ocultarDivFast('bverP');
             mostrarDivFast('bocuP');
-        }else{
+        } else {
             gVisible = 'F';
             ocultarDivFast('tdImagen');
             mostrarDivFast('bverP');
             ocultarDivFast('bocuP');
-        }      
+        }
 
     }
 
@@ -414,17 +432,18 @@
 
         var vta_acum = $('#dwvta').val();
 
-        
+
 
         codcadena = codcadena.toString();
 
         /*sostic 06/2019*/
         var tipocanal = '0';
 
-        if (document.getElementById('opttodos').checked) tipocanal = '0'
-        if (document.getElementById('optmulti').checked) tipocanal = '1'
-        if (document.getElementById('optchat').checked) tipocanal = '2'
-
+        if ($("#Pais").val() == 'PE') {
+            if (document.getElementById('opttodos').checked) tipocanal = '0'
+            if (document.getElementById('optmulti').checked) tipocanal = '1'
+            if (document.getElementById('optchat').checked) tipocanal = '2'
+        }
 
         //if ($('#multicanalidad').is(":checked")) {
         //    multicanalidad = 1;
@@ -492,11 +511,11 @@
 
                     $.each(valors, function (index, item) {
 
-                       
+
 
                         codTienda = item.Codigo_tienda;
                         NombreArticulo = item.Descripcion;
-                        strUrlImagen = item.Url_Imagen;                        
+                        strUrlImagen = item.Url_Imagen;
                         TelefonoTienda = item.Telefono;
                         if (codTienda != consTienda) {
 
@@ -520,15 +539,15 @@
 
                                 strhtml = strhtml.replace("VACUM", acum.toString());
 
-                        //        $.each(pares_acumulados, function (_index, _item) {
-                        //            var tda_pa = _item.TIENDA;
-                        //            var pa = _item.PARES_ACUM;
-                        //            if (tda_pa == consTienda) {
-                        //                strhtml = strhtml.replace('>0<', '>' + pa + '<');
-                        //            }
-                        //        });
+                                //        $.each(pares_acumulados, function (_index, _item) {
+                                //            var tda_pa = _item.TIENDA;
+                                //            var pa = _item.PARES_ACUM;
+                                //            if (tda_pa == consTienda) {
+                                //                strhtml = strhtml.replace('>0<', '>' + pa + '<');
+                                //            }
+                                //        });
 
-                              
+
 
                                 divFinal += strhtml;
                                 listTalla = '';
@@ -541,9 +560,8 @@
 
                         total += item.Cantidad;
 
-                        var as = $(pares_acumulados).filter(function (i, n) { return n.TIENDA === codTienda});
-                        if (as.length > 0)
-                            {
+                        var as = $(pares_acumulados).filter(function (i, n) { return n.TIENDA === codTienda });
+                        if (as.length > 0) {
                             acum = as[0].PARES_ACUM;
                         }
                         nombreTienda = item.Nombre_Tienda;
@@ -558,7 +576,7 @@
                         listTalla = listTalla.replace("codTalla", talla);
                         listTalla = listTalla.replace("codArticulo", codArticulo);
 
-                       
+
 
                         listCantidad += ConstCantidad;
                         listCantidad = listCantidad.replace("variableCantidad", cantidad);
@@ -577,7 +595,7 @@
                         divFinal += ConstHtmlTienda;
                         document.getElementById('imagenCatalogo').src = strUrlImagen;
                         document.getElementById("listTienda").innerHTML = divFinal;
-                        document.getElementById("DivNombre").innerHTML = 'Stock de Articulo:&nbsp;' + codArticulo+'-' + NombreArticulo;
+                        document.getElementById("DivNombre").innerHTML = 'Stock de Articulo:&nbsp;' + codArticulo + '-' + NombreArticulo;
                     }
 
                 } else {
@@ -719,10 +737,10 @@
                         strhtml += '<td style="font-size:14px;width:5%;text-align:left;">'
                         strhtml += '<span id="bocuPS"   style="display:none" class="glyphicon glyphicon-eye-close"></span>'
                         strhtml += '<span id="bverPS" class="glyphicon glyphicon-picture"></span>'
-                   
+
                         strhtml += '</td>'
                         strhtml += '<td style="font-size:14px;width:95%;text-align:left;">Articulos Sustitutos de:&nbsp;&nbsp;' + codArticulo + '&nbsp;&nbsp;-&nbsp;&nbsp;Tienda:&nbsp;&nbsp;' + destienda + '</td>'
-                      
+
                         strhtml += '</tr>'
                         strhtml += '</table>'
                         strhtml += '</h5>'

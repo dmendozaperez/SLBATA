@@ -55,7 +55,6 @@ namespace CapaDato.ReportsValeCompra
                     using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
                     {
 
-
                         SqlParameter ocodArticulo = cmd.Parameters.Add("@codArticulo", SqlDbType.VarChar);
                         ocodArticulo.Direction = ParameterDirection.Input;
                         ocodArticulo.Value = Cod_Articulo;
@@ -97,7 +96,7 @@ namespace CapaDato.ReportsValeCompra
             return lista;
         }
 
-        public List<Ent_Distrito> listar_distrito()
+        public List<Ent_Distrito> listar_distrito(string pais)
         {
             string sqlquery = "USP_GET_DISTRITO";
             List<Ent_Distrito> lista = null;
@@ -112,6 +111,15 @@ namespace CapaDato.ReportsValeCompra
                         cmd.CommandType = CommandType.StoredProcedure;
                         using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                         {
+
+                            SqlParameter opais = cmd.Parameters.Add("@Pais", SqlDbType.VarChar);
+                            opais.Direction = ParameterDirection.Input;
+                            opais.Value = pais;
+
+
+                            cmd.CommandTimeout = 0;
+                            cmd.CommandType = CommandType.StoredProcedure;
+
                             DataTable dt = new DataTable();
                             da.Fill(dt);
                             lista = new List<Ent_Distrito>();
@@ -191,6 +199,7 @@ namespace CapaDato.ReportsValeCompra
 
                         cmd.CommandTimeout = 0;
                         cmd.CommandType = CommandType.StoredProcedure;
+
                         using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                         {
                             DataTable dt = new DataTable();
@@ -287,14 +296,14 @@ namespace CapaDato.ReportsValeCompra
         }
 
         public string listarStr_ArticuloStock(string Cod_Articulo, string Cod_Dpto, string Cod_Prv, string Cod_Dist, 
-                                              string codTalla,String coddist_b,string cod_tda,/*sostic 06/2019*/ string tipocanal, string cadena,string vta_acum)
+                                              string codTalla,String coddist_b,string cod_tda,/*sostic 06/2019*/ string tipocanal, string cadena,string vta_acum,string pais)
         {
             string strJson = "";
             try
             {
                 SqlConnection cn = new SqlConnection(Ent_Conexion.conexionPosPeru);
                 cn.Open();
-                SqlCommand oComando = new SqlCommand("USP_Obtener_Articulo_StockPorTienda", cn);
+                SqlCommand oComando = new SqlCommand("USP_Obtener_Articulo_StockPorTienda_2", cn);
                 oComando.CommandType = CommandType.StoredProcedure;
 
                 SqlParameter oArticulo = oComando.Parameters.Add("@codArticulo", SqlDbType.VarChar);
@@ -337,8 +346,12 @@ namespace CapaDato.ReportsValeCompra
                 SqlParameter omulticanalidad = oComando.Parameters.Add("@tipocanal", SqlDbType.VarChar);
                 omulticanalidad.Direction = ParameterDirection.Input;
                 omulticanalidad.Value = tipocanal;// ( == null ? 0 :1);
-                                                                        /*sostic 06/2019*/
+                                                  /*sostic 06/2019*/
 
+                /*AGA 07/2020*/
+                SqlParameter opais = oComando.Parameters.Add("@pais", SqlDbType.VarChar);
+                opais.Direction = ParameterDirection.Input;
+                opais.Value = pais;
 
                 //SqlDataReader oReader = oComando.ExecuteReader(CommandBehavior.SingleResult);
                 DataSet dsRes = new DataSet();

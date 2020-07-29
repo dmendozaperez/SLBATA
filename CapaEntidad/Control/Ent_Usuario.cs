@@ -17,5 +17,10 @@ namespace CapaEntidad.Control
 
         public string usu_tip_nom { get; set; }
         public string usu_ip { get; set; }
+
+        /*pais -bataweb ecuador*/
+        public string usu_pais { get; set; }
+
+
     }
 }
