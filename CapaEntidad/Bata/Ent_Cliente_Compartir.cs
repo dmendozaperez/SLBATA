@@ -15,6 +15,7 @@ namespace CapaEntidad.Bata
         public string fecha_ing { get; set; }
         public string fecha_env { get; set; }      
         public string cod_tda { get; set; }  
+        public string num_doc { get; set; }
 
     }
 }

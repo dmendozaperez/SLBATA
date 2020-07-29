@@ -108,7 +108,8 @@ namespace CapaPresentacion.Controllers
                              a.tienda,
                              a.fecha_ing,
                              a.fecha_env,
-                             a.cod_tda                             
+                             a.cod_tda,
+                             a.num_doc                             
                          };
             //Se devuelven los resultados por json
             return Json(new
@@ -125,12 +126,14 @@ namespace CapaPresentacion.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult NuevoCompartir(string dni, string correo, string tienda,Int32 envio)
+        public ActionResult NuevoCompartir(string dni, string correo, string tienda,Int32 envio,string numdoc)
         {
+
+            if (numdoc == null) numdoc = "";
 
             Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
 
-            Boolean _valida_nuevo = compartir.insert_edit_compartir(dni,correo,tienda, _usuario.usu_id, (envio==1)?true:false); //true;// funcion.InsertarFuncion();
+            Boolean _valida_nuevo = compartir.insert_edit_compartir(dni,correo,tienda, _usuario.usu_id, (envio==1)?true:false,numdoc); //true;// funcion.InsertarFuncion();
 
             return Json(new { estado = (_valida_nuevo) ? "1" : "-1", desmsg = (_valida_nuevo) ? "Se actualizo satisfactoriamente." : "Hubo un error al actualizar." });
         }

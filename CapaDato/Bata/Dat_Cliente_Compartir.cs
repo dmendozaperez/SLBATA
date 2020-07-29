@@ -50,7 +50,7 @@ namespace CapaDato.Bata
             }
             return list;
         }
-        public Boolean insert_edit_compartir(string dni,string correo,string cod_tda,decimal usu,Boolean envio)
+        public Boolean insert_edit_compartir(string dni,string correo,string cod_tda,decimal usu,Boolean envio,string numdoc="")
         {
             Boolean valida = false;
             string sqlquery = "USP_BATACLUB_INSERTAR_ENVIAR_COMPARTIR_BATAWEB";
@@ -70,6 +70,7 @@ namespace CapaDato.Bata
                             cmd.Parameters.AddWithValue("@cod_tda", cod_tda);
                             cmd.Parameters.AddWithValue("@usu", usu);
                             cmd.Parameters.AddWithValue("@envio", envio);
+                            cmd.Parameters.AddWithValue("@numdoc", numdoc);
                             cmd.ExecuteNonQuery();
                             valida = true;
                         }
@@ -189,6 +190,7 @@ namespace CapaDato.Bata
                                         fecha_ing = fila["fecha_ing"].ToString(),
                                         fecha_env = fila["fecha_env"].ToString(),
                                         cod_tda = fila["cod_tda"].ToString(),
+                                        num_doc = fila["num_doc"].ToString(),
                                     }
                                   ).ToList();
                         }
