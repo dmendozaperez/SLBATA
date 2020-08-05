@@ -27,18 +27,16 @@ namespace CapaPresentacion.Controllers
 {
     public class InterfaceController : Controller
     {
-     
-    
+
         private Dat_Interface datInterface = new Dat_Interface();
-        
-     
+
         private string _session_listInterface = "_session_listInterface";
-       
+
         public ActionResult Index()
         {
-                    
-            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];                   
-           
+
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+
             string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
             string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
             string return_view = actionName + "|" + controllerName;
@@ -49,11 +47,10 @@ namespace CapaPresentacion.Controllers
             }
             else
             {
-
                 var lista = datInterface.listar_Pais();
-               
+
                 ViewBag.listPais = lista;
-              
+
                 return View();
             }
         }
@@ -71,7 +68,7 @@ namespace CapaPresentacion.Controllers
                     strJson = datInterface.listarStr_Tienda(Params);
                     jRespuesta = Json(serializer.Deserialize<List<Ent_Combo>>(strJson), JsonRequestBehavior.AllowGet);
                     break;
-                
+
                 default:
                     Console.WriteLine("Default case");
                     break;
@@ -84,7 +81,7 @@ namespace CapaPresentacion.Controllers
             string strJson = "";
             JsonResult jRespuesta = null;
             strJson = datInterface.listarStr_Interface();
-           
+
             return strJson;
         }
 
@@ -94,10 +91,10 @@ namespace CapaPresentacion.Controllers
             var oJRespuesta = new JsonResponse();
             Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
 
-            _InterfaceTienda.IdUsu = _usuario.usu_id;            
+            _InterfaceTienda.IdUsu = _usuario.usu_id;
 
             Boolean respuesta = datInterface.InsertarInterfaceTienda(_InterfaceTienda);
-            
+
             oJRespuesta.Message = respuesta.ToString();
             oJRespuesta.Success = respuesta;
 
@@ -107,7 +104,7 @@ namespace CapaPresentacion.Controllers
         public JsonResult GenerarArchivoInterface(string Cod_Pais, List<string> listTienda, List<string> listInterface)
         {
             var oJRespuesta = new JsonResponse();
-            var oJRpta= new JsonRespuesta();
+            var oJRpta = new JsonRespuesta();
             Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
             DataTable dt_item = null;
             DataTable dt_price_item = null;
@@ -115,7 +112,7 @@ namespace CapaPresentacion.Controllers
             foreach (string Cod_Tda in listTienda)
             {
                 string ruta1 = System.Web.HttpContext.Current.Server.MapPath(Ent_Conexion.strDirectorio_Interface);
-                oJRpta = datInterface.GenerarArchivoInterface(Cod_Pais, Cod_Tda, listInterface, ruta1,ref dt_item,ref dt_price_item,ref dt_item_images);
+                oJRpta = datInterface.GenerarArchivoInterface(Cod_Pais, Cod_Tda, listInterface, ruta1, ref dt_item, ref dt_price_item, ref dt_item_images);
                 //if (oJRpta.Success) {
 
                 //    string strDirectorio = oJRpta.Message;
@@ -133,17 +130,17 @@ namespace CapaPresentacion.Controllers
             }
 
 
-            string strDirectorio = Ent_Conexion.strDirectorio_Interface;          
+            string strDirectorio = Ent_Conexion.strDirectorio_Interface;
             string startPath = System.Web.HttpContext.Current.Server.MapPath(strDirectorio.Remove(strDirectorio.Length - 1));
             string zipPath = startPath + ".zip";
-            string ruta =zipPath;
+            string ruta = zipPath;
 
             if (System.IO.File.Exists(zipPath))
             {
                 System.IO.File.Delete(zipPath);
             }
 
-            ZipFile.CreateFromDirectory(startPath, zipPath);   
+            ZipFile.CreateFromDirectory(startPath, zipPath);
 
             foreach (string Cod_Tda in listTienda)
             {
@@ -153,7 +150,7 @@ namespace CapaPresentacion.Controllers
 
             oJRespuesta.Message = oJRpta.Message;
             oJRespuesta.Success = oJRpta.Success;
-         
+
 
             return Json(oJRespuesta, JsonRequestBehavior.AllowGet);
         }
@@ -171,7 +168,7 @@ namespace CapaPresentacion.Controllers
             var fecha = thisDay.ToString("yyyyMMdd");
             var hora = DateTime.Now.ToString("hhmmss");
 
-            string fileName = "xstore_" + "Interface_"+ fecha+"_"+ hora + ".zip";
+            string fileName = "xstore_" + "Interface_" + fecha + "_" + hora + ".zip";
             return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
 
 
