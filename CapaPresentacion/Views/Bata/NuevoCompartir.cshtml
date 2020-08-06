@@ -18,13 +18,19 @@
                 </td>
             </tr>
             <tr>
-                <td><label for="correo">Correo</label></td>
+                <td><label for="email">Correo</label></td>
                 <td>
                     <input type="email" maxlength="155" id="correo" placeholder="Ingese el Correo" class="form-control" />
                 </td>
             </tr>
             <tr>
-                <td><label for="controller">Tienda</label></td>
+                <td><label for="numdoc">Num-Doc</label></td>
+                <td>
+                    <input type="text" maxlength="30" id="numdoc" placeholder="Ingese el Numero de Boleta" class="form-control" />
+                </td>
+            </tr>
+            <tr>
+                <td><label for="dwtienda">Tienda</label></td>
                 <td>
                     @Html.DropDownList("dwtienda", new SelectList(ViewBag.tienda, "cod_entid", "des_entid", "-1"), new { @class = "selectCountry form-control", @data_live_search = "true", @id = "dwtienda" })
                 </td>
@@ -46,3 +52,10 @@
         <input type="submit" onclick="OnNuevo_Grabar();" class="btn btn-primary" id="btnSubmit" value="Aceptar" />
     </div>
 </div>
+<script>
+$(document).ready(function() {
+    $("#dwtienda").select({
+    dropdownParent: $("#myModal")
+  });
+});
+</script>

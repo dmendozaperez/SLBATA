@@ -3,7 +3,8 @@
     ViewBag.Title = "Consulta y Acciones de Cupones Compartir";
 }
 <p class="text-danger">Muestra la lista de clientes compartir. Agregar cliente o Reeenviar correo y editar correo para en reenvio de correo.</p>
-<link href="~/ContentSelect/bootstrap-select.css" rel="stylesheet" />
+@*<link href="~/ContentSelect/bootstrap-select.css" rel="stylesheet" />
+@Scripts.Render("~/bundles/bootstrap")*@
 <style>
     .table thead {
         background-color: #5799bf;
@@ -45,8 +46,9 @@
             <table id="tbcompartir" class="table dataTable table-hover table-striped table-responsive">
                 <thead>
                     <tr>
-                        <th>DNI</th>
+                        <th>DNI</th>                        
                         <th>CORREO</th>
+                        <th>NUM-DOC</th>
                         <th>ENVIO EMAIL</th>
                         <th>TIENDA</th>
                         <th>FECHA ING.</th>
@@ -57,8 +59,9 @@
                 <tbody data-bind="foreach:"></tbody>
                 <tfoot>
                     <tr>
-                        <th>DNI</th>
+                        <th>DNI</th>                        
                         <th>CORREO</th>
+                        <th>NUM-DOC</th>
                         <th>ENVIO EMAIL</th>
                         <th>TIENDA</th>
                         <th>FECHA ING.</th>
@@ -94,7 +97,7 @@
     </div>
 </div>
 <script src="~/Scripts/bootstrap.min.js"></script>
-<script src="~/ScriptsSelect/bootstrap-select.js"></script>
+@*<script src="~/ScriptsSelect/bootstrap-select.js"></script>*@
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>
     var buscar = '';
@@ -132,7 +135,7 @@
             "bdestroy": true,
             "start": 0,
             "columnDefs": [{
-                "targets": [ 2, 3,4,5,6],
+                "targets": [ 2,3,4,5,6,7],
                 "orderable": false                    
             }],
             "processing": true,           
@@ -141,6 +144,7 @@
             "aoColumns": [
                   { "sName": "dni", "mData": "dni" },
                   { "sName": "correo", "mData": "correo" },
+                  { "sName": "num_doc", "mData": "num_doc" },
                   { "sName": "envio_email", "mData": "envio_email" },
                   { "sName": "tienda", "mData": "tienda" },
                   { "sName": "fecha_ing", "mData": "fecha_ing" },
@@ -266,7 +270,9 @@
         var dni = $("#dni").val();
         var correo = $("#correo").val();
         var tienda = $('#dwtienda').val();
-            
+        
+        var numdoc = $("#numdoc").val();
+
         if (dni.trim().trimLeft().trimRight().length == 0) {
             toastr.error("Ingrese el numero de Dni o Roc.", "Aviso");
             $('#dni').focus();
@@ -300,7 +306,7 @@
                 success: function (data) {
                     waitingDialog.hide();
                     if (data.estado == 0) {
-                        grabar_cliente(dni, correo, tienda, envio,estado);
+                        grabar_cliente(dni, correo, tienda, envio, estado, numdoc);
                     }
                     else {                 
                         toastr.error(data.mensaje, "Alerta");
@@ -312,13 +318,13 @@
             });
         }
         else{
-            grabar_cliente(dni, correo, tienda, envio, estado);
+            grabar_cliente(dni, correo, tienda, envio, estado,'');
         }
 
        
 
     }
-    function grabar_cliente(dni, correo, tienda,envio ,estado) {
+    function grabar_cliente(dni, correo, tienda,envio ,estado,numdoc) {
         var msg = '';
 
         if (envio == 0) {
@@ -358,7 +364,7 @@
                 $.ajax({
                     type: "POST",
                     url: '@Url.Action("NuevoCompartir", "Bata")',
-                    data: { dni: dni, correo: correo, tienda: tienda,envio:envio },
+                    data: { dni: dni, correo: correo, tienda: tienda, envio: envio, numdoc: numdoc },
                     success: function (data) {
                         if (data.estado == "1") {
                             buscar = dni;
@@ -418,7 +424,7 @@
                                     actualizar = "";
                                     toastr.success('Se envio los cupones al correo: ' + correo, msg_titulo)
                                     
-                                    //waitingDialog.hide();
+                                    waitingDialog.hide();
                                 }
                                
                             }
