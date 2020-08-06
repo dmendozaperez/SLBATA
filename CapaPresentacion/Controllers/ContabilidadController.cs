@@ -18,7 +18,7 @@ namespace CapaPresentacion.Controllers
     {
         private Dat_ListaTienda dat_lista_tienda = new Dat_ListaTienda();
         private Dat_Contabilidad_EstadoDocumento datConta = new Dat_Contabilidad_EstadoDocumento();
-        private string _session_contabilidad_num_private = "_session_contabilidad_num_private"; 
+        private string _session_contabilidad_num_private = "_session_contabilidad_num_private";
         private string _session_contb_tienda_peru = "_session_contb_tienda_peru";
         private string _session_contb_popup = "_session_contb_popup";
 
@@ -39,9 +39,19 @@ namespace CapaPresentacion.Controllers
             }
             else
             {
-                ViewBag.Tienda = dat_lista_tienda.get_tienda("PE", "1");
-                List<Ent_ListaTienda> listienda = ViewBag.Tienda;
-                Session[_session_contb_tienda_peru] = listienda;
+                if (Session["PAIS"].ToString() == "PE") // LISTA DE TIENDAS PARA BATA ECUADOR
+                {
+                    ViewBag.Tienda = dat_lista_tienda.get_tienda("PE", "1");
+                    List<Ent_ListaTienda> listienda = ViewBag.Tienda;
+                    Session[_session_contb_tienda_peru] = listienda;
+                }
+                else
+                {
+                    ViewBag.Tienda = dat_lista_tienda.get_tienda("EC", "1");
+                    List<Ent_ListaTienda> listienda = ViewBag.Tienda;
+                    Session[_session_contb_tienda_peru] = listienda;
+                }
+
             }
             return View();
             //else
@@ -58,7 +68,7 @@ namespace CapaPresentacion.Controllers
             //}
 
             //return View();
-          //  }
+            //  }
         }
 
         public List<Ent_Contabilidad_EstadoDocumento> listaTable(string cod_entid, DateTime fec_ini, DateTime fec_fin)
@@ -71,11 +81,11 @@ namespace CapaPresentacion.Controllers
         public PartialViewResult _Table(string hidden, string fec_ini, string fec_fin, string dwtda)
         {
             if (hidden == null || hidden == "")
-            {   return PartialView(); }
+            { return PartialView(); }
             else
             {   //string dwtda--> se reemplaza por hidden - para agarrar varios id de tiendas por el combo multiselect
                 return PartialView(listaTable(hidden, Convert.ToDateTime(fec_ini), Convert.ToDateTime(fec_fin)));
-            }  
+            }
         }
 
         public ActionResult getDetAjax(Ent_jQueryDataTableParams param)

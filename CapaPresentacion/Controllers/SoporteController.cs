@@ -107,20 +107,30 @@ namespace CapaPresentacion.Controllers
             }
             else
             {
-                if (Session[_session_soporte_tienda_peru] != null)
+                if (Session["PAIS"].ToString() == "PE")
                 {
-                    ViewBag.Tienda = Session["_session_soporte_tienda_peru"];
+
+                    if (Session[_session_soporte_tienda_peru] != null)
+                    {
+                        ViewBag.Tienda = Session["_session_soporte_tienda_peru"];
+                    }
+                    else
+                    {
+                        ViewBag.Tienda = dat_lista_tienda.get_tienda("PE", "1");
+                        List<Ent_ListaTienda> listienda = ViewBag.Tienda;
+                        Session[_session_soporte_tienda_peru] = listienda;
+                    }
                 }
                 else
                 {
-                    ViewBag.Tienda = dat_lista_tienda.get_tienda("PE", "1");
-                    List<Ent_ListaTienda> listienda = ViewBag.Tienda;
-                    Session[_session_soporte_tienda_peru] = listienda;
+                    //ViewBag.Tienda = tienda.get_ListaTiendaXstore_EC(Session["PAIS"].ToString());
+                    ViewBag.Tienda = dat_lista_tienda.get_tienda("EC", "1");
                 }
-                return View();
-
             }
+            return View();
+
         }
+
 
         public List<Ent_Documento_Transac> listaGuia(string cod_entid, DateTime fec_ini, DateTime fec_fin)
         {
@@ -612,7 +622,7 @@ namespace CapaPresentacion.Controllers
             Int32 respuesta = 0;
             var oJRespuesta = new JsonResponse();
 
-            
+
             if (Estado == "1" && Tk_soporte != "")
             {
                 Estado = "E"; // EN PROCESO
@@ -623,7 +633,7 @@ namespace CapaPresentacion.Controllers
             }
 
 
-            if (Tk_soporte == "" )
+            if (Tk_soporte == "")
             {
                 oJRespuesta.Message = (respuesta).ToString();
                 oJRespuesta.Data = false;

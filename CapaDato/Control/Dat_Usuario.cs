@@ -126,6 +126,7 @@ namespace CapaDato.Control
                         cmd.Parameters.AddWithValue("@usu_login", usu.usu_login);
                         cmd.Parameters.AddWithValue("@usu_password",usu.usu_contraseña);
                         cmd.Parameters.AddWithValue("@usu_tip_id",usu.usu_tip_id);
+                        cmd.Parameters.AddWithValue("@usu_pais", usu.usu_pais);
 
                         cmd.Parameters.Add("@existe", SqlDbType.Bit);
 
@@ -172,6 +173,7 @@ namespace CapaDato.Control
                         cmd.Parameters.AddWithValue("@usu_est_id", usu.usu_est_id);
                         cmd.Parameters.AddWithValue("@usu_tip_id", usu.usu_tip_id);
                         cmd.Parameters.AddWithValue("@pass", edit_pass);
+                        cmd.Parameters.AddWithValue("@usu_pais", usu.usu_pais);
                         cmd.ExecuteNonQuery();
                         valida = true;
                     }
@@ -212,6 +214,7 @@ namespace CapaDato.Control
                                 _usu.usu_est_id = dr["Usu_Est_Id"].ToString();
                                 _usu.usu_tip_nom = dr["Usu_Tip_Nombre"].ToString();
                                 _usu.usu_tip_id= dr["Usu_Tip_Id"].ToString();
+                                _usu.usu_pais = dr["Usu_pais"].ToString();
                                 list.Add(_usu);
                             }
                         }

@@ -12,7 +12,7 @@ namespace CapaDato.Transac
 {
     public class Dat_Consultar_Guia
     {
-        public List<Ent_Consultar_Guia> get_lista(string p_tda_destino, string p_num_guia)
+        public List<Ent_Consultar_Guia> get_lista(string p_tda_destino, string p_num_guia,string p_pais)
         {
             string sqlquery = "USP_CONSULTAR_GUIAS_TIENDA";
             List<Ent_Consultar_Guia> listar = null;
@@ -30,7 +30,8 @@ namespace CapaDato.Transac
 
                             cmd.Parameters.AddWithValue("@tda_destino", p_tda_destino);
                             cmd.Parameters.AddWithValue("@num_guia", p_num_guia);
-                            
+                            cmd.Parameters.AddWithValue("@pais", p_pais);
+
                             using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                             {
                                 DataTable dt = new DataTable();
