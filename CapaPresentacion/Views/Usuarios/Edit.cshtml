@@ -28,12 +28,6 @@
             <input type="hidden" id="idusu" value="@Model.usu_id" />
             <table class="table table-striped">
                 <tr>
-                    <td><label for="dwtipo">Pais</label></td>
-                    <td>
-                        @Html.DropDownList("dwpais", new SelectList(ViewBag.listPais, "cbo_codigo", "cbo_descripcion", Model.usu_pais), new { @class = "form-control", @data_live_search = "false", @id = "dwpais" })
-                    </td>
-                </tr>
-                <tr>
                     <td><label for="dwtipo">Tipo Usuario</label></td>
                     <td>
                         @Html.DropDownList("dwtipo", new SelectList(ViewBag.usuariotipo, "usu_tip_id", "usu_tip_nombre",Model.usu_tip_id), new { @class = "selectCountry form-control", @data_live_search = "false", @id = "dwtipo" })
@@ -121,7 +115,6 @@
         var _tipo = $('select[name=dwtipo]').selectpicker('val');
         var _estado = $('select[name=dwestado]').selectpicker('val');
         var _password = $("#password").val();
-        var _pais = $('select[name=dwpais]').selectpicker('val');
 
         var _pasedit='0'
        
@@ -136,7 +129,7 @@
                  url: '../Usuarios/Edit',
                  dataType: "json",
                  type: "POST",
-                 data: { id: _id, nombre: _nombre, password: _password, tipo: _tipo, estado: _estado, pass: _pasedit, pais: _pais },
+                 data: { id: _id, nombre: _nombre, password: _password, tipo: _tipo, estado: _estado, pass: _pasedit },
                  success: function (data, textStatus, XMLHttpRequest) {
                      if (data.estado == '1') {
 

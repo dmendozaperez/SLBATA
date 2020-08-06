@@ -303,7 +303,7 @@ namespace CapaDato.ReportsValeCompra
             {
                 SqlConnection cn = new SqlConnection(Ent_Conexion.conexionPosPeru);
                 cn.Open();
-                SqlCommand oComando = new SqlCommand("USP_Obtener_Articulo_StockPorTienda", cn);
+                SqlCommand oComando = new SqlCommand("USP_Obtener_Articulo_StockPorTienda_2", cn);
                 oComando.CommandType = CommandType.StoredProcedure;
 
                 SqlParameter oArticulo = oComando.Parameters.Add("@codArticulo", SqlDbType.VarChar);

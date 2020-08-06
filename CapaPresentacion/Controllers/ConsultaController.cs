@@ -214,15 +214,7 @@ namespace CapaPresentacion.Controllers
                 }
                 else
                 {
-                    if (Session["PAIS"].ToString() == "PE")
-                    {
-                        ViewBag.Tienda = tienda.get_ListaTiendaXstore(true);
-                    }else
-                    {
-                        ViewBag.Tienda = tienda.get_ListaTiendaXstore_EC(Session["PAIS"].ToString());
-                    }
-
-                    
+                    ViewBag.Tienda = tienda.get_ListaTiendaXstore(true);
                 }
 
                 return View();
@@ -237,14 +229,14 @@ namespace CapaPresentacion.Controllers
         public string listarStr_DatosGuia(string tda_destino, string num_guia)
         {
             JavaScriptSerializer js = new JavaScriptSerializer();
-            string jsonData = js.Serialize(datGuia.get_lista(tda_destino, num_guia,Session["PAIS"].ToString()));
+            string jsonData = js.Serialize(datGuia.get_lista(tda_destino, num_guia));
 
             return jsonData;
         }
 
         public List<Ent_Consultar_Guia> listaGuia(string tda_destino, string num_guia)
         {
-            List<Ent_Consultar_Guia> listguia = datGuia.get_lista(tda_destino, num_guia,Session["PAIS"].ToString());
+            List<Ent_Consultar_Guia> listguia = datGuia.get_lista(tda_destino, num_guia);
             Session[_session_listguia_private] = listguia;
             return listguia;
         }

@@ -16,7 +16,7 @@ namespace CapaDato.Maestros
 {
     public class Dat_XstoreTienda
     {
-        public List<Ent_TiendaConf> List_Tienda_config(string pais)
+        public List<Ent_TiendaConf> List_Tienda_config()
         {
             string sqlquery = "USP_LISTAR_TIENDA";
             List<Ent_TiendaConf> list = null;
@@ -31,8 +31,6 @@ namespace CapaDato.Maestros
                         {
                             cmd.CommandTimeout = 0;
                             cmd.CommandType = CommandType.StoredProcedure;
-
-                            cmd.Parameters.AddWithValue("@pais", pais);
 
                             using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                             {

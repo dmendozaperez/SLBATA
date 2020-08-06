@@ -276,58 +276,6 @@ namespace CapaDato.Reporte
             return list;
         }
 
-
-        /*lista xstore Bata Ecuador*/
-        public List<Ent_Combo> get_ListaTiendaXstore_EC(string Pais)
-        {
-            List<Ent_Combo> list = null;
-            string sqlquery = "USP_LISTAR_TIENDA_XSTORE";
-            try
-            {
-                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
-                {
-                    if (cn.State == 0) cn.Open();
-                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
-                    {
-                        cmd.CommandTimeout = 0;
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@pais", Pais);
-                        
-                        SqlDataReader dr = cmd.ExecuteReader();
-                        if (dr.HasRows)
-                        {
-                            list = new List<Ent_Combo>();
-                            Ent_Combo combo = new Ent_Combo();
-                            //if (_selecciona)
-                            //{
-                            //    combo.cbo_codigo = "-1";
-                            //    combo.cbo_descripcion = "--SELECCIONAR--";
-                            //    list.Add(combo);
-                            //}
-
-                            while (dr.Read())
-                            {
-                                combo = new Ent_Combo();
-                                combo.cbo_codigo = dr["codigo"].ToString();
-                                combo.cbo_descripcion = dr["descrip"].ToString();
-
-                                list.Add(combo);
-
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception)
-            {
-
-                list = null;
-            }
-            return list;
-        }
-
-
-
         public List<Ent_Combo> get_ListaTiendaXstoreActivo(string codTda = "")
         {
             List<Ent_Combo> list = null;

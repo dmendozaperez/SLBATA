@@ -10,7 +10,6 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using CapaDato.Interface;
 
 namespace CapaPresentacion.Controllers
 {
@@ -70,11 +69,6 @@ namespace CapaPresentacion.Controllers
 
             Dat_Usuario_Tipo usuariotipo = new Dat_Usuario_Tipo();
             ViewBag.usuariotipo = usuariotipo.get_lista();
-
-            Dat_Interface datInterface = new Dat_Interface();
-            var lista = datInterface.listar_Pais();
-            ViewBag.listPais = lista;
-
             return View();
         }
 
@@ -88,14 +82,13 @@ namespace CapaPresentacion.Controllers
                 string return_view = actionName + "|" + controllerName;
                 return RedirectToAction("Login", "Control", new { returnUrl = return_view });
             }
-            else
-            {
+            else { 
                 return View();
             }
         }
 
         [HttpPost]
-        public ActionResult CambiarClave(string password)
+        public ActionResult CambiarClave( string password)
         {
 
             Ent_Usuario _oldusuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
@@ -121,11 +114,11 @@ namespace CapaPresentacion.Controllers
 
 
         [HttpPost]
-        public ActionResult Nuevo(string nombre, string login, string password, string tipo,string pais)
+        public ActionResult Nuevo(string nombre, string login, string password, string tipo)
         {
             if (nombre == null) return Json(new { estado = "0" });
 
-            if (tipo == "0" || tipo == null) return Json(new { estado = "-1", desmsg = "seleccione el tipo de usuario" });
+            if (tipo=="0" || tipo==null) return Json(new { estado = "-1", desmsg="seleccione el tipo de usuario" });
 
             Ent_Usuario _usuario = new Ent_Usuario();
 
@@ -133,25 +126,24 @@ namespace CapaPresentacion.Controllers
             _usuario.usu_login = login;
             _usuario.usu_contraseña = password;
             _usuario.usu_tip_id = tipo;
-            _usuario.usu_pais = pais;
 
             Dat_Usuario usuario = new Dat_Usuario();
             usuario.usu = _usuario;
 
 
 
-            Boolean _valida_nuevo = usuario.InsertarUsuario();
+            Boolean _valida_nuevo =usuario.InsertarUsuario();
 
             if (usuario.existe_login)
             {
                 _valida_nuevo = false;
-                return Json(new { estado = "-1", desmsg = "El login del usuario ya existe." });
+                return Json(new { estado ="-1", desmsg = "El login del usuario ya existe." });
             }
             else
             {
                 return Json(new { estado = (_valida_nuevo) ? "1" : "-1", desmsg = (_valida_nuevo) ? "Se actualizo satisfactoriamente." : "Hubo un error al actualizar." });
             }
-
+            
         }
 
         public ActionResult Edit(int? id)
@@ -170,33 +162,28 @@ namespace CapaPresentacion.Controllers
             Dat_Usuario_Tipo usuariotipo = new Dat_Usuario_Tipo();
             ViewBag.usuariotipo = usuariotipo.get_lista();
 
-            Dat_Interface datInterface = new Dat_Interface();
-            var lista = datInterface.listar_Pais();
-            ViewBag.listPais = lista;
-
 
             return View(filafuncion);
         }
 
         [HttpPost]
-        public ActionResult Edit(string id, string nombre, string password, string tipo, string estado, string pass,string pais)
+        public ActionResult Edit(string id, string nombre, string password, string tipo,string estado,string pass)
         {
             if (id == null) return Json(new { estado = 0 });
 
             Ent_Usuario _usuario = new Ent_Usuario();
 
-            _usuario.usu_id = Convert.ToDecimal(id);
+            _usuario.usu_id =Convert.ToDecimal(id);
             _usuario.usu_nombre = nombre;
             _usuario.usu_contraseña = password;
             _usuario.usu_tip_id = tipo;
             _usuario.usu_est_id = estado;
-            _usuario.usu_pais = pais;
-
+                        
 
             Dat_Usuario usuario = new Dat_Usuario();
             usuario.usu = _usuario;
 
-            Boolean _valida_editar = usuario.EditarUsuario((pass == "1") ? true : false);
+            Boolean _valida_editar =usuario.EditarUsuario((pass=="1")?true:false);
 
             return Json(new { estado = (_valida_editar) ? "1" : "-1", desmsg = (_valida_editar) ? "Se actualizo satisfactoriamente." : "Hubo un error al actualizar." });
         }

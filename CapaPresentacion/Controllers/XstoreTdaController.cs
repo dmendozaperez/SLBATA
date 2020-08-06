@@ -55,7 +55,7 @@ namespace CapaPresentacion.Controllers
 
         public List<Ent_TiendaConf> lista()
         {
-            List<Ent_TiendaConf> liststoreConf = dat_storeTda.List_Tienda_config(Session["PAIS"].ToString());
+            List<Ent_TiendaConf> liststoreConf = dat_storeTda.List_Tienda_config();
 
 
             int nroXstoreActivo = (from n in liststoreConf
@@ -74,7 +74,7 @@ namespace CapaPresentacion.Controllers
         }
         public ActionResult getTienda(Ent_jQueryDataTableParams param)
         {
-            List<Ent_TiendaConf> liststoreConf2 = dat_storeTda.List_Tienda_config(Session["PAIS"].ToString());
+            List<Ent_TiendaConf> liststoreConf2 = dat_storeTda.List_Tienda_config();
             Session[_session_listTdaXstore_private] = liststoreConf2;
 
             /*verificar si esta null*/
