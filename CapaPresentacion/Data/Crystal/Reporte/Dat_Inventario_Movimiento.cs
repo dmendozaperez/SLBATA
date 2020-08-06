@@ -11,7 +11,7 @@ namespace CapaPresentacion.Data.Crystal.Reporte
 {
     public class Dat_Inventario_Movimiento
     {
-        public Models_InventarioMovimiento get_InventarioMovimiento(string cod_tda, DateTime fechaIni,DateTime FechaFin )
+        public Models_InventarioMovimiento get_InventarioMovimiento(string cod_tda, DateTime fechaIni, DateTime FechaFin)
         {
             Models_InventarioMovimiento lista = null;
             List<Lista_InventarioMovimiento> lista1 = null;
