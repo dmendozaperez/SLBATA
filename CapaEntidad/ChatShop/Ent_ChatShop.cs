@@ -22,6 +22,7 @@ namespace CapaEntidad.ChatShop
         public string Direccion { get; set; }
         public string Referencia { get; set; }
         public string Estado { get; set; }
+        public string FlagCourier { get; set; }
 
 
         public List<Ent_DetallesVentaCanal_2> detalles2 { get; set; }
