@@ -1,0 +1,64 @@
+﻿@{
+    Layout = null;
+}
+<table id="tabVenDet" class="table dataTable table-hover table-striped table-responsive">
+    <thead>
+        <tr>
+            <th>PROMOCION</th>
+            <th>ARTICULO</th>
+            <th>TALLA</th>
+            <th>CANTIDAD</th>
+            <th>PRECIO</th>
+            <th>DESCUENTO</th>
+            <th>TOTAL LINEA</th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach:"></tbody>
+    <tfoot>
+        <tr>
+            <th>PROMOCION</th>
+            <th>ARTICULO</th>
+            <th>TALLA</th>
+            <th>CANTIDAD</th>
+            <th>PRECIO</th>
+            <th>DESCUENTO</th>
+            <th>TOTAL LINEA</th>
+        </tr>
+    </tfoot>
+</table>
+<script>
+    $(document).ready(function () {
+        //waitingDialog.show('Espere un momento por favor');
+
+        var total=@ViewBag.total;
+        $("#dcTotal").html("&nbsp;&nbsp;" + total);
+
+        var dniEliminar = "";
+        $('#tabVenDet').DataTable({
+            "language": {
+                "url": "../Scripts/DataTables/Spanish.json"
+            },
+            "bProcessing": false,
+            "bServerSide": true,
+            "bAutoWidth": false,
+            "sAjaxSource": '@Url.Action("getTableBataSacVentaDetAjax", "Bata")',
+            //"fnServerParams": function (aoData) {
+            //    aoData.push({ "name": "dniEliminar", "value": dniEliminar });
+            //},
+            "bdestroy": true,
+            "start": 0,
+            "sort": false,
+            "order": [],
+            "bDeferRender": true,
+            "aoColumns": [
+                    { "sName": "promocion", "mData": "promocion" },
+                    { "sName": "articulo", "mData": "articulo" },
+                    { "sName": "talla", "mData": "talla" },                    
+                    { "sName": "cantidad", "mData": "cantidad" },
+                    { "sName": "precio", "mData": "precio" },
+                    { "sName": "descuento", "mData": "descuento" },
+                    { "sName": "total_linea", "mData": "total_linea" },
+            ]
+        });
+    });
+</script>
