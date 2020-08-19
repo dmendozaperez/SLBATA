@@ -16,7 +16,7 @@ namespace CapaDato.ChatShop
         public List<Ent_ChatShop> get_VentasChatShop(DateTime fdesde, DateTime fhasta, string noDocCli, string noDoc, string CodTda)
         {
             List<Ent_ChatShop> list = null;
-            string sqlquery = "USP_CHATSHOP_LISTA_VENTAS_COURIER";
+            string sqlquery = "USP_CHATSHOP_LISTA_VENTAS_COURIER_2";
             //string _tienda = "";// (String)Session["Tienda"];
             try
             {
@@ -54,6 +54,7 @@ namespace CapaDato.ChatShop
                                 ven.Direccion = dr["DIR_CLIENTE"].ToString();
                                 ven.Referencia = dr["REF_DIRECCION"].ToString();
                                 ven.Estado = dr["ESTADO"].ToString();
+                                ven.FlagCourier = dr["FLAG_COURIER"].ToString();
                                 list.Add(ven);
                             }
                         }

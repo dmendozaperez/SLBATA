@@ -23,6 +23,7 @@ namespace CapaPresentacion.Models.ChatShop
         public string Referencia { get; set; }
         public string Estado { get; set; }
         public string guia_electronica { get; set; }
+        public string FlagCourier { get; set; }
 
         public List<DetallesCanalVenta> detalles { get; set; }
         public List<HistorialEstadosCV> historialEstados { get; set; }

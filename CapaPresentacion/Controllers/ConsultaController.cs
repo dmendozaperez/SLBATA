@@ -217,12 +217,13 @@ namespace CapaPresentacion.Controllers
                     if (Session["PAIS"].ToString() == "PE")
                     {
                         ViewBag.Tienda = tienda.get_ListaTiendaXstore(true);
-                    }else
+                    }
+                    else
                     {
                         ViewBag.Tienda = tienda.get_ListaTiendaXstore_EC(Session["PAIS"].ToString());
                     }
 
-                    
+
                 }
 
                 return View();
@@ -237,14 +238,14 @@ namespace CapaPresentacion.Controllers
         public string listarStr_DatosGuia(string tda_destino, string num_guia)
         {
             JavaScriptSerializer js = new JavaScriptSerializer();
-            string jsonData = js.Serialize(datGuia.get_lista(tda_destino, num_guia,Session["PAIS"].ToString()));
+            string jsonData = js.Serialize(datGuia.get_lista(tda_destino, num_guia, Session["PAIS"].ToString()));
 
             return jsonData;
         }
 
         public List<Ent_Consultar_Guia> listaGuia(string tda_destino, string num_guia)
         {
-            List<Ent_Consultar_Guia> listguia = datGuia.get_lista(tda_destino, num_guia,Session["PAIS"].ToString());
+            List<Ent_Consultar_Guia> listguia = datGuia.get_lista(tda_destino, num_guia, Session["PAIS"].ToString());
             Session[_session_listguia_private] = listguia;
             return listguia;
         }
@@ -402,9 +403,7 @@ namespace CapaPresentacion.Controllers
 
                 listPed = selectVentas(Convert.ToDateTime(fdesde), Convert.ToDateTime(fhasta), noDocCli, noDoc, CodTda);
                 return View(listPed);
-
             }
-
         }
 
         private List<ChatShop> selectVentas(DateTime fdesde, DateTime fhasta, string noDocCli, string noDoc, string CodTda)
@@ -433,171 +432,184 @@ namespace CapaPresentacion.Controllers
                     chsh.Direccion = item.Direccion;
                     chsh.Referencia = item.Referencia;
                     chsh.Estado = item.Estado;
+                    chsh.FlagCourier = item.FlagCourier;
                     ventas.Add(chsh);
                 }
             }
             return ventas;
         }
 
-        public ActionResult Envia_Courier(string IdTienda, string CodInterno, string NroDocumento, string Ruc, string Cliente)
+        public ActionResult Envia_Courier(string IdTienda, string CodInterno, string NroDocumento, string Ruc, string Cliente, string Flag)
         {
-            /*delivery CHASKI*/
-
-            ChatShop cvCzk = selectVenta(IdTienda, CodInterno);
-            List<Ent_Chazki> list_chazki = new List<Ent_Chazki>();
             Dat_ChatShop datos = new Dat_ChatShop();
-            Dat_CanalVenta datos2 = new Dat_CanalVenta();
-
             var oJRespuesta = new JsonResponse();
 
-            string[] desUbigeo = null;
-            desUbigeo = datos2.get_des_ubigeo(cvCzk.informacionTiendaDestinatario.ubigeo);
-            if (desUbigeo == null)
+            if (Flag == "NO")
             {
-                oJRespuesta.Message = ("2").ToString();
-                oJRespuesta.Data = false;
-                oJRespuesta.Success = false;
-                return Json(oJRespuesta, JsonRequestBehavior.AllowGet);
-            }
+                datos.insertar_ge_chatshop(IdTienda, CodInterno, NroDocumento, "");
+                oJRespuesta.Message = ("3").ToString();
+                oJRespuesta.Data = true;
+                oJRespuesta.Success = true;
 
-            if (cvCzk.informacionTiendaEnvio != null)
-            {
-                /* DATA CHASKI : PRODUCCION*/
-
-                Ent_Chazki chazki = new Ent_Chazki();
-                chazki.storeId = cvCzk.informacionTiendaEnvio.chaski_storeId; // "10411"; // proporcionado por chazki
-                chazki.branchId = cvCzk.informacionTiendaEnvio.chaski_branchId; // proporcionado por chazki
-                chazki.deliveryTrackCode = NroDocumento;
-                chazki.proofPayment = "Ninguna"; // por definir la evindencia que será entregada al cliente
-                chazki.deliveryCost = 0;
-                chazki.mode = "Regular"; //pendiente definir el modo con el que se va a trabajar el canal de venta.
-                chazki.time = "";
-                chazki.paymentMethod = "Pagado";
-                chazki.country = "PE";
-
-                /* DATA CHASKI : TEST*/
-
-                //Ent_Chazki chazki = new Ent_Chazki();
-                //chazki.storeId = "10411";
-                //chazki.branchId = "CCSC-B187";
-                //chazki.deliveryTrackCode = NroDocumento;
-                //chazki.proofPayment = "Ninguna"; // por definir la evindencia que será entregada al cliente
-                //chazki.deliveryCost = 0;
-                //chazki.mode = "Regular"; //pendiente definir el modo con el que se va a trabajar el canal de venta.
-                //chazki.time = "";
-                //chazki.paymentMethod = "Pagado";
-                //chazki.country = "PE";
-
-                /* DATA ARTICULO*/
-
-                List<Ent_ItemSold_2> listItemSold = new List<Ent_ItemSold_2>();
-                foreach (var producto in cvCzk.detalles)
-                {
-                    if (producto.codigoProducto != "9999997" && producto.fd_colo == "")
-                    {
-                        Ent_ItemSold_2 _item = new Ent_ItemSold_2();
-                        _item.name = producto.nombreProducto;
-                        _item.currency = "PEN";
-                        _item.price = Convert.ToDouble(producto.total);
-                        _item.weight = 0.3;
-                        _item.volumen = 0;
-                        _item.quantity = producto.cantidad;
-                        _item.unity = "Caja";
-                        _item.size = "M";
-                        listItemSold.Add(_item);
-                    }
-                }
-                chazki.listItemSold = listItemSold;
-                chazki.notes = "Entregar a Cliente";
-                chazki.documentNumber = Ruc;
-                chazki.lastName = "";
-                chazki.email = "servicio.clientes.peru@bata.com";
-
-                chazki.phone = cvCzk.informacionTiendaDestinatario.telefono;
-                int CadRuc = Ruc.Length;
-
-                if (CadRuc > 8)
-                {
-                    chazki.documentType = "RUC";
-                    chazki.companyName = Cliente;
-                    chazki.name_tmp = "";
-                }
-                else
-                {
-                    chazki.documentType = "DNI";
-                    chazki.companyName = "";
-                    chazki.name_tmp = Cliente;
-                }
-                /* DATA DIRECCION*/
-
-                List<Ent_AddressClient_2> listAdressClient = new List<Ent_AddressClient_2>();
-                Ent_AddressClient_2 addressClient = new Ent_AddressClient_2();
-                addressClient.nivel_2 = desUbigeo[0]; //(cvCzk.tipo == "3" ? (cvCzk.ubigeoCliente.ToString() == "" ? cvCzk.ubigeoTienda.Substring(0, 2) : cvCzk.ubigeoCliente.Substring(0, 2)) : cvCzk.ubigeoTienda.Substring(0, 2));
-                addressClient.nivel_3 = desUbigeo[1]; //(cvCzk.tipo == "3" ? (cvCzk.ubigeoCliente.ToString() == "" ? cvCzk.ubigeoTienda.Substring(2, 2) : cvCzk.ubigeoCliente.Substring(2, 2)) : cvCzk.ubigeoTienda.Substring(2, 2));
-                addressClient.nivel_4 = desUbigeo[2]; //(cvCzk.tipo == "3" ? (cvCzk.ubigeoCliente.ToString() == "" ? cvCzk.ubigeoTienda.Substring(4) : cvCzk.ubigeoCliente.Substring(4)) : cvCzk.ubigeoTienda.Substring(4));
-                addressClient.name = cvCzk.informacionTiendaDestinatario.direccion_entrega;
-                addressClient.reference = cvCzk.informacionTiendaDestinatario.referencia;
-                addressClient.alias = "No Alias";
-                Ent_Position_2 position = new Ent_Position_2();
-                position.latitude = 0;
-                position.longitude = 0;
-                addressClient.position = position;
-                listAdressClient.Add(addressClient);
-                chazki.addressClient = listAdressClient;
-
-                list_chazki.Add(chazki);
-
-                string jsonChazki = JsonConvert.SerializeObject(list_chazki);
-                Response_Registro rpta = new Response_Registro();
-                using (var http = new HttpClient())
-                {
-                    http.DefaultRequestHeaders.Add("chazki-api-key", cvCzk.informacionTiendaEnvio.chaski_api_key); //PRODUCCION
-                    //http.DefaultRequestHeaders.Add("chazki-api-key", "KfXfqgEBhfMK4T8Luw8ba91RynMtjzTY"); //TEST
-
-                    HttpContent content = new StringContent(jsonChazki);
-                    content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-
-                    var request = http.PostAsync("https://integracion.chazki.com:8443/chazkiServices/delivery/create/deliveryService", content); //PRODUCCION
-
-                    //var request = http.PostAsync("https://sandboxintegracion.chazki.com:8443/chazkiServices/delivery/create/deliveryService", content); //TEST
-
-                    var response = request.Result.Content.ReadAsStringAsync().Result;
-                    rpta = JsonConvert.DeserializeObject<Response_Registro>(response);
-                }
-                if (rpta.response == 1)
-                {
-                    oJRespuesta.Message = (rpta.response).ToString();
-                    oJRespuesta.Data = true;
-                    oJRespuesta.Success = true;
-
-                    Dat_CanalVenta objCanal = new Dat_CanalVenta();
-                    //datos.insertar_ge_cv(IdTienda, CodInterno, NroDocumento, rpta.codeDelivery);
-                    datos.insertar_ge_chatshop(IdTienda, CodInterno, NroDocumento, rpta.codeDelivery);
-
-                    //TempData["Success"] = "Pedido generado correctamente: " + rpta.codeDelivery;
-                }
-                else if (rpta.response == 99)
-                {
-                    oJRespuesta.Message = (rpta.response).ToString();
-                    oJRespuesta.Data = false;
-                    oJRespuesta.Success = false;
-
-                    //TempData["Error"] = "Error al generar pedido. Error en el servidor" + " | " + rpta.descriptionResponse + " | " + rpta.codeDelivery + " | " + "Intentelo mas tarde.";
-                }
-                else
-                {
-                    oJRespuesta.Message = (rpta.response).ToString();
-                    oJRespuesta.Data = false;
-                    oJRespuesta.Success = false;
-
-                    TempData["Error"] = "Error al generar pedido. " + rpta.descriptionResponse + "|" + rpta.codeDelivery;
-                }
             }
             else
             {
-                TempData["Error"] = "Error al generar guia. No existe informacion de recogo para la tienda.";
+                /*delivery CHASKI*/
+                ChatShop cvCzk = selectVenta(IdTienda, CodInterno);
+                List<Ent_Chazki> list_chazki = new List<Ent_Chazki>();
+
+                Dat_CanalVenta datos2 = new Dat_CanalVenta();
+
+                string[] desUbigeo = null;
+                desUbigeo = datos2.get_des_ubigeo(cvCzk.informacionTiendaDestinatario.ubigeo);
+                if (desUbigeo == null)
+                {
+                    oJRespuesta.Message = ("2").ToString();
+                    oJRespuesta.Data = false;
+                    oJRespuesta.Success = false;
+                    return Json(oJRespuesta, JsonRequestBehavior.AllowGet);
+                }
+
+                if (cvCzk.informacionTiendaEnvio != null)
+                {
+                    /* DATA CHASKI : PRODUCCION*/
+
+                    Ent_Chazki chazki = new Ent_Chazki();
+                    chazki.storeId = cvCzk.informacionTiendaEnvio.chaski_storeId; // "10411"; // proporcionado por chazki
+                    chazki.branchId = cvCzk.informacionTiendaEnvio.chaski_branchId; // proporcionado por chazki
+                    chazki.deliveryTrackCode = NroDocumento;
+                    chazki.proofPayment = "Ninguna"; // por definir la evindencia que será entregada al cliente
+                    chazki.deliveryCost = 0;
+                    chazki.mode = "Regular"; //pendiente definir el modo con el que se va a trabajar el canal de venta.
+                    chazki.time = "";
+                    chazki.paymentMethod = "Pagado";
+                    chazki.country = "PE";
+
+                    /* DATA CHASKI : TEST*/
+
+                    //Ent_Chazki chazki = new Ent_Chazki();
+                    //chazki.storeId = "10411";
+                    //chazki.branchId = "CCSC-B187";
+                    //chazki.deliveryTrackCode = NroDocumento;
+                    //chazki.proofPayment = "Ninguna"; // por definir la evindencia que será entregada al cliente
+                    //chazki.deliveryCost = 0;
+                    //chazki.mode = "Regular"; //pendiente definir el modo con el que se va a trabajar el canal de venta.
+                    //chazki.time = "";
+                    //chazki.paymentMethod = "Pagado";
+                    //chazki.country = "PE";
+
+                    /* DATA ARTICULO*/
+
+                    List<Ent_ItemSold_2> listItemSold = new List<Ent_ItemSold_2>();
+                    foreach (var producto in cvCzk.detalles)
+                    {
+                        if (producto.codigoProducto != "9999997" && producto.fd_colo == "")
+                        {
+                            Ent_ItemSold_2 _item = new Ent_ItemSold_2();
+                            _item.name = producto.nombreProducto;
+                            _item.currency = "PEN";
+                            _item.price = Convert.ToDouble(producto.total);
+                            _item.weight = 0.3;
+                            _item.volumen = 0;
+                            _item.quantity = producto.cantidad;
+                            _item.unity = "Caja";
+                            _item.size = "M";
+                            listItemSold.Add(_item);
+                        }
+                    }
+                    chazki.listItemSold = listItemSold;
+                    chazki.notes = "Entregar a Cliente";
+                    chazki.documentNumber = Ruc;
+                    chazki.lastName = "";
+                    chazki.email = "servicio.clientes.peru@bata.com";
+
+                    chazki.phone = cvCzk.informacionTiendaDestinatario.telefono;
+                    int CadRuc = Ruc.Length;
+
+                    if (CadRuc > 8)
+                    {
+                        chazki.documentType = "RUC";
+                        chazki.companyName = Cliente;
+                        chazki.name_tmp = "";
+                    }
+                    else
+                    {
+                        chazki.documentType = "DNI";
+                        chazki.companyName = "";
+                        chazki.name_tmp = Cliente;
+                    }
+                    /* DATA DIRECCION*/
+
+                    List<Ent_AddressClient_2> listAdressClient = new List<Ent_AddressClient_2>();
+                    Ent_AddressClient_2 addressClient = new Ent_AddressClient_2();
+                    addressClient.nivel_2 = desUbigeo[0]; //(cvCzk.tipo == "3" ? (cvCzk.ubigeoCliente.ToString() == "" ? cvCzk.ubigeoTienda.Substring(0, 2) : cvCzk.ubigeoCliente.Substring(0, 2)) : cvCzk.ubigeoTienda.Substring(0, 2));
+                    addressClient.nivel_3 = desUbigeo[1]; //(cvCzk.tipo == "3" ? (cvCzk.ubigeoCliente.ToString() == "" ? cvCzk.ubigeoTienda.Substring(2, 2) : cvCzk.ubigeoCliente.Substring(2, 2)) : cvCzk.ubigeoTienda.Substring(2, 2));
+                    addressClient.nivel_4 = desUbigeo[2]; //(cvCzk.tipo == "3" ? (cvCzk.ubigeoCliente.ToString() == "" ? cvCzk.ubigeoTienda.Substring(4) : cvCzk.ubigeoCliente.Substring(4)) : cvCzk.ubigeoTienda.Substring(4));
+                    addressClient.name = cvCzk.informacionTiendaDestinatario.direccion_entrega;
+                    addressClient.reference = cvCzk.informacionTiendaDestinatario.referencia;
+                    addressClient.alias = "No Alias";
+                    Ent_Position_2 position = new Ent_Position_2();
+                    position.latitude = 0;
+                    position.longitude = 0;
+                    addressClient.position = position;
+                    listAdressClient.Add(addressClient);
+                    chazki.addressClient = listAdressClient;
+
+                    list_chazki.Add(chazki);
+
+                    string jsonChazki = JsonConvert.SerializeObject(list_chazki);
+                    Response_Registro rpta = new Response_Registro();
+                    using (var http = new HttpClient())
+                    {
+                        http.DefaultRequestHeaders.Add("chazki-api-key", cvCzk.informacionTiendaEnvio.chaski_api_key); //PRODUCCION
+                        //http.DefaultRequestHeaders.Add("chazki-api-key", "KfXfqgEBhfMK4T8Luw8ba91RynMtjzTY"); //TEST
+
+                        HttpContent content = new StringContent(jsonChazki);
+                        content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+                        var request = http.PostAsync("https://integracion.chazki.com:8443/chazkiServices/delivery/create/deliveryService", content); //PRODUCCION
+
+                        //var request = http.PostAsync("https://sandboxintegracion.chazki.com:8443/chazkiServices/delivery/create/deliveryService", content); //TEST
+
+                        var response = request.Result.Content.ReadAsStringAsync().Result;
+                        rpta = JsonConvert.DeserializeObject<Response_Registro>(response);
+                    }
+                    if (rpta.response == 1)
+                    {
+                        oJRespuesta.Message = (rpta.response).ToString();
+                        oJRespuesta.Data = true;
+                        oJRespuesta.Success = true;
+
+                        Dat_CanalVenta objCanal = new Dat_CanalVenta();
+                        //datos.insertar_ge_cv(IdTienda, CodInterno, NroDocumento, rpta.codeDelivery);
+                        datos.insertar_ge_chatshop(IdTienda, CodInterno, NroDocumento, rpta.codeDelivery);
+
+                        //TempData["Success"] = "Pedido generado correctamente: " + rpta.codeDelivery;
+                    }
+                    else if (rpta.response == 99)
+                    {
+                        oJRespuesta.Message = (rpta.response).ToString();
+                        oJRespuesta.Data = false;
+                        oJRespuesta.Success = false;
+
+                        //TempData["Error"] = "Error al generar pedido. Error en el servidor" + " | " + rpta.descriptionResponse + " | " + rpta.codeDelivery + " | " + "Intentelo mas tarde.";
+                    }
+                    else
+                    {
+                        oJRespuesta.Message = (rpta.response).ToString();
+                        oJRespuesta.Data = false;
+                        oJRespuesta.Success = false;
+
+                        TempData["Error"] = "Error al generar pedido. " + rpta.descriptionResponse + "|" + rpta.codeDelivery;
+                    }
+                }
+                else
+                {
+                    TempData["Error"] = "Error al generar guia. No existe informacion de recogo para la tienda.";
+                }
             }
             return Json(oJRespuesta, JsonRequestBehavior.AllowGet);
+
 
             //return RedirectToAction("ChatShop", "Consulta");
         }

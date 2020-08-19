@@ -1,4 +1,5 @@
 ﻿@using CapaEntidad.Util;
+
 @{AjaxOptions options = new AjaxOptions
     {
         HttpMethod = "GET",
@@ -97,44 +98,44 @@
                 <table class="table table-hover table-striped table-responsive dataTable">
                     <thead>
                         <tr style="background-color:#3d566e; color:#ecf0f1">
-                            <th>Cod.Interno</th>
+                            @*<th>Cod.Interno</th>*@
                             <th>Boleta/Factura</th>
                             <th>Fecha</th>
                             <th>Tienda</th>
                             <th>Cliente</th>
                             <th>DNI/RUC</th>
-                            <th>Tipo</th>
+                            @*<th>Tipo</th>*@
                             <th>Importe</th>
                             <th>Guia de Courier</th>
                             <th>Estado</th>
-                            <th>Courier</th>
-                            <th>Guia</th>
-                            <th>Seguimiento</th>
+                            <th>Actualizar Estado</th>
+                            <th>LLamar a Courier</th>
+                            <th>Guia (Rotulo)</th>
+                            <th>Seguimiento a Courier</th>
                         </tr>
                     </thead>
                     <tbody data-bind="foreach:">
                         @foreach (var row in Model)
                         {
                             <tr>
-                                <td width="40px">@row.CodInterno</td>
+                                @*<td width="30px">@row.CodInterno</td>*@
                                 <td>@row.NroDocumento</td>
-                                <td>@row.Fecha</td>
+                                <td width="30px">@row.Fecha</td>
                                 <td>@row.Tienda</td>
                                 <td width="400px">@row.Cliente</td>
                                 <td>@row.Ruc</td>
-                                <td>@row.Tipo</td>
+                                @*<td>@row.Tipo</td>*@
                                 <td>@row.Importe</td>
                                 @*<td>@row.CodSeguimiento</td>*@
                                 @*<td>@row.Estado</td>*@
                                 @if (@row.CodSeguimiento != "")
                                 {
-                                    <td width="200px"><span class="glyphicon glyphicon-barcode" title="Código de Guía"></span>&nbsp;@row.CodSeguimiento</td>
+                                    <td width="250px"><span class="glyphicon glyphicon-barcode" title="Código de Guía"></span>&nbsp;@row.CodSeguimiento</td>
                                 }
                                 else
                                 {
-                                    <td width="200px"><span class="glyphicon glyphicon-question-sign" title="Falta Código de Guia"></span>&nbsp;@row.CodSeguimiento</td>
+                                    <td width="250px"><span class="glyphicon glyphicon-question-sign" title="Falta Código de Guia"></span>&nbsp;@row.CodSeguimiento</td>
                                 }
-
 
                                 @if (@row.Estado == "DELIVERY DESPACHADO")
                                 {
@@ -145,50 +146,130 @@
                                     <td><span class="glyphicon glyphicon-list-alt"></span>&nbsp;@row.Estado</td>
                                 }
 
-                                @*@if (@row.Estado == "DELIVERY DESPACHADO")
+                                @if (@row.FlagCourier == "SI")
+                                //XXX
+                                {
+                                    if (@row.Estado == "DELIVERY DESPACHADO")
                                     {
-                                        <td><span class="glyphicon glyphicon-ok"></span>&nbsp;@row.Estado</td>
+                                        <td width="100px" class="p-0">
+                                            <ul class="list-inline" style="margin-bottom: 0px;">
+                                                @* NO LLAMAR A COURIER Y SOLO ACTUALIZA ESTADO DEL PEDIDO FACTURADO *@
+                                                <li><a class="btn btn-info btn-sm" title="Actualizar estado" onclick="msj('2');"><span class="fa fa-refresh" aria-hidden="true"></span></a></li>
+                                            </ul>
+                                        </td>
                                     }
                                     else
                                     {
-                                        <td><span class="glyphicon glyphicon-list-alt"></span>&nbsp;@row.Estado</td>
-                                    }*@
+                                        <td width="100px" class="p-0">
+                                            <ul class="list-inline" style="margin-bottom: 0px;">
+                                                @* NO LLAMAR A COURIER Y SOLO ACTUALIZA ESTADO DEL PEDIDO FACTURADO *@
+                                                <li><a class="btn btn-info btn-sm" title="Actualizar estado" onclick="PopupConfirmacion('@row.CodInterno','@row.Tienda','@row.NroDocumento','@row.CodSeguimiento','@row.Ruc','@row.Cliente','@row.Estado','NO');"><span class="fa fa-refresh" aria-hidden="true"></span></a></li>
+                                            </ul>
+                                        </td>
+                                    }
 
+                                    <td width="100px" class="p-0">
+                                        <ul class="list-inline" style="margin-bottom: 0px;">
+                                            @* LLAMAR A COURIER *@
+                                            <li><a class="btn btn-primary btn-sm" title="Llamar a Courier" onclick="PopupConfirmacion('@row.CodInterno','@row.Tienda','@row.NroDocumento','@row.CodSeguimiento','@row.Ruc','@row.Cliente','@row.Estado','SI');"><span class="fa fa-phone" aria-hidden="true"></span></a></li>
+                                        </ul>
+                                    </td>
 
-
-                                <td width="70px" class="p-0">
-                                    <ul class="list-inline" style="margin-bottom: 0px;">
-                                        <li>
-                                            <a class="btn btn-primary btn-sm" title="Llamar" onclick="EnviaCourier_2('@row.CodInterno','@row.Tienda','@row.NroDocumento','@row.CodSeguimiento','@row.Ruc','@row.Cliente');"><span class="fa fa-phone" aria-hidden="true"></span></a>
-                                        </li>
-                                    </ul>
-                                </td>
-
-                                <td width="70px" class="p-0">
-                                    <ul class="list-inline" style="margin-bottom: 0px;">
-                                        <li>
-                                            <a class="btn btn-primary btn-sm" title="Descargar" id="guiaE" onclick="ImprimirGuia('@row.Cliente','@row.Tienda','@row.CodInterno','@row.NroDocumento','@row.CodSeguimiento');"><span class="fa fa-arrow-circle-down" aria-hidden="true"></span></a>
-                                        </li>
-                                    </ul>
-                                </td>
-
-
-                                @if (@row.CodSeguimiento == "")
-                                {
-                                    <td width="70px" class="p-0">
+                                    //if (@row.CodSeguimiento != "" || @row.Estado != "FACTURADO")
+                                    //{
+                                    <td width="80px" class="p-0">
                                         <ul class="list-inline" style="margin-bottom: 0px;">
                                             <li>
-                                                <a class="btn btn-primary btn-sm" title="Ver" id="link" onclick="msj();"><span class="fa fa-eye-slash" aria-hidden="true"></span></a>
+                                                <a class="btn btn-primary btn-sm" title="Descargar archivo" id="guiaE" onclick="ImprimirGuia('@row.Cliente','@row.Tienda','@row.CodInterno','@row.NroDocumento','@row.CodSeguimiento','@row.Estado');"><span class="fa fa-arrow-circle-down" aria-hidden="true"></span></a>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                    //}
+                                    @*else
+                                        {
+                                            <td width="80px" class="p-0">
+                                                <ul class="list-inline" style="margin-bottom: 0px;">
+                                                    <li>
+                                                        <a class="btn btn-primary btn-sm" title="Descargar archivo" id="guiaE" onclick="msj('3');"><span class="fa fa-arrow-circle-down" aria-hidden="true"></span></a>
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                        }*@
+                                }
+                                //XXX
+                                else
+                                {
+                                    if (@row.Estado == "DELIVERY DESPACHADO")
+                                    {
+                                        <td width="100px" class="p-0">
+                                            <ul class="list-inline" style="margin-bottom: 0px;">
+                                                @* NO LLAMAR A COURIER Y SOLO ACTUALIZA ESTADO DEL PEDIDO FACTURADO *@
+                                                <li><a class="btn btn-info btn-sm" title="Actualizar estado" onclick="msj('2');"><span class="fa fa-refresh" aria-hidden="true"></span></a></li>
+                                            </ul>
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td width="100px" class="p-0">
+                                            <ul class="list-inline" style="margin-bottom: 0px;">
+                                                @* NO LLAMAR A COURIER Y SOLO ACTUALIZA ESTADO DEL PEDIDO FACTURADO *@
+                                                <li><a class="btn btn-info btn-sm" title="Actualizar estado" onclick="PopupConfirmacion('@row.CodInterno','@row.Tienda','@row.NroDocumento','@row.CodSeguimiento','@row.Ruc','@row.Cliente','@row.Estado','NO');"><span class="fa fa-refresh" aria-hidden="true"></span></a></li>
+                                            </ul>
+                                        </td>
+
+                                    }
+
+                                    <td width="100px" class="p-0">
+                                        <ul class="list-inline" style="margin-bottom: 0px;">
+
+                                            @* LLAMAR A COURIER *@
+                                            <li><a class="btn btn-default btn-sm" title="Llamar a Courier" onclick="msj('0');"><span class="fa fa-phone" aria-hidden="true"></span></a></li>
+                                        </ul>
+                                    </td>
+
+                                    <td width="80px" class="p-0">
+                                        <ul class="list-inline" style="margin-bottom: 0px;">
+                                            <li>
+                                                <a class="btn btn-primary btn-sm" title="Descargar archivo" id="guiaE" onclick="ImprimirGuia('@row.Cliente','@row.Tienda','@row.CodInterno','@row.NroDocumento','@row.CodSeguimiento','@row.Estado');"><span class="fa fa-arrow-circle-down" aria-hidden="true"></span></a>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                }
+
+                                @*<td width="100px" class="p-0">
+                                        <ul class="list-inline" style="margin-bottom: 0px;">
+                                            <li>
+                                                <a class="btn btn-primary btn-sm" title="Descargar archivo" id="guiaE" onclick="ImprimirGuia('@row.Cliente','@row.Tienda','@row.CodInterno','@row.NroDocumento','@row.CodSeguimiento');"><span class="fa fa-arrow-circle-down" aria-hidden="true"></span></a>
+                                            </li>
+                                        </ul>
+                                    </td>*@
+
+                                @if (@row.CodSeguimiento == "" && @row.FlagCourier == "NO")
+                                {
+                                    <td width="100px" class="p-0">
+                                        <ul class="list-inline" style="margin-bottom: 0px;">
+                                            <li>
+                                                <a class="btn btn-default btn-sm" title="Ver Entrega" id="link" onclick="msj('0');"><span class="fa fa-eye-slash" aria-hidden="true"></span></a>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                }
+                                else if (@row.CodSeguimiento == "" && @row.FlagCourier == "SI")
+                                {
+                                    <td width="100px" class="p-0">
+                                        <ul class="list-inline" style="margin-bottom: 0px;">
+                                            <li>
+                                                <a class="btn btn-primary btn-sm" title="Ver Entrega" id="link" onclick="msj('1');"><span class="fa fa-eye-slash" aria-hidden="true"></span></a>
                                             </li>
                                         </ul>
                                     </td>
                                 }
                                 else
                                 {
-                                    <td width="70px" class="p-0">
+                                    <td width="100px" class="p-0">
                                         <ul class="list-inline" style="margin-bottom: 0px;">
                                             <li>
-                                                <a class="btn btn-primary btn-sm" title="Ver" id="link" href="https://atari.chazki.com/#/public/seguimiento/1/@row.NroDocumento" target="_blank"><span class="fa fa-eye" aria-hidden="true"></span></a>
+                                                <a class="btn btn-primary btn-sm" title="Ver Entrega" id="link" href="https://atari.chazki.com/#/public/seguimiento/1/@row.NroDocumento" target="_blank"><span class="fa fa-eye" aria-hidden="true"></span></a>
                                             </li>
                                         </ul>
                                     </td>
@@ -211,7 +292,13 @@
 <div class="row">
     <img id="itf" class="hidden" />
 </div>
-
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" ng-app>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
+        </div>
+    </div>
+</div>
 <script>
 
     $(document).ready(function () {
@@ -261,86 +348,158 @@
 
     }*@
 
-    function msj() {
-        toastr.error("No hay datos para realizar el seguimiento", "Error");
-    }
+    function msj(Flag) {
 
+        //alert(Flag);
 
-
-    function EnviaCourier_2(CodInterno, Tienda, NroDocumento, CodSeguimiento, Ruc, Cliente) {
-
-        //alert(CodInterno);
-        //alert(CodSeguimiento);
-
-        if (CodSeguimiento == '') {
-            waitingDialog.show('Espere un momento por favor...');
-
-            var objGuiaError = {
-                CodInterno: CodInterno,
-                IdTienda: Tienda,
-                NroDocumento: NroDocumento,
-                CodSeguimiento: CodSeguimiento,
-                Ruc: Ruc,
-                Cliente: Cliente,
-
-            }
-
-            $.ajax
-              ({
-                  url: '../Consulta/Envia_Courier',
-                  dataType: "json",
-                  type: "POST",
-                  data: objGuiaError,
-                  success: function (data, textStatus, XMLHttpRequest) {
-                      waitingDialog.hide();
-
-
-                      if ((data.Success).toString() == "true") {
-                          if (data.Message == "1") {
-
-                              toastr.success("Se realizó satisfactoriamente el llamado al courier", "Mensaje");
-                              setInterval(function () {
-                                  waitingDialog.hide();
-                              }, 40000);
-
-                              location.reload(true);
-                          }
-
-                      } else {
-                          if (data.Message == "2") {
-                              toastr.error("No se llamó al courier,falta definir el código de Ubigeo o código Postal", "Error");
-                              //MostrarListado();
-                              waitingDialog.hide();
-                          } if (data.Message == "99") {
-                              toastr.error("Error en el servidor no se puedo realizar el llamado de courier ,porfavor intentelo mas tarde", "Error");
-                              waitingDialog.hide();
-
-                          }
-                      }
-                  },
-                  error: function (xhr) {
-                      waitingDialog.hide();
-                      toastr.error("No se realizó el llamado de courier", "Error");
-                      waitingDialog.hide();
-                  }
-
-              })
-
-        } else {
-
-            toastr.error("El pedido ya ha sido enviado anteriormente", "Error");
-            waitingDialog.hide();
+        if (Flag == '0') {
+            toastr.error("El usuario de tienda no esta habilitado para utilizar esta opción", "Error");
+        }
+        if (Flag == '1') {
+            toastr.error("No hay datos para mostrar", "Error");
+        }
+        if (Flag == '2') {
+            toastr.error("El pedido ya fue actualizado anteriormente", "Error");
+        }
+        if (Flag == '3') {
+            toastr.error("Falta generar el código Guía de Courier", "Error");
         }
     }
 
-    function ImprimirGuia(Cliente, Tienda, CodInterno, NroDocumento, CodSeguimiento) {
+    function PopupConfirmacion(CodInterno, Tienda, NroDocumento, CodSeguimiento, Ruc, Cliente, Estado, FlagCourier) {
+        //if (CodSeguimiento == '' && (FlagCourier == 'SI' || FlagCourier == 'NO')) {
 
+        if (FlagCourier == 'SI' && (CodSeguimiento != '' || Estado != "FACTURADO")) {
+
+            toastr.error("El pedido ya fue actualizado y/o enviado a courier", "Error");
+            waitingDialog.hide();
+        } else if (CodSeguimiento == '' && (FlagCourier == 'SI' || FlagCourier == 'NO')) {
+
+            var envio = "'" + CodInterno + "','" + Tienda + "','" + NroDocumento + "','" + CodSeguimiento + "','" + Ruc + "','" + Cliente + "','" + FlagCourier + "'"
+            //alert(envio);
+
+            var strhtml = ''
+            strhtml += '<div class="modal-header modal-header-danger" style="margin-top:0px;margin-bottom:0px;padding-top:2px;padding-bottom:2px;">'
+            strhtml += '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
+            strhtml += '<h5 class="modal-title" id="myModalLabel">'
+            strhtml += '<table style="border-bottom:0px;font-size:14px;width:50%;">'
+            strhtml += '<tr>'
+            strhtml += '<td style="font-size:14px;width:100%;text-align:left;">Mensaje del Documento : <b>' + NroDocumento + '</b></td>'
+            strhtml += '</tr>'
+            strhtml += '</table>'
+            strhtml += '</h5>'
+            strhtml += '</div>'
+            strhtml += '<div class="modal-body">'
+            if (FlagCourier == "SI") {
+                strhtml += 'Esta seguro de realizar el llamado a courier para despachar por delivery?</b>'
+            } else {
+                strhtml += 'Esta seguro de actualizar el estado del pedido sin llamar al courier?</b>'
+            }
+
+            strhtml += '</div>'
+            strhtml += '<div class="modal-footer" style="margin-top:-30px">'
+            strhtml += '<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>'
+
+            strhtml += '<button type="button" class="btn btn-primary"  onclick="EnviaCourier(' + envio + ')" data-dismiss="modal">Confirmar</button>'
+            //strhtml += ' <button type="button"  title="Eliminar class="btn btn-danger" data-dismiss="modal" detalle" onclick="EliminarDetalle(this)"  data-id="' + codArticulo + '" data-modal="" data-toggle="modal">Elimninar</button>';
+            //strhtml += '<input type="submit" class="btn btn-primary" onclick="agregarLista()"  id="btnSubmit" value="Agregar" />'
+            strhtml += '</div>'
+            var options = { "backdrop": "static", keyboard: true };
+
+            $('#myModalContent').html(strhtml);
+            $('#myModal').modal(options);
+            $('#myModal').modal('show');
+        }
+
+    }
+
+
+    function EnviaCourier(CodInterno, Tienda, NroDocumento, CodSeguimiento, Ruc, Cliente, FlagCourier) {
+
+        //alert("entro");
+        waitingDialog.show('Espere un momento por favor...');
+
+        var objGuiaError = {
+            CodInterno: CodInterno,
+            IdTienda: Tienda,
+            NroDocumento: NroDocumento,
+            CodSeguimiento: CodSeguimiento,
+            Ruc: Ruc,
+            Cliente: Cliente,
+            Flag: FlagCourier,
+
+        }
+
+        $.ajax
+          ({
+              url: '../Consulta/Envia_Courier',
+              dataType: "json",
+              type: "POST",
+              data: objGuiaError,
+              success: function (data, textStatus, XMLHttpRequest) {
+                  waitingDialog.hide();
+
+
+                  if ((data.Success).toString() == "true") {
+                      if (data.Message == "1") {
+
+                          toastr.success("Se realizó satisfactoriamente el llamado al courier", "Mensaje");
+                          setInterval(function () {
+                              waitingDialog.hide();
+                          }, 40000);
+
+                          location.reload(true);
+                      }
+                      else {
+                          toastr.success("Se actualizó satisfactoriamente el estado del pedido", "Mensaje");
+                          setInterval(function () {
+                              waitingDialog.hide();
+                          }, 40000);
+                          location.reload(true);
+                      }
+                  }
+                  else {
+                      if (data.Message == "2") {
+                          toastr.error("No se llamó al courier,falta definir el código de Ubigeo o código Postal", "Error");
+                          //MostrarListado();
+                          waitingDialog.hide();
+                      } if (data.Message == "99") {
+                          toastr.error("Error en el servidor no se puedo realizar el llamado de courier ,porfavor intentelo mas tarde", "Error");
+                          waitingDialog.hide();
+                      } if (data.Message == "0") {
+                          toastr.error("El trackCode ya se registró en el sistema del courier", "Error");
+                          waitingDialog.hide();
+                      }
+                  }
+              },
+              error: function (xhr) {
+                  waitingDialog.hide();
+                  toastr.error("No se realizó el llamado de courier", "Error");
+                  waitingDialog.hide();
+              }
+
+          })
+
+        //}
+        //else if (CodSeguimiento != '' && FlagCourier == 'SI') {
+
+        //    toastr.error("El pedido ya ha sido enviado anteriormente", "Error");
+        //    waitingDialog.hide();
+
+        //    //} else if (CodSeguimiento == '' && FlagCourier == 'NO') {
+
+        //    //    toastr.error("El usuario de tienda no esta habilitado para utilizar esta opción", "Error");
+        //    //    waitingDialog.hide();
+        //}
+    }
+
+    function ImprimirGuia(Cliente, Tienda, CodInterno, NroDocumento, CodSeguimiento, Estado) {
         //alert(Cliente);
         //alert(Tienda);
         //alert(CodInterno);
         //alert(CodSeguimiento);
-
-        if (CodSeguimiento != "") {
+       
+        if ((Estado != "FACTURADO")) {
             var _cliente = Cliente;
             var _Tienda = Tienda
             var _CodInterno = CodInterno
@@ -361,6 +520,7 @@
                     validadoBataClub = true;
                     waitingDialog.hide();
                     if (data.estado == 1) {
+
                         var guia = data.guia
                         var cliente = data.cliente
                         var _direccion = data.direccion
@@ -368,18 +528,23 @@
                         var ubigeo = data.ubigeo
                         var _telefono = data.telefono
                         var _empresa = "Bata Perú"
+                        const img = document.querySelector('img#itf');
 
                         /**/
-                        JsBarcode("#itf", guia);
-                        const img = document.querySelector('img#itf');
+                        if (guia != "") {
+                            JsBarcode("#itf", guia);
+                            //const img = document.querySelector('img#itf');
+                        }
                         var doc = new jsPDF();
                         var fsT = 11;
                         var fsD = 12;
 
                         doc.setFont('courier');
                         doc.setFontType('bold');
-                        doc.addImage(img.src, 'png', 67, 10, 0, 0);
 
+                        if (guia != "") {
+                            doc.addImage(img.src, 'png', 67, 10, 0, 0);
+                        }
 
                         doc.setFontSize(fsT);
                         doc.text(20, 60, 'Destinatario: ');
@@ -415,9 +580,11 @@
                         doc.setFontSize(fsD);
                         doc.text(55, 128, _empresa);
                         /****/
-                        var mt2 = 150;
 
-                        doc.addImage(img.src, 'png', 67, 10 + mt2, 0, 0);
+                        var mt2 = 150;
+                        if (guia != "") {
+                            doc.addImage(img.src, 'png', 67, 10 + mt2, 0, 0);
+                        }
 
                         doc.setFontSize(fsT);
                         doc.text(20, 60 + mt2, 'Destinatario: ');
@@ -449,17 +616,30 @@
                         doc.setFontSize(fsD);
                         doc.text(55, 128 + mt2, _empresa);
 
-                        doc.save('GuiaCourier_' + guia + '.pdf');
+                        if (guia != "") {
 
-                        toastr.success("Se generó satisfactoriamente la Guia de Courier", "Mensaje");
-                        waitingDialog.hide();
+                            doc.save('GuiaCourier_' + guia + '.pdf');
+                            toastr.success("Se generó satisfactoriamente la Guia de Courier", "Mensaje");
+                            waitingDialog.hide();
+
+                        } else {
+                            doc.save('Guia_' + cliente + '.pdf');
+                            toastr.success("Se generó satisfactoriamente la Guia de Cliente", "Mensaje");
+                            waitingDialog.hide();
+                        }
+
                     }
                 }
 
             })
+            //} else {
+            //    toastr.error("Falta generar el código Guía de Courier", "Error");
+            //    waitingDialog.hide();
+            //}
         } else {
-            toastr.error("Falta generar el código Guía de Courier", "Error");
-            waitingDialog.hide();
+                toastr.error("Falta generar el código Guía de Courier o Actualizar el pedido", "Error");
+                waitingDialog.hide();
+
         }
     }
 
