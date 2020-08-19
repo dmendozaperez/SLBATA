@@ -1,4 +1,5 @@
 ﻿@using CapaEntidad.Util;
+
 @{AjaxOptions options = new AjaxOptions
     {
         HttpMethod = "GET",
@@ -167,7 +168,7 @@
                                         </td>
                                     }
 
-                                    <td width="80px" class="p-0">
+                                    <td width="100px" class="p-0">
                                         <ul class="list-inline" style="margin-bottom: 0px;">
                                             @* LLAMAR A COURIER *@
                                             <li><a class="btn btn-primary btn-sm" title="Llamar a Courier" onclick="PopupConfirmacion('@row.CodInterno','@row.Tienda','@row.NroDocumento','@row.CodSeguimiento','@row.Ruc','@row.Cliente','@row.Estado','SI');"><span class="fa fa-phone" aria-hidden="true"></span></a></li>
@@ -218,7 +219,7 @@
 
                                     }
 
-                                    <td width="80px" class="p-0">
+                                    <td width="100px" class="p-0">
                                         <ul class="list-inline" style="margin-bottom: 0px;">
 
                                             @* LLAMAR A COURIER *@
@@ -245,7 +246,7 @@
 
                                 @if (@row.CodSeguimiento == "" && @row.FlagCourier == "NO")
                                 {
-                                    <td width="80px" class="p-0">
+                                    <td width="100px" class="p-0">
                                         <ul class="list-inline" style="margin-bottom: 0px;">
                                             <li>
                                                 <a class="btn btn-default btn-sm" title="Ver Entrega" id="link" onclick="msj('0');"><span class="fa fa-eye-slash" aria-hidden="true"></span></a>
@@ -255,7 +256,7 @@
                                 }
                                 else if (@row.CodSeguimiento == "" && @row.FlagCourier == "SI")
                                 {
-                                    <td width="80px" class="p-0">
+                                    <td width="100px" class="p-0">
                                         <ul class="list-inline" style="margin-bottom: 0px;">
                                             <li>
                                                 <a class="btn btn-primary btn-sm" title="Ver Entrega" id="link" onclick="msj('1');"><span class="fa fa-eye-slash" aria-hidden="true"></span></a>
@@ -265,7 +266,7 @@
                                 }
                                 else
                                 {
-                                    <td width="80px" class="p-0">
+                                    <td width="100px" class="p-0">
                                         <ul class="list-inline" style="margin-bottom: 0px;">
                                             <li>
                                                 <a class="btn btn-primary btn-sm" title="Ver Entrega" id="link" href="https://atari.chazki.com/#/public/seguimiento/1/@row.NroDocumento" target="_blank"><span class="fa fa-eye" aria-hidden="true"></span></a>

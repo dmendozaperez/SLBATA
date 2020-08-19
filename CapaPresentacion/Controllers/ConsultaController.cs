@@ -474,22 +474,9 @@ namespace CapaPresentacion.Controllers
                 {
                     /* DATA CHASKI : PRODUCCION*/
 
-                    //Ent_Chazki chazki = new Ent_Chazki();
-                    //chazki.storeId = cvCzk.informacionTiendaEnvio.chaski_storeId; // "10411"; // proporcionado por chazki
-                    //chazki.branchId = cvCzk.informacionTiendaEnvio.chaski_branchId; // proporcionado por chazki
-                    //chazki.deliveryTrackCode = NroDocumento;
-                    //chazki.proofPayment = "Ninguna"; // por definir la evindencia que será entregada al cliente
-                    //chazki.deliveryCost = 0;
-                    //chazki.mode = "Regular"; //pendiente definir el modo con el que se va a trabajar el canal de venta.
-                    //chazki.time = "";
-                    //chazki.paymentMethod = "Pagado";
-                    //chazki.country = "PE";
-
-                    /* DATA CHASKI : TEST*/
-
                     Ent_Chazki chazki = new Ent_Chazki();
-                    chazki.storeId = "10411";
-                    chazki.branchId = "CCSC-B187";
+                    chazki.storeId = cvCzk.informacionTiendaEnvio.chaski_storeId; // "10411"; // proporcionado por chazki
+                    chazki.branchId = cvCzk.informacionTiendaEnvio.chaski_branchId; // proporcionado por chazki
                     chazki.deliveryTrackCode = NroDocumento;
                     chazki.proofPayment = "Ninguna"; // por definir la evindencia que será entregada al cliente
                     chazki.deliveryCost = 0;
@@ -497,6 +484,19 @@ namespace CapaPresentacion.Controllers
                     chazki.time = "";
                     chazki.paymentMethod = "Pagado";
                     chazki.country = "PE";
+
+                    /* DATA CHASKI : TEST*/
+
+                    //Ent_Chazki chazki = new Ent_Chazki();
+                    //chazki.storeId = "10411";
+                    //chazki.branchId = "CCSC-B187";
+                    //chazki.deliveryTrackCode = NroDocumento;
+                    //chazki.proofPayment = "Ninguna"; // por definir la evindencia que será entregada al cliente
+                    //chazki.deliveryCost = 0;
+                    //chazki.mode = "Regular"; //pendiente definir el modo con el que se va a trabajar el canal de venta.
+                    //chazki.time = "";
+                    //chazki.paymentMethod = "Pagado";
+                    //chazki.country = "PE";
 
                     /* DATA ARTICULO*/
 
@@ -561,15 +561,15 @@ namespace CapaPresentacion.Controllers
                     Response_Registro rpta = new Response_Registro();
                     using (var http = new HttpClient())
                     {
-                        //http.DefaultRequestHeaders.Add("chazki-api-key", cvCzk.informacionTiendaEnvio.chaski_api_key); //PRODUCCION
-                        http.DefaultRequestHeaders.Add("chazki-api-key", "KfXfqgEBhfMK4T8Luw8ba91RynMtjzTY"); //TEST
+                        http.DefaultRequestHeaders.Add("chazki-api-key", cvCzk.informacionTiendaEnvio.chaski_api_key); //PRODUCCION
+                        //http.DefaultRequestHeaders.Add("chazki-api-key", "KfXfqgEBhfMK4T8Luw8ba91RynMtjzTY"); //TEST
 
                         HttpContent content = new StringContent(jsonChazki);
                         content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-                        //var request = http.PostAsync("https://integracion.chazki.com:8443/chazkiServices/delivery/create/deliveryService", content); //PRODUCCION
+                        var request = http.PostAsync("https://integracion.chazki.com:8443/chazkiServices/delivery/create/deliveryService", content); //PRODUCCION
 
-                        var request = http.PostAsync("https://sandboxintegracion.chazki.com:8443/chazkiServices/delivery/create/deliveryService", content); //TEST
+                        //var request = http.PostAsync("https://sandboxintegracion.chazki.com:8443/chazkiServices/delivery/create/deliveryService", content); //TEST
 
                         var response = request.Result.Content.ReadAsStringAsync().Result;
                         rpta = JsonConvert.DeserializeObject<Response_Registro>(response);
