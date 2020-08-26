@@ -47,10 +47,8 @@ namespace CapaPresentacion.Controllers
             }
             else
             {
-                var lista = datInterface.listar_Pais();
-
+                var lista = datInterface.listar_Pais(Session["PAIS"].ToString());
                 ViewBag.listPais = lista;
-
                 return View();
             }
         }

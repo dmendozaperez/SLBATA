@@ -72,7 +72,7 @@ namespace CapaPresentacion.Controllers
             ViewBag.usuariotipo = usuariotipo.get_lista();
 
             Dat_Interface datInterface = new Dat_Interface();
-            var lista = datInterface.listar_Pais();
+            var lista = datInterface.listar_Pais(Session["PAIS"].ToString());
             ViewBag.listPais = lista;
 
             return View();
@@ -171,7 +171,7 @@ namespace CapaPresentacion.Controllers
             ViewBag.usuariotipo = usuariotipo.get_lista();
 
             Dat_Interface datInterface = new Dat_Interface();
-            var lista = datInterface.listar_Pais();
+            var lista = datInterface.listar_Pais(Session["PAIS"].ToString());
             ViewBag.listPais = lista;
 
 

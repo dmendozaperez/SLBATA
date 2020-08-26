@@ -17,9 +17,9 @@ namespace CapaDato.Interface
     {
         
         
-        public List<Ent_Combo> listar_Pais()
+        public List<Ent_Combo> listar_Pais(string opcion)
         {
-            
+
             string sqlquery = "USP_Listar_Pais";
             List<Ent_Combo> lista = null;
             try
@@ -31,6 +31,7 @@ namespace CapaDato.Interface
 
                         cmd.CommandTimeout = 0;
                         cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@opcion", opcion );
                         using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                         {
                             DataTable dt = new DataTable();
