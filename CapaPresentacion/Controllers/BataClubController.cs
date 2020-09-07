@@ -427,7 +427,7 @@ namespace CapaPresentacion.Controllers
             return Json(new { chartDS = JsonConvert.SerializeObject(chartDS, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }) });
         }
 
-        public ActionResult updateChartData(string anio, int informe, int mes = 0, string fecini = null, string fecfin = null, string prom = "", string sup = "", string fecini_canal = null, string fecfin_canaL = null, string fecini_com = null, string fecfin_com = null, string fecini_com_cl = null, string fecfin_com_cl = null, string opcion_data_in = "FN")
+        public ActionResult updateChartData(string anio, int informe, int mes = 0, string fecini = null, string fecfin = null, string prom = "", string sup = "", string fecini_canal = null, string fecfin_canaL = null, string fecini_com = null, string fecfin_com = null, string fecini_com_cl = null, string fecfin_com_cl = null, string opcion_data_in = "FN",string fechaIni_PS=null,string fechaFin_PS=null)
         {
             Ent_BataClub_DashBoard dashboard = (Ent_BataClub_DashBoard)Session["_dashboardData"];
 
@@ -466,6 +466,12 @@ namespace CapaPresentacion.Controllers
                 if (fecfin_com_cl.Length == 0) fecfin_com_cl = null;
             }
 
+            if (fechaIni_PS != null)
+            {
+                if (fechaIni_PS.Length == 0) fechaIni_PS = null;
+                if (fechaFin_PS.Length == 0) fechaFin_PS = null;
+            }
+
             if (informe == 5 || informe == 7 || informe == 8 || informe == 9 || informe == 11)
             {
                 dashboard = (Ent_BataClub_DashBoard)Session["_dashboardData"];
@@ -476,7 +482,7 @@ namespace CapaPresentacion.Controllers
 
                 if (informe == 10) informe = 7;
 
-                dashboard = datDash.GET_INFO_DASHBOARD(ref dashboard, anio, informe, mes, fecini, fecfin, prom, fecini_canal, fecfin_canaL, fecini_com, fecfin_com, fecini_com_cl, fecfin_com_cl, opcion_data_in);
+                dashboard = datDash.GET_INFO_DASHBOARD(ref dashboard, anio, informe, mes, fecini, fecfin, prom, fecini_canal, fecfin_canaL, fecini_com, fecfin_com, fecini_com_cl, fecfin_com_cl, opcion_data_in, fechaIni_PS, fechaFin_PS);
                 Session["_dashboardData"] = dashboard;
             }
             Ent_BataClub_Chart_Data chartDS = null;

@@ -509,13 +509,40 @@
                     <i class="fa fa-bar-chart-o"></i>
                     <h3 class="box-title">Pares/Soles  x  Mes</h3>
 
-                    <div class="box-tools pull-right" style="top: 3px;">
+                    <div  class="box-tools pull-right"  style="top: 3px;visibility:hidden;">
 
                         @Html.DropDownList("anioPS", new SelectList(ViewBag.anios, "cbo_codigo", "cbo_descripcion", "0"), new { @class = "form-control form-control-sm selectpicker anio", @id = "anioPS", @name = "anioPS", @data_informe = 4 })
                     </div>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-inline">
+                                <div class="form-group date">
+                                    <label>Inicio: </label>&nbsp;&nbsp;
+                                    <div class="input-group input-group-sm">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input type="text" class="form-control pull-right" id="fechaIni_PS">
+                                    </div>
+                                </div>&nbsp;&nbsp;&nbsp;
+                                <div class="form-group date">
+                                    <label>Fin: </label>&nbsp;&nbsp;
+                                    <div class="input-group input-group-sm">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input type="text" class="form-control pull-right" id="fechaFin_PS">
+                                    </div>
+                                </div>&nbsp;&nbsp;&nbsp;
+                                <button type="button" class="btn btn-primary btn-sm" title="Mostrar" id="btnMostrarChartBarPS"><i class="fa fa-search"></i></button>
+                                @*<a href="@Url.Action("RegTraConTdaExcel","BataClub")" class="btn btn-success btn-sm pull-right"><i class="glyphicon glyphicon-export"></i>&nbsp;&nbsp;Exportar</a>*@
+                            </div>
+
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-md-8">
                             <p class="text-center" id="tituloBarCharPS">
@@ -2057,6 +2084,23 @@
         }).datepicker("setDate", "0");
 
 
+        var primerDia = new Date(date.getFullYear(), 0, 1);      
+
+        $('#fechaIni_PS').datepicker({
+            format: "dd-mm-yyyy",
+            autoclose: true,
+            maxDate: new Date(),
+        }).datepicker("setDate", primerDia);
+
+
+        $('#fechaFin_PS').datepicker({
+            format: "dd-mm-yyyy",
+            autoclose: true,
+            maxDate: new Date(),
+        }).datepicker("setDate", "0");
+
+
+
         /** Ini Clientes x Mes **/
         GetChartCxM();
         $("#anioIm").change(function () {
@@ -2114,6 +2158,13 @@
         $("#btnMostrarChartBarDist").click(function () {
             GetChartDist(null,null);
         });
+        $("#btnMostrarChartBarPS").click(function () {
+            var informe = 4;
+            var anio = 2020;
+            updateCharts(anio, informe,null,null,null,null,null,null,null,null,null,null,null,$('#fechaIni_PS').val(), $('#fechaFin_PS').val());
+
+        });
+
         document.getElementById("barChartDist").onclick = function (e) {
             try {
                 var activeIndex = _cDist.tooltip._lastActive[0]._index;
@@ -2306,10 +2357,53 @@
                 var clickCoordinates = Chart.helpers.getRelativePosition(e, myChartPS.chart);
                 if (clickCoordinates.y >= 36) {
                     var activePoints = myChartPS.getElementsAtEvent(e);
+                    var datasetName = myChartPS.data.labels[activeIndex]; //myChartPS.data.datasets[activeIndex].label;
+
+                    var mes_sele = 0;
+
+                    switch (datasetName) {
+                        case "Enero":
+                            mes_sele = 1;
+                            break;
+                        case "Febrero":
+                            mes_sele = 2;
+                            break;
+                        case "Marzo":
+                            mes_sele = 3;
+                            break;
+                        case "Abril":
+                            mes_sele = 4;
+                            break;
+                        case "Mayo":
+                            mes_sele = 5;
+                            break;                               
+                        case "Junio":
+                            mes_sele = 6;
+                            break;
+                        case "Julio":
+                            mes_sele = 7;
+                            break;
+                        case "Agosto":
+                            mes_sele = 8;
+                            break;
+                        case "Septiembre":
+                            mes_sele = 9;
+                            break;
+                        case "Octubre":
+                            mes_sele = 10;
+                            break;
+                        case "Noviembre":
+                            mes_sele = 11;
+                            break;
+                        case "Dociembre":
+                            mes_sele = 12;
+                            break;                      
+                    }
+
                     var informe = 5;
                     var anio = $("#anioPS").val();
                     var mes = activeIndex + 1
-                    updateCharts(anio, informe, mes);
+                    updateCharts(anio, informe, mes_sele);
                 }
             } catch (e) {
 
@@ -2425,12 +2519,12 @@
             });
         });
 
-        function updateCharts(anio, informe, mes, fecini, fecfin, prom, fecini_canal, fecfin_canal, fecini_com, fecfin_com, fecini_com_cl, fecfin_com_cl, opcion_data_in) {
+        function updateCharts(anio, informe, mes, fecini, fecfin, prom, fecini_canal, fecfin_canal, fecini_com, fecfin_com, fecini_com_cl, fecfin_com_cl, opcion_data_in, fechaIni_PS, fechaFin_PS) {
             waitingDialog.show('Espere un momento por favor');
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("updateChartData", "BataClub")',
-                data: { anio: anio, informe: informe, mes: (mes == null || mes == '' ? 0 : mes), fecini: fecini, fecfin: fecfin, prom: prom, fecini_canal: fecini_canal, fecfin_canal: fecfin_canal, fecini_com: fecini_com, fecfin_com: fecfin_com, fecini_com_cl: fecini_com_cl, fecfin_com_cl: fecfin_com_cl, opcion_data_in: opcion_data_in },
+                data: { anio: anio, informe: informe, mes: (mes == null || mes == '' ? 0 : mes), fecini: fecini, fecfin: fecfin, prom: prom, fecini_canal: fecini_canal, fecfin_canal: fecfin_canal, fecini_com: fecini_com, fecfin_com: fecfin_com, fecini_com_cl: fecini_com_cl, fecfin_com_cl: fecfin_com_cl, opcion_data_in: opcion_data_in, fechaIni_PS:fechaIni_PS,fechaFin_PS:fechaFin_PS },
                 success: function (data) {
                     if (informe == 2) {
                         myChart.destroy();
