@@ -335,7 +335,7 @@ namespace CapaDato.BataClub
         }
         public Ent_BataClub_DashBoard GET_INFO_DASHBOARD(ref Ent_BataClub_DashBoard dashboard_session, string anio = "2020" , int informe = 0, int mes = 0,object fechaIni = null , object fechaFin = null , string prom = "", 
             object fechaIni_canal = null, object fechaFin_canal = null, object fechaIni_com = null, object fechaFin_com = null, object fechaIni_com_cl = null, object fechaFin_com_cl = null,String opcion_data_in="FN",
-            object fechaIni_ps = null, object fechaFin_ps = null) // 0 = TODO | 1 = GENERAL | 2 = REGISTRADOS | 3 = MIEMBROS | 4 = CANALES
+            object fechaIni_ps = null, object fechaFin_ps = null,String canal_venta="TD,EC") // 0 = TODO | 1 = GENERAL | 2 = REGISTRADOS | 3 = MIEMBROS | 4 = CANALES
         {
             string sqlquery = "[USP_BATACLUB_DASHBOARD]";
             Ent_BataClub_DashBoard info = null;
@@ -387,6 +387,9 @@ namespace CapaDato.BataClub
 
                         cmd.Parameters.AddWithValue("@prom", prom);//@prom
                         cmd.Parameters.AddWithValue("@opcion_data_in", opcion_data_in);//@prom
+
+                        cmd.Parameters.AddWithValue("@canal_venta_ps", canal_venta);//@prom
+
                         using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                         {
                             DataSet ds = new DataSet();
@@ -715,7 +718,7 @@ namespace CapaDato.BataClub
             }
             return info;
         }
-        public Ent_BataClub_Dashboard_PPS BATACLUB_DASHBOARD_PPS(string fechaini = null, string fechafin = null)
+        public Ent_BataClub_Dashboard_PPS BATACLUB_DASHBOARD_PPS(string fechaini = null, string fechafin = null,String canal_venta_ps= "TD,EC")
         {
             string sqlquery = "USP_BATACLUB_DASHBOARD_PORC_PARES_SOLES";
             Ent_BataClub_Dashboard_PPS info = null;
@@ -732,6 +735,7 @@ namespace CapaDato.BataClub
                         {
                             cmd.Parameters.AddWithValue("@fecha_ini", Convert.ToDateTime(fechaini));
                             cmd.Parameters.AddWithValue("@fecha_fin", Convert.ToDateTime(fechafin));
+                            cmd.Parameters.AddWithValue("@canal_venta_ps", canal_venta_ps);
                         }
                         using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                         {

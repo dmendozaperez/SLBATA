@@ -508,6 +508,10 @@
                 <div class="box-header with-border">
                     <i class="fa fa-bar-chart-o"></i>
                     <h3 class="box-title">Pares/Soles  x  Mes</h3>
+                    <div class="box-tools pull-right" style="top: 3px;">
+
+                        @Html.DropDownList("dw_can_venta_soles", new SelectList(ViewBag.canal_venta, "can_venta_id", "can_venta_des", "0"), new { @class = "selectpicker", @data_live_search = "true", multiple = "multiple", @id = "dw_can_venta_soles", @name = "dw_can_venta_soles", @data_informe = 4, @data_actions_box = "true", @data_selected_text_format = "count > 2" })
+                    </div>
 
                     <div  class="box-tools pull-right"  style="top: 3px;visibility:hidden;">
 
@@ -707,7 +711,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-7">
             <div class="box">
                 <div class="box-header with-border">
                     <i class="fa fa-pie-chart"></i>
@@ -778,7 +782,7 @@
             </div>
             <!-- /.box -->
         </div>
-        <div class="col-md-4">
+        <div class="col-md-5">
             <div class="box box-default">
                 <div class="box-header with-border">
                     <i class="fa fa-pie-chart"></i>
@@ -819,7 +823,7 @@
                             <p class="text-center text-bold" id="tituloCanalesChar">
                             </p>
                             <div class="chart-responsive">
-                                <canvas id="incompletoChart" height="290"></canvas>
+                                <canvas id="incompletoChart" height="217"></canvas>
                             </div>
                             <!-- ./chart-responsive -->
                         </div>
@@ -833,7 +837,7 @@
     <strong class="text-red"></strong>
 
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-7">
 
             <div class="box">
                 <div class="box-header with-border">
@@ -893,11 +897,17 @@
             </div>
             <!-- /.box -->
         </div>
-        <div class="col-md-4">
+        <div class="col-md-5">
             <div class="box box-default">
                 <div class="box-header with-border">
                     <i class="fa fa-pie-chart"></i>
-                    <h3 class="box-title">Porcentaje Pares/Soles Bata/BataClub</h3>
+                    <h3 class="box-title">% Pares/Soles Bata/BataClub</h3>
+
+                    <div class="box-tools pull-right" style="top: 3px;">
+
+                        @Html.DropDownList("dw_sol_bata_bc", new SelectList(ViewBag.canal_venta, "can_venta_id", "can_venta_des", "0"), new { @class = "selectpicker", @data_live_search = "true", multiple = "multiple", @id = "dw_sol_bata_bc", @name = "dw_can_venta_soles", @data_informe = 4, @data_actions_box = "true", @data_selected_text_format = "count > 2" })
+                    </div>
+
                     @*<button type="button" class="btn btn-primary btn-sm" title="Mostrar" id="btnMostrarCharBarcanal"><i class="fa fa-search"></i></button>*@
                     @*<button type="button" class="btn btn-success btn-sm" title="Exportar a Excel" id="btnMostrarCharBarcanal_excel"><i class="glyphicon glyphicon-export">Exportar</i></button>*@
                 </div>
@@ -1469,11 +1479,23 @@
     }
     /** Ini Porcentaje pares Soles **/
     function GetChartPPS() {
+
+        var strCanal = $('#dw_sol_bata_bc').val();
+
+        if (strCanal == null) {
+            toastr.error('Seleccione Canales de venta', "Alerta");
+            $('#dw_sol_bata_bc').focus();
+            return;
+        }
+
+        strCanal = strCanal.toString();
+    
+
         $("#PPS-load").removeClass("hidden");
         $.ajax({
             type: "POST",
             url: '@Url.Action("GetChartPPS", "BataClub")',
-            data: { fechaini: $('#fechaIniPPS').val(), fechafin: $('#fechaFinPPS').val() },
+            data: { fechaini: $('#fechaIniPPS').val(), fechafin: $('#fechaFinPPS').val(), canal_venta_ps: strCanal },
             success: function (data) {
                 // ini chart
                 var _data = JSON.parse(data.chartDS);
@@ -2083,6 +2105,12 @@
             maxDate: new Date(),
         }).datepicker("setDate", "0");
 
+        $('#dw_can_venta_soles option').attr("selected", "selected");
+        $('#dw_can_venta_soles').selectpicker('refresh');
+
+        $('#dw_sol_bata_bc option').attr("selected", "selected");
+        $('#dw_sol_bata_bc').selectpicker('refresh');
+
 
         var primerDia = new Date(date.getFullYear(), 0, 1);      
 
@@ -2159,9 +2187,19 @@
             GetChartDist(null,null);
         });
         $("#btnMostrarChartBarPS").click(function () {
+
+            var strCanal = $('#dw_can_venta_soles').val();
+
+            if (strCanal == null) {
+                toastr.error('Seleccione Canales de venta', "Alerta");
+                $('#dw_can_venta_soles').focus();
+                return;
+            }
+
+            strCanal=strCanal.toString();
             var informe = 4;
             var anio = 2020;
-            updateCharts(anio, informe,null,null,null,null,null,null,null,null,null,null,null,$('#fechaIni_PS').val(), $('#fechaFin_PS').val());
+            updateCharts(anio, informe, null, null, null, null, null, null, null, null, null, null, null, $('#fechaIni_PS').val(), $('#fechaFin_PS').val(), strCanal);
 
         });
 
@@ -2519,12 +2557,12 @@
             });
         });
 
-        function updateCharts(anio, informe, mes, fecini, fecfin, prom, fecini_canal, fecfin_canal, fecini_com, fecfin_com, fecini_com_cl, fecfin_com_cl, opcion_data_in, fechaIni_PS, fechaFin_PS) {
+        function updateCharts(anio, informe, mes, fecini, fecfin, prom, fecini_canal, fecfin_canal, fecini_com, fecfin_com, fecini_com_cl, fecfin_com_cl, opcion_data_in, fechaIni_PS, fechaFin_PS,canal_venta) {
             waitingDialog.show('Espere un momento por favor');
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("updateChartData", "BataClub")',
-                data: { anio: anio, informe: informe, mes: (mes == null || mes == '' ? 0 : mes), fecini: fecini, fecfin: fecfin, prom: prom, fecini_canal: fecini_canal, fecfin_canal: fecfin_canal, fecini_com: fecini_com, fecfin_com: fecfin_com, fecini_com_cl: fecini_com_cl, fecfin_com_cl: fecfin_com_cl, opcion_data_in: opcion_data_in, fechaIni_PS:fechaIni_PS,fechaFin_PS:fechaFin_PS },
+                data: { anio: anio, informe: informe, mes: (mes == null || mes == '' ? 0 : mes), fecini: fecini, fecfin: fecfin, prom: prom, fecini_canal: fecini_canal, fecfin_canal: fecfin_canal, fecini_com: fecini_com, fecfin_com: fecfin_com, fecini_com_cl: fecini_com_cl, fecfin_com_cl: fecfin_com_cl, opcion_data_in: opcion_data_in, fechaIni_PS: fechaIni_PS, fechaFin_PS: fechaFin_PS, canal_venta: canal_venta },
                 success: function (data) {
                     if (informe == 2) {
                         myChart.destroy();

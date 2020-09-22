@@ -155,6 +155,18 @@ namespace CapaPresentacion.Controllers
 
                // Session[_session_det_tdas_sup] = dashboard.listTiendasSupervTot;
                 Session[_session_par_sol_mes_excel] = dashboard.listPromsPS;
+
+                List<Ent_BataClub_Canalventa> list_canal_venta = new List<Ent_BataClub_Canalventa>();
+                Ent_BataClub_Canalventa canal_venta = new Ent_BataClub_Canalventa();
+                canal_venta.can_venta_id = "TD";
+                canal_venta.can_venta_des = "TIENDAS";
+                list_canal_venta.Add(canal_venta);
+                canal_venta = new Ent_BataClub_Canalventa();
+                canal_venta.can_venta_id = "EC";
+                canal_venta.can_venta_des = "ECOMMERCE";
+                list_canal_venta.Add(canal_venta);
+
+                ViewBag.canal_venta = list_canal_venta;
                 //Session[_session_det_tdas_sup_excel] = dashboard.listTiendasSupervTot;
                 return View();
             }
@@ -270,10 +282,10 @@ namespace CapaPresentacion.Controllers
             chartDS.labels = chartPSM.Select(s => s.marca).ToArray();
             return Json(new { result = JsonConvert.SerializeObject(chartDS, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }) });
         }
-        public ActionResult GetChartPPS(string fechaini = null, string fechafin = null)
+        public ActionResult GetChartPPS(string fechaini = null, string fechafin = null,string canal_venta_ps= "TD,EC")
         {
             Ent_BataClub_Chart_Data chartDS = new Ent_BataClub_Chart_Data();
-            Ent_BataClub_Dashboard_PPS data = datDash.BATACLUB_DASHBOARD_PPS(fechaini, fechafin);
+            Ent_BataClub_Dashboard_PPS data = datDash.BATACLUB_DASHBOARD_PPS(fechaini, fechafin, canal_venta_ps);
 
             Ent_BataClub_Chart_DataSet dsP = (new Ent_BataClub_Chart_DataSet()
             {
@@ -289,7 +301,19 @@ namespace CapaPresentacion.Controllers
                 data = new decimal[] { data.PORC_SOLES_BATACLUB, data.PORC_SOLES_BATA }
             });
 
-            chartDS.labels = new string[] { "BATACLUB" , "BATA" } ;
+            string str_canal = "GENERAL";
+
+            if (canal_venta_ps == "EC")
+            {
+                str_canal = "E-COMMERCE";
+            }
+            if (canal_venta_ps == "TD")
+            {
+                str_canal = "TIENDAS";
+            }
+
+
+            chartDS.labels = new string[] { "BATACLUB" , str_canal } ;
             chartDS.datasets = new List<Ent_BataClub_Chart_DataSet>() { dsP,dsS };
             return Json(new { chartDS = JsonConvert.SerializeObject(chartDS, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }) });
         }
@@ -427,7 +451,7 @@ namespace CapaPresentacion.Controllers
             return Json(new { chartDS = JsonConvert.SerializeObject(chartDS, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }) });
         }
 
-        public ActionResult updateChartData(string anio, int informe, int mes = 0, string fecini = null, string fecfin = null, string prom = "", string sup = "", string fecini_canal = null, string fecfin_canaL = null, string fecini_com = null, string fecfin_com = null, string fecini_com_cl = null, string fecfin_com_cl = null, string opcion_data_in = "FN",string fechaIni_PS=null,string fechaFin_PS=null)
+        public ActionResult updateChartData(string anio, int informe, int mes = 0, string fecini = null, string fecfin = null, string prom = "", string sup = "", string fecini_canal = null, string fecfin_canaL = null, string fecini_com = null, string fecfin_com = null, string fecini_com_cl = null, string fecfin_com_cl = null, string opcion_data_in = "FN",string fechaIni_PS=null,string fechaFin_PS=null,string canal_venta=null)
         {
             Ent_BataClub_DashBoard dashboard = (Ent_BataClub_DashBoard)Session["_dashboardData"];
 
@@ -482,7 +506,7 @@ namespace CapaPresentacion.Controllers
 
                 if (informe == 10) informe = 7;
 
-                dashboard = datDash.GET_INFO_DASHBOARD(ref dashboard, anio, informe, mes, fecini, fecfin, prom, fecini_canal, fecfin_canaL, fecini_com, fecfin_com, fecini_com_cl, fecfin_com_cl, opcion_data_in, fechaIni_PS, fechaFin_PS);
+                dashboard = datDash.GET_INFO_DASHBOARD(ref dashboard, anio, informe, mes, fecini, fecfin, prom, fecini_canal, fecfin_canaL, fecini_com, fecfin_com, fecini_com_cl, fecfin_com_cl, opcion_data_in, fechaIni_PS, fechaFin_PS, canal_venta);
                 Session["_dashboardData"] = dashboard;
             }
             Ent_BataClub_Chart_Data chartDS = null;

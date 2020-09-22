@@ -42,6 +42,11 @@ namespace CapaEntidad.BataClub
         public decimal NUMERO { get; set; }
         public decimal NUMERO2 { get; set; }
     }   
+    public class Ent_BataClub_Canalventa
+    {
+        public string can_venta_id { get; set; }
+        public string can_venta_des { get; set; }
+    }
     public class Ent_BataClub_Dashboard_Canales
     {
         public string CANAL { get; set; }
