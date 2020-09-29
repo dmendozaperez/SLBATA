@@ -695,6 +695,15 @@
     <Content Include="Files\RuletaBata\-30 NS correct.png" />
     <Content Include="Files\RuletaBata\-30 NS.png" />
     <Content Include="Files\RuletaBata\-30 PW.png" />
+    <Content Include="Files\RuletaBata\BataClub\10 ADICIONAL.png" />
+    <Content Include="Files\RuletaBata\BataClub\20 BATA.PE.png" />
+    <Content Include="Files\RuletaBata\BataClub\20 COMPRA.png" />
+    <Content Include="Files\RuletaBata\BataClub\25 ZAPATILLAS.png" />
+    <Content Include="Files\RuletaBata\BataClub\30 COMPRA.png" />
+    <Content Include="Files\RuletaBata\BataClub\50 SOLES.png" />
+    <Content Include="Files\RuletaBata\BataClub\fondo_ruleta.png" />
+    <Content Include="Files\RuletaBata\BataClub\fondo.png" />
+    <Content Include="Files\RuletaBata\BataClub\indicador.png" />
     <Content Include="Files\RuletaBata\fondo.png" />
     <Content Include="Files\RuletaBata\FONDO_RULETA.png" />
     <Content Include="Files\RuletaBata\girar.png" />

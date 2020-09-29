@@ -21,4 +21,15 @@ namespace CapaEntidad.RuletaBata
         public string color { get; set; }
         public string imagen { get; set; }
     }
+    public class Ent_Ruleta_Valida
+    {
+        public string prim_nom { get; set; }
+        public string seg_nom { get; set; }
+        public string pri_ape { get; set; }
+        public string seg_ape { get; set; }
+        public string telefono { get; set; }
+        public string correo { get; set; }
+        public decimal compras { get; set; }
+        public Boolean bataclub { get; set; }
+    }
 }

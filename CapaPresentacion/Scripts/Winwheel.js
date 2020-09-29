@@ -236,7 +236,7 @@ function Winwheel(options, drawWheel)
                 this.segments[y].imgData = new Image();
                 this.segments[y].imgData.onload = winwheelLoadedImage;
                 this.segments[y].imgData.src = this.segments[y].image;
-                this.segments[y].imgData.width = 172.5;
+                this.segments[y].imgData.width = 223.5;
                 this.segments[y].imgData.height = 225;
             }
         }

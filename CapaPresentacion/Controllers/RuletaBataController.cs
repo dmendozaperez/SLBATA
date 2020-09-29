@@ -10,6 +10,7 @@ using CapaEntidad.Util;
 using CrystalDecisions.CrystalReports.Engine;
 using System.IO;
 using System.Data;
+using CapaEntidad.Control;
 
 namespace CapaPresentacion.Controllers
 {
@@ -19,7 +20,7 @@ namespace CapaPresentacion.Controllers
         Dat_RuletaBata _datos = new Dat_RuletaBata();        
         public ActionResult Index()
         {
-            //Session["Tienda"] = "50143";
+            Session["Tienda"] = "50143";
             if (Session["Tienda"] == null)
             {
                 return RedirectToAction("Login", "Control");
@@ -34,14 +35,16 @@ namespace CapaPresentacion.Controllers
         {
             return value.All(char.IsNumber);
         }
+
         [HttpPost]
-        public ActionResult RegistrarGanador(GanadorRuleta ganador, string w01 , string[] codigos , string afiliarse, string sinDNI)
+        public ActionResult RegistrarClienteBataclub(GanadorRuleta ganador, string w01, string[] codigos, string afiliarse, string sinDNI)
         {
             string men_validacion_campos = "";
             var regex = "\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*";
             try
             {
-                if (Session["Tienda"] == null || Session["PremioGanador"]== null)
+                //if (Session["Tienda"] == null || Session["PremioGanador"] == null)
+                if (Session["Tienda"] == null )
                 {
                     return RedirectToAction("Login", "Control");
                 }
@@ -51,14 +54,15 @@ namespace CapaPresentacion.Controllers
                     {
                         men_validacion_campos += "Ingrese un número de documento válido." + Environment.NewLine;
                     }
-                }else
+                }
+                else
                 {
                     if (ganador.dni == null || ganador.dni == "" || ganador.dni.Length < 6)
                     {
                         men_validacion_campos += "Ingrese un número de documento válido." + Environment.NewLine;
                     }
                 }
-                    
+
                 if (ganador.nombre == null || ganador.nombre == "")
                 {
                     men_validacion_campos += "Ingrese el nombre del participante." + Environment.NewLine;
@@ -84,8 +88,106 @@ namespace CapaPresentacion.Controllers
                     return Json(new { estado = 0, codigo = "", resultados = men_validacion_campos.Trim() });
                 }
                 string corre_envio = "";
+                string telef_envia = "";
+                string codigo = "";
+                string tienda = Session["Tienda"].ToString(); ;
+                //Premios premio = (Premios)Session["PremioGanador"];
+                int estado = 0;
+                //if (premio.indice.ToString() == w01)
+                //{
+                    /*generar codigo real y registrar al ganador.*/
+                    //codigo += ganador.dni.ToString().Substring(4);
+                    //codigo += premio.id.ToString();
+                    //codigo += DateTime.Now.ToString("HHmmss");
+                    //codigo = codigo.Replace(":", "");
+
+                    //codigo = codigo.PadLeft(15, '0');
+
+                    //int result_insert = _datos.insertar_ganador_ruleta(codigo, Session["Tienda"].ToString(), ganador.dni, ganador.nombre, ganador.ape_pat, ganador.ape_mat, ganador.telefono, ganador.email, premio.id);
+                    //if (result_insert > 0)
+                    //{
+                    //    if (afiliarse == "on" && sinDNI != "on")
+                        //{
+                            actualiza_cliente(ganador.dni, ganador.nombre, ganador.ape_pat, ganador.ape_mat, ganador.telefono, ganador.email, Session["Tienda"].ToString(), ref corre_envio, ref telef_envia);
+                        //}
+                        estado = 1;
+                        return Json(new { estado = estado, codigo = codigo, resultados = "Se registró correctamente al Cliente." });
+                    //}
+                    //else
+                    //{
+                    //    estado = 0;
+                    //    return Json(new { estado = estado, codigo = "", resultados = "Error al registrar el ganador." });
+                    //}
+                //}
+                //else
+                //{
+                //    estado = 0;
+                //    return Json(new { estado = estado, codigo = "", resultados = "Ganador. No válido." });
+                //}
+            }
+            catch (Exception ex)
+            {
+                return Json(new { estado = 0, codigo = "", resultados = "Error al registrar el Cliente. Verifique los datos ingresados." });
+            }
+        }
+
+        [HttpPost]
+        public ActionResult RegistrarGanador(GanadorRuleta ganador, string w01 , string[] codigos , string afiliarse, string sinDNI)
+        {
+            string men_validacion_campos = "";
+            var regex = "\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*";
+            try
+            {
+                Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+                Int32 usu_id = 1;//Convert.ToInt32(_usuario.usu_id);
+                usu_id = 1;
+                if (Session["Tienda"] == null || Session["PremioGanador"]== null)
+                {
+                    return RedirectToAction("Login", "Control");
+                }
+
+                //if (sinDNI != "on")
+                //{
+                //    if (ganador.dni == null || ganador.dni == "" || ganador.dni.Length != 8 || !IsNumeric(ganador.dni))
+                //    {
+                //        men_validacion_campos += "Ingrese un número de documento válido." + Environment.NewLine;
+                //    }
+                //}else
+                //{
+                //    if (ganador.dni == null || ganador.dni == "" || ganador.dni.Length < 6)
+                //    {
+                //        men_validacion_campos += "Ingrese un número de documento válido." + Environment.NewLine;
+                //    }
+                //}
+                    
+                //if (ganador.nombre == null || ganador.nombre == "")
+                //{
+                //    men_validacion_campos += "Ingrese el nombre del participante." + Environment.NewLine;
+                //}
+                //if (ganador.ape_pat == null || ganador.ape_pat == "")
+                //{
+                //    men_validacion_campos += "Ingrese el apellido paterno del participante." + Environment.NewLine;
+                //}
+                ////if (ganador.ape_mat == null || ganador.ape_mat == "")
+                ////{
+                ////    men_validacion_campos += "Ingrese el apellido materno del participante." + Environment.NewLine;
+                ////}
+                //if ((ganador.telefono == null || ganador.telefono == "") && (ganador.email == null || ganador.email == ""))
+                //{
+                //    men_validacion_campos += "Ingrese un numero de telefono o email válido del participante." + Environment.NewLine;
+                //}
+                //if (ganador.email != null && ganador.email.Length > 0 && !System.Text.RegularExpressions.Regex.IsMatch(ganador.email, regex))
+                //{
+                //    men_validacion_campos += "Ingrese un email válido del participante." + Environment.NewLine;
+                //}
+                //if (men_validacion_campos.Trim() != "")
+                //{
+                //    return Json(new { estado = 0, codigo = "", resultados = men_validacion_campos.Trim() });
+                //}
+                string corre_envio = "";
                 string telef_envia = ""; 
                 string codigo = "";
+                string barra = "";
                 string tienda = Session["Tienda"].ToString(); ;
                 Premios premio = (Premios)Session["PremioGanador"];
                 int estado = 0;
@@ -99,13 +201,14 @@ namespace CapaPresentacion.Controllers
 
                     codigo = codigo.PadLeft(15, '0');
 
-                    int result_insert = _datos.insertar_ganador_ruleta(codigo, Session["Tienda"].ToString(), ganador.dni, ganador.nombre, ganador.ape_pat,ganador.ape_mat, ganador.telefono, ganador.email, premio.id);
+                    int result_insert = _datos.insertar_ganador_ruleta(codigo, Session["Tienda"].ToString(), ganador.dni, ganador.nombre, ganador.ape_pat,ganador.ape_mat, ganador.telefono, ganador.email, premio.id, usu_id,ref barra);
                     if (result_insert > 0)
                     {
                         if (afiliarse == "on" && sinDNI != "on")
                         {
-                            actualiza_cliente(ganador.dni, ganador.nombre, ganador.ape_pat, ganador.ape_mat, ganador.telefono, ganador.email, Session["Tienda"].ToString(), ref corre_envio, ref telef_envia);
+                            //actualiza_cliente(ganador.dni, ganador.nombre, ganador.ape_pat, ganador.ape_mat, ganador.telefono, ganador.email, Session["Tienda"].ToString(), ref corre_envio, ref telef_envia);
                         }
+                        codigo = barra;
                         estado = 1;
                         return Json(new { estado = estado, codigo = codigo, resultados = "Se registró correctamente al ganador." , premio = premio.nombre , codigos = (codigos == null ? 1 : codigos.Length + 1), prom_id = premio.prom_id });
                     }
@@ -129,73 +232,91 @@ namespace CapaPresentacion.Controllers
         [HttpPost]
         public ActionResult ValidarMiembroBataClub(GanadorRuleta ganador)
         {
-            //bool nuevo_bataclub = false;
+            Ent_Ruleta_Valida ruleta_valida = null;
+            Int32 estado = 0;
+            string mensaje = "";
             try
             {
-                BataClub.BataEcommerceSoapClient cliente_bataclub = new BataClub.BataEcommerceSoapClient();
-                BataClub.ValidateAcceso header = new BataClub.ValidateAcceso();
-                header.Username = "EA646294-11F4-4836-8C6E-F5D9B5F681FC";
-                header.Password = "DB959DFE-E49A-4F9B-8CD5-97364EE31FBA";
 
-                BataClub.Cliente_Parameter_Bataclub parameter = new BataClub.Cliente_Parameter_Bataclub();
-                parameter.dni = ganador.dni;
-                parameter.dni_barra = "";
-                parameter.envia_correo = "0"/*QUE NO ENVIE CORREO*/;
+                ruleta_valida = _datos.get_valida_dni(ganador.dni.ToString());
+                estado = 1;
+                
 
-                var datacliente = cliente_bataclub.ws_consultar_Cliente(header, parameter);
-
-                if (datacliente != null)
-                {
-                    if (datacliente.existe_cliente)
-                    {
-                        string _fc_ruc = datacliente.dni.ToString();//  datosCliente.DNI_String.ToString();
-                        string _fc_nomb = datacliente.primerNombre;//(datosCliente.Nombres != null) ? datosCliente.Nombres.ToString() : "";
-                        string _fc_apep = datacliente.apellidoPater;// (datosCliente.Apellidos != null) ? datosCliente.Apellidos.ToString() : "";
-                        string _fc_apem = datacliente.apellidoMater;// (datosCliente.ApellidoMaterno != null) ? datosCliente.ApellidoMaterno.ToString() : "";
-                        string _fc_tele = datacliente.telefono;// (datosCliente.Celular != null) ? datosCliente.Celular : "";
-                                                               //if (fc_tele.Length == 0) fc_tele = (datosCliente.Fono != null) ? datosCliente.Fono.ToString() : "";
-                        string _fc_mail = datacliente.correo;// (datosCliente.eMail != null) ? datosCliente.eMail.ToString() : "";
-                        string _fc_dcli = "";//(datosCliente.Localidad != null) ? datosCliente.Localidad.ToString() : "";
-                                             //dt.Rows.Add(_fc_ruc, fc_nomb.ToUpper(), fc_apep.ToUpper(), fc_apem, fc_tele, fc_mail, fc_dcli.ToUpper(), "");
-                        bool flujo_metri = datacliente.miembro_bataclub;// datosCliente.RegistradoEnFlujosBataClub;                    
-                        return Json(new { estado = 1, existe = datacliente.existe_cliente, nuevo_bataclub = !datacliente.miembro_bataclub, _dni = _fc_ruc, nombre = _fc_nomb, ape_pat = _fc_apep, ape_mat = _fc_apem, telefono = _fc_tele, email = _fc_mail });
-                    }
-                    else
-                    {
-                        SunatReniec.Sunat_Reniec_PESoapClient clienteSunatReniec = new SunatReniec.Sunat_Reniec_PESoapClient();
-                        SunatReniec.validateLogin la = new SunatReniec.validateLogin();
-                        la.Username = "BataPeru";
-                        la.Password = "Bata2018**.";
-
-                        var dataClienteReniec = clienteSunatReniec.ws_persona_reniec(la, ganador.dni);
-                        if (dataClienteReniec.Valida_Reniec.Estado == "0")
-                        {
-                            return Json(new { estado = 1, existe = false, nuevo_bataclub = true, _dni = dataClienteReniec.Dni, nombre = dataClienteReniec.Nombres, ape_pat = dataClienteReniec.ApePat, ape_mat = dataClienteReniec.ApeMat });
-                        }
-                        else
-                        {
-                            return Json(new
-                            {
-                                estado = 1,
-                                existe = false,
-                                nuevo_bataclub = true,
-                                _dni = "",
-                                nombre = "",
-                                ape_pat = "",
-                                ape_mat = ""
-                            });
-                        }
-                    }
-                }
-                else
-                {
-                    return Json(new { estado = 1, existe = false, nuevo_bataclub = true });
-                }                
             }
-            catch (Exception ex)
+            catch (Exception exc)
             {
-                return Json(new { estado = 0, existe = false, nuevo_bataclub = true , resultados = "Error al validar miembro BATACLUB" });
-            }           
+                estado = 0;
+                mensaje = exc.Message;
+
+            }
+            return Json(new { estado = estado, mensaje = mensaje, ruleta_valida = ruleta_valida });
+            //bool nuevo_bataclub = false;
+            //try
+            //{
+            //    BataClub.BataEcommerceSoapClient cliente_bataclub = new BataClub.BataEcommerceSoapClient();
+            //    BataClub.ValidateAcceso header = new BataClub.ValidateAcceso();
+            //    header.Username = "EA646294-11F4-4836-8C6E-F5D9B5F681FC";
+            //    header.Password = "DB959DFE-E49A-4F9B-8CD5-97364EE31FBA";
+
+            //    BataClub.Cliente_Parameter_Bataclub parameter = new BataClub.Cliente_Parameter_Bataclub();
+            //    parameter.dni = ganador.dni;
+            //    parameter.dni_barra = "";
+            //    parameter.envia_correo = "0"/*QUE NO ENVIE CORREO*/;
+
+            //    var datacliente = cliente_bataclub.ws_consultar_Cliente(header, parameter);
+
+            //    if (datacliente != null)
+            //    {
+            //        if (datacliente.existe_cliente)
+            //        {
+            //            string _fc_ruc = datacliente.dni.ToString();//  datosCliente.DNI_String.ToString();
+            //            string _fc_nomb = datacliente.primerNombre;//(datosCliente.Nombres != null) ? datosCliente.Nombres.ToString() : "";
+            //            string _fc_apep = datacliente.apellidoPater;// (datosCliente.Apellidos != null) ? datosCliente.Apellidos.ToString() : "";
+            //            string _fc_apem = datacliente.apellidoMater;// (datosCliente.ApellidoMaterno != null) ? datosCliente.ApellidoMaterno.ToString() : "";
+            //            string _fc_tele = datacliente.telefono;// (datosCliente.Celular != null) ? datosCliente.Celular : "";
+            //                                                   //if (fc_tele.Length == 0) fc_tele = (datosCliente.Fono != null) ? datosCliente.Fono.ToString() : "";
+            //            string _fc_mail = datacliente.correo;// (datosCliente.eMail != null) ? datosCliente.eMail.ToString() : "";
+            //            string _fc_dcli = "";//(datosCliente.Localidad != null) ? datosCliente.Localidad.ToString() : "";
+            //                                 //dt.Rows.Add(_fc_ruc, fc_nomb.ToUpper(), fc_apep.ToUpper(), fc_apem, fc_tele, fc_mail, fc_dcli.ToUpper(), "");
+            //            bool flujo_metri = datacliente.miembro_bataclub;// datosCliente.RegistradoEnFlujosBataClub;                    
+            //            return Json(new { estado = 1, existe = datacliente.existe_cliente, nuevo_bataclub = !datacliente.miembro_bataclub, _dni = _fc_ruc, nombre = _fc_nomb, ape_pat = _fc_apep, ape_mat = _fc_apem, telefono = _fc_tele, email = _fc_mail });
+            //        }
+            //        else
+            //        {
+            //            SunatReniec.Sunat_Reniec_PESoapClient clienteSunatReniec = new SunatReniec.Sunat_Reniec_PESoapClient();
+            //            SunatReniec.validateLogin la = new SunatReniec.validateLogin();
+            //            la.Username = "BataPeru";
+            //            la.Password = "Bata2018**.";
+
+            //            var dataClienteReniec = clienteSunatReniec.ws_persona_reniec(la, ganador.dni);
+            //            if (dataClienteReniec.Valida_Reniec.Estado == "0")
+            //            {
+            //                return Json(new { estado = 1, existe = false, nuevo_bataclub = true, _dni = dataClienteReniec.Dni, nombre = dataClienteReniec.Nombres, ape_pat = dataClienteReniec.ApePat, ape_mat = dataClienteReniec.ApeMat });
+            //            }
+            //            else
+            //            {
+            //                return Json(new
+            //                {
+            //                    estado = 1,
+            //                    existe = false,
+            //                    nuevo_bataclub = true,
+            //                    _dni = "",
+            //                    nombre = "",
+            //                    ape_pat = "",
+            //                    ape_mat = ""
+            //                });
+            //            }
+            //        }
+            //    }
+            //    else
+            //    {
+            //        return Json(new { estado = 1, existe = false, nuevo_bataclub = true });
+            //    }                
+            //}
+            //catch (Exception ex)
+            //{
+            //    return Json(new { estado = 0, existe = false, nuevo_bataclub = true , resultados = "Error al validar miembro BATACLUB" });
+            //}           
         }
 
         [HttpPost]
@@ -232,6 +353,9 @@ namespace CapaPresentacion.Controllers
         {
             try
             {
+                //string[] c = { "BCR200UJ037P000006" };
+                //codigos = c;
+                //codigos[0] = "BCR200UJ037P000006";
                 DataTable dt_info_cupon = null;
                 List<PremioRuleta> premios = new List<PremioRuleta>();
                 for (int i = 0; i < codigos.Length; i++)
