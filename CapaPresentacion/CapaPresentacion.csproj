@@ -1801,6 +1801,8 @@
     <Content Include="Views\Bata\getListaCupPromCompartir.cshtml" />
     <Content Include="Views\Bata\BataSac.cshtml" />
     <Content Include="Views\Bata\get_venta_detalle.cshtml" />
+    <Content Include="Views\ECommerce\TrazaPedido.cshtml" />
+    <Content Include="Views\ECommerce\ListaTraza.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

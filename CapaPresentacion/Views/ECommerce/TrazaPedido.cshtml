@@ -1,0 +1,267 @@
+﻿@using CapaEntidad.ECommerce
+@model IEnumerable<Ent_TrazaPedido>
+@{
+    ViewBag.Title = "Mantenimiento y Traza de pedidos";
+    AjaxOptions options = new AjaxOptions
+    {
+        HttpMethod = "GET",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "lista",
+        OnComplete = "waitingDialog.hide();",
+        OnBegin = "waitingDialog.show('Espere un momento por favor');",
+        OnFailure = "waitingDialog.hide();"
+    };
+}
+@*@Scripts.Render("~/bundles/bootstrap")
+
+    <link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js"></script>*@
+
+
+<script src="~/Scripts/bootstrap-select.min.js"></script>
+<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+
+<script src="~/Scripts/BI.js"></script>
+<style>
+    iframe {
+        border: none;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        height: 800px;
+    }
+</style>
+
+<p class="text-danger">Mantenimiento y trazabilidad de pedidos dede Prestashop hasta Almacén</p>
+<div class="box box-body box-primary">
+    @using (Ajax.BeginForm("ListaTraza", options))
+    {
+        <form id="form1">
+            <div class="col-sm-2">
+                <label for="segape">Fecha Inicio</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div id="datepickerini" class="input-group date" data-date-format="dd-mm-yyyy">
+                            <input id="fecini" name="fecini" value="" class="form-control custom-input" placeholder="dd-mm-yyyy" type="text" />
+                            <span class="input-group-addon  bg-white"><img src="~/Content/images/wall-calendar-with-lines.svg" height="20" width="20"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <label for="fecnac">Fecha Final</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div id="datepickerfin" class="input-group date" data-date-format="dd-mm-yyyy">
+                            <input id="fecfinc" name="fecfinc" value="" class="form-control custom-input" placeholder="dd-mm-yyyy" type="text" />
+                            <span class="input-group-addon  bg-white"><img src="~/Content/images/wall-calendar-with-lines.svg" height="20" width="20"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-8" style="padding-left: 25px;">
+                <label></label><br />
+                @*<button type="submit" title="Consultar" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-search" onclick="SetearParametros();" ></span>
+                    </button>*@
+                <button name="buscar" class="btn btn-primary" onload="javascript: waitingDialog.hide();" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="@Url.Action("ExportToExcel")" title="Exportar a excel" class="btn btn-primary">Exportar</a>
+                @*<button type="submit" id="btnEnviar" type="button" title="Actualizar pedido" target="_blank" onclick="PopupConfirmacion('act');" class="btn btn-success" onload="javascript: waitingDialog.hide();">Actualizar</button>
+                    <button type="submit" title="Anular pedido" target="_blank" onclick="PopupConfirmacion('anu');" class="btn btn-danger" onload="javascript: waitingDialog.hide();">Anular</button>&nbsp;&nbsp;&nbsp;*@
+                <button id="act" type="button" title="Actualizar pedido" class="btn btn-success">Actualizar</button>
+                <button id="anu" type="button" title="Anular pedido" class="btn btn-danger">Anular</button>&nbsp;&nbsp;&nbsp;
+
+                @*<a href="@Url.Action("ActualizarPedido")" title="Actualizar pedido" class="btn btn-success">Actualizar</a>*@
+                @*<a href="@Url.Action("AnularPedido")" title="Anular pedido" class="btn btn-danger">Anular</a>&nbsp;&nbsp;&nbsp;*@
+                <span class="label label-default" style="font-size:14px">
+                    <b>Enviar a WMS:</b><small class="text-right">&nbsp;<label id="lblwms" name="lblwms"></label></small>
+                    @*<div class='checkbox' style='height: 13px;'>*@
+                    <label><input style='margin-top: 0px;' name="opt" id="flagWMS" type='checkbox' checked> </label>
+                    @*<label class="checkbox-inline"><input style='margin-top: 0px;' type="checkbox" name="wms" id="wms" checked >Enviar a WMS</label>*@
+                    @*</div>*@
+                </span>
+
+            </div>
+        </form>
+    }
+    <div class="box-body" id="lista">
+        @{Html.RenderPartial("ListaTraza", Model);}
+    </div>
+    <br />
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" ng-app>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div id='myModalContent'></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    $(document).ready(function () {
+        $("#act").click(function () {
+            PopupConfirmacion("act");
+        });
+    });
+
+    $(document).ready(function () {
+        $("#anu").click(function () {
+            PopupConfirmacion("anu");
+        });
+    });
+
+
+    $(function () {
+        $("#datepickerini").datepicker({
+            autoclose: true,
+            todayHighlight: true
+        }).datepicker("setDate", "0");;
+    });
+    $(function () {
+        $("#datepickerfin").datepicker({
+            autoclose: true,
+            todayHighlight: true
+        }).datepicker("setDate", "0");;
+    });
+
+    @*function Listar() {
+        alert("okk");
+        waitingDialog.show('Espere un momento por favor...');
+        $.ajax
+          ({
+
+              type: "POST",                                              // tipo de request que estamos generando
+              url: '@Url.Action("ActualizarPedido", "Ecommerce")',                    // URL al que vamos a hacer el pedido
+
+
+              @*$('#lista').load('@Url.Action("ListaTraza", "Ecommerce")', {});*@
+    //data: { FlagWMS: valor },    // data es un arreglo JSON que contiene los parámetros que
+    //success: function (data) {
+    //    waitingDialog.hide();
+
+    //    if ((data.estado) == true) {
+    //    }
+    //}
+    //})
+    //}
+
+    function PopupConfirmacion(tipo) {
+        //alert(tipo);
+
+        var strhtml = ''
+        strhtml += '<div class="modal-header modal-header-danger" style="margin-top:0px;margin-bottom:0px;padding-top:2px;padding-bottom:2px;">'
+        strhtml += '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
+        strhtml += '<h5 class="modal-title" id="myModalLabel">'
+        strhtml += '<table style="border-bottom:0px;font-size:14px;width:50%;">'
+        strhtml += '<tr>'
+        strhtml += '<td style="font-size:14px;width:100%;text-align:left;"><b> Mantenimiento de pedidos </b></td>'
+        strhtml += '</tr>'
+        strhtml += '</table>'
+        strhtml += '</h5>'
+        strhtml += '</div>'
+        strhtml += '<div class="modal-body">'
+        if (tipo == "act") {
+            strhtml += 'Esta seguro de realizar la actualización o parcialización de los pedidos seleccionados?</b>'
+        } else {
+            strhtml += 'Esta seguro de anular los pedidos seleccionados?</b>'
+        }
+
+        strhtml += '</div>'
+        strhtml += '<div class="modal-footer" style="margin-top:-30px">'
+        strhtml += '<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>'
+        if (tipo == "act") {
+            strhtml += '<button type="button" class="btn btn-primary"  onclick="ActualizarPedido()" data-dismiss="modal">Confirmar</button>'
+        } else {
+            strhtml += '<button type="button" class="btn btn-primary"  onclick="AnularPedido()" data-dismiss="modal">Confirmar</button>'
+        }
+        strhtml += '</div>'
+        var options = { "backdrop": "static", keyboard: true };
+
+        $('#myModalContent').html(strhtml);
+        $('#myModal').modal(options);
+        $('#myModal').modal('show');
+    }
+
+
+    function ActualizarPedido() {
+
+        waitingDialog.show('Espere un momento por favor...');
+        var valor;
+
+        if (document.getElementById('flagWMS').checked == true) {
+            valor = 1
+        } else {
+            valor = 0
+        }
+
+        $.ajax
+          ({
+
+              type: "POST",                                              // tipo de request que estamos generando
+              url: '@Url.Action("ActualizarPedido", "Ecommerce")',                    // URL al que vamos a hacer el pedido
+              data: { FlagWMS: valor },    // data es un arreglo JSON que contiene los parámetros que
+              success: function (data) {
+                  waitingDialog.hide();
+
+                  if ((data.estado) == true) {
+
+                      if (data.FlagWMS == 1) {
+                          $('#lista').load('@Url.Action("ListaTraza", "Ecommerce")', {});
+                          waitingDialog.hide();
+                          toastr.success("Los pedidos seleccionados se actualizarán en WMS y Facturación en unos minutos", "Mensaje");
+                          //location.reload(true);
+
+                      } else {
+                          $('#lista').load('@Url.Action("ListaTraza", "Ecommerce")', {});
+                          waitingDialog.hide();
+                          toastr.success("Los pedidos seleccionados se parcializarán en Facturación en unos minutos", "Mensaje");
+                          //location.reload(true);
+
+                      }
+                  } else {
+                      waitingDialog.hide();
+                      toastr.error("El proceso no se ejecutó correctamente , porfavor intente de nuevo", "Error");
+                      //location.reload(true);
+                  }
+              }
+          })
+    }
+
+    function AnularPedido() {
+
+        var valor = 0;
+
+        waitingDialog.show('Espere un momento por favor...');
+        $.ajax
+          ({
+              type: "POST",                                              // tipo de request que estamos generando
+              url: '@Url.Action("AnularPedido", "Ecommerce")',                    // URL al que vamos a hacer el pedido
+              data: { FlagWMS: valor },    // data es un arreglo JSON que contiene los parámetros que
+              success: function (data) {
+                  waitingDialog.hide();
+
+                  if ((data.estado) == true) {
+                      $('#lista').load('@Url.Action("ListaTraza", "Ecommerce")', {});
+                      waitingDialog.hide();
+                      toastr.success("El proceso de anulación de pedidos se ejecutó satisfactoriamente", "Mensaje");
+                      //location.reload(true);
+
+                  } else {
+                      waitingDialog.hide();
+                      toastr.error("El proceso no anuló ningun pedido , porfavor intente de nuevo", "Error");
+                      //location.reload(true);
+                  }
+              }
+
+          })
+    }
+
+
+
+</script>

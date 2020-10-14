@@ -13,12 +13,18 @@ using CapaDato.ECommerce.Urbano;
 using CapaDato.comercioxpress;
 using Data.Crystal.Reporte;
 using CapaPresentacion.Bll;
+using CapaEntidad.Menu;
+using CapaEntidad.General;
+using Newtonsoft.Json;
+using CapaEntidad.ValeCompra;
 
 namespace CapaPresentacion.Controllers
 {
     public class ECommerceController : Controller
     {
         Dat_ECommerce datos = new Dat_ECommerce();
+        //List<Ent_TrazaPedido> listTraza = new List<Ent_TrazaPedido>();
+        private string _session_listTraza_private = "_session_listTraza_private";
         // GET: Cnvta
 
         public ActionResult Index()
@@ -503,14 +509,14 @@ namespace CapaPresentacion.Controllers
         }
 
 
-        public PartialViewResult ConsultaStockEcom(string codAlmacen, string numArticulo, string desArticulo , string talArticulo)
+        public PartialViewResult ConsultaStockEcom(string codAlmacen, string numArticulo, string desArticulo, string talArticulo)
         {
             return PartialView(get_Lista_Stock_Almacen(codAlmacen, numArticulo, desArticulo, talArticulo));
         }
 
         public List<Ent_Stock_Almacen> get_Lista_Stock_Almacen(string codAlmacen, string numArticulo, string desArticulo, string talArticulo)
         {
-            List<Ent_Stock_Almacen> lista = datos.get_Lista_Stock_Almacen(codAlmacen, numArticulo, desArticulo,talArticulo);
+            List<Ent_Stock_Almacen> lista = datos.get_Lista_Stock_Almacen(codAlmacen, numArticulo, desArticulo, talArticulo);
             Session["Lista_stock_almacen"] = lista;
             return lista;
         }
@@ -548,7 +554,7 @@ namespace CapaPresentacion.Controllers
                              a.descripcion,
                              a.talla,
                              a.stock
-                        
+
 
                          };
 
@@ -572,7 +578,7 @@ namespace CapaPresentacion.Controllers
             List<Ent_Stock_Almacen> lista = (List<Ent_Stock_Almacen>)Session["Lista_stock_almacen"];
             string[] columns = { "ALMACEN", "NUM_ARTICULO", "ARTICULO", "TALLA", "STOCK" };
             //string[] headers = { "ALMACEN", "NUM_ARTICULO", "ARTICULO", "TALLA", "STOCK"};
-            byte[] filecontent = ExcelExportHelper.ExportExcelStock_Ecom1(lista, "LISTA GENERAL DE STOCK DE ARTICULOS POR ALMACEN",false, columns);
+            byte[] filecontent = ExcelExportHelper.ExportExcelStock_Ecom1(lista, "LISTA GENERAL DE STOCK DE ARTICULOS POR ALMACEN", false, columns);
             //byte[] filecontent = ExcelExportHelper.CreateCSVFile(lista, "LISTA GENERAL DE STOCK DE ARTICULOS POR ALMACEN");
             return File(filecontent, ExcelExportHelper.ExcelContentType, "StockArticulosAlmacen.xlsx");
         }
@@ -597,7 +603,7 @@ namespace CapaPresentacion.Controllers
                 //ViewBag.Tienda = dat_lista_tienda.get_tienda("PE", "1");
                 Session["Lista_Pedidos_Prestashop"] = null;
 
-              
+
                 return View();
             }
         }
@@ -696,11 +702,184 @@ namespace CapaPresentacion.Controllers
                 Session["Lista_Pedidos_Prestashop"] = liststoreConf;
             }
             List<Ent_Prestashop> lista = (List<Ent_Prestashop>)Session["Lista_Pedidos_Prestashop"];
-            string[] columns = { "ID_ORDER", "FECHA_PED", "ESTADO_SIST_FACT", "PRESTA_ESTADO", "PRESTA_ESTADO_NAME", "PRESTA_FECING", "FECHA_FACTURACION","COMPROBANTE","NAME_CARRIER","ALMACEN","UBIGEO","UBICACION","SEMANA","ARTICULO_ID","TALLA","CANTIDAD","PRECIO_VTA","PRECIO_ORIGINAL","COD_LINE3","DES_LINE3","COD_CATE3","DES_CATE3","COD_SUBC3","DES_SUBC3","COD_MARC3","DES_MARCA","PRECIO_PLANILLA","COSTO","C","5","B","W","1"};
+            string[] columns = { "ID_ORDER", "FECHA_PED", "ESTADO_SIST_FACT", "PRESTA_ESTADO", "PRESTA_ESTADO_NAME", "PRESTA_FECING", "FECHA_FACTURACION", "COMPROBANTE", "NAME_CARRIER", "ALMACEN", "UBIGEO", "UBICACION", "SEMANA", "ARTICULO_ID", "TALLA", "CANTIDAD", "PRECIO_VTA", "PRECIO_ORIGINAL", "COD_LINE3", "DES_LINE3", "COD_CATE3", "DES_CATE3", "COD_SUBC3", "DES_SUBC3", "COD_MARC3", "DES_MARCA", "PRECIO_PLANILLA", "COSTO", "C", "5", "B", "W", "1" };
             //string[] headers = { "ALMACEN", "NUM_ARTICULO", "ARTICULO", "TALLA", "STOCK"};
             byte[] filecontent = ExcelExportHelper.ExportExcel_Prestashop(lista, "INFORME GENERAL DE PEDIDOS - PRESTASHOP", false, columns);
             //byte[] filecontent = ExcelExportHelper.CreateCSVFile(lista, "LISTA GENERAL DE STOCK DE ARTICULOS POR ALMACEN");
             return File(filecontent, ExcelExportHelper.ExcelContentType, "InformacionPrestashop.xlsx");
+        }
+
+        //MANTENIMIENTO Y TRAZA DE PEDIDOS ECOMMERCE
+        public ActionResult TrazaPedido()
+        {
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
+
+            if (_usuario == null)
+            {
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+            }
+            else
+            {
+                return View();
+            }
+        }
+
+        public PartialViewResult ListaTraza(string fecini, string fecfinc)
+        {
+            return PartialView(lista(Convert.ToDateTime(fecini), Convert.ToDateTime(fecfinc)));
+        }
+
+        public List<Ent_TrazaPedido> lista(DateTime fechaini, DateTime fechafin)
+        {
+            List<Ent_TrazaPedido> listTraza = datos.get_lista(fechaini, fechafin);
+            listTraza = datos.get_lista(fechaini, fechafin);
+            Session[_session_listTraza_private] = listTraza;
+            return listTraza;
+        }
+
+        public ActionResult getListaTraza(Ent_jQueryDataTableParams param, string ID_PEDIDO)
+        {
+            /*verificar si esta null*/
+            if (Session[_session_listTraza_private] == null)
+            {
+                List<Ent_TrazaPedido> listTraza = new List<Ent_TrazaPedido>();
+                Session[_session_listTraza_private] = listTraza;
+            }
+
+            if (ID_PEDIDO != null)
+            {
+                List<Ent_TrazaPedido> listPedido = (List<Ent_TrazaPedido>)Session[_session_listTraza_private];
+                listPedido.Where(w => w.ID_PEDIDO == ID_PEDIDO).Select(a => { a.VALOR = !a.VALOR; return a; }).ToList();
+                Session[_session_listTraza_private] = listPedido;
+
+            }
+
+            //Traer registros
+            IQueryable<Ent_TrazaPedido> membercol = ((List<Ent_TrazaPedido>)(Session[_session_listTraza_private])).AsQueryable();  //lista().AsQueryable();
+
+            //Manejador de filtros
+            int totalCount = membercol.Count();
+            IEnumerable<Ent_TrazaPedido> filteredMembers = membercol;
+
+            if (!string.IsNullOrEmpty(param.sSearch))
+            {
+                filteredMembers = membercol
+                    .Where(m => m.ID_PEDIDO.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                     m.CLIENTE.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                     m.ESTADO.ToUpper().Contains(param.sSearch.ToUpper()));
+
+            }
+            //Manejador de orden
+            //var sortIdx = Convert.ToInt32(Request["iSortCol_0"]);
+            //Func<Ent_TrazaPedido, string> orderingFunction =
+            //(
+            //m => sortIdx == 0 ? m.cod_tienda :
+            //sortIdx == 1 ? m.des_tienda :
+            //sortIdx == 2 ? m.semana :
+            //sortIdx == 3 ? m.dni :
+            //m.estado
+            //);
+            //var sortDirection = Request["sSortDir_0"];
+            //if (sortDirection == "asc")
+            //    filteredMembers = filteredMembers.OrderBy(orderingFunction);
+            //else
+            //    filteredMembers = filteredMembers.OrderByDescending(orderingFunction);
+            var displayMembers = filteredMembers
+                .Skip(param.iDisplayStart)
+                .Take(param.iDisplayLength);
+            var result = from a in displayMembers
+                         select new
+                         {
+                             a.ID_PEDIDO,
+                             a.FECHA_PEDIDO,
+                             a.DESPACHO,
+                             a.FECHA_ING_FACTURACION,
+                             a.FECHA_REG_VENTA,
+                             a.CLIENTE,
+                             a.ESTADO,
+                             a.COLOR,
+                             a.VALOR
+
+                         };
+            //Se devuelven los resultados por json
+            return Json(new
+            {
+                sEcho = param.sEcho,
+                iTotalRecords = totalCount,
+                iTotalDisplayRecords = filteredMembers.Count(),
+                aaData = result
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public FileContentResult ExportToExcel()
+        {
+            List<Ent_TrazaPedido> listTrazaPedido = (List<Ent_TrazaPedido>)Session[_session_listTraza_private];
+
+            //List<Technology> technologies = StaticData.Technologies;
+            string[] columns = { "ID_PEDIDO", "FECHA_PEDIDO", "DESPACHO", "FECHA_ING_FACTURACION", "FECHA_REG_VENTA", "CLIENTE", "ESTADO" };
+            byte[] filecontent = ExcelExportHelper.ExportExcel(listTrazaPedido, "Trazabilidad de Pedidos - Almacén", true, columns);
+            return File(filecontent, ExcelExportHelper.ExcelContentType, "TrazaPedidos_Almacen.xlsx");
+        }
+        //[HttpPost]
+        public ActionResult AgregarPedido(string IdPedido_)
+        {
+            List<Ent_TrazaPedido> listPedido = (List<Ent_TrazaPedido>)Session[_session_listTraza_private];
+
+            listPedido.Where(w => w.ID_PEDIDO == IdPedido_).Select(a => { a.VALOR = !a.VALOR; return a; }).ToList();
+            Session[_session_listTraza_private] = listPedido;
+
+            return Json(new { estado = 1 });
+
+        }
+
+        //[HttpPost]
+        public ActionResult AnularPedido(int FlagWMS)
+        {
+            var oJRespuesta = new JsonResponse();
+            bool estado = false;
+            List<Ent_TrazaPedido> listPedido = (List<Ent_TrazaPedido>)Session[_session_listTraza_private];
+            //Dat_ECommerce datos = new Dat_ECommerce();
+
+            var newlist = listPedido.Where(sublista => sublista.VALOR == true).ToList();
+
+            for (int i = 0; i < newlist.Count; i++)
+            {
+                estado = datos.update_pedido_ecommerce(newlist[i].ID_PEDIDO, "A", FlagWMS);
+            }
+            //if (estado == true)
+            //{
+            //    oJRespuesta.Success = estado;
+            //}
+            //return Json(oJRespuesta, JsonRequestBehavior.AllowGet);
+            return Json(new { estado = estado });
+
+        }
+
+        //[HttpPost]
+        public ActionResult ActualizarPedido(int FlagWMS)
+        {
+            var oJRespuesta = new JsonResponse();
+            bool estado = false;
+            List<Ent_TrazaPedido> listPedido = (List<Ent_TrazaPedido>)Session[_session_listTraza_private];
+            //Dat_ECommerce datos = new Dat_ECommerce();
+
+            var newlist = listPedido.Where(sublista => sublista.VALOR == true).ToList();
+
+            for (int i = 0; i < newlist.Count; i++)
+            {
+                estado = datos.update_pedido_ecommerce(newlist[i].ID_PEDIDO, "E", FlagWMS);
+            }
+            //if (estado == true)
+            //{
+            //    oJRespuesta.Success = estado;
+            //}
+            return Json(new { estado = estado , FlagWMS = FlagWMS });
+            
         }
         #endregion
     }

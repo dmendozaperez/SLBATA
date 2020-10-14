@@ -405,6 +405,78 @@ namespace CapaDato.ECommerce
             return listar;
         }
 
+        public List<Ent_TrazaPedido> get_lista(DateTime fechaini, DateTime fechafin)
+        {
+            string sqlquery = "USP_GetTrazabilidadPedido";
+            List<Ent_TrazaPedido> listar = null;
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexionEcommerce))
+                {
+                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@FECHA_INICIO", fechaini);
+                        cmd.Parameters.AddWithValue("@FECHA_FIN", fechafin);
+                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                        {
+                            DataTable dt = new DataTable();
+                            da.Fill(dt);
+                            listar = new List<Ent_TrazaPedido>();
+                            listar = (from DataRow dr in dt.Rows
+                                      select new Ent_TrazaPedido()
+                                      {
+                                          ID_PEDIDO = dr["ID_PEDIDO"].ToString(),
+                                          FECHA_PEDIDO = dr["FECHA_PEDIDO"].ToString(),
+                                          DESPACHO = dr["DESPACHO"].ToString(),
+                                          FECHA_ING_FACTURACION = dr["FECHA_ING_FACTURACION"].ToString(),
+                                          FECHA_REG_VENTA = (dr["FECHA_REG_VENTA"]).ToString(),
+                                          CLIENTE = dr["CLIENTE"].ToString(),
+                                          ESTADO = dr["ESTADO"].ToString(),
+                                          COLOR = dr["COLOR"].ToString(),
+                                      }).ToList();
+
+                        }
+                    }
+                }
+            }
+            catch (Exception exc)
+            {
+
+                listar = null;
+            }
+            return listar;
+        }
+
+        public Boolean update_pedido_ecommerce(string liq_id, string accion,int flagWMS)
+        {
+            Boolean valida = false;
+            string sqlquery = "USP_Anular_Liquidacion2";
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexionEcommerce))
+                {
+                    if (cn.State == 0) cn.Open();
+                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@Liq_Id", liq_id);
+                        cmd.Parameters.AddWithValue("@Accion", accion);
+                        cmd.Parameters.AddWithValue("@flagWMS", flagWMS);
+                        cmd.ExecuteNonQuery();
+                        valida = true;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                valida = false;
+                throw;
+            }
+            return valida;
+        }
 
 
     }
