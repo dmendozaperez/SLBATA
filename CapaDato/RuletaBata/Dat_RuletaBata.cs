@@ -12,6 +12,45 @@ namespace CapaDato.RuletaBata
 {
     public class Dat_RuletaBata
     {
+
+        public Int32 get_valida_ruleta()
+        {
+            string sqlquery = "USP_BATACLUB_VALIDA_RULETA";
+            Int32 valida = 0;
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+                    try
+                    {
+                        if (cn.State == 0) cn.Open();
+                        using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                        {
+                            cmd.CommandTimeout = 0;
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.Add("@VALIDA",SqlDbType.Int);
+                            cmd.Parameters["@VALIDA"].Direction = ParameterDirection.Output;
+                            cmd.ExecuteNonQuery();
+                            valida =Convert.ToInt32(cmd.Parameters["@VALIDA"].Value);
+
+                        }
+
+                    }
+                    catch (Exception)
+                    {
+                        valida = 0;
+                    }
+                    if (cn != null)
+                        if (cn.State == ConnectionState.Open) cn.Close();
+                }
+            }
+            catch
+            {
+                valida = 0;
+
+            }
+            return valida;
+        }
         public List<Premios> get_premios ()
         {
             string sqlquery = "[usp_get_premios_ruleta_bata]";

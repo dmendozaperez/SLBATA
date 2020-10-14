@@ -20,7 +20,7 @@ namespace CapaPresentacion.Controllers
         Dat_RuletaBata _datos = new Dat_RuletaBata();        
         public ActionResult Index()
         {
-            Session["Tienda"] = "50143";
+            //Session["Tienda"] = "50143";
             if (Session["Tienda"] == null)
             {
                 return RedirectToAction("Login", "Control");
@@ -28,6 +28,9 @@ namespace CapaPresentacion.Controllers
             Ent_RuletaBata ruleta = new Ent_RuletaBata();
             List<Premios> _prem = _datos.get_premios();            
             ruleta.listPremios = _prem;
+
+            ViewBag.valida_ruleta = _datos.get_valida_ruleta();
+
             return View(ruleta);
         }
 
@@ -139,8 +142,8 @@ namespace CapaPresentacion.Controllers
             try
             {
                 Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
-                Int32 usu_id = 1;//Convert.ToInt32(_usuario.usu_id);
-                usu_id = 1;
+                Int32 usu_id = Convert.ToInt32(_usuario.usu_id);//Convert.ToInt32(_usuario.usu_id);
+                //usu_id = 1;
                 if (Session["Tienda"] == null || Session["PremioGanador"]== null)
                 {
                     return RedirectToAction("Login", "Control");

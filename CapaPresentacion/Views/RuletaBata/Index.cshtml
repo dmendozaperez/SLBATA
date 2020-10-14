@@ -155,7 +155,7 @@
 
     function iniciar_validacion(){
         $("#ptitulo").html('Ingrese el dni para verificar si puede jugar');
-        $("#modalRegistrarGanador").modal({ backdrop: 'static', keyboard: false });  
+        $("#modalRegistrarGanador").modal({ backdrop: 'static', keyboard: false });
         $('#btnregistrar').hide();
         $('#btnregistrabc').hide();
         $('#btnvalidar_dni').show();
@@ -164,23 +164,40 @@
         $('#ape_pat').prop("disabled", true);
         $('#ape_mat').prop("disabled", true);
         $('#telefono').prop("disabled", true);
-        $('#email').prop("disabled", true);      
-        
+        $('#email').prop("disabled", true);
+
         $('#buscar_dni').prop("disabled", false);
-        
+
 
         $("#dni").focus();
     }
 
-    $(document).ready(function () {        
+    $(document).ready(function () {
         if (inicio_ruleta==0){
-            iniciar_validacion();
+            /*si el valor es cero entonces finde la ruleta*/
+            if (@ViewBag.valida_ruleta==1){
+                iniciar_validacion();
+            }else
+            {
+                swal({ 
+                    title: "Aviso!",
+                    text: "El juego no esta activo",
+                    icon: "error"}
+                                    ).then((value)=>{
+                                        $("#spin_button").prop('disabled', true);
+                                        window.location = '@Url.Action("Index")';                                     
+                                    });
+
+              
+            }
+
+
             //$("#ptitulo").html('Validar el juego de Ruleta ingresando su numero de DNI');
-            //$("#modalRegistrarGanador").modal({ backdrop: 'static', keyboard: false });         
+            //$("#modalRegistrarGanador").modal({ backdrop: 'static', keyboard: false });
             /*Has Ganado: */
 
         }
-        
+
 
 
 
@@ -380,8 +397,8 @@
                         /*en este caso si es que es -1 entonces ya se realizo*/
                         if (data.ruleta_valida.compras==-1){
                             swal({
-                                title: "Cliente ya se Genero su Premio",
-                                text: "El Nro de dni ingresado Ya esta registrado",
+                                title: "El cliente ya jugó la Ruleta Bata Club",
+                                text: "Verifica si su cupón esta vigente y no ha sido utilizado en el POS.NET",
                                 icon: "error",
                                 dangerMode: true,
                             });
