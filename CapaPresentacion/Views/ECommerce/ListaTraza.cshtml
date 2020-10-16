@@ -100,7 +100,7 @@
     function AgregarPedido(ID_PEDIDO) {
         //alert(ID_PEDIDO);
 
-        waitingDialog.show('Agregando a la lista...');
+        waitingDialog.show('Agregando el pedido a la lista...');
         $.ajax({
             type: "POST",                                              // tipo de request que estamos generando
             url: '@Url.Action("AgregarPedido", "Ecommerce")',                    // URL al que vamos a hacer el pedido
