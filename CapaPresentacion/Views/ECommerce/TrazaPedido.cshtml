@@ -38,6 +38,8 @@
     @using (Ajax.BeginForm("ListaTraza", options))
     {
         <form id="form1">
+            @*<input type="hidden" id="FecIni" value="@ViewBag.FecIni" />
+                <input type="hidden" id="FecFin" value="@ViewBag.FecFin" />*@
             <div class="col-sm-2">
                 <label for="segape">Fecha Inicio</label>
                 <div class="form-group">
@@ -66,7 +68,7 @@
                 @*<button type="submit" title="Consultar" class="btn btn-primary">
                         <span class="glyphicon glyphicon-search" onclick="SetearParametros();" ></span>
                     </button>*@
-                <button name="buscar" class="btn btn-primary" onload="javascript: waitingDialog.hide();" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                <button name="buscar" class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search"></span></button>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <a href="@Url.Action("ExportToExcel")" title="Exportar a excel" class="btn btn-primary">Exportar</a>
                 @*<button type="submit" id="btnEnviar" type="button" title="Actualizar pedido" target="_blank" onclick="PopupConfirmacion('act');" class="btn btn-success" onload="javascript: waitingDialog.hide();">Actualizar</button>
@@ -130,46 +132,63 @@
         }).datepicker("setDate", "0");;
     });
 
-    @*function Listar() {
-        alert("okk");
-        waitingDialog.show('Espere un momento por favor...');
-        $.ajax
-          ({
-
-              type: "POST",                                              // tipo de request que estamos generando
-              url: '@Url.Action("ActualizarPedido", "Ecommerce")',                    // URL al que vamos a hacer el pedido
-
-
-              @*$('#lista').load('@Url.Action("ListaTraza", "Ecommerce")', {});*@
-    //data: { FlagWMS: valor },    // data es un arreglo JSON que contiene los parámetros que
-    //success: function (data) {
-    //    waitingDialog.hide();
-
-    //    if ((data.estado) == true) {
-    //    }
-    //}
-    //})
-    //}
-
     function PopupConfirmacion(tipo) {
         //alert(tipo);
 
         var strhtml = ''
-        strhtml += '<div class="modal-header modal-header-danger" style="margin-top:0px;margin-bottom:0px;padding-top:2px;padding-bottom:2px;">'
+        if (tipo == "act") {
+            strhtml += '<div class="modal-header modal-header-success" style="margin-top:0px;margin-bottom:0px;padding-top:2px;padding-bottom:2px;">'
+        } else {
+            strhtml += '<div class="modal-header modal-header-danger" style="margin-top:0px;margin-bottom:0px;padding-top:2px;padding-bottom:2px;">'
+        }
         strhtml += '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
         strhtml += '<h5 class="modal-title" id="myModalLabel">'
-        strhtml += '<table style="border-bottom:0px;font-size:14px;width:50%;">'
+        strhtml += '<table style="border-bottom:0px;font-size:14px;width:100%;">'
         strhtml += '<tr>'
-        strhtml += '<td style="font-size:14px;width:100%;text-align:left;"><b> Mantenimiento de pedidos </b></td>'
+        if (tipo == "act") {
+            strhtml += '<td style="font-size:16px;width:100%;text-align:left;"><b> Esta seguro de actualizar o parcializar los siguientes pedidos ?</b></td>'
+        } else {
+            strhtml += '<td style="font-size:16px;width:100%;text-align:left;"><b> Esta seguro de anular los siguientes pedidos ?</b></td>'
+        }
         strhtml += '</tr>'
         strhtml += '</table>'
         strhtml += '</h5>'
         strhtml += '</div>'
         strhtml += '<div class="modal-body">'
         if (tipo == "act") {
-            strhtml += 'Esta seguro de realizar la actualización o parcialización de los pedidos seleccionados?</b>'
+
+            //strhtml += ' <table class="table table-hover dataTable  table-striped table-responsive">'
+            strhtml += '<table id="table2" class="table table-hover dataTable  table-striped table-responsive">'
+
+            strhtml += '<thead>'
+            strhtml += '<tr style="background-color:#3d566e; color:#ecf0f1">'
+            strhtml += '<th style="width:auto">Pedido</th>'
+            strhtml += '<th style="width:auto">Semáforo</th>'
+            //strhtml += '<th style="width:auto"></th>'
+
+            strhtml += '</tr>'
+            strhtml += '</thead>'
+            strhtml += '<tbody></tbody>'
+            //strhtml += '<tfoot>'
+            //strhtml += '<tr>'
+            ////strhtml += '<th></th>'
+            //strhtml += '</tr>'
+            //strhtml += '</tfoot>'
+            strhtml += '</table>'
+
+
         } else {
-            strhtml += 'Esta seguro de anular los pedidos seleccionados?</b>'
+            strhtml += '<table id="table2" class="table table-hover dataTable  table-striped table-responsive">'
+
+            strhtml += '<thead>'
+            strhtml += '<tr style="background-color:#3d566e; color:#ecf0f1">'
+            strhtml += '<th style="width:auto">Pedido</th>'
+            strhtml += '<th style="width:auto">Semáforo</th>'
+
+            strhtml += '</tr>'
+            strhtml += '</thead>'
+            strhtml += '<tbody></tbody>'
+            strhtml += '</table>'
         }
 
         strhtml += '</div>'
@@ -186,6 +205,33 @@
         $('#myModalContent').html(strhtml);
         $('#myModal').modal(options);
         $('#myModal').modal('show');
+
+        $(document).ready(function () {
+
+            $('#table2').dataTable({
+                "language": {
+                    "url": "../Scripts/DataTables/Spanish.json"
+                },
+                "bServerSide": true,
+                "bAutoWidth": false,
+                "sAjaxSource": '@Url.Action("getListaTraza_filtro", "ECommerce")',
+                "bdestroy": true,
+                "start": 0,
+                "order": [0, "asc"],
+                "bDeferRender": true,
+                "aoColumns": [
+                       { "sName": "ID_PEDIDO", "mData": "ID_PEDIDO" },
+                       {
+                           "render": function (data, type, full) {
+                               return "<span class='label label-" + full.COLOR + "'>" + full.ESTADO + "</span>"
+                           }
+                       },
+
+                ],
+
+            });
+
+        });
     }
 
 
@@ -207,27 +253,32 @@
               url: '@Url.Action("ActualizarPedido", "Ecommerce")',                    // URL al que vamos a hacer el pedido
               data: { FlagWMS: valor },    // data es un arreglo JSON que contiene los parámetros que
               success: function (data) {
-                  waitingDialog.hide();
+
 
                   if ((data.estado) == true) {
 
+                      $('#lista').load('@Url.Action("ListaTraza", "Ecommerce")', {});
+
                       if (data.FlagWMS == 1) {
-                          $('#lista').load('@Url.Action("ListaTraza", "Ecommerce")', {});
-                          waitingDialog.hide();
+
                           toastr.success("Los pedidos seleccionados se actualizarán en WMS y Facturación en unos minutos", "Mensaje");
-                          //location.reload(true);
+                          setInterval(function () {
+                              waitingDialog.hide();
+                          }, 6000);
 
                       } else {
-                          $('#lista').load('@Url.Action("ListaTraza", "Ecommerce")', {});
-                          waitingDialog.hide();
-                          toastr.success("Los pedidos seleccionados se parcializarán en Facturación en unos minutos", "Mensaje");
-                          //location.reload(true);
+                          @*$('#lista').load('@Url.Action("ListaTraza", "Ecommerce")', {});*@
 
+                          toastr.success("Los pedidos seleccionados se parcializarán en Facturación en unos minutos", "Mensaje");
+
+                          setInterval(function () {
+                              waitingDialog.hide();
+                          }, 6000);
                       }
                   } else {
                       waitingDialog.hide();
                       toastr.error("El proceso no se ejecutó correctamente , porfavor intente de nuevo", "Error");
-                      //location.reload(true);
+
                   }
               }
           })
@@ -244,24 +295,22 @@
               url: '@Url.Action("AnularPedido", "Ecommerce")',                    // URL al que vamos a hacer el pedido
               data: { FlagWMS: valor },    // data es un arreglo JSON que contiene los parámetros que
               success: function (data) {
-                  waitingDialog.hide();
 
                   if ((data.estado) == true) {
                       $('#lista').load('@Url.Action("ListaTraza", "Ecommerce")', {});
-                      waitingDialog.hide();
+
                       toastr.success("El proceso de anulación de pedidos se ejecutó satisfactoriamente", "Mensaje");
-                      //location.reload(true);
+                      setInterval(function () {
+                          waitingDialog.hide();
+                      }, 6000);
 
                   } else {
                       waitingDialog.hide();
                       toastr.error("El proceso no anuló ningun pedido , porfavor intente de nuevo", "Error");
-                      //location.reload(true);
                   }
               }
 
           })
     }
-
-
 
 </script>

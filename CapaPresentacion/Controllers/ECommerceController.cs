@@ -730,14 +730,23 @@ namespace CapaPresentacion.Controllers
 
         public PartialViewResult ListaTraza(string fecini, string fecfinc)
         {
-            return PartialView(lista(Convert.ToDateTime(fecini), Convert.ToDateTime(fecfinc)));
+
+            if (fecini != null && fecfinc != null)
+            {
+                Session["fecini"] = fecini;
+                Session["fecfinc"] = fecfinc;
+
+            }
+            return PartialView(lista(Convert.ToDateTime(Session["fecini"]), Convert.ToDateTime(Session["fecfinc"])));
         }
 
         public List<Ent_TrazaPedido> lista(DateTime fechaini, DateTime fechafin)
         {
+            
             List<Ent_TrazaPedido> listTraza = datos.get_lista(fechaini, fechafin);
             listTraza = datos.get_lista(fechaini, fechafin);
             Session[_session_listTraza_private] = listTraza;
+
             return listTraza;
         }
 
@@ -795,11 +804,14 @@ namespace CapaPresentacion.Controllers
                          select new
                          {
                              a.ID_PEDIDO,
+                             a.CLIENTE,
+                             a.IMPORTE_PEDIDO,
+                             //a.DESPACHO,
                              a.FECHA_PEDIDO,
-                             a.DESPACHO,
                              a.FECHA_ING_FACTURACION,
                              a.FECHA_REG_VENTA,
-                             a.CLIENTE,
+                             a.FECHA_REG_COURIER,
+                             //a.TRAZABILIDAD,
                              a.ESTADO,
                              a.COLOR,
                              a.VALOR
@@ -815,13 +827,101 @@ namespace CapaPresentacion.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
 
+
+        public ActionResult getListaTraza_filtro(Ent_jQueryDataTableParams param, string ID_PEDIDO)
+        {
+            string _session_listTraza_private_filtro = "_session_listTraza_private_filtro";
+
+            /*verificar si esta null*/
+            if (Session[_session_listTraza_private] == null)
+            {
+                List<Ent_TrazaPedido> listTraza_filtro = new List<Ent_TrazaPedido>();
+                Session[_session_listTraza_private] = listTraza_filtro;
+            }
+
+            if (ID_PEDIDO == null)
+            {
+                List<Ent_TrazaPedido> listPedido = (List<Ent_TrazaPedido>)Session[_session_listTraza_private];
+                listPedido.Where(w => w.ID_PEDIDO == ID_PEDIDO).Select(a => { a.VALOR = !a.VALOR; return a; }).ToList();
+                Session[_session_listTraza_private] = listPedido;
+
+                //filtro
+                List<Ent_TrazaPedido> listPedido_filtro = (List<Ent_TrazaPedido>)Session[_session_listTraza_private];
+
+                Session[_session_listTraza_private_filtro] = listPedido_filtro;
+
+                var newlist = listPedido_filtro.Where(sublista => sublista.VALOR == true).ToList();
+                Session[_session_listTraza_private_filtro] = newlist;
+
+
+            }
+
+            //Traer registros
+            IQueryable<Ent_TrazaPedido> membercol = ((List<Ent_TrazaPedido>)(Session[_session_listTraza_private_filtro])).AsQueryable();  //lista().AsQueryable();
+
+            //Manejador de filtros
+            int totalCount = membercol.Count();
+            IEnumerable<Ent_TrazaPedido> filteredMembers = membercol;
+
+            if (!string.IsNullOrEmpty(param.sSearch))
+            {
+                filteredMembers = membercol
+                    .Where(m => m.ID_PEDIDO.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                     //m.CLIENTE.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                     m.ESTADO.ToUpper().Contains(param.sSearch.ToUpper()));
+
+            }
+            //Manejador de orden
+            //var sortIdx = Convert.ToInt32(Request["iSortCol_0"]);
+            //Func<Ent_TrazaPedido, string> orderingFunction =
+            //(
+            //m => sortIdx == 0 ? m.cod_tienda :
+            //sortIdx == 1 ? m.des_tienda :
+            //sortIdx == 2 ? m.semana :
+            //sortIdx == 3 ? m.dni :
+            //m.estado
+            //);
+            //var sortDirection = Request["sSortDir_0"];
+            //if (sortDirection == "asc")
+            //    filteredMembers = filteredMembers.OrderBy(orderingFunction);
+            //else
+            //    filteredMembers = filteredMembers.OrderByDescending(orderingFunction);
+            var displayMembers = filteredMembers
+                .Skip(param.iDisplayStart)
+                .Take(param.iDisplayLength);
+            var result = from a in displayMembers
+                         select new
+                         {
+                             a.ID_PEDIDO,
+                             //a.FECHA_PEDIDO,
+                             //a.DESPACHO,
+                             //a.FECHA_ING_FACTURACION,
+                             //a.FECHA_REG_VENTA,
+                             //a.CLIENTE,
+                             a.ESTADO,
+                             a.COLOR,
+                             a.VALOR
+
+                         };
+            //Se devuelven los resultados por json
+            return Json(new
+            {
+                sEcho = param.sEcho,
+                iTotalRecords = totalCount,
+                iTotalDisplayRecords = filteredMembers.Count(),
+                aaData = result
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+
+
         [HttpGet]
         public FileContentResult ExportToExcel()
         {
             List<Ent_TrazaPedido> listTrazaPedido = (List<Ent_TrazaPedido>)Session[_session_listTraza_private];
 
             //List<Technology> technologies = StaticData.Technologies;
-            string[] columns = { "ID_PEDIDO", "FECHA_PEDIDO", "DESPACHO", "FECHA_ING_FACTURACION", "FECHA_REG_VENTA", "CLIENTE", "ESTADO" };
+            string[] columns = { "ID_PEDIDO", "CLIENTE","IMPORTE_PEDIDO","FECHA_PEDIDO", "FECHA_ING_FACTURACION", "FECHA_REG_VENTA", "FECHA_REG_COURIER", "ESTADO" };
             byte[] filecontent = ExcelExportHelper.ExportExcel(listTrazaPedido, "Trazabilidad de Pedidos - Almacén", true, columns);
             return File(filecontent, ExcelExportHelper.ExcelContentType, "TrazaPedidos_Almacen.xlsx");
         }
@@ -846,10 +946,15 @@ namespace CapaPresentacion.Controllers
             //Dat_ECommerce datos = new Dat_ECommerce();
 
             var newlist = listPedido.Where(sublista => sublista.VALOR == true).ToList();
+            int flagcorreo = 0;
 
             for (int i = 0; i < newlist.Count; i++)
             {
-                estado = datos.update_pedido_ecommerce(newlist[i].ID_PEDIDO, "A", FlagWMS);
+                if (i == newlist.Count - 1)
+                {
+                    flagcorreo = 1;
+                }
+                estado = datos.update_pedido_ecommerce(newlist[i].ID_PEDIDO, "A", FlagWMS, flagcorreo);
             }
             //if (estado == true)
             //{
@@ -857,9 +962,7 @@ namespace CapaPresentacion.Controllers
             //}
             //return Json(oJRespuesta, JsonRequestBehavior.AllowGet);
             return Json(new { estado = estado });
-
         }
-
         //[HttpPost]
         public ActionResult ActualizarPedido(int FlagWMS)
         {
@@ -869,17 +972,22 @@ namespace CapaPresentacion.Controllers
             //Dat_ECommerce datos = new Dat_ECommerce();
 
             var newlist = listPedido.Where(sublista => sublista.VALOR == true).ToList();
+            int flagcorreo = 0;
 
             for (int i = 0; i < newlist.Count; i++)
             {
-                estado = datos.update_pedido_ecommerce(newlist[i].ID_PEDIDO, "E", FlagWMS);
+                if (i == newlist.Count - 1)
+                {
+                    flagcorreo = 1;
+                }
+                estado = datos.update_pedido_ecommerce(newlist[i].ID_PEDIDO, "E", FlagWMS, flagcorreo);
             }
             //if (estado == true)
             //{
             //    oJRespuesta.Success = estado;
             //}
-            return Json(new { estado = estado , FlagWMS = FlagWMS });
-            
+            return Json(new { estado = estado, FlagWMS = FlagWMS });
+
         }
         #endregion
     }

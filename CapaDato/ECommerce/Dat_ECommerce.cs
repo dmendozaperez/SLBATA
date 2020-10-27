@@ -405,6 +405,7 @@ namespace CapaDato.ECommerce
             return listar;
         }
 
+        //LISTA PEDIDOS DE ALMACEN - TRAZA
         public List<Ent_TrazaPedido> get_lista(DateTime fechaini, DateTime fechafin)
         {
             string sqlquery = "USP_GetTrazabilidadPedido";
@@ -428,11 +429,14 @@ namespace CapaDato.ECommerce
                                       select new Ent_TrazaPedido()
                                       {
                                           ID_PEDIDO = dr["ID_PEDIDO"].ToString(),
+                                          IMPORTE_PEDIDO = dr["IMPORTE_PEDIDO"].ToString(),
                                           FECHA_PEDIDO = dr["FECHA_PEDIDO"].ToString(),
-                                          DESPACHO = dr["DESPACHO"].ToString(),
+                                          //DESPACHO = dr["DESPACHO"].ToString(),
                                           FECHA_ING_FACTURACION = dr["FECHA_ING_FACTURACION"].ToString(),
-                                          FECHA_REG_VENTA = (dr["FECHA_REG_VENTA"]).ToString(),
+                                          FECHA_REG_VENTA = dr["FECHA_REG_VENTA"].ToString(),
+                                          FECHA_REG_COURIER = dr["FECHA_REG_COURIER"].ToString(),
                                           CLIENTE = dr["CLIENTE"].ToString(),
+                                          //TRAZABILIDAD = dr["TRAZABILIDAD"].ToString(),
                                           ESTADO = dr["ESTADO"].ToString(),
                                           COLOR = dr["COLOR"].ToString(),
                                       }).ToList();
@@ -449,7 +453,7 @@ namespace CapaDato.ECommerce
             return listar;
         }
 
-        public Boolean update_pedido_ecommerce(string liq_id, string accion,int flagWMS)
+        public Boolean update_pedido_ecommerce(string liq_id, string accion,int flagWMS,int flagcorreo)
         {
             Boolean valida = false;
             string sqlquery = "USP_Anular_Liquidacion2";
@@ -465,6 +469,7 @@ namespace CapaDato.ECommerce
                         cmd.Parameters.AddWithValue("@Liq_Id", liq_id);
                         cmd.Parameters.AddWithValue("@Accion", accion);
                         cmd.Parameters.AddWithValue("@flagWMS", flagWMS);
+                        cmd.Parameters.AddWithValue("@flag_correo", flagcorreo);
                         cmd.ExecuteNonQuery();
                         valida = true;
                     }

@@ -1,13 +1,17 @@
 ﻿<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.min.css" />
-<table class="table table-hover dataTable  table-striped table-responsive">
+<table id="table" class="table table-hover dataTable  table-striped table-responsive">
+    @*<table id="lista" class="table table-hover dataTable  table-striped table-responsive">*@
     <thead>
         <tr style="background-color:#3d566e; color:#ecf0f1">
-            <th style="width:auto">Cod. Pedido</th>
+            <th style="width:auto">Pedido</th>
+            <th style="width:auto">Cliente</th>
+            <th style="width:auto">Importe</th>
+            @*<th style="width:auto">Despacho Pedido</th>*@
             <th style="width:auto">Fecha reg. Pedido</th>
-            <th style="width:auto">Despacho Pedido</th>
             <th style="width:auto">Fecha Ing. Facturación</th>
             <th style="width:auto">Fecha Reg. Venta</th>
-            <th style="width:auto">Cliente</th>
+            <th style="width:auto">Fecha Reg. Courier</th>
+        @*    <th style="width:auto">Trazabilidad</th>*@
             <th style="width:auto">Semáforo</th>
             <th style="width:auto"></th>
 
@@ -16,12 +20,15 @@
     <tbody></tbody>
     <tfoot>
         <tr>
-            <th>Cod. Pedido</th>
+            <th>Pedido</th>
+            <th>Cliente</th>
+            <th>Importe</th>
+            @*<th>Despacho Pedido</th>*@
             <th>Fecha reg. Pedido</th>
-            <th>Despacho Pedido</th>
             <th>Fecha Ing. Facturación</th>
             <th>Fecha Reg. Venta</th>
-            <th>Cliente</th>
+            <th>Fecha Reg. Courier</th>
+        @*    <th>Trazabilidad</th>*@
             <th>Semáforo</th>
             <th></th>
         </tr>
@@ -36,7 +43,7 @@
 
 <script>
     $(document).ready(function () {
-        $('.table').dataTable({
+        $('#table').dataTable({
             "language": {
                 "url": "../Scripts/DataTables/Spanish.json"
             },
@@ -49,12 +56,18 @@
             "bDeferRender": true,
             "aoColumns": [
                    { "sName": "ID_PEDIDO", "mData": "ID_PEDIDO" },
+                   { "sName": "CLIENTE", "mData": "CLIENTE" },
+                   { "sName": "IMPORTE_PEDIDO", "mData": "IMPORTE_PEDIDO" },
+                   //{ "sName": "DESPACHO", "mData": "DESPACHO" },
                    { "sName": "FECHA_PEDIDO", "mData": "FECHA_PEDIDO" },
-                   { "sName": "DESPACHO", "mData": "DESPACHO" },
                    { "sName": "FECHA_ING_FACTURACION", "mData": "FECHA_ING_FACTURACION" },
                    { "sName": "FECHA_REG_VENTA", "mData": "FECHA_REG_VENTA" },
-                   { "sName": "CLIENTE", "mData": "CLIENTE" },
-                   //{ "sName": "ESTADO", "mData": "ESTADO" },
+                   { "sName": "FECHA_REG_COURIER", "mData": "FECHA_REG_COURIER" },
+                   //{
+                   //    "render": function (data, type, full) {
+                   //        return "<span class='label label-" + full.COLOR + "'>" + full.TRAZABILIDAD + "</span>"
+                   //    }
+                   //},
                    {
                        "render": function (data, type, full) {
                            return "<span class='label label-" + full.COLOR + "'>" + full.ESTADO + "</span>"
@@ -76,22 +89,7 @@
 
 
             ],
-            // dom: 'Bfrtip',
-            // buttons: [
-            //{
-            //    extend: 'excelHtml5',
-            //    title: 'Bataclub_xls'
-            //},
-            //{
-            //    extend: 'csvHtml5',
-            //    title: 'BataClub_csv'
-            //},
-            //{
-            //    extend: 'pdfHtml5',
-            //    title: 'BataClub_pdf'
-            //},
-            //'copyHtml5',
-            // ]
+
         });
 
     });
@@ -111,8 +109,6 @@
                 //validadoBataClub = true;
                 waitingDialog.hide();
                 //if (data.estado == 1) {
-
-
                 //}
             }
         })
