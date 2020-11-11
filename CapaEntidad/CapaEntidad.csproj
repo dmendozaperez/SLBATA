@@ -46,6 +46,7 @@
     <Compile Include="ArticuloStock\Departamento.cs" />
     <Compile Include="ArticuloStock\Articulo_Tienda.cs" />
     <Compile Include="ArticuloSustituto\Articulo_Sustituto_Tienda.cs" />
+    <Compile Include="BataClub\Ent_Bataclub_Bounce.cs" />
     <Compile Include="BataClub\Ent_BataClub_Cliente.cs" />
     <Compile Include="BataClub\Ent_BataClub_CuponesCO.cs" />
     <Compile Include="BataClub\Ent_BataClub_ComboProm.cs" />

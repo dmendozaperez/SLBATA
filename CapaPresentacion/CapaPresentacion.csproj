@@ -1803,6 +1803,7 @@
     <Content Include="Views\Bata\get_venta_detalle.cshtml" />
     <Content Include="Views\ECommerce\TrazaPedido.cshtml" />
     <Content Include="Views\ECommerce\ListaTraza.cshtml" />
+    <Content Include="Views\BataClub\icommkt_bounces.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

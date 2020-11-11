@@ -2497,6 +2497,136 @@ namespace CapaPresentacion.Controllers
             }
             
         }
-            #endregion
+        #endregion
+
+        #region<CORREOS REBOTES BOUNCES>
+        private string _session_listbounces_private = "_session_listbounces_private";
+        private Dat_Bataclub_Bounce bc_bounces = new Dat_Bataclub_Bounce();
+        public ActionResult icommkt_bounces()
+        {
+
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
+
+            if (_usuario == null)
+            {
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+            }
+            else
+            {
+                return View();
+            }
+        }
+        public FileContentResult ExportToExcel_Bounce()
+        {
+            List<Ent_Bataclub_Bounce> listbataclub = (List<Ent_Bataclub_Bounce>)Session[_session_listbounces_private];
+            string[] columns = { "RecordType", "MessageID", "Details", "Email", "BouncedAt", "Subject", "Canal", "Dni", "FecRegistro", "Tienda" };
+            byte[] filecontent = ExcelExportHelper.ExportExcel(listbataclub, "", true, columns);
+            return File(filecontent, ExcelExportHelper.ExcelContentType, "BATACLUB_BOUNCES.xlsx");
+        }
+        public List<Ent_Bataclub_Bounce> lista(string fecha_ini, string fecha_fin)
+        {
+            List<Ent_Bataclub_Bounce> listbounces = bc_bounces.listar_bounce(Convert.ToDateTime(fecha_ini), Convert.ToDateTime(fecha_fin));
+            Session[_session_listbounces_private] = listbounces;
+            return listbounces;
+        }
+
+        public ActionResult getListBouncesAjax(Ent_jQueryDataTableParams param, string actualizar, string fecha_ini, string fecha_fin)
+        {
+
+            List<Ent_Bataclub_Bounce> listbounces = new List<Ent_Bataclub_Bounce>();
+
+            if (!String.IsNullOrEmpty(actualizar))
+            {
+                listbounces = lista(fecha_ini, fecha_fin);
+                //listAtributos = datOE.get_lista_atributos();
+                Session[_session_listbounces_private] = listbounces;
+            }
+
+            /*verificar si esta null*/
+            if (Session[_session_listbounces_private] == null)
+            {
+
+                listbounces = new List<Ent_Bataclub_Bounce>();
+
+                Session[_session_listbounces_private] = listbounces;
+            }
+
+
+            //Traer registros
+            IQueryable<Ent_Bataclub_Bounce> membercol = ((List<Ent_Bataclub_Bounce>)(Session[_session_listbounces_private])).AsQueryable();  //lista().AsQueryable();
+
+            //Manejador de filtros
+            int totalCount = membercol.Count();
+            IEnumerable<Ent_Bataclub_Bounce> filteredMembers = membercol;
+
+            if (!string.IsNullOrEmpty(param.sSearch))
+            {
+                filteredMembers = membercol
+                    .Where(m => m.Email.ToUpper().Contains(param.sSearch.ToUpper()) || m.Canal.ToUpper().Contains(param.sSearch.ToUpper()) 
+                    || m.Dni.ToUpper().Contains(param.sSearch.ToUpper()));
+            }
+            //Manejador de orden
+            var sortIdx = Convert.ToInt32(Request["iSortCol_0"]);
+
+            if (param.iSortingCols > 0)
+            {
+                //if (Request["sSortDir_0"].ToString() == "asc")
+                //{
+                //    switch (sortIdx)
+                //    {
+                //        case 0: filteredMembers = filteredMembers.OrderBy(o => o.desp_nrodoc); break;
+                //        case 1: filteredMembers = filteredMembers.OrderBy(o => o.desp_tipo_descripcion); break;
+                //        case 2: filteredMembers = filteredMembers.OrderBy(o => Convert.ToDateTime(o.desp_fechacre)); break;
+                //        case 3: filteredMembers = filteredMembers.OrderBy(o => o.totalparesenviado); break;
+                //        case 4: filteredMembers = filteredMembers.OrderBy(o => o.estado); break;
+
+                //    }
+                //}
+                //else
+                //{
+                //    switch (sortIdx)
+                //    {
+                //        case 0: filteredMembers = filteredMembers.OrderByDescending(o => o.desp_nrodoc); break;
+                //        case 1: filteredMembers = filteredMembers.OrderByDescending(o => o.desp_tipo_descripcion); break;
+                //        case 2: filteredMembers = filteredMembers.OrderByDescending(o => Convert.ToDateTime(o.desp_fechacre)); break;
+                //        case 3: filteredMembers = filteredMembers.OrderByDescending(o => o.totalparesenviado); break;
+                //        case 4: filteredMembers = filteredMembers.OrderByDescending(o => o.estado); break;
+                //    }
+                //}
+            }
+            var displayMembers = filteredMembers
+                .Skip(param.iDisplayStart)
+                .Take(param.iDisplayLength);
+
+
+            var result = from a in displayMembers
+                         select new
+                         {
+                             a.RecordType,
+                             a.MessageID,
+                             a.Details,
+                             a.Email,
+                             a.BouncedAt,
+                             a.Subject,
+                             a.Canal,
+                             a.Dni,
+                             a.FecRegistro,
+                             a.Tienda
+                         };
+            //Se devuelven los resultados por json
+            return Json(new
+            {
+                sEcho = param.sEcho,
+                iTotalRecords = totalCount,
+                iTotalDisplayRecords = filteredMembers.Count(),
+                aaData = result
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        #endregion
+
     }
 }

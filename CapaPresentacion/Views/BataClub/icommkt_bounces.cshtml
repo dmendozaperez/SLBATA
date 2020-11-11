@@ -1,0 +1,165 @@
+﻿@{
+    ViewBag.Title = "Bataclub Bounces";
+}
+@Scripts.Render("~/bundles/bootstrap")
+<p class="text-danger">Consulta de Correos Bounces(Rebote). Filtro por rango de fecha </p>
+<div class="box box-body box-primary">
+    <div class="row">
+        <div class="col-sm-2">
+            <label for="segape">Fecha Inicio</label>
+            <div class="form-group">
+                <div class="input-group">
+                    <div id="datepickerini" class="input-group date" data-date-format="dd-mm-yyyy">
+                        <input id="fecini" name="fecini" value="" class="form-control custom-input" placeholder="dd-mm-yyyy" type="text" />
+                        <span class="input-group-addon  bg-white"><img src="~/Content/images/wall-calendar-with-lines.svg" height="20" width="20"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <label for="fecnac">Fecha Final</label>
+            <div class="form-group">
+                <div class="input-group">
+                    <div id="datepickerfin" class="input-group date" data-date-format="dd-mm-yyyy">
+                        <input id="fecfin" name="fecfin" value="" class="form-control custom-input" placeholder="dd-mm-yyyy" type="text" />
+                        <span class="input-group-addon  bg-white"><img src="~/Content/images/wall-calendar-with-lines.svg" height="20" width="20"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <label></label><br />
+            <button type="submit" onclick="buscar();" title="Consultar" class="btn btn-primary">
+                <span class="glyphicon glyphicon-search"></span>
+            </button>
+            <a href="@Url.Action("ExportToExcel_Bounce")" title="Exportar a excel" class="btn btn-success"><i class="glyphicon glyphicon-export"></i>Exportar</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table id="tb_bounces" class="table table-hover table-bordered compact">
+                    <thead>
+                        <tr style="background-color:#3d566e; color:#ecf0f1">
+                            <th>RecordType</th>
+                            <th>MessageID</th>
+                            <th>Details</th>
+                            <th>Email</th>
+                            <th>BouncedAt</th>
+                            <th>Subject</th>
+                            <th>Canal</th>
+                            <th>Dni</th>
+                            <th>FecRegistro</th>
+                            <th>Tienda</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                    <tfoot>
+                        <tr>
+                            <th>RecordType</th>
+                            <th>MessageID</th>
+                            <th>Details</th>
+                            <th>Email</th>
+                            <th>BouncedAt</th>
+                            <th>Subject</th>
+                            <th>Canal</th>
+                            <th>Dni</th>
+                            <th>FecRegistro</th>
+                            <th>Tienda</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+          
+        </div>
+</div>
+
+<script>
+    $(function () {
+        $("#datepickerini").datepicker({
+            autoclose: true,
+            todayHighlight: true
+        }).datepicker("setDate", "0");;
+    });
+    $(function () {
+        $("#datepickerfin").datepicker({
+            autoclose: true,
+            todayHighlight: true
+        }).datepicker("setDate", "0");;
+    });
+
+</script>
+<script>
+    function buscar() {
+        actualizar_data = "1";
+        fecha_ini = $("#fecini").val();
+        fecha_fin = $("#fecfin").val();
+      
+        waitingDialog.show("Espere por favor...");
+        $('#tb_bounces').DataTable().ajax.reload(function () {
+            waitingDialog.hide();
+        });
+    }
+
+
+    var fecha_ini;
+    var fecha_fin;
+    var actualizar_data = '';
+    $(document).ready(function () {
+        $("body").toggleClass('sidebar-collapse');
+        fecha_ini = $("#fecini").val();
+        fecha_fin = $("#fecfin").val();
+        actualizar_data = '1';
+        waitingDialog.show("Espere por favor...");
+        $('#tb_bounces').DataTable({
+            //"dom": 't<"row"<"col-md-6"f><"col-md-6"p>>',
+            //"iDisplayLength": 1500,
+            "language": {
+                "url": "../Scripts/DataTables/Spanish.json"
+            },
+            "bServerSide": true,
+            "bAutoWidth": false,
+            "sAjaxSource": '@Url.Action("getListBouncesAjax", "BataClub")',
+            "fnServerParams": function (aoData) {
+                aoData.push({ "name": "actualizar", "value": actualizar_data });
+                aoData.push({ "name": "fecha_ini", "value": fecha_ini });
+                aoData.push({ "name": "fecha_fin", "value": fecha_fin });                             
+                actualizar_data = "";
+
+            },
+            "drawCallback": function (settings) {
+              waitingDialog.hide();
+            },
+            "sort": false,
+            "bProcessing": true,
+            "orderable": false,
+            "bDeferRender": true,
+            //"bdestroy": true,
+            "start": 0,
+            "columnDefs": [{
+                "orderable": false,
+                //"targets": [3, 6, 7, 9],
+            }],
+
+
+            "aoColumns": [
+                  { "sName": "RecordType", "mData": "RecordType" },
+                  { "sName": "MessageID", "mData": "MessageID" },
+                  { "sName": "Details", "mData": "Details" },
+                  { "sName": "Email", "mData": "Email" },
+                  { "sName": "BouncedAt", "mData": "BouncedAt" },
+                  { "sName": "Subject", "mData": "Subject" },
+                  { "sName": "Canal", "mData": "Canal" },
+                  { "sName": "Dni", "mData": "Dni" },
+                  { "sName": "FecRegistro", "mData": "FecRegistro" },
+                  { "sName": "Tienda", "mData": "Tienda" },
+                  
+
+                                                                
+
+            ],
+        });
+
+    });
+</script>
