@@ -3,15 +3,16 @@
     @*<table id="lista" class="table table-hover dataTable  table-striped table-responsive">*@
     <thead>
         <tr style="background-color:#3d566e; color:#ecf0f1">
-            <th style="width:auto">Pedido</th>
-            <th style="width:auto">Cliente</th>
+            <th style="width:50px">Pedido</th>
+            <th style="width:130px">Cliente</th>
             <th style="width:auto">Importe</th>
-            @*<th style="width:auto">Despacho Pedido</th>*@
-            <th style="width:auto">Fecha reg. Pedido</th>
-            <th style="width:auto">Fecha Ing. Facturación</th>
-            <th style="width:auto">Fecha Reg. Venta</th>
-            <th style="width:auto">Fecha Reg. Courier</th>
-        @*    <th style="width:auto">Trazabilidad</th>*@
+            <th style="width:30px">Despacho</th>
+            <th style="width:120px">Tipo de entrega</th>
+            <th style="width:auto">Fec.Pedido</th>
+            <th style="width:auto">Fec.Ing.Facturación</th>
+            <th style="width:auto">Fec.reg.Venta</th>
+            <th style="width:auto">Fec.Courier</th>
+            @*    <th style="width:auto">Trazabilidad</th>*@
             <th style="width:auto">Semáforo</th>
             <th style="width:auto"></th>
 
@@ -23,12 +24,13 @@
             <th>Pedido</th>
             <th>Cliente</th>
             <th>Importe</th>
-            @*<th>Despacho Pedido</th>*@
-            <th>Fecha reg. Pedido</th>
-            <th>Fecha Ing. Facturación</th>
-            <th>Fecha Reg. Venta</th>
-            <th>Fecha Reg. Courier</th>
-        @*    <th>Trazabilidad</th>*@
+            <th>Despacho</th>
+            <th>Tipo de entrega</th>
+            <th>Fec.Pedido</th>
+            <th>Fec.Facturación</th>
+            <th>Fec.Venta</th>
+            <th>Fec.Courier</th>
+            @*    <th>Trazabilidad</th>*@
             <th>Semáforo</th>
             <th></th>
         </tr>
@@ -58,7 +60,8 @@
                    { "sName": "ID_PEDIDO", "mData": "ID_PEDIDO" },
                    { "sName": "CLIENTE", "mData": "CLIENTE" },
                    { "sName": "IMPORTE_PEDIDO", "mData": "IMPORTE_PEDIDO" },
-                   //{ "sName": "DESPACHO", "mData": "DESPACHO" },
+                   { "sName": "DESPACHO", "mData": "DESPACHO" },
+                   { "sName": "TIPO_ENTREGA", "mData": "TIPO_ENTREGA" },
                    { "sName": "FECHA_PEDIDO", "mData": "FECHA_PEDIDO" },
                    { "sName": "FECHA_ING_FACTURACION", "mData": "FECHA_ING_FACTURACION" },
                    { "sName": "FECHA_REG_VENTA", "mData": "FECHA_REG_VENTA" },

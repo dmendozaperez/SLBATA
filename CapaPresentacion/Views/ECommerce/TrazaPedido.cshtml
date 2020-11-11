@@ -33,7 +33,7 @@
     }
 </style>
 
-<p class="text-danger">Mantenimiento y trazabilidad de pedidos desde Prestashop hasta Almacén</p>
+<p class="text-danger">Mantenimiento y trazabilidad de pedidos de almacén y tiendas</p>
 <div class="box box-body box-primary">
     @using (Ajax.BeginForm("ListaTraza", options))
     {
@@ -62,6 +62,14 @@
                     </div>
                 </div>
             </div>
+            @*<div class="col-sm-2">
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label for="tipo">Tiendas</label>
+                            @Html.DropDownList("tda", new SelectList(ViewBag.tienda, "cbo_codigo", "cbo_descripcion", null), new { @class = "form-control selectpicker", @data_live_search = "true", @id = "tda", @name = "dwtda", @data_actions_box = "true" })
+                        </div>
+                    </div>
+                </div>*@
 
             <div class="col-sm-8" style="padding-left: 25px;">
                 <label></label><br />
@@ -146,7 +154,7 @@
         strhtml += '<table style="border-bottom:0px;font-size:14px;width:100%;">'
         strhtml += '<tr>'
         if (tipo == "act") {
-            strhtml += '<td style="font-size:16px;width:100%;text-align:left;"><b> Esta seguro de actualizar o parcializar los siguientes pedidos ?</b></td>'
+            strhtml += '<td style="font-size:16px;width:100%;text-align:left;"><b> Esta seguro de actualizar los pedidos seleccionados ?</b></td>'
         } else {
             strhtml += '<td style="font-size:16px;width:100%;text-align:left;"><b> Esta seguro de anular los siguientes pedidos ?</b></td>'
         }
@@ -261,7 +269,7 @@
 
                       if (data.FlagWMS == 1) {
 
-                          toastr.success("Los pedidos seleccionados se actualizarán en WMS y Facturación en unos minutos", "Mensaje");
+                          toastr.success("Los pedidos seleccionados se actualizarán en unos momentos", "Mensaje");
                           setInterval(function () {
                               waitingDialog.hide();
                           }, 6000);
@@ -269,7 +277,7 @@
                       } else {
                           @*$('#lista').load('@Url.Action("ListaTraza", "Ecommerce")', {});*@
 
-                          toastr.success("Los pedidos seleccionados se parcializarán en Facturación en unos minutos", "Mensaje");
+                          toastr.success("Los pedidos seleccionados se actualizarán en unos momentos", "Mensaje");
 
                           setInterval(function () {
                               waitingDialog.hide();

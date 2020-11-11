@@ -431,7 +431,8 @@ namespace CapaDato.ECommerce
                                           ID_PEDIDO = dr["ID_PEDIDO"].ToString(),
                                           IMPORTE_PEDIDO = dr["IMPORTE_PEDIDO"].ToString(),
                                           FECHA_PEDIDO = dr["FECHA_PEDIDO"].ToString(),
-                                          //DESPACHO = dr["DESPACHO"].ToString(),
+                                          DESPACHO = dr["DESPACHO"].ToString(),
+                                          TIPO_ENTREGA = dr["TIPO_ENTREGA"].ToString(),
                                           FECHA_ING_FACTURACION = dr["FECHA_ING_FACTURACION"].ToString(),
                                           FECHA_REG_VENTA = dr["FECHA_REG_VENTA"].ToString(),
                                           FECHA_REG_COURIER = dr["FECHA_REG_COURIER"].ToString(),
@@ -439,6 +440,7 @@ namespace CapaDato.ECommerce
                                           //TRAZABILIDAD = dr["TRAZABILIDAD"].ToString(),
                                           ESTADO = dr["ESTADO"].ToString(),
                                           COLOR = dr["COLOR"].ToString(),
+                                          FLG_REASIGNA = Convert.ToInt32( dr["FLG_REASIGNA"]),
                                       }).ToList();
 
                         }
@@ -453,7 +455,7 @@ namespace CapaDato.ECommerce
             return listar;
         }
 
-        public Boolean update_pedido_ecommerce(string liq_id, string accion,int flagWMS,int flagcorreo)
+        public Boolean update_pedido_ecommerce(string liq_id, string accion,int flagWMS,int flagcorreo,int flagreasignar)
         {
             Boolean valida = false;
             string sqlquery = "USP_Anular_Liquidacion2";
@@ -470,6 +472,7 @@ namespace CapaDato.ECommerce
                         cmd.Parameters.AddWithValue("@Accion", accion);
                         cmd.Parameters.AddWithValue("@flagWMS", flagWMS);
                         cmd.Parameters.AddWithValue("@flag_correo", flagcorreo);
+                        cmd.Parameters.AddWithValue("@flag_reasignar", flagreasignar);
                         cmd.ExecuteNonQuery();
                         valida = true;
                     }

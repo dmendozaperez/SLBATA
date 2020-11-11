@@ -742,7 +742,7 @@ namespace CapaPresentacion.Controllers
 
         public List<Ent_TrazaPedido> lista(DateTime fechaini, DateTime fechafin)
         {
-            
+
             List<Ent_TrazaPedido> listTraza = datos.get_lista(fechaini, fechafin);
             listTraza = datos.get_lista(fechaini, fechafin);
             Session[_session_listTraza_private] = listTraza;
@@ -806,7 +806,8 @@ namespace CapaPresentacion.Controllers
                              a.ID_PEDIDO,
                              a.CLIENTE,
                              a.IMPORTE_PEDIDO,
-                             //a.DESPACHO,
+                             a.DESPACHO,
+                             a.TIPO_ENTREGA,
                              a.FECHA_PEDIDO,
                              a.FECHA_ING_FACTURACION,
                              a.FECHA_REG_VENTA,
@@ -913,17 +914,15 @@ namespace CapaPresentacion.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
 
-
-
         [HttpGet]
         public FileContentResult ExportToExcel()
         {
             List<Ent_TrazaPedido> listTrazaPedido = (List<Ent_TrazaPedido>)Session[_session_listTraza_private];
 
             //List<Technology> technologies = StaticData.Technologies;
-            string[] columns = { "ID_PEDIDO", "CLIENTE","IMPORTE_PEDIDO","FECHA_PEDIDO", "FECHA_ING_FACTURACION", "FECHA_REG_VENTA", "FECHA_REG_COURIER", "ESTADO" };
-            byte[] filecontent = ExcelExportHelper.ExportExcel(listTrazaPedido, "Trazabilidad de Pedidos - Almacén", true, columns);
-            return File(filecontent, ExcelExportHelper.ExcelContentType, "TrazaPedidos_Almacen.xlsx");
+            string[] columns = { "ID_PEDIDO", "CLIENTE", "IMPORTE_PEDIDO", "DESPACHO", "TIPO_ENTREGA", "FECHA_PEDIDO", "FECHA_ING_FACTURACION", "FECHA_REG_VENTA", "FECHA_REG_COURIER", "ESTADO" };
+            byte[] filecontent = ExcelExportHelper.ExportExcel(listTrazaPedido, "Trazabilidad de Pedidos", true, columns);
+            return File(filecontent, ExcelExportHelper.ExcelContentType, "TrazaPedidos.xlsx");
         }
         //[HttpPost]
         public ActionResult AgregarPedido(string IdPedido_)
@@ -954,7 +953,7 @@ namespace CapaPresentacion.Controllers
                 {
                     flagcorreo = 1;
                 }
-                estado = datos.update_pedido_ecommerce(newlist[i].ID_PEDIDO, "A", FlagWMS, flagcorreo);
+                estado = datos.update_pedido_ecommerce(newlist[i].ID_PEDIDO, "A", FlagWMS, flagcorreo, 0);
             }
             //if (estado == true)
             //{
@@ -978,9 +977,18 @@ namespace CapaPresentacion.Controllers
             {
                 if (i == newlist.Count - 1)
                 {
-                    flagcorreo = 1;
+                    if (newlist[i].FLG_REASIGNA == 0)
+                    {
+                        flagcorreo = 1;
+                    }
+                    else
+                    {
+                        FlagWMS = 0;
+
+                    }
+
                 }
-                estado = datos.update_pedido_ecommerce(newlist[i].ID_PEDIDO, "E", FlagWMS, flagcorreo);
+                estado = datos.update_pedido_ecommerce(newlist[i].ID_PEDIDO, "E", FlagWMS, flagcorreo, newlist[i].FLG_REASIGNA);
             }
             //if (estado == true)
             //{
