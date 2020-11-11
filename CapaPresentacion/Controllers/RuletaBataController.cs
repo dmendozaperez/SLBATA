@@ -20,7 +20,7 @@ namespace CapaPresentacion.Controllers
         Dat_RuletaBata _datos = new Dat_RuletaBata();        
         public ActionResult Index()
         {
-            //Session["Tienda"] = "50143";
+           // Session["Tienda"] = "50143";
             if (Session["Tienda"] == null)
             {
                 return RedirectToAction("Login", "Control");
@@ -111,10 +111,14 @@ namespace CapaPresentacion.Controllers
                     //{
                     //    if (afiliarse == "on" && sinDNI != "on")
                         //{
-                            actualiza_cliente(ganador.dni, ganador.nombre, ganador.ape_pat, ganador.ape_mat, ganador.telefono, ganador.email, Session["Tienda"].ToString(), ref corre_envio, ref telef_envia);
-                        //}
-                        estado = 1;
-                        return Json(new { estado = estado, codigo = codigo, resultados = "Se registró correctamente al Cliente." });
+                        string valida_ingreso=actualiza_cliente(ganador.dni, ganador.nombre, ganador.ape_pat, ganador.ape_mat, ganador.telefono, ganador.email, Session["Tienda"].ToString(), ref corre_envio, ref telef_envia);
+                        string resultados = "";
+
+                        estado = (valida_ingreso.Length == 0) ? 1 : 0;
+                        resultados = (valida_ingreso.Length == 0) ? "Se registró correctamente al Cliente." : valida_ingreso;
+                //}
+                //estado = 1;
+                        return Json(new { estado = estado, codigo = codigo, resultados = resultados });
                     //}
                     //else
                     //{

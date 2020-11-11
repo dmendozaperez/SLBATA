@@ -61,6 +61,7 @@
   <ItemGroup>
     <Compile Include="ArticuloStock\Dat_ArticuloStock.cs" />
     <Compile Include="ArticuloSustituto\Dat_ArticuloSustituto.cs" />
+    <Compile Include="BataClub\Dat_Bataclub_Bounce.cs" />
     <Compile Include="BataClub\Dat_BataClub_Cliente.cs" />
     <Compile Include="BataClub\Dat_BataClub_CuponesCO.cs" />
     <Compile Include="BataClub\Dat_BataClub_Dashboard.cs" />

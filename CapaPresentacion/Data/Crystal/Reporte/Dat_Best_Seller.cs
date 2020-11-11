@@ -55,6 +55,11 @@ namespace CapaPresentacion.Data.Crystal.Reporte
                                           neto = Convert.ToDecimal(fila["neto"]),   
                                           fecha_rango= fila["fec_rango"].ToString(),
                                           id= Convert.ToInt32(fila["id"]),
+
+                                          pplanilla= Convert.ToDecimal(fila["pplanilla"]),
+                                          ppventa = Convert.ToDecimal(fila["pventa"]),
+                                          stockactual = Convert.ToDecimal(fila["stkactual"]),
+
                                       }).ToList();
                         }
                                              
@@ -62,7 +67,7 @@ namespace CapaPresentacion.Data.Crystal.Reporte
                 }
 
             }
-            catch (Exception)
+            catch (Exception exc)
             {
                 
             }

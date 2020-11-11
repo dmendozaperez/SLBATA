@@ -21,5 +21,9 @@ namespace CapaPresentacion.Models.Crystal.Reporte
         public string fecha_rango { get; set; }
         public int id { get; set; }
 
+        public decimal pplanilla { get; set; }
+        public decimal ppventa { get; set; }
+        public decimal stockactual { get; set; }
+
     }
 }

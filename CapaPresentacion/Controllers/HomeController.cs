@@ -10,6 +10,10 @@ namespace CapaPresentacion.Controllers
     {
         public ActionResult Index()
         {
+
+            ViewBag.tienda =  Session["Tienda"];
+            ViewBag.pais = Session["PAIS"];
+
             return View();
         }
 

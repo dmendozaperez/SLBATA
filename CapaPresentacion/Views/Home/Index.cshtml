@@ -1,32 +1,63 @@
 ﻿@Scripts.Render("~/bundles/bootstrap")
-@*@{
-    ViewBag.Title = "Home Page";
-}*@
 
-@*<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+<div class="row" id="divmsg" hidden="hidden">
+    @*<div class="box box-body box-primary">*@
+
+    @*<div class="content-wrapper">*@
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            <small></small>
+        </h1>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <!-- row -->
+        <div class="row">
+            <div class="col-md-12">
+                <!-- The time line -->
+                <ul class="timeline">
+                    <!-- timeline time label -->
+                    <li class="time-label">
+                        <span class="bg-red">
+                            Mensaje del equipo de Soporte
+                        </span>
+                    </li>
+                    <!-- /.timeline-label -->
+                    <!-- timeline item -->
+                    <li>
+                        <i class="fa fa-user bg-blue"></i>
+                        <div class="timeline-item">
+                            <h3 class="timeline-header">Atenciones por el <a href="http://soporte.emcomer.pe:8080/" target="_blank">SISTEMA DE MESA DE AYUDA</a></h3>
+                            <div class="timeline-body">
+                                <b>URGENTES:</b>  (apertura, promociones, cupones, etc.) usar <b>LIVE CHAT</b><br />
+                                <b>MENOS urgentes:</b> (guías, artículos que no figuran, etc.) usar  <b>FORMULARIO WEB</b><br />
+                                <b>SIN ACCESO A PC:</b> (PC no enciende, no hay internet, etc.) usar  <b>WHATSAPP</b><br />
+                                <u>Para entrar al sistema </u> => Usuario: <b>50XXX</b> y Contraseña: <b>*50XXX+</b> (XXX es tu tienda)<br />
+                            </div>
+
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.col -->
+        </div>
+    </section>
+    <!-- /.content -->
+    @*</div>*@
+    @*</div>*@
+
 </div>
+<script>
+    $(document).ready(function () {
+        var tienda="@ViewBag.tienda";
+        var pais="@ViewBag.pais";
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>
-</div>*@
+        if (tienda!='' && pais=='PE'){
+            $("#divmsg").show();
+        } else{
+            $("#divmsg").hide();
+        }
+
+    });
+</script>
