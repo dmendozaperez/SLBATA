@@ -338,7 +338,7 @@ namespace CapaPresentacion.Controllers
 
 
             JsonResult jRespuesta = null;
-            strJson = datArticuloSusti.listarStr_ArticuloSustituto(codTda, codArticulo, codTalla, calidad);
+            strJson = datArticuloSusti.listarStr_ArticuloSustituto(codTda, codArticulo, codTalla, calidad, Session["PAIS"].ToString());
             var serializer = new JavaScriptSerializer();
             jRespuesta = Json(serializer.Deserialize<List<Articulo_Sustituto_Tienda>>(strJson), JsonRequestBehavior.AllowGet);
 

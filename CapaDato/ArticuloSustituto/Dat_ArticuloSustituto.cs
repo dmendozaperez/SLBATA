@@ -14,7 +14,7 @@ namespace CapaDato.Articulosustituto
     public class Dat_ArticuloSustituto
     {
         
-        public string listarStr_ArticuloSustituto(string Cod_tda, string Cod_Articulo, string codTalla, string calidad)
+        public string listarStr_ArticuloSustituto(string Cod_tda, string Cod_Articulo, string codTalla, string calidad,string pais)
         {
             string strJson = "";
             try
@@ -39,6 +39,10 @@ namespace CapaDato.Articulosustituto
                 SqlParameter ocalidad = oComando.Parameters.Add("@calidad", SqlDbType.VarChar);
                 ocalidad.Direction = ParameterDirection.Input;
                 ocalidad.Value = calidad;
+
+                SqlParameter opais = oComando.Parameters.Add("@pais", SqlDbType.VarChar);
+                opais.Direction = ParameterDirection.Input;
+                opais.Value = pais;
 
                 SqlDataReader oReader = oComando.ExecuteReader(CommandBehavior.SingleResult);
                 DataTable dataTable = new DataTable("row");
