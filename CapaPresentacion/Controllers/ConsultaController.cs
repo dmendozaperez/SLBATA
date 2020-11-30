@@ -521,7 +521,15 @@ namespace CapaPresentacion.Controllers
                     chazki.notes = "Entregar a Cliente";
                     chazki.documentNumber = Ruc;
                     chazki.lastName = "";
-                    chazki.email = "servicio.clientes.peru@bata.com";
+                    //chazki.email = "servicio.clientes.peru@bata.com";
+                    if (chazki.email == "" || chazki.email == null)
+                    {
+                        chazki.email = "servicio.clientes.peru @bata.com";
+                    }
+                    else
+                    {
+                        chazki.email = cvCzk.informacionTiendaDestinatario.email;
+                    }
 
                     chazki.phone = cvCzk.informacionTiendaDestinatario.telefono;
                     int CadRuc = Ruc.Length;
@@ -613,6 +621,7 @@ namespace CapaPresentacion.Controllers
 
             //return RedirectToAction("ChatShop", "Consulta");
         }
+
 
         private ChatShop selectVenta(string Tienda, string CodInterno)
         {

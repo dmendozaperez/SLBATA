@@ -433,7 +433,9 @@
     <Compile Include="Models\Crystal\Reporte\Models_Vendedor.cs" />
     <Compile Include="Models\Crystal\Reporte\Models_Art_Sin_Mov.cs" />
     <Compile Include="Models\Crystal\Reporte\Models_Planilla.cs" />
+    <Compile Include="Models\ECommerce\Chazki_E.cs" />
     <Compile Include="Models\ECommerce\ECommerce.cs" />
+    <Compile Include="Models\ECommerce\Ecommerce_Chazki.cs" />
     <Compile Include="Models\ECommerce\ReporteVentasEcommerce.cs" />
     <Compile Include="Models\FileManager\DataProvider.cs" />
     <Compile Include="Models\FileManager\FileSystemProvider.cs" />
@@ -1533,6 +1535,7 @@
     </Content>
     <Content Include="Service References\FEBataBack\CapaPresentacion.FEBataBack.OnlineGenerationResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Service References\FEBataBack\CapaPresentacion.FEBataBack.OnlineRecoveryRecListResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -1690,7 +1693,9 @@
     <Content Include="Views\Consulta\ListaDocumento.cshtml" />
     <Content Include="Views\AnalisisMov\Index.cshtml" />
     <Content Include="Views\AnalisisMov\ListaAnalisisMov.cshtml" />
-    <None Include="Service References\FEBataBack\Online.wsdl" />
+    <None Include="Service References\FEBataBack\Online.wsdl">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\FEBataEpos\Online.wsdl" />
     <Content Include="Views\Interface\Index.cshtml" />
     <Content Include="Views\Usuarios\CambioClave.cshtml" />

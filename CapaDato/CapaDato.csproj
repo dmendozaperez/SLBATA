@@ -79,6 +79,7 @@
     <Compile Include="Control\Dat_Roles.cs" />
     <Compile Include="Control\Dat_Usuario.cs" />
     <Compile Include="ECommerce\ActTracking.cs" />
+    <Compile Include="ECommerce\Chazki\EnviaPedidoChazki.cs" />
     <Compile Include="ECommerce\comercioxpress\EnviaPedidoCxpress.cs" />
     <Compile Include="ECommerce\Conexion.cs" />
     <Compile Include="ECommerce\Dat_Cexpress.cs" />

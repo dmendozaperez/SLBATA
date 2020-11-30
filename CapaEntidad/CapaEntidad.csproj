@@ -66,6 +66,8 @@
     <Compile Include="Control\Ent_Tienda.cs" />
     <Compile Include="ECommerce\Cliente.cs" />
     <Compile Include="ECommerce\Ent_Cexpress.cs" />
+    <Compile Include="ECommerce\Ent_Chazki_E.cs" />
+    <Compile Include="ECommerce\Ent_Ecommerce_Chazki.cs" />
     <Compile Include="ECommerce\Ent_ECommerce.cs" />
     <Compile Include="ECommerce\Ent_Etiqueta.cs" />
     <Compile Include="ECommerce\Ent_GuiaCexpress.cs" />

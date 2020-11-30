@@ -15,7 +15,7 @@
 }
 <script>
 
-    function EnviaCourier(codigo, seguimiento) {
+    function EnviaCourierx(codigo, seguimiento) {
         @*swal({
             title: "Enviar Courier",
             text: "¿Desea enviar la Solicitud de recojo a la Courier?",
@@ -48,25 +48,25 @@
                 }
             }
         });*@
-    if (codigo == null || codigo === '') {
-        //swal("Ingrese el campo codigo por favor.", {
-        //    icon: "info",
-        //});
-        alert("Ingrese el campo codigo por favor.");
-    } else if (seguimiento != null && seguimiento != '') {
-        //swal("El pedido ya ha sido enviado anteriormente.", {
-        //    icon: "info",
-        //});
-        alert("El pedido ya ha sido enviado anteriormente.");
-    }
-    else {
+        //if (codigo == null || codigo === '') {
+        //    //swal("Ingrese el campo codigo por favor.", {
+        //    //    icon: "info",
+        //    //});
+        //    alert("Ingrese el campo codigo por favor.");
+        //} else if (seguimiento != null && seguimiento != '') {
+        //    //swal("El pedido ya ha sido enviado anteriormente.", {
+        //    //    icon: "info",
+        //    //});
+        //    alert("El pedido ya ha sido enviado anteriormente.");
+        //}
+        //else {
         // Ejecuta el envío
-        alert("Procesando.");
+        waitingDialog.show('Espere un momento por favor...');
         var form = $("#Formulario");
-        document.getElementById("ven_id").value = codigo;
+        document.getElementById("ven_id").value = "B09500020762";
         form.attr("action", "@Url.Action("Envia_Courier", "Ecommerce")");
         form.submit();
-    }
+        //}
     }
 
     $(document).ready(function () {
@@ -75,11 +75,52 @@
 
         $('.datepicker').datepicker({
             format: "dd/mm/yyyy",
-            startDate : "01/04/2019",
-            autoclose : true
+            startDate: "01/04/2019",
+            autoclose: true
         });
         //$('.select2').select2();
     });
+
+    function EnviaCourier(ven_id, seguimiento) {
+
+        if (seguimiento != null && seguimiento != '') {
+            toastr.error("El pedido ya ha sido enviado anteriormente.", "Error");
+        } else {
+
+            waitingDialog.show('Espere un momento por favor...');
+
+            var objCourier = {
+                ven_id: ven_id,
+                seguimiento: seguimiento,
+            }
+
+            $.ajax
+              ({
+                  url: '../Ecommerce/Envia_Courier',
+                  dataType: "json",
+                  type: "POST",
+                  data: objCourier,
+                  success: function (data, textStatus, XMLHttpRequest) {
+
+                      if (data.Message != "") {
+                          toastr.success("Se realizó satisfactoriamente el llamado al courier", "Mensaje");
+                          waitingDialog.hide();
+                          form.submit();
+
+                      } else {
+                          toastr.error("No se llamó al courier, intente de nuevo porfavor", "Error");
+                          waitingDialog.hide();
+                      }
+
+                  }
+              })
+        }
+    }
+
+
+
+
+
     //function cargarDestinos() {
     //    var tiendaOrigen = $("#tiendaOrigen option:selected").val();
     //    $.ajax({
@@ -160,35 +201,35 @@
 {
     @Html.Hidden("ven_id", null, new { @id = "ven_id" })
     @*@Html.Hidden("vtA", null,new { @id= "vtA" })
-    @Html.Hidden("vtB", null, new { @id = "vtB" })
-    @Html.Hidden("vtEstados", null, new { @id = "vtEstados" })
-    @Html.Hidden("vtTipos", null, new { @id = "vtTipos" })*@
-    
+        @Html.Hidden("vtB", null, new { @id = "vtB" })
+        @Html.Hidden("vtEstados", null, new { @id = "vtEstados" })
+        @Html.Hidden("vtTipos", null, new { @id = "vtTipos" })*@
+
     <div class="box box-body box-primary">
         <div class="row">
             <div class="col-md-12">
                 <button name="buscar" class="btn btn-primary" onclick="SetearParametros();" type="submit"><span class="glyphicon glyphicon-search"></span>&nbsp;Buscar</button>
                 @*<button type="button" class="btn btn-info" onclick="javascript: MostrarReporte()"><span class="glyphicon glyphicon-th-list"></span>&nbsp;Ver Reporte</button>*@
-            </div>                        
-        </div>        
+            </div>
+        </div>
         <br />
         <div class="row">
 
             <div class="col-md-6">
                 @*<div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="tiendaOrigen">Tienda Origen:</label>
-                            @Html.DropDownList("tiendaOrigen", (List<SelectListItem>)ViewBag._SelectOrigen, new { @class = "form-control select2", @id = "tiendaOrigen" ,@name = "tiendaOrigen", @onchange = "cargarDestinos();" })
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="tiendaOrigen">Tienda Origen:</label>
+                                @Html.DropDownList("tiendaOrigen", (List<SelectListItem>)ViewBag._SelectOrigen, new { @class = "form-control select2", @id = "tiendaOrigen" ,@name = "tiendaOrigen", @onchange = "cargarDestinos();" })
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="tiendaDestino">Tienda Destino:</label>
-                            @Html.DropDownList("tiendaDestino", (List<SelectListItem>)ViewBag._SelectDestino, new { @class = "form-control select2", @id = "tiendaDestino" })                                                     
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="tiendaDestino">Tienda Destino:</label>
+                                @Html.DropDownList("tiendaDestino", (List<SelectListItem>)ViewBag._SelectDestino, new { @class = "form-control select2", @id = "tiendaDestino" })
+                            </div>
                         </div>
-                    </div>
-                </div>*@
+                    </div>*@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -205,37 +246,37 @@
                 </div>
             </div>
             @*<div class="col-md-6">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="tipo">Tipo:</label>
-                            @Html.DropDownList("tipo", (List<SelectListItem>)ViewBag._selectTipos, new { @class = "form-control select2 tipo", @id = "tipo" , @multiple="" })                            
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="tipo">Tipo:</label>
+                                @Html.DropDownList("tipo", (List<SelectListItem>)ViewBag._selectTipos, new { @class = "form-control select2 tipo", @id = "tipo" , @multiple="" })
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="estado">Estado</label>
-                            @Html.DropDownList("estado", (List<SelectListItem>)ViewBag._selectEstados, new { @class = "form-control select2 estado", @id = "estado", @multiple = "" })
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="estado">Estado</label>
+                                @Html.DropDownList("estado", (List<SelectListItem>)ViewBag._selectEstados, new { @class = "form-control select2 estado", @id = "estado", @multiple = "" })
+                            </div>
                         </div>
-                    </div>
-                  
-                </div>
 
-            </div>*@
+                    </div>
+
+                </div>*@
 
         </div>
-        <div class="row">  
+        <div class="row">
             <div class="col-md-4">
                 <div class="form-group ">
                     <label>Cliente:</label>
                     <input type="text" placeholder="No. Documento : 12345678" name="noDocCli" id="noDocCli" class="form-control" value="@ViewBag._noDocCli" />
                     <!--input type="text" placeholder="Raz. Social o Nombres y Apellidos" name="noDocumento" id="noDocumento" class="form-control" /-->
-                </div>     
-            </div> 
+                </div>
+            </div>
             <div class="col-md-4">
                 <label>No Documento:</label>
                 <input type="text" placeholder="Serie-Número:  B123-87654321" name="noDoc" id="noDoc" class="form-control" value="@ViewBag._noDoc" />
-            </div>                      
+            </div>
         </div>
         <div class="row">
             <div class="col-md-12">
@@ -250,7 +291,7 @@
                             <th>Cliente</th>
                             <th>Courier</th>
                             <th>Seguimiento Courier</th>
-                            <th>Llamdo a Courier</th>
+                            <th>Llamado a Courier</th>
                             <th>Ver Guía Interna</th>
                         </tr>
                     </thead>
@@ -266,23 +307,33 @@
                                 <td>@row.nombreCompletoCliente</td>
                                 <td>@row.nom_courier</td>
                                 @if (row.nom_courier.Contains("iend"))
-                                {   <td>@row.codSeguimiento</td>       }
+                                {
+                                    <td>@row.codSeguimiento</td>       }
                                 else if (row.nom_courier == "Comercio Xpress")
-                                {   <td><a href="https://bata.pe/tracking-ce/?norder=@row.codSeguimiento" target="_blank">@row.codSeguimiento</a></td>       }
-                                else
-                                {   <td><a href="http://app.urbano.com.pe/plugin/etracking/etracking/?guia=@row.codSeguimiento" target="_blank">@row.codSeguimiento</a></td>       }
-
-                                @if (row.nom_courier.Contains("iend"))
-                                {   <td></td>       }
+                                {
+                                    <td><a href="https://bata.pe/tracking-ce/?norder=@row.codSeguimiento" target="_blank">@row.codSeguimiento</a></td>
+                                }
+                                else if (row.nom_courier == "Chazki - Envíos Express")
+                                {
+                                    <td><a href="https://atari.chazki.com/#/public/seguimiento/1/@row.SerieDoc-@row.NroDoc" target="_blank">@row.SerieDoc-@row.NroDoc</a></td>
+                                }
                                 else
                                 {
-                                <td width="70px" class="p-0">
-                                    <ul class="list-inline" style="margin-bottom: 0px;">
-                                        <li>
-                                            <a class="btn btn-sm btn-primary" onclick="EnviaCourier('@row.SerieDoc@row.NroDoc', '@row.codSeguimiento');"><span class="glyphicon glyphicon-list"></span></a>
-                                        </li>
-                                    </ul>
-                                </td>
+                                    <td><a href="http://app.urbano.com.pe/plugin/etracking/etracking/?guia=@row.codSeguimiento" target="_blank">@row.codSeguimiento</a></td>
+                                }
+
+                                @if (row.nom_courier.Contains("iend"))
+                                {
+                                    <td></td>       }
+                                else
+                                {
+                                    <td width="70px" class="p-0">
+                                        <ul class="list-inline" style="margin-bottom: 0px;">
+                                            <li>
+                                                <a class="btn btn-sm btn-primary" onclick="EnviaCourier('@row.SerieDoc@row.NroDoc', '@row.codSeguimiento');"><span class="glyphicon glyphicon-list"></span></a>
+                                            </li>
+                                        </ul>
+                                    </td>
                                 }
                                 <td width="70px" class="p-0">
                                     <ul class="list-inline" style="margin-bottom: 0px;">

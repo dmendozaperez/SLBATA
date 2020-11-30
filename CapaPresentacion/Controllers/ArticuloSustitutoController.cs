@@ -18,10 +18,10 @@ namespace CapaPresentacion.Controllers
 {
     public class ArticuloSustitutoController : Controller
     {
-     
-    
+
+
         private Dat_ArticuloSustituto datArticuloSusti = new Dat_ArticuloSustituto();
-     
+
         private string _session_liststockArticulo = "_session_listArticuloTienda";
 
         private bool IsValid(string usuario, string password, ref string _error_con)
@@ -185,22 +185,23 @@ namespace CapaPresentacion.Controllers
                     usuario_con = Request.Cookies["Pass"].Value;
                     string _error_con = "";
                     _acceso = IsValid(usuario_nom, usuario_con, ref _error_con);
-                    if(_acceso)
+                    if (_acceso)
                         _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
 
                     _accesoMenu = false;
                 }
 
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 _acceso = false;
             }
-           
+
             string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
             string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
             string return_view = actionName + "|" + controllerName;
 
-            if ((_usuario == null && _acceso == false)||(_usuario == null && _accesoMenu == true))
+            if ((_usuario == null && _acceso == false) || (_usuario == null && _accesoMenu == true))
             {
                 return RedirectToAction("Login", "Control", new { returnUrl = return_view });
             }
@@ -208,12 +209,13 @@ namespace CapaPresentacion.Controllers
             {
                 if (_accesoMenu == true)
                 {
-                  
+
                     ViewBag.Usuario = _usuario.usu_nombre;
 
                     return View();
                 }
-                else {
+                else
+                {
                     var data = new Dat_Menu();
                     var items = data.navbarItems(_usuario.usu_id).ToList();
                     Session[Ent_Global._session_menu_user] = items;
@@ -226,9 +228,9 @@ namespace CapaPresentacion.Controllers
                     #endregion
                     if (valida_rol)
                     {
-                     
+
                         ViewBag.Usuario = _usuario.usu_nombre;
-                    
+
                         return View();
                     }
                     else
@@ -322,7 +324,7 @@ namespace CapaPresentacion.Controllers
 
             return Json("Success", JsonRequestBehavior.AllowGet);
         }
-      
+
 
         public string listarStr_ArticuloSustituto(string codTda, string codArticulo, string codTalla, string calidad)
         {
@@ -336,7 +338,6 @@ namespace CapaPresentacion.Controllers
                 codTda = gcodTda;
             }
 
-
             JsonResult jRespuesta = null;
             strJson = datArticuloSusti.listarStr_ArticuloSustituto(codTda, codArticulo, codTalla, calidad, Session["PAIS"].ToString());
             var serializer = new JavaScriptSerializer();
@@ -344,7 +345,6 @@ namespace CapaPresentacion.Controllers
 
             return strJson;
         }
-
 
     }
 }
