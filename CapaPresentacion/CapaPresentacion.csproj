@@ -1610,13 +1610,13 @@
     <Content Include="Service References\SunatReniec\CapaPresentacion.SunatReniec.ws_persona_sunatResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <None Include="Service References\SunatReniec\Sunat_Reniec_PE.disco" />
     <None Include="Service References\SunatReniec\configuration91.svcinfo" />
     <None Include="Service References\SunatReniec\configuration.svcinfo" />
     <None Include="Service References\SunatReniec\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <None Include="Service References\SunatReniec\Sunat_Reniec_PE1.disco" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -1789,7 +1789,6 @@
     <Content Include="Views\ECommerce\StockAlmacen.cshtml" />
     <Content Include="Views\ECommerce\ConsultaStockEcom.cshtml" />
     <Content Include="Views\Inventario\ReporteInventarioMovimiento.cshtml" />
-    <None Include="Service References\SunatReniec\Sunat_Reniec_PE.wsdl" />
     <Content Include="Views\Consulta\ChatShop.cshtml" />
     <Content Include="Views\ECommerce\Prestashop.cshtml" />
     <Content Include="Views\ECommerce\_TablePrestashop.cshtml" />
@@ -1804,6 +1803,8 @@
     <Content Include="Views\ECommerce\TrazaPedido.cshtml" />
     <Content Include="Views\ECommerce\ListaTraza.cshtml" />
     <Content Include="Views\BataClub\icommkt_bounces.cshtml" />
+    <None Include="Service References\SunatReniec\Sunat_Reniec_PE1.wsdl" />
+    <Content Include="Views\BataClub\TableBataPE.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

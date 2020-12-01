@@ -1851,6 +1851,12 @@ namespace CapaPresentacion.Controllers
         #endregion
 
         #region BataClub/Tablet
+
+        public ActionResult TableBataPE()
+        {
+            return View();
+        }
+
         public ActionResult TabletPrincipal()
         {
             string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
