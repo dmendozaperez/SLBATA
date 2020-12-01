@@ -154,9 +154,9 @@
         strhtml += '<table style="border-bottom:0px;font-size:14px;width:100%;">'
         strhtml += '<tr>'
         if (tipo == "act") {
-            strhtml += '<td style="font-size:16px;width:100%;text-align:left;"><b> Esta seguro de actualizar los pedidos seleccionados ?</b></td>'
+            strhtml += '<td style="font-size:15px;width:100%;text-align:left;"><b> Esta seguro de actualizar los datos de los pedidos seleccionados?</b></td>'
         } else {
-            strhtml += '<td style="font-size:16px;width:100%;text-align:left;"><b> Esta seguro de anular los siguientes pedidos ?</b></td>'
+            strhtml += '<td style="font-size:15px;width:100%;text-align:left;"><b> Esta seguro de anular los pedidos seleccionados?</b></td>'
         }
         strhtml += '</tr>'
         strhtml += '</table>'
@@ -285,7 +285,7 @@
                       }
                   } else {
                       waitingDialog.hide();
-                      toastr.error("El proceso no se ejecutó correctamente , porfavor intente de nuevo", "Error");
+                      toastr.error("El proceso no actualizó ningun pedido , porfavor intente de nuevo", "Error");
 
                   }
               }

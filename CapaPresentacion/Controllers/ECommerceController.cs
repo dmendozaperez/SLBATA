@@ -10,6 +10,8 @@ using CapaEntidad.Util;
 using CapaEntidad.Control;
 using CapaDato.ECommerce;
 using CapaDato.ECommerce.Urbano;
+using CapaDato.ECommerce.Chazki;
+using CapaDato.CanalVenta;
 using CapaDato.comercioxpress;
 using Data.Crystal.Reporte;
 using CapaPresentacion.Bll;
@@ -17,6 +19,12 @@ using CapaEntidad.Menu;
 using CapaEntidad.General;
 using Newtonsoft.Json;
 using CapaEntidad.ValeCompra;
+
+using System.Web.Script.Serialization;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using Newtonsoft.Json;
+
 
 namespace CapaPresentacion.Controllers
 {
@@ -85,26 +93,29 @@ namespace CapaPresentacion.Controllers
 
         public ActionResult Envia_Courier(string ven_id)
         {
-            //Basico.act_presta_urbano(grabar_numerodoc, ref _error, ref _cod_urbano)
+            //Basico.act_presta_urbano(grabar_numerodoc, ref _error, ref _cod_courier)
             Dat_PrestaShop action_presta = null;
             Dat_Urbano data_urbano = null;
             Dat_Cexpress data_Cexpress = null;
+            var oJRespuesta = new JsonResponse();
 
             /*Datos para devolver*/
-            string error = ""; string cod_urbano = "";
+            //string error = ""; string cod_courier = "";
             try
             {
-                string guia_presta = ""; string guia_urb = ""; string name_carrier = "";
+                string guia_presta = ""; string guia_courier = ""; string name_carrier = ""; //= "Chazki - Envíos Express";
                 action_presta = new Dat_PrestaShop();
                 data_urbano = new Dat_Urbano();
-                //action_presta.get_guia_presta_urba(ven_id, ref guia_presta, ref guia_urb, ref name_carrier);
+                //action_presta.get_guia_presta_urba(ven_id, ref guia_presta, ref guia_courier, ref name_carrier);
+
                 action_presta.get_carrier(ven_id, ref guia_presta, ref name_carrier);
+                string track_chazki;
 
                 if (guia_presta.Trim().Length > 0)
                 {
                     UpdaEstado updateestado = new UpdaEstado();
                     Boolean valida = updateestado.ActualizarReference(guia_presta);
-
+                    //Boolean valida = true;
                     if (valida)
                     {
                         data_Cexpress = new Dat_Cexpress();
@@ -114,12 +125,11 @@ namespace CapaPresentacion.Controllers
 
                         /*enviamos urbano la guia*/
                         EnviaPedido envia = new EnviaPedido();
-
+                        /**/
                         if (name_carrier == "Comercio Xpress")
                         {
                             Ent_Cexpress ent_Cexpress = envia2.sendCexpress(ven_id, ref nroserv);
                         }
-
                         //intentando 3 veces
                         for (Int32 i = 0; i < 3; ++i)
                         {
@@ -129,8 +139,19 @@ namespace CapaPresentacion.Controllers
                                 //Ent_Cexpress ent_Cexpress = envia2.sendCexpress(ven_id, ref nroserv);
                                 action_presta.updestafac_prestashop(guia_presta);
                                 data_Cexpress.update_guia(guia_presta, nroserv);
-                                guia_urb = nroserv;
-
+                                guia_courier = nroserv;
+                                break;
+                            }
+                            else if (name_carrier == "Chazki - Envíos Express")
+                            {
+                                string nrodelivery_chazki = Envia_Courier_chazki(ven_id);
+                                if (nrodelivery_chazki != "")
+                                {
+                                    action_presta.updestafac_prestashop(guia_presta);
+                                    data_Cexpress.update_guia(guia_presta, nrodelivery_chazki);
+                                    guia_courier = nrodelivery_chazki;
+                                    break;
+                                }
                             }
                             else
                             {
@@ -141,37 +162,268 @@ namespace CapaPresentacion.Controllers
                                     {
                                         action_presta.updestafac_prestashop(guia_presta);
                                         data_urbano.update_guia(guia_presta, ent_urbano.guia);
-                                        guia_urb = ent_urbano.guia;
+                                        guia_courier = ent_urbano.guia;
                                         break;
                                     }
                                 }
                             }
                         }
-
-                        //guia_urb=
-                        //action_presta.get_guia_presta_urba(ven_id, ref guia_presta, ref guia_urb);
+                        //guia_courier=
+                        //action_presta.get_guia_presta_urba(ven_id, ref guia_presta, ref guia_courier);
 
                         ActTracking enviaguia_presta = new ActTracking();
-                        string[] valida_prest = enviaguia_presta.ActualizaTrackin(guia_presta, guia_urb);
-                        /*el valor 1 quiere decir que actualizo prestashop*/
-                        if (valida_prest[0] == "1" && guia_urb.ToString() != "")
+                        string[] valida_prest = enviaguia_presta.ActualizaTrackin(guia_presta, guia_courier);
+
+                        if (name_carrier == "Chazki - Envíos Express") //para chazki el codigo de seguimiento es el mismo nro de boleta
                         {
-                            data_urbano.updprestashopGuia(guia_presta, guia_urb);
+                            track_chazki = ven_id.Substring(0, 4) + "-" + ven_id.Substring(4, 8);
+
+                            valida_prest = enviaguia_presta.ActualizaTrackin(guia_presta, track_chazki);
+                        }
+                        else
+                        {
+                            valida_prest = enviaguia_presta.ActualizaTrackin(guia_presta, guia_courier);
                         }
 
-                        cod_urbano = guia_urb;
+                        /*el valor 1 quiere decir que actualizo prestashop*/
+                        if (valida_prest[0] == "1" && guia_courier.ToString() != "")
+                        {
+                            data_urbano.updprestashopGuia(guia_presta, guia_courier);
+                        }
+
+                        //cod_courier = guia_courier;
+                        oJRespuesta.Message = guia_courier;
+                        //return Json(oJRespuesta, JsonRequestBehavior.AllowGet);
                         /************************/
                     }
                 }
-
             }
-            catch (Exception exc)
+            catch (Exception)
             {
-                cod_urbano = "";
-                error = exc.Message;
+                oJRespuesta.Message = "";
             }
-            return RedirectToAction("Index", "ECommerce");
+            //return RedirectToAction("Index", "ECommerce");
+            return Json(oJRespuesta, JsonRequestBehavior.AllowGet);
         }
+
+        /*metodo para chazki - ecommerce*/
+
+        public string Envia_Courier_chazki(string ven_id)
+        {
+            string retorno = "";
+            try
+            {
+                /*delivery CHASKI*/
+                Ecommerce_Chazki cvCzk = selectVenta_Chazki(ven_id);
+                List<Ent_Chazki_E> list_chazki = new List<Ent_Chazki_E>();
+                if (cvCzk.informacionTiendaEnvio != null)
+                {
+                    /* DATA CHASKI : PRODUCCION*/
+                    Ent_Chazki_E chazki = new Ent_Chazki_E();
+                    chazki.storeId = cvCzk.informacionTiendaEnvio.chaski_storeId; // "10411"; // proporcionado por chazki
+                    chazki.branchId = cvCzk.informacionTiendaEnvio.chaski_branchId; // proporcionado por chazki
+                    chazki.deliveryTrackCode = cvCzk.informacionTiendaEnvio.nro_documento;
+                    chazki.proofPayment = "Ninguna"; // por definir la evindencia que será entregada al cliente
+                    chazki.deliveryCost = 0;
+                    chazki.mode = "Express"; //pendiente definir el modo con el que se va a trabajar el canal de venta.
+                    chazki.time = "";
+                    chazki.paymentMethod = "Pagado";
+                    chazki.country = "PE";
+
+                    /* DATA CHASKI : TEST*/
+
+                    //Ent_Chazki_E chazki = new Ent_Chazki_E();
+                    //chazki.storeId = "10411";
+                    //chazki.branchId = "CCSC-B187";
+                    //chazki.deliveryTrackCode = cvCzk.informacionTiendaEnvio.nro_documento;
+                    //chazki.proofPayment = "Ninguna"; // por definir la evindencia que será entregada al cliente
+                    //chazki.deliveryCost = 0;
+                    //chazki.mode = "Express"; //pendiente definir el modo con el que se va a trabajar el canal de venta.
+                    //chazki.time = "";
+                    //chazki.paymentMethod = "Pagado";
+                    //chazki.country = "PE";
+
+                    /* DATA ARTICULO*/
+
+                    List<Ent_ItemSold_E> listItemSold = new List<Ent_ItemSold_E>();
+                    foreach (var producto in cvCzk.detalles)
+                    {
+                        if (producto.codigoProducto != "9999997")
+                        {
+                            Ent_ItemSold_E _item = new Ent_ItemSold_E();
+                            _item.name = producto.nombreProducto;
+                            _item.currency = "PEN";
+                            _item.price = Convert.ToDouble(producto.total);
+                            _item.weight = 0.3;
+                            _item.volumen = 0;
+                            _item.quantity = producto.cantidad;
+                            _item.unity = "Caja";
+                            _item.size = "M";
+                            listItemSold.Add(_item);
+                        }
+                    }
+
+                    //CLIENTE
+                    chazki.listItemSold = listItemSold;
+                    chazki.notes = "Entregar a Cliente";
+                    chazki.documentNumber = cvCzk.informacionTiendaDestinatario.nroDocumento;
+                    //chazki.email = "servicio.clientes.peru@bata.com";
+                    if (cvCzk.informacionTiendaDestinatario.email == "" || cvCzk.informacionTiendaDestinatario.email == null)
+                    {
+                        chazki.email = "servicio.clientes.peru @bata.com";
+                    }
+                    else
+                    {
+                        chazki.email = cvCzk.informacionTiendaDestinatario.email; //
+                    }
+
+                    chazki.phone = cvCzk.informacionTiendaDestinatario.telefono;
+                    int CadRuc = cvCzk.informacionTiendaDestinatario.nroDocumento.Length;
+
+                    if (CadRuc > 8)
+                    {
+                        chazki.documentType = "RUC";
+                        chazki.lastName = "";
+                        chazki.companyName = cvCzk.informacionTiendaDestinatario.cliente;
+                        chazki.name_tmp = "";
+                    }
+                    else
+                    {
+                        chazki.documentType = "DNI";
+                        chazki.companyName = "";
+                        chazki.name_tmp = cvCzk.informacionTiendaDestinatario.cliente;
+                        chazki.lastName = "";
+                    }
+                    /* DATA DIRECCION*/
+                    List<Ent_AddressClient_E> listAdressClient = new List<Ent_AddressClient_E>();
+                    Ent_AddressClient_E addressClient = new Ent_AddressClient_E();
+                    Dat_CanalVenta datos = new Dat_CanalVenta();
+                    string[] desUbigeo = null;
+
+                    desUbigeo = datos.get_des_ubigeo(cvCzk.informacionTiendaDestinatario.ubigeo);
+                    addressClient.nivel_2 = desUbigeo[0];
+                    addressClient.nivel_3 = desUbigeo[1];
+                    addressClient.nivel_4 = desUbigeo[2];
+                    addressClient.name = cvCzk.informacionTiendaDestinatario.direccion_entrega;
+                    addressClient.reference = cvCzk.informacionTiendaDestinatario.referencia;
+                    addressClient.alias = "No Alias";
+                    Ent_Position_E position = new Ent_Position_E();
+                    position.latitude = 0;
+                    position.longitude = 0;
+                    addressClient.position = position;
+                    listAdressClient.Add(addressClient);
+                    chazki.addressClient = listAdressClient;
+
+                    list_chazki.Add(chazki);
+
+                    string jsonChazki = JsonConvert.SerializeObject(list_chazki);
+                    Response_Registro rpta = new Response_Registro();
+                    using (var http = new HttpClient())
+                    {
+                        http.DefaultRequestHeaders.Add("chazki-api-key", cvCzk.informacionTiendaEnvio.chaski_api_key); //PRODUCCION
+                        //http.DefaultRequestHeaders.Add("chazki-api-key", "KfXfqgEBhfMK4T8Luw8ba91RynMtjzTY"); //TEST
+
+                        HttpContent content = new StringContent(jsonChazki);
+                        content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+                        var request = http.PostAsync("https://integracion.chazki.com:8443/chazkiServices/delivery/create/deliveryService", content); //PRODUCCION
+
+                        //var request = http.PostAsync("https://sandboxintegracion.chazki.com:8443/chazkiServices/delivery/create/deliveryService", content); //TEST
+
+                        var response = request.Result.Content.ReadAsStringAsync().Result;
+                        rpta = JsonConvert.DeserializeObject<Response_Registro>(response);
+
+                        if (rpta.descriptionResponse == "SUCCESS")
+                        {
+                            retorno = rpta.codeDelivery;
+                        }
+                    }
+                }
+            }
+
+            catch (Exception ex)
+            {
+                retorno = "";
+            }
+            return retorno;
+        }
+
+
+        private Ecommerce_Chazki selectVenta_Chazki(string ven_id)
+        {
+            Ecommerce_Chazki ventas = new Ecommerce_Chazki();
+
+            EnviaPedidoChazki datos = new EnviaPedidoChazki();
+
+            //Chazki objModelo = new Chazki();
+
+            Ent_Ecommerce_Chazki ent_ventas = datos.get_Ventas_por_Chazki(ven_id);
+
+            if (ent_ventas != null)
+            {
+                Ecommerce_Chazki _cnvta = new Ecommerce_Chazki();
+
+                List<DetallesCanalVenta> list_cnvtaD = new List<DetallesCanalVenta>();
+
+                foreach (Ent_DetallesVentaCanal_E item in ent_ventas.detalles2)
+                {
+                    DetallesCanalVenta _cnvtaD = new DetallesCanalVenta();
+
+                    _cnvtaD.cantidad = Convert.ToInt32(item.cantidad);
+                    _cnvtaD.codigoProducto = item.codigoProducto;
+                    _cnvtaD.descuento = item.descuento;
+                    _cnvtaD.precioUnitario = item.precioUnitario;
+                    _cnvtaD.total = item.total;
+                    _cnvtaD.talla = item.talla;
+                    _cnvtaD.nombreProducto = item.nombreProducto;
+                    _cnvtaD.fd_colo = item.fd_colo;
+                    list_cnvtaD.Add(_cnvtaD);
+                }
+                _cnvta.detalles = list_cnvtaD;
+
+                Informacion_Tienda_envio _ic = null;
+                if (ent_ventas.informacionTiendaEnvio != null)
+                {
+                    _ic = new Informacion_Tienda_envio();
+                    _ic.id = ent_ventas.informacionTiendaEnvio.id;
+                    _ic.cod_entid = ent_ventas.informacionTiendaEnvio.cod_entid;
+                    _ic.courier = ent_ventas.informacionTiendaEnvio.courier;
+                    _ic.cx_codTipoDocProveedor = ent_ventas.informacionTiendaEnvio.cx_codTipoDocProveedor;
+                    _ic.cx_nroDocProveedor = ent_ventas.informacionTiendaEnvio.cx_nroDocProveedor;
+                    _ic.cx_codDireccionProveedor = ent_ventas.informacionTiendaEnvio.cx_codDireccionProveedor;
+                    _ic.cx_codCliente = ent_ventas.informacionTiendaEnvio.cx_codCliente;
+                    _ic.cx_codCtaCliente = ent_ventas.informacionTiendaEnvio.cx_codCtaCliente;
+                    _ic.id_usuario = ent_ventas.informacionTiendaEnvio.id_usuario;
+                    _ic.de_terminal = ent_ventas.informacionTiendaEnvio.de_terminal;
+                    _ic.chaski_storeId = ent_ventas.informacionTiendaEnvio.chaski_storeId;
+                    _ic.chaski_branchId = ent_ventas.informacionTiendaEnvio.chaski_branchId;
+                    _ic.chaski_api_key = ent_ventas.informacionTiendaEnvio.chaski_api_key;
+                    _ic.nro_documento = ent_ventas.informacionTiendaEnvio.deliveryTrack_Code;
+
+                }
+                _cnvta.informacionTiendaEnvio = _ic;
+                ventas = _cnvta;
+
+                Informacion_Tienda_Destinatario _id = null;
+                if (ent_ventas.informacionTiendaDestinatario != null)
+                {
+                    _id = new Informacion_Tienda_Destinatario();
+                    _id.id = ent_ventas.informacionTiendaDestinatario.id;
+                    _id.nroDocumento = ent_ventas.informacionTiendaDestinatario.nroDocumento;
+                    _id.email = ent_ventas.informacionTiendaDestinatario.email;
+                    _id.referencia = ent_ventas.informacionTiendaDestinatario.referencia;
+                    _id.telefono = ent_ventas.informacionTiendaDestinatario.telefono;
+                    _id.direccion_entrega = ent_ventas.informacionTiendaDestinatario.direccion_entrega;
+                    _id.cod_entid = ent_ventas.informacionTiendaDestinatario.cod_entid;
+                    _id.ubigeo = ent_ventas.informacionTiendaDestinatario.ubigeo;
+                    _id.cliente = ent_ventas.informacionTiendaDestinatario.cliente;
+                }
+                _cnvta.informacionTiendaDestinatario = _id;
+            }
+            return ventas;
+        }
+
+
         public ActionResult ActualizarRechazado(string descripcion, string id, string cod_entid, string fc_nint, string vendedor)
         {
             /*Ent_Usuario user = null;

@@ -329,7 +329,7 @@ namespace CapaDato.ECommerce
 
                         cmd.Parameters.Add("@cod_prestashop", SqlDbType.VarChar, 30);
                         cmd.Parameters.Add("@cod_urbano", SqlDbType.VarChar, 30);
-                        cmd.Parameters.Add("@name_carrier", SqlDbType.VarChar, 15);
+                        cmd.Parameters.Add("@name_carrier", SqlDbType.VarChar, 50);
 
                         cmd.Parameters["@cod_prestashop"].Direction = ParameterDirection.Output;
                         cmd.Parameters["@cod_urbano"].Direction = ParameterDirection.Output;
