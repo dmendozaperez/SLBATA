@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace CapaPresentacion
 {
@@ -22,5 +24,10 @@ namespace CapaPresentacion
                 defaults: new { controller = "Control", action = "Login", id = UrlParameter.Optional }
             );
         }
+        //public static void register (HttpConfiguration config) //CORS
+        //{
+        //    var cors = new EnableCorsAttribute("*", "*", "*");
+        //    config.EnableCors(cors);
+        //}
     }
 }

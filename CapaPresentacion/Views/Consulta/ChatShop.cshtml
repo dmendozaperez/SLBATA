@@ -269,7 +269,7 @@
                                     <td width="100px" class="p-0">
                                         <ul class="list-inline" style="margin-bottom: 0px;">
                                             <li>
-                                                <a class="btn btn-primary btn-sm" title="Ver Entrega" id="link" href="https://atari.chazki.com/#/public/seguimiento/1/@row.NroDocumento" target="_blank"><span class="fa fa-eye" aria-hidden="true"></span></a>
+                                                <a class="btn btn-primary btn-sm" title="Ver Entrega" id="link" href="https://atari.chazki.com/#/public/seguimiento/1/@row.NroDocumento.Replace("-","")" target="_blank"><span class="fa fa-eye" aria-hidden="true"></span></a>
                                             </li>
                                         </ul>
                                     </td>
@@ -353,16 +353,17 @@
         //alert(Flag);
 
         if (Flag == '0') {
-            toastr.error("El usuario de tienda no esta habilitado para utilizar esta opción", "Error");
+            toastr.info("El usuario de tienda no esta habilitado para utilizar esta opción", "Información");
+            
         }
         if (Flag == '1') {
-            toastr.error("No hay datos para mostrar", "Error");
+            toastr.info("No hay datos para mostrar", "Información");
         }
         if (Flag == '2') {
-            toastr.error("El pedido ya fue actualizado anteriormente", "Error");
+            toastr.info("El pedido ya fue actualizado anteriormente", "Información");
         }
         if (Flag == '3') {
-            toastr.error("Falta generar el código Guía de Courier", "Error");
+            toastr.info("Falta generar el código Guía de Courier", "Información");
         }
     }
 
@@ -371,7 +372,7 @@
 
         if (FlagCourier == 'SI' && (CodSeguimiento != '' || Estado != "FACTURADO")) {
 
-            toastr.error("El pedido ya fue actualizado y/o enviado a courier", "Error");
+            toastr.info("El pedido ya fue actualizado y/o enviado a courier", "Información");
             waitingDialog.hide();
         } else if (CodSeguimiento == '' && (FlagCourier == 'SI' || FlagCourier == 'NO')) {
 
@@ -443,7 +444,7 @@
                   if ((data.Success).toString() == "true") {
                       if (data.Message == "1") {
 
-                          toastr.success("Se realizó satisfactoriamente el llamado al courier", "Mensaje");
+                          toastr.success("Se realizó satisfactoriamente el llamado al courier", "Éxito");
                           setInterval(function () {
                               waitingDialog.hide();
                           }, 40000);
@@ -451,7 +452,7 @@
                           location.reload(true);
                       }
                       else {
-                          toastr.success("Se actualizó satisfactoriamente el estado del pedido", "Mensaje");
+                          toastr.success("Se actualizó satisfactoriamente el estado del pedido", "Éxito");
                           setInterval(function () {
                               waitingDialog.hide();
                           }, 40000);
@@ -619,12 +620,12 @@
                         if (guia != "") {
 
                             doc.save('GuiaCourier_' + guia + '.pdf');
-                            toastr.success("Se generó satisfactoriamente la Guia de Courier", "Mensaje");
+                            toastr.success("Se generó satisfactoriamente la Guia de Courier", "Éxito");
                             waitingDialog.hide();
 
                         } else {
                             doc.save('Guia_' + cliente + '.pdf');
-                            toastr.success("Se generó satisfactoriamente la Guia de Cliente", "Mensaje");
+                            toastr.success("Se generó satisfactoriamente la Guia de Cliente", "Éxito");
                             waitingDialog.hide();
                         }
 
@@ -637,7 +638,7 @@
             //    waitingDialog.hide();
             //}
         } else {
-                toastr.error("Falta generar el código Guía de Courier o Actualizar el pedido", "Error");
+                toastr.info("Falta generar el código Guía de Courier o Actualizar el pedido", "Información");
                 waitingDialog.hide();
 
         }

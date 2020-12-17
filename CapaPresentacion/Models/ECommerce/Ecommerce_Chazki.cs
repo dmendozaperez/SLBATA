@@ -83,6 +83,10 @@ namespace CapaPresentacion.Models.ECommerce
         public string chaski_branchId { get; set; }
         public string chaski_api_key { get; set; }
         public string nro_documento { get; set; }
+        public string tiempo { get; set; }
+        public string payment_method { get; set; }
+        public string mode { get; set; }
+        public string proofPayment { get; set; }
     }
 
     public class Informacion_Tienda_Destinatario

@@ -84,7 +84,7 @@
     function EnviaCourier(ven_id, seguimiento) {
 
         if (seguimiento != null && seguimiento != '') {
-            toastr.error("El pedido ya ha sido enviado anteriormente.", "Error");
+            toastr.info("El pedido ya ha sido enviado anteriormente.", "Información");
         } else {
 
             waitingDialog.show('Espere un momento por favor...');
@@ -103,9 +103,10 @@
                   success: function (data, textStatus, XMLHttpRequest) {
 
                       if (data.Message != "") {
-                          toastr.success("Se realizó satisfactoriamente el llamado al courier", "Mensaje");
+                          toastr.success("Se realizó satisfactoriamente el llamado al courier", "Éxito");
                           waitingDialog.hide();
-                          form.submit();
+                          //form.submit();
+                          location.reload(true);
 
                       } else {
                           toastr.error("No se llamó al courier, intente de nuevo porfavor", "Error");
@@ -116,9 +117,6 @@
               })
         }
     }
-
-
-
 
 
     //function cargarDestinos() {
@@ -181,6 +179,7 @@
         //    $("#vtEstados").val(_vtEstados);
         //    $("#vtTipos").val(_vtTipos);
     }
+
 
 </script>
 <script src="~/Scripts/bootstrap-select.min.js"></script>
@@ -315,7 +314,11 @@
                                 }
                                 else if (row.nom_courier == "Chazki - Envíos Express")
                                 {
-                                    <td><a href="https://atari.chazki.com/#/public/seguimiento/1/@row.SerieDoc-@row.NroDoc" target="_blank">@row.SerieDoc-@row.NroDoc</a></td>
+                                    <td><a href="https://atari.chazki.com/#/public/seguimiento/1/@row.codSeguimiento" target="_blank">@row.codSeguimiento</a></td>
+                                }
+                                else if (row.nom_courier == "Envío a Domicilio - Savar")
+                                {
+                                    <td><a href="https://savarexpress.com.pe/tracking/tracking.php?cod=@row.codSeguimiento" target="_blank">@row.codSeguimiento</a></td>
                                 }
                                 else
                                 {
@@ -356,5 +359,8 @@
             </div>
         </div>
     </div>
+    @*<div class="box-body" id="lista">
+            @{Html.RenderPartial("Index", Model);}
+        </div>*@
 
 }

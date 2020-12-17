@@ -477,7 +477,7 @@ namespace CapaPresentacion.Controllers
                     Ent_Chazki chazki = new Ent_Chazki();
                     chazki.storeId = cvCzk.informacionTiendaEnvio.chaski_storeId; // "10411"; // proporcionado por chazki
                     chazki.branchId = cvCzk.informacionTiendaEnvio.chaski_branchId; // proporcionado por chazki
-                    chazki.deliveryTrackCode = NroDocumento;
+                    chazki.deliveryTrackCode = NroDocumento.Replace("-", "");
                     chazki.proofPayment = "Ninguna"; // por definir la evindencia que será entregada al cliente
                     chazki.deliveryCost = 0;
                     chazki.mode = "Regular"; //pendiente definir el modo con el que se va a trabajar el canal de venta.

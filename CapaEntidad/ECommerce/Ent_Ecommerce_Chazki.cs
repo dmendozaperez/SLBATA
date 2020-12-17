@@ -60,6 +60,7 @@ namespace CapaEntidad.ECommerce
         public string tiempo { get; set; }
         public string payment_method { get; set; }
         public string country { get; set; }
+        public string proofPayment { get; set; }
     }
     public class Ent_Informacion_Tienda_Destinatario_E
     {

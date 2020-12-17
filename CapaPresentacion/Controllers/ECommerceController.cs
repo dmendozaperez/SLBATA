@@ -11,6 +11,7 @@ using CapaEntidad.Control;
 using CapaDato.ECommerce;
 using CapaDato.ECommerce.Urbano;
 using CapaDato.ECommerce.Chazki;
+using CapaDato.ECommerce.Savar;
 using CapaDato.CanalVenta;
 using CapaDato.comercioxpress;
 using Data.Crystal.Reporte;
@@ -19,18 +20,21 @@ using CapaEntidad.Menu;
 using CapaEntidad.General;
 using Newtonsoft.Json;
 using CapaEntidad.ValeCompra;
-
-using System.Web.Script.Serialization;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using Newtonsoft.Json;
-
+using System.Web.Http.Cors;
+using System.Net;
+using System.Text.RegularExpressions;
 
 namespace CapaPresentacion.Controllers
 {
+    //[EnableCors(origins: "*", headers: "*", methods: "*")] //CORS
+
     public class ECommerceController : Controller
     {
+
         Dat_ECommerce datos = new Dat_ECommerce();
+
         //List<Ent_TrazaPedido> listTraza = new List<Ent_TrazaPedido>();
         private string _session_listTraza_private = "_session_listTraza_private";
         // GET: Cnvta
@@ -115,6 +119,7 @@ namespace CapaPresentacion.Controllers
                 {
                     UpdaEstado updateestado = new UpdaEstado();
                     Boolean valida = updateestado.ActualizarReference(guia_presta);
+
                     //Boolean valida = true;
                     if (valida)
                     {
@@ -144,14 +149,23 @@ namespace CapaPresentacion.Controllers
                             }
                             else if (name_carrier == "Chazki - Envíos Express")
                             {
-                                string nrodelivery_chazki = Envia_Courier_chazki(ven_id);
+                                string nrodelivery_chazki = Envia_Courier_chazki(ven_id); 
                                 if (nrodelivery_chazki != "")
                                 {
                                     action_presta.updestafac_prestashop(guia_presta);
-                                    data_Cexpress.update_guia(guia_presta, nrodelivery_chazki);
-                                    guia_courier = nrodelivery_chazki;
+                                    data_Cexpress.update_guia(guia_presta, ven_id);//se registra el  nro de BOL para codigo de seguimiento
+                                    guia_courier = ven_id;
                                     break;
                                 }
+                            }
+                            else if (name_carrier == "Envío a Domicilio - Savar")
+                            {
+                                string nrodelivery_savar = Envia_Courier_Savar(ven_id);
+
+                                data_Cexpress.update_guia(guia_presta, nrodelivery_savar);
+                                guia_courier = nrodelivery_savar;
+                                break;
+
                             }
                             else
                             {
@@ -172,18 +186,10 @@ namespace CapaPresentacion.Controllers
                         //action_presta.get_guia_presta_urba(ven_id, ref guia_presta, ref guia_courier);
 
                         ActTracking enviaguia_presta = new ActTracking();
-                        string[] valida_prest = enviaguia_presta.ActualizaTrackin(guia_presta, guia_courier);
+                        string[] valida_prest;
 
-                        if (name_carrier == "Chazki - Envíos Express") //para chazki el codigo de seguimiento es el mismo nro de boleta
-                        {
-                            track_chazki = ven_id.Substring(0, 4) + "-" + ven_id.Substring(4, 8);
+                        valida_prest = enviaguia_presta.ActualizaTrackin(guia_presta, guia_courier);
 
-                            valida_prest = enviaguia_presta.ActualizaTrackin(guia_presta, track_chazki);
-                        }
-                        else
-                        {
-                            valida_prest = enviaguia_presta.ActualizaTrackin(guia_presta, guia_courier);
-                        }
 
                         /*el valor 1 quiere decir que actualizo prestashop*/
                         if (valida_prest[0] == "1" && guia_courier.ToString() != "")
@@ -205,9 +211,97 @@ namespace CapaPresentacion.Controllers
             //return RedirectToAction("Index", "ECommerce");
             return Json(oJRespuesta, JsonRequestBehavior.AllowGet);
         }
+        /*metodo para savar - ecommerce*/
+        public string Envia_Courier_Savar(string ven_id)
+        {
+            DataTable dtApi_savar = new DataTable();
+            EnviarPedidoSavar objD_savar = new EnviarPedidoSavar();
+            List<Ent_Savar> objList_savar = new List<Ent_Savar>();
+            Ent_Savar objE_savar = new Ent_Savar();
+
+            dtApi_savar = objD_savar.get_Ventas_por_Savar(ven_id);
+            objE_savar.CodPaquete = dtApi_savar.Rows[0]["CodPaquete"].ToString();
+            objE_savar.NomRemitente = dtApi_savar.Rows[0]["NomRemitente"].ToString();
+            objE_savar.DireccionRemitente = dtApi_savar.Rows[0]["DireccionRemitente"].ToString();
+            objE_savar.DistritoRemitente = dtApi_savar.Rows[0]["DistritoRemitente"].ToString();
+            objE_savar.TelefonoRemitente = dtApi_savar.Rows[0]["TelefonoRemitente"].ToString();
+            objE_savar.CodigoProducto = dtApi_savar.Rows[0]["CodigoProducto"].ToString();
+            objE_savar.MarcaProducto = dtApi_savar.Rows[0]["MarcaProducto"].ToString();
+            objE_savar.ModeloProducto = dtApi_savar.Rows[0]["ModeloProducto"].ToString();
+            objE_savar.ColorProducto = dtApi_savar.Rows[0]["ColorProducto"].ToString();
+            objE_savar.TipoProducto = dtApi_savar.Rows[0]["TipoProducto"].ToString();
+            objE_savar.DescProducto = dtApi_savar.Rows[0]["DescProducto"].ToString();
+            objE_savar.cantidad = Convert.ToInt32(dtApi_savar.Rows[0]["cantidad"].ToString());
+            objE_savar.NomConsignado = dtApi_savar.Rows[0]["NomConsignado"].ToString();
+            objE_savar.NumDocConsignado = dtApi_savar.Rows[0]["NumDocConsignado"].ToString();
+            objE_savar.DireccionConsignado = dtApi_savar.Rows[0]["DireccionConsignado"].ToString();
+            objE_savar.DistritoConsignado = dtApi_savar.Rows[0]["DistritoConsignado"].ToString();
+            objE_savar.Referencia = dtApi_savar.Rows[0]["Referencia"].ToString();
+            objE_savar.TelefonoConsignado = dtApi_savar.Rows[0]["TelefonoConsignado"].ToString();
+            objE_savar.CorreoConsignado = dtApi_savar.Rows[0]["CorreoConsignado"].ToString();
+            objE_savar.Subservicio = dtApi_savar.Rows[0]["Subservicio"].ToString();
+            objE_savar.TipoPago = dtApi_savar.Rows[0]["TipoPago"].ToString();
+            objE_savar.MetodoPago = dtApi_savar.Rows[0]["MetodoPago"].ToString();
+            objE_savar.Monto = Convert.ToDecimal(dtApi_savar.Rows[0]["Monto"].ToString());
+            objE_savar.Largo = Convert.ToDecimal(dtApi_savar.Rows[0]["Largo"].ToString());
+            objE_savar.Ancho = Convert.ToDecimal(dtApi_savar.Rows[0]["Ancho"].ToString());
+            objE_savar.Peso = Convert.ToDecimal(dtApi_savar.Rows[0]["Peso"].ToString());
+            objE_savar.ValorComercial = dtApi_savar.Rows[0]["ValorComercial"].ToString();
+            objE_savar.HoraIni1 = dtApi_savar.Rows[0]["HoraIni1"].ToString();
+            objE_savar.HoraFin1 = dtApi_savar.Rows[0]["HoraFin1"].ToString();
+            objE_savar.HoraIni2 = dtApi_savar.Rows[0]["HoraIni2"].ToString();
+            objE_savar.HoraFin2 = dtApi_savar.Rows[0]["HoraFin2"].ToString();
+            objE_savar.Comentario = dtApi_savar.Rows[0]["Comentario"].ToString();
+            objE_savar.Comentario2 = dtApi_savar.Rows[0]["Comentario2"].ToString();
+
+            objList_savar.Add(objE_savar);
+            string jsonSavar = JsonConvert.SerializeObject(objList_savar);
+            string retorno = "";
+
+
+            Dat_ECommerce objD_ecommerce = new Dat_ECommerce();
+            DataTable dtConexion = new DataTable();
+
+            dtConexion = objD_ecommerce.Ecommerce_getConexionesAPI("savar", 1); //conexion de savar
+
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Add("Authorization", dtConexion.Rows[0]["Token"].ToString());
+                    //client.DefaultRequestHeaders.Add("TOKEN", dtConexion.Rows[0]["Token"].ToString());
+
+                    using (StringContent jsonContent = new StringContent(jsonSavar))
+                    {
+                        jsonContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+                        var request = client.PostAsync(dtConexion.Rows[0]["Url"].ToString(), jsonContent);
+
+                        string response = request.Result.Content.ReadAsStringAsync().Result;
+                        string codseguimiento = Regex.Replace(response, @"[^A-Za-z0-9ñÑ ]+", "");
+
+                        if (objE_savar.CodPaquete == codseguimiento)
+                        {
+                            retorno = codseguimiento;
+                        }
+                        else
+                        {
+                            retorno = "";
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                retorno = "";
+            }
+
+            return retorno;
+        }
+
 
         /*metodo para chazki - ecommerce*/
-
         public string Envia_Courier_chazki(string ven_id)
         {
             string retorno = "";
@@ -223,11 +317,11 @@ namespace CapaPresentacion.Controllers
                     chazki.storeId = cvCzk.informacionTiendaEnvio.chaski_storeId; // "10411"; // proporcionado por chazki
                     chazki.branchId = cvCzk.informacionTiendaEnvio.chaski_branchId; // proporcionado por chazki
                     chazki.deliveryTrackCode = cvCzk.informacionTiendaEnvio.nro_documento;
-                    chazki.proofPayment = "Ninguna"; // por definir la evindencia que será entregada al cliente
+                    chazki.proofPayment = cvCzk.informacionTiendaEnvio.proofPayment; // por definir la evindencia que será entregada al cliente
                     chazki.deliveryCost = 0;
-                    chazki.mode = "Express"; //pendiente definir el modo con el que se va a trabajar el canal de venta.
-                    chazki.time = "";
-                    chazki.paymentMethod = "Pagado";
+                    chazki.mode = cvCzk.informacionTiendaEnvio.mode; //pendiente definir el modo con el que se va a trabajar el canal de venta.
+                    chazki.time = cvCzk.informacionTiendaEnvio.tiempo;
+                    chazki.paymentMethod = cvCzk.informacionTiendaEnvio.payment_method;
                     chazki.country = "PE";
 
                     /* DATA CHASKI : TEST*/
@@ -327,7 +421,6 @@ namespace CapaPresentacion.Controllers
                         content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
                         var request = http.PostAsync("https://integracion.chazki.com:8443/chazkiServices/delivery/create/deliveryService", content); //PRODUCCION
-
                         //var request = http.PostAsync("https://sandboxintegracion.chazki.com:8443/chazkiServices/delivery/create/deliveryService", content); //TEST
 
                         var response = request.Result.Content.ReadAsStringAsync().Result;
@@ -347,7 +440,6 @@ namespace CapaPresentacion.Controllers
             }
             return retorno;
         }
-
 
         private Ecommerce_Chazki selectVenta_Chazki(string ven_id)
         {
@@ -385,20 +477,15 @@ namespace CapaPresentacion.Controllers
                 if (ent_ventas.informacionTiendaEnvio != null)
                 {
                     _ic = new Informacion_Tienda_envio();
-                    _ic.id = ent_ventas.informacionTiendaEnvio.id;
-                    _ic.cod_entid = ent_ventas.informacionTiendaEnvio.cod_entid;
-                    _ic.courier = ent_ventas.informacionTiendaEnvio.courier;
-                    _ic.cx_codTipoDocProveedor = ent_ventas.informacionTiendaEnvio.cx_codTipoDocProveedor;
-                    _ic.cx_nroDocProveedor = ent_ventas.informacionTiendaEnvio.cx_nroDocProveedor;
-                    _ic.cx_codDireccionProveedor = ent_ventas.informacionTiendaEnvio.cx_codDireccionProveedor;
-                    _ic.cx_codCliente = ent_ventas.informacionTiendaEnvio.cx_codCliente;
-                    _ic.cx_codCtaCliente = ent_ventas.informacionTiendaEnvio.cx_codCtaCliente;
-                    _ic.id_usuario = ent_ventas.informacionTiendaEnvio.id_usuario;
-                    _ic.de_terminal = ent_ventas.informacionTiendaEnvio.de_terminal;
                     _ic.chaski_storeId = ent_ventas.informacionTiendaEnvio.chaski_storeId;
                     _ic.chaski_branchId = ent_ventas.informacionTiendaEnvio.chaski_branchId;
                     _ic.chaski_api_key = ent_ventas.informacionTiendaEnvio.chaski_api_key;
                     _ic.nro_documento = ent_ventas.informacionTiendaEnvio.deliveryTrack_Code;
+                    _ic.mode = ent_ventas.informacionTiendaEnvio.mode;
+                    _ic.tiempo = ent_ventas.informacionTiendaEnvio.tiempo;
+                    _ic.payment_method = ent_ventas.informacionTiendaEnvio.payment_method;
+                    _ic.proofPayment = ent_ventas.informacionTiendaEnvio.proofPayment;
+
 
                 }
                 _cnvta.informacionTiendaEnvio = _ic;
@@ -422,7 +509,6 @@ namespace CapaPresentacion.Controllers
             }
             return ventas;
         }
-
 
         public ActionResult ActualizarRechazado(string descripcion, string id, string cod_entid, string fc_nint, string vendedor)
         {

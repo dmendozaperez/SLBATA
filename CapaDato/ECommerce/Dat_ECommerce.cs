@@ -486,6 +486,33 @@ namespace CapaDato.ECommerce
             return valida;
         }
 
+        public DataTable Ecommerce_getConexionesAPI(string nombre, int tipo)
+        {
+            DataTable dt = null;
+            SqlConnection cn = null;
+            SqlCommand cmd = null;
+            SqlDataAdapter da = null;
+            string sqlcommand = "USP_Lista_APICourier";
+            try
+            {
+                cn = new SqlConnection(Ent_Conexion.conexionEcommerce);
+                cmd = new SqlCommand(sqlcommand, cn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandTimeout = 0;
+                cmd.Parameters.AddWithValue("@Nombre", nombre);
+                cmd.Parameters.AddWithValue("@Tipo", tipo);
+                da = new SqlDataAdapter(cmd);
+                dt = new DataTable();
+                da.Fill(dt);
+            }
+            catch
+            {
+                dt = null;
+                throw;
+            }
+            return dt;
+        }
+
 
     }
 
