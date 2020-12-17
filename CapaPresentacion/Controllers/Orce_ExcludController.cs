@@ -570,11 +570,35 @@ namespace CapaPresentacion.Controllers
         #region Cupones Orce
         public ActionResult Cupones()
         {
-            return View();
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
+
+            if (_usuario == null)
+            {
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+            }
+            else
+            {
+                return View();
+            }
         }
         public ActionResult GenerarCupones()
         {
-            return View();
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
+
+            if (_usuario == null)
+            {
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+            }
+            else
+            {
+                return View();
+            }
         }
         public ActionResult GenerarCuponesOrce(string prefx)
         {
