@@ -147,7 +147,7 @@ namespace CapaPresentacion.Controllers
                                 guia_courier = nroserv;
                                 break;
                             }
-                            else if (name_carrier == "Chazki - Envíos Express")
+                            else if (name_carrier.Contains("Chazki"))
                             {
                                 string nrodelivery_chazki = Envia_Courier_chazki(ven_id); 
                                 if (nrodelivery_chazki != "")
@@ -158,10 +158,9 @@ namespace CapaPresentacion.Controllers
                                     break;
                                 }
                             }
-                            else if (name_carrier == "Envío a Domicilio - Savar")
+                            else if (name_carrier.Contains("Savar"))
                             {
                                 string nrodelivery_savar = Envia_Courier_Savar(ven_id);
-
                                 data_Cexpress.update_guia(guia_presta, nrodelivery_savar);
                                 guia_courier = nrodelivery_savar;
                                 break;
@@ -189,7 +188,6 @@ namespace CapaPresentacion.Controllers
                         string[] valida_prest;
 
                         valida_prest = enviaguia_presta.ActualizaTrackin(guia_presta, guia_courier);
-
 
                         /*el valor 1 quiere decir que actualizo prestashop*/
                         if (valida_prest[0] == "1" && guia_courier.ToString() != "")

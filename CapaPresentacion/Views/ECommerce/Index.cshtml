@@ -101,11 +101,12 @@
                   type: "POST",
                   data: objCourier,
                   success: function (data, textStatus, XMLHttpRequest) {
-
+                 
                       if (data.Message != "") {
                           toastr.success("Se realizó satisfactoriamente el llamado al courier", "Éxito");
-                          waitingDialog.hide();
-                          //form.submit();
+                          setInterval(function () {
+                              waitingDialog.hide();
+                          }, 40000);
                           location.reload(true);
 
                       } else {
@@ -312,11 +313,11 @@
                                 {
                                     <td><a href="https://bata.pe/tracking-ce/?norder=@row.codSeguimiento" target="_blank">@row.codSeguimiento</a></td>
                                 }
-                                else if (row.nom_courier == "Chazki - Envíos Express")
+                                else if (row.nom_courier.Contains("Chazki"))
                                 {
                                     <td><a href="https://atari.chazki.com/#/public/seguimiento/1/@row.codSeguimiento" target="_blank">@row.codSeguimiento</a></td>
                                 }
-                                else if (row.nom_courier == "Envío a Domicilio - Savar")
+                                else if (row.nom_courier.Contains("Savar"))
                                 {
                                     <td><a href="https://savarexpress.com.pe/tracking/tracking.php?cod=@row.codSeguimiento" target="_blank">@row.codSeguimiento</a></td>
                                 }
