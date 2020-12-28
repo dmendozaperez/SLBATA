@@ -664,25 +664,25 @@ namespace CapaPresentacion.Controllers
         #region <Extender Nota de Credito Center>
         public ActionResult Extender_NC_XCenter()
         {
-            //Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
-            //string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
-            //string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
-            //string return_view = actionName + "|" + controllerName;
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
 
-            //if (_usuario == null)
-            //{
-            //    return RedirectToAction("Login", "Control", new { returnUrl = return_view });
-            //}
-            //else
-            //{
-            Ent_Extender_NC entExtender_NC = new Ent_Extender_NC();
-            ViewBag.entExtender_NC = entExtender_NC;
+            if (_usuario == null)
+            {
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+            }
+            else
+            {
+                Ent_Extender_NC entExtender_NC = new Ent_Extender_NC();
+                ViewBag.entExtender_NC = entExtender_NC;
 
-            List<Ent_ListaTienda> tiendas = new List<Ent_ListaTienda>();
-            tiendas.Add(new Ent_ListaTienda() { cod_entid = "-1", des_entid = "SELECCIONE" });
-            ViewBag.tienda = tiendas.Concat(dat_lista_tienda.get_tienda("PE", "1"));
-            return View();
-            //}
+                List<Ent_ListaTienda> tiendas = new List<Ent_ListaTienda>();
+                tiendas.Add(new Ent_ListaTienda() { cod_entid = "-1", des_entid = "SELECCIONE" });
+                ViewBag.tienda = tiendas.Concat(dat_lista_tienda.get_tienda("PE", "1"));
+                return View();
+            }
 
         }
 
