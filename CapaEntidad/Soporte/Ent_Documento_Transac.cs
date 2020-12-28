@@ -27,4 +27,21 @@ namespace CapaEntidad.Soporte
         public string TOTAL { get; set; }
     }
 
+    public class Ent_Extender_NC
+    {
+        public string Serial_Nbr { get; set; }
+        public int? Organization_Id { get; set; }
+        public int? Rtl_Loc_Id { get; set; }
+        public int? Wkstn_Id { get; set; }
+        public int? Trans_Seq { get; set; }
+        public string String_Value { get; set; }
+        public DateTime? Business_Date { get; set; }
+        public DateTime? Expr_Date { get; set; }
+        public DateTime? New_Expr_Date { get; set; }
+        //Campos de busqueda
+        public string Tienda { get; set; }
+        public string Num_Doc { get; set; }
+        public DateTime? FechaInicio { get; set; }
+        public DateTime? FechaFin { get; set; }
+    }
 }

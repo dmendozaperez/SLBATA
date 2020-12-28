@@ -170,8 +170,85 @@ namespace CapaDato.Soporte
         //    }
         //    return strJson;
         //}
-
-
         //gft
+        public List<Ent_Extender_NC> LisXCenter_NC(Ent_Extender_NC ent)
+        {
+            List<Ent_Extender_NC> Listar = new List<Ent_Extender_NC>();
+            string sqlquery = "[USP_XCENTER_GET_NOTAS_CREDITO]";
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+                    cn.Open();
+                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                    {
+
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@TIENDA", DbType.String).Value = ent.Tienda;
+                        cmd.Parameters.AddWithValue("@NUM_DOC", DbType.String).Value = ent.Num_Doc;
+                        cmd.Parameters.AddWithValue("@FECHA_INI", DbType.DateTime).Value = ent.FechaInicio;
+                        cmd.Parameters.AddWithValue("@FECHA_FIN", DbType.DateTime).Value = ent.FechaFin;
+                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                        {
+                            DataTable dt = new DataTable();
+                            da.Fill(dt);
+
+                            Listar = new List<Ent_Extender_NC>();
+                            Listar = (from DataRow fila in dt.Rows
+                                      select new Ent_Extender_NC()
+                                      {
+                                          Serial_Nbr = (fila["Serial_Nbr"] is DBNull) ? string.Empty : (string)(fila["Serial_Nbr"]),
+                                          Organization_Id = (fila["Organization_Id"] is DBNull) ? (int?)null : Convert.ToInt32(fila["Organization_Id"]),
+                                          Rtl_Loc_Id = (fila["Rtl_Loc_Id"] is DBNull) ? (int?)null : Convert.ToInt32(fila["Rtl_Loc_Id"]),
+                                          Wkstn_Id = (fila["Wkstn_Id"] is DBNull) ? (int?)null : Convert.ToInt32(fila["Wkstn_Id"]),
+                                          Trans_Seq = (fila["Trans_Seq"] is DBNull) ? (int?)null : Convert.ToInt32(fila["Trans_Seq"]),
+                                          String_Value = (fila["String_Value"] is DBNull) ? string.Empty : (string)(fila["String_Value"]),
+                                          Business_Date = (fila["Business_Date"] is DBNull) ? (DateTime?)null : Convert.ToDateTime(fila["Business_Date"]),
+                                          Expr_Date = (fila["Expr_Date"] is DBNull) ? (DateTime?)null : Convert.ToDateTime(fila["Expr_Date"])
+                                      }
+                                    ).ToList();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return Listar;
+        }
+        
+        public bool UpExtender_NC(Ent_Extender_NC ent, ref string Estado)
+        {
+            bool result= false;
+            string sqlquery = "USP_XCENTER_EXTENDER_NOTAS_CREDITO";
+            SqlConnection cn = null;
+            SqlCommand cmd = null;
+            try
+            {
+                cn = new SqlConnection(Ent_Conexion.conexion);
+                if (cn.State == 0) cn.Open();
+                cmd = new SqlCommand(sqlquery, cn);
+                cmd.CommandTimeout = 0;
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@TIENDA", ent.Rtl_Loc_Id);
+                cmd.Parameters.AddWithValue("@NUM_NC", ent.String_Value);
+                cmd.Parameters.AddWithValue("@FEC_NC", ent.Business_Date);
+                cmd.Parameters.AddWithValue("@NEW_FECHA", ent.New_Expr_Date);
+                cmd.Parameters.Add("@ESTADO", SqlDbType.VarChar, 30);
+
+                cmd.Parameters["@ESTADO"].Direction = ParameterDirection.Output;
+                cmd.ExecuteNonQuery();
+                Estado = cmd.Parameters["@ESTADO"].Value.ToString();
+                result = true;
+            }
+            catch (Exception exc)
+            {
+                result = false;
+            }
+            if (cn.State == ConnectionState.Open) cn.Close();
+            return result;
+        }
+
     }
 }
