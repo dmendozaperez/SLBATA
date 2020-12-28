@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Listado para extender las fechas";
+    ViewBag.Title = "Listado para extender las fechas XCENTER";
     ViewBag.SubTitle = "";
 }
 <style>
@@ -384,14 +384,14 @@
                     if (objExtender.general.ValidarEdit()) {
                         //debugger;
                         swal({
-                            title: "¿Seguro que desea actualizar la fecha?",
-                            text: "",
+                            title: "Update XCenter",
+                            text: "¿Seguro que desea actualizar la fecha?",
                             icon: "warning",
                             buttons: ["No", "Si"],
                             dangerMode: true,
                         }).then((cambiar) => {
                             if (cambiar) {
-                                waitingDialog.show("Espere un momento por favor.")
+                                //waitingDialog.show("Espere un momento por favor.")
                                 //debugger 
                                 var _Ent = function () { return @Html.Raw(Json.Encode(ViewBag.entExtender_NC)); }();
                                 _Ent.Rtl_Loc_Id = objExtender.Rtl_Loc_Id;
@@ -413,7 +413,7 @@
                                            //debugger
                                             objExtender.isOkUpdate = true
                                             swal({title: "Ok",text: data.Message,icon: "success"}).then((value) => {
-                                                waitingDialog.hide();
+                                                //waitingDialog.hide();
                                                 $('#tbLisXCenter').DataTable().ajax.reload(function () { });
                                             }); 
                                             $('#myModal').modal('hide');

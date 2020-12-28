@@ -780,7 +780,7 @@ namespace CapaPresentacion.Controllers
                 if (Result)
                 {
                     objResult.Success = true;
-                    objResult.Message = "La nuwva fecha se actualizo correctamente.";
+                    objResult.Message = "La nueva fecha se actualizo correctamente.";
                 }
                 else
                 {
