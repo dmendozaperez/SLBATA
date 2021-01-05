@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\CapaPresentacion\App_Data\Contracts.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -40,6 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\BataClub\Ent_BusquedaDoc.cs" />
+    <Compile Include="Api\Seguridad\SecurityViewModel.cs" />
     <Compile Include="ArticuloStock\Distrito.cs" />
     <Compile Include="ArticuloStock\Ent_Distrito.cs" />
     <Compile Include="ArticuloStock\Provincia.cs" />
