@@ -315,6 +315,25 @@
       <param name="address">input IP address</param>
       <returns>Is IPV4 True or False</returns>
     </member>
+    <member name="T:CapaPresentacion.Models.Api_WS.Reply">
+      <summary>
+      </summary>
+    </member>
+    <member name="P:CapaPresentacion.Models.Api_WS.Reply.result">
+      <summary>
+            si es 1 entonces la consulta es correcta, si es 0 no hubo exito en la consulta
+            </summary>
+    </member>
+    <member name="P:CapaPresentacion.Models.Api_WS.Reply.data">
+      <summary>
+            array de tipo cadena
+            </summary>
+    </member>
+    <member name="P:CapaPresentacion.Models.Api_WS.Reply.messaje">
+      <summary>
+            Mensaje depende de la consulta realizada
+            </summary>
+    </member>
     <member name="T:CapaPresentacion.BataClub.ValidateAcceso">
       <remarks />
     </member>

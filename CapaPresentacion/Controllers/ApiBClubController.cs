@@ -36,18 +36,18 @@ namespace CapaPresentacion.Controllers
                 }
                 if (model.num_doc == null)
                 {
-                    or.messaje = "Ingrese el numero de documento a buscar";
+                    or.messaje = "Ingrese el numero de boleta a buscar";
                     return or;
                 }
                 if (model.num_doc.Trim().Length == 0)
                 {
-                    or.messaje = "Ingrese el numero de documento a buscar";
+                    or.messaje = "Ingrese el numero de boleta a buscar";
                     return or;
                 }
 
                 if (model.num_doc.Trim().Length != 12)
                 {
-                    or.messaje = "El numero de documento debe tener 12 de longitud";
+                    or.messaje = "El numero de boleta debe tener 12 de longitud";
                     return or;
                 }
 
@@ -59,7 +59,7 @@ namespace CapaPresentacion.Controllers
 
                 or.data = (resultado == 0 ? null : or.data);
 
-                or.messaje = (resultado == 1) ? "Documento encontrado" : "El Nro de Documento no existe";
+                or.messaje = (resultado == 1) ? "Documento encontrado" : "El Nro de boleta no existe, por favor verificar";
 
             }
             catch (Exception exc)
@@ -107,7 +107,7 @@ namespace CapaPresentacion.Controllers
                 or.data = dat_doc.buscar_pedido(model.token, model.nro_pedido, ref resultado);
                 or.result = (resultado == 1) ? 1 : 0;// resultado;
                 or.data = (resultado == 0 ? null : or.data);
-                or.messaje = (resultado == 1) ? "Pedido encontrado" : "El Nro de Pedido no existe";
+                or.messaje = (resultado == 1) ? "Pedido encontrado" : "El Nro de Pedido no existe, por favor verificar";
 
             }
             catch (Exception exc)
@@ -139,17 +139,17 @@ namespace CapaPresentacion.Controllers
                 }
                 if (model.nro_dni == null)
                 {
-                    or.messaje = "Ingrese el numero de documento a buscar";
+                    or.messaje = "Ingrese el numero de dni a buscar";
                     return or;
                 }
                 if (model.nro_dni.Trim().Length == 0)
                 {
-                    or.messaje = "Ingrese el numero de documento a buscar";
+                    or.messaje = "Ingrese el numero de dni a buscar";
                     return or;
                 }
                 if (model.nro_dni.Trim().Length != 8)
                 {
-                    or.messaje = "El numero de documento debe tener 8 de longitud ";
+                    or.messaje = "El numero de dni debe tener 8 digitos, por favor verificar ";
                     return or;
                 }
 
@@ -160,7 +160,7 @@ namespace CapaPresentacion.Controllers
                 //or.result = 1;//  resultado;
                 or.result = (resultado == 1) ? 1 : 0;// resultado;
                 or.data = (resultado == 0 ? null : or.data);
-                or.messaje = (resultado == 1) ? "Documento encontrado" : "El Nro de Documento no existe";
+                or.messaje = (resultado == 1) ? "Documento encontrado" : "No es miembro de Bataclub";
 
             }
             catch (Exception exc)
