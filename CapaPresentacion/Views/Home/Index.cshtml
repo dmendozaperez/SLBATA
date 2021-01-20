@@ -48,16 +48,136 @@
     @*</div>*@
 
 </div>
+<div class="modal fade" id="mdlAviso" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" ng-app>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            @*[cuerpo del modal]*@
+            <div class="modal-header modal-header-danger">
+                <h4 class="modal-title" id="myModalLabel"></h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        @*[Info del modal]*@
+                        <div class="box-body">
+                            <table id="TbTabla" class="table table-hover dataTable  table-striped table-responsive">
+                                <thead>
+                                    <tr style="background-color:#3d566e; color:#ecf0f1;padding-top: 0px;padding-bottom: 0px;">
+                                        <th style="text-align: center;">TIPO</th>
+                                        <th style="text-align: center;">NUM. DOCUMENTO</th>
+                                        <th style="text-align: center;">FECHA</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colspan='3'>No se encontraron resultados</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        @*[/Info del modal]*@
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="margin-top:-30px">
+                <button id="btnAceptar" type="button" class="btn btn-primary">Aceptar</button>
+            </div>
+            @*[/cuerpo del modal]*@
+        </div>
+    </div>
+</div>
 <script>
     $(document).ready(function () {
-        var tienda="@ViewBag.tienda";
+        var tienda = "@ViewBag.tienda";
         var pais="@ViewBag.pais";
 
         if (tienda!='' && pais=='PE'){
             $("#divmsg").show();
+            Tienda_Proceso();
         } else{
             $("#divmsg").hide();
         }
+        //[Tiendas con proceso carga el modal]
+        $("#btnAceptar").click(function () {
+            $('#mdlAviso').modal('hide');
+        });
 
+        function Tienda_Proceso() {
+            var isOkUpdate = true;
+            var isOk = true;
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("getTienda_Proceso", "Control")',
+                data: {
+                    tienda: tienda,
+                    isOkUpdate: isOkUpdate,
+                    isOk: isOk
+                },
+                success: function (data) {
+                    data = JSON.parse(data);
+                    if (data.Success) {
+                        let options = { "backdrop": "static", keyboard: true };
+                        isOkUpdate = false;
+                        isOk = false;
+                        cargaTabla(isOkUpdate, isOk);
+                        $('#mdlAviso').modal(options);
+                        $('#mdlAviso').modal('show');
+                    }
+                    if (data.isError) {
+                        swal({ title: "Alerta", text: data.Message, icon: "error" }).then((value) => { });
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {                   
+                    swal({ title: "Alerta", text: "Error al listar.", icon: "error" }).then((value) => { });
+                }
+            });
+        }
+        //[/Tiendas con proceso carga el modal]
+         //[Carga la lista]
+        function cargaTabla(isOkUpdate, isOk) {
+            $('#TbTabla').DataTable({
+                "language": {
+                    "url": "../Scripts/DataTables/Spanish.json"
+                },
+                "bServerSide": true,
+                "bAutoWidth": false,
+                "sAjaxSource": '@Url.Action("getTienda_Proceso", "Control")',
+                "fnServerParams": function (aoData) {
+                    //debugger
+                    aoData.push({ "name": "isOkUpdate", "value": isOkUpdate });
+                    aoData.push({ "name": "isOk", "value": isOk });
+                },
+                "start": 0,
+                "columnDefs": [{
+                    "orderable": false,
+                    "targets": [0, 1, 2],
+                }],
+                "bDeferRender": true,
+                "lengthChange": false, //Lista por cantidad
+                "aoColumns": [                    
+                    { "sName": "Tipo", "mData": "Tipo", "sClass": " " },
+                    { "sName": "Numdoc", "mData": "Numdoc", "sClass": " " },
+                    {
+                        "mData": null,
+                        "sClass": "",
+                        "render": function (Data, type, full, meta) {
+                            var Fecha = (full.Fecha == undefined || full.Fecha == null || full.Fecha == 0) ? ' ' : new Date(parseInt(full.Fecha.replace("/Date(", "").replace(")/", ""), 10));
+                            return (Fecha == undefined || Fecha == null || Fecha == 0) ? ' ' : (Fecha.getDate() < 10 ? "0" + Fecha.getDate() : Fecha.getDate()) + "/" + ((Fecha.getMonth() + 1) < 10 ? "0" + (Fecha.getMonth() + 1) : (Fecha.getMonth() + 1)) + "/" + Fecha.getFullYear();
+                        }
+                    }
+                ],
+                "fnRowCallback": function (row, data, index) {
+                },
+                "drawCallback": function (settings) {
+                    //actualiza el estado cuando ya se ha listado el grid, cuando hace paginación
+                    waitingDialog.hide();
+                    isOkUpdate = false;
+                    isOk = false;
+                },
+                "initComplete": function (settings, json) {
+                }
+            });
+        }
+         //[/Carga la lista]
     });
 </script>

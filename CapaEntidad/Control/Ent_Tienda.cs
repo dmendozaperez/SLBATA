@@ -13,4 +13,13 @@ namespace CapaEntidad.Control
         public string cadena { get; set; }
 
     }
+
+    public class Ent_Tienda_Proceso
+    {
+        public string Tienda { get; set; }
+        public string Tipo { get; set; }
+        public string Numdoc { get; set; }
+        public DateTime? Fecha { get; set; }
+        public string Cod_EntId { get; set; }
+    }
 }
