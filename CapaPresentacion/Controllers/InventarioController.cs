@@ -194,7 +194,7 @@ namespace CapaPresentacion.Controllers
             }
             else
             {
-                ViewBag.Tienda = dat_lista_tienda.get_tienda("PE", "1");
+                ViewBag.Tienda = dat_lista_tienda.get_tienda(Session["PAIS"].ToString(), "1");
                 Session["Lista_Consulta_Movimiento"] = null;
                 return View();
             }
@@ -571,7 +571,7 @@ namespace CapaPresentacion.Controllers
             {
                 List<Ent_ListaTienda> tiendas = new List<Ent_ListaTienda>();
                 tiendas.Add(new Ent_ListaTienda() { cod_entid = "-1", des_entid = "TODOS" });
-                ViewBag.tienda = tiendas.Concat(dat_lista_tienda.get_tienda("PE", "1"));
+                ViewBag.tienda = tiendas.Concat(dat_lista_tienda.get_tienda(Session["PAIS"].ToString(), "1"));
                 Session[_session_lista_ajuste_inv] = null;
                 return View();
             }
@@ -986,7 +986,7 @@ namespace CapaPresentacion.Controllers
             else
             {
 
-                ViewBag.Tienda = ip.get_ListaTienda("", 0);
+                ViewBag.Tienda = ip.get_ListaTienda("",0,Session["PAIS"].ToString());
 
                 //ViewBag._selectTipos = SelectTipos((tipo == null ? " '',R,E" : tipo));
 
@@ -1076,7 +1076,7 @@ namespace CapaPresentacion.Controllers
             else
             {
 
-                ViewBag.Tienda = ip.get_ListaTienda("", 0);
+                ViewBag.Tienda = ip.get_ListaTienda("",0,Session["PAIS"].ToString());
 
                 //ViewBag._selectTipos = SelectTipos((tipo == null ? " '',R,E" : tipo));
 

@@ -71,7 +71,7 @@ namespace CapaPresentacion.Data.Crystal.Reporte
             return lista;
         }
 
-        public List<Ent_Combo> get_ListaTienda(string codTienda, int ind_)
+        public List<Ent_Combo> get_ListaTienda(string codTienda,int ind_, string pais)
         {
             List<Ent_Combo> list = null;
             string sqlquery = "USP_LISTAR_TIENDA";
@@ -86,6 +86,7 @@ namespace CapaPresentacion.Data.Crystal.Reporte
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@codTienda", codTienda);
                         cmd.Parameters.AddWithValue("@ind_", ind_);
+                        cmd.Parameters.AddWithValue("@pais", pais);
                         SqlDataReader dr = cmd.ExecuteReader();
                         if (dr.HasRows)
                         {

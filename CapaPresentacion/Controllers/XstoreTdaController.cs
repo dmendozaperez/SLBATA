@@ -300,7 +300,7 @@ namespace CapaPresentacion.Controllers
         }
         public Ent_ConfigConexion listar_config_conexion()
         {
-            Ent_ConfigConexion config_conexion = dat_storeTda.XSTORE_GET_CONEXION_GLOBAL();
+            Ent_ConfigConexion config_conexion = dat_storeTda.XSTORE_GET_CONEXION_GLOBAL(Session["PAIS"].ToString());
             Session[_session_cc_central_xst] = config_conexion.list_central_xst;
             Session[_session_cc_caja_xst] = config_conexion.list_cajas_xst;
             return config_conexion;
