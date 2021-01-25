@@ -81,16 +81,23 @@ namespace CapaPresentacion.Controllers
                 ViewBag.Estado = datCbo.get_ListaEstado();
 
                 if (Session["Tienda"]!=null)
-                {
-                    ViewBag.Tienda = datCbo.get_ListaTiendaXstore().Where(t => t.cbo_codigo == Session["Tienda"].ToString()).ToList();
+                {//VLADIMIR
+                    ViewBag.Tienda = datCbo.get_ListaTiendaXstore(Session["PAIS"].ToString()).Where(t => t.cbo_codigo == Session["Tienda"].ToString()).ToList();
                 }
-                else
-                {
-                    ViewBag.Tienda = datCbo.get_ListaTiendaXstore();
+                else 
+                {//vladimir
+
+                    // ViewBag.Tienda = datCbo.get_ListaTiendaXstore();
+                   
+                        //ViewBag.Tienda = datCbo.get_ListaTiendaXstore(true);
+                        ViewBag.Tienda = datCbo.get_ListaTiendaXstore(Session["PAIS"].ToString());
+                   
+
+
+                    //vladimir end
                 }
 
-                
-                
+
 
                 string strJson = "";
                 JsonResult jRespuesta = null;
@@ -331,8 +338,8 @@ namespace CapaPresentacion.Controllers
                 entComboD.cbo_descripcion = "----Todos----";
                 listD.Add(entComboD);
                 ViewBag.Categoria = listD;
-
-                List<Ent_Combo_DisCadTda> combo_discadtda = discattda.list_dis_cad_tda();
+                //vladimir
+                List<Ent_Combo_DisCadTda> combo_discadtda = discattda.list_dis_cad_tda(Session["PAIS"].ToString());
                 //Session["Tienda"] = "50143";
                 if (Session["Tienda"] != null)
                 {
@@ -343,7 +350,7 @@ namespace CapaPresentacion.Controllers
                 ViewBag.DisCadTda = combo_discadtda;
 
                 Session[_session_dis_cad_tda] = combo_discadtda;
-
+                //vladimir end
 
 
                 List<Ent_Combo_DisCadTda> list_cad = new List<Ent_Combo_DisCadTda>();
@@ -451,21 +458,36 @@ namespace CapaPresentacion.Controllers
 
                 ViewBag.Title = "Reporte Vendedor";
 
-                List<Ent_Combo_DisCadTda> combo_discadtda = discattda.list_dis_cad_tda();
+                List<Ent_Combo_DisCadTda> combo_discadtda = discattda.list_dis_cad_tda(Session["PAIS"].ToString());
                 //Session["Tienda"] = "50143";
+                //vladimir
                 if (Session["Tienda"] != null)
                 {
                     combo_discadtda = combo_discadtda.Where(t => t.cod_entid == Session["Tienda"].ToString()).ToList();
                 }
+                //vladimir end
 
-                ViewBag.Distrito = combo_distrito(combo_discadtda);
-                ViewBag.DisCadTda = combo_discadtda;
+                //ViewBag.Distrito = combo_distrito(combo_discadtda);
+                //ViewBag.DisCadTda = combo_discadtda;
 
-                Session[_session_dis_cad_tda] = combo_discadtda;
+                //Session[_session_dis_cad_tda] = combo_discadtda;
+                else
+                {//vladimir
 
-              
+                    // ViewBag.Tienda = datCbo.get_ListaTiendaXstore();
+                   
+                        combo_discadtda = discattda.list_dis_cad_tda(Session["PAIS"].ToString());
+                        ViewBag.Distrito = combo_distrito(combo_discadtda);
+                        ViewBag.DisCadTda = combo_discadtda;
 
-                List<Ent_Combo_DisCadTda> list_cad = new List<Ent_Combo_DisCadTda>();
+                        Session[_session_dis_cad_tda] = combo_discadtda;
+                   
+
+                }
+                    //vladimir end
+
+
+                    List<Ent_Combo_DisCadTda> list_cad = new List<Ent_Combo_DisCadTda>();
                 Ent_Combo_DisCadTda entCombo_cad = new Ent_Combo_DisCadTda();
                 entCombo_cad.cod_cadena = "-1";
                 entCombo_cad.des_cadena = "----Todos----";
@@ -619,13 +641,14 @@ namespace CapaPresentacion.Controllers
 
                 ViewBag.Title = "Reporte Articulo sin movimiento";
 
-                List<Ent_Combo_DisCadTda> combo_discadtda = discattda.list_dis_cad_tda();
+                List<Ent_Combo_DisCadTda> combo_discadtda = discattda.list_dis_cad_tda(Session["PAIS"].ToString());
                 //Session["Tienda"] = "50143";
+                //vladimir
                 if (Session["Tienda"] != null)
                 {
                     combo_discadtda = combo_discadtda.Where(t => t.cod_entid == Session["Tienda"].ToString()).ToList();
                 }
-
+                //vladimir end
                 ViewBag.Distrito = combo_distrito(combo_discadtda);
                 ViewBag.DisCadTda = combo_discadtda;
 
@@ -751,18 +774,18 @@ namespace CapaPresentacion.Controllers
                 }
 
                 ViewBag.sem = ent_sem;
-
+                //vladimir
                 if (Session["Tienda"] != null)
                 {
-                    ViewBag.Tienda = datCbo.get_ListaTiendaXstoreActivo(Session["Tienda"].ToString());
+                    ViewBag.Tienda = datCbo.get_ListaTiendaXstoreActivo(Session["PAIS"].ToString(),Session["Tienda"].ToString());
                 }
                 else
                 {
                     
-                    ViewBag.Tienda = datCbo.get_ListaTiendaXstoreActivo("");
+                    ViewBag.Tienda = datCbo.get_ListaTiendaXstoreActivo(Session["PAIS"].ToString(),"");
 
                 }
-
+                //vladimir end
                 return View();
             }
         }
@@ -823,7 +846,7 @@ namespace CapaPresentacion.Controllers
             }
             else
             { 
-                List<Ent_Combo_DisCadTda> combo_discadtda = discattda.list_dis_cad_tda();
+                List<Ent_Combo_DisCadTda> combo_discadtda = discattda.list_dis_cad_tda(Session["PAIS"].ToString());
                 //Session["Tienda"] = "50143";
                 if (Session["Tienda"] != null)
                 {
@@ -947,7 +970,9 @@ namespace CapaPresentacion.Controllers
         public ActionResult ShowGenericReportArtSinMovInNewWin(/*string cod_cadena,string cod_dis, */string cod_tda, Int32 nsemana, Int32 maxpares, string estado, string grupo, string categoria, string tipo,string resumen , Int32 minpares,string calidad , string semIng)
         {
             //grupo = "0";categoria = "0";subcategoria = "0";estado = "0";
-            Data_Bata pl = new Data_Bata();
+
+            
+                Data_Bata pl = new Data_Bata();
             this.HttpContext.Session["ReportName"] = "ReportArtSinMov.rpt";
 
             List<Models_Art_Sin_Mov> model_Art_sn_mov = pl.list_art_sin_mov(/*cod_cadena, cod_dis,*/ cod_tda, nsemana, maxpares, estado, grupo, categoria, tipo , minpares,calidad , semIng);
@@ -981,14 +1006,14 @@ namespace CapaPresentacion.Controllers
             {
 
                 ViewBag.Title = "Reporte Comparativo Venta";
-
+                //VLADIMIR
                 if (Session["Tienda"] != null)
                 {
-                    ViewBag.Tienda = datCbo.get_ListaTiendaXstoreActivo(Session["Tienda"].ToString());
+                    ViewBag.Tienda = datCbo.get_ListaTiendaXstoreActivo(Session["PAIS"].ToString(),Session["Tienda"].ToString());
                 }
                 else
                 {
-                    ViewBag.Tienda = datCbo.get_ListaTiendaXstoreActivo("");
+                    ViewBag.Tienda = datCbo.get_ListaTiendaXstoreActivo(Session["PAIS"].ToString(),"");
                 }
 
 
@@ -1075,9 +1100,11 @@ namespace CapaPresentacion.Controllers
         }
 
         [HttpPost]
-        public ActionResult ShowGenericReportObsolescenciaInNewWin(/*string coddis,*/ string cod_tda, string tipo_cat, string cod_linea, string cod_categ, string calidad, string precio1, string precio2, string tipoObs,string rangoObs , string resumen)
+        public ActionResult ShowGenericReportObsolescenciaInNewWin(/*string coddis,*/ string cod_tda, string tipo_cat, string cod_linea, string cod_categ, string calidad, string precio1, string precio2, string tipoObs,string rangoObs , string resumen,string pais)
         {
             //grupo = "0";categoria = "0";subcategoria = "0";estado = "0";
+            //vladimir
+            //pais = Session["PAIS"].ToString();
             Data_Bata da = new Data_Bata();
             this.HttpContext.Session["ReportName"] = "Vendedor.rpt";
 
@@ -1120,7 +1147,7 @@ namespace CapaPresentacion.Controllers
                 }
                 else
                 {
-                    ViewBag.Tienda = datCbo.get_ListaTiendaXstoreActivo("");
+                    ViewBag.Tienda = datCbo.get_ListaTiendaXstoreActivo(Session["PAIS"].ToString(),"");
                 }
 
                 ViewBag.Tipo = datCbo.get_ListaTipoCategoria();
@@ -1308,7 +1335,7 @@ namespace CapaPresentacion.Controllers
             {
                 ViewBag.Title = "Reporte Rendiniento por Categoria";
 
-                List<Ent_Combo_DisCadTda> combo_discadtda = discattda.list_dis_cad_tda();
+                List<Ent_Combo_DisCadTda> combo_discadtda = discattda.list_dis_cad_tda(Session["PAIS"].ToString());
                 //Session["Tienda"] = "50143";
                 if (Session["Tienda"] != null)
                 {
@@ -1527,11 +1554,11 @@ namespace CapaPresentacion.Controllers
             {
                 if (Session["Tienda"] != null)
                 {
-                    ViewBag.Tienda = datCbo.get_ListaTiendaXstore().Where(t => t.cbo_codigo == Session["Tienda"].ToString()).ToList();
+                    ViewBag.Tienda = datCbo.get_ListaTiendaXstore(Session["PAIS"].ToString()).Where(t => t.cbo_codigo == Session["Tienda"].ToString()).ToList();
                 }
                 else
                 {
-                    ViewBag.Tienda = datCbo.get_ListaTiendaXstore();
+                    ViewBag.Tienda = datCbo.get_ListaTiendaXstore(Session["PAIS"].ToString());
                     
                 }
                 ViewBag.anios = datCbo.get_lista_anios(2015);
@@ -1593,13 +1620,13 @@ namespace CapaPresentacion.Controllers
             else
             {
                 if (Session["Tienda"] != null)
-                {
-                    ViewBag.Tienda = datCbo.get_ListaTiendaXstore().Where(t => t.cbo_codigo == Session["Tienda"].ToString()).ToList();
+                {//VLADIMIR
+                    ViewBag.Tienda = datCbo.get_ListaTiendaXstore(Session["PAIS"].ToString()).Where(t => t.cbo_codigo == Session["Tienda"].ToString()).ToList();
                 }
                 else
                 {
-                    ViewBag.Tienda = datCbo.get_ListaTiendaXstore();
-
+                    ViewBag.Tienda = datCbo.get_ListaTiendaXstore(Session["PAIS"].ToString());
+                    //VLADIMIR END
                 }
                 ViewBag.anios = datCbo.get_lista_anios(2015);
                 List<Ent_Combo> listcbo = new List<Ent_Combo>();

@@ -292,7 +292,7 @@ namespace CapaDato.Maestros
         }
 
         #region **Config Conexion**
-        public Ent_ConfigConexion XSTORE_GET_CONEXION_GLOBAL()
+        public Ent_ConfigConexion XSTORE_GET_CONEXION_GLOBAL(string pais)
         {
             string sql = "USP_XSTORE_GET_CONEXION_GLOBAL";
             DataSet dsResponse = null;
@@ -306,6 +306,7 @@ namespace CapaDato.Maestros
                     dsResponse = new DataSet();
                     SqlCommand cmd = new SqlCommand(sql, cn);
                     cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@pais", pais);
                     SqlDataAdapter da = new SqlDataAdapter(cmd);
                     da.Fill(dsResponse);
                     listCentralXst = new List<Ent_Central_Xst>();

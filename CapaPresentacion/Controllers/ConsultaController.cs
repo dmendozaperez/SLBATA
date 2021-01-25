@@ -54,12 +54,15 @@ namespace CapaPresentacion.Controllers
             {
                 if (Session["Tienda"] != null)
                 {
-                    ViewBag.Tienda = tienda.get_ListaTiendaXstore().Where(a => a.cbo_codigo == Session["Tienda"].ToString());
+                    //VLADIMIR
+                    ViewBag.Tienda = tienda.get_ListaTiendaXstore(Session["PAIS"].ToString()).Where(a => a.cbo_codigo == Session["Tienda"].ToString());
+                    //VLADIMIR END
                     ViewBag.concepto_suna = dat_concepto_suna.lista_concepto_suna().Where(d => d.con_sun_id != "07" && d.con_sun_id != "-1");
                 }
                 else
-                {
-                    ViewBag.Tienda = tienda.get_ListaTiendaXstore(true);
+                {//VLADIMIR
+                    ViewBag.Tienda = tienda.get_ListaTiendaXstore(Session["PAIS"].ToString(),true);
+                    //VLADIMIR END
                     ViewBag.concepto_suna = dat_concepto_suna.lista_concepto_suna().Where(w => w.con_sun_id != "-1");
                 }
                 return View();
@@ -209,14 +212,14 @@ namespace CapaPresentacion.Controllers
             {
                 Session[_session_listguia_private] = null;
                 if (Session["Tienda"] != null)
-                {
-                    ViewBag.Tienda = tienda.get_ListaTiendaXstore().Where(t => t.cbo_codigo == Session["Tienda"].ToString()).ToList();
+                {//VLADIMIR
+                    ViewBag.Tienda = tienda.get_ListaTiendaXstore(Session["PAIS"].ToString()).Where(t => t.cbo_codigo == Session["Tienda"].ToString()).ToList();
                 }
                 else
                 {
                     if (Session["PAIS"].ToString() == "PE")
                     {
-                        ViewBag.Tienda = tienda.get_ListaTiendaXstore(true);
+                        ViewBag.Tienda = tienda.get_ListaTiendaXstore(Session["PAIS"].ToString(),true);
                     }
                     else
                     {

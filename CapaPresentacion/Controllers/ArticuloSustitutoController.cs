@@ -285,8 +285,9 @@ namespace CapaPresentacion.Controllers
                 {
 
                     ViewBag.Usuario = _usuario.usu_nombre;
-                    ViewBag.Tienda = datCbo.get_ListaTiendaXstore();
-
+                    //vladimir
+                    ViewBag.Tienda = datCbo.get_ListaTiendaXstore(Session["PAIS"].ToString());
+                    //vladimir end
                     return View();
                 }
                 else

@@ -177,9 +177,9 @@
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="NReco.PdfGenerator, Version=1.1.12.0, Culture=neutral, PublicKeyToken=231663d50a41b451, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\NReco.PdfGenerator.dll</HintPath>
+    <Reference Include="NReco.PdfGenerator, Version=1.1.11.0, Culture=neutral, PublicKeyToken=231663d50a41b451, processorArchitecture=MSIL">
+      <HintPath>..\packages\NReco.PdfGenerator.1.1.11.0\lib\net20\NReco.PdfGenerator.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
@@ -193,8 +193,8 @@
       <HintPath>..\packages\Syncfusion.Compression.Base.16.4.0.48\lib\net45\Syncfusion.Compression.Base.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Syncfusion.Licensing, Version=16.4450.0.48, Culture=neutral, PublicKeyToken=632609b4d040f6b4, processorArchitecture=MSIL">
-      <HintPath>..\packages\Syncfusion.Licensing.16.4.0.48\lib\net45\Syncfusion.Licensing.dll</HintPath>
+    <Reference Include="Syncfusion.Licensing, Version=16.2450.0.41, Culture=neutral, PublicKeyToken=632609b4d040f6b4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.Licensing.16.2.0.41\lib\net45\Syncfusion.Licensing.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -1883,9 +1883,9 @@
     <Content Include="Views\ECommerce\ListaTraza.cshtml" />
     <Content Include="Views\BataClub\icommkt_bounces.cshtml" />
     <Content Include="Views\BataClub\TableBataPE.cshtml" />
-    <None Include="Service References\SunatReniec\Sunat_Reniec_PE.wsdl" />
     <Content Include="Views\Soporte\Extender_NC_XCenter.cshtml" />
     <Content Include="Views\Shared\_Layout_Api.cshtml" />
+    <None Include="Service References\SunatReniec\Sunat_Reniec_PE.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1915,20 +1915,6 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CapaDato\CapaDato.csproj">
-      <Project>{3b548edf-2e78-4a86-a5db-20cfa737cd21}</Project>
-      <Name>CapaDato</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CapaEntidad\CapaEntidad.csproj">
-      <Project>{d766eb68-5a6b-4719-b604-60e1a87a999c}</Project>
-      <Name>CapaEntidad</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CapaOraDato\CapaOraDato.csproj">
-      <Project>{218a9618-c092-4cdf-868a-8d2f2058def9}</Project>
-      <Name>CapaOraDato</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\BataClub\" />
@@ -2018,6 +2004,20 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CapaDato\CapaDato.csproj">
+      <Project>{3b548edf-2e78-4a86-a5db-20cfa737cd21}</Project>
+      <Name>CapaDato</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CapaEntidad\CapaEntidad.csproj">
+      <Project>{d766eb68-5a6b-4719-b604-60e1a87a999c}</Project>
+      <Name>CapaEntidad</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CapaOraDato\CapaOraDato.csproj">
+      <Project>{218a9618-c092-4cdf-868a-8d2f2058def9}</Project>
+      <Name>CapaOraDato</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
