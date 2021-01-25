@@ -52,14 +52,17 @@
 <script>
     $(document).ready(function () {
         var tienda = "@ViewBag.tienda";
-        var pais="@ViewBag.pais";
+        var pais = "@ViewBag.pais";
+        setCookie('ccMoIni', '', 1)
         debugger
-        if (tienda!='' && pais=='PE'){
-            $("#divmsg").show();
-            setCookie('ccMoIni', 'Inicio', 1)
+        if (tienda != '' && pais == 'PE') {
+            debugger
+            $("#divmsg").show();            
+            setCookie('ccMoIni', 'Inicio', 1)            
             BorrarCookie('ccHrIni')
             BorrarCookie('ccHrIniInterval')
-        } else{
+        } else {
+            debugger
             $("#divmsg").hide();
         }
 

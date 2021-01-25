@@ -249,7 +249,6 @@
                 var iTiempo = 20; //[PONER EL TIEMPO A SEGUNDOS , EJEMPLO AHORA ESTA EN 20 SEGUNDOS]
 
                 var ccMoIni = getCookie('ccMoIni');
-
                 if (tienda != '' && pais == 'PE')
                 {
                     if (ccMoIni == "Inicio")
@@ -259,7 +258,8 @@
                     if (ccMoIni == "Reinicio") {
                         isOkUpdate = true;
                         isOk = false;
-                        cargaTabla(isOkUpdate, isOk, tienda)
+                        cargaTabla(isOkUpdate, isOk, tienda);
+                        timeAlertInfo();
                     }
                 }
                 //[/Declaramos variables]
@@ -275,8 +275,7 @@
                 //[/btnAceptar Info Modal]
 
                 //[Tiendas con proceso carga el modal]
-                function Tienda_Proceso(tienda, pais) {                    
-                   // debugger
+                function Tienda_Proceso(tienda, pais) {        
                     isOkUpdate = true;
                     isOk = true;
                     $.ajax({
@@ -288,7 +287,6 @@
                             isOk: isOk
                         },
                         success: function (data) {
-                            debugger
                             data = JSON.parse(data);
                             if (data.Success) {
                                 isOkUpdate = false
@@ -318,7 +316,6 @@
 
                 //[Carga la lista]
                 function cargaTabla(isOkUpdate, isOk, tienda) {
-                    //debugger
                     $('#TbTabla').DataTable({
                         "language": {
                             "url": "../Scripts/DataTables/Spanish.json"
@@ -327,7 +324,6 @@
                         "bAutoWidth": false,
                         "sAjaxSource": "/Control/getTienda_Proceso/",
                         "fnServerParams": function (aoData) {
-                            //debugger
                             aoData.push({ "name": "isOkUpdate", "value": isOkUpdate });
                             aoData.push({ "name": "isOk", "value": isOk });
                             aoData.push({ "name": "tienda", "value": tienda });
@@ -373,7 +369,7 @@
                         Now = (Now.getHours() * 60 * 60) + (Now.getMinutes() * 60) + Now.getSeconds();
                     let ccHrIniInterval = getCookie('ccHrIniInterval');
                     let ccMoIni = getCookie('ccMoIni')
-                    //console.log(Now + " = " + ccHrIniInterval);
+                    console.log(Now + " = " + ccHrIniInterval);
                     if (Now > ccHrIniInterval) {
                         let date = new Date();
                         setCookie('ccHrIni', ((date.getHours() * 60 * 60) + (date.getMinutes() * 60) + date.getSeconds()), 1)
@@ -396,11 +392,9 @@
                     let ccMoIni = getCookie('ccMoIni')
                     if (ccMoIni == 'Reinicio') {
                         nIntervId = setInterval(ModalInfo, 1000);
-                        //console.log(ccMoIni);
+                        console.log(ccMoIni);
                     }
                 }
-
-                timeAlertInfo();
                 //[/Inicializamos el time]
             }, 1000);
 
