@@ -471,19 +471,19 @@ namespace CapaPresentacion.Controllers
                 //ViewBag.DisCadTda = combo_discadtda;
 
                 //Session[_session_dis_cad_tda] = combo_discadtda;
-                else
-                {//vladimir
+                
+                //vladimir
 
                     // ViewBag.Tienda = datCbo.get_ListaTiendaXstore();
                    
-                        combo_discadtda = discattda.list_dis_cad_tda(Session["PAIS"].ToString());
+                       // combo_discadtda = discattda.list_dis_cad_tda(Session["PAIS"].ToString());
                         ViewBag.Distrito = combo_distrito(combo_discadtda);
                         ViewBag.DisCadTda = combo_discadtda;
 
                         Session[_session_dis_cad_tda] = combo_discadtda;
                    
 
-                }
+                
                     //vladimir end
 
 
