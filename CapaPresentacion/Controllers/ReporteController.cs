@@ -84,7 +84,7 @@ namespace CapaPresentacion.Controllers
                 {//VLADIMIR
                     ViewBag.Tienda = datCbo.get_ListaTiendaXstore(Session["PAIS"].ToString()).Where(t => t.cbo_codigo == Session["Tienda"].ToString()).ToList();
                 }
-                else
+                else 
                 {//vladimir
 
                     // ViewBag.Tienda = datCbo.get_ListaTiendaXstore();
