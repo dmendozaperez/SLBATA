@@ -194,7 +194,14 @@ namespace CapaPresentacion.Controllers
             }
             else
             {
-                ViewBag.Tienda = dat_lista_tienda.get_tienda("PE", "1");
+
+                string pais = "PE";
+                if (Session["PAIS"] != null)
+                {
+                    pais = Session["PAIS"].ToString();
+                }
+
+                ViewBag.Tienda = dat_lista_tienda.get_tienda(pais, "1");
                 Session["Lista_Consulta_Movimiento"] = null;
                 return View();
             }
@@ -334,7 +341,13 @@ namespace CapaPresentacion.Controllers
             }
             else
             {
-                ViewBag.tienda = dat_lista_tienda.get_tienda("PE", "1");
+                string pais = "PE";
+                if (Session["PAIS"] != null)
+                {
+                    pais = Session["PAIS"].ToString();
+                }
+
+                ViewBag.tienda = dat_lista_tienda.get_tienda(pais, "1");
                 Session[_session_lista_articulos_inv] = null;
                 return View();
             }
@@ -569,16 +582,28 @@ namespace CapaPresentacion.Controllers
             }
             else
             {
+                string pais = "PE";
+                if (Session["PAIS"] != null)
+                {
+                    pais = Session["PAIS"].ToString();
+                }
+
                 List<Ent_ListaTienda> tiendas = new List<Ent_ListaTienda>();
                 tiendas.Add(new Ent_ListaTienda() { cod_entid = "-1", des_entid = "TODOS" });
-                ViewBag.tienda = tiendas.Concat(dat_lista_tienda.get_tienda("PE", "1"));
+                ViewBag.tienda = tiendas.Concat(dat_lista_tienda.get_tienda(pais, "1"));
                 Session[_session_lista_ajuste_inv] = null;
                 return View();
             }
         }
         public PartialViewResult ListaAjustesInv(string tienda)
         {
-            List<Ent_Inventario_Ajuste> lista = datInv.getListaAjustesInv(tienda);
+            string pais = "PE";
+            if (Session["PAIS"] != null)
+            {
+                pais = Session["PAIS"].ToString();
+            }
+
+            List<Ent_Inventario_Ajuste> lista = datInv.getListaAjustesInv(tienda, pais);
             Session[_session_lista_ajuste_inv] = lista;
             return PartialView();
         }
@@ -709,7 +734,12 @@ namespace CapaPresentacion.Controllers
             }
             else
             {
-                ViewBag.Tienda = datInv.get_ListaTienda();
+                string pais = "PE";
+                if (Session["PAIS"] != null)
+                {
+                    pais = Session["PAIS"].ToString();
+                }
+                ViewBag.Tienda = datInv.get_ListaTienda(pais);
                 return View();
             }
 
@@ -985,8 +1015,13 @@ namespace CapaPresentacion.Controllers
             }
             else
             {
+                string pais = "PE";
+                if (Session["PAIS"] != null)
+                {
+                    pais = Session["PAIS"].ToString();
+                }
 
-                ViewBag.Tienda = ip.get_ListaTienda("", 0);
+                ViewBag.Tienda = ip.get_ListaTienda("", pais);
 
                 //ViewBag._selectTipos = SelectTipos((tipo == null ? " '',R,E" : tipo));
 
@@ -1075,8 +1110,13 @@ namespace CapaPresentacion.Controllers
             }
             else
             {
+                string pais = "PE";
+                if (Session["PAIS"] != null)
+                {
+                    pais = Session["PAIS"].ToString();
+                }
 
-                ViewBag.Tienda = ip.get_ListaTienda("", 0);
+                ViewBag.Tienda = ip.get_ListaTienda("", pais);
 
                 //ViewBag._selectTipos = SelectTipos((tipo == null ? " '',R,E" : tipo));
 

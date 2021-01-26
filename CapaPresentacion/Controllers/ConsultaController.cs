@@ -52,14 +52,20 @@ namespace CapaPresentacion.Controllers
             }
             else
             {
+                string pais = "PE";
+                if (Session["PAIS"] != null)
+                {
+                    pais = Session["PAIS"].ToString();
+                }
+
                 if (Session["Tienda"] != null)
                 {
-                    ViewBag.Tienda = tienda.get_ListaTiendaXstore().Where(a => a.cbo_codigo == Session["Tienda"].ToString());
+                    ViewBag.Tienda = tienda.get_ListaTiendaXstore(false,pais).Where(a => a.cbo_codigo == Session["Tienda"].ToString());
                     ViewBag.concepto_suna = dat_concepto_suna.lista_concepto_suna().Where(d => d.con_sun_id != "07" && d.con_sun_id != "-1");
                 }
                 else
                 {
-                    ViewBag.Tienda = tienda.get_ListaTiendaXstore(true);
+                    ViewBag.Tienda = tienda.get_ListaTiendaXstore(true,pais);
                     ViewBag.concepto_suna = dat_concepto_suna.lista_concepto_suna().Where(w => w.con_sun_id != "-1");
                 }
                 return View();
@@ -208,15 +214,22 @@ namespace CapaPresentacion.Controllers
             else
             {
                 Session[_session_listguia_private] = null;
+
+                string pais = "PE";
+                if (Session["PAIS"] != null)
+                {
+                    pais = Session["PAIS"].ToString();
+                }
+
                 if (Session["Tienda"] != null)
                 {
-                    ViewBag.Tienda = tienda.get_ListaTiendaXstore().Where(t => t.cbo_codigo == Session["Tienda"].ToString()).ToList();
+                    ViewBag.Tienda = tienda.get_ListaTiendaXstore(false, pais).Where(t => t.cbo_codigo == Session["Tienda"].ToString()).ToList();
                 }
                 else
                 {
                     if (Session["PAIS"].ToString() == "PE")
                     {
-                        ViewBag.Tienda = tienda.get_ListaTiendaXstore(true);
+                        ViewBag.Tienda = tienda.get_ListaTiendaXstore(true,pais);
                     }
                     else
                     {
