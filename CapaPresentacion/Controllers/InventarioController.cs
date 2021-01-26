@@ -201,7 +201,17 @@ namespace CapaPresentacion.Controllers
                     pais = Session["PAIS"].ToString();
                 }
 
-                ViewBag.Tienda = dat_lista_tienda.get_tienda(pais, "1");
+                if (Session["Tienda"] != null)
+                {
+                    ViewBag.Tienda = dat_lista_tienda.get_tienda(pais, "1").Where(t => t.cod_entid == Session["Tienda"].ToString()).ToList();
+                }
+                else
+                {
+                  
+                    ViewBag.tienda = dat_lista_tienda.get_tienda(pais, "1");
+                }
+
+                //ViewBag.Tienda = dat_lista_tienda.get_tienda(pais, "1");
                 Session["Lista_Consulta_Movimiento"] = null;
                 return View();
             }
@@ -347,7 +357,16 @@ namespace CapaPresentacion.Controllers
                     pais = Session["PAIS"].ToString();
                 }
 
-                ViewBag.tienda = dat_lista_tienda.get_tienda(pais, "1");
+                if (Session["Tienda"] != null)
+                {
+                    ViewBag.Tienda = dat_lista_tienda.get_tienda(pais, "1").Where(t => t.cod_entid == Session["Tienda"].ToString()).ToList();
+                }
+                else
+                {
+                    ViewBag.tienda = dat_lista_tienda.get_tienda(pais, "1");
+                }
+
+              //  ViewBag.tienda = dat_lista_tienda.get_tienda(pais, "1");
                 Session[_session_lista_articulos_inv] = null;
                 return View();
             }
@@ -589,8 +608,19 @@ namespace CapaPresentacion.Controllers
                 }
 
                 List<Ent_ListaTienda> tiendas = new List<Ent_ListaTienda>();
-                tiendas.Add(new Ent_ListaTienda() { cod_entid = "-1", des_entid = "TODOS" });
-                ViewBag.tienda = tiendas.Concat(dat_lista_tienda.get_tienda(pais, "1"));
+
+                 if (Session["Tienda"]!=null)
+                {
+                    ViewBag.Tienda = dat_lista_tienda.get_tienda(pais, "1").Where(t => t.cod_entid == Session["Tienda"].ToString()).ToList();
+                }
+                else
+                {
+                    tiendas.Add(new Ent_ListaTienda() { cod_entid = "-1", des_entid = "TODOS" });                  
+                    ViewBag.tienda = tiendas.Concat(dat_lista_tienda.get_tienda(pais, "1"));
+                }
+
+                //tiendas.Add(new Ent_ListaTienda() { cod_entid = "-1", des_entid = "TODOS" });
+                
                 Session[_session_lista_ajuste_inv] = null;
                 return View();
             }
@@ -739,7 +769,19 @@ namespace CapaPresentacion.Controllers
                 {
                     pais = Session["PAIS"].ToString();
                 }
-                ViewBag.Tienda = datInv.get_ListaTienda(pais);
+
+
+                if (Session["Tienda"] != null)
+                {
+                    ViewBag.Tienda = datInv.get_ListaTienda(pais).Where(t => t.cod_entid == Session["Tienda"].ToString()).ToList();
+                }
+                else
+                {
+                   
+                    ViewBag.tienda = datInv.get_ListaTienda(pais);
+                }
+
+               
                 return View();
             }
 
@@ -1021,7 +1063,16 @@ namespace CapaPresentacion.Controllers
                     pais = Session["PAIS"].ToString();
                 }
 
-                ViewBag.Tienda = ip.get_ListaTienda("", pais);
+                if (Session["Tienda"] != null)
+                {
+                    ViewBag.Tienda = ip.get_ListaTienda("", pais).Where(t => t.cbo_codigo == Session["Tienda"].ToString()).ToList();
+                }
+                else
+                {
+                    ViewBag.Tienda = ip.get_ListaTienda("", pais);
+                }
+
+               // ViewBag.Tienda = ip.get_ListaTienda("", pais);
 
                 //ViewBag._selectTipos = SelectTipos((tipo == null ? " '',R,E" : tipo));
 
@@ -1116,7 +1167,16 @@ namespace CapaPresentacion.Controllers
                     pais = Session["PAIS"].ToString();
                 }
 
-                ViewBag.Tienda = ip.get_ListaTienda("", pais);
+                if (Session["Tienda"] != null)
+                {
+                    ViewBag.Tienda = ip.get_ListaTienda("", pais).Where(t => t.cbo_codigo == Session["Tienda"].ToString()).ToList();
+                }
+                else
+                {
+                    ViewBag.Tienda = ip.get_ListaTienda("", pais);
+                }
+
+                    
 
                 //ViewBag._selectTipos = SelectTipos((tipo == null ? " '',R,E" : tipo));
 

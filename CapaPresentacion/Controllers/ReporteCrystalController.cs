@@ -25,7 +25,7 @@ namespace CapaPresentacion.Controllers
             ViewBag.Grupo = datCbo.get_ListaGrupo();
             ViewBag.Estado = datCbo.get_ListaEstado();
             //VLADIMIR
-            ViewBag.Tienda = datCbo.get_ListaTiendaXstore(Session["PAIS"].ToString());
+            ViewBag.Tienda = datCbo.get_ListaTiendaXstore(false,Session["PAIS"].ToString());
             //VLADIMIR ENBD
             ViewBag.Categoria = list;
 

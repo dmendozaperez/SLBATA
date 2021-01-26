@@ -38,11 +38,11 @@ namespace CapaPresentacion.Controllers
             {
                 if (Session["Tienda"] != null)
                 {//VLADIMIR
-                    ViewBag.Tienda = tienda.get_ListaTiendaXstore(Session["PAIS"].ToString()).Where(t => t.cbo_codigo == Session["Tienda"].ToString()).ToList();
+                    ViewBag.Tienda = tienda.get_ListaTiendaXstore(false,Session["PAIS"].ToString()).Where(t => t.cbo_codigo == Session["Tienda"].ToString()).ToList();
                 }
                 else
                 {
-                    ViewBag.Tienda = tienda.get_ListaTiendaXstore(Session["PAIS"].ToString(),true);
+                    ViewBag.Tienda = tienda.get_ListaTiendaXstore(true, Session["PAIS"].ToString());
                 }//VLADIMIR END
 
                 return View();

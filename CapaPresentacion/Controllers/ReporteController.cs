@@ -338,7 +338,13 @@ namespace CapaPresentacion.Controllers
                 listD.Add(entComboD);
                 ViewBag.Categoria = listD;
 
-                List<Ent_Combo_DisCadTda> combo_discadtda = discattda.list_dis_cad_tda();
+                string pais = "PE";
+                if (Session["PAIS"] != null)
+                {
+                    pais = Session["PAIS"].ToString();
+                }
+
+                List<Ent_Combo_DisCadTda> combo_discadtda = discattda.list_dis_cad_tda(pais);
                 //Session["Tienda"] = "50143";
                 if (Session["Tienda"] != null)
                 {
@@ -630,8 +636,12 @@ namespace CapaPresentacion.Controllers
             {
 
                 ViewBag.Title = "Reporte Articulo sin movimiento";
-
-                List<Ent_Combo_DisCadTda> combo_discadtda = discattda.list_dis_cad_tda();
+                string pais = "PE";
+                if (Session["PAIS"] != null)
+                {
+                    pais = Session["PAIS"].ToString();
+                }
+                List<Ent_Combo_DisCadTda> combo_discadtda = discattda.list_dis_cad_tda(pais);
                 //Session["Tienda"] = "50143";
                 if (Session["Tienda"] != null)
                 {
@@ -840,8 +850,15 @@ namespace CapaPresentacion.Controllers
                 return RedirectToAction("Login", "Control", new { returnUrl = return_view });
             }
             else
-            { 
-                List<Ent_Combo_DisCadTda> combo_discadtda = discattda.list_dis_cad_tda();
+            {
+
+                string pais = "PE";
+                if (Session["PAIS"] != null)
+                {
+                    pais = Session["PAIS"].ToString();
+                }
+
+                List<Ent_Combo_DisCadTda> combo_discadtda = discattda.list_dis_cad_tda(pais);
                 //Session["Tienda"] = "50143";
                 if (Session["Tienda"] != null)
                 {
@@ -1000,13 +1017,19 @@ namespace CapaPresentacion.Controllers
 
                 ViewBag.Title = "Reporte Comparativo Venta";
 
+                string pais = "PE";
+                if (Session["PAIS"] != null)
+                {
+                    pais = Session["PAIS"].ToString();
+                }
+
                 if (Session["Tienda"] != null)
                 {
-                    ViewBag.Tienda = datCbo.get_ListaTiendaXstoreActivo(Session["Tienda"].ToString());
+                    ViewBag.Tienda = datCbo.get_ListaTiendaXstoreActivo(Session["Tienda"].ToString(), pais);
                 }
                 else
                 {
-                    ViewBag.Tienda = datCbo.get_ListaTiendaXstoreActivo("");
+                    ViewBag.Tienda = datCbo.get_ListaTiendaXstoreActivo("", pais);
                 }
 
 
@@ -1131,14 +1154,19 @@ namespace CapaPresentacion.Controllers
             {
 
                 ViewBag.Title = "Reporte Guia por tienda";
+                string pais = "PE";
+                if (Session["PAIS"] != null)
+                {
+                    pais = Session["PAIS"].ToString();
+                }
 
                 if (Session["Tienda"] != null)
                 {
-                    ViewBag.Tienda = datCbo.get_ListaTiendaXstoreActivo(Session["Tienda"].ToString());
+                    ViewBag.Tienda = datCbo.get_ListaTiendaXstoreActivo(Session["Tienda"].ToString(), pais);
                 }
                 else
                 {
-                    ViewBag.Tienda = datCbo.get_ListaTiendaXstoreActivo("");
+                    ViewBag.Tienda = datCbo.get_ListaTiendaXstoreActivo("", pais);
                 }
 
                 ViewBag.Tipo = datCbo.get_ListaTipoCategoria();
