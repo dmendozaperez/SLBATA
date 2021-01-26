@@ -48,29 +48,16 @@
     @*</div>*@
 
 </div>
-
 <script>
     $(document).ready(function () {
-        var tienda = "@ViewBag.tienda";
+        var tienda="@ViewBag.tienda";
         var pais="@ViewBag.pais";
-        debugger
+
         if (tienda!='' && pais=='PE'){
             $("#divmsg").show();
-            setCookie('ccMoIni', 'Inicio', 1)
-            BorrarCookie('ccHrIni')
-            BorrarCookie('ccHrIniInterval')
         } else{
             $("#divmsg").hide();
         }
 
-        function BorrarCookie(name) {
-            setCookie(name, "", -1);
-        }
-        function setCookie(cname, cvalue, exdays) {
-            var d = new Date();
-            d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-            var expires = "expires=" + d.toGMTString();
-            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-        }
     });
 </script>

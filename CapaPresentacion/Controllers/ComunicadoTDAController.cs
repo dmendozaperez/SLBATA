@@ -37,13 +37,13 @@ namespace CapaPresentacion.Controllers
             else
             {
                 if (Session["Tienda"] != null)
-                {
-                    ViewBag.Tienda = tienda.get_ListaTiendaXstore().Where(t => t.cbo_codigo == Session["Tienda"].ToString()).ToList();
+                {//VLADIMIR
+                    ViewBag.Tienda = tienda.get_ListaTiendaXstore(Session["PAIS"].ToString()).Where(t => t.cbo_codigo == Session["Tienda"].ToString()).ToList();
                 }
                 else
                 {
-                    ViewBag.Tienda = tienda.get_ListaTiendaXstore(true);
-                }
+                    ViewBag.Tienda = tienda.get_ListaTiendaXstore(Session["PAIS"].ToString(),true);
+                }//VLADIMIR END
 
                 return View();
             }

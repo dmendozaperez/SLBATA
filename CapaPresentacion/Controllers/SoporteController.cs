@@ -337,7 +337,9 @@ namespace CapaPresentacion.Controllers
             else
             {
                 Session[_session_cupones_retorno] = null;
-                ViewBag.Tienda = tienda.get_ListaTiendaXstore(true);
+                //VLADIMIR
+                ViewBag.Tienda = tienda.get_ListaTiendaXstore(Session["PAIS"].ToString(),true);
+                //VLADIMIR END
                 return View();
             }
         }
