@@ -35,7 +35,13 @@ namespace CapaPresentacion.Controllers
             {
                 //gcodTda = (String)Session["Tienda"];
                 /*SOLO TIENDA XSTORE*/
-                ViewBag.tienda = dat_lista_tienda.get_tienda("PE", "1");
+                string pais = "PE";
+                if (Session["PAIS"] != null)
+                {
+                    pais = Session["PAIS"].ToString();
+                }
+
+                ViewBag.tienda = dat_lista_tienda.get_tienda(pais, "1");
            
                 string codTda = "";
                 string gcodTda = (String)Session["Tienda"];

@@ -40,7 +40,7 @@ namespace CapaDato.Control
             }
             return valida;
         }
-        public List<Ent_Roles> get_lista()
+        public List<Ent_Roles> get_lista(String pais)
         {
             List<Ent_Roles> list = null;
             string sqlquery = "USP_Leer_Roles";
@@ -53,6 +53,7 @@ namespace CapaDato.Control
                     {
                         cmd.CommandTimeout = 0;
                         cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@PAIS", pais);
                         SqlDataReader dr = cmd.ExecuteReader();
                         if (dr.HasRows)
                         {

@@ -773,12 +773,13 @@ namespace CapaPresentacion.Controllers
 
                 if (Session["Tienda"] != null)
                 {
-                    ViewBag.Tienda = datInv.get_ListaTienda(pais).Where(t => t.cod_entid == Session["Tienda"].ToString()).ToList();
+                    
+                    ViewBag.Tienda = dat_lista_tienda.get_tienda(pais,"1").Where(t => t.cod_entid == Session["Tienda"].ToString()).ToList();
                 }
                 else
                 {
-                   
-                    ViewBag.tienda = datInv.get_ListaTienda(pais);
+
+                    ViewBag.tienda = dat_lista_tienda.get_tienda(pais, "1");
                 }
 
                
