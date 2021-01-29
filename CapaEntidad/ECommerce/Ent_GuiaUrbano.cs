@@ -48,5 +48,7 @@ namespace CapaEntidad.ECommerce
         //Grupo 7: Datos para despachos
         public string peso_total { get; set; } //Peso total, 0.3g por defecto para cada par
         public string pieza_total { get; set; } //# de bultos
+        public string asegurado { get; set; } //# asegurado : SI
+        public decimal monto_asegurado { get; set; } //# monto total asegurado por pedido
     }
 }

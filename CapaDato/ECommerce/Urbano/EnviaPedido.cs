@@ -58,6 +58,9 @@ namespace CapaDato.ECommerce.Urbano
                                                ref_direc = Convert.ToString(item["ref_direc"].ToString()),
                                                peso_total = Convert.ToDecimal(item["peso_total"].ToString()),
                                                cant_total = Convert.ToDecimal(item["tot_cant"].ToString()),
+                                               //se agrego nuevos campos por seguro de pedidos
+                                               //asegurado = item["asegurado"].ToString(),
+                                               //monto_asegurado = Convert.ToDecimal(item["monto_asegurado"]),
 
                                            }
                                        into G
@@ -79,6 +82,9 @@ namespace CapaDato.ECommerce.Urbano
                                                ref_direc = G.Key.ref_direc,
                                                peso_total = G.Key.peso_total,
                                                cant_total = G.Key.cant_total,
+                                               //se agrego nuevos campos por seguro de pedidos
+                                               //asegurado = G.Key.asegurado,
+                                               //monto_asegurado = G.Key.monto_asegurado,
                                            };
                        
 
@@ -90,6 +96,7 @@ namespace CapaDato.ECommerce.Urbano
                             GuiaUrbano guiaUrbano = new GuiaUrbano();
                             guiaUrbano.linea = acceso.linea;//Linea, "3", dato de proveedor logístico==>desde la base de datos , estatico
                             guiaUrbano.id_contrato = acceso.contrato;//ID de contrato, 7207, dato de proveedor logístico==>desde la base de datos , estatico
+                            //guiaUrbano.id_contrato = "7246";
                             guiaUrbano.cod_rastreo = key.cod_rastreo;//Codigo de rastreo, # de orden de Prestashop ==> Referencia de pedido
                             guiaUrbano.cod_barra = key.cod_rastreo;//Codigo de barra, # de orden de Prestashop ==> Referencia de pedido
                             guiaUrbano.fech_emi_vent = key.fech_emi_vent;//Fecha de emisión de venta==> fecha de venta   
@@ -112,6 +119,8 @@ namespace CapaDato.ECommerce.Urbano
                             guiaUrbano.peso_total = key.peso_total.ToString(); //Peso total, 0.3g por defecto para cada par
                             guiaUrbano.pieza_total = key.cant_total.ToString(); //Cantidad total, No se considera el Envío
                             //guiaUrbano.pieza_total = "3";//# de bultos
+                            //guiaUrbano.asegurado = key.asegurado;//Indicador de pedido asegurado SI/NO
+                            //guiaUrbano.monto_asegurado = key.monto_asegurado; //Monto total asegurado por pedido
                             #endregion
 
 
@@ -147,6 +156,9 @@ namespace CapaDato.ECommerce.Urbano
                             string guiaEncoded = "";
                             guiaEncoded += "%22linea%22%3A%22" + guiaUrbano.linea + "%22%2C";
                             guiaEncoded += "%22id_contrato%22%3A%22" + guiaUrbano.id_contrato + "%22%2C";
+                            //PRUEBA 
+                            //guiaEncoded += "%22linea%22%3A%22" + "3" + "%22%2C";
+                            //guiaEncoded += "%22id_contrato%22%3A%22" + "7246" + "%22%2C";
                             guiaEncoded += "%22cod_rastreo%22%3A%22" + guiaUrbano.cod_rastreo + "%22%2C";
                             guiaEncoded += "%22cod_barra%22%3A%22" + guiaUrbano.cod_barra + "%22%2C";
                             guiaEncoded += "%22fech_emi_vent%22%3A%22" + HttpUtility.UrlEncode(guiaUrbano.fech_emi_vent) + "%22%2C";
@@ -168,6 +180,9 @@ namespace CapaDato.ECommerce.Urbano
                             guiaEncoded += "%22ref_direc%22%3A%22" + HttpUtility.UrlEncode(guiaUrbano.ref_direc) + "%22%2C";
                             guiaEncoded += "%22peso_total%22%3A%22" + guiaUrbano.peso_total + "%22%2C";
                             guiaEncoded += "%22pieza_total%22%3A%22" + guiaUrbano.pieza_total + "%22%2C";
+                            /*se agrego para pedidos asegurados*/
+                            //guiaEncoded += "%22asegurado%22%3A%22" + guiaUrbano.asegurado + "%22%2C";
+                            //guiaEncoded += "%22monto_asegurado%22%3A%22" + guiaUrbano.monto_asegurado + "%22%2C";
 
                             //Construyendo cadena desde lista de productos
                             string productos = "";
@@ -196,8 +211,13 @@ namespace CapaDato.ECommerce.Urbano
                                 client.Headers.Add("Content-type", "application/x-www-form-urlencoded");
                                 client.Headers.Add("user", acceso.usuario);
                                 client.Headers.Add("pass", acceso.password);
+                                //credenciales de PRUEBA
+                                //client.Headers.Add("user", "WS.ECOMMERCE");
+                                //client.Headers.Add("pass", "444c1efe975e9babde869520762c42efcacf1deb");
 
                                 var response = client.UploadString(acceso.url, "POST", content);
+                                //url de PRUEBA
+                                //var response = client.UploadString("http://devel.urbanoexpress.com.pe/ws/ue/ge", "POST", content);
 
                                 Ent_Urbano post = JsonConvert.DeserializeObject<Ent_Urbano>(response);
 
