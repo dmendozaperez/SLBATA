@@ -50,7 +50,12 @@ namespace CapaPresentacion.Controllers
         }
         public List<Ent_Roles> lista()
         {
-            List<Ent_Roles> listroles = roles.get_lista();
+            string pais = "PE";
+            if (Session["PAIS"] != null)
+            {
+                pais = Session["PAIS"].ToString();
+            }
+            List<Ent_Roles> listroles = roles.get_lista(pais);
             Session[_session_listroles_private] = listroles;
             return listroles;
         }

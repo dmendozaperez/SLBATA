@@ -24,7 +24,9 @@ namespace CapaPresentacion.Controllers
             ViewBag.Title = "Reporte de Planilla";
             ViewBag.Grupo = datCbo.get_ListaGrupo();
             ViewBag.Estado = datCbo.get_ListaEstado();
-            ViewBag.Tienda = datCbo.get_ListaTiendaXstore();
+            //VLADIMIR
+            ViewBag.Tienda = datCbo.get_ListaTiendaXstore(false,Session["PAIS"].ToString());
+            //VLADIMIR ENBD
             ViewBag.Categoria = list;
 
             string strJson = "";

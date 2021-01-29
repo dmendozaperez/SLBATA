@@ -230,7 +230,7 @@ namespace CapaDato.Reporte
             }
             return list;
         }
-        public List<Ent_Combo> get_ListaTiendaXstore(Boolean _selecciona=false)
+        public List<Ent_Combo> get_ListaTiendaXstore(Boolean _selecciona=false,string _pais="PE")
         {
             List<Ent_Combo> list = null;
             string sqlquery = "USP_LISTAR_TIENDA_XSTORE";
@@ -243,6 +243,7 @@ namespace CapaDato.Reporte
                     {
                         cmd.CommandTimeout = 0;
                         cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@pais", _pais);
                         SqlDataReader dr = cmd.ExecuteReader();
                         if (dr.HasRows)
                         {
@@ -328,7 +329,7 @@ namespace CapaDato.Reporte
 
 
 
-        public List<Ent_Combo> get_ListaTiendaXstoreActivo(string codTda = "")
+        public List<Ent_Combo> get_ListaTiendaXstoreActivo(string codTda = "",string pais="PE")
         {
             List<Ent_Combo> list = null;
             string sqlquery = "USP_LISTAR_TIENDA_XSTORE_ACTIVA";
@@ -341,10 +342,11 @@ namespace CapaDato.Reporte
                     {
                         cmd.CommandTimeout = 0;
                         cmd.CommandType = CommandType.StoredProcedure;
-
-                        SqlParameter otda = cmd.Parameters.Add("@COD_TDA", SqlDbType.VarChar);
-                        otda.Direction = ParameterDirection.Input;
-                        otda.Value = codTda;
+                        cmd.Parameters.AddWithValue("@pais", pais);
+                        cmd.Parameters.AddWithValue("@COD_TDA", codTda);
+                        //SqlParameter otda = cmd.Parameters.Add("@COD_TDA", SqlDbType.VarChar);
+                        //otda.Direction = ParameterDirection.Input;
+                        //otda.Value = codTda;
 
                         SqlDataReader dr = cmd.ExecuteReader();
                         if (dr.HasRows)

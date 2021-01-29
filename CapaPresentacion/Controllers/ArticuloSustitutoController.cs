@@ -283,9 +283,14 @@ namespace CapaPresentacion.Controllers
             {
                 if (_accesoMenu == true)
                 {
+                    string pais = "PE";
+                    if (Session["PAIS"]!=null)
+                    {
+                        pais = Session["PAIS"].ToString();
+                    }
 
                     ViewBag.Usuario = _usuario.usu_nombre;
-                    ViewBag.Tienda = datCbo.get_ListaTiendaXstore();
+                    ViewBag.Tienda = datCbo.get_ListaTiendaXstore(false,pais);
 
                     return View();
                 }

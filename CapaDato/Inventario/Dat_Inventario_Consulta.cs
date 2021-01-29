@@ -14,7 +14,7 @@ namespace CapaDato.Inventario
     public class Dat_Inventario_Consulta
     {
         // Combo de Tiendas (seleccionadas)
-        public List<Ent_Inventario_Tienda> get_ListaTienda()
+        public List<Ent_Inventario_Tienda> get_ListaTienda(string pais="PE")
         {
             List<Ent_Inventario_Tienda> list = null;
             string sqlquery = "USP_XSTORE_INV_GET_TDA";
@@ -27,6 +27,7 @@ namespace CapaDato.Inventario
                     {
                         cmd.CommandTimeout = 0;
                         cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@pais", pais);
                         SqlDataReader dr = cmd.ExecuteReader();
                         if (dr.HasRows)
                         {
@@ -319,7 +320,7 @@ namespace CapaDato.Inventario
             return f;
         }
 
-        public List<Ent_Inventario_Ajuste> getListaAjustesInv(string tienda)
+        public List<Ent_Inventario_Ajuste> getListaAjustesInv(string tienda,string pais="PE")
         {
             string sqlquery = "USP_XSTORE_INVENTARIO_GET";
             DataTable dt = null;
@@ -333,7 +334,8 @@ namespace CapaDato.Inventario
                     {
                         cmd.CommandTimeout = 0;
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@COD_TDA ", tienda);                        
+                        cmd.Parameters.AddWithValue("@COD_TDA ", tienda);
+                        cmd.Parameters.AddWithValue("@pais ", pais);
                         //cmd.Parameters.AddWithValue("@estado", dwest);
                         using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                         {

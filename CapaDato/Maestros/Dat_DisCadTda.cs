@@ -11,7 +11,7 @@ namespace CapaDato.Maestros
 {
     public class Dat_DisCadTda
     {
-        public List<Ent_Combo_DisCadTda> list_dis_cad_tda()
+        public List<Ent_Combo_DisCadTda> list_dis_cad_tda(string pais="PE")
         {
             string sqlquery = "USP_XSTORE_GET_DISTRITO_CAD_TDA";
             List<Ent_Combo_DisCadTda> listar = null;
@@ -25,6 +25,7 @@ namespace CapaDato.Maestros
                     {
                         cmd.CommandTimeout = 0;
                         cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@pais", pais);
                         using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                         {
                             dt = new DataTable();

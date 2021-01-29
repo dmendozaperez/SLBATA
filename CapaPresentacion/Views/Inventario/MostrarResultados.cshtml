@@ -2,15 +2,15 @@
     Layout = null;
 }
 <div class="row">
-    <div class="col-md-3" id="ultimo_registro">        
+    <div class="col-md-3" id="ultimo_registro">
     </div>
 </div>
 <div class="row">
     <div class="col-md-12" id="lista">
         <h4 class="text-bold">Resultados</h4>
-        
-        <a id="EXCEL" name="excel" class="btn btn-success btn-sm"   href="@Url.Action("ConsultaMovimientoExcel","Inventario")" style="margin-bottom:10px" ><span class="glyphicon glyphicon-export"></span>&nbsp;Excel</a>
-        
+
+        <a id="EXCEL" name="excel" class="btn btn-success btn-sm" href="@Url.Action("ConsultaMovimientoExcel","Inventario")" style="margin-bottom:10px"><span class="glyphicon glyphicon-export"></span>&nbsp;Excel</a>
+
         <table class="table table-bordered table-condensed table-responsive">
             <thead>
                 <tr style="background-color:#c1c1c1">
@@ -37,20 +37,20 @@
             </thead>
             <tbody data-bind="foreach:"></tbody>
             @*<tfoot>
-                <tr class="bg-blue-gradient">
-                    <th style="text-align:center">FECHA</th>
-                    <th style="text-align:center">INI_C</th>
-                    <th style="text-align:center">INI_NC</th>
-                    <th style="text-align:center">VEN_C</th>
-                    <th style="text-align:center">VEN_NC</th>
-                    <th style="text-align:center">ING_C</th>
-                    <th style="text-align:center">ING_NC</th>
-                    <th style="text-align:center">SAL_C</th>
-                    <th style="text-align:center">SAL_NC</th>
-                    <th style="text-align:center">SALDO_C</th>
-                    <th style="text-align:center">SALDO_NC</th>
-                </tr>
-            </tfoot>*@
+                    <tr class="bg-blue-gradient">
+                        <th style="text-align:center">FECHA</th>
+                        <th style="text-align:center">INI_C</th>
+                        <th style="text-align:center">INI_NC</th>
+                        <th style="text-align:center">VEN_C</th>
+                        <th style="text-align:center">VEN_NC</th>
+                        <th style="text-align:center">ING_C</th>
+                        <th style="text-align:center">ING_NC</th>
+                        <th style="text-align:center">SAL_C</th>
+                        <th style="text-align:center">SAL_NC</th>
+                        <th style="text-align:center">SALDO_C</th>
+                        <th style="text-align:center">SALDO_NC</th>
+                    </tr>
+                </tfoot>*@
         </table>
     </div>
 </div>
@@ -59,7 +59,7 @@
 <script>
 
     $(document).ready(function () {
-       
+
 
         //waitingDialog.show('Espere un momento por favor');
         $('.table').DataTable({
@@ -99,8 +99,8 @@
                   { "sName": "SAL_NO_CALZADO", "mData": "SAL_NO_CALZADO", "className": "content-center-text"  },
                   { "sName": "SALDO_CALZADO", "mData": "SALDO_CALZADO", "className": "content-center-text"  },
                   { "sName": "SALDO_NO_CALZADO", "mData": "SALDO_NO_CALZADO", "className": "content-center-text"  }
-                 
-            ]           
+
+            ]
             // ,
             // dom: 'Bfrtip',
             // buttons: [

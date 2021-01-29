@@ -186,7 +186,7 @@ namespace CapaDato.Control
             return valida;
         }
 
-        public List<Ent_Usuario> get_lista(Boolean listar = false)
+        public List<Ent_Usuario> get_lista(Boolean listar = false,String pais="PE")
         {
             string sqlquery = "[USP_Leer_Usuarios_Web]";
             List<Ent_Usuario> list = null;
@@ -199,6 +199,7 @@ namespace CapaDato.Control
                     {
                         cmd.CommandTimeout = 0;
                         cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@pais", pais);
                         SqlDataReader dr = cmd.ExecuteReader();
 
                         if (dr.HasRows)

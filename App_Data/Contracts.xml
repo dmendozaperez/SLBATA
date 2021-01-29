@@ -1,0 +1,249 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CapaEntidad</name>
+    </assembly>
+    <members>
+        <member name="T:CapaEntidad.Api.BataClub.BuscarBC">
+            <summary>
+            Buscar Cliente BataClub
+            </summary>
+        </member>
+        <member name="P:CapaEntidad.Api.BataClub.BuscarBC.nro_dni">
+            <summary>
+            Numero de dni
+            </summary>
+        </member>
+        <member name="P:CapaEntidad.Api.BataClub.BuscarBC.bataclub">
+            <summary>
+            Estado de Cliente
+            </summary>
+        </member>
+        <member name="P:CapaEntidad.Api.BataClub.BuscarBC.listar_promocion">
+            <summary>
+            Lista de promociones
+            </summary>
+        </member>
+        <member name="T:CapaEntidad.Api.BataClub.ListarPromocion">
+            <summary>
+            Listar de Promociones activas
+            </summary>
+        </member>
+        <member name="P:CapaEntidad.Api.BataClub.ListarPromocion.promocion">
+            <summary>
+            Descripcion de la promocion
+            </summary>
+        </member>
+        <member name="T:CapaEntidad.ECommerce.GuiaUrbano">
+            <summary>
+            Clase para generación de la Guía Electrónica de Urbano
+            </summary>
+        </member>
+        <member name="T:CapaEntidad.ECommerce.Ent_Producto">
+            <summary>
+            Clase para la representación de Productos para GuiaUrbano
+            </summary>
+        </member>
+        <member name="P:CapaEntidad.ECommerce.Order_Dtl._code">
+            <summary>
+            Código de articulo
+            </summary>
+        </member>
+        <member name="P:CapaEntidad.ECommerce.Order_Dtl._artName">
+            <summary>
+            Nombre de articulo
+            </summary>
+        </member>
+        <member name="P:CapaEntidad.ECommerce.Order_Dtl._brand">
+            <summary>
+            Marca
+            </summary>
+        </member>
+        <member name="P:CapaEntidad.ECommerce.Order_Dtl._brandImg">
+            <summary>
+            Imagen de la marca
+            </summary>
+        </member>
+        <member name="P:CapaEntidad.ECommerce.Order_Dtl._color">
+            <summary>
+            Color
+            </summary>
+        </member>
+        <member name="P:CapaEntidad.ECommerce.Order_Dtl._size">
+            <summary>
+            Talla
+            </summary>
+        </member>
+        <member name="P:CapaEntidad.ECommerce.Order_Dtl._qty">
+            <summary>
+            Unidades
+            </summary>
+        </member>
+        <member name="P:CapaEntidad.ECommerce.Order_Dtl._qtyCancel">
+            <summary>
+            Unidades cancelAQUARELLAs
+            </summary>
+        </member>
+        <member name="P:CapaEntidad.ECommerce.Order_Dtl._majorCat">
+            <summary>
+            Mayor categoria
+            </summary>
+        </member>
+        <member name="P:CapaEntidad.ECommerce.Order_Dtl._cat">
+            <summary>
+            Categoria
+            </summary>
+        </member>
+        <member name="P:CapaEntidad.ECommerce.Order_Dtl._subcat">
+            <summary>
+            Sub-categoria
+            </summary>
+        </member>
+        <member name="P:CapaEntidad.ECommerce.Order_Dtl._origin">
+            <summary>
+            Origen
+            </summary>
+        </member>
+        <member name="P:CapaEntidad.ECommerce.Order_Dtl._originDesc">
+            <summary>
+            Descripcion origen
+            </summary>
+        </member>
+        <member name="P:CapaEntidad.ECommerce.Order_Dtl._comm">
+            <summary>
+            Comision de articulo, 1-> si, 0-> No
+            </summary>
+        </member>
+        <member name="P:CapaEntidad.ECommerce.Order_Dtl._uriPhoto">
+            <summary>
+            Url de fotografia
+            </summary>
+        </member>
+        <member name="P:CapaEntidad.ECommerce.Order_Dtl._price">
+            <summary>
+            Precio publico
+            </summary>
+        </member>
+        <member name="P:CapaEntidad.ECommerce.Order_Dtl._priceDesc">
+            <summary>
+            Formato moneda del precio publico
+            </summary>
+        </member>
+        <member name="P:CapaEntidad.ECommerce.Order_Dtl._commission">
+            <summary>
+            Comision valor
+            </summary>
+        </member>
+        <member name="P:CapaEntidad.ECommerce.Order_Dtl._commissionPctg">
+            <summary>
+            % de comision
+            </summary>
+        </member>
+        <member name="P:CapaEntidad.ECommerce.Order_Dtl._commissionDesc">
+            <summary>
+            Formato de moneda del valor de la comision
+            </summary>
+        </member>
+        <member name="P:CapaEntidad.ECommerce.Order_Dtl._dscto">
+            <summary>
+            Valor descuento sobre el item
+            </summary>
+        </member>
+        <member name="P:CapaEntidad.ECommerce.Order_Dtl._dsctoDesc">
+            <summary>
+            Formato moneda del valor del descuento item
+            </summary>
+        </member>
+        <member name="P:CapaEntidad.ECommerce.Order_Dtl._dsctoPerc">
+            <summary>
+            % de descuento item
+            </summary>
+        </member>
+        <member name="P:CapaEntidad.ECommerce.Order_Dtl._dsctoVale">
+            <summary>
+            Valor de descuento item
+            </summary>
+        </member>
+        <member name="P:CapaEntidad.ECommerce.Order_Dtl._dsctoValeDesc">
+            <summary>
+            Formato moneda del valor del descuento
+            </summary>
+        </member>
+        <member name="P:CapaEntidad.ECommerce.Order_Dtl._dsctoMsg">
+            <summary>
+            Mensaje del descuento
+            </summary>
+        </member>
+        <member name="P:CapaEntidad.ECommerce.Order_Dtl._lineTotal">
+            <summary>
+            Total neto de la linea
+            </summary>
+        </member>
+        <member name="P:CapaEntidad.ECommerce.Order_Dtl._lineTotDesc">
+            <summary>
+            Formato moneda del total de la linea
+            </summary>
+        </member>
+        <member name="P:CapaEntidad.ECommerce.Order_Dtl._units">
+            <summary>
+            Unidades
+            </summary>
+        </member>
+        <member name="P:CapaEntidad.ECommerce.Order_Dtl_Temp.items">
+            <summary>
+            numero de item de la fila
+            </summary>
+        </member>
+        <member name="P:CapaEntidad.ECommerce.Order_Dtl_Temp.articulo">
+            <summary>
+            codigo de articulo
+            </summary>
+        </member>
+        <member name="P:CapaEntidad.ECommerce.Order_Dtl_Temp.talla">
+            <summary>
+            talla del articulo
+            </summary>
+        </member>
+        <member name="P:CapaEntidad.ECommerce.Order_Dtl_Temp.cantidad">
+            <summary>
+            cantidad del producto
+            </summary>
+        </member>
+        <member name="P:CapaEntidad.General.Ent_jQueryDataTableParams.sEcho">
+            <summary>  
+            Request sequence number sent by DataTable,  
+            same value must be returned in response  
+            </summary>      
+        </member>
+        <member name="P:CapaEntidad.General.Ent_jQueryDataTableParams.sSearch">
+            <summary>  
+            Text used for filtering  
+            </summary>  
+        </member>
+        <member name="P:CapaEntidad.General.Ent_jQueryDataTableParams.iDisplayLength">
+            <summary>  
+            Number of records that should be shown in table  
+            </summary>  
+        </member>
+        <member name="P:CapaEntidad.General.Ent_jQueryDataTableParams.iDisplayStart">
+            <summary>  
+            First record that should be shown(used for paging)  
+            </summary>  
+        </member>
+        <member name="P:CapaEntidad.General.Ent_jQueryDataTableParams.iColumns">
+            <summary>  
+            Number of columns in table  
+            </summary>  
+        </member>
+        <member name="P:CapaEntidad.General.Ent_jQueryDataTableParams.iSortingCols">
+            <summary>  
+            Number of columns that are used in sorting  
+            </summary>  
+        </member>
+        <member name="P:CapaEntidad.General.Ent_jQueryDataTableParams.sColumns">
+            <summary>  
+            Comma separated list of column names  
+            </summary>  
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,441 @@
+﻿@{
+    ViewBag.Title = "Listado para extender las fechas XCENTER";
+    ViewBag.SubTitle = "";
+}
+<style>
+    .table thead {
+        background-color: #5799bf;
+        color: #fff;
+    }
+
+    .boton-xs-td {
+        padding-top: 5px !important;
+        padding-bottom: 5px !important;
+    }
+
+
+    .alignRight {
+        text-align: right;
+        vertical-align: middle;
+    }
+
+    .alignCenter {
+        text-align: center;
+        vertical-align: middle;
+    }
+</style>
+<link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />
+<p class="text-primary"></p>
+<div class="box box-header box-primary">
+    <h3 class="box-title danger" style="color:#9c9c9c;font-weight:bold">Parametro de Busqueda</h3>
+    <br />
+    <br />
+    <div class="row">
+        <div class="col-sm-3">
+            <label for="">Tienda</label>
+            <div class="form-group">                
+                @Html.DropDownList("ddlTienda", new SelectList(ViewBag.tienda, "cod_entid", "des_entid", null), new { @class = "form-control selectpicker", @id = "ddlTienda", @data_live_search = "true", @data_actions_box = "true" })
+
+            </div>
+        </div>
+        <div class="col-sm-3" style="width: 280px;padding-right: 0px;padding-left: 30px;">
+            <label for="">Fecha Inicio</label> 
+            <div class="input-group">
+                <div id="_dtpFechaInicio" class="input-group date" data-date-format="dd/mm/yyyy">
+                    @Html.TextBox("dtpFechaInicio", null, new { @class = "form-control custom-input", @placeholder = "dd/mm/yyyy", @disabled = "disabled" })
+                    <span class="input-group-addon  bg-white"><img src="~/Content/images/wall-calendar-with-lines.svg" height="20" width="20"></span>
+                </div>
+            </div>   
+        </div>
+        <div class="col-sm-3" style="padding-left: 0px; width: 265px;">
+            <label for="">Fecha Fin</label>
+            <div class="input-group">
+                <div id="_dtpFechaFin" class="input-group date" data-date-format="dd/mm/yyyy">
+                    @Html.TextBox("dtpFechaFin", null, new { @class = "form-control custom-input", @placeholder = "dd/mm/yyyy", @disabled = "disabled" })
+                    <span class="input-group-addon  bg-white"><img src="~/Content/images/wall-calendar-with-lines.svg" height="20" width="20"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <button id="btnBuscar" type="button" title="Buscar" class="btn btn-primary" style="margin-top: 25px;">
+                <span class="glyphicon glyphicon-search"></span>&nbsp;&nbsp;Buscar
+            </button>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box-body">
+                <table id="tbLisXCenter" class="table table-hover dataTable  table-striped table-responsive">
+                    <thead>
+                        <tr style="background-color:#3d566e; color:#ecf0f1;padding-top: 0px;padding-bottom: 0px;">
+                            <th style="text-align: center;">ORGANIZATE</th>
+                            <th style="text-align: center;">RTL_LOC_ID</th>
+                            <th style="text-align: center;">WKSTN_ID</th>
+                            <th style="text-align: center;">TRANS_SEQ</th>
+                            <th style="text-align: center;">FOLIO</th>
+                            <th style="text-align: center;">BUSINESS_DATE </th>
+                            <th style="text-align: center;">EXPR_DATE</th>
+                            <th style="text-align: center;">SERIAL_NBR</th>
+                            <th style="text-align: center;">ACCION</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan='12'>No se encontraron resultados</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" ng-app>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                @*[cuerpo del modal]*@
+                <div class="modal-header modal-header-danger">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Extender Nota Credito</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form role="form">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>RTL_LOC_ID</label>
+                                            <input type="text" id="Rtl_Loc_Id" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>WKSTN_ID</label>
+                                            <input type="text" id="Wkstn_Id" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>FOLIO</label>
+                                            <input type="text" id="String_Value" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>BUSINESS_DATE</label>
+                                            <input type="text" id="Business_Date" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>EXPR_DATE</label>
+                                            <input type="text" id="Expr_Date" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>NEW EXPR_DATE</label>
+                                            <div class="input-group">
+                                                <div id="_dtpNew_Expr_Date" class="input-group date" data-date-format="dd/mm/yyyy">
+                                                    @Html.TextBox("dtpNew_Expr_Date", null, new { @class = "form-control custom-input", @placeholder = "dd/mm/yyyy", @disabled = "disabled" })
+                                                    <span class="input-group-addon  bg-white"><img src="~/Content/images/wall-calendar-with-lines.svg" height="20" width="20"></span>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="margin-top:-30px">
+                    <button id="btnCerrar" type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <button id="btnAceptar" type="button" class="btn btn-primary">Aceptar</button>
+                </div>
+                @*[/cuerpo del modal]*@
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section scripts{
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="~/Scripts/bootstrap-select.min.js"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+    <script src="~/Scripts/Linkend/linq.min.js"></script>
+    <script>
+        var objExtender = {
+            Inicio: function () {
+                //debugger 
+                //[Declaramos las fechas]
+                $("#_dtpFechaInicio").datepicker({
+                    autoclose: true,
+                    todayHighlight: true,
+                    dateFormat: 'dd/mm/yy'
+                }).datepicker("setDate", "0");
+
+                $("#_dtpFechaFin").datepicker({
+                    autoclose: true,
+                    todayHighlight: true,
+                    dateFormat: 'dd/mm/yy'
+                }).datepicker("setDate", "0");
+
+                $("#_dtpNew_Expr_Date").datepicker({
+                    autoclose: true,
+                    todayHighlight: true,
+                    dateFormat: 'dd/mm/yy'
+                }).datepicker("setDate", "0");
+                //[/Declaramos las fechas]
+
+                //[Inicializamos las variables]
+                this.isOkUpdate = true;
+                this.Selected = [];
+                this.FechaInicio = $("#dtpFechaInicio").val();
+                this.FechaFin = $("#dtpFechaFin").val();
+                this.Tienda = $("#ddlTienda").val();
+                this.Num_Doc = "";
+
+                this.Rtl_Loc_Id = "";
+                this.Wkstn_Id = "";
+                this.String_Value = "";
+                this.Business_Date = "";
+                this.Expr_Date = "";
+                this.New_Expr_Date = "";
+                //[/Inicializamos las variables]
+
+                //[Inicializamos la tabla]
+                objExtender.grid.get();
+                //[/Inicializamos la tabla]
+
+                $("#btnBuscar").click(function () {
+                    objExtender.isOkUpdate = true;
+                    objExtender.Tienda = $("#ddlTienda").val();
+                    objExtender.FechaInicio = $("#dtpFechaInicio").val();
+                    objExtender.FechaFin = $("#dtpFechaFin").val();
+                    objExtender.general.consultar();
+                    objExtender.isOkUpdate = false;
+                })
+                
+                /*[Editar fila]*/
+                $('#tbLisXCenter tbody').on('click', '#btnEditar', function (e) {
+                    // debugger
+                    waitingDialog.show('Espere un momento por favor');
+                    let options = { "backdrop": "static", keyboard: true };
+                    objExtender.Rtl_Loc_Id = $(this).closest('tr').find('td.Rtl_Loc_Id').html();
+                    objExtender.Wkstn_Id = $(this).closest('tr').find('td.Wkstn_Id').html();
+                    objExtender.String_Value = $(this).closest('tr').find('td.String_Value').html();
+                    objExtender.Business_Date = $(this).closest('tr').find('td.Business_Date').html();
+                    objExtender.Expr_Date = $(this).closest('tr').find('td.Expr_Date').html();
+                    $("#Rtl_Loc_Id").val(objExtender.Rtl_Loc_Id);
+                    $("#Wkstn_Id").val(objExtender.Wkstn_Id);
+                    $("#String_Value").val(objExtender.String_Value);
+                    $("#Business_Date").val(objExtender.Business_Date);
+                    $("#Expr_Date").val(objExtender.Expr_Date);
+
+                    $('#myModal').modal(options);
+                    $('#myModal').modal('show');
+                    waitingDialog.hide();
+                })
+
+                $("#closbtn").click(function () {
+                    // debugger;
+                    waitingDialog.hide();
+                    $('#myModal').modal('hide');
+                });
+                /*[/Editar fila]*/
+
+                //[Guardar] 
+                $("#btnAceptar").click(function () {
+                    // debugger;
+                    objExtender.New_Expr_Date = $("#dtpNew_Expr_Date").val();
+                    objExtender.general.Registrar();  
+                });
+                //[/Guardar]
+            },
+            grid: {
+                get: function () {
+                    waitingDialog.show("Espere por favor...")
+                    $('#tbLisXCenter').DataTable({
+                        "language": {
+                            "url": "../Scripts/DataTables/Spanish.json"
+                        },
+                        "bServerSide": true,
+                        "bAutoWidth": false,
+                        "sAjaxSource": '@Url.Action("getLisXCenter_NC", "Soporte")',
+                        "fnServerParams": function (aoData) {
+                            //debugger
+                            aoData.push({ "name": "isOkUpdate", "value": objExtender.isOkUpdate});
+                            aoData.push({ "name": "FechaInicio", "value": objExtender.FechaInicio});
+                            aoData.push({ "name": "FechaFin", "value": objExtender.FechaFin});
+                            aoData.push({ "name": "Tienda", "value": objExtender.Tienda});
+                            aoData.push({ "name": "Num_Doc", "value": objExtender.Num_Doc})
+                        },
+                        "start": 0,
+                        "columnDefs": [{
+                            "orderable": false,
+                            "targets": [0, 1, 2, 3, 4, 5, 6, 7,8],
+                        }],
+                        "bDeferRender": true,
+                        "aoColumns": [
+                                { "sName": "Organization_Id", "mData": "Organization_Id", "sClass": "alignCenter Organization_Id" },
+                                { "sName": "Rtl_Loc_Id", "mData": "Rtl_Loc_Id", "sClass": "alignCenter Rtl_Loc_Id" },
+                                { "sName": "Wkstn_Id", "mData": "Wkstn_Id", "sClass": "alignCenter Wkstn_Id" },
+                                { "sName": "Trans_Seq", "mData": "Trans_Seq", "sClass": "alignCenter Trans_Seq" },
+                                { "sName": "String_Value", "mData": "String_Value", "sClass": "alignCenter String_Value" },
+                               // { "sName": "Business_Date", "mData": "Business_Date", "sClass": "" },
+                                {
+                                    "mData": null,
+                                    "sClass": "alignCenter Business_Date",
+                                    "render": function (Data, type, full, meta) {
+                                        //debugger
+                                        var Fecha = (full.Business_Date == undefined || full.Business_Date == null || full.Business_Date == 0) ? ' ' : new Date(parseInt(full.Business_Date.replace("/Date(", "").replace(")/", ""), 10));;
+                                        return (Fecha == undefined || Fecha == null || Fecha == 0) ? ' ' : Fecha.toLocaleDateString();
+                                    }
+                                },
+                                // { "sName": "Expr_Date", "mData": "Expr_Date", "sClass": "" },
+                                {
+                                    "mData": null,
+                                    "sClass": "alignCenter Expr_Date",
+                                    "render": function (Data, type, full, meta) {
+                                        //debugger;
+                                        var Fecha = (full.Expr_Date == undefined || full.Expr_Date == null || full.Expr_Date == 0) ? ' ' : new Date(parseInt(full.Expr_Date.replace("/Date(", "").replace(")/", ""), 10));;
+                                        return (Fecha == undefined || Fecha == null || Fecha == 0) ? ' ' : Fecha.toLocaleDateString();
+                                    }
+                                },                             
+                                { "sName": "Serial_Nbr", "mData": "Serial_Nbr", "sClass": "alignCenter Serial_Nbr" },
+                                {
+                                    "mData": null, "sClass": "Editar alignCenter",
+                                    "render": function (data, type, full, meta) {
+                                        return objExtender.grid.btnEditar();
+                                    }
+                                }
+                        ],
+                        "fnRowCallback": function (row, data, index) {
+                        },
+                        "drawCallback": function (settings) {
+                            //actualiza el estado cuando ya se ha listado el grid, cuando hace paginación
+                            waitingDialog.hide();
+                            objExtender.isOkUpdate = false;
+                        },
+                        "initComplete": function (settings, json) {
+                        }
+                    });
+                },
+                cargaTabla: function () {
+                    waitingDialog.show("Espere por favor...")
+                    $('#tbLisXCenter').DataTable().ajax.reload(function () {
+                        waitingDialog.hide();
+                    });
+                },
+                btnEditar: function (IdValue) {
+                    //debugger                   
+                    var _input = '<button title="Editar Funcion" id = "btnEditar" class="btnEditar btn btn-primary  data-modal="" data-toggle="modal">' +
+                                    '<span class="glyphicon glyphicon-pencil"></span>' +
+                                 '</button>';
+                    return _input;
+                }
+            },
+            general: {
+                Validar: function () {
+                    //debugger;
+                    //objMovpago.IdCliente = IdCliente.toString();
+                    if (objExtender.Tienda == undefined || objExtender.Tienda == null || objExtender.Tienda == 0 || objExtender.Tienda == '' || objExtender.Tienda == '-1') {
+                        swal({ title: "Alerta", text: "No selecciono una tienda.", icon: "error" }).then((value) => {
+                            $('#ddlTienda').focus();
+                        });
+                        return false;
+                    }
+                    if (objExtender.FechaInicio == undefined || objExtender.FechaInicio == null || objExtender.FechaInicio.length == 0 || objExtender.FechaInicio == '') {
+                        swal({ title: "Alerta", text: "No selecciono la fecha de inicio.", icon: "error" }).then((value) => {
+                        });
+                        return false;
+                    }
+                    if (objExtender.FechaFin == undefined || objExtender.FechaFin == null || objExtender.FechaFin.length == 0 || objExtender.FechaFin == '') {
+                        swal({ title: "Alerta", text: "No selecciono la fecha de fin.", icon: "error" }).then((value) => {
+                        });
+                        return false;
+                    }
+                    return true;
+                },
+                ValidarEdit: function () {
+                    //debugger;
+                    //objMovpago.IdCliente = IdCliente.toString();
+                    if (objExtender.New_Expr_Date == undefined || objExtender.New_Expr_Date == null || objExtender.New_Expr_Date == 0 || objExtender.New_Expr_Date == '') {
+                        swal({ title: "Alerta", text: "No selecciono la fecha .", icon: "error" }).then((value) => {                           
+                        });
+                        return false;
+                    }
+                    return true;
+                },
+                consultar: function () {
+                    //debugger
+                    if (objExtender.general.Validar()) {
+                        objExtender.grid.cargaTabla();
+                    }
+                },
+                Registrar: function () {
+                    if (objExtender.general.ValidarEdit()) {
+                        //debugger;
+                        swal({
+                            title: "Update XCenter",
+                            text: "¿Seguro que desea actualizar la fecha?",
+                            icon: "warning",
+                            buttons: ["No", "Si"],
+                            dangerMode: true,
+                        }).then((cambiar) => {
+                            if (cambiar) {
+                                //waitingDialog.show("Espere un momento por favor.")
+                                //debugger 
+                                var _Ent = function () { return @Html.Raw(Json.Encode(ViewBag.entExtender_NC)); }();
+                                _Ent.Rtl_Loc_Id = objExtender.Rtl_Loc_Id;
+                                _Ent.Wkstn_Id = objExtender.Wkstn_Id;
+                                _Ent.String_Value = objExtender.String_Value;
+                                _Ent.Business_Date = objExtender.Business_Date;
+                                _Ent.Expr_Date = objExtender.Expr_Date;
+                                _Ent.New_Expr_Date = objExtender.New_Expr_Date;
+                               //debugger
+                                $.ajax({
+                                    type: "POST",
+                                    url: '@Url.Action("getUpExtender_NC", "Soporte")',
+                                    data: { _Ent : _Ent },
+                                    async: false,
+                                    success: function (data) {
+                                        //debugger
+                                        data = JSON.parse(data);
+                                        if (data.Success) {
+                                           //debugger
+                                            objExtender.isOkUpdate = true
+                                            swal({title: "Ok",text: data.Message,icon: "success"}).then((value) => {
+                                                //waitingDialog.hide();
+                                                $('#tbLisXCenter').DataTable().ajax.reload(function () { });
+                                            }); 
+                                            $('#myModal').modal('hide');
+                                        } else {
+                                            swal({ title: "Alerta", text: data.Message, icon: "error" }).then((value) => { });
+                                            waitingDialog.hide();
+                                        }
+                                    },
+                                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                                        waitingDialog.hide();
+                                        swal({ title: "Alerta", text: "Error al grabar.", icon: "error" }).then((value) => { });
+                                    }
+                                });
+                            }
+                        })
+                    }
+                }
+            }
+        };
+
+        $(document).ready(function () {
+           objExtender.Inicio();
+        });
+    </script>
+}

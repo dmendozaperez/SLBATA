@@ -14,7 +14,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using CapaEntidad.ValeCompra;
-
+using Newtonsoft.Json;
 
 namespace CapaPresentacion.Controllers
 {
@@ -29,6 +29,7 @@ namespace CapaPresentacion.Controllers
         private string _session_soporte_tienda_peru = "_session_soporte_tienda_peru";//gft
         private string _session_cupones_retorno = "_session_cupones_retorno";
         private string _session_consulta_guiaerrores = "_session_consulta_guiaerrores"; //aga
+        private string _session_LisXCenter_NC = "_session_LisXCenter_NC";
 
         private Dat_ListaTienda dat_lista_tienda = new Dat_ListaTienda();
         private Dat_Combo tienda = new Dat_Combo();//gft
@@ -336,7 +337,9 @@ namespace CapaPresentacion.Controllers
             else
             {
                 Session[_session_cupones_retorno] = null;
-                ViewBag.Tienda = tienda.get_ListaTiendaXstore(true);
+                //VLADIMIR
+                ViewBag.Tienda = tienda.get_ListaTiendaXstore(true,Session["PAIS"].ToString());
+                //VLADIMIR END
                 return View();
             }
         }
@@ -660,5 +663,142 @@ namespace CapaPresentacion.Controllers
         }
         #endregion
 
+        #region <Extender Nota de Credito Center>
+        public ActionResult Extender_NC_XCenter()
+        {
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
+
+            if (_usuario == null)
+            {
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+            }
+            else
+            {
+                Ent_Extender_NC entExtender_NC = new Ent_Extender_NC();
+                ViewBag.entExtender_NC = entExtender_NC;
+
+                List<Ent_ListaTienda> tiendas = new List<Ent_ListaTienda>();
+                tiendas.Add(new Ent_ListaTienda() { cod_entid = "-1", des_entid = "SELECCIONE" });
+                ViewBag.tienda = tiendas.Concat(dat_lista_tienda.get_tienda("PE", "1"));
+                return View();
+            }
+
+        }
+
+        public JsonResult getLisXCenter_NC(Ent_jQueryDataTableParams param, string FechaInicio, string FechaFin,string Tienda, string Num_Doc, bool isOkUpdate)
+        {
+            Ent_Extender_NC _ent = new Ent_Extender_NC();
+            _ent.Tienda = Tienda;
+            _ent.Num_Doc = Num_Doc;
+            _ent.FechaInicio = DateTime.Parse(FechaInicio);
+            _ent.FechaFin = DateTime.Parse(FechaFin);
+
+            if (isOkUpdate)
+            {
+                Session[_session_LisXCenter_NC] = datGuia.LisXCenter_NC(_ent).ToList();
+            }
+
+            /*verificar si esta null*/
+            if (Session[_session_LisXCenter_NC] == null)
+            {
+                List<Ent_Extender_NC> ListarXCenter_NC = new List<Ent_Extender_NC>();
+                Session[_session_LisXCenter_NC] = ListarXCenter_NC;
+            }
+
+            IQueryable<Ent_Extender_NC> entDocTrans = ((List<Ent_Extender_NC>)(Session[_session_LisXCenter_NC])).AsQueryable();
+
+            //Manejador de filtros
+            int totalCount = entDocTrans.Count();
+            IEnumerable<Ent_Extender_NC> filteredMembers = entDocTrans;
+            if (!string.IsNullOrEmpty(param.sSearch))
+            {
+                filteredMembers = entDocTrans
+                    .Where(m =>
+                                m.Serial_Nbr.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                                m.String_Value.ToUpper().Contains(param.sSearch.ToUpper())
+                            );
+            }
+
+            //Manejador de ordene
+            var sortIdx = Convert.ToInt32(Request["iSortCol_0"]);
+
+            if (param.iSortingCols > 0)
+            {
+                if (Request["sSortDir_0"].ToString() == "asc")
+                {
+                    switch (sortIdx)
+                    {
+                        case 0: filteredMembers = filteredMembers.OrderBy(o => o.Serial_Nbr); break;
+                        case 1: filteredMembers = filteredMembers.OrderBy(o => o.Organization_Id); break;
+                        case 2: filteredMembers = filteredMembers.OrderBy(o => o.Rtl_Loc_Id); break;
+                        case 3: filteredMembers = filteredMembers.OrderBy(o => o.Wkstn_Id); break;
+                        case 4: filteredMembers = filteredMembers.OrderBy(o => o.Trans_Seq); break;
+                        case 5: filteredMembers = filteredMembers.OrderBy(o => o.String_Value); break;
+                        case 6: filteredMembers = filteredMembers.OrderBy(o => o.Business_Date); break;
+                        case 7: filteredMembers = filteredMembers.OrderBy(o => o.Expr_Date); break;
+                    }
+                }
+                else
+                {
+                    switch (sortIdx)
+                    {
+                        case 0: filteredMembers = filteredMembers.OrderByDescending(o => o.Serial_Nbr); break;
+                        case 1: filteredMembers = filteredMembers.OrderByDescending(o => o.Organization_Id); break;
+                        case 2: filteredMembers = filteredMembers.OrderByDescending(o => o.Rtl_Loc_Id); break;
+                        case 3: filteredMembers = filteredMembers.OrderByDescending(o => o.Wkstn_Id); break;
+                        case 4: filteredMembers = filteredMembers.OrderByDescending(o => o.Trans_Seq); break;
+                        case 5: filteredMembers = filteredMembers.OrderByDescending(o => o.String_Value); break;
+                        case 6: filteredMembers = filteredMembers.OrderByDescending(o => o.Business_Date); break;
+                        case 7: filteredMembers = filteredMembers.OrderByDescending(o => o.Expr_Date); break;
+                    }
+                }
+            }
+
+            var Result = filteredMembers
+                .Skip(param.iDisplayStart)
+                .Take(param.iDisplayLength);
+
+            //Se devuelven los resultados por json
+            return Json(new
+            {
+                sEcho = param.sEcho,
+                iTotalRecords = totalCount,
+                iTotalDisplayRecords = filteredMembers.Count(),
+                aaData = Result
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult getUpExtender_NC(Ent_Extender_NC _Ent)
+        {
+            bool Result = false;
+            string Estado = string.Empty;
+            JsonResponse objResult = new JsonResponse();
+            try
+            {
+                Result = datGuia.UpExtender_NC(_Ent, ref Estado);
+                if (Result)
+                {
+                    objResult.Success = true;
+                    objResult.Message = "La nueva fecha se actualizo correctamente.";
+                }
+                else
+                {
+                    objResult.Success = false;
+                    objResult.Message = Estado;
+                }
+            }
+            catch (Exception ex)
+            {
+                objResult.Success = false;
+                objResult.Message = "Error al actualizar";
+            }
+
+            var JSON = JsonConvert.SerializeObject(objResult);
+            return Json(JSON, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
     }
 }
