@@ -110,21 +110,9 @@
                     <div class="row">
                         <div class="col-md-12">
                             @*[Info del modal]*@
-                            <div class="box-body" id="box-body-TbTabla">
-                                <table id="TbTabla" class="table table-hover dataTable  table-striped table-responsive">
-                                    <thead>
-                                        <tr style="background-color:#3d566e; color:#ecf0f1;padding-top: 0px;padding-bottom: 0px;">
-                                            <th style="text-align: center;">TIPO</th>
-                                            <th style="text-align: center;">NUM. DOCUMENTO</th>
-                                            <th style="text-align: center;">FECHA</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td colspan='3'>No se encontraron resultados</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                            <div class="box-body" id="Id-box-body-TbTabla">
+                                @*[Carga tabla]*@
+                                @*[/Carga tabla]*@
                             </div>
                             @*[/Info del modal]*@
                         </div>
@@ -240,14 +228,36 @@
     <script>
         window.onload = function () {           
             setTimeout(function () {
+
+                function HtmlTabla() {
+                    let _HtmlTabla = '<table id="TbTabla" class="table table-hover dataTable  table-striped table-responsive">' +
+                                        '<thead>' +
+                                            '<tr style="background-color:#3d566e; color:#ecf0f1;padding-top: 0px;padding-bottom: 0px;">' +
+                                                '<tr style="background-color:#3d566e; color:#ecf0f1;padding-top: 0px;padding-bottom: 0px;">' +
+                                                    '<th style="text-align: center;">TIPO</th>' +
+                                                    '<th style="text-align: center;">NUM. DOCUMENTO</th>' +
+                                                    '<th style="text-align: center;">FECHA</th>'
+                                                '</tr>' +
+                                        '</thead>' +
+                                        '<tbody>' +
+                                            '<tr>' +
+                                                '<td colspan="3">No se encontraron resultados</td>' +
+                                            '</tr>' +
+                                        '</tbody>' +
+                                    '</table>';
+                    return _HtmlTabla;
+                }
+
+
                 //[Declaramos variables]
+                
                 var nIntervId;
                 var isOkUpdate = true;
                 var isOk = false;
                 var tienda = $("#hTienda").val();                
                 var pais = $("#hPais").val();
                 var iTiempo = 20; //[PONER EL TIEMPO A SEGUNDOS , EJEMPLO AHORA ESTA EN 20 SEGUNDOS]
-
+                
                 var ccMoIni = getCookie('ccMoIni');
                 if (tienda != '' && pais == 'PE')
                 {
@@ -258,9 +268,11 @@
                     if (ccMoIni == "Reinicio") {
                         isOkUpdate = true;
                         isOk = false;
+                        $("#Id-box-body-TbTabla").html(HtmlTabla());
                         cargaTabla(isOkUpdate, isOk, tienda);
                         timeAlertInfo();
                     }
+                } else {
                 }
                 //[/Declaramos variables]
 
@@ -291,8 +303,9 @@
                             if (data.Success) {
                                 isOkUpdate = false
                                 isOk = false
-                                let options = { "backdrop": "static", keyboard: true };
-                                cargaTabla(isOkUpdate, isOk, tienda)
+                                let options = { "backdrop": "static", keyboard: true };                                
+                                $("#Id-box-body-TbTabla").html(HtmlTabla());
+                                cargaTabla(isOkUpdate, isOk, tienda);
                                 $('#mdlAviso').modal(options);
                                 $('#mdlAviso').modal('show');
                                 setCookie('ccMoIni', 'Reinicio', 1);
@@ -316,6 +329,7 @@
 
                 //[Carga la lista]
                 function cargaTabla(isOkUpdate, isOk, tienda) {
+
                     $('#TbTabla').DataTable({
                         "language": {
                             "url": "../Scripts/DataTables/Spanish.json"
@@ -369,7 +383,7 @@
                         Now = (Now.getHours() * 60 * 60) + (Now.getMinutes() * 60) + Now.getSeconds();
                     let ccHrIniInterval = getCookie('ccHrIniInterval');
                     let ccMoIni = getCookie('ccMoIni')
-                    console.log(Now + " = " + ccHrIniInterval);
+                    //console.log(Now + " = " + ccHrIniInterval);
                     if (Now > ccHrIniInterval) {
                         let date = new Date();
                         setCookie('ccHrIni', ((date.getHours() * 60 * 60) + (date.getMinutes() * 60) + date.getSeconds()), 1)

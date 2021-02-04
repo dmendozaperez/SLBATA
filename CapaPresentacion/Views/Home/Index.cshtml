@@ -54,16 +54,13 @@
         var tienda = "@ViewBag.tienda";
         var pais = "@ViewBag.pais";
         setCookie('ccMoIni', '', 1)
-        debugger
         if (tienda != '' && pais == 'PE') {
-            debugger
             $("#divmsg").show();            
             setCookie('ccMoIni', 'Inicio', 1)            
             BorrarCookie('ccHrIni')
             BorrarCookie('ccHrIniInterval')
         } else {
-            debugger
-            $("#divmsg").hide();
+            $("#divmsg").hide();            
         }
 
         function BorrarCookie(name) {
