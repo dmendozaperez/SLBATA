@@ -107,7 +107,8 @@ namespace Data.Crystal.Reporte
                                              subcat3 = dr["subcat3"].ToString(),
                                              pventa =string.IsNullOrEmpty(dr["pventa"].ToString())?0:Convert.ToDecimal(dr["pventa"].ToString()),
 
-                                             vta_acum = string.IsNullOrEmpty(dr["vta_acum"].ToString()) ? 0 : Convert.ToDecimal(dr["vta_acum"].ToString()),
+                                             vta_acum = ((tipo_rep == "-1")? string.IsNullOrEmpty(dr["vta_acum"].ToString()) ? 0 : Convert.ToDecimal(dr["vta_acum"].ToString()):0),
+                                             
 
                                              tcant = string.IsNullOrEmpty(dr["tcant"].ToString()) ? 0 : Convert.ToDecimal(dr["tcant"].ToString()), //Convert.ToDecimal(dr["tcant"]),
 

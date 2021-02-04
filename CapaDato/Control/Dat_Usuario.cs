@@ -186,7 +186,7 @@ namespace CapaDato.Control
             return valida;
         }
 
-        public List<Ent_Usuario> get_lista(Boolean listar = false)
+        public List<Ent_Usuario> get_lista(Boolean listar = false,String pais="PE")
         {
             string sqlquery = "[USP_Leer_Usuarios_Web]";
             List<Ent_Usuario> list = null;
@@ -199,6 +199,7 @@ namespace CapaDato.Control
                     {
                         cmd.CommandTimeout = 0;
                         cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@pais", pais);
                         SqlDataReader dr = cmd.ExecuteReader();
 
                         if (dr.HasRows)
@@ -226,48 +227,6 @@ namespace CapaDato.Control
                 list = null;
             }
             return list;
-        }
-        #endregion
-
-        #region <TIENDAS EN PROCESO>
-        public List<Ent_Tienda_Proceso> LisTiendaProceso(Ent_Tienda_Proceso ent)
-        {
-            List<Ent_Tienda_Proceso> Listar = new List<Ent_Tienda_Proceso>();
-            string sqlquery = "[USP_XCENTER_GET_TIENDA_IN_PROCESS]";
-            try
-            {
-                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
-                {
-                    cn.Open();
-                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
-                    {
-
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@COD_ENTID", DbType.String).Value = ent.Cod_EntId;
-                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
-                        {
-                            DataTable dt = new DataTable();
-                            da.Fill(dt);
-
-                            Listar = new List<Ent_Tienda_Proceso>();
-                            Listar = (from DataRow fila in dt.Rows
-                                      select new Ent_Tienda_Proceso()
-                                      {
-                                          Tienda = (fila["Tienda"] is DBNull) ? string.Empty : (string)(fila["Tienda"]),
-                                          Tipo = (fila["Tipo"] is DBNull) ? string.Empty : (string)(fila["Tipo"]),
-                                          Numdoc = (fila["Numdoc"] is DBNull) ? string.Empty : (string)(fila["Numdoc"]),
-                                          Fecha = (fila["Fecha"] is DBNull) ? (DateTime?)null : Convert.ToDateTime(fila["Fecha"])
-                                      }
-                                    ).ToList();
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-            return Listar;
         }
         #endregion
     }
@@ -364,7 +323,5 @@ namespace CapaDato.Control
             }
             return list;
         }
-
- 
     }
 }

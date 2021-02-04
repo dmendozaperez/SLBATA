@@ -41,6 +41,7 @@ namespace Data.Crystal.Reporte
                             cmd.Parameters.AddWithValue("@nstockmax", maxpares); 
                             cmd.Parameters.AddWithValue("@Calidad", calidad);
                             cmd.Parameters.AddWithValue("@nSemanasIng", semIng);
+                            
                             using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                             {
                                 dt = new DataTable();
@@ -173,7 +174,7 @@ namespace Data.Crystal.Reporte
                             cmd.Parameters.AddWithValue("@rprecio2", rprecio2);
                             cmd.Parameters.AddWithValue("@tipo_obs", tipo_obs);
                             cmd.Parameters.AddWithValue("@rango_obs", rango_obs);
-
+                            //cmd.Parameters.AddWithValue("@pais", pais);
                             using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                             {
                                 dt = new DataTable();

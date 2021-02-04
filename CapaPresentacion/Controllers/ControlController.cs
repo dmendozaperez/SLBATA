@@ -2,7 +2,6 @@
 using CapaDato.Menu;
 using CapaEntidad.Control;
 using CapaEntidad.Util;
-using CapaEntidad.General;
 using CapaPresentacion.Models.Control;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
@@ -12,15 +11,12 @@ using System.Linq;
 using System.Security.Claims;
 using System.Web;
 using System.Web.Mvc;
-using Newtonsoft.Json;
 
 namespace CapaPresentacion.Controllers
 {
     [Authorize]
     public class ControlController : Controller
     {
-        private string _session_isTiendaProceso = "_session_isTiendaProceso";
-
         #region<Validacion de acceso al sistema>
         IAuthenticationManager Authentication
         {
@@ -66,7 +62,6 @@ namespace CapaPresentacion.Controllers
         [AllowAnonymous]
         public ActionResult Login(LoginViewModel model, string returnUrl = null)
         {
-            Session[_session_isTiendaProceso] = null;
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -141,13 +136,19 @@ namespace CapaPresentacion.Controllers
             Dat_Usuario _usuario = new Dat_Usuario();
             Ent_Usuario _data_user= _usuario.get_login(usuario);
 
+            if (_data_user == null) _valida = false;
 
-
-            if ((_data_user.usu_login == "Tienda" || _data_user.usu_login == "TIENDAPOS") && Session["Tienda"]==null) {
-                password = "";
+            if (_data_user!=null)
+            {
+                if ((_data_user.usu_login == "Tienda" || _data_user.usu_login == "TIENDAPOS") && Session["Tienda"] == null)
+                {
+                    password = "";
+                }
             }
 
-            if (_data_user == null) _valida = false;             
+            
+
+                   
 
             if (_data_user != null)
             {
@@ -266,102 +267,5 @@ namespace CapaPresentacion.Controllers
             return result;
         }
 
-        public ActionResult getTienda_Proceso(Ent_jQueryDataTableParams param,string tienda,bool isOkUpdate,bool isOk)
-        {
-            Ent_Tienda_Proceso _Ent = new Ent_Tienda_Proceso();
-            _Ent.Cod_EntId = tienda;
-            Dat_Usuario datUsuario = new Dat_Usuario();
-            JsonRespuesta objResult = new JsonRespuesta();
-            try
-            {
-                if (isOkUpdate)
-                {
-                    Session[_session_isTiendaProceso] = datUsuario.LisTiendaProceso(_Ent).ToList();
-                }
-
-                IQueryable<Ent_Tienda_Proceso> entDocTrans = ((List<Ent_Tienda_Proceso>)(Session[_session_isTiendaProceso])).AsQueryable();
-
-                if (isOk)
-                {
-                    var Cant = entDocTrans.Count();
-                    if (Cant == 0)
-                    {
-                        objResult.Success = false;
-                    }
-                    else
-                    {
-                        objResult.Success = true;
-                    }
-
-                    var JSONCount = JsonConvert.SerializeObject(objResult);
-                    return Json(JSONCount, JsonRequestBehavior.AllowGet);
-                }
-
-                /*verificar si esta null*/
-                if (Session[_session_isTiendaProceso] == null)
-                {
-                    List<Ent_Tienda_Proceso> ListarTienda_Proceso = new List<Ent_Tienda_Proceso>();
-                    Session[_session_isTiendaProceso] = ListarTienda_Proceso;
-                }                
-
-                //Manejador de filtros
-                int totalCount = entDocTrans.Count();
-                IEnumerable<Ent_Tienda_Proceso> filteredMembers = entDocTrans;
-                if (!string.IsNullOrEmpty(param.sSearch))
-                {
-                    filteredMembers = entDocTrans
-                        .Where(m =>
-                                    m.Tipo.ToUpper().Contains(param.sSearch.ToUpper()) ||
-                                    m.Numdoc.ToUpper().Contains(param.sSearch.ToUpper())
-                                );
-                }
-
-                //Manejador de ordene
-                var sortIdx = Convert.ToInt32(Request["iSortCol_0"]);
-
-                if (param.iSortingCols > 0)
-                {
-                    if (Request["sSortDir_0"].ToString() == "asc")
-                    {
-                        switch (sortIdx)
-                        {
-                            case 0: filteredMembers = filteredMembers.OrderBy(o => o.Tipo); break;
-                            case 1: filteredMembers = filteredMembers.OrderBy(o => o.Numdoc); break;
-                        }
-                    }
-                    else
-                    {
-                        switch (sortIdx)
-                        {
-                            case 0: filteredMembers = filteredMembers.OrderByDescending(o => o.Tipo); break;
-                            case 1: filteredMembers = filteredMembers.OrderByDescending(o => o.Numdoc); break;
-                        }
-                    }
-                }
-
-                var Result = filteredMembers
-                    .Skip(param.iDisplayStart)
-                    .Take(param.iDisplayLength);
-
-                //Se devuelven los resultados por json
-                return Json(new
-                {
-                    sEcho = param.sEcho,
-                    iTotalRecords = totalCount,
-                    iTotalDisplayRecords = filteredMembers.Count(),
-                    aaData = Result
-                }, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception ex)
-            {
-                objResult.Success = false;
-                objResult.Data = null;
-                objResult.isError = true;
-                objResult.Message = string.Format("Error al cargar la lista");
-            }
-            
-            var JSON = JsonConvert.SerializeObject(objResult);
-            return Json(JSON, JsonRequestBehavior.AllowGet);
-        }
     }
 }

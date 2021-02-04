@@ -71,13 +71,13 @@ namespace CapaPresentacion.Data.Crystal.Reporte
             return lista;
         }
 
-        public List<Ent_Combo> get_ListaTienda(string codTienda, int ind_)
+        public List<Ent_Combo> get_ListaTienda(string codTienda, String pais="PE")
         {
             List<Ent_Combo> list = null;
-            string sqlquery = "USP_LISTAR_TIENDA";
+            string sqlquery = "USP_LISTAR_TIENDA_INV";
             try
             {
-                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexionEcommerce))
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
                 {
                     if (cn.State == 0) cn.Open();
                     using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
@@ -85,7 +85,7 @@ namespace CapaPresentacion.Data.Crystal.Reporte
                         cmd.CommandTimeout = 0;
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@codTienda", codTienda);
-                        cmd.Parameters.AddWithValue("@ind_", ind_);
+                        cmd.Parameters.AddWithValue("@pais", pais);
                         SqlDataReader dr = cmd.ExecuteReader();
                         if (dr.HasRows)
                         {

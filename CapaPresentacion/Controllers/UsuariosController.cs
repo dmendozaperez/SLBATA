@@ -58,7 +58,13 @@ namespace CapaPresentacion.Controllers
 
         public List<Ent_Usuario> lista()
         {
-            List<Ent_Usuario> listusuario = usuario.get_lista();
+            string pais = "PE";
+            if (Session["PAIS"] != null)
+            {
+                pais = Session["PAIS"].ToString();
+            }
+
+            List<Ent_Usuario> listusuario = usuario.get_lista(false,pais);
             Session[_session_listusu_private] = listusuario;
             return listusuario;
         }
@@ -212,8 +218,14 @@ namespace CapaPresentacion.Controllers
             ViewBag.usuid = id.ToString();
             ViewBag.usunombre = filausuario.usu_nombre.ToString();
 
+            string pais = "PE";
+            if (Session["PAIS"] != null)
+            {
+                pais = Session["PAIS"].ToString();
+            }
+
             Dat_Roles roles = new Dat_Roles();
-            ViewBag.roles = roles.get_lista();
+            ViewBag.roles = roles.get_lista(pais);
 
             return View(lista_usu_rol(id));
 
