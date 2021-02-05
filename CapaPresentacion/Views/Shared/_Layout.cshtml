@@ -226,190 +226,234 @@
 
     </script>
     <script>
-        window.onload = function () {           
-            setTimeout(function () {
+        window.onload = function () {
+            var nIntervId;
+            var isOkUpdate = true;
+            var isOk = false;
+            var tienda = $("#hTienda").val();
+            var pais = $("#hPais").val();
+            var iTiempo = 20; //[PONER EL TIEMPO A SEGUNDOS , EJEMPLO AHORA ESTA EN 20 SEGUNDOS]
 
-                function HtmlTabla() {
-                    let _HtmlTabla = '<table id="TbTabla" class="table table-hover dataTable  table-striped table-responsive">' +
-                                        '<thead>' +
-                                            '<tr style="background-color:#3d566e; color:#ecf0f1;padding-top: 0px;padding-bottom: 0px;">' +
-                                                '<tr style="background-color:#3d566e; color:#ecf0f1;padding-top: 0px;padding-bottom: 0px;">' +
-                                                    '<th style="text-align: center;">TIPO</th>' +
-                                                    '<th style="text-align: center;">NUM. DOCUMENTO</th>' +
-                                                    '<th style="text-align: center;">FECHA</th>'
-                                                '</tr>' +
-                                        '</thead>' +
-                                        '<tbody>' +
-                                            '<tr>' +
-                                                '<td colspan="3">No se encontraron resultados</td>' +
-                                            '</tr>' +
-                                        '</tbody>' +
-                                    '</table>';
-                    return _HtmlTabla;
-                }
+            var ccMoIni = getCookie('ccMoIni');
 
+            //[btnAceptar Info Modal]
+            $("#btnAceptar").click(function () {
+                let options = { "backdrop": "static", keyboard: true };
+                $('#mdlAviso').modal(options);
+                $('#mdlAviso').modal('hide');
+                let date = new Date();
+                setCookie('ccHrIni', ((date.getHours() * 60 * 60) + (date.getMinutes() * 60) + date.getSeconds()), 1)
+                setCookie('ccHrIniInterval', ((date.getHours() * 60 * 60) + (date.getMinutes() * 60) + (date.getSeconds() + iTiempo)), 1)
+                timeAlertInfo();
+            });
+            //[/btnAceptar Info Moda
 
-                //[Declaramos variables]
-                
-                var nIntervId;
-                var isOkUpdate = true;
-                var isOk = false;
-                var tienda = $("#hTienda").val();                
-                var pais = $("#hPais").val();
-                var iTiempo = 20; //[PONER EL TIEMPO A SEGUNDOS , EJEMPLO AHORA ESTA EN 20 SEGUNDOS]
-                
-                var ccMoIni = getCookie('ccMoIni');
-                if (tienda != '' && pais == 'PE')
-                {
-                    if (ccMoIni == "Inicio")
-                    {
-                        Tienda_Proceso(tienda, pais);
+            //[Tiendas con proceso carga el modal]
+            function Tienda_Proceso(tienda, pais) {
+                let result = false;
+                //debugger
+                isOkUpdate = true;
+                isOk = true;
+                $.ajax({
+                    type: "POST",
+                    url: "/Control/getTienda_Proceso/",
+                    data: {
+                        tienda: tienda,
+                        isOkUpdate: isOkUpdate,
+                        isOk: isOk
+                    },
+                    async: false,
+                    success: function (data) {
+                        data = JSON.parse(data);
+                        //debugger;
+                        if (data.Success) {
+                            //debugger;
+                            result = true;
+                            setCookie('ccMoIni', 'Reinicio', 1);
+                            //console.log("isOk");
+                        } else {
+                            // debugger;
+                            setCookie('ccMoIni', '', -1);
+                            //console.log("noOk");
+                            result = false;
+                        }
+                        if (data.isError) {
+                            swal({ title: "Alerta", text: data.Message, icon: "error" }).then((value) => { });
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        swal({ title: "Alerta", text: "Error al listar.", icon: "error" }).then((value) => { });
                     }
-                    if (ccMoIni == "Reinicio") {
-                        isOkUpdate = true;
+                });
+                //clearInterval(nIntervId);
+
+                return result;
+            }
+            //[/Tiendas con proceso carga el modal]
+
+            //[Carga la lista]
+            function cargaTabla(isOkUpdate, isOk, tienda) {
+
+                $('#TbTabla').DataTable({
+                    "language": {
+                        "url": "../Scripts/DataTables/Spanish.json"
+                    },
+                    "bServerSide": true,
+                    "bAutoWidth": false,
+                    "sAjaxSource": "/Control/getTienda_Proceso/",
+                    "fnServerParams": function (aoData) {
+                        aoData.push({ "name": "isOkUpdate", "value": isOkUpdate });
+                        aoData.push({ "name": "isOk", "value": isOk });
+                        aoData.push({ "name": "tienda", "value": tienda });
+                    },
+                    "start": 0,
+                    "columnDefs": [{
+                        "orderable": false,
+                        "targets": [0, 1, 2],
+                    }],
+                    "bDeferRender": true,
+                    "retrieve": false,
+                    "destroy": true, // controla el reinicio de la tabla
+                    "lengthChange": false, //Lista por cantidad
+                    "aoColumns": [
+                        { "sName": "Tipo", "mData": "Tipo", "sClass": " " },
+                        { "sName": "Numdoc", "mData": "Numdoc", "sClass": " " },
+                        {
+                            "mData": null,
+                            "sClass": "",
+                            "render": function (Data, type, full, meta) {
+                                var Fecha = (full.Fecha == undefined || full.Fecha == null || full.Fecha == 0) ? ' ' : new Date(parseInt(full.Fecha.replace("/Date(", "").replace(")/", ""), 10));
+                                return (Fecha == undefined || Fecha == null || Fecha == 0) ? ' ' : (Fecha.getDate() < 10 ? "0" + Fecha.getDate() : Fecha.getDate()) + "/" + ((Fecha.getMonth() + 1) < 10 ? "0" + (Fecha.getMonth() + 1) : (Fecha.getMonth() + 1)) + "/" + Fecha.getFullYear();
+                            }
+                        }
+                    ],
+                    "fnRowCallback": function (row, data, index) {
+                    },
+                    "drawCallback": function (settings) {
+                        //actualiza el estado cuando ya se ha listado el grid, cuando hace paginación
+                        waitingDialog.hide();
+                        isOkUpdate = false;
                         isOk = false;
-                        $("#Id-box-body-TbTabla").html(HtmlTabla());
-                        cargaTabla(isOkUpdate, isOk, tienda);
-                        timeAlertInfo();
+                    },
+                    "initComplete": function (settings, json) {
                     }
-                } else {
-                }
-                //[/Declaramos variables]
+                });
+            }
+            //[/Carga la lista]
 
-                //[btnAceptar Info Modal]
-                $("#btnAceptar").click(function () {
+            //[/Modal info]
+            function ModalInfo() {
+                if (!Tienda_Proceso(tienda, pais)) {
+                    return false;
+                }
+                let Now = new Date();
+                Now = (Now.getHours() * 60 * 60) + (Now.getMinutes() * 60) + Now.getSeconds();
+                let ccHrIniInterval = getCookie('ccHrIniInterval');
+                let ccMoIni = getCookie('ccMoIni')
+                //console.log(Now + " = " + ccHrIniInterval);
+                if (Now > ccHrIniInterval) {
                     let date = new Date();
                     setCookie('ccHrIni', ((date.getHours() * 60 * 60) + (date.getMinutes() * 60) + date.getSeconds()), 1)
                     setCookie('ccHrIniInterval', ((date.getHours() * 60 * 60) + (date.getMinutes() * 60) + (date.getSeconds() + iTiempo)), 1)
-                    timeAlertInfo();
-                    $('#mdlAviso').modal('hide');
-                });
-                //[/btnAceptar Info Modal]
-
-                //[Tiendas con proceso carga el modal]
-                function Tienda_Proceso(tienda, pais) {        
-                    isOkUpdate = true;
-                    isOk = true;
-                    $.ajax({
-                        type: "POST",
-                        url: "/Control/getTienda_Proceso/",
-                        data: {
-                            tienda: tienda,
-                            isOkUpdate: isOkUpdate,
-                            isOk: isOk
-                        },
-                        success: function (data) {
-                            data = JSON.parse(data);
-                            if (data.Success) {
-                                isOkUpdate = false
-                                isOk = false
-                                let options = { "backdrop": "static", keyboard: true };                                
-                                $("#Id-box-body-TbTabla").html(HtmlTabla());
-                                cargaTabla(isOkUpdate, isOk, tienda);
-                                $('#mdlAviso').modal(options);
-                                $('#mdlAviso').modal('show');
-                                setCookie('ccMoIni', 'Reinicio', 1);
-                                clearInterval(nIntervId);
-                                console.log("isOk");
-                            } else {
-                                setCookie('ccMoIni', '', -1);
-                                console.log("noOk");
-                            }
-                            if (data.isError) {
-                                swal({ title: "Alerta", text: data.Message, icon: "error" }).then((value) => { });
-                            }
-                        },
-                        error: function (XMLHttpRequest, textStatus, errorThrown) {
-                            swal({ title: "Alerta", text: "Error al listar.", icon: "error" }).then((value) => { });
-                        }
-                    });
-                   clearInterval(nIntervId);
                 }
-                //[/Tiendas con proceso carga el modal]
-
-                //[Carga la lista]
-                function cargaTabla(isOkUpdate, isOk, tienda) {
-
-                    $('#TbTabla').DataTable({
-                        "language": {
-                            "url": "../Scripts/DataTables/Spanish.json"
-                        },
-                        "bServerSide": true,
-                        "bAutoWidth": false,
-                        "sAjaxSource": "/Control/getTienda_Proceso/",
-                        "fnServerParams": function (aoData) {
-                            aoData.push({ "name": "isOkUpdate", "value": isOkUpdate });
-                            aoData.push({ "name": "isOk", "value": isOk });
-                            aoData.push({ "name": "tienda", "value": tienda });
-                        },
-                        "start": 0,
-                        "columnDefs": [{
-                            "orderable": false,
-                            "targets": [0, 1, 2],
-                        }],
-                        "bDeferRender": true,
-                        "retrieve": false,
-                        "destroy": true, // controla el reinicio de la tabla
-                        "lengthChange": false, //Lista por cantidad
-                        "aoColumns": [
-                            { "sName": "Tipo", "mData": "Tipo", "sClass": " " },
-                            { "sName": "Numdoc", "mData": "Numdoc", "sClass": " " },
-                            {
-                                "mData": null,
-                                "sClass": "",
-                                "render": function (Data, type, full, meta) {
-                                    var Fecha = (full.Fecha == undefined || full.Fecha == null || full.Fecha == 0) ? ' ' : new Date(parseInt(full.Fecha.replace("/Date(", "").replace(")/", ""), 10));
-                                    return (Fecha == undefined || Fecha == null || Fecha == 0) ? ' ' : (Fecha.getDate() < 10 ? "0" + Fecha.getDate() : Fecha.getDate()) + "/" + ((Fecha.getMonth() + 1) < 10 ? "0" + (Fecha.getMonth() + 1) : (Fecha.getMonth() + 1)) + "/" + Fecha.getFullYear();
-                                }
-                            }
-                        ],
-                        "fnRowCallback": function (row, data, index) {
-                        },
-                        "drawCallback": function (settings) {
-                            //actualiza el estado cuando ya se ha listado el grid, cuando hace paginación
-                            waitingDialog.hide();
-                            isOkUpdate = false;
-                            isOk = false;
-                        },
-                        "initComplete": function (settings, json) {
-                        }
-                    });
+                if (Now == ccHrIniInterval && ccMoIni == 'Reinicio') {
+                    /*[carga el modal]*/
+                    isOkUpdate = false
+                    isOk = false
+                    let options = { "backdrop": "static", keyboard: true };
+                    $("#Id-box-body-TbTabla").html(HtmlTabla());
+                    cargaTabla(isOkUpdate, isOk, tienda);
+                    $('#mdlAviso').modal(options);
+                    $('#mdlAviso').modal('show');
+                    clearInterval(nIntervId);
                 }
-                //[/Carga la lista]
+            }
+            //[/Modal info]
 
-                //[/Modal info]
-                function ModalInfo() {
-                    let Now = new Date();
-                        Now = (Now.getHours() * 60 * 60) + (Now.getMinutes() * 60) + Now.getSeconds();
-                    let ccHrIniInterval = getCookie('ccHrIniInterval');
-                    let ccMoIni = getCookie('ccMoIni')
-                    //console.log(Now + " = " + ccHrIniInterval);
-                    if (Now > ccHrIniInterval) {
-                        let date = new Date();
-                        setCookie('ccHrIni', ((date.getHours() * 60 * 60) + (date.getMinutes() * 60) + date.getSeconds()), 1)
-                        setCookie('ccHrIniInterval', ((date.getHours() * 60 * 60) + (date.getMinutes() * 60) + (date.getSeconds() + iTiempo)), 1)
-                    }
-                    if (Now == ccHrIniInterval && ccMoIni == 'Reinicio') {
+            //[Inicializamos el time]
+            function timeAlertInfo() {
+                let ccMoIni = getCookie('ccMoIni')
+                if (ccMoIni == 'Reinicio') {
+                    nIntervId = setInterval(ModalInfo, 1000);
+                    //console.log(ccMoIni);
+                }
+            }
+
+            var vInterval;
+            function timevInterval() {
+                vInterval = setInterval(Proceso, 1000);
+            }
+
+            function Proceso() {
+                //console.log("1");
+                let ccMoIni = getCookie('ccMoIni')
+                //console.log(ccMoIni);
+                if (ccMoIni == '') {
+                    if (Tienda_Proceso(tienda, pais)) {
+                        //console.log("2");
                         isOkUpdate = false
                         isOk = false
                         let options = { "backdrop": "static", keyboard: true };
-                        $('#TbTabla').DataTable().ajax.reload(function () { });
+                        $("#Id-box-body-TbTabla").html(HtmlTabla());
+                        cargaTabla(isOkUpdate, isOk, tienda);
                         $('#mdlAviso').modal(options);
                         $('#mdlAviso').modal('show');
                         clearInterval(nIntervId);
                     }
                 }
-                //[/Modal info]
+            }
+            /*[creamos la tabla para que no tenga conflicto]*/
+            function HtmlTabla() {
+                let _HtmlTabla = '<table id="TbTabla" class="table table-hover dataTable  table-striped table-responsive">' +
+                                    '<thead>' +
+                                        '<tr style="background-color:#3d566e; color:#ecf0f1;padding-top: 0px;padding-bottom: 0px;">' +
+                                            '<tr style="background-color:#3d566e; color:#ecf0f1;padding-top: 0px;padding-bottom: 0px;">' +
+                                                '<th style="text-align: center;">TIPO</th>' +
+                                                '<th style="text-align: center;">NUM. DOCUMENTO</th>' +
+                                                '<th style="text-align: center;">FECHA</th>'
+                                        '</tr>' +
+                                '</thead>' +
+                                '<tbody>' +
+                                    '<tr>' +
+                                        '<td colspan="3">No se encontraron resultados</td>' +
+                                    '</tr>' +
+                                '</tbody>' +
+                            '</table>';
+                return _HtmlTabla;
+            }
+            /*[/creamos la tabla para que no tenga conflicto]*/
 
-                //[Inicializamos el time]
-                function timeAlertInfo() {
-                    let ccMoIni = getCookie('ccMoIni')
-                    if (ccMoIni == 'Reinicio') {
-                        nIntervId = setInterval(ModalInfo, 1000);
-                        console.log(ccMoIni);
+            setTimeout(function () {                
+                //[Declaramos variables]
+                if (tienda != '' && pais == 'PE')
+                {
+                    timevInterval();
+                    if (!Tienda_Proceso(tienda, pais)) {
+                        return false;
                     }
-                }
-                //[/Inicializamos el time]
+                    debugger
+                    if (ccMoIni == "Inicio")
+                    {
+                        /*[carga el modal]*/
+                        isOkUpdate = false
+                        isOk = false
+                        let options = { "backdrop": "static", keyboard: true };                                
+                        $("#Id-box-body-TbTabla").html(HtmlTabla());
+                        cargaTabla(isOkUpdate, isOk, tienda);
+                        $('#mdlAviso').modal(options);
+                        $('#mdlAviso').modal('show');   
+                        clearInterval(nIntervId);
+                       /*[/carga el modal]*/
+                    }
+                    if (ccMoIni == "Reinicio") {
+                        isOkUpdate = false;
+                        isOk = false;
+                        $("#Id-box-body-TbTabla").html(HtmlTabla());
+                        cargaTabla(isOkUpdate, isOk, tienda);
+                        timeAlertInfo();
+                    }                    
+                } 
+                //[/Declaramos variables]
             }, 1000);
 
             //[Asignacion de cookies Agregar y recuperar Cookie]
