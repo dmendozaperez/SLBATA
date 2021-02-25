@@ -329,7 +329,7 @@ namespace CapaPresentacion.Controllers
                         switch (sortIdx)
                         {
                             case 0: filteredMembers = filteredMembers.OrderBy(o => o.Tipo); break;
-                            case 1: filteredMembers = filteredMembers.OrderBy(o => o.Numdoc); break;
+                            case 2: filteredMembers = filteredMembers.OrderBy(o => o.Numdoc); break;
                         }
                     }
                     else
@@ -337,7 +337,7 @@ namespace CapaPresentacion.Controllers
                         switch (sortIdx)
                         {
                             case 0: filteredMembers = filteredMembers.OrderByDescending(o => o.Tipo); break;
-                            case 1: filteredMembers = filteredMembers.OrderByDescending(o => o.Numdoc); break;
+                            case 2: filteredMembers = filteredMembers.OrderByDescending(o => o.Numdoc); break;
                         }
                     }
                 }

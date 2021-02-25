@@ -104,11 +104,13 @@
             <div class="modal-content">
                 @*[cuerpo del modal]*@
                 <div class="modal-header modal-header-danger">
-                    <h4 class="modal-title" id="myModalLabel"></h4>
+                    <h4 class="modal-title" id="myModalLabel"><b>USTED HA DEJADO EN ESTADO "EN PROCESO" LAS SIGUIENTES GUIAS.</b></h4>                  
                 </div>
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12">
+                            <h4 class="modal-title" id="myModalLabel"><b>Debe cerrar las guias lo más pronto posible.</b></h4>
+                            <h5 class="modal-title" id="myModalLabel">Si requiere ayuda , avisar a soporte</h5>
                             @*[Info del modal]*@
                             <div class="box-body" id="Id-box-body-TbTabla">
                                 @*[Carga tabla]*@
@@ -119,6 +121,7 @@
                     </div>
                 </div>
                 <div class="modal-footer" style="margin-top:-30px">
+
                     <button id="btnAceptar" type="button" class="btn btn-primary">Aceptar</button>
                 </div>
                 @*[/cuerpo del modal]*@
@@ -232,7 +235,7 @@
             var isOk = false;
             var tienda = $("#hTienda").val();
             var pais = $("#hPais").val();
-            var iTiempo = 20; //[PONER EL TIEMPO A SEGUNDOS , EJEMPLO AHORA ESTA EN 20 SEGUNDOS]
+            var iTiempo = 5; //[PONER EL TIEMPO A SEGUNDOS , EJEMPLO AHORA ESTA EN 20 SEGUNDOS]
 
             var ccMoIni = getCookie('ccMoIni');
 
@@ -309,7 +312,7 @@
                     "start": 0,
                     "columnDefs": [{
                         "orderable": false,
-                        "targets": [0, 1, 2],
+                        "targets": [0, 1, 2,3],
                     }],
                     "bDeferRender": true,
                     "retrieve": false,
@@ -317,6 +320,7 @@
                     "lengthChange": false, //Lista por cantidad
                     "aoColumns": [
                         { "sName": "Tipo", "mData": "Tipo", "sClass": " " },
+                        { "sName": "Destino", "mData": "Destino", "sClass": " " },
                         { "sName": "Numdoc", "mData": "Numdoc", "sClass": " " },
                         {
                             "mData": null,
@@ -409,13 +413,14 @@
                                         '<tr style="background-color:#3d566e; color:#ecf0f1;padding-top: 0px;padding-bottom: 0px;">' +
                                             '<tr style="background-color:#3d566e; color:#ecf0f1;padding-top: 0px;padding-bottom: 0px;">' +
                                                 '<th style="text-align: center;">TIPO</th>' +
+                                                '<th style="text-align: center;">DESTINO</th>' +                                                
                                                 '<th style="text-align: center;">NUM. DOCUMENTO</th>' +
                                                 '<th style="text-align: center;">FECHA</th>'
                                         '</tr>' +
                                 '</thead>' +
                                 '<tbody>' +
                                     '<tr>' +
-                                        '<td colspan="3">No se encontraron resultados</td>' +
+                                        '<td colspan="4">No se encontraron resultados</td>' +
                                     '</tr>' +
                                 '</tbody>' +
                             '</table>';

@@ -53,7 +53,8 @@ namespace CapaDato.Transac
                                               inicial =Convert.ToInt32(dr["inicial"]),
                                               ingreso =Convert.ToInt32(dr["ingreso"]),
                                               salida =Convert.ToInt32(dr["salida"]),
-                                              saldo =Convert.ToInt32(dr["saldo"]),                                              
+                                              saldo =Convert.ToInt32(dr["saldo"]), 
+                                              estado_inicial=dr["Estado_inicial"].ToString(),                                             
                                           }).ToList();
                             }
 

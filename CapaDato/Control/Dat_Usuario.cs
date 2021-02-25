@@ -256,7 +256,8 @@ namespace CapaDato.Control
                                           Tienda = (fila["Tienda"] is DBNull) ? string.Empty : (string)(fila["Tienda"]),
                                           Tipo = (fila["Tipo"] is DBNull) ? string.Empty : (string)(fila["Tipo"]),
                                           Numdoc = (fila["Numdoc"] is DBNull) ? string.Empty : (string)(fila["Numdoc"]),
-                                          Fecha = (fila["Fecha"] is DBNull) ? (DateTime?)null : Convert.ToDateTime(fila["Fecha"])
+                                          Fecha = (fila["Fecha"] is DBNull) ? (DateTime?)null : Convert.ToDateTime(fila["Fecha"]),
+                                          Destino = (fila["Destino"] is DBNull) ? string.Empty : (string)(fila["Destino"]),
                                       }
                                     ).ToList();
                         }
