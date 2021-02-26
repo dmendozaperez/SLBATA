@@ -1,0 +1,230 @@
+﻿@{
+    ViewBag.Title = "Lista...";
+    ViewBag.SubTitle = "";
+}
+<style>
+    .table thead {
+        background-color: #5799bf;
+        color: #fff;
+    }
+
+    .boton-xs-td {
+        padding-top: 5px !important;
+        padding-bottom: 5px !important;
+    }
+
+
+    .alignRight {
+        text-align: right;
+        vertical-align: middle;
+    }
+
+    .alignCenter {
+        text-align: center;
+        vertical-align: middle;
+    }
+</style>
+<link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />
+<p class="text-primary"></p>
+<div class="box box-header box-primary">
+    <h3 class="box-title danger" style="color:#9c9c9c;font-weight:bold">Parametro de Busqueda</h3>
+    <div class="row">
+        <div class="col-sm-9">
+
+        </div>
+        <div class="col-sm-3 text-right"">
+            <button id="btnRefrescar" type="button" title="Buscar" class="btn btn-primary">
+                <span class="glyphicon glyphicon-refresh"></span>&nbsp;&nbsp;Refrescar
+            </button>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box-body">
+                <table id="tbTable" class="table table-hover dataTable  table-striped table-responsive">
+                    <thead>
+                        <tr style="background-color:#3d566e; color:#ecf0f1;padding-top: 0px;padding-bottom: 0px;">
+                            <th style="text-align: center;">TIENDA</th>
+                            <th style="text-align: center;">TIPO</th>
+                            <th style="text-align: center;">DESTINO</th>
+                            <th style="text-align: center;">NUM. DOCUMENTO</th>
+                            <th style="text-align: center;">FECHA</th>
+                            <th style="text-align: center;">ACCION</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan='6'>No se encontraron resultados</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="~/Scripts/bootstrap-select.min.js"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+    <script src="~/Scripts/Linkend/linq.min.js"></script>
+    <script>
+        var objTiendaProcess = {
+            Inicio: function () {
+                //debugger
+                //[Inicializamos las variables]
+                this.Pais = "@ViewBag.pais";
+                this.isOkUpdate = true;
+                this.Tienda = @ViewBag.tienda";
+                //[/Inicializamos las variables]
+
+                //[Inicializamos la tabla]
+                objTiendaProcess.grid.get();
+                //[/Inicializamos la tabla]
+
+                /*[Editar fila]*/
+                $('#tbTable tbody').on('click', '#btnEliminar', function (e) {
+                    // debugger
+                    let Cod_EntId = $(this).attr('data-Cod_EntId');
+                    let Numdoc = $(this).attr('data-Numdoc');
+                    //debugger;
+                    swal({
+                        title: "¿Desea eliminar la guía en proceso del XSTORE?",
+                        text: "Recuerde que el sistema xstore se actualizara en unos momentos, y depende del procesos del sftp.",
+                        icon: "warning",
+                        buttons: ["No", "Si"],
+                        dangerMode: true,
+                    }).then((cambiar) => {
+                        if (cambiar) {
+                            //waitingDialog.show("Espere un momento por favor.")
+                            //debugger
+                            var _Ent = function () { return @Html.Raw(Json.Encode(ViewBag.EntTiendaProceso)); }();
+                            _Ent.Cod_EntId = Cod_EntId;
+                            _Ent.Numdoc = Numdoc;
+                            //debugger
+                            $.ajax({
+                                type: "POST",
+                                url: '@Url.Action("getElimanaDoc", "Soporte")',
+                                data: { _Ent : _Ent },
+                                async: false,
+                                success: function (data) {
+                                    //debugger
+                                    data = JSON.parse(data);
+                                    if (data.Success) {
+                                        //debugger
+                                        objTiendaProcess.isOkUpdate = true
+                                        swal({title: "Ok",text: data.Message,icon: "success"}).then((value) => {
+                                            //waitingDialog.hide();
+                                            $('#tbTable').DataTable().ajax.reload(function () { });
+                                        });
+                                    } else {
+                                        swal({ title: "Alerta", text: data.Message, icon: "error" }).then((value) => { });
+                                        waitingDialog.hide();
+                                    }
+                                },
+                                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                                    waitingDialog.hide();
+                                    swal({ title: "Alerta", text: "Error al eliminar.", icon: "error" }).then((value) => { });
+                                }
+                            });
+                        }
+                    })
+
+                })
+                /*[/Editar fila]*/
+
+                //[Refrescar]
+                $("#btnRefrescar").click(function () {
+                    objTiendaProcess.isOkUpdate = true;
+                    objTiendaProcess.Tienda = "@ViewBag.tienda";
+                    objTiendaProcess.general.consultar();
+                })
+                //[/Refrescar]
+            },
+            grid: {
+                get: function () {
+                    waitingDialog.show("Espere por favor...")
+                    $('#tbTable').DataTable({
+                        "language": {
+                            "url": "../Scripts/DataTables/Spanish.json"
+                        },
+                        "bServerSide": true,
+                        "bAutoWidth": false,
+                        "sAjaxSource": '@Url.Action("getTienda_Proceso", "Soporte")',
+                        "fnServerParams": function (aoData) {
+                            aoData.push({ "name": "isOkUpdate", "value": objTiendaProcess.isOkUpdate });
+                            aoData.push({ "name": "tienda", "value": objTiendaProcess.Tienda });
+                        },
+                        "start": 0,
+                        "columnDefs": [{
+                            "orderable": false,
+                            "targets": [0, 1, 2,3,4,5],
+                        }],
+                        "bDeferRender": true,
+                        "retrieve": false,
+                        "destroy": true, // controla el reinicio de la tabla
+                        "lengthChange": false, //Lista por cantidad
+                        "aoColumns": [
+                            { "sName": "Tienda", "mData": "Tienda", "sClass": " " },
+                            { "sName": "Tipo", "mData": "Tipo", "sClass": "alignCenter" },
+                            { "sName": "Destino", "mData": "Destino", "sClass": " " },
+                            { "sName": "Numdoc", "mData": "Numdoc", "sClass": "alignCenter" },
+                            {
+                                "mData": null,
+                                "sClass": "alignCenter",
+                                "render": function (Data, type, full, meta) {
+                                    var Fecha = (full.Fecha == undefined || full.Fecha == null || full.Fecha == 0) ? ' ' : new Date(parseInt(full.Fecha.replace("/Date(", "").replace(")/", ""), 10));
+                                    return (Fecha == undefined || Fecha == null || Fecha == 0) ? ' ' : (Fecha.getDate() < 10 ? "0" + Fecha.getDate() : Fecha.getDate()) + "/" + ((Fecha.getMonth() + 1) < 10 ? "0" + (Fecha.getMonth() + 1) : (Fecha.getMonth() + 1)) + "/" + Fecha.getFullYear();
+                                }
+                            },
+                            {
+                                "mData": null, "sClass": "alignCenter",
+                                "render": function (data, type, full, meta) {
+                                    let disabled = full.Estado_Envio == "SI" ? false : true;
+                                    return objTiendaProcess.grid.btnAccion(full.Cod_EntId, full.Numdoc, disabled);
+                                }
+                            }
+
+                        ],
+                        "fnRowCallback": function (row, data, index) {
+                        },
+                        "drawCallback": function (settings) {
+                            //actualiza el estado cuando ya se ha listado el grid, cuando hace paginación
+                            waitingDialog.hide();
+                            objTiendaProcess.isOkUpdate = false;
+                        },
+                        "initComplete": function (settings, json) {
+                        }
+                    });
+                },
+                cargaTabla: function () {
+                    waitingDialog.show("Espere por favor...")
+                    $('#tbTable').DataTable().ajax.reload(function () {
+                        waitingDialog.hide();
+                    });
+                },
+                btnAccion: function (Cod_EntId, Numdoc, disabled) {
+                    //debugger
+                    var _input = '<button title="Eliminar guía en proceso." id = "btnEliminar" class="btnEditar btn btn-danger"' +
+                                    (disabled == false ? ' disabled = "disabled"  ' : '  ') +
+                                    (disabled == true ? ' data-Cod_EntId = "' + Cod_EntId + '" data-Numdoc = "' + Numdoc + '" ' : '  ') +
+                                 '>' +
+                                    '<span class="glyphicon glyphicon-remove"></span>' +
+                                 '</button>';
+                    return _input;
+                }
+            },
+            general: {
+                consultar: function () {
+                    //debugger
+                    objTiendaProcess.grid.cargaTabla();
+                }
+            }
+        };
+
+        $(document).ready(function () {
+           objTiendaProcess.Inicio();
+        });
+    </script>
+}

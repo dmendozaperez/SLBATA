@@ -22,5 +22,7 @@ namespace CapaEntidad.Control
         public DateTime? Fecha { get; set; }
         public string Cod_EntId { get; set; }
         public String Destino { get; set; }
+        public string Estado_Envio { get; set; }
+        public Decimal UsuarioCrea { get; set; }
     }
 }

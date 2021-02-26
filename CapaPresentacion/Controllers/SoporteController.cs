@@ -1,6 +1,7 @@
 ﻿using CapaDato.Maestros;
 using CapaDato.Reporte;
 using CapaDato.Soporte;
+using CapaDato.Control;
 using CapaEntidad.Control;
 using CapaEntidad.General;
 using CapaEntidad.Maestros;
@@ -30,6 +31,7 @@ namespace CapaPresentacion.Controllers
         private string _session_cupones_retorno = "_session_cupones_retorno";
         private string _session_consulta_guiaerrores = "_session_consulta_guiaerrores"; //aga
         private string _session_LisXCenter_NC = "_session_LisXCenter_NC";
+        private string _session_LisTiendaProceso = "_session_LisTiendaProceso";
 
         private Dat_ListaTienda dat_lista_tienda = new Dat_ListaTienda();
         private Dat_Combo tienda = new Dat_Combo();//gft
@@ -797,6 +799,134 @@ namespace CapaPresentacion.Controllers
             }
 
             var JSON = JsonConvert.SerializeObject(objResult);
+            return Json(JSON, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+
+        #region <>
+        public ActionResult Tienda_Process_XCenter()
+        {
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
+
+            if (_usuario == null)
+            {
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+            }
+            else
+            {
+
+                Ent_Tienda_Proceso EntTiendaProceso = new Ent_Tienda_Proceso();
+                ViewBag.EntTiendaProceso = EntTiendaProceso;
+                ViewBag.tienda = Session["Tienda"];
+                ViewBag.pais = Session["PAIS"];
+                return View();
+            }
+
+        }
+
+        public ActionResult getTienda_Proceso(Ent_jQueryDataTableParams param, string tienda, bool isOkUpdate)
+        {
+            Ent_Tienda_Proceso _Ent = new Ent_Tienda_Proceso();
+            _Ent.Cod_EntId = tienda;
+            Dat_Usuario datUsuario = new Dat_Usuario();
+            JsonRespuesta objResult = new JsonRespuesta();
+            if (isOkUpdate)
+            {
+                Session[_session_LisTiendaProceso] = datUsuario.LisTiendaProceso(_Ent).ToList();
+            }
+
+            IQueryable<Ent_Tienda_Proceso> entDocTrans = ((List<Ent_Tienda_Proceso>)(Session[_session_LisTiendaProceso])).AsQueryable();
+
+            /*verificar si esta null*/
+            if (Session[_session_LisTiendaProceso] == null)
+            {
+                List<Ent_Tienda_Proceso> ListarTienda_Proceso = new List<Ent_Tienda_Proceso>();
+                Session[_session_LisTiendaProceso] = ListarTienda_Proceso;
+            }
+
+            //Manejador de filtros
+            int totalCount = entDocTrans.Count();
+            IEnumerable<Ent_Tienda_Proceso> filteredMembers = entDocTrans;
+            if (!string.IsNullOrEmpty(param.sSearch))
+            {
+                filteredMembers = entDocTrans
+                    .Where(m =>
+                                m.Tipo.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                                m.Numdoc.ToUpper().Contains(param.sSearch.ToUpper())
+                            );
+            }
+
+            //Manejador de ordene
+            var sortIdx = Convert.ToInt32(Request["iSortCol_0"]);
+
+            if (param.iSortingCols > 0)
+            {
+                if (Request["sSortDir_0"].ToString() == "asc")
+                {
+                    switch (sortIdx)
+                    {
+                        case 0: filteredMembers = filteredMembers.OrderBy(o => o.Tipo); break;
+                        case 2: filteredMembers = filteredMembers.OrderBy(o => o.Numdoc); break;
+                    }
+                }
+                else
+                {
+                    switch (sortIdx)
+                    {
+                        case 0: filteredMembers = filteredMembers.OrderByDescending(o => o.Tipo); break;
+                        case 2: filteredMembers = filteredMembers.OrderByDescending(o => o.Numdoc); break;
+                    }
+                }
+            }
+
+            var Result = filteredMembers
+                .Skip(param.iDisplayStart)
+                .Take(param.iDisplayLength);
+
+            //Se devuelven los resultados por json
+            return Json(new
+            {
+                sEcho = param.sEcho,
+                iTotalRecords = totalCount,
+                iTotalDisplayRecords = filteredMembers.Count(),
+                aaData = Result
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult getElimanaDoc(Ent_Tienda_Proceso _Ent)
+        {
+            bool Result = false;
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            Dat_Usuario datUsuario = new Dat_Usuario();
+
+            JsonResponse objResult = new JsonResponse();
+
+            _Ent.UsuarioCrea = _usuario.usu_id;
+            try
+            {
+                Result = datUsuario.EliminarDoc(_Ent);
+                if (Result)
+                {
+                    objResult.Success = true;
+                    objResult.Message = "Se elimino la guía correctamente.";
+                }
+                else
+                {
+                    objResult.Success = false;
+                    objResult.Message = "La guía no se pudo eliminar.";
+                }
+            }
+            catch (Exception ex)
+            {
+                objResult.Success = false;
+                objResult.Message = "Error al eliminar";
+            }
+
+            var JSON = JsonConvert.SerializeObject(objResult);
+
             return Json(JSON, JsonRequestBehavior.AllowGet);
         }
         #endregion
