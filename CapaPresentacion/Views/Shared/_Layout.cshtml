@@ -235,7 +235,7 @@
             var isOk = false;
             var tienda = $("#hTienda").val();
             var pais = $("#hPais").val();
-            var iTiempo = 5; //[PONER EL TIEMPO A SEGUNDOS , EJEMPLO AHORA ESTA EN 20 SEGUNDOS]
+            var iTiempo = 7200; //[PONER EL TIEMPO A SEGUNDOS , EJEMPLO AHORA ESTA EN 20 SEGUNDOS]
 
             var ccMoIni = getCookie('ccMoIni');
 
@@ -259,7 +259,7 @@
                 isOk = true;
                 $.ajax({
                     type: "POST",
-                    url: "/Control/getTienda_Proceso/",
+                    url:  '@Url.Action("getTienda_Proceso", "Control")',// "../Control/getTienda_Proceso/",
                     data: {
                         tienda: tienda,
                         isOkUpdate: isOkUpdate,
@@ -303,7 +303,7 @@
                     },
                     "bServerSide": true,
                     "bAutoWidth": false,
-                    "sAjaxSource": "/Control/getTienda_Proceso/",
+                    "sAjaxSource": '@Url.Action("getTienda_Proceso", "Control")',//"/Control/getTienda_Proceso/",
                     "fnServerParams": function (aoData) {
                         aoData.push({ "name": "isOkUpdate", "value": isOkUpdate });
                         aoData.push({ "name": "isOk", "value": isOk });
@@ -413,7 +413,7 @@
                                         '<tr style="background-color:#3d566e; color:#ecf0f1;padding-top: 0px;padding-bottom: 0px;">' +
                                             '<tr style="background-color:#3d566e; color:#ecf0f1;padding-top: 0px;padding-bottom: 0px;">' +
                                                 '<th style="text-align: center;">TIPO</th>' +
-                                                '<th style="text-align: center;">DESTINO</th>' +                                                
+                                                '<th style="text-align: center;">DESTINO</th>' +
                                                 '<th style="text-align: center;">NUM. DOCUMENTO</th>' +
                                                 '<th style="text-align: center;">FECHA</th>'
                                         '</tr>' +
@@ -428,7 +428,7 @@
             }
             /*[/creamos la tabla para que no tenga conflicto]*/
 
-            setTimeout(function () {                
+            setTimeout(function () {
                 //[Declaramos variables]
                 if (tienda != '' && pais == 'PE')
                 {
@@ -442,11 +442,11 @@
                         /*[carga el modal]*/
                         isOkUpdate = false
                         isOk = false
-                        let options = { "backdrop": "static", keyboard: true };                                
+                        let options = { "backdrop": "static", keyboard: true };
                         $("#Id-box-body-TbTabla").html(HtmlTabla());
                         cargaTabla(isOkUpdate, isOk, tienda);
                         $('#mdlAviso').modal(options);
-                        $('#mdlAviso').modal('show');   
+                        $('#mdlAviso').modal('show');
                         clearInterval(nIntervId);
                        /*[/carga el modal]*/
                     }
@@ -456,8 +456,8 @@
                         $("#Id-box-body-TbTabla").html(HtmlTabla());
                         cargaTabla(isOkUpdate, isOk, tienda);
                         timeAlertInfo();
-                    }                    
-                } 
+                    }
+                }
                 //[/Declaramos variables]
             }, 1000);
 

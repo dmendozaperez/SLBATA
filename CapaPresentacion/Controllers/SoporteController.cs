@@ -820,7 +820,7 @@ namespace CapaPresentacion.Controllers
 
                 Ent_Tienda_Proceso EntTiendaProceso = new Ent_Tienda_Proceso();
                 ViewBag.EntTiendaProceso = EntTiendaProceso;
-                ViewBag.tienda = Session["Tienda"];
+                //ViewBag.tienda = "50143";// Session["Tienda"];
                 ViewBag.pais = Session["PAIS"];
                 return View();
             }
@@ -830,7 +830,7 @@ namespace CapaPresentacion.Controllers
         public ActionResult getTienda_Proceso(Ent_jQueryDataTableParams param, string tienda, bool isOkUpdate)
         {
             Ent_Tienda_Proceso _Ent = new Ent_Tienda_Proceso();
-            _Ent.Cod_EntId = tienda;
+            _Ent.Cod_EntId = "";// tienda;
             Dat_Usuario datUsuario = new Dat_Usuario();
             JsonRespuesta objResult = new JsonRespuesta();
             if (isOkUpdate)

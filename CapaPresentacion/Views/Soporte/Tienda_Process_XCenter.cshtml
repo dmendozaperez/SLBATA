@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Lista...";
+    ViewBag.Title = "Lista de guias de Traspaso ó devolucion con estado en proceso";
     ViewBag.SubTitle = "";
 }
 <style>
@@ -27,7 +27,7 @@
 <link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />
 <p class="text-primary"></p>
 <div class="box box-header box-primary">
-    <h3 class="box-title danger" style="color:#9c9c9c;font-weight:bold">Parametro de Busqueda</h3>
+    <h3 class="box-title danger" style="color:#9c9c9c;font-weight:bold">Eliminar guias del xstore de tipo devolucion o traspaso</h3>
     <div class="row">
         <div class="col-sm-9">
 
@@ -76,7 +76,7 @@
                 //[Inicializamos las variables]
                 this.Pais = "@ViewBag.pais";
                 this.isOkUpdate = true;
-                this.Tienda = @ViewBag.tienda";
+                @*this.Tienda = @ViewBag.tienda";*@
                 //[/Inicializamos las variables]
 
                 //[Inicializamos la tabla]
@@ -97,6 +97,7 @@
                         dangerMode: true,
                     }).then((cambiar) => {
                         if (cambiar) {
+                            waitingDialog.show("Espere por favor...")
                             //waitingDialog.show("Espere un momento por favor.")
                             //debugger
                             var _Ent = function () { return @Html.Raw(Json.Encode(ViewBag.EntTiendaProceso)); }();
@@ -137,7 +138,7 @@
                 //[Refrescar]
                 $("#btnRefrescar").click(function () {
                     objTiendaProcess.isOkUpdate = true;
-                    objTiendaProcess.Tienda = "@ViewBag.tienda";
+                    objTiendaProcess.Tienda ="";// "@ViewBag.tienda";
                     objTiendaProcess.general.consultar();
                 })
                 //[/Refrescar]
@@ -154,7 +155,7 @@
                         "sAjaxSource": '@Url.Action("getTienda_Proceso", "Soporte")',
                         "fnServerParams": function (aoData) {
                             aoData.push({ "name": "isOkUpdate", "value": objTiendaProcess.isOkUpdate });
-                            aoData.push({ "name": "tienda", "value": objTiendaProcess.Tienda });
+                            //aoData.push({ "name": "tienda", "value": objTiendaProcess.Tienda });
                         },
                         "start": 0,
                         "columnDefs": [{
