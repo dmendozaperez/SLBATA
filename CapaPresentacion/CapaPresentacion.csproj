@@ -1886,6 +1886,7 @@
     <Content Include="Views\Soporte\Extender_NC_XCenter.cshtml" />
     <Content Include="Views\Shared\_Layout_Api.cshtml" />
     <None Include="Service References\SunatReniec\Sunat_Reniec_PE.wsdl" />
+    <Content Include="Views\Soporte\Tienda_Process_XCenter.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

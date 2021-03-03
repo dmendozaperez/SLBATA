@@ -65,7 +65,7 @@ namespace CapaPresentacion.Controllers
 
             List<Ent_Analisis_Mov> lista_mov = lista(dwtienda, Convert.ToDateTime(fecini), Convert.ToDateTime(fecfinc), _cod_art, _calidad, talla);
 
-            Int32 inicial = 0; Int32 saldo = 0;
+            Int32 inicial = 0; Int32 saldo = 0;string estado_inicial = "";
             if (lista_mov!=null)
             {
                 
@@ -74,10 +74,12 @@ namespace CapaPresentacion.Controllers
                     Int32 filas = lista_mov.Count();
                     inicial = lista_mov.Where(i => i.item == 1).Sum(s=>s.inicial);
                     saldo = lista_mov.Where(i => i.item== filas).Sum(s=>s.saldo);
+                    estado_inicial = lista_mov[0].estado_inicial.ToString();
                 }
             }
             ViewBag.inicial = inicial;
             ViewBag.saldo = saldo;
+            ViewBag.estado_inicial = estado_inicial;
             return PartialView(lista_mov);
         }
         public List<Ent_Analisis_Mov> lista(string cod_tda, DateTime fec_ini, DateTime fec_fin,

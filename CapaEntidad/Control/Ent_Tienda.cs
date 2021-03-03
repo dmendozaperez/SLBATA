@@ -21,5 +21,8 @@ namespace CapaEntidad.Control
         public string Numdoc { get; set; }
         public DateTime? Fecha { get; set; }
         public string Cod_EntId { get; set; }
+        public String Destino { get; set; }
+        public string Estado_Envio { get; set; }
+        public Decimal UsuarioCrea { get; set; }
     }
 }

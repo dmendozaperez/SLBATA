@@ -18,6 +18,6 @@ namespace CapaEntidad.Transac
         public Int32 ingreso { get; set; }
         public Int32 salida { get; set; }
         public Int32 saldo { get; set; }
-
+        public string estado_inicial { get; set; }
     }
 }

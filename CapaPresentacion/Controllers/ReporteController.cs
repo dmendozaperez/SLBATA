@@ -1160,14 +1160,46 @@ namespace CapaPresentacion.Controllers
                     pais = Session["PAIS"].ToString();
                 }
 
+                List<Ent_Combo_DisCadTda> combo_discadtda = discattda.list_dis_cad_tda(pais);
                 if (Session["Tienda"] != null)
                 {
-                    ViewBag.Tienda = datCbo.get_ListaTiendaXstoreActivo(Session["Tienda"].ToString(), pais);
+                    combo_discadtda = combo_discadtda.Where(t => t.cod_entid == Session["Tienda"].ToString()).ToList();
                 }
-                else
-                {
-                    ViewBag.Tienda = datCbo.get_ListaTiendaXstoreActivo("", pais);
-                }
+
+                ViewBag.Distrito = combo_distrito(combo_discadtda);
+                ViewBag.DisCadTda = combo_discadtda;
+
+                Session[_session_dis_cad_tda] = combo_discadtda;
+
+
+
+                List<Ent_Combo_DisCadTda> list_cad = new List<Ent_Combo_DisCadTda>();
+                Ent_Combo_DisCadTda entCombo_cad = new Ent_Combo_DisCadTda();
+                entCombo_cad.cod_cadena = "-1";
+                entCombo_cad.des_cadena = "----Todos----";
+                list_cad.Add(entCombo_cad);
+
+                List<Ent_Combo_DisCadTda> list_tda = new List<Ent_Combo_DisCadTda>();
+                Ent_Combo_DisCadTda entCombo_tda = new Ent_Combo_DisCadTda();
+                entCombo_tda.cod_entid = "-1";
+                entCombo_tda.des_entid = "----Todos----";
+                list_tda.Add(entCombo_tda);
+
+
+
+
+
+                ViewBag.Cadena = list_cad;
+                ViewBag.Tienda = list_tda;
+
+                //if (Session["Tienda"] != null)
+                //{
+                //    ViewBag.Tienda = datCbo.get_ListaTiendaXstoreActivo(Session["Tienda"].ToString(), pais);
+                //}
+                //else
+                //{
+                //    ViewBag.Tienda = datCbo.get_ListaTiendaXstoreActivo("", pais);
+                //}
 
                 ViewBag.Tipo = datCbo.get_ListaTipoCategoria();
 
@@ -1205,10 +1237,13 @@ namespace CapaPresentacion.Controllers
 
         }
 
-        public PartialViewResult ListaGuiaTienda(string dwtienda, string dwTipo, string[] dwGrupo, string[] dwCate, string txtarticulo, string dwCalidad, string[] dwEst, string[] dwTipoCon, string txtGuia)
+        public PartialViewResult ListaGuiaTienda(string[] dwtda, string dwTipo, string[] dwGrupo, string[] dwCate, string txtarticulo, string dwCalidad, string[] dwEst, string[] dwTipoCon, string txtGuia)
         {
             dwTipo = dwTipo == "01" ? "S" : "R";
             txtarticulo = txtarticulo.Trim();
+
+            dwtda = dwtda == null ? new string[] { "-1" } : dwtda;
+
             dwGrupo = dwGrupo == null ? new string[] { "-1" } : dwGrupo; // dwGrupo == "0" ? "-1" : dwGrupo;
             dwCate = dwCate == null ? new string[] { "-1" } : dwCate;// dwCate == "0" ? "-1" : dwCate;
             txtarticulo = txtarticulo == "" ? "-1" : txtarticulo;
@@ -1216,7 +1251,8 @@ namespace CapaPresentacion.Controllers
             dwEst = dwEst == null ? new string[] { "0" } : dwEst;
             dwTipoCon = dwTipoCon == null ? new string[] { "0" } : dwTipoCon;
 
-            
+            string _dwtda = String.Join(",", dwtda);
+            _dwtda = _dwtda == "0" ? "-1" : _dwtda;
 
             string _dwGrupo = String.Join(",", dwGrupo);
             _dwGrupo = _dwGrupo == "0" ? "-1" : _dwGrupo;
@@ -1224,7 +1260,9 @@ namespace CapaPresentacion.Controllers
             string _dwCate = String.Join(",", dwCate);
             _dwCate = _dwCate == "0" ? "-1" : _dwCate;
 
-            Models_GuiaConten model_vent_comp = listaGuia(dwtienda, dwTipo, _dwGrupo, _dwCate, txtarticulo, dwCalidad, String.Join(",",dwEst),String.Join(",",dwTipoCon) , txtGuia);
+
+
+            Models_GuiaConten model_vent_comp = listaGuia(_dwtda, dwTipo, _dwGrupo, _dwCate, txtarticulo, dwCalidad, String.Join(",",dwEst),String.Join(",",dwTipoCon) , txtGuia);
 
             string total_pares = "0";
             string total_soles_pares = "0";
@@ -1256,7 +1294,18 @@ namespace CapaPresentacion.Controllers
 
             return model_vent_comp;
         }
+        [HttpGet]
+        public FileContentResult ExportToExcel_Prescripcion()
+        {
+            List<Models_Guia> listpres = (List<Models_Guia>)Session[_session_listguia_private];
 
+            if (listpres == null) listpres = new List<Models_Guia>();
+
+            //List<Technology> technologies = StaticData.Technologies;
+            string[] columns = { "TIENDA_ORI", "TIENDA_DES", "NUMERO", "FECHA", "PARES", "VCALZADO", "NOCALZADO", "VNOCALZADO", "ESTADO" };
+            byte[] filecontent = ExcelExportHelper.ExportExcel(listpres, "CONSULTA DE PRESCRIPCIONES A LA FECHA " + DateTime.Today.ToString("dd/MM/yyyy"), true, columns);
+            return File(filecontent, ExcelExportHelper.ExcelContentType, "Prescripcion01.xlsx");
+        }
         public ActionResult getGuias(Ent_jQueryDataTableParams param)
         {
 
