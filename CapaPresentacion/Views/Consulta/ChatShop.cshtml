@@ -354,7 +354,7 @@
 
         if (Flag == '0') {
             toastr.info("El usuario de tienda no esta habilitado para utilizar esta opción", "Información");
-            
+
         }
         if (Flag == '1') {
             toastr.info("No hay datos para mostrar", "Información");
@@ -438,8 +438,7 @@
               type: "POST",
               data: objGuiaError,
               success: function (data, textStatus, XMLHttpRequest) {
-                  waitingDialog.hide();
-
+                  //waitingDialog.hide();
 
                   if ((data.Success).toString() == "true") {
                       if (data.Message == "1") {
@@ -476,7 +475,6 @@
               error: function (xhr) {
                   waitingDialog.hide();
                   toastr.error("No se realizó el llamado de courier", "Error");
-                  waitingDialog.hide();
               }
 
           })
@@ -499,7 +497,7 @@
         //alert(Tienda);
         //alert(CodInterno);
         //alert(CodSeguimiento);
-       
+
         if ((Estado != "FACTURADO")) {
             var _cliente = Cliente;
             var _Tienda = Tienda
@@ -638,8 +636,8 @@
             //    waitingDialog.hide();
             //}
         } else {
-                toastr.info("Falta generar el código Guía de Courier o Actualizar el pedido", "Información");
-                waitingDialog.hide();
+            toastr.info("Falta generar el código Guía de Courier o Actualizar el pedido", "Información");
+            waitingDialog.hide();
 
         }
     }

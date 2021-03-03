@@ -75,7 +75,7 @@
     {
         <div class="row">
             <div class="col-sm-3">
-                <label for="fecini">Fec. Ini</label>
+                <label for="fecini">Fecha Inicio</label>
                 <div class="form-group">
                     <div id="datepickerini" class="input-group date" data-date-format="dd-mm-yyyy">
                         <input id="fecini" name="fecini" value="" class="form-control custom-input" placeholder="dd-mm-yyyy" type="text" />
@@ -84,7 +84,7 @@
                 </div>
             </div>
             <div class="col-sm-3">
-                <label for="fecfin">Fec. Fin</label>
+                <label for="fecfin">Fecha Final</label>
                 <div class="form-group">
                     <div id="datepickerfin" class="input-group date" data-date-format="dd-mm-yyyy">
                         <input id="fecfin" name="fecfin" value="" class="form-control" placeholder="dd-mm-yyyy" type="text" />
@@ -92,11 +92,16 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-3" style="padding-top: 20px;">
                 <div class="form-group">
                     <label for="buscar" style="color:transparent">Buscar</label>
                     <button id="buscar" name="buscar" class="btn btn-primary" onclick="" type="submit"><span class="glyphicon glyphicon-search"></span>&nbsp;Buscar</button>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a id="EXCEL" name="excel" class="btn btn-success" href="@Url.Action("DetallePrestashop","Ecommerce")"><span class="glyphicon glyphicon-export"></span>&nbsp;Excel</a>
                 </div>
+                @*<div class="form-group">
+
+                    </div>*@
             </div>
         </div>
 
@@ -145,5 +150,3 @@
         //$('#dwusuario').selectpicker('refresh');
     });
 </script>
-
-
