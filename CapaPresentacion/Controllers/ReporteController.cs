@@ -1776,17 +1776,17 @@ namespace CapaPresentacion.Controllers
 
         public ActionResult LLegada_Mercaderia()
         {
-            //Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
-            //string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
-            //string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
-            //string return_view = actionName + "|" + controllerName;
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
 
-            //if (_usuario == null)
-            //{
-            //    return RedirectToAction("Login", "Control", new { returnUrl = return_view });
-            //}
-            //else
-            //{
+            if (_usuario == null)
+            {
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+            }
+            else
+            {
                 ViewBag.Title = "Reporte Vendedor";
 
                 string pais = "PE";
@@ -1836,7 +1836,7 @@ namespace CapaPresentacion.Controllers
                 ViewBag.EntLLegMercaderia = EntLLegMercaderia;
 
                 return View();
-            //}
+            }
         }
 
         public ActionResult ShowGenericReportLLegMercaderia(string cod_tda, string FEC_INI, string FEC_FIN, string Concepto)
