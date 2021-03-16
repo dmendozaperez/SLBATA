@@ -10,7 +10,7 @@
 namespace CapaPresentacion.AspNetForms {
     
     
-    public partial class Vendedor {
+    public partial class LLegada_Mercaderia {
         
         /// <summary>
         /// Control form1.
@@ -28,6 +28,6 @@ namespace CapaPresentacion.AspNetForms {
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::CrystalDecisions.Web.CrystalReportViewer crv_vendedor;
+        protected global::CrystalDecisions.Web.CrystalReportViewer crv_LlegMercaderia;
     }
 }

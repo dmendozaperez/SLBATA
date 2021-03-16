@@ -47,4 +47,21 @@ namespace Models.Crystal.Reporte
         public decimal TICKET_PROM_2 { get; set; }
     }
    
+    public class Models_LLegMercaderia
+    {
+        public string SEMANA_STR { get; set; }
+        public string TIENDA_ORI { get; set; }
+        public string TIENDA { get; set; }
+        public string TIPO { get; set; }
+        public string NUMERO { get; set; }
+        public DateTime FECHA { get; set; }
+        public string TRANSPORTISTA { get; set; }
+        public DateTime FECHA_RECEPCION_FISICA { get; set; }
+        public string HORA_RECEPCION_FISICA { get; set; }
+        //Campos adicionales
+        public DateTime FEC_INI { get; set; }
+        public DateTime FEC_FIN { get; set; }
+        public string CodTda { get; set; }
+        public string Concepto { get; set; }
+    }
 }
