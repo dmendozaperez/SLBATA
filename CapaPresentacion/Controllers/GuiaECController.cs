@@ -37,7 +37,7 @@ namespace CapaPresentacion.Controllers
         
 
         [HttpPost]
-        public ActionResult ShowGenericReport( string cod_venta)
+        public ActionResult ShowGenericReport( string cod_venta, string cod_TdaId)
         {
             //grupo = "0";categoria = "0";subcategoria = "0";estado = "0";
             //   tipoReport = "1";
@@ -47,8 +47,8 @@ namespace CapaPresentacion.Controllers
 
             //string tipo_rep = "1";
 
-            List<ECommerce> model_guia = pl.getGuia_EC(cod_venta);
-            List<DetallesECommerce> model_detguia = pl.get_DetGuia_EC(cod_venta);
+            List<ECommerce> model_guia = pl.getGuia_EC(cod_venta, cod_TdaId);
+            List<DetallesECommerce> model_detguia = pl.get_DetGuia_EC(cod_venta, cod_TdaId);
 
             this.HttpContext.Session["rptSource"] = model_guia;
             this.HttpContext.Session["rptSource_sub"] = model_detguia;

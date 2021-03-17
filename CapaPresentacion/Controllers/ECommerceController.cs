@@ -89,13 +89,17 @@ namespace CapaPresentacion.Controllers
             //}
         }
 
-        public ActionResult GuiaEC(string ven_id)
+        public ActionResult GuiaEC(string ven_id, string cod_TdaId)
         {
+            //Dat_VTEX action_vtex = null;
+            //action_vtex = new Dat_VTEX();
+            //// ENDPOINT PARA ACTUALIZAR ESTADO A FACTURADO EN VTEX
+            //action_vtex.PraparandoTrama_Actualizar_Estado_Invoice(ven_id);
             return View();
             ; //RedirectToAction("GuiaEC", "ECommerce");
         }
 
-        public ActionResult Envia_Courier(string ven_id)
+        public ActionResult Envia_Courier(string ven_id, string cod_TdaId)
         {
             //Basico.act_presta_urbano(grabar_numerodoc, ref _error, ref _cod_courier)
             Dat_PrestaShop action_presta = null;
@@ -112,15 +116,18 @@ namespace CapaPresentacion.Controllers
                 data_urbano = new Dat_Urbano();
                 //action_presta.get_guia_presta_urba(ven_id, ref guia_presta, ref guia_courier, ref name_carrier);
 
-                action_presta.get_carrier(ven_id, ref guia_presta, ref name_carrier);
+                action_presta.get_carrier(ven_id, cod_TdaId, ref guia_presta, ref name_carrier);
                 string track_chazki;
 
                 if (guia_presta.Trim().Length > 0)
                 {
-                    UpdaEstado updateestado = new UpdaEstado();
-                    Boolean valida = updateestado.ActualizarReference(guia_presta);
+                    //----INICIO---SB-VTEX2020---20201119_12:02----
+                    // YA NO SE ACTUALIZA A PRESTASHOP
+                    //UpdaEstado updateestado = new UpdaEstado();
+                    //Boolean valida = updateestado.ActualizarReference(guia_presta);
+                    //----FIN---SB-VTEX2020---20201119_12:02----
 
-                    //Boolean valida = true;
+                    Boolean valida = true;
                     if (valida)
                     {
                         data_Cexpress = new Dat_Cexpress();
@@ -142,17 +149,19 @@ namespace CapaPresentacion.Controllers
                             if (name_carrier == "Comercio Xpress")
                             {
                                 //Ent_Cexpress ent_Cexpress = envia2.sendCexpress(ven_id, ref nroserv);
-                                action_presta.updestafac_prestashop(guia_presta);
+                                //action_presta.updestafac_prestashop(guia_presta);
+                                action_presta.updestafac_prestashop(guia_presta, cod_TdaId);
                                 data_Cexpress.update_guia(guia_presta, nroserv);
                                 guia_courier = nroserv;
                                 break;
                             }
                             else if (name_carrier.Contains("Chazki"))
                             {
-                                string nrodelivery_chazki = Envia_Courier_chazki(ven_id); 
+                                string nrodelivery_chazki = Envia_Courier_Chazki(ven_id, cod_TdaId); 
                                 if (nrodelivery_chazki != "")
                                 {
-                                    action_presta.updestafac_prestashop(guia_presta);
+                                    //action_presta.updestafac_prestashop(guia_presta);
+                                    action_presta.updestafac_prestashop(guia_presta, cod_TdaId);
                                     data_Cexpress.update_guia(guia_presta, ven_id);//se registra el  nro de BOL para codigo de seguimiento
                                     guia_courier = ven_id;
                                     break;
@@ -160,7 +169,7 @@ namespace CapaPresentacion.Controllers
                             }
                             else if (name_carrier.Contains("Savar"))
                             {
-                                string nrodelivery_savar = Envia_Courier_Savar(ven_id);
+                                string nrodelivery_savar = Envia_Courier_Savar(ven_id, cod_TdaId);
                                 data_Cexpress.update_guia(guia_presta, nrodelivery_savar);
                                 guia_courier = nrodelivery_savar;
                                 break;
@@ -168,13 +177,13 @@ namespace CapaPresentacion.Controllers
                             }
                             else
                             {
-                                Ent_Urbano ent_urbano = envia.sendUrbano(ven_id);
+                                Ent_Urbano ent_urbano = envia.sendUrbano(ven_id, cod_TdaId);
                                 if (ent_urbano.error == "1")
                                 {
                                     if (ent_urbano.guia.Trim().Length > 0)
                                     {
-                                        action_presta.updestafac_prestashop(guia_presta);
-                                        data_urbano.update_guia(guia_presta, ent_urbano.guia);
+                                        action_presta.updestafac_prestashop(guia_presta, cod_TdaId);
+                                        data_urbano.update_guia(guia_presta, ent_urbano.guia, cod_TdaId);
                                         guia_courier = ent_urbano.guia;
                                         break;
                                     }
@@ -184,15 +193,18 @@ namespace CapaPresentacion.Controllers
                         //guia_courier=
                         //action_presta.get_guia_presta_urba(ven_id, ref guia_presta, ref guia_courier);
 
-                        ActTracking enviaguia_presta = new ActTracking();
-                        string[] valida_prest;
+                        //----INICIO---SB-VTEX2020---20201119_12:02----
+                        // YA NO SE ACTUALIZA A PRESTASHOP
+                        //ActTracking enviaguia_presta = new ActTracking();
+                        //string[] valida_prest = enviaguia_presta.ActualizaTrackin(guia_presta, guia_urb);
+                        //----FIN---SB-VTEX2020---20201119_12:02----
 
-                        valida_prest = enviaguia_presta.ActualizaTrackin(guia_presta, guia_courier);
+                        string[] valida_prest = { "1" };
 
                         /*el valor 1 quiere decir que actualizo prestashop*/
                         if (valida_prest[0] == "1" && guia_courier.ToString() != "")
                         {
-                            data_urbano.updprestashopGuia(guia_presta, guia_courier);
+                            data_urbano.updprestashopGuia(guia_presta, guia_courier, cod_TdaId);
                         }
 
                         //cod_courier = guia_courier;
@@ -210,14 +222,14 @@ namespace CapaPresentacion.Controllers
             return Json(oJRespuesta, JsonRequestBehavior.AllowGet);
         }
         /*metodo para savar - ecommerce*/
-        public string Envia_Courier_Savar(string ven_id)
+        public string Envia_Courier_Savar(string ven_id,string cod_TdaId)
         {
             DataTable dtApi_savar = new DataTable();
             EnviarPedidoSavar objD_savar = new EnviarPedidoSavar();
             List<Ent_Savar> objList_savar = new List<Ent_Savar>();
             Ent_Savar objE_savar = new Ent_Savar();
 
-            dtApi_savar = objD_savar.get_Ventas_por_Savar(ven_id);
+            dtApi_savar = objD_savar.get_Ventas_por_Savar(ven_id, cod_TdaId);
             objE_savar.CodPaquete = dtApi_savar.Rows[0]["CodPaquete"].ToString();
             objE_savar.NomRemitente = dtApi_savar.Rows[0]["NomRemitente"].ToString();
             objE_savar.DireccionRemitente = dtApi_savar.Rows[0]["DireccionRemitente"].ToString();
@@ -276,6 +288,9 @@ namespace CapaPresentacion.Controllers
                         var request = client.PostAsync(dtConexion.Rows[0]["Url"].ToString(), jsonContent);
 
                         string response = request.Result.Content.ReadAsStringAsync().Result;
+                        //string rpta;
+                        //rpta = JsonConvert.DeserializeObject<Response_Registro>(response).ToString();
+
                         string codseguimiento = Regex.Replace(response, @"[^A-Za-z0-9ñÑ ]+", "");
 
                         if (objE_savar.CodPaquete == codseguimiento)
@@ -291,7 +306,6 @@ namespace CapaPresentacion.Controllers
             }
             catch (Exception ex)
             {
-
                 retorno = "";
             }
 
@@ -300,13 +314,13 @@ namespace CapaPresentacion.Controllers
 
 
         /*metodo para chazki - ecommerce*/
-        public string Envia_Courier_chazki(string ven_id)
+        public string Envia_Courier_Chazki(string ven_id, string cod_TdaId)
         {
             string retorno = "";
             try
             {
                 /*delivery CHASKI*/
-                Ecommerce_Chazki cvCzk = selectVenta_Chazki(ven_id);
+                Ecommerce_Chazki cvCzk = selectVenta_Chazki(ven_id, cod_TdaId);
                 List<Ent_Chazki_E> list_chazki = new List<Ent_Chazki_E>();
                 if (cvCzk.informacionTiendaEnvio != null)
                 {
@@ -439,7 +453,7 @@ namespace CapaPresentacion.Controllers
             return retorno;
         }
 
-        private Ecommerce_Chazki selectVenta_Chazki(string ven_id)
+        private Ecommerce_Chazki selectVenta_Chazki(string ven_id,string cod_TdaId)
         {
             Ecommerce_Chazki ventas = new Ecommerce_Chazki();
 
@@ -447,7 +461,7 @@ namespace CapaPresentacion.Controllers
 
             //Chazki objModelo = new Chazki();
 
-            Ent_Ecommerce_Chazki ent_ventas = datos.get_Ventas_por_Chazki(ven_id);
+            Ent_Ecommerce_Chazki ent_ventas = datos.get_Ventas_por_Chazki(ven_id, cod_TdaId);
 
             if (ent_ventas != null)
             {
