@@ -270,5 +270,58 @@ namespace Data.Crystal.Reporte
             }
             return dt;
         }
+
+        public List<Models_LLegMercaderia> get_reporteLLegMercaderia(Models_LLegMercaderia _Ent)
+        {
+            string sqlquery = "USP_XSTORE_REPORTE_LLEGADA_MERCADERIA_TIENDA";
+            List<Models_LLegMercaderia> Lista = null;
+            try
+            {
+                if (_Ent.CodTda.Substring(0, 1).ToString() == "0") _Ent.CodTda = "0";
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexionPosPeru))
+                {
+                    try
+                    {
+                        using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                        {
+                            cmd.CommandTimeout = 0;
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.AddWithValue("@codtda", _Ent.CodTda);
+                            cmd.Parameters.AddWithValue("@FEC_INI", _Ent.FEC_INI);
+                            cmd.Parameters.AddWithValue("@FEC_FIN", _Ent.FEC_FIN);
+                            cmd.Parameters.AddWithValue("@TIPO", _Ent.Concepto);
+                            using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                            {
+                                DataSet ds = new DataSet();
+                                da.Fill(ds);
+                                Lista = new List<Models_LLegMercaderia>();
+                                Lista = (from DataRow dr in ds.Tables[0].Rows
+                                          select new Models_LLegMercaderia()
+                                          {
+                                              SEMANA_STR = dr["SEMANA_STR"].ToString(),
+                                              TIENDA_ORI = dr["TIENDA_ORI"].ToString(),
+                                              TIENDA = dr["TIENDA"].ToString(),
+                                              TIPO = dr["TIPO"].ToString(),
+                                              NUMERO = dr["NUMERO"].ToString(),
+                                              FECHA = Convert.ToDateTime(dr["FECHA"].ToString()),
+                                              TRANSPORTISTA = dr["TRANSPORTISTA"].ToString(),
+                                              FECHA_RECEPCION_FISICA = Convert.ToDateTime(dr["FECHA_RECEPCION_FISICA"].ToString()),
+                                              HORA_RECEPCION_FISICA = dr["HORA_RECEPCION_FISICA"].ToString()
+                                          }).ToList();
+                            }
+                        }
+                    }
+                    catch (Exception exc)
+                    {
+                        Lista = new List<Models_LLegMercaderia>();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                Lista = new List<Models_LLegMercaderia>();
+            }
+            return Lista;
+        }
     }
 }
