@@ -126,6 +126,7 @@
     <Compile Include="Transac\Dat_Documentos_Tda.cs" />
     <Compile Include="ValeCompra\Dat_Cliente.cs" />
     <Compile Include="ValeCompra\Dat_ValeCompra.cs" />
+    <Compile Include="VTEX\Dat_VTEX.cs" />
     <Compile Include="XstoreTda\Dat_XCenter.cs" />
     <Compile Include="XstoreTda\Dat_XstoreTienda.cs" />
   </ItemGroup>

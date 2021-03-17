@@ -193,6 +193,10 @@
       <HintPath>..\packages\Syncfusion.Compression.Base.16.4.0.48\lib\net45\Syncfusion.Compression.Base.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Syncfusion.Compression.Portable, Version=18.4451.0.46, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.Xamarin.Compression.18.4.0.46\lib\portable-win+net45+wp80+win81+wpa81\Syncfusion.Compression.Portable.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Syncfusion.Licensing, Version=16.2450.0.41, Culture=neutral, PublicKeyToken=632609b4d040f6b4, processorArchitecture=MSIL">
       <HintPath>..\packages\Syncfusion.Licensing.16.2.0.41\lib\net45\Syncfusion.Licensing.dll</HintPath>
       <Private>True</Private>
@@ -374,6 +378,13 @@
     <Compile Include="AspNetForms\KeyCategoryPerformance.aspx.designer.cs">
       <DependentUpon>KeyCategoryPerformance.aspx</DependentUpon>
     </Compile>
+    <Compile Include="AspNetForms\LLegada_Mercaderia.aspx.cs">
+      <DependentUpon>LLegada_Mercaderia.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AspNetForms\LLegada_Mercaderia.aspx.designer.cs">
+      <DependentUpon>LLegada_Mercaderia.aspx</DependentUpon>
+    </Compile>
     <Compile Include="AspNetForms\ReporteObs.aspx.cs">
       <DependentUpon>ReporteObs.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -535,6 +546,12 @@
       <DependentUpon>KeyCategoryPerformanceWB.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="RptsCrystal\LlegMercaderia.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LlegMercaderia.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="RptsCrystal\PlanillaDet.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -589,12 +606,6 @@
       <DependentUpon>TablaProsperidad_Bata.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="RptsCrystal\Vendedor.cs">
-      <DependentUpon>Vendedor.rpt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="RptsCrystal\Planilla.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -605,6 +616,12 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ReportArtSinMov.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RptsCrystal\Vendedor.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Vendedor.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="RptsCrystal\VentasEcommerce.cs">
@@ -656,6 +673,7 @@
     <Content Include="AspNetForms\InventarioMovimiento.aspx" />
     <Content Include="AspNetForms\InventarioPlanilla.aspx" />
     <Content Include="AspNetForms\KeyCategoryPerformance.aspx" />
+    <Content Include="AspNetForms\LLegada_Mercaderia.aspx" />
     <Content Include="AspNetForms\ReporteObs.aspx" />
     <Content Include="AspNetForms\RendimientoxCateg.aspx" />
     <Content Include="AspNetForms\TabProsp.aspx" />
@@ -1887,6 +1905,7 @@
     <Content Include="Views\Shared\_Layout_Api.cshtml" />
     <None Include="Service References\SunatReniec\Sunat_Reniec_PE.wsdl" />
     <Content Include="Views\Soporte\Tienda_Process_XCenter.cshtml" />
+    <Content Include="Views\Reporte\LLegada_Mercaderia.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1950,6 +1969,10 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>KeyCategoryPerformanceWB.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="RptsCrystal\LlegMercaderia.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>LlegMercaderia.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="RptsCrystal\PlanillaDet.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>PlanillaDet.cs</LastGenOutput>
@@ -1986,10 +2009,6 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>TablaProsperidad_Bata.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="RptsCrystal\Vendedor.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>Vendedor1.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="RptsCrystal\Planilla.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>Planilla.cs</LastGenOutput>
@@ -1997,6 +2016,10 @@
     <EmbeddedResource Include="RptsCrystal\ReportArtSinMov.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>ReportArtSinMov.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RptsCrystal\Vendedor.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Vendedor.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="RptsCrystal\VentasEcommerce.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

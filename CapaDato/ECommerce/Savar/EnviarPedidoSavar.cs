@@ -12,9 +12,9 @@ namespace CapaDato.ECommerce.Savar
 {
     public class EnviarPedidoSavar
     {
-        public DataTable get_Ventas_por_Savar(string ven_id)
+        public DataTable get_Ventas_por_Savar(string ven_id, string cod_TdaId)
         {
-            string sqlquery = "USP_ECOMMERCE_LISTA_SAVAR";
+            string sqlquery = "USP_ECOMMERCE_LISTA_SAVAR_split";
             DataTable dtSavar = new DataTable();
 
             try
@@ -28,6 +28,7 @@ namespace CapaDato.ECommerce.Savar
                             cmd.CommandTimeout = 0;
                             cmd.CommandType = CommandType.StoredProcedure;
                             cmd.Parameters.AddWithValue("@ven_id", ven_id);
+                            cmd.Parameters.AddWithValue("@ven_tda", cod_TdaId);
 
                             SqlDataAdapter da = new SqlDataAdapter(cmd);
                             DataSet ds = new DataSet();

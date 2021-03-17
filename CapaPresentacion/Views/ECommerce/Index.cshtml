@@ -81,7 +81,7 @@
         //$('.select2').select2();
     });
 
-    function EnviaCourier(ven_id, seguimiento) {
+    function EnviaCourier(ven_id, seguimiento, cod_TdaId) {
 
         if (seguimiento != null && seguimiento != '') {
             toastr.info("El pedido ya ha sido enviado anteriormente.", "Información");
@@ -92,6 +92,7 @@
             var objCourier = {
                 ven_id: ven_id,
                 seguimiento: seguimiento,
+                cod_TdaId: cod_TdaId
             }
 
             $.ajax
@@ -200,6 +201,11 @@
 @using (Html.BeginForm("Index", "ECommerce", FormMethod.Post, new { @id = "Formulario" }))
 {
     @Html.Hidden("ven_id", null, new { @id = "ven_id" })
+
+    @*----INICIO---SB-VTEX2020---20201119_12:02--*@
+    @Html.Hidden("cod_TdaId", null, new { @id = "cod_TdaId" })
+    @*----FIN---SB-VTEX2020---20201119_12:02----*@
+
     @*@Html.Hidden("vtA", null,new { @id= "vtA" })
         @Html.Hidden("vtB", null, new { @id = "vtB" })
         @Html.Hidden("vtEstados", null, new { @id = "vtEstados" })
@@ -326,7 +332,7 @@
                                     <td><a href="http://app.urbano.com.pe/plugin/etracking/etracking/?guia=@row.codSeguimiento" target="_blank">@row.codSeguimiento</a></td>
                                 }
 
-                                @if (row.nom_courier.Contains("iend"))
+                                @if (row.nom_courier.Contains("iend") || row.nom_courier.Contains("pickup"))
                                 {
                                     <td></td>       }
                                 else
@@ -334,7 +340,7 @@
                                     <td width="70px" class="p-0">
                                         <ul class="list-inline" style="margin-bottom: 0px;">
                                             <li>
-                                                <a class="btn btn-sm btn-primary" onclick="EnviaCourier('@row.SerieDoc@row.NroDoc', '@row.codSeguimiento');"><span class="glyphicon glyphicon-list"></span></a>
+                                                <a class="btn btn-sm btn-primary" onclick="EnviaCourier('@row.SerieDoc@row.NroDoc', '@row.codSeguimiento','@row.cod_entid');"><span class="glyphicon glyphicon-list"></span></a>
                                             </li>
                                         </ul>
                                     </td>
@@ -342,7 +348,7 @@
                                 <td width="70px" class="p-0">
                                     <ul class="list-inline" style="margin-bottom: 0px;">
                                         <li>
-                                            <a class="btn btn-sm btn-primary" href="~/ECommerce/GuiaEC?ven_id=@row.SerieDoc@row.NroDoc" target="popup" onClick="window.open(this.href, this.target); return false;"><span class="glyphicon glyphicon-list"></span></a>
+                                            <a class="btn btn-sm btn-primary" href="~/ECommerce/GuiaEC?ven_id=@row.SerieDoc@row.NroDoc&cod_TdaId=@row.cod_entid" target="popup" onClick="window.open(this.href, this.target); return false;"><span class="glyphicon glyphicon-list"></span></a>
                                         </li>
                                     </ul>
                                 </td>

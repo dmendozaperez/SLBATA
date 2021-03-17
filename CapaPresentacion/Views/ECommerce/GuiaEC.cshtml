@@ -92,6 +92,9 @@
         function MostrarReporte(e) {
 
             var venta = getParameterByName("ven_id");
+            @* ----INICIO--- SB - VTEX2020-- - 20201119_12: 02-- *@
+            var cod_TdaId = getParameterByName("cod_TdaId");
+            @* ----FIN--- SB - VTEX2020-- - 20201119_12: 02-- *@
 
             venta = venta.toString();
 
@@ -104,7 +107,7 @@
                     dataType: 'json',
                     type: 'POST',
                     //dataType: "html",
-                    data: { cod_venta: venta },
+                    data: { cod_venta: venta, cod_TdaId: cod_TdaId  },
                     //cache: false,
                     //async: false,
                     //dataType: "html",
