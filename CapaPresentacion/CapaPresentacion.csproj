@@ -451,6 +451,7 @@
     <Compile Include="Controllers\InventarioController.cs" />
     <Compile Include="Controllers\LoginIntermedioController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
+    <Compile Include="Controllers\NPSController.cs" />
     <Compile Include="Controllers\OrceController.cs" />
     <Compile Include="Controllers\Orce_ExcludController.cs" />
     <Compile Include="Controllers\ReporteController.cs" />
@@ -1722,7 +1723,6 @@
     </Content>
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
@@ -1902,6 +1902,10 @@
     <None Include="Service References\SunatReniec\Sunat_Reniec_PE.wsdl" />
     <Content Include="Views\Soporte\Tienda_Process_XCenter.cshtml" />
     <Content Include="Views\Reporte\LLegada_Mercaderia.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Shared\_Layout_NPS.cshtml" />
+    <Content Include="Views\NPS\Index.cshtml" />
+    <Content Include="Views\NPS\Finalizado.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
