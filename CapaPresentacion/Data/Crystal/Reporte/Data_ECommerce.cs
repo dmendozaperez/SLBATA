@@ -16,7 +16,7 @@ namespace Data.Crystal.Reporte
 {
     public class Data_Ecommerce
     {
-        public List<ECommerce> getGuia_EC(string venta_id)
+        public List<ECommerce> getGuia_EC(string venta_id, string cod_TdaId)
         {
             string sqlquery = "USP_REP_GUIA_ECOMMERCE";
             List<ECommerce> result = null;
@@ -34,6 +34,9 @@ namespace Data.Crystal.Reporte
                             cmd.CommandTimeout = 0;
                             cmd.CommandType = CommandType.StoredProcedure;
                             cmd.Parameters.AddWithValue("@ven_id", venta_id);
+                            //----INICIO--- SB - VTEX2020-- - 20201119_12: 02-- 
+                            cmd.Parameters.AddWithValue("@cod_TdaId", cod_TdaId);
+                            //----FIN--- SB - VTEX2020-- - 20201119_12: 02-- 
 
                             using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                             {
@@ -115,7 +118,7 @@ namespace Data.Crystal.Reporte
             return result;
         }
 
-        public List<DetallesECommerce> get_DetGuia_EC(string venta_id)
+        public List<DetallesECommerce> get_DetGuia_EC(string venta_id, string cod_TdaId)
         {
             string sqlquery = "USP_REP_GUIA_ECOMMERCE";
             ECommerce guia = null;
@@ -132,6 +135,9 @@ namespace Data.Crystal.Reporte
                             cmd.CommandTimeout = 0;
                             cmd.CommandType = CommandType.StoredProcedure;
                             cmd.Parameters.AddWithValue("@ven_id", venta_id);
+                            //----INICIO--- SB - VTEX2020-- - 20201119_12: 02-- 
+                            cmd.Parameters.AddWithValue("@cod_TdaId", cod_TdaId);
+                            //----FIN--- SB - VTEX2020-- - 20201119_12: 02-- 
 
                             using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                             {

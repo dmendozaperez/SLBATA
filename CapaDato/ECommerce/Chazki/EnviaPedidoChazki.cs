@@ -11,10 +11,10 @@ namespace CapaDato.ECommerce.Chazki
 {
     public class EnviaPedidoChazki
     {
-        public Ent_Ecommerce_Chazki get_Ventas_por_Chazki(string ven_id)
+        public Ent_Ecommerce_Chazki get_Ventas_por_Chazki(string ven_id,string cod_TdaId)
         {
             Ent_Ecommerce_Chazki ven = null;
-            string sqlquery = "USP_ECOMMERCE_LISTA_CHAZKI";
+            string sqlquery = "USP_ECOMMERCE_LISTA_CHAZKI_split";
             try
             {
                 //Ent_Conexion.conexion = "Server=192.168.1.242;Database=BDPOS;User ID=sa;Password=1;Trusted_Connection=False;";
@@ -26,6 +26,7 @@ namespace CapaDato.ECommerce.Chazki
                         cmd.CommandTimeout = 0;
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@ven_id", ven_id);
+                        cmd.Parameters.AddWithValue("@ven_tda", cod_TdaId);
 
                         SqlDataAdapter da = new SqlDataAdapter(cmd);
                         DataSet ds = new DataSet();

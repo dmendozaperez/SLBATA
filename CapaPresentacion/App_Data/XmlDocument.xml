@@ -148,24 +148,6 @@
             Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
             </remarks>
     </member>
-    <member name="F:CapaPresentacion.AspNetForms.LLegada_Mercaderia.form1">
-      <summary>
-            Control form1.
-            </summary>
-      <remarks>
-            Campo generado automáticamente.
-            Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-            </remarks>
-    </member>
-    <member name="F:CapaPresentacion.AspNetForms.LLegada_Mercaderia.crv_LlegMercaderia">
-      <summary>
-            Control crv_LlegMercaderia.
-            </summary>
-      <remarks>
-            Campo generado automáticamente.
-            Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-            </remarks>
-    </member>
     <member name="F:CapaPresentacion.AspNetForms.ReporteObs.form1">
       <summary>
             Control form1.
@@ -249,7 +231,7 @@
     </member>
     <member name="F:CapaPresentacion.AspNetForms.Vendedor.crv_vendedor">
       <summary>
-            Control crv_LlegMercaderia.
+            Control crv_vendedor.
             </summary>
       <remarks>
             Campo generado automáticamente.

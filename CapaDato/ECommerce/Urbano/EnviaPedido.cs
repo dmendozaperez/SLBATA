@@ -15,7 +15,7 @@ namespace CapaDato.ECommerce.Urbano
     public class EnviaPedido
     {
 
-        public Ent_Urbano sendUrbano(string _ven_id)
+        public Ent_Urbano sendUrbano(string _ven_id, string cod_TdaId)
         {
             Boolean valida = false;
             DataTable dt = null;
@@ -25,9 +25,10 @@ namespace CapaDato.ECommerce.Urbano
                 post_data = new Ent_Urbano();
                 Dat_Urbano data_urbano = new Dat_Urbano();
                 Ent_Urbano acceso = data_urbano.get_acceso();
+                //----INICIO---SB-VTEX2020---20201119_12:02----
+                dt = data_urbano.get_data(_ven_id, cod_TdaId);
+                //----FIN---SB-VTEX2020---20201119_12:02----
 
-                dt = data_urbano.get_data(_ven_id);
-                
                 if (dt!=null)
                 {
                     if (dt.Rows.Count>0)

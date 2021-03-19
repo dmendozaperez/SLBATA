@@ -57,7 +57,7 @@ namespace CapaDato.ECommerce
         /// acceso a los datos a enviar urbano
         /// </summary>
         /// <returns></returns>
-        public DataTable get_data(string _ven_id)
+        public DataTable get_data(string _ven_id, string cod_TdaId)
         {
             DataTable dt = null;
             string sqlquery = "USP_Urbano_SendData";
@@ -70,6 +70,9 @@ namespace CapaDato.ECommerce
                         cmd.CommandTimeout = 0;
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@ven_id", _ven_id);
+                        //----INICIO---SB-VTEX2020---20201119_12:02----
+                        cmd.Parameters.AddWithValue("@cod_TdaId", cod_TdaId);
+                        //----FIN---SB-VTEX2020---20201119_12:02-------
                         using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                         {
                             dt = new DataTable();
@@ -90,7 +93,7 @@ namespace CapaDato.ECommerce
         /// <param name="guia_prestasop"></param>
         /// <param name="guia_urbano"></param>
         /// <returns></returns>
-       public Boolean update_guia(string guia_prestasop,string guia_urbano)
+       public Boolean update_guia(string guia_prestasop,string guia_urbano, string cod_TdaId)
         {
             Boolean valida = false;
             string sqlquery = "USP_Urbano_UpdateGuia";
@@ -105,6 +108,9 @@ namespace CapaDato.ECommerce
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@Ven_Pst_Ref", guia_prestasop);
                         cmd.Parameters.AddWithValue("@Ven_Guia_Urbano", guia_urbano);
+                        //----INICIO---SB-VTEX2020---20201119_12:02----
+                        cmd.Parameters.AddWithValue("@cod_TdaId", cod_TdaId);
+                        //----FIN---SB-VTEX2020---20201119_12:02----
                         cmd.ExecuteNonQuery();
                         valida = true;
                     }
@@ -152,7 +158,7 @@ namespace CapaDato.ECommerce
         /// update en la tabla venta , para ya no volver a enviar la guia
         /// </summary>
         /// <returns></returns>
-        public Boolean updprestashopGuia(string guia_prestashop,string guia_urbano)
+        public Boolean updprestashopGuia(string guia_prestashop,string guia_urbano, string cod_TdaId)
         {
             string sqlquery = "USP_UpdPrestashop_Guia";
             Boolean valida = false;
@@ -166,7 +172,10 @@ namespace CapaDato.ECommerce
                         cmd.CommandTimeout = 0;
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@ven_pst_ref", guia_prestashop);
-                        cmd.Parameters.AddWithValue("@ven_guia_urbano", guia_urbano);
+                        //----INICIO---SB-VTEX2020---20201119_12:02----
+                        //cmd.Parameters.AddWithValue("@ven_guia_urbano", guia_urbano);
+                        cmd.Parameters.AddWithValue("@cod_TdaId", cod_TdaId);
+                        //----FIN---SB-VTEX2020---20201119_12:02----
                         cmd.ExecuteNonQuery();
                         valida = true;
                     }

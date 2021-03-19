@@ -101,7 +101,7 @@ namespace CapaDato.ECommerce
                             /*el valor 1 quiere decir que actualizo prestashop*/
                             if (valida[0]=="1")
                             {
-                                guias_urbano.updprestashopGuia(guia_prestashop, guia_urbano);
+                                //guias_urbano.updprestashopGuia(guia_prestashop, guia_urbano);
                             }
 
                         }
@@ -327,7 +327,7 @@ namespace CapaDato.ECommerce
 
                             if (valida)
                             {
-                                estadofac_presta.updestafac_prestashop(guiaref_presta);
+                                //estadofac_presta.updestafac_prestashop(guiaref_presta);
                             }
                         }
                     }
