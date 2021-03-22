@@ -1,0 +1,438 @@
+﻿@using CapaEntidad.Util;
+@{
+    ViewBag.Title = "REPORTE DE LLEGADA DE MERCADERIA";
+    AjaxOptions options = new AjaxOptions
+    {
+        HttpMethod = "GET",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "lista",
+        OnComplete = "waitingDialog.hide();",
+        OnBegin = "waitingDialog.show('Espere un momento por favor');",
+        OnFailure = "waitingDialog.hide();"
+    };
+
+}
+
+@*@Scripts.Render("~/bundles/bootstrap-select_Select")*@
+<link href="~/ContentSelect/bootstrap-select.css" rel="stylesheet" />
+<link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />
+@*<link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />*@
+<style>
+    iframe {
+        border: none;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        height: 800px;
+    }
+</style>
+<p class="text-danger">Consulta de reporte de llegada de mercaderia, por filtro Tienda, Rango de fecha y concepto</p>
+<div class="box box-body box-primary">
+    <div class="row">
+        <div class="col-sm-2">
+            <label for="dwCate">Distrito</label>
+            <div class="form-group">
+                <div class="form-group">
+                    @Html.DropDownList("dwDis", new SelectList(ViewBag.Distrito, "cod_distri", "des_distri", "-1"), new { @class = "selectpicker", @data_live_search = "true", multiple = "multiple", @id = "dwDis", @name = "dwDis", @data_actions_box = "true", @data_selected_text_format = "count > 2" })
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <label for="dwCate">Cadena</label>
+            <div class="form-group">
+                <div id="divcad" class="form-group">
+                    @Html.DropDownList("dwcad", new SelectList(ViewBag.Cadena, "cod_cadena", "des_cadena", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwcad", @name = "dwcad" })
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <label for="dwCate">Tienda</label>
+            <div class="form-group">
+                <div id="divtda" class="form-group">
+                    @Html.DropDownList("dwtda", new SelectList(ViewBag.Tienda, "cod_entid", "des_entid", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwtda", @name = "dwtda" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="form-group">
+                <label for="lblFechaInicio" style="color: #3d566e;">Fecha Inicio</label>
+                <div id="datepickerIni" class="input-group date" data-date-format="dd/mm/yyyy">
+                    <input id="dtpFechaInicio" type="text" class="form-control input-sm ui-cell-input" disabled style="max-width: 100%" />
+                    <span class="input-group-addon btn btn-xs btn-default" style="padding: 4px 5px;">
+                        <i class="glyphicon glyphicon-calendar" height="20" width="20" style="color:#ff9f3f"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <label for="lblFechaFin" style="color: #3d566e;">Fecha Fin</label>
+            <div id="datepickerFin" class="input-group date" data-date-format="dd/mm/yyyy">
+                <input id="dtpFechaFin" type="text" class="form-control input-sm ui-cell-input" disabled style="max-width: 100%" />
+                <span class="input-group-addon btn btn-xs btn-default" style="padding: 4px 5px;">
+                    <i class="glyphicon glyphicon-calendar" height="20" width="20" style="color:#ff9f3f"></i>
+                </span>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <label for="dwCalidad">Concepto</label>
+            <div class="form-group">
+                <div id="divcateg" class="form-group">
+                    @Html.DropDownList("dwTipoCon", new MultiSelectList(ViewBag.Tipo2, "cbo_codigo", "cbo_descripcion", new[] { "30", "31" }), new { @class = "selectpicker", @data_live_search = "true", @id = "dwTipoCon", @data_actions_box = "true", @data_selected_text_format = "count > 2", multiple = "multiple", })
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <label for="fecfin"></label>
+            <div class="form-group">
+                <div id="tipodoc" class="form-group">
+                    <button type="button" id="BtnReporte" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-th-list"></span>&nbsp;Ver Reporte
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+        </div>
+        <div class="col-md-6 text-right">
+            <button id="btnExportar" title="Actualizar" class="btn btn-success disabled" disabled>
+                <span class="glyphicon glyphicon-export"></span>&nbsp;&nbsp;Exportar Lista
+            </button>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div id="ifrReporte" class="well" style="width: 100%; height: 800px;">
+            <iframe id="load" src="" frameborder="0" marginheight="1"
+                    marginwidth="1" scrolling="auto" onload="javascript: waitingDialog.hide();"></iframe>
+        </div>
+
+
+    </div>
+</div>
+@*<script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/ScriptsSelect/bootstrap-select.js"></script>*@
+<script src="~/Scripts/bootstrap-select.min.js"></script>
+<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+
+<script src="~/Scripts/Linkend/linq.min.js"></script>
+
+<script src="~/Scripts/BI.js"></script>
+
+<script>
+    var objLLegMercaderia = {
+        Inicio: function () {
+            /*[Inicializamos variables]*/
+            $("#datepickerIni").datepicker({
+                autoclose: true,
+                todayHighlight: true
+            }).datepicker("setDate", "0");
+
+            $("#datepickerFin").datepicker({
+                autoclose: true,
+                todayHighlight: true
+            }).datepicker("setDate", "0");
+
+
+            $("#btnExportar").addClass("disabled");
+            $("#btnExportar").attr('disabled', 'disabled');
+
+            this.FechaInicio = $("#dtpFechaInicio").val();
+            this.FechaFin = $("#dtpFechaFin").val();
+
+            $('#dwDis option').attr("selected", "selected");
+            $('#dwDis').selectpicker('refresh');
+
+            $('#dwCad option').attr("selected", "selected");
+            $('#dwCad').selectpicker('refresh');
+
+            objLLegMercaderia.Cmbs.ListarCadena();
+            objLLegMercaderia.Cmbs.ListarTienda();
+            /*[/Inicializamos variables]*/
+
+            /*[ddlDis]*/
+            $("#dwDis").change(function () {
+                objLLegMercaderia.Cmbs.Listar_Cadena_Tienda();
+            })
+            /*[/ddlDis]*/
+
+            /*[btn Exportar y buscar]*/
+            $("#BtnReporte").click(function () {
+                objLLegMercaderia.generaal.MostrarReporte();
+            })
+
+            $("#btnExportar").click(function () {
+                waitingDialog.show("Espere por favor...")
+                objLLegMercaderia.generaal.exportar();
+            })
+            /*[btn Exportar y buscar]*/
+            },
+        Cmbs: {
+            Listar_Cadena_Tienda: function () {
+                objLLegMercaderia.Cmbs.ListarCadena();
+                objLLegMercaderia.Cmbs.ListarTienda();
+            },
+            ListarCadena: function () {
+                var dataArray = function () { return @Html.Raw(Json.Encode(ViewBag.DisCadTda)); }();
+                // var dataArray = data.Data;
+                var strTipo = $('#dwDis').val();
+
+                var listar = [];
+
+                if (strTipo != null) {
+
+                    if (strTipo == "-1") {
+                        var lista_filter = (strTipo == "-1") ? dataArray.filter(obj => obj.cod_distri != strTipo) : dataArray.filter(obj => obj.cod_distri === strTipo || obj.cod_distri == '0');
+                        $.each(lista_filter, function (index, item) {
+
+                            listar.push(item);
+                        });
+                    } else {
+                        var lista_filter = dataArray.filter(obj => obj.cod_distri == '0');
+                        $.each(lista_filter, function (index, item) {
+                            listar.push(item);
+                        });
+
+                        $.each(strTipo, function (index2, item2) {
+
+                            var lista_filter = dataArray.filter(obj => obj.cod_distri === item2);
+                            $.each(lista_filter, function (index, item) {
+
+                                listar.push(item);
+                            });
+
+                        });
+                    }
+                }
+
+                var group_cadena = Enumerable.from(listar)
+                .groupBy(
+                null,
+                null,
+                "{ cod_cadena: $.cod_cadena, des_cadena: $.des_cadena}",
+                "'' + $.cod_cadena + '-' + $.des_cadena"
+                ).toArray();
+
+                objLLegMercaderia.Cmbs.llenarComboCad("divcad", "dwcad", group_cadena, '0', '', "ListarTienda", '1');
+            },
+            ListarTienda: function () {
+                var dataArray = function () { return @Html.Raw(Json.Encode(ViewBag.DisCadTda)); }();
+
+                var strTipo = $('#dwDis').val();
+                var strCad = $('#dwcad').val();
+                var listar = [];
+
+                if (strTipo != null && strCad != null) {
+
+                    if (strTipo == "-1" || strCad=="-1") {
+                        var lista_filter = (strTipo == "-1") ? dataArray.filter(obj => obj.cod_distri != strTipo) : dataArray.filter(obj => obj.cod_distri === strTipo || obj.cod_distri == '0');
+                        $.each(lista_filter, function (index, item) {
+
+                            listar.push(item);
+                        });
+                    } else {
+
+                        var lista_filter = dataArray.filter(obj => obj.cod_distri == '0');
+                        $.each(lista_filter, function (index, item) {
+
+                            listar.push(item);
+                        });
+
+                        $.each(strCad, function (index3, item3) {
+
+                            $.each(strTipo, function (index2, item2) {
+
+                                var lista_filter = dataArray.filter(obj => obj.cod_distri === item2 && obj.cod_cadena===item3);
+                                $.each(lista_filter, function (index, item) {
+
+                                    listar.push(item);
+                                });
+
+                            });
+                        });
+                    }
+                }
+                var group_tienda = Enumerable.from(listar)
+                .groupBy(
+                null,
+                null,
+                "{ cod_entid: $.cod_entid, des_entid: $.des_entid}",
+                "'' + $.cod_entid + '-' + $.des_entid"
+                ).toArray();
+
+                objLLegMercaderia.Cmbs.llenarComboTda("divtda", "dwtda", group_tienda, '0', '', "", '1');
+            },
+            llenarComboCad: function (DivId, IdControl, Data, codDefecto, desDefecto, onchangeFuncion, tipo)
+            {
+                $('#' + IdControl).find('option').remove();
+                var str = (tipo == '1') ? '<select class="selectpicker" multiple = "multiple"  data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '" data-actions-box="true"  data-selected-text-format="count > 2" >' : '<select class="selectpicker"  data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '"  data-actions-box="true"  data-selected-text-format="count > 2" > ';
+                var ItemNormal = '<option value="codItem">desItem</option>';
+                var colectItemNormal = '';
+
+                //if (codDefecto != '') { str += '<option value="' + codDefecto + '" selected="selected">------' + desDefecto + '------</option>'; }
+
+                if (onchangeFuncion != '') { onchangeFuncion = 'onchange = "' + onchangeFuncion + '()"' }
+                str = str.replace("onchangeFuncion", onchangeFuncion);
+
+                $.each(Data, function (index, item) {
+
+                    colectItemNormal = colectItemNormal + ItemNormal
+                    var strSelected = '"';
+
+                    if (item.cod_entid == codDefecto) {
+                        strSelected = '" selected="selected" '
+
+                    }
+                    strSelected = '" selected="selected" '; // seleccionar todos al cargar
+                    colectItemNormal = colectItemNormal.replace("codItem", item.cod_cadena + strSelected);
+                    colectItemNormal = colectItemNormal.replace("desItem", item.des_cadena);
+
+                });
+
+                str += colectItemNormal
+                str += '</select>'
+
+                document.getElementById(DivId).innerHTML = str
+
+                $('.selectpicker').selectpicker({
+                    liveSearch: true,
+                    showSubtext: true
+                });
+            },
+            llenarComboTda: function (DivId, IdControl, Data, codDefecto, desDefecto, onchangeFuncion, tipo) {
+                $('#' + IdControl).find('option').remove();
+
+                var str = (tipo == '1') ? '<select class="selectpicker" multiple = "multiple"  data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '" data-actions-box="true"  data-selected-text-format="count > 2" >' : '<select class="selectpicker"  data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '"  data-actions-box="true"  data-selected-text-format="count > 2" > ';
+                var ItemNormal = '<option value="codItem">desItem</option>';
+                var colectItemNormal = '';
+                //if (codDefecto != '') { str += '<option value="' + codDefecto + '" selected="selected">------' + desDefecto + '------</option>'; }
+
+                if (onchangeFuncion != '') { onchangeFuncion = 'onchange = "' + onchangeFuncion + '()"' }
+                str = str.replace("onchangeFuncion", onchangeFuncion);
+
+                $.each(Data, function (index, item) {
+
+                    colectItemNormal = colectItemNormal + ItemNormal
+                    var strSelected = '"';
+
+                    if (item.cod_entid == codDefecto) {
+                        strSelected = '" selected="selected" '
+
+                    }
+                    strSelected = '" selected="selected" '; // seleccionar todos al cargar
+                    colectItemNormal = colectItemNormal.replace("codItem", item.cod_entid + strSelected);
+                    colectItemNormal = colectItemNormal.replace("desItem", item.des_entid);
+                });
+
+                str += colectItemNormal
+                str += '</select>'
+
+                document.getElementById(DivId).innerHTML = str
+
+                $('.selectpicker').selectpicker({
+                    liveSearch: true,
+                    showSubtext: true
+                });
+
+            }
+        },
+        generaal: {
+            MostrarReporte: function () {
+                debugger;
+                var tda = $('#dwtda').val(); //  ($("#dwtda option:not(:selected)").length == 0 && $("#dwtda > option").length > 1 ? "0" : $('#dwtda').val() ) ; //$('#dwtda').val();
+                var Concepto = $('#dwTipoCon').val();//($("#dwTipoCon option:not(:selected)").length == 0 && $("#dwTipoCon > option").length > 1 ? "0" : $('#dwTipoCon').val());// $('#dwTipoCon').val();
+                var fecIni = $("#dtpFechaInicio").val();
+                var fecFin = $("#dtpFechaFin").val();
+                var strIni = fecIni[2] + fecIni[1] + fecIni[0];
+                var strFin = fecFin[2] + fecFin[1] + fecFin[0];
+                //if (Concepto == '' || Concepto == null) { Concepto = '0' };
+                //Concepto = Concepto.toString();
+
+                tda = tda.toString();
+                Concepto = Concepto.toString();
+                var TeamDetailPostBackURL = "@Url.Action("ShowGenericReportLLegMercaderia", "Almacen")";
+                if (tda != '' || tda == null) {
+                    waitingDialog.show('Espere un momento por favor');
+                    $.ajax({
+                        url: TeamDetailPostBackURL,
+                        dataType: 'json',
+                        type: 'POST',
+                        data: { cod_tda: tda, FEC_INI: fecIni, FEC_FIN: fecFin, Concepto: Concepto },
+                        success: function (data) {
+                            //alert('ok');
+                            debugger
+                            data = JSON.parse(data);
+                            if (data.Success) {
+                                debugger
+                                toastr.success(data.Message);
+                                $("#btnExportar").removeClass("disabled");
+                                $("#btnExportar").removeAttr("disabled");
+                                $('#load').show();
+                                $("#load").attr("src", "../AspNetForms/LLegada_Mercaderia.aspx");
+                            }
+                            else {
+                                if (!data.Success)
+                                {
+                                    $("#btnExportar").addClass("disabled");
+                                    $("#btnExportar").attr('disabled', 'disabled');
+                                    $('#load').hide();
+                                    waitingDialog.hide();
+                                    toastr.error(data.Message, "Alerta");
+                                }
+                                else
+                                {
+                                    $("#btnExportar").addClass("disabled");
+                                    $("#btnExportar").attr('disabled', 'disabled');
+                                    $('#load').hide();
+                                    waitingDialog.hide();
+                                    toastr.error('Hubo un error en el reporte', "Alerta");
+                                }
+                            }
+                            return false;
+                        },
+                        error: function (request, status, error) {
+                            waitingDialog.hide();
+                        }
+                        }).done(function () {
+
+                        });
+                    } else {
+                        toastr.error('Debe Ingresar Tienda', "Alerta");
+                    }
+            },
+            exportar: function () {
+                var _Ent = function () { return @Html.Raw(Json.Encode(ViewBag.EntLLegMercaderia)); }();
+                _Ent.FEC_INI = $("#dtpFechaInicio").val();
+                _Ent.FEC_FIN = $("#dtpFechaFin").val();
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("get_exporta_LLegMercaderia_excel", "Almacen")',
+                    data : {_Ent:_Ent},
+                    success: function (data) {
+                        data = JSON.parse(data);
+                        waitingDialog.hide();
+                        if (data.Success) {
+                            toastr.success(data.Message);
+                            window.location = '@Url.Action("ListarMercaderia_Excel")';
+                        }
+                        else {
+                            toastr.error(data.Message, "Alerta");
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        waitingDialog.hide();
+                        toastr.error("Error al exportar excel.", "Alerta");
+                    }
+                });
+            }
+        }
+    };
+    $(document).ready(function () {
+        objLLegMercaderia.Inicio();
+    });
+</script>

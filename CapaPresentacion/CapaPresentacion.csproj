@@ -431,6 +431,7 @@
     <Compile Include="Bll\ExcelExportHelper.cs" />
     <Compile Include="Bll\ReportCredentials.cs" />
     <Compile Include="Controllers\AdminLteController.cs" />
+    <Compile Include="Controllers\AlmacenController.cs" />
     <Compile Include="Controllers\AnalisisMovController.cs" />
     <Compile Include="Controllers\ApiBClubController.cs" />
     <Compile Include="Controllers\AplicacionController.cs" />
@@ -1906,6 +1907,7 @@
     <None Include="Service References\SunatReniec\Sunat_Reniec_PE.wsdl" />
     <Content Include="Views\Soporte\Tienda_Process_XCenter.cshtml" />
     <Content Include="Views\Reporte\LLegada_Mercaderia.cshtml" />
+    <Content Include="Views\Almacen\LLegada_Mercaderia.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
