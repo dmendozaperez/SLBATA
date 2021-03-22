@@ -66,11 +66,11 @@ namespace CapaPresentacion.Controllers
         {
             return View();
         }
-        public ActionResult getGenerarEncuesta(List<Ent_TMP_NPS_Respuestas> _ListRespuesta)
+        public ActionResult getGenerarEncuesta(List<Ent_TMP_NPS_Respuestas> _ListRespuesta, Ent_TMP_NPS_Respuestas _Ent)
         {
             bool Result = false;
             JsonRespuesta objResult = new JsonRespuesta();
-            Ent_TMP_NPS_Respuestas _Ent = new Ent_TMP_NPS_Respuestas();
+
             _Ent.ID = (string)Session[_session_ID];
             try
             {
@@ -87,7 +87,6 @@ namespace CapaPresentacion.Controllers
                     dtRespuestas.Rows[Fila]["COD_NPS"] = item.COD_NPS;
                     dtRespuestas.Rows[Fila]["COD_NPS_OPC"] = Convert.ToDecimal(item.COD_NPS_OPC);
                     dtRespuestas.Rows[Fila]["VALOR_NPS"] = Convert.ToInt32(item.VALOR_NPS);
-
                     Fila++;
                 }
 

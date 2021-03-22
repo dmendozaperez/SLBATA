@@ -45,5 +45,6 @@ namespace CapaEntidad.NPS
         public bool isOK { get; set; }
         //Campos adicionales
         public string ID { get; set; }
+        public string COMENTARIO { get; set; }
     }
 }

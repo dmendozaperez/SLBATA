@@ -456,6 +456,7 @@
     <Compile Include="Controllers\InventarioController.cs" />
     <Compile Include="Controllers\LoginIntermedioController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
+    <Compile Include="Controllers\NPSController.cs" />
     <Compile Include="Controllers\OrceController.cs" />
     <Compile Include="Controllers\Orce_ExcludController.cs" />
     <Compile Include="Controllers\ReporteController.cs" />
@@ -1908,6 +1909,9 @@
     <Content Include="Views\Soporte\Tienda_Process_XCenter.cshtml" />
     <Content Include="Views\Reporte\LLegada_Mercaderia.cshtml" />
     <Content Include="Views\Almacen\LLegada_Mercaderia.cshtml" />
+    <Content Include="Views\NPS\Finalizado.cshtml" />
+    <Content Include="Views\NPS\Index.cshtml" />
+    <Content Include="Views\Shared\_Layout_NPS.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -79,6 +79,7 @@ namespace CapaDato.NPS
                 cmd.CommandTimeout = 0;
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@ID", ent.ID);
+                cmd.Parameters.AddWithValue("@COMENTARIO", ent.COMENTARIO);                
                 cmd.Parameters.AddWithValue("@TMP", dt);
                 cmd.ExecuteNonQuery();
                 result = true;
