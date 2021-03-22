@@ -105,6 +105,7 @@
     <Compile Include="Maestros\Dat_Ubigeo.cs" />
     <Compile Include="Maestros\Dat_Usuario_Tipo.cs" />
     <Compile Include="Menu\Dat_Menu.cs" />
+    <Compile Include="NPS\Dat_NPS.cs" />
     <Compile Include="OrceExclud\Dat_OrceExclud.cs" />
     <Compile Include="Orce\Dat_Promotion_Orce.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
