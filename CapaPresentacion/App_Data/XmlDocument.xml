@@ -1823,6 +1823,21 @@
             cantidad del producto
             </summary>
     </member>
+    <member name="T:CapaEntidad.NPS.Ent_NPS_Dashboard_Estado">
+      <summary>
+            CHART ESTADO
+            </summary>
+    </member>
+    <member name="T:CapaEntidad.NPS.Ent_NPS_Dashboard_Tipo">
+      <summary>
+            CHART TIPO
+            </summary>
+    </member>
+    <member name="T:CapaEntidad.NPS.Ent_NPS_Dashboard_Distrito">
+      <summary>
+            DISTRITO
+            </summary>
+    </member>
     <member name="P:CapaEntidad.General.Ent_jQueryDataTableParams.sEcho">
       <summary>  
             Request sequence number sent by DataTable,  

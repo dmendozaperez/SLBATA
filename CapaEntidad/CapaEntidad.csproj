@@ -104,6 +104,7 @@
     <Compile Include="Maestros\Ent_TipoTienda.cs" />
     <Compile Include="Maestros\Ent_Distrito.cs" />
     <Compile Include="NPS\Ent_NPS.cs" />
+    <Compile Include="NPS\Ent_NPS_DashBoard.cs" />
     <Compile Include="Oracle\Ent_Ora_Conexion.cs" />
     <Compile Include="OrceExlud\Ent_OrceExclud.cs" />
     <Compile Include="Orce\Ent_Promotion_Orce.cs" />
