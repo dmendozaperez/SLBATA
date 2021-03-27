@@ -1714,6 +1714,7 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <Content Include="Views\BataClub\Dashboard.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -1857,7 +1858,6 @@
     <Content Include="Views\BataClub\GenerarCupon.cshtml" />
     <Content Include="Views\BataClub\CrearPromocion.cshtml" />
     <Content Include="Views\BataClub\getListaCupProm.cshtml" />
-    <Content Include="Views\BataClub\Dashboard.cshtml" />
     <Content Include="Views\ECommerce\ReporteVentasEcommerce.cshtml" />
     <Content Include="Views\Soporte\PruebaOracle.cshtml" />
     <Content Include="Views\Shared\_LayoutBataClubTablet.cshtml" />
@@ -1912,6 +1912,7 @@
     <Content Include="Views\NPS\Finalizado.cshtml" />
     <Content Include="Views\NPS\Index.cshtml" />
     <Content Include="Views\Shared\_Layout_NPS.cshtml" />
+    <Content Include="Views\NPS\Dashboard.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
