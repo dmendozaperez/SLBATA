@@ -11,6 +11,7 @@ using System.Web.Mvc;
 using System.Text;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
+using CapaEntidad.Control;
 
 namespace CapaPresentacion.Controllers
 {
