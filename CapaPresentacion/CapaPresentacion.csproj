@@ -505,6 +505,7 @@
     <Compile Include="Models\ECommerce\ReporteVentasEcommerce.cs" />
     <Compile Include="Models\FileManager\DataProvider.cs" />
     <Compile Include="Models\FileManager\FileSystemProvider.cs" />
+    <Compile Include="Models\PedidosNoFactu\PedidoNoFactu.cs" />
     <Compile Include="Models\RuletaBata\RuletaBata.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -1912,6 +1913,7 @@
     <Content Include="Views\NPS\Finalizado.cshtml" />
     <Content Include="Views\NPS\Index.cshtml" />
     <Content Include="Views\Shared\_Layout_NPS.cshtml" />
+    <Content Include="Views\ECommerce\PedidosNoFactu.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -86,6 +86,7 @@
     <Compile Include="ECommerce\Conexion.cs" />
     <Compile Include="ECommerce\Dat_Cexpress.cs" />
     <Compile Include="ECommerce\Dat_ECommerce.cs" />
+    <Compile Include="ECommerce\Dat_PedNoFactu.cs" />
     <Compile Include="ECommerce\Dat_PrestaShop.cs" />
     <Compile Include="ECommerce\Dat_Urbano.cs" />
     <Compile Include="ECommerce\Savar\EnviarPedidoSavar.cs" />

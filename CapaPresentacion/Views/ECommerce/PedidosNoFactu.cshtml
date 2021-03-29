@@ -1,0 +1,166 @@
+﻿
+@*@using CapaEntidad.Util;*@
+
+@*@{AjaxOptions options = new AjaxOptions
+    {
+        HttpMethod = "GET",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "lista",
+        OnComplete = "waitingDialog.hide();",
+        OnBegin = "waitingDialog.show('Espere un momento por favor');",
+        OnFailure = "waitingDialog.hide();"
+    };
+}*@
+
+@model IEnumerable<CapaPresentacion.Models.PedidosNoFactu.PedidoNoFactu>
+
+@{
+    ViewBag.Title = "Consulta de Pedidos Ecommerce No Facturados";
+}
+
+<script>
+    $(document).ready(function () {
+        $('.dataTable').DataTable({
+            "language": {
+                "url": "../Scripts/DataTables/Spanish.json"
+            }     
+
+            //buttons: [
+            //     'copy', 'csv', 'excel', 'pdf', 'print'
+            //]
+
+//            "dom": 'lBfrtip',
+//"buttons": [
+//{
+//    extend: 'collection',
+//    text: 'Export',
+//    buttons: [
+//    'copy',
+//    'excel',
+//    'csv',
+//    'pdf',
+//    'print'
+//    ]
+//}
+//        ]
+    });
+
+
+        //$('.datepicker').datepicker({
+        //    format: "dd/mm/yyyy",
+        //    startDate: "01/04/2019",
+        //    autoclose: true
+        //});
+        //$('.select2').select2();
+    });
+</script>
+
+
+
+<script src="~/Scripts/bootstrap-select.min.js"></script>
+<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+
+
+@*<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/r/dt/jq-2.1.4,jszip-2.5.0,pdfmake-0.1.18,dt-1.10.9,af-2.0.0,b-1.0.3,b-colvis-1.0.3,b-html5-1.0.3,b-print-1.0.3,se-1.0.1/datatables.min.css" />
+<script type="text/javascript" src="https://cdn.datatables.net/r/dt/jq-2.1.4,jszip-2.5.0,pdfmake-0.1.18,dt-1.10.9,af-2.0.0,b-1.0.3,b-colvis-1.0.3,b-html5-1.0.3,b-print-1.0.3,se-1.0.1/datatables.min.js"></script>*@
+
+
+@*<script src="~/Scripts/BI.js"></script>*@
+
+@*<style>
+    iframe {
+        border: none;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        height: 800px;
+    }
+</style>*@
+
+
+
+@using (Html.BeginForm("PedidosNoFactu", "Ecommerce", FormMethod.Post, new { @id = "Formulario" }))
+{
+
+    <div class="box box-body box-primary">        
+        
+        <div class="row">
+            <div class="col-sm-3">                
+                <div class="form-group ">
+                    <label for="nroped">Nro Pedido VTEX</label>                    
+                    <input type="text" class="form-control" id="nroped" placeholder="999" name="nroped"  value="@ViewBag._nroped" />
+                </div>                
+            </div>
+        
+            <div class="col-sm-3">
+                <label></label><br />
+                <button name="buscar" type="submit" class="btn btn-primary" onclick="" ><span class="glyphicon glyphicon-search"></span>&nbsp;Buscar</button>
+                <a href="@Url.Action("ExportToExcel2")" title="Exportar a excel" class="btn btn-primary">Exportar</a>
+            </div>
+
+         </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-hover table-striped table-responsive dataTable">
+                    <thead>
+                        <tr style="background-color:#3d566e; color:#ecf0f1">
+                            <th>Pedido</th>
+                            <th>Cod Tienda</th>
+                            <th>Nombre Tienda</th>
+                            <th>Cod Articulo</th>
+                            <th>Nombre Articulo</th>
+                            <th>Estado</th>
+                            <th>Estado OB</th>
+                        </tr>
+                    </thead>
+                    <tbody data-bind="foreach:">
+                        @foreach (var row in Model)
+                        {
+                            <tr>
+                                <td width="20%">@row.id_pedido</td>
+                                <td width="10%">@row.cod_tienda</td>
+                                <td width="20%">@row.nom_tienda</td>
+                                <td width="10%">@row.cod_articulo</td>
+                                <td width="20%">@row.nom_articulo</td>
+                                <td width="10%">@row.estado</td>
+                                <td width="10%">@row.estado_ob</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+}
+
+
+@if (Model.Count() > 0 && Model.FirstOrDefault().estado == "Facturado")
+{
+    <script>
+        function MostrarMensajeFacturado() {
+            alert("Pedido ya fue facturado con el numero: " + "@Model.First().nro_comprob");
+        }
+    </script>
+}
+else
+{
+    <script>
+        function MostrarMensajeFacturado() {
+        }
+    </script>
+}
+
+<script>
+    //$(document).ready(function () {
+    //    MostrarMensajeFacturado();
+    //});
+
+
+    $(window).load(function () {
+        MostrarMensajeFacturado();
+    });
+
+</script>

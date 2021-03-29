@@ -21,8 +21,7 @@ using CapaEntidad.ChatShop;
 using CapaPresentacion.Models.ChatShop;
 using System.Data;
 using CapaEntidad.ValeCompra;
-
-
+using CapaDato.ECommerce;
 
 namespace CapaPresentacion.Controllers
 {
@@ -743,6 +742,8 @@ namespace CapaPresentacion.Controllers
             }
         }
 
+
+  
 
 
 
