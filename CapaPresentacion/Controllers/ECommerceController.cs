@@ -151,13 +151,13 @@ namespace CapaPresentacion.Controllers
                         //intentando 3 veces
                         for (Int32 i = 0; i < 3; ++i)
                         {
-                            /*Nuevo*/
+                            /*se agrego Nuevo campo codigo de tienda*/
                             if (name_carrier == "Comercio Xpress")
                             {
                                 //Ent_Cexpress ent_Cexpress = envia2.sendCexpress(ven_id, ref nroserv);
                                 //action_presta.updestafac_prestashop(guia_presta);
                                 action_presta.updestafac_prestashop(guia_presta, cod_TdaId);
-                                data_Cexpress.update_guia(guia_presta, nroserv);
+                                data_Cexpress.update_guia(guia_presta, nroserv, cod_TdaId);
                                 guia_courier = nroserv;
                                 break;
                             }
@@ -168,7 +168,7 @@ namespace CapaPresentacion.Controllers
                                 {
                                     //action_presta.updestafac_prestashop(guia_presta);
                                     action_presta.updestafac_prestashop(guia_presta, cod_TdaId);
-                                    data_Cexpress.update_guia(guia_presta, ven_id);//se registra el  nro de BOL para codigo de seguimiento
+                                    data_Cexpress.update_guia(guia_presta, ven_id, cod_TdaId);//se registra el  nro de BOL para codigo de seguimiento
                                     guia_courier = ven_id;
                                     break;
                                 }
@@ -176,7 +176,7 @@ namespace CapaPresentacion.Controllers
                             else if (name_carrier.Contains("Savar"))
                             {
                                 string nrodelivery_savar = Envia_Courier_Savar(ven_id, cod_TdaId);
-                                data_Cexpress.update_guia(guia_presta, nrodelivery_savar);
+                                data_Cexpress.update_guia(guia_presta, nrodelivery_savar, cod_TdaId);
                                 guia_courier = nrodelivery_savar;
                                 break;
 

@@ -1,4 +1,5 @@
-﻿using CapaDato.NPS;
+﻿using CapaEntidad.Control;
+using CapaDato.NPS;
 using CapaDato.Maestros;
 using CapaEntidad.NPS;
 using CapaEntidad.Util;
