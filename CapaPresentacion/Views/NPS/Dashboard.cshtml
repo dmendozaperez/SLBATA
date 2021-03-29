@@ -1,0 +1,908 @@
+﻿@using CapaEntidad.Util;
+@{
+    ViewBag.Title = "NPS Dashboard";
+}
+<style>
+
+</style>
+<link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />
+<link href="~/Content/magic-check.css" rel="stylesheet" />
+<section class="content"> 
+
+    <div class="row">
+        <!-- [CHART ESTADO] -->
+        <div class="col-md-4">
+            <div class="box">
+                <div class="box-header with-border">
+                    <i class="fa fa-bar-chart-o"></i>
+                    <h3 class="box-title">NPS ESTADO</h3>
+                    <div class="box-tools pull-right" style="top: 3px;">
+                        <button type="button" class="btn btn-block btn-success btn-xs" title="Exportar a Excel" id="btnExportarEst" style="margin-top : 5px;padding-top :3px;padding-bottom :3px;padding-right :7px;" disabled>
+                            <i class="glyphicon glyphicon-export"></i>&nbsp;&nbsp;Exportar
+                        </button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="row row-no-gutters">
+                        <div class="col-sm-5">
+                            <div class="form-inline">
+                                <label for="lblFechaInicio" style="color: #3d566e;">Fecha Inicio</label>
+                                <div id="datepickerIniEst" class="input-group date" data-date-format="dd/mm/yyyy">
+                                    <input id="dtpFechaInicioEst" type="text" class="form-control input-sm ui-cell-input" disabled style="max-width: 100%" />
+                                    <span class="input-group-addon btn btn-xs btn-default" style="padding: 4px 5px;">
+                                        <i class="fa fa-calendar" height="20" width="20" style="color:#555"></i>
+                                    </span>
+                                </div>   
+                            </div>
+                        </div>
+                        <div class="col-sm-5">
+                            <div class="form-inline">
+                                <label for="lblFechaFIn" style="color: #3d566e;">Fecha Fin</label>
+                                <div id="datepickerFinEst" class="input-group date" data-date-format="dd/mm/yyyy">
+                                    <input id="dtpFechaFinEst" type="text" class="form-control input-sm ui-cell-input" disabled style="max-width: 100%" />
+                                    <span class="input-group-addon btn btn-xs btn-default" style="padding: 4px 5px;">
+                                        <i class="fa fa-calendar" height="20" width="20" style="color:#555"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <button id="btnBuscarEst" type="submit" title="Consultar" class="btn btn-primary btn-sm" style="margin-top: 24px;">
+                                <span class="fa fa-search"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- [ChartEstado] -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p class="text-center">
+                                <strong id="tituloEstado"></strong>
+                            </p>
+                            <div class="chart">
+                                <canvas id="ChartEstado" style="height: 310px;"></canvas>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- [/ChartEstado] -->
+                </div>
+                <div id="TP-load" class="overlay hidden">
+                    <i class="fa fa-refresh fa-spin"></i>
+                </div>
+            </div>
+        </div>
+        <!-- [/CHART ESTADO] -->
+
+        <!-- [CHART TIPO] -->
+        <div class="col-md-8">
+            <div class="box">
+                <div class="box-header with-border">
+                    <i class="fa fa-bar-chart-o"></i>
+                    <h3 class="box-title">NPS TIPO</h3>
+                    <div class="box-tools pull-right" style="top: 3px;">
+                        <button type="button" class="btn btn-block btn-success btn-xs" title="Exportar a Excel" id="btnExportarTip" style="margin-top : 5px;padding-top :3px;padding-bottom :3px;padding-right :7px;" disabled>
+                            <i class="glyphicon glyphicon-export"></i>&nbsp;&nbsp;Exportar
+                        </button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <label for="dwCate">Distrito</label>
+                            <div class="form-group">
+                                <div class="form-group">
+                                    @Html.DropDownList("dwDis", new SelectList(ViewBag.Distrito, "cod_distri", "des_distri", "-1"), new { @class = "selectpicker", @data_live_search = "true", multiple = "multiple", @id = "dwDis", @name = "dwDis", @data_actions_box = "true", @data_selected_text_format = "count > 2" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <label for="dwCate">Cadena</label>
+                            <div class="form-group">
+                                <div id="divcad" class="form-group">
+                                    @Html.DropDownList("dwcad", new SelectList(ViewBag.Cadena, "cod_cadena", "des_cadena", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwcad", @name = "dwcad" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <label for="dwCate">Tienda</label>
+                            <div class="form-group">
+                                <div id="divtda" class="form-group">
+                                    @Html.DropDownList("dwtda", new SelectList(ViewBag.Tienda, "cod_entid", "des_entid", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwtda", @name = "dwtda" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <label for="dwCate">Preguntas</label>
+                            <div class="form-group" id="">
+                                @Html.DropDownList("ddlPreguntas", new SelectList(ViewBag._Listar_Preguntas, "Codigo", "Descripcion"), new { @class = "form-control selectpicker", @data_live_search = "true", @id = "ddlPreguntas", @name = "ddlPreguntas" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">                          
+                            <label for="lblFechaInicioTip" style="color: #3d566e;">Fecha Inicio</label>
+                            <div id="datepickerIniTip" class="input-group date" data-date-format="dd/mm/yyyy">
+                                <input id="dtpFechaInicioTip" type="text" class="form-control input-sm ui-cell-input" disabled style="max-width: 100%" />
+                                <span class="input-group-addon btn btn-xs btn-default" style="padding: 4px 5px;">
+                                    <i class="fa fa-calendar" height="20" width="20" style="color:#555"></i>
+                                </span>
+                            </div>            
+                        </div>
+                        <div class="col-md-3">
+                            <label for="lblFechaFinTip" style="color: #3d566e;">Fecha Fin</label>
+                            <div id="datepickerFinTip" class="input-group date" data-date-format="dd/mm/yyyy">
+                                <input id="dtpFechaFinTip" type="text" class="form-control input-sm ui-cell-input" disabled style="max-width: 100%" />
+                                <span class="input-group-addon btn btn-xs btn-default" style="padding: 4px 5px;">
+                                    <i class="fa fa-calendar" height="20" width="20" style="color:#555"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <button id="btnBuscarTip" type="submit" title="Consultar" class="btn btn-primary btn-sm" style="margin-top: 24px;">
+                                <span class="fa fa-search"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- [ChartTipo] -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-10">
+                                <p class="text-center">
+                                    <strong id="tituloTipo"></strong>
+                                </p>
+                                <div class="chart">
+                                    <canvas id="ChartTipo" style="height: 310px;"></canvas>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <table id="TbTablaNota" class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th style="text-align:center" class='text-bold'>NOTA</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td align="center"><span style='background-color:#dd4b39' class='badge text-bold' id="lblNotas"></span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- [/ChartTipo] -->
+                </div>
+                <div id="Tipo-load" class="overlay hidden">
+                    <i class="fa fa-refresh fa-spin"></i>
+                </div>
+            </div>
+        </div>
+        <!-- [/CHART TIPO] -->
+    </div>
+
+    <div class="row">
+        <!-- [Dashboard Distrito] -->
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <i class="fa fa-bar-chart-o"></i>
+                    <h3 class="box-title">NPS Calificación por distrito</h3>
+                    <div class="box-tools pull-right" style="top: 3px;">
+                        <button type="button" class="btn btn-block btn-success btn-xs" title="Exportar a Excel" id="btnExportarDis" style="margin-top : 5px;padding-top :3px;padding-bottom :3px;padding-right :7px;" disabled>
+                            <i class="glyphicon glyphicon-export"></i>&nbsp;&nbsp;Exportar
+                        </button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label for="lblFechaInicioDis" style="color: #3d566e;">Fecha Inicio</label>
+                            <div id="datepickerIniDis" class="input-group date" data-date-format="dd/mm/yyyy">
+                                <input id="dtpFechaInicioDis" type="text" class="form-control input-sm ui-cell-input" disabled style="max-width: 100%" />
+                                <span class="input-group-addon btn btn-xs btn-default" style="padding: 4px 5px;">
+                                    <i class="fa fa-calendar" height="20" width="20" style="color:#555"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="lblFechaFinDis" style="color: #3d566e;">Fecha Fin</label>
+                            <div id="datepickerFinDis" class="input-group date" data-date-format="dd/mm/yyyy">
+                                <input id="dtpFechaFinDis" type="text" class="form-control input-sm ui-cell-input" disabled style="max-width: 100%" />
+                                <span class="input-group-addon btn btn-xs btn-default" style="padding: 4px 5px;">
+                                    <i class="fa fa-calendar" height="20" width="20" style="color:#555"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <button id="btnBuscarDis" type="submit" title="Consultar" class="btn btn-primary btn-sm" style="margin-top: 24px;">
+                                <span class="fa fa-search"></span>
+                            </button>
+                        </div>
+                        <div class="col-md-6 text-right">
+                        </div>
+                    </div>
+                    <!-- [Table] -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-10">
+                                <p class="text-center">
+                                    <strong id="tituloTipo"></strong>
+                                </p>
+                                <div class="table-responsive" style="height:270px">
+                                    <table id="TbTablaDistrito" class="table table-hover"></table>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- [/Table] -->
+                </div>
+                <div id="Dist-load" class="overlay hidden">
+                    <i class="fa fa-refresh fa-spin"></i>
+                </div>
+            </div>
+        </div>
+        <!-- [/Dashboard Distrito] -->
+    </div>
+</section>
+<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+<script src="@Url.Content("~/Scripts/bootstrap-select.min.js")"></script>
+<script src="~/Scripts/bootstrap-select.min.js"></script>
+<script src="~/Scripts/Linkend/linq.min.js"></script>
+<script src="~/Scripts/BI.js"></script>
+<script>
+    var objDashboard = {
+        Inicio: function () {
+            debugger
+
+            /*[Inicializamos variables]*/
+            this._HtmlTabla = '<thead>' +
+                                    '<tr>' +
+                                        '<th style="text-align: center;">Preguntas</th>' +
+                                        '<th style="text-align: center;">Tiendas</th>' +
+                                    '</tr>' +
+                                '</thead>' +
+                                '<tbody>' +
+                                    '<tr>' +
+                                        '<td colspan="2">No se encontraron resultados</td>' +
+                                    '</tr>' +
+                                '</tbody>' +
+
+            //$("#TbTablaDistrito").html(objDashboard._HtmlTabla);
+
+            /*[ESTADO]*/
+            $("#datepickerIniEst").datepicker({
+                autoclose: true,
+                todayHighlight: true
+            }).datepicker("setDate", "0");
+
+            $("#datepickerFinEst").datepicker({
+                autoclose: true,
+                todayHighlight: true
+            }).datepicker("setDate", "0");
+
+            this.FechaInicioEst = $("#dtpFechaInicioEst").val();
+            this.FechaFinEst = $("#dtpFechaFinEst").val();
+            /*[/ESTADO]*/
+
+            /*[TIPO]*/
+            $('#dwDis option').attr("selected", "selected");
+            $('#dwDis').selectpicker('refresh');
+
+            $('#dwCad option').attr("selected", "selected");
+            $('#dwCad').selectpicker('refresh');
+
+            objDashboard.Cmbs.ListarCadena();
+            objDashboard.Cmbs.ListarTienda();
+
+            $("#dwDis").change(function () {
+                objDashboard.Cmbs.Listar_Cadena_Tienda();
+            })
+
+            $("#datepickerIniTip").datepicker({
+                autoclose: true,
+                todayHighlight: true
+            }).datepicker("setDate", "0");
+
+            $("#datepickerFinTip").datepicker({
+                autoclose: true,
+                todayHighlight: true
+            }).datepicker("setDate", "0");
+
+            this.FechaInicioTip = $("#dtpFechaInicioTip").val();
+            this.FechaFinTip = $("#dtpFechaFinTip").val();
+            this.COD_NPS = $('#ddlPreguntas').val();
+
+            var codTienda = $('#dwtda').val();
+            var CodConString = "";
+            for (var key in codTienda) {
+                CodConString += codTienda[key] + ",";
+            }
+            this.Tienda = CodConString.slice(0, -1); 
+            /*[/TIPO]*/
+
+            /*[DISTRITO]*/
+            $("#datepickerIniDis").datepicker({
+                autoclose: true,
+                todayHighlight: true
+            }).datepicker("setDate", "0");
+
+            $("#datepickerFinDis").datepicker({
+                autoclose: true,
+                todayHighlight: true
+            }).datepicker("setDate", "0");
+
+            this.FechaInicioDis = $("#dtpFechaInicioDis").val();
+            this.FechaFinDis = $("#dtpFechaFinDis").val();
+            /*[/DISTRITO]*/
+
+            $("#btnExportarEst").addClass("disabled");
+            $("#btnExportarEst").attr('disabled', 'disabled');
+            $("#btnExportarTip").addClass("disabled");
+            $("#btnExportarTip").attr('disabled', 'disabled');
+            $("#btnExportarDis").addClass("disabled");
+            $("#btnExportarDis").attr('disabled', 'disabled');
+
+            objDashboard.generaal.getChartEstado();
+            objDashboard.generaal.getChartTipo();
+            objDashboard.generaal.getChartDistrito();
+            /*[/Inicializamos variables]*/
+
+            /*[btn Exportar y buscar]*/
+            $("#btnExportarEst").click(function () {
+                objDashboard.FechaInicioEst = $("#dtpFechaInicioEst").val();
+                objDashboard.FechaFinEst = $("#dtpFechaFinEst").val();
+                objDashboard.generaal.exportarEst();
+            });
+
+            $("#btnExportarTip").click(function () {
+                objDashboard.FechaInicioTip = $("#dtpFechaInicioTip").val();
+                objDashboard.FechaFinTip = $("#dtpFechaFinTip").val();
+                objDashboard.generaal.exportarTip();
+            });
+
+            $("#btnExportarDis").click(function () {
+                objDashboard.FechaInicioDis = $("#dtpFechaInicioDis").val();
+                objDashboard.FechaFinDis = $("#dtpFechaFinDis").val();
+                objDashboard.generaal.exportarDis();
+            });
+
+            $("#btnBuscarEst").click(function () {
+                debugger;
+                objDashboard.FechaInicioEst = $("#dtpFechaInicioEst").val();
+                objDashboard.FechaFinEst = $("#dtpFechaFinEst").val();
+                objDashboard.generaal.getChartEstado();
+            });
+
+            $("#btnBuscarTip").click(function () {
+                debugger;
+                objDashboard.FechaInicioTip = $("#dtpFechaInicioTip").val();
+                objDashboard.FechaFinTip = $("#dtpFechaFinTip").val();
+                objDashboard.COD_NPS = $('#ddlPreguntas').val();
+                var Tienda = $('#dwtda').val();
+                var CodConString = "";
+                for (var key in Tienda) {
+                    CodConString += Tienda[key] + ",";
+                }
+                objDashboard.Tienda = CodConString.slice(0, -1);
+                objDashboard.generaal.getChartTipo();
+            });
+
+            $("#btnBuscarDis").click(function () {
+                debugger;
+                objDashboard.FechaInicioDis = $("#dtpFechaInicioDis").val();
+                objDashboard.FechaFinDis = $("#dtpFechaFinDis").val();
+                objDashboard.generaal.getChartDistrito();
+            });
+            /*[btn Exportar y buscar]*/
+        },
+        Cmbs: {
+            Listar_Cadena_Tienda: function () {
+                objDashboard.Cmbs.ListarCadena();
+                objDashboard.Cmbs.ListarTienda();
+            },
+            ListarCadena: function () {
+                var dataArray = function () { return @Html.Raw(Json.Encode(ViewBag.DisCadTda)); }();
+                // var dataArray = data.Data;
+                var strTipo = $('#dwDis').val();
+
+                var listar = [];
+
+                if (strTipo != null) {
+
+                    if (strTipo == "-1") {
+                        var lista_filter = (strTipo == "-1") ? dataArray.filter(obj => obj.cod_distri != strTipo) : dataArray.filter(obj => obj.cod_distri === strTipo || obj.cod_distri == '0');
+                        $.each(lista_filter, function (index, item) {
+
+                            listar.push(item);
+                        });
+                    } else {
+                        var lista_filter = dataArray.filter(obj => obj.cod_distri == '0');
+                        $.each(lista_filter, function (index, item) {
+                            listar.push(item);
+                        });
+
+                        $.each(strTipo, function (index2, item2) {
+
+                            var lista_filter = dataArray.filter(obj => obj.cod_distri === item2);
+                            $.each(lista_filter, function (index, item) {
+
+                                listar.push(item);
+                            });
+                        });
+                    }
+                }
+
+                var group_cadena = Enumerable.from(listar)
+                .groupBy(
+                null,
+                null,
+                "{ cod_cadena: $.cod_cadena, des_cadena: $.des_cadena}",
+                "'' + $.cod_cadena + '-' + $.des_cadena"
+                ).toArray();
+
+                objDashboard.Cmbs.llenarComboCad("divcad", "dwcad", group_cadena, '0', '', "ListarTienda", '1');
+            },
+            ListarTienda: function () {
+                var dataArray = function () { return @Html.Raw(Json.Encode(ViewBag.DisCadTda)); }();
+
+                var strTipo = $('#dwDis').val();
+                var strCad = $('#dwcad').val();
+                var listar = [];
+
+                if (strTipo != null && strCad != null) {
+                    if (strTipo == "-1" || strCad=="-1") {
+                        var lista_filter = (strTipo == "-1") ? dataArray.filter(obj => obj.cod_distri != strTipo) : dataArray.filter(obj => obj.cod_distri === strTipo || obj.cod_distri == '0');
+                        $.each(lista_filter, function (index, item) {
+
+                            listar.push(item);
+                        });
+                    } else {
+
+                        var lista_filter = dataArray.filter(obj => obj.cod_distri == '0');
+                        $.each(lista_filter, function (index, item) {
+
+                            listar.push(item);
+                        });
+
+                        $.each(strCad, function (index3, item3) {
+                            $.each(strTipo, function (index2, item2) {
+                                var lista_filter = dataArray.filter(obj => obj.cod_distri === item2 && obj.cod_cadena===item3);
+                                $.each(lista_filter, function (index, item) {
+                                    listar.push(item);
+                                });
+
+                            });
+                        });
+                    }
+                }
+                var group_tienda = Enumerable.from(listar)
+                .groupBy(
+                null,
+                null,
+                "{ cod_entid: $.cod_entid, des_entid: $.des_entid}",
+                "'' + $.cod_entid + '-' + $.des_entid"
+                ).toArray();
+
+                objDashboard.Cmbs.llenarComboTda("divtda", "dwtda", group_tienda, '0', '', "", '1');
+            },
+            llenarComboCad: function (DivId, IdControl, Data, codDefecto, desDefecto, onchangeFuncion, tipo){
+                $('#' + IdControl).find('option').remove();
+                var str = (tipo == '1') ? '<select class="selectpicker" multiple = "multiple"  data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '" data-actions-box="true"  data-selected-text-format="count > 2" >' : '<select class="selectpicker"  data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '"  data-actions-box="true"  data-selected-text-format="count > 2" > ';
+                var ItemNormal = '<option value="codItem">desItem</option>';
+                var colectItemNormal = '';
+
+                //if (codDefecto != '') { str += '<option value="' + codDefecto + '" selected="selected">------' + desDefecto + '------</option>'; }
+
+                if (onchangeFuncion != '') { onchangeFuncion = 'onchange = "' + onchangeFuncion + '()"' }
+                str = str.replace("onchangeFuncion", onchangeFuncion);
+
+                $.each(Data, function (index, item) {
+
+                    colectItemNormal = colectItemNormal + ItemNormal
+                    var strSelected = '"';
+
+                    if (item.cod_entid == codDefecto) {
+                        strSelected = '" selected="selected" '
+                    }
+                    strSelected = '" selected="selected" '; // seleccionar todos al cargar
+                    colectItemNormal = colectItemNormal.replace("codItem", item.cod_cadena + strSelected);
+                    colectItemNormal = colectItemNormal.replace("desItem", item.des_cadena);
+
+                });
+
+                str += colectItemNormal
+                str += '</select>'
+
+                document.getElementById(DivId).innerHTML = str
+
+                $('.selectpicker').selectpicker({
+                    liveSearch: true,
+                    showSubtext: true
+                });
+            },
+            llenarComboTda: function (DivId, IdControl, Data, codDefecto, desDefecto, onchangeFuncion, tipo) {
+                $('#' + IdControl).find('option').remove();
+
+                var str = (tipo == '1') ? '<select class="selectpicker" multiple = "multiple"  data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '" data-actions-box="true"  data-selected-text-format="count > 2" >' : '<select class="selectpicker"  data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '"  data-actions-box="true"  data-selected-text-format="count > 2" > ';
+                var ItemNormal = '<option value="codItem">desItem</option>';
+                var colectItemNormal = '';
+                //if (codDefecto != '') { str += '<option value="' + codDefecto + '" selected="selected">------' + desDefecto + '------</option>'; }
+
+                if (onchangeFuncion != '') { onchangeFuncion = 'onchange = "' + onchangeFuncion + '()"' }
+                str = str.replace("onchangeFuncion", onchangeFuncion);
+
+                $.each(Data, function (index, item) {
+
+                    colectItemNormal = colectItemNormal + ItemNormal
+                    var strSelected = '"';
+
+                    if (item.cod_entid == codDefecto) {
+                        strSelected = '" selected="selected" '
+
+                    }
+                    strSelected = '" selected="selected" '; // seleccionar todos al cargar
+                    colectItemNormal = colectItemNormal.replace("codItem", item.cod_entid + strSelected);
+                    colectItemNormal = colectItemNormal.replace("desItem", item.des_entid);
+                });
+
+                str += colectItemNormal
+                str += '</select>'
+
+                document.getElementById(DivId).innerHTML = str
+
+                $('.selectpicker').selectpicker({
+                    liveSearch: true,
+                    showSubtext: true
+                });
+
+            }
+        },
+        grid: {
+            getTable: function (_data) {
+                debugger
+                var Data = _data.Data;
+                var result = "<thead>";
+                    result += "<tr><th>Preguntas</th>";
+                    for (var KeyTh in _data.Cols) { 
+                        result += "<th>" + _data.Cols[KeyTh].DISTRITO + "</th>";
+                    }
+                    result += "</tr>";
+                    result += "</thead>"
+                    result += "<tbody>";
+                    for (var KeyR in _data.Rows) {
+                        result += "<tr>";
+                        result += "<td>" + _data.Rows[KeyR].PREGUNTA_NPS + "</td>";
+                        for (var KeyC in _data.Cols) {
+                            let index = Data.findIndex(c => c.COD_NPS == _data.Rows[KeyR].COD_NPS &&  c.DISTRITO == _data.Cols[KeyC].DISTRITO);
+                            if (index>-1) {
+                                result += "<td><span class='badge' style='background-color: " + Data[index].COLOR_RGBA + "'>" + Data[index].NOTA + "</span></td>";
+                            } else {
+                                result += "<td></td>";
+                            }                            
+                        }
+                        result += "<tr>";
+                    }
+                    result += "</tbody>"
+                return result;
+            }
+        },
+        generaal: {
+            /*[ESTADO]*/
+            ChartEstadoDiv: function (_data) {
+                debugger;
+                try {
+                    ChartEstado.destroy();
+                } catch (e) { }
+                ChartEstado = new Chart(document.getElementById('ChartEstado'), {
+                        type: 'bar',
+                        data: _data,
+                        plugins: [ChartDataLabels],
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true,
+                                    }
+                                }],
+                                xAxes: [{
+                                    ticks: {
+                                        callback: function (value) {
+                                            if (value.length > 7 && 5 == 6) {
+                                                return value.substr(0, 7) + "..."; //truncate
+                                            } else {
+                                                return value
+                                            }
+                                        }
+                                    }
+                                }],
+                            },
+                            tooltips: {
+                                mode: 'index',
+                                intersect: false,
+                                backgroundColor: 'rgba(237, 237, 237,0.8)',
+                                bodyFontColor: 'rgba(73, 73, 73,0.8)',
+                                borderWidth: 1,
+                                borderColor: 'rgba(158, 158, 158, 1)',
+                                titleFontColor: 'rgba(73, 73, 73,0.8)',
+                                callbacks: {
+                                    title: function (tooltipItems, data) {
+                                        var idx = tooltipItems[0].index;
+                                        return data.labels[idx]; //do something with title
+                                        //}
+                                    },
+                                }
+                            },
+                            maintainAspectRatio: false,
+                            plugins: {
+                                datalabels: {
+                                    color: 'white',
+                                    font: {
+                                        weigth: 'bold',
+                                        size:17,
+                                    },
+                                    textAlign: 'end',
+                                }
+                            },
+                            legend: {
+                                display:false,
+                            }
+                        }
+                    })
+                //[/Config chart]
+            },
+            getChartEstado: function () {
+                debugger
+                $("#TP-load").removeClass("hidden");
+                var _Ent = function () { return @Html.Raw(Json.Encode(ViewBag.entDashboardEstado)); }();
+                _Ent.FEC_INI = objDashboard.FechaInicioEst;
+                _Ent.FEC_FIN = objDashboard.FechaFinEst
+                debugger;
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("getChartEstado", "NPS")',
+                    data: { _Ent:_Ent},
+                    success: function (data) {
+                        debugger;
+                        var data = JSON.parse(data);
+                        objDashboard.generaal.ChartEstadoDiv(data.Data);
+                        if (data.Success) {                            
+                            $("#TP-load").addClass("hidden");
+                            $("#btnExportarEst").removeClass("disabled");
+                            $("#btnExportarEst").removeAttr("disabled");
+                        } else {
+                            $("#TP-load").addClass("hidden");
+                            $("#btnExportarEst").addClass("disabled");
+                            $("#btnExportarEst").attr('disabled', 'disabled');
+                        }
+                        // fin chart
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        $("#TP-load").addClass("hidden");
+                        waitingDialog.hide();
+                        var error = eval("(" + XMLHttpRequest.responseText + ")");
+                        swal(error.Message);
+                    }
+                });
+            },
+            /*[TIPO]*/
+            ChartTipoDiv: function (_data) {
+                debugger;
+                try {
+                    ChartTipo.destroy();
+                } catch (e) { }
+                ChartTipo = new Chart(document.getElementById('ChartTipo'), {
+                    type: 'bar',
+                    data: _data,
+                    plugins: [ChartDataLabels],
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                }
+                            }],
+                            xAxes: [{
+                                ticks: {
+                                    callback: function (value) {
+                                        if (value.length > 7 && 5 == 6) {
+                                            return value.substr(0, 7) + "..."; //truncate
+                                        } else {
+                                            return value
+                                        }
+                                    }
+                                }
+                            }],
+                        },
+                        tooltips: {
+                            mode: 'index',
+                            intersect: false,
+                            backgroundColor: 'rgba(237, 237, 237,0.8)',
+                            bodyFontColor: 'rgba(73, 73, 73,0.8)',
+                            borderWidth: 1,
+                            borderColor: 'rgba(158, 158, 158, 1)',
+                            titleFontColor: 'rgba(73, 73, 73,0.8)',
+                            callbacks: {
+                                title: function (tooltipItems, data) {
+                                    var idx = tooltipItems[0].index;
+                                    return data.labels[idx]; //do something with title
+                                    //}
+                                },
+                            }
+                        },
+                        maintainAspectRatio: false,
+                        plugins: {
+                            datalabels: {
+                                color: 'white',
+                                font: {
+                                    weigth: 'bold',
+                                    size:17,
+                                },
+                                textAlign: 'end',
+                            }
+                        },
+                        legend: {
+                            display:false,
+                        }
+                    }
+                })
+                //[/Config chart]
+            },
+            getChartTipo: function () {
+                debugger
+                $("#Tipo-load").removeClass("hidden");
+                var _Ent = function () { return @Html.Raw(Json.Encode(ViewBag.EntDashboardTipo)); }();
+                _Ent.FEC_INI = objDashboard.FechaInicioTip;
+                _Ent.FEC_FIN = objDashboard.FechaFinTip;
+                _Ent.COD_NPS = objDashboard.COD_NPS;
+                _Ent.CODTDA = objDashboard.Tienda;
+                debugger;
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("getChartTipo", "NPS")',
+                    data: { _Ent:_Ent},
+                    success: function (data) {
+                        debugger
+                        var data = JSON.parse(data);
+                        objDashboard.generaal.ChartTipoDiv(data.Data);
+                        if (data.Success) {
+                            $("#lblNotas").html(data.Data.Notas);
+                            $("#Tipo-load").addClass("hidden");
+                            $("#btnExportarTip").removeClass("disabled");
+                            $("#btnExportarTip").removeAttr("disabled");
+                        } else {
+                            $("#Tipo-load").addClass("hidden");
+                            $("#btnExportarTip").addClass("disabled");
+                            $("#btnExportarTip").attr('disabled', 'disabled');
+                        }
+                        // fin chart
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        $("#Tipo-load").addClass("hidden");
+                        waitingDialog.hide();
+                        var error = eval("(" + XMLHttpRequest.responseText + ")");
+                        swal(error.Message);
+                    }
+                });
+            },
+            getChartDistrito: function () {
+                debugger
+                $("#Dist-load").removeClass("hidden");
+                var _Ent = function () { return @Html.Raw(Json.Encode(ViewBag.entDashboardDistrito)); }();
+                _Ent.FEC_INI = objDashboard.FechaInicioDis;
+                _Ent.FEC_FIN = objDashboard.FechaFinDis;
+                debugger;
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("_getCaliPorDistrito", "NPS")',
+                    data: { _Ent:_Ent},
+                    success: function (data) {
+                        debugger;
+                        var data = JSON.parse(data);
+                        if (data.Success) {
+                            $("#TbTablaDistrito").html(objDashboard._HtmlTabla);
+                            var output = objDashboard.grid.getTable(data.Data);
+                            $("#TbTablaDistrito").html(output)
+                            $("#Dist-load").addClass("hidden");
+                            $("#btnExportarDis").removeClass("disabled");
+                            $("#btnExportarDis").removeAttr("disabled");
+                        } else {
+                            $("#TbTablaDistrito").html(objDashboard._HtmlTabla);
+                            $("#Dist-load").addClass("hidden");
+                            $("#btnExportarDis").addClass("disabled");
+                            $("#btnExportarDis").attr('disabled', 'disabled');
+                        }                       
+                        // fin chart
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        $("#Dist-load").addClass("hidden");
+                        var error = eval("(" + XMLHttpRequest.responseText + ")");
+                        swal(error.Message);
+                    }
+                });
+            },
+            Validar : function(){
+
+                return true;
+            },
+            consultar: function () {
+            },
+            exportarEst: function () {
+                var _Ent = function () { return @Html.Raw(Json.Encode(ViewBag.entDashboardEstado)); }();
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("get_exporta_ListarChartEstado_excel", "NPS")',
+                    data : {_Ent:_Ent},
+                    success: function (data) {
+                        data = JSON.parse(data);
+                        waitingDialog.hide();
+                        if (data.Success) {
+                            toastr.success(data.Message);
+                            window.location = '@Url.Action("ListarChartEstadoExcel")';
+                        }
+                        else {
+                            toastr.error(data.Message, "Alerta");
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        waitingDialog.hide();
+                        toastr.error("Error al exportar excel.", "Alerta");
+                    }
+                });
+            },
+            exportarTip: function () {
+                var _Ent = function () { return @Html.Raw(Json.Encode(ViewBag.EntDashboardTipo)); }();
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("get_exporta_ListarChartTipo_excel", "NPS")',
+                    data : {_Ent:_Ent},
+                    success: function (data) {
+                        data = JSON.parse(data);
+                        waitingDialog.hide();
+                        if (data.Success) {
+                            toastr.success(data.Message);
+                            window.location = '@Url.Action("ListarChartTipoExcel")';
+                        }
+                        else {
+                            toastr.error(data.Message, "Alerta");
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        waitingDialog.hide();
+                        toastr.error("Error al exportar excel.", "Alerta");
+                    }
+                });
+            },
+            exportarDis: function () {
+                var _Ent = function () { return @Html.Raw(Json.Encode(ViewBag.entDashboardDistrito)); }();
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("get_exporta_ListarChartDistrito_excel", "NPS")',
+                    data : {_Ent:_Ent},
+                    success: function (data) {
+                        data = JSON.parse(data);
+                        waitingDialog.hide();
+                        if (data.Success) {
+                            toastr.success(data.Message);
+                            window.location = '@Url.Action("ListarChartDistritoExcel")';
+                        }
+                        else {
+                            toastr.error(data.Message, "Alerta");
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        waitingDialog.hide();
+                        toastr.error("Error al exportar excel.", "Alerta");
+                    }
+                });
+            }
+        }
+    };
+    //[Inicializamos]
+    $(document).ready(function () {
+        $("body").toggleClass('sidebar-collapse');
+        objDashboard.Inicio();
+    });
+    //[/Inicializamos]
+</script>

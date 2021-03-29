@@ -25,6 +25,9 @@ using System.Net.Http.Headers;
 using System.Web.Http.Cors;
 using System.Net;
 using System.Text.RegularExpressions;
+using CapaPresentacion.Models.PedidosNoFactu;
+using System.Threading.Tasks;
+using System.Text;
 
 namespace CapaPresentacion.Controllers
 {
@@ -34,6 +37,9 @@ namespace CapaPresentacion.Controllers
     {
 
         Dat_ECommerce datos = new Dat_ECommerce();
+        Dat_PedNoFactu datospednofactu = new Dat_PedNoFactu();
+
+        private string _session_nroped_private = "_session_nroped_private";
 
         //List<Ent_TrazaPedido> listTraza = new List<Ent_TrazaPedido>();
         private string _session_listTraza_private = "_session_listTraza_private";
@@ -1348,5 +1354,138 @@ namespace CapaPresentacion.Controllers
 
         }
         #endregion
+
+
+        public ActionResult PedidosNoFactu()
+        {
+            string nroped = (Request.HttpMethod == "POST" ? Request.Params["nroped"].ToString() : "");
+
+            List<PedidoNoFactu> listPed = SelectPedNoFactu(nroped);
+
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
+
+            if (_usuario == null)
+            {
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+            }
+            else
+            {
+                #region<VALIDACION DE ROLES DE USUARIO>
+                Boolean valida_rol = true;
+                Basico valida_controller = new Basico();
+                List<Ent_Menu_Items> menu = (List<Ent_Menu_Items>)Session[Ent_Global._session_menu_user];
+                valida_rol = valida_controller.AccesoMenu(menu, this);
+                #endregion
+                valida_rol = true; // ojo por mientras
+                if (valida_rol)
+                {
+                    return View(listPed);
+                }
+                else
+                {
+                    return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+                }
+            }
+
+        }
+
+
+        public List<PedidoNoFactu> SelectPedNoFactu(string nroped)
+        {
+            string _tienda = (Session["Tienda"] == null) ? "" : Session["Tienda"].ToString();
+
+            //_tienda = "50128"; // ojo por mientras
+
+            Session[_session_nroped_private] = nroped;
+
+            List<PedidoNoFactu> listPed = new List<PedidoNoFactu>();
+            List<Ent_PedidoNoFactu> listaux = new List<Ent_PedidoNoFactu>();
+            listaux = datospednofactu.get_data(nroped, _tienda);
+
+            if (listaux != null)
+            {
+                foreach (var item in listaux)
+                {
+                    PedidoNoFactu model = new PedidoNoFactu();
+                    model.id_pedido = item.id_pedido;
+                    model.cod_tienda = item.cod_tienda;
+                    model.nom_tienda = item.nom_tienda;
+                    model.cod_articulo = item.cod_articulo;
+                    model.nom_articulo = item.nom_articulo;
+                    model.estado = item.estado;
+                    model.estado_ob = item.estado_ob;
+                    model.nro_comprob = item.nro_comprob;
+                    listPed.Add(model);
+                }
+            }
+
+            return listPed;
+        }
+
+
+        [HttpGet]
+        public FileContentResult ExportToExcel2()
+        {
+            string nroped = (Session["_session_nroped_private"] == null) ? "" : Session["_session_nroped_private"].ToString();
+            List<PedidoNoFactu> listPed = SelectPedNoFactu(nroped);
+
+            string[] columns = { "id_pedido", "cod_tienda", "nom_tienda", "cod_articulo", "nom_articulo", "estado", "estado_ob", "nro_comprob"};
+            byte[] filecontent = ExcelExportHelper.ExportExcel(listPed, "PEDIDOS NO FACTURADOS", true, columns);
+            return File(filecontent, ExcelExportHelper.ExcelContentType, "pednofactu.xlsx");
+        }
+
+
+        //public static async Task<dynamic> LlamadaWebApiOrderBrokerAsync(string verbo, string AppAuthorization, string Uri, string soapXml = "")
+        //{
+        //    //-------------------------------------
+        //    dynamic objreturn = null;
+        //    HttpResponseMessage response = null;
+        //    using (var client = new HttpClient())
+        //    {
+        //        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("text/xml"));
+        //        client.DefaultRequestHeaders.Add("Authorization", AppAuthorization);
+        //        System.Net.ServicePointManager.ServerCertificateValidationCallback += (se, cert, chain, sslerror) =>
+        //        {
+        //            return true;
+        //        };
+        //        client.Timeout = TimeSpan.FromMinutes(3);
+        //        /*********/
+        //        switch (verbo)
+        //        {
+        //            case "GET":
+        //                break;
+        //            case "PUT":
+        //                break;
+        //            case "POST":
+        //                response = client.PostAsync(Uri, new StringContent(soapXml, Encoding.UTF8, "text/xml")).Result;
+        //                break;
+        //        }
+        //        /*********/
+        //        if (response.IsSuccessStatusCode)
+        //        {
+
+        //            var content = response.Content.ReadAsStringAsync().Result;
+
+        //            if (content != "")
+        //            {
+        //                objreturn = content;
+        //            }
+        //            else { objreturn = content; }
+        //        }
+        //        else
+        //        {
+        //            objreturn = null;
+        //        }
+        //    }
+        //    //----------------------------------------------------------------
+        //    //-- DEBE DEVOLVER UN OBJETO CON EL RESPONSE Y EL CODIGO DE ESTADO
+        //    //----------------------------------------------------------------
+        //    return new { response = objreturn, statuscode = (int)response.StatusCode };
+        //    //-------------------------------------
+        //}
     }
 }

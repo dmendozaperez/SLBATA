@@ -1,0 +1,315 @@
+﻿@{
+    ViewBag.Title = "";
+    Layout = "~/Views/Shared/_Layout_NPS.cshtml";
+}
+<style>
+    .Css_BtnR {
+        -webkit-box-sizing: content-box;
+        -moz-box-sizing: content-box;
+        box-sizing: content-box;
+        width: 0;
+        cursor: pointer;
+        padding: 10px 20px;
+        margin: 3px 3px;
+        border: 3px solid rgba(234,96,84,1);
+        -webkit-border-radius: 30px;
+        border-radius: 30px;
+        font: normal 16px/normal "Advent Pro", Helvetica, sans-serif;
+        color: #a53529;
+        text-align: center;
+        text-indent: -5px;
+        -o-text-overflow: clip;
+        text-overflow: clip;
+        letter-spacing: 1px;
+        background: rgba(0,0,0,0);
+        -webkit-transition: background-color 0.3s cubic-bezier(0, 0, 0, 0), color 0.3s cubic-bezier(0, 0, 0, 0), width 0.3s cubic-bezier(0, 0, 0, 0), border-width 0.3s cubic-bezier(0, 0, 0, 0), border-color 0.3s cubic-bezier(0, 0, 0, 0);
+        -moz-transition: background-color 0.3s cubic-bezier(0, 0, 0, 0), color 0.3s cubic-bezier(0, 0, 0, 0), width 0.3s cubic-bezier(0, 0, 0, 0), border-width 0.3s cubic-bezier(0, 0, 0, 0), border-color 0.3s cubic-bezier(0, 0, 0, 0);
+        -o-transition: background-color 0.3s cubic-bezier(0, 0, 0, 0), color 0.3s cubic-bezier(0, 0, 0, 0), width 0.3s cubic-bezier(0, 0, 0, 0), border-width 0.3s cubic-bezier(0, 0, 0, 0), border-color 0.3s cubic-bezier(0, 0, 0, 0);
+        transition: background-color 0.3s cubic-bezier(0, 0, 0, 0), color 0.3s cubic-bezier(0, 0, 0, 0), width 0.3s cubic-bezier(0, 0, 0, 0), border-width 0.3s cubic-bezier(0, 0, 0, 0), border-color 0.3s cubic-bezier(0, 0, 0, 0);
+    }
+
+    .Css_BtnR:hover {
+        border: 2px solid #a53529;
+        -webkit-border-radius: 40px;
+        border-radius: 40px;
+        color: rgba(255,255,255,1);
+        background: #dd4b39;
+    }
+
+    .Css_BtnR:active {
+        background: #e87368;
+        -webkit-transition: none;
+        -moz-transition: none;
+        -o-transition: none;
+        transition: none;
+    }
+
+    .Css_BtnRActi{
+        border: 2px solid #a53529;
+        -webkit-border-radius: 40px;
+        border-radius: 40px;
+        color: rgba(255,255,255,1);
+        background: #dd4b39;
+    }
+  
+
+    .Css_BtnP {
+        -webkit-box-sizing: content-box;
+        -moz-box-sizing: content-box;
+        box-sizing: content-box;
+        width: 140px;
+        cursor: pointer;
+        top: 5px;
+        margin: 5px 6px;
+        padding: 5px 5px 5px 13px;
+        border: 2px solid #c72513;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        font: normal 16px/normal "Advent Pro", Helvetica, sans-serif;
+        color: #a53529;
+        -o-text-overflow: clip;
+        text-overflow: clip;
+        letter-spacing: 1px;
+        background: rgba(0,0,0,0);
+        -webkit-transition: background-color 0.3s cubic-bezier(0, 0, 0, 0), color 0.3s cubic-bezier(0, 0, 0, 0), width 0.3s cubic-bezier(0, 0, 0, 0), border-width 0.3s cubic-bezier(0, 0, 0, 0), border-color 0.3s cubic-bezier(0, 0, 0, 0);
+        -moz-transition: background-color 0.3s cubic-bezier(0, 0, 0, 0), color 0.3s cubic-bezier(0, 0, 0, 0), width 0.3s cubic-bezier(0, 0, 0, 0), border-width 0.3s cubic-bezier(0, 0, 0, 0), border-color 0.3s cubic-bezier(0, 0, 0, 0);
+        -o-transition: background-color 0.3s cubic-bezier(0, 0, 0, 0), color 0.3s cubic-bezier(0, 0, 0, 0), width 0.3s cubic-bezier(0, 0, 0, 0), border-width 0.3s cubic-bezier(0, 0, 0, 0), border-color 0.3s cubic-bezier(0, 0, 0, 0);
+        transition: background-color 0.3s cubic-bezier(0, 0, 0, 0), color 0.3s cubic-bezier(0, 0, 0, 0), width 0.3s cubic-bezier(0, 0, 0, 0), border-width 0.3s cubic-bezier(0, 0, 0, 0), border-color 0.3s cubic-bezier(0, 0, 0, 0);
+    }
+
+    .Css_BtnP:hover {
+        color: rgba(255,255,255,1);
+        background: #dd4b39;
+    }
+
+    .Css_BtnP:active {
+        background: #e87368;
+        -webkit-transition: none;
+        -moz-transition: none;
+        -o-transition: none;
+        transition: none;
+    }
+
+   .Css_BtnPActi {
+        color: rgba(255,255,255,1);
+        background: #dd4b39;
+    }
+</style>
+<p class="text-danger"></p>
+<div class="box box-body">
+    <div id="Contenido">
+    </div>
+    <br>
+
+    <div class="box-footer">
+        <div class="row">
+            <div class="col-md-1">
+                <div class="form-group">
+
+                </div>
+            </div>
+            <div class="col-md-10">
+                <div class="form-group">
+                    <label style="font-size: 1.5em; color: #a2a2a2;">Dejanos un comentario o recomendación si deseas.</label>
+                    <textarea id="TxtComentario" class="form-control" rows="3" style="max-width: 100%" maxlength="140"></textarea>
+                    <label id="TxtCont" class="text-right" style="color: #afaeae;">0/140</label>
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="form-group">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12" style="text-align: center;">
+            <button id="btnRegistrar" title="Enviar" class="btn btn-success">
+                <span class="glyphicon glyphicon-floppy-saved"></span>&nbsp;&nbsp;Finalizar Encuesta
+            </button>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+        //debugger
+        var objNPS = {
+            Inicio: function () {
+                //debugger
+
+                /*[Inicializamos variables]*/
+                objNPS.generaal.SoloTexto($("#TxtComentario"));
+
+                this.GrpPregun = function () { return @Html.Raw(Json.Encode(ViewBag.GrpPregun)); }();
+                this._ListRespuesta = function () { return @Html.Raw(Json.Encode(ViewBag.ListRespuesta)); }();
+
+                for (var key in objNPS.GrpPregun) {
+                    var _ent = function () { return @Html.Raw(Json.Encode(ViewBag.entTmpNPS_Respuestas)); }();
+                    _ent.COD_NPS_CON = objNPS.GrpPregun[key].COD_NPS_CON;
+                    _ent.COD_NPS = objNPS.GrpPregun[key].COD_NPS;
+                    _ent.COD_NPS_OPC = 0;
+                    _ent.VALOR_NPS = 0;
+                    _ent.isOK = false;
+                    objNPS._ListRespuesta.push(_ent);
+                }
+                console.log(objNPS._ListRespuesta);
+                this.divHtml = "";
+                /*[/Inicializamos variables]*/
+
+                /*[Inicializamos Preguntas]*/
+                for (var key in objNPS.GrpPregun)
+                {
+                    let COD_NPS_CON = objNPS.GrpPregun[key].COD_NPS_CON;
+                    let COD_NPS = objNPS.GrpPregun[key].COD_NPS;
+                    let ID = COD_NPS_CON + COD_NPS;
+                    if (objNPS.GrpPregun[key].RANGO_NPS) {
+                        objNPS.divHtml += '<div class="row">' +
+                                                '<div class="col-sm-12">' +
+                                                    '<div class="form-group" style="text-align: center;">' +
+                                                        '<h3>' + objNPS.GrpPregun[key].PREGUNTA_NPS + '</h3>' +
+                                                    '</div>' +
+                                                '</div>' +
+                                                '<div class="col-sm-12">' +
+                                                    '<div class="form-group" style="text-align: center;" id="' + ID + '">' +
+                                                        '<button class="Css_BtnR" id="Btn' + ID + '1"   onclick="javascript: objNPS.generaal.CapRango(\'R\',\'' + COD_NPS_CON + '\',\'' + COD_NPS + '\',\'' + ID + '\',\'1\')">1</button>' +
+                                                        '<button class="Css_BtnR" id="Btn' + ID + '2"   onclick="javascript: objNPS.generaal.CapRango(\'R\',\'' + COD_NPS_CON + '\',\'' + COD_NPS + '\',\'' + ID + '\',\'2\')">2</button>' +
+                                                        '<button class="Css_BtnR" id="Btn' + ID + '3"   onclick="javascript: objNPS.generaal.CapRango(\'R\',\'' + COD_NPS_CON + '\',\'' + COD_NPS + '\',\'' + ID + '\',\'3\')">3</button>' +
+                                                        '<button class="Css_BtnR" id="Btn' + ID + '4"   onclick="javascript: objNPS.generaal.CapRango(\'R\',\'' + COD_NPS_CON + '\',\'' + COD_NPS + '\',\'' + ID + '\',\'4\')">4</button>' +
+                                                        '<button class="Css_BtnR" id="Btn' + ID + '5"   onclick="javascript: objNPS.generaal.CapRango(\'R\',\'' + COD_NPS_CON + '\',\'' + COD_NPS + '\',\'' + ID + '\',\'5\')">5</button>' +
+                                                        '<button class="Css_BtnR" id="Btn' + ID + '6"   onclick="javascript: objNPS.generaal.CapRango(\'R\',\'' + COD_NPS_CON + '\',\'' + COD_NPS + '\',\'' + ID + '\',\'6\')">6</button>' +
+                                                        '<button class="Css_BtnR" id="Btn' + ID + '7"   onclick="javascript: objNPS.generaal.CapRango(\'R\',\'' + COD_NPS_CON + '\',\'' + COD_NPS + '\',\'' + ID + '\',\'7\')">7</button>' +
+                                                        '<button class="Css_BtnR" id="Btn' + ID + '8"   onclick="javascript: objNPS.generaal.CapRango(\'R\',\'' + COD_NPS_CON + '\',\'' + COD_NPS + '\',\'' + ID + '\',\'8\')">8</button>' +
+                                                        '<button class="Css_BtnR" id="Btn' + ID + '9"   onclick="javascript: objNPS.generaal.CapRango(\'R\',\'' + COD_NPS_CON + '\',\'' + COD_NPS + '\',\'' + ID + '\',\'9\')">9</button>' +
+                                                        '<button class="Css_BtnR" id="Btn' + ID + '10"  onclick="javascript: objNPS.generaal.CapRango(\'R\',\'' + COD_NPS_CON + '\',\'' + COD_NPS + '\',\'' + ID + '\',\'10\')">10</button>' +
+                                                    '</div>' +
+                                                '</div>' +
+                                            '</div>';
+                    }
+                    else
+                    {
+                        objNPS.divHtml += '<div class="row">' +
+                                                '<div class="col-sm-12">' +
+                                                    '<div class="form-group" style="text-align: center;">' +
+                                                        '<h3>' + objNPS.GrpPregun[key].PREGUNTA_NPS + '</h3>' +
+                                                    '</div>' +
+                                                '</div>' +
+                                                '<div class="col-sm-12">' +
+                                                    '<div class="form-group"  id="' + ID + '">'+
+                                                        '<div class="row">' +
+                                                                '<div class="col-sm-2"></div>';
+                                                                for(var keys in objNPS.GrpPregun[key].Alternativas){
+                                                                    objNPS.divHtml += '<div class="col-sm-2"">' +
+                                                                                            '<button class="Css_BtnP" id="Btn' + ID + objNPS.GrpPregun[key].Alternativas[keys].COD_NPS_OPC + '"  style="text-align: left;" onclick="javascript: objNPS.generaal.CapPregun(\'P\',\'' + COD_NPS_CON + '\',\'' + COD_NPS + '\',\'' + ID + '\',\'' + objNPS.GrpPregun[key].Alternativas[keys].COD_NPS_OPC + '\')">' + objNPS.GrpPregun[key].Alternativas[keys].DES_NPS_OPC + '</button>' +
+                                                                                      '</div>';
+                                                                }
+                                                objNPS.divHtml += '<div class="col-sm-2"></div>';
+                                     objNPS.divHtml += '</div>' +
+                                                    '</div>' +
+                                               '</div>' +
+                                            '</div>';
+                    }
+                }
+
+                $("#Contenido").html(objNPS.divHtml);
+                /*[/Inicializamos Preguntas]*/
+
+                /*[Registra]*/
+                $("#btnRegistrar").click(function () {
+                    if (objNPS.generaal.Validar()) {
+                        $("#btnRegistrar").addClass("disabled");
+                        $("#btnRegistrar").attr('disabled', 'disabled');
+                        objNPS.generaal.Registrar();
+                    }
+                })
+                /*[/Registra]*/
+                var Txt_Max = 0;
+                $("#TxtComentario").keyup(function () {
+                    var text_len = $('#TxtComentario').val().length;
+                    var text_suma = Txt_Max + text_len;
+
+                    $('#TxtCont').html(text_suma +'/140');
+
+                });
+            },
+            generaal: {
+                SoloTexto: function (element) {
+                    //SOLO LETRAS CON NUMERO SIN CARACTERES ESPECIALES
+                    $(element).keypress(function (e) {
+                        var keyCode = e.keyCode || e.which;
+                        var regex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9., ]+$/;
+                        //Validate TextBox value against the Regex.
+                        var isValid = regex.test(String.fromCharCode(keyCode));
+                        return isValid;
+                    });
+                },
+                CapRango: function (COLORBTN, COD_NPS_CON, COD_NPS, ID, VALOR) {
+                    //debugger
+                    $("#" + ID + " button").removeClass("Css_BtnRActi");
+                    $("#Btn" + ID + VALOR).addClass("Css_BtnRActi");
+                    let index = objNPS._ListRespuesta.findIndex(C => C.COD_NPS_CON == COD_NPS_CON && C.COD_NPS == COD_NPS);
+
+                    if (index >-1) {
+                        objNPS._ListRespuesta[index].VALOR_NPS = VALOR;
+                        objNPS._ListRespuesta[index].isOK = true;
+                    }
+                    console.log(objNPS._ListRespuesta);
+                },
+                CapPregun: function (COLORBTN, COD_NPS_CON, COD_NPS, ID, VALOR) {
+                    //debugger
+                    $("#" + ID + " button").removeClass("Css_BtnPActi");
+                    $("#Btn" + ID + VALOR).addClass("Css_BtnPActi");
+                    let index = objNPS._ListRespuesta.findIndex(C => C.COD_NPS_CON == COD_NPS_CON && C.COD_NPS == COD_NPS);
+
+                    if (index > -1) {
+                        objNPS._ListRespuesta[index].COD_NPS_OPC = VALOR;
+                        objNPS._ListRespuesta[index].isOK = true;
+                    }
+                    console.log(objNPS._ListRespuesta);
+                },
+                Validar : function(){
+                    var Resul = true
+                    for (var key in objNPS._ListRespuesta) {
+                        if (!objNPS._ListRespuesta[key].isOK) {
+                            swal({ title: "¡Advertencia!", text: "Las preguntas son obligatorias", icon: "warning" })
+                            Resul = false;
+                        }
+                    }
+                    return Resul;
+                },
+                Registrar: function () {
+                    var _EntRpt = function () { return @Html.Raw(Json.Encode(ViewBag.entTmpNPS_Respuestas)); }();
+                    _EntRpt.COMENTARIO = $("#TxtComentario").val();
+                    //debugger
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("getGenerarEncuesta", "NPS")',
+                        data: { _ListRespuesta: objNPS._ListRespuesta, _Ent: _EntRpt },
+                        //async: false,
+                        success: function (data) {
+                            data = JSON.parse(data);
+                            if (data.Success) {
+                                swal({ title: "¡GRACIAS!", text: data.Message, icon: "success" })
+                                    setTimeout(function () {
+                                        window.location = '@Url.Action("Finalizado", "NPS")';
+                                    }, 1000)
+
+                            } else {
+                                swal({ title: "Alerta", text: data.Message, icon: "error" })
+                            }
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            waitingDialog.hide();
+                            swal({ title: "Alerta", text: "Error al registrar la encuesta.", icon: "error" })
+                        }
+                    });
+                }
+            }
+        };
+        //[Inicializamos]
+        $(document).ready(function () {
+            objNPS.Inicio();
+        });
+        //[/Inicializamos]
+</script>
+}
