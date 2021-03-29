@@ -224,15 +224,13 @@
                     <!-- [Table] -->
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="col-md-10">
+                            <div class="col-md-12">
                                 <p class="text-center">
                                     <strong id="tituloTipo"></strong>
                                 </p>
-                                <div class="table-responsive" style="height:270px">
+                                <div class="table-responsive" style="height:450px">
                                     <table id="TbTablaDistrito" class="table table-hover"></table>
                                 </div>
-                            </div>
-                            <div class="col-md-2">
                             </div>
                         </div>
                     </div>
@@ -442,7 +440,7 @@
                 "'' + $.cod_cadena + '-' + $.des_cadena"
                 ).toArray();
 
-                objDashboard.Cmbs.llenarComboCad("divcad", "dwcad", group_cadena, '0', '', "ListarTienda", '1');
+                objDashboard.Cmbs.llenarComboCad("divcad", "dwcad", group_cadena, '0', '', "objDashboard.Cmbs.ListarTienda", '1');
             },
             ListarTienda: function () {
                 var dataArray = function () { return @Html.Raw(Json.Encode(ViewBag.DisCadTda)); }();
@@ -589,6 +587,45 @@
             }
         },
         generaal: {
+            FormatDecimal: function (numero, decimales, separadorDecimal, separadorMiles) {
+                //debugger
+                var partes, array;
+                if (!isFinite(numero) || isNaN(numero = parseFloat(numero))) {
+                    return "";
+                }
+                if (typeof decimales === "undefined") {
+                    decimales = 2;
+                }
+                if (typeof separadorDecimal === "undefined") {
+                    separadorDecimal = ".";
+                }
+                if (typeof separadorMiles === "undefined") {
+                    separadorMiles = ",";
+                }
+                // Redondeamos
+                if (!isNaN(parseInt(decimales))) {
+                    if (decimales >= 0) {
+                        numero = numero.toFixed(decimales);
+                    } else {
+                        numero = (
+                            Math.round(numero / Math.pow(10, Math.abs(decimales))) * Math.pow(10, Math.abs(decimales))
+                        ).toFixed();
+                    }
+                } else {
+                    numero = numero.toString();
+                }
+                // Damos formato
+                partes = numero.split(".", 2);
+                array = partes[0].split("");
+                for (var i = array.length - 3; i > 0 && array[i - 1] !== "-"; i -= 3) {
+                    array.splice(i, 0, separadorMiles);
+                }
+                numero = array.join("");
+                if (partes.length > 1) {
+                    numero += separadorDecimal + partes[1];
+                }
+                return numero;
+            },
             /*[ESTADO]*/
             ChartEstadoDiv: function (_data) {
                 debugger;
@@ -767,7 +804,7 @@
                         var data = JSON.parse(data);
                         objDashboard.generaal.ChartTipoDiv(data.Data);
                         if (data.Success) {
-                            $("#lblNotas").html(data.Data.Notas);
+                            $("#lblNotas").html(objDashboard.generaal.FormatDecimal(data.Data.Notas, 2, '.', ','));
                             $("#Tipo-load").addClass("hidden");
                             $("#btnExportarTip").removeClass("disabled");
                             $("#btnExportarTip").removeAttr("disabled");

@@ -94,7 +94,7 @@ namespace CapaDato.ECommerce
         /// <param name="guia_prestasop"></param>
         /// <param name="guia_urbano"></param>
         /// <returns></returns>
-        public Boolean update_guia(string guia_prestasop, string guia_urbano,string cod_TdaId)
+        public Boolean update_guia(string guia_prestasop, string guia_urbano)
         {
             Boolean valida = false;
             string sqlquery = "USP_Urbano_UpdateGuia";
@@ -109,7 +109,6 @@ namespace CapaDato.ECommerce
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@Ven_Pst_Ref", guia_prestasop);
                         cmd.Parameters.AddWithValue("@Ven_Guia_Urbano", guia_urbano);
-                        cmd.Parameters.AddWithValue("@cod_TdaId", cod_TdaId);
                         cmd.ExecuteNonQuery();
                         valida = true;
                     }
