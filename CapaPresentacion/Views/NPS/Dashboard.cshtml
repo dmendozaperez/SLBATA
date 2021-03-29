@@ -440,7 +440,7 @@
                 "'' + $.cod_cadena + '-' + $.des_cadena"
                 ).toArray();
 
-                objDashboard.Cmbs.llenarComboCad("divcad", "dwcad", group_cadena, '0', '', "ListarTienda", '1');
+                objDashboard.Cmbs.llenarComboCad("divcad", "dwcad", group_cadena, '0', '', "objDashboard.Cmbs.ListarTienda", '1');
             },
             ListarTienda: function () {
                 var dataArray = function () { return @Html.Raw(Json.Encode(ViewBag.DisCadTda)); }();
