@@ -1356,6 +1356,8 @@ namespace CapaPresentacion.Controllers
         #endregion
 
 
+        #region<REGION DE CARLOS Q>
+
         public ActionResult PedidosNoFactu()
         {
             string nroped = (Request.HttpMethod == "POST" ? Request.Params["nroped"].ToString() : "");
@@ -1438,7 +1440,7 @@ namespace CapaPresentacion.Controllers
             return File(filecontent, ExcelExportHelper.ExcelContentType, "pednofactu.xlsx");
         }
 
-
+        #endregion
         //public static async Task<dynamic> LlamadaWebApiOrderBrokerAsync(string verbo, string AppAuthorization, string Uri, string soapXml = "")
         //{
         //    //-------------------------------------
