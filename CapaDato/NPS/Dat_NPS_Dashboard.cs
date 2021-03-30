@@ -175,7 +175,7 @@ namespace CapaDato.NPS
                             _ListarNota = (from DataRow fila in dt_Nota.Rows
                                            select new Ent_NPS_Tipo_Nota()
                                            {
-                                               NOTA = (fila["NOTA"] is DBNull)? (int?)null : Convert.ToInt32(fila["NOTA"])
+                                               NOTA = (fila["NOTA"] is DBNull)? (decimal?)null : Convert.ToDecimal(fila["NOTA"])
                                            }).ToList();
                             objResult._ListarNota = _ListarNota;
 

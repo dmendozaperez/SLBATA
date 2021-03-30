@@ -1376,21 +1376,21 @@ namespace CapaPresentacion.Controllers
             }
             else
             {
-                #region<VALIDACION DE ROLES DE USUARIO>
-                Boolean valida_rol = true;
-                Basico valida_controller = new Basico();
-                List<Ent_Menu_Items> menu = (List<Ent_Menu_Items>)Session[Ent_Global._session_menu_user];
-                valida_rol = valida_controller.AccesoMenu(menu, this);
-                #endregion
-                valida_rol = true; // ojo por mientras
-                if (valida_rol)
-                {
+                //#region<VALIDACION DE ROLES DE USUARIO>
+                //Boolean valida_rol = true;
+                //Basico valida_controller = new Basico();
+                //List<Ent_Menu_Items> menu = (List<Ent_Menu_Items>)Session[Ent_Global._session_menu_user];
+                //valida_rol = valida_controller.AccesoMenu(menu, this);
+                //#endregion
+                //valida_rol = true; // ojo por mientras
+                //if (valida_rol)
+                //{
                     return View(listPed);
-                }
-                else
-                {
-                    return RedirectToAction("Login", "Control", new { returnUrl = return_view });
-                }
+                //}
+                //else
+                //{
+                //    return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+                //}
             }
 
         }
