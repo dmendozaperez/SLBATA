@@ -218,7 +218,7 @@
                 "'' + $.cod_cadena + '-' + $.des_cadena"
                 ).toArray();
 
-                objLLegMercaderia.Cmbs.llenarComboCad("divcad", "dwcad", group_cadena, '0', '', "ListarTienda", '1');
+                objLLegMercaderia.Cmbs.llenarComboCad("divcad", "dwcad", group_cadena, '0', '', "objLLegMercaderia.Cmbs.ListarTienda", '1');
             },
             ListarTienda: function () {
                 var dataArray = function () { return @Html.Raw(Json.Encode(ViewBag.DisCadTda)); }();
