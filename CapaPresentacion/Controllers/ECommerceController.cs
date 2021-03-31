@@ -278,7 +278,7 @@ namespace CapaPresentacion.Controllers
             Dat_ECommerce objD_ecommerce = new Dat_ECommerce();
             DataTable dtConexion = new DataTable();
 
-            dtConexion = objD_ecommerce.Ecommerce_getConexionesAPI("savar", 2); //conexion de savar
+            dtConexion = objD_ecommerce.Ecommerce_getConexionesAPI("savar", 1); //conexion de savar
 
             try
             {
