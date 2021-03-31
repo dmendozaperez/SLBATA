@@ -278,7 +278,7 @@ namespace CapaPresentacion.Controllers
             Dat_ECommerce objD_ecommerce = new Dat_ECommerce();
             DataTable dtConexion = new DataTable();
 
-            dtConexion = objD_ecommerce.Ecommerce_getConexionesAPI("savar", 1); //conexion de savar
+            dtConexion = objD_ecommerce.Ecommerce_getConexionesAPI("savar", 2); //conexion de savar
 
             try
             {
@@ -306,7 +306,7 @@ namespace CapaPresentacion.Controllers
 
                         if (codseguimiento.Length > 12)
                         {
-                            retorno = codseguimiento.Substring(0, 12) + '-' + codseguimiento.Substring(12, 5);
+                            codseguimiento = codseguimiento.Substring(0, 12) + '-' + codseguimiento.Substring(12, 5);
                         }
 
                         /**/
