@@ -1367,6 +1367,8 @@ namespace CapaPresentacion.Controllers
         #endregion
 
 
+        #region<REGION DE CARLOS Q>
+
         public ActionResult PedidosNoFactu()
         {
             string nroped = (Request.HttpMethod == "POST" ? Request.Params["nroped"].ToString() : "");
@@ -1385,21 +1387,21 @@ namespace CapaPresentacion.Controllers
             }
             else
             {
-                #region<VALIDACION DE ROLES DE USUARIO>
-                Boolean valida_rol = true;
-                Basico valida_controller = new Basico();
-                List<Ent_Menu_Items> menu = (List<Ent_Menu_Items>)Session[Ent_Global._session_menu_user];
-                valida_rol = valida_controller.AccesoMenu(menu, this);
-                #endregion
-                valida_rol = true; // ojo por mientras
-                if (valida_rol)
-                {
-                    return View(listPed);
-                }
-                else
-                {
-                    return RedirectToAction("Login", "Control", new { returnUrl = return_view });
-                }
+                //#region<VALIDACION DE ROLES DE USUARIO>
+                //Boolean valida_rol = true;
+                //Basico valida_controller = new Basico();
+                //List<Ent_Menu_Items> menu = (List<Ent_Menu_Items>)Session[Ent_Global._session_menu_user];
+                //valida_rol = valida_controller.AccesoMenu(menu, this);
+                //#endregion
+                //valida_rol = true; // ojo por mientras
+                //if (valida_rol)
+                //{
+                return View(listPed);
+                //}
+                //else
+                //{
+                //    return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+                //}
             }
 
         }
@@ -1444,10 +1446,12 @@ namespace CapaPresentacion.Controllers
             string nroped = (Session["_session_nroped_private"] == null) ? "" : Session["_session_nroped_private"].ToString();
             List<PedidoNoFactu> listPed = SelectPedNoFactu(nroped);
 
-            string[] columns = { "id_pedido", "cod_tienda", "nom_tienda", "cod_articulo", "nom_articulo", "estado", "estado_ob", "nro_comprob"};
+            string[] columns = { "id_pedido", "cod_tienda", "nom_tienda", "cod_articulo", "nom_articulo", "estado", "estado_ob", "nro_comprob" };
             byte[] filecontent = ExcelExportHelper.ExportExcel(listPed, "PEDIDOS NO FACTURADOS", true, columns);
             return File(filecontent, ExcelExportHelper.ExcelContentType, "pednofactu.xlsx");
         }
+
+        #endregion
 
 
         //public static async Task<dynamic> LlamadaWebApiOrderBrokerAsync(string verbo, string AppAuthorization, string Uri, string soapXml = "")

@@ -1914,6 +1914,7 @@
     <Content Include="Views\NPS\Index.cshtml" />
     <Content Include="Views\Shared\_Layout_NPS.cshtml" />
     <Content Include="Views\ECommerce\PedidosNoFactu.cshtml" />
+    <Content Include="Views\NPS\Dashboard.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

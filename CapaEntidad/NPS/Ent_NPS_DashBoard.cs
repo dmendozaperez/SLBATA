@@ -67,7 +67,7 @@ namespace CapaEntidad.NPS
     }
     public class Ent_NPS_Tipo_Nota
     {
-        public int? NOTA { get; set; }
+        public decimal? NOTA { get; set; }
     }
     public class Ent_NPS_Tipoo_Lista
     {
