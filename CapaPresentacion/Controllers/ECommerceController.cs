@@ -278,7 +278,7 @@ namespace CapaPresentacion.Controllers
             Dat_ECommerce objD_ecommerce = new Dat_ECommerce();
             DataTable dtConexion = new DataTable();
 
-            dtConexion = objD_ecommerce.Ecommerce_getConexionesAPI("savar", 1); //conexion de savar
+            dtConexion = objD_ecommerce.Ecommerce_getConexionesAPI("savar", 2); //conexion de savar
 
             try
             {
@@ -299,6 +299,17 @@ namespace CapaPresentacion.Controllers
 
                         string codseguimiento = Regex.Replace(response, @"[^A-Za-z0-9ñÑ ]+", "");
 
+                        /**/
+                        //string COD_PRUEBA = "B09500031157-50128";
+
+                        //string REQUEST = Regex.Replace(COD_PRUEBA, @"[^A-Za-z0-9ñÑ ]+", "");
+
+                        if (codseguimiento.Length > 12)
+                        {
+                            retorno = codseguimiento.Substring(0, 12) + '-' + codseguimiento.Substring(12, 5);
+                        }
+
+                        /**/
                         if (objE_savar.CodPaquete == codseguimiento)
                         {
                             retorno = codseguimiento;
