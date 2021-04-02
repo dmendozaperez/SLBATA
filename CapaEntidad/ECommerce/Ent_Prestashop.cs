@@ -20,7 +20,10 @@ namespace CapaEntidad.ECommerce
         public string Name_Carrier { get; set; }
         public string Almacen { get; set; }
         public string Ubigeo_Ent { get; set; }
-        public string Ubicacion { get; set; }
+        //public string Ubicacion { get; set; }
+        public string Departamento { get; set; }
+        public string Provincia { get; set; }
+        public string Distrito { get; set; }
         public string Semana { get; set; }
         public string ArticuloId { get; set; }
         public string Talla { get; set; }

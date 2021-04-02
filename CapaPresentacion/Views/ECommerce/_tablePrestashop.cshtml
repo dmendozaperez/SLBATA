@@ -10,89 +10,95 @@
         display: none;
     }
 </style>
-<div class="box-body" id="lista" style="overflow-x: auto;">
-    @*<a id="EXCEL" name="excel" class="btn btn-success btn-sm" href="@Url.Action("DetallePrestashop","Ecommerce")" style="margin-bottom:10px"><span class="glyphicon glyphicon-export"></span>&nbsp;Excel</a>*@
-
-    <table id="example" class="table table-hover dataTable  table-striped table-responsive">
-        <thead>
-            <tr style="background-color:#3d566e; color:#ecf0f1">
-                <th>Orden</th>
-                <th>Fec.Pedido</th>
-                <th>Estado Sist Facturación</th>
-                <th>Cod.Estado Prestashop</th>
-                <th>Estado Prestashop</th>
-                <th>Estado Prestashop Ped. Tienda</th>
-                <th>Fec.Ing.Prestashop</th>
-                <th>Fec.Facturación</th>
-                <th>Comprobante</th>
-                <th>Tipo -Courier</th>
-                <th>Almacén</th>
-                <th>Ubigeo</th>
-                <th>Ubicación</th>
-                <th>Semana</th>
-                <th>Artículo</th>
-                <th>Talla</th>
-                <th>Cantidad</th>
-                <th>Precio Vta.</th>
-                <th>Precio Original.</th>
-                <th>Cod. Linea 3</th>
-                <th>Des. Linea 3</th>
-                <th>Cod. Cat. 3</th>
-                <th>Des. Cat. 3</th>
-                <th>Cod. Subc 3</th>
-                <th>Des. Subc 3</th>
-                <th>Cod. Marc 3</th>
-                <th>Des. Marc 3</th>
-                <th>Precio Planilla</th>
-                <th>Costo</th>
-                <th>Alm.C</th>
-                <th>Alm.5</th>
-                <th>Alm.B</th>
-                <th>Alm.W</th>
-                <th>Alm.1</th>
-            </tr>
-        </thead>
-        <tbody data-bind="foreach:"></tbody>
-        <tfoot>
-            <tr>
-                <td width="100px">Id Orden</td>
-                <td>Fec.Pedido</td>
-                <td>Est. Sistema Facturación</td>
-                <td>Cod.Estado Prestashop</td>
-                <td>Estado Prestashop</td>
-                <td>Estado Prestashop Ped. Tienda</td>
-                <td>Fec.Ing.Prestashop</td>
-                <td>Fec.Facturación</td>
-                <td>Comprobante</td>
-                <td>Tipo -Courier</td>
-                <td>Almacén</td>
-                <td>Ubigeo</td>
-                <td>Ubicacion</td>
-                <td>Semana</td>
-                <td>Artículo</td>
-                <td>Talla</td>
-                <td>Cantidad</td>
-                <td>Precio Vta.</td>
-                <td>Precio Original.</td>
-                <td>Cod. Linea 3</td>
-                <td>Des. Linea 3</td>
-                <td>Cod. Cat. 3</td>
-                <td>Des. Cat. 3</td>
-                <td>Cod. Subc 3</td>
-                <td>Des. Subc 3</td>
-                <td>Cod. Marc 3</td>
-                <td>Des. Marc 3</td>
-                <td>Precio Planilla</td>
-                <td>Costo</td>
-                <td>Alm.C</td>
-                <td>Alm.5</td>
-                <td>Alm.B</td>
-                <td>Alm.W</td>
-                <td>Alm.1</td>
-            </tr>
-        </tfoot>
-    </table>
-</div>
+@*<div class="box-body" id="lista" style="overflow-x: auto;">*@
+@*<a id="EXCEL" name="excel" class="btn btn-success btn-sm" href="@Url.Action("DetallePrestashop","Ecommerce")" style="margin-bottom:10px"><span class="glyphicon glyphicon-export"></span>&nbsp;Excel</a>*@
+@*class="table table-hover dataTable  table-striped table-responsive"*@
+<table id="example" class="table table-hover dataTable  table-striped table-responsive">
+    <thead>
+        <tr style="background-color:#3d566e; color:#ecf0f1">
+            <th>Orden</th>
+            <th>Fec.Pedido</th>
+            <th>Estado Sist Facturación</th>
+            <th>Cod.Estado Prestashop</th>
+            <th>Estado Prestashop</th>
+            <th>Estado Prestashop(Tienda)</th>
+            <th>Fec.Ing.Prestashop</th>
+            <th>Fec.Facturación</th>
+            <th>Comprobante</th>
+            <th>Tipo -Courier</th>
+            <th>Almacén</th>
+            <th>Ubigeo</th>
+            @*<th>Ubicación</th>*@
+            <th>Departamento</th>
+            <th>Provincia</th>
+            <th>Distrito</th>
+            <th>Semana</th>
+            <th>Artículo</th>
+            <th>Talla</th>
+            <th>Cantidad</th>
+            <th>Precio Vta.</th>
+            <th>Precio Original.</th>
+            <th>Cod. Linea 3</th>
+            <th>Des. Linea 3</th>
+            <th>Cod. Cat. 3</th>
+            <th>Des. Cat. 3</th>
+            <th>Cod. Subc 3</th>
+            <th>Des. Subc 3</th>
+            <th>Cod. Marc 3</th>
+            <th>Des. Marc 3</th>
+            <th>Precio Planilla</th>
+            <th>Costo</th>
+            <th>Alm.C</th>
+            <th>Alm.5</th>
+            <th>Alm.B</th>
+            <th>Alm.W</th>
+            <th>Alm.1</th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach:"></tbody>
+    <tfoot>
+        <tr>
+            <td>Id Orden</td>
+            <td>Fec.Pedido</td>
+            <td>Est. Sistema Facturación</td>
+            <td>Cod.Estado Prestashop</td>
+            <td>Estado Prestashop</td>
+            <td>Estado Prestashop(Tienda)</td>
+            <td>Fec.Ing.Prestashop</td>
+            <td>Fec.Facturación</td>
+            <td>Comprobante</td>
+            <td>Tipo -Courier</td>
+            <td>Almacén</td>
+            <td>Ubigeo</td>
+            @*<td>Ubicacion</td>*@
+            <td>Departamento</td>
+            <td>Provincia</td>
+            <td>Distrito</td>
+            <td>Semana</td>
+            <td>Artículo</td>
+            <td>Talla</td>
+            <td>Cantidad</td>
+            <td>Precio Vta.</td>
+            <td>Precio Original.</td>
+            <td>Cod. Linea 3</td>
+            <td>Des. Linea 3</td>
+            <td>Cod. Cat. 3</td>
+            <td>Des. Cat. 3</td>
+            <td>Cod. Subc 3</td>
+            <td>Des. Subc 3</td>
+            <td>Cod. Marc 3</td>
+            <td>Des. Marc 3</td>
+            <td>Precio Planilla</td>
+            <td>Costo</td>
+            <td>Alm.C</td>
+            <td>Alm.5</td>
+            <td>Alm.B</td>
+            <td>Alm.W</td>
+            <td>Alm.1</td>
+        </tr>
+    </tfoot>
+</table>
+@*</div>*@
 
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" ng-app>
     <div class="modal-dialog">
@@ -167,7 +173,10 @@
                     { "sName": "Name_Carrier", "mData": "Name_Carrier" },
                     { "sName": "Almacen", "mData": "Almacen" },
                     { "sName": "Ubigeo_Ent", "mData": "Ubigeo_Ent" },
-                    { "sName": "Ubicacion", "mData": "Ubicacion" },
+                    //{ "sName": "Ubicacion", "mData": "Ubicacion" },
+                    { "sName": "Departamento", "mData": "Departamento" },
+                    { "sName": "Provincia", "mData": "Provincia" },
+                    { "sName": "Distrito", "mData": "Distrito" },
                     { "sName": "Semana", "mData": "Semana" },
                     { "sName": "ArticuloId", "mData": "ArticuloId" },
                     { "sName": "Talla", "mData": "Talla" },
