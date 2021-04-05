@@ -6,11 +6,15 @@ using CapaEntidad.Control;
 using CapaEntidad.General;
 using CapaEntidad.Maestros;
 using CapaEntidad.Util;
+using Models.Crystal.Reporte;
+using Data.Crystal.Reporte;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Text;
+using Newtonsoft.Json;
 
 namespace CapaPresentacion.Controllers
 {
@@ -18,10 +22,16 @@ namespace CapaPresentacion.Controllers
     {
         private Dat_ListaTienda dat_lista_tienda = new Dat_ListaTienda();
         private Dat_Contabilidad_EstadoDocumento datConta = new Dat_Contabilidad_EstadoDocumento();
+        private Data_Contabilidad dat_Contabilidad = new Data_Contabilidad();
+        private Dat_DisCadTda discattda = new Dat_DisCadTda();
+
         private string _session_contabilidad_num_private = "_session_contabilidad_num_private";
         private string _session_contb_tienda_peru = "_session_contb_tienda_peru";
         private string _session_contb_popup = "_session_contb_popup";
+        private string _session_VentaEfectivo = "_session_VentaEfectivo";
+        private string _session_VentaEfectivo_Excel = "_session_VentaEfectivo_Excel";
 
+        //_session_VentaEfectivo_Excel
         // GET: Contabilidad
 
         #region Contabilidad_Estado_Documento   
@@ -236,5 +246,226 @@ namespace CapaPresentacion.Controllers
 
         #endregion
 
+        #region <REPORTE DE VENTAS EFECTIVO>
+
+        public ActionResult ReporteVentaEfectivo()
+        {
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
+
+            if (_usuario == null)
+            {
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+            }
+            else
+            {
+                string pais = "PE";
+                if (Session["PAIS"] != null)
+                {
+                    pais = Session["PAIS"].ToString();
+                }
+
+                List<Ent_Combo_DisCadTda> combo_discadtda = discattda.list_dis_cad_tda(pais);
+                if (Session["Tienda"] != null)
+                {
+                    combo_discadtda = combo_discadtda.Where(t => t.cod_entid == Session["Tienda"].ToString()).ToList();
+                }
+
+                ViewBag.Distrito = combo_distrito(combo_discadtda);
+                ViewBag.DisCadTda = combo_discadtda;
+
+                List<Ent_Combo_DisCadTda> list_cad = new List<Ent_Combo_DisCadTda>();
+                Ent_Combo_DisCadTda entCombo_cad = new Ent_Combo_DisCadTda();
+                entCombo_cad.cod_cadena = "-1";
+                entCombo_cad.des_cadena = "----Todos----";
+                list_cad.Add(entCombo_cad);
+
+                List<Ent_Combo_DisCadTda> list_tda = new List<Ent_Combo_DisCadTda>();
+                Ent_Combo_DisCadTda entCombo_tda = new Ent_Combo_DisCadTda();
+                entCombo_tda.cod_entid = "-1";
+                entCombo_tda.des_entid = "----Todos----";
+                list_tda.Add(entCombo_tda);
+
+                ViewBag.Cadena = list_cad;
+                ViewBag.Tienda = list_tda;
+
+                Models_VentaEfectivo EntVentaEfectivo = new Models_VentaEfectivo();
+                ViewBag.EntVentaEfectivo = EntVentaEfectivo;
+
+                return View();
+             }
+        }
+        private List<Ent_Combo_DisCadTda> combo_distrito(List<Ent_Combo_DisCadTda> combo_general)
+        {
+            List<Ent_Combo_DisCadTda> listar = null;
+            try
+            {
+                listar = new List<Ent_Combo_DisCadTda>();
+                listar = (from grouping in combo_general.GroupBy(x => new Tuple<string, string>(x.cod_distri, x.des_distri))
+                          select new Ent_Combo_DisCadTda
+                          {
+                              cod_distri = grouping.Key.Item1,
+                              des_distri = grouping.Key.Item2,
+                          }).ToList();
+            }
+            catch
+            {
+                listar = new List<Ent_Combo_DisCadTda>();
+            }
+            return listar;
+        }
+        public ActionResult ShowGenericReportVentaEfectivo(Models_VentaEfectivo _Ent)
+        {
+            Session[_session_VentaEfectivo] = null;
+            JsonRespuesta objResult = new JsonRespuesta();
+            List<Models_VentaEfectivo> lisVentaEfectivo = dat_Contabilidad.get_reporteVentaEfectivo(_Ent);
+            try
+            {
+                if (lisVentaEfectivo.Count>0)
+                {                    
+                    Session[_session_VentaEfectivo] = lisVentaEfectivo;
+
+                    this.HttpContext.Session["ReportName"] = "ReportVentaEfectivo.rpt";
+                    this.HttpContext.Session["rptSource"] = lisVentaEfectivo;
+
+                    objResult.Success =  true;
+                    objResult.Message = "El reporte se genero correctamente.";
+                }
+                else
+                {
+                    objResult.Success = false;
+                    objResult.Message = "No hay información para mostrar.";
+                }
+            }
+            catch (Exception)
+            {
+                objResult.Success = false;
+                objResult.Message = "Error al mostrar el reporte.";
+            }
+
+            var JSON = JsonConvert.SerializeObject(objResult);
+            return Json(JSON, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult get_exporta_VentaEfectivo_excel(Models_VentaEfectivo _Ent)
+        {
+            JsonRespuesta objResult = new JsonRespuesta();
+            try
+            {
+                Session[_session_VentaEfectivo_Excel] = null;
+                string cadena = "";
+                if (Session[_session_VentaEfectivo] != null)
+                {
+
+                    List<Models_VentaEfectivo> _Listar_VentaEfectivo = (List<Models_VentaEfectivo>)Session[_session_VentaEfectivo];
+                    if (_Listar_VentaEfectivo.Count == 0)
+                    {
+                        objResult.Success = false;
+                        objResult.Message = "No hay filas para exportar";
+                    }
+                    else
+                    {
+                        cadena = get_html_Listar_VentaEfectivo_str((List<Models_VentaEfectivo>)Session[_session_VentaEfectivo], _Ent);
+                        if (cadena.Length == 0)
+                        {
+                            objResult.Success = false;
+                            objResult.Message = "Error del formato html";
+                        }
+                        else
+                        {
+                            objResult.Success = true;
+                            objResult.Message = "Se genero el excel correctamente";
+                            Session[_session_VentaEfectivo_Excel] = cadena;
+                        }
+                    }
+                }
+                else
+                {
+                    objResult.Success = false;
+                    objResult.Message = "No hay filas para exportar";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                objResult.Success = false;
+                objResult.Message = "No hay filas para exportar";
+            }
+
+            var JSON = JsonConvert.SerializeObject(objResult);
+            return Json(JSON, JsonRequestBehavior.AllowGet);
+        }
+
+        public string get_html_Listar_VentaEfectivo_str(List<Models_VentaEfectivo> _Listar_VentaEfectivo, Models_VentaEfectivo _Ent)
+        {
+            StringBuilder sb = new StringBuilder();
+            var Lista = _Listar_VentaEfectivo.ToList();
+            try
+            {
+                sb.Append("<div>");
+                sb.Append("<table cellspacing='0' style='width: 1000px' rules='all' border='0' style='border-collapse:collapse;'>");
+                sb.Append("<tr><td Colspan='7'></td></tr>");
+                sb.Append("<tr><td Colspan='7' valign='middle' align='center' style='vertical-align: middle;font-size: 18.0pt;font-weight: bold;color:#285A8F'>REPORTE DE VENTAS EFECTIVO</td></tr>");
+                sb.Append("<tr><td Colspan='7' valign='middle' align='center' style='vertical-align: middle;font-size: 10.0pt;font-weight: bold;color:#000000'>Rango : del " + String.Format("{0:dd/MM/yyyy}", _Ent.FechaInicio) + " al " + String.Format("{0:dd/MM/yyyy}", _Ent.FechaFin) + "</td></tr>");//subtitulo
+                sb.Append("<tr><td Colspan='7'></td></tr>");
+                sb.Append("<tr>\n");
+                sb.Append("<th  bgColor='#1E77AB' style='text-align: center; font-weight:bold;font-size:11.0pt;'><font color='#FFFFFF'>Distrito</font></th>\n");
+                sb.Append("<th  bgColor='#1E77AB' style='text-align: center; font-weight:bold;font-size:11.0pt;'><font color='#FFFFFF'>Cadena</font></th>\n");
+                sb.Append("<th  bgColor='#1E77AB' style='text-align: center; font-weight:bold;font-size:11.0pt;'><font color='#FFFFFF'>Nombre Tienda</font></th>\n");
+                sb.Append("<th  bgColor='#1E77AB' style='text-align: center; font-weight:bold;font-size:11.0pt;'><font color='#FFFFFF'>Documento</font></th>\n");
+                sb.Append("<th  bgColor='#1E77AB' style='text-align: center; font-weight:bold;font-size:11.0pt;'><font color='#FFFFFF'>Fecha</font></th>\n");
+                sb.Append("<th  bgColor='#1E77AB' style='text-align: center; font-weight:bold;font-size:11.0pt;'><font color='#FFFFFF'>Total</font></th>\n");
+                sb.Append("<th  bgColor='#1E77AB' style='text-align: center; font-weight:bold;font-size:11.0pt;'><font color='#FFFFFF'>Redondeo</font></th>\n");
+                sb.Append("</tr>\n");
+
+                foreach (var item in Lista)
+                {
+                    sb.Append("<tr>\n");
+                    sb.Append("<td align=''>" + item.Distrito + "</td>\n");
+                    sb.Append("<td align=''>" + item.Cadena + "</td>\n");
+                    sb.Append("<td align=''>" + item.Nombre_Tienda + "</td>\n");
+                    sb.Append("<td align='Center'>" + item.Documento + "</td>\n");
+                    sb.Append("<td align='Center'>" + String.Format("{0:d}", item.Fecha) + "</td>\n");                    
+                    sb.Append("<td align='right'>" + Convert.ToDecimal(string.Format("{0:F2}", item.Total)) + "</td>");
+                    sb.Append("<td align='right'>" + Convert.ToDecimal(string.Format("{0:F2}", item.Redondeo)) + "</td>");
+                    sb.Append("</tr>\n");
+                }
+                //sb.Append("<tfoot>\n");
+                //sb.Append("<tr bgcolor='#085B8C'>\n");
+                //sb.Append("</tr>\n");
+                //sb.Append("</tfoot>\n");
+                sb.Append("</table></div>");
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            return sb.ToString();
+        }
+        public ActionResult ListarVentaEfectivo_Excel()
+        {
+            string NombreArchivo = "ReporteVentaEfectivo";
+            String style = style = @"<style> .textmode { mso-number-format:\@; } </style> ";
+            try
+            {
+                Response.Clear();
+                Response.Buffer = true;
+                Response.ContentType = "application/vnd.ms-excel";
+                Response.AddHeader("Content-Disposition", "attachment;filename=" + NombreArchivo + ".xls");
+                Response.Charset = "UTF-8";
+                Response.ContentEncoding = Encoding.Default;
+                Response.Write(style);
+                Response.Write(Session[_session_VentaEfectivo_Excel].ToString());
+                Response.End();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            return Json(new { estado = 0, mensaje = 1 });
+        }
+        #endregion </REPORTE DE VENTAS EFECTIVO>
     }
 }
