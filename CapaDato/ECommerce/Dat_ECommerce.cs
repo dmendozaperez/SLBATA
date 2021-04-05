@@ -366,10 +366,12 @@ namespace CapaDato.ECommerce
                                           Name_Carrier = dr["name_carrier"].ToString(),
                                           Almacen = dr["almacen"].ToString(),
                                           Ubigeo_Ent = dr["ubigeo_ent"].ToString(),
-                                          Ubicacion = dr["ubicacion"].ToString(),
+                                          //Ubicacion = dr["ubicacion"].ToString(),
+                                          Departamento = dr["Departamento"].ToString(),
+                                          Provincia = dr["Provincia"].ToString(),
+                                          Distrito = dr["Distrito"].ToString(),
                                           Semana = dr["semana"].ToString(),
                                           ArticuloId = dr["ARTICULOID"].ToString(),
-
                                           Talla = dr["TALLA"].ToString(),
                                           Cantidad = Convert.ToInt32(dr["CANTIDAD"]),
 
