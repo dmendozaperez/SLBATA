@@ -13,10 +13,10 @@ namespace CapaDato.ECommerce
     public class Dat_PedNoFactu
     {
 
-        public List<Ent_PedidoNoFactu> get_data(string nroped, string tienda)
+        public List<Ent_PedidoNoFactu> get_data(string nroped, string tienda, DateTime fecini, DateTime fecfin)
         {
             //var dt = new DataTable();
-            string sqlquery = "usp_get_ped_nofactu";
+            string sqlquery = "usp_get_ped_nofacturados";
             List<Ent_PedidoNoFactu> list = null;
 
             try
@@ -30,6 +30,8 @@ namespace CapaDato.ECommerce
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@nroped", nroped);
                         cmd.Parameters.AddWithValue("@codtienda", tienda);
+                        cmd.Parameters.AddWithValue("@fecini", fecini.ToString("yyyyMMdd"));
+                        cmd.Parameters.AddWithValue("@fecfin", fecfin.ToString("yyyyMMdd"));
                         //using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                         //{
                         //    //dt = new DataTable();
@@ -47,12 +49,16 @@ namespace CapaDato.ECommerce
                                 enti.id_pedido = dr["id_pedido"].ToString();
                                 enti.cod_tienda = dr["cod_tienda"].ToString();
                                 enti.nom_tienda = dr["nom_tienda"].ToString();
+                                enti.fec_pedido = Convert.ToDateTime(dr["fec_pedido"]);
                                 enti.cod_articulo = dr["cod_articulo"].ToString();
                                 enti.nom_articulo = dr["nom_articulo"].ToString();
                                 enti.estado = dr["estado"].ToString();
                                 enti.estado_ob = dr["estado_ob"].ToString();
                                 enti.nro_comprob = dr["nro_comprob"].ToString();
                                 list.Add(enti);
+
+                                //guia.fechaPedido = Convert.ToDateTime(dt.Rows[0]["fechaPedido"]);
+
                             }
                         }
                     }
