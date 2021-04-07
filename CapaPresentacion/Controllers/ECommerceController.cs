@@ -301,6 +301,17 @@ namespace CapaPresentacion.Controllers
 
                         string codseguimiento = Regex.Replace(response, @"[^A-Za-z0-9ñÑ ]+", "");
 
+                        /**/
+                        //string COD_PRUEBA = "B09500031157-50128";
+
+                        //string REQUEST = Regex.Replace(COD_PRUEBA, @"[^A-Za-z0-9ñÑ ]+", "");
+
+                        if (codseguimiento.Length > 12)
+                        {
+                            codseguimiento = codseguimiento.Substring(0, 12) + '-' + codseguimiento.Substring(12, 5);
+                        }
+
+                        /**/
                         if (objE_savar.CodPaquete == codseguimiento)
                         {
                             retorno = codseguimiento;
@@ -1018,7 +1029,10 @@ namespace CapaPresentacion.Controllers
                              a.Name_Carrier,
                              a.Almacen,
                              a.Ubigeo_Ent,
-                             a.Ubicacion,
+                             //a.Ubicacion,
+                             a.Departamento,
+                             a.Provincia,
+                             a.Distrito,
                              a.Semana,
                              a.ArticuloId,
                              a.Talla,

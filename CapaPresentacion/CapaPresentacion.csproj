@@ -35,7 +35,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>App_Data\XmlDocument.xml</DocumentationFile>
+    <DocumentationFile>bin\CapaPresentacion.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -385,6 +385,13 @@
     <Compile Include="AspNetForms\LLegada_Mercaderia.aspx.designer.cs">
       <DependentUpon>LLegada_Mercaderia.aspx</DependentUpon>
     </Compile>
+    <Compile Include="AspNetForms\ReportCuponRedimidos.aspx.cs">
+      <DependentUpon>ReportCuponRedimidos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AspNetForms\ReportCuponRedimidos.aspx.designer.cs">
+      <DependentUpon>ReportCuponRedimidos.aspx</DependentUpon>
+    </Compile>
     <Compile Include="AspNetForms\ReporteObs.aspx.cs">
       <DependentUpon>ReporteObs.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -398,6 +405,13 @@
     </Compile>
     <Compile Include="AspNetForms\RendimientoxCateg.aspx.designer.cs">
       <DependentUpon>RendimientoxCateg.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AspNetForms\ReportVentaEfectivo.aspx.cs">
+      <DependentUpon>ReportVentaEfectivo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AspNetForms\ReportVentaEfectivo.aspx.designer.cs">
+      <DependentUpon>ReportVentaEfectivo.aspx</DependentUpon>
     </Compile>
     <Compile Include="AspNetForms\TabProsp.aspx.cs">
       <DependentUpon>TabProsp.aspx</DependentUpon>
@@ -465,11 +479,13 @@
     <Compile Include="Controllers\ArticuloStockController.cs" />
     <Compile Include="Controllers\ReportsValeCompraController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
+    <Compile Include="Controllers\RRHHController.cs" />
     <Compile Include="Controllers\RuletaBataController.cs" />
     <Compile Include="Controllers\SoporteController.cs" />
     <Compile Include="Controllers\UsuariosController.cs" />
     <Compile Include="Controllers\ValeCompraController.cs" />
     <Compile Include="Controllers\XstoreTdaController.cs" />
+    <Compile Include="Data\Crystal\Reporte\Data_Contabilidad.cs" />
     <Compile Include="Data\Crystal\Reporte\Data_ECommerce.cs" />
     <Compile Include="Data\Crystal\Reporte\Data_Bata.cs" />
     <Compile Include="Data\Crystal\Reporte\Data_Planilla.cs" />
@@ -477,6 +493,7 @@
     <Compile Include="Data\Crystal\Reporte\Dat_EstadoStock.cs" />
     <Compile Include="Data\Crystal\Reporte\Dat_InventarioPlanilla.cs" />
     <Compile Include="Data\Crystal\Reporte\Dat_Inventario_Movimiento.cs" />
+    <Compile Include="Data\Crystal\Reporte\Dat_RRHH.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -495,10 +512,12 @@
     <Compile Include="Models\Crystal\Reporte\Models_Guia.cs" />
     <Compile Include="Models\Crystal\Reporte\Models_Comparativo_Venta.cs" />
     <Compile Include="Models\Crystal\Reporte\Models_Obs.cs" />
+    <Compile Include="Models\Crystal\Reporte\Models_RRHH.cs" />
     <Compile Include="Models\Crystal\Reporte\Models_Tab_Pros.cs" />
     <Compile Include="Models\Crystal\Reporte\Models_Vendedor.cs" />
     <Compile Include="Models\Crystal\Reporte\Models_Art_Sin_Mov.cs" />
     <Compile Include="Models\Crystal\Reporte\Models_Planilla.cs" />
+    <Compile Include="Models\Crystal\Reporte\Models_VentaEfectivo.cs" />
     <Compile Include="Models\ECommerce\Chazki_E.cs" />
     <Compile Include="Models\ECommerce\ECommerce.cs" />
     <Compile Include="Models\ECommerce\Ecommerce_Chazki.cs" />
@@ -561,6 +580,12 @@
       <DependentUpon>PlanillaDet.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="RptsCrystal\ReportCuponRedimidos.cs">
+      <DependentUpon>ReportCuponRedimidos.rpt</DependentUpon>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Include="RptsCrystal\ReporteBestSeller.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -596,6 +621,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ReporteOBS.rpt</DependentUpon>
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RptsCrystal\ReportVentaEfectivo.cs">
+      <DependentUpon>ReportVentaEfectivo.rpt</DependentUpon>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="RptsCrystal\TablaProsperidad.cs">
       <AutoGen>True</AutoGen>
@@ -677,8 +708,10 @@
     <Content Include="AspNetForms\InventarioPlanilla.aspx" />
     <Content Include="AspNetForms\KeyCategoryPerformance.aspx" />
     <Content Include="AspNetForms\LLegada_Mercaderia.aspx" />
+    <Content Include="AspNetForms\ReportCuponRedimidos.aspx" />
     <Content Include="AspNetForms\ReporteObs.aspx" />
     <Content Include="AspNetForms\RendimientoxCateg.aspx" />
+    <Content Include="AspNetForms\ReportVentaEfectivo.aspx" />
     <Content Include="AspNetForms\TabProsp.aspx" />
     <Content Include="AspNetForms\TiendasEcommerce.aspx" />
     <Content Include="AspNetForms\Vendedor.aspx" />
@@ -1915,6 +1948,8 @@
     <Content Include="Views\Shared\_Layout_NPS.cshtml" />
     <Content Include="Views\ECommerce\PedidosNoFactu.cshtml" />
     <Content Include="Views\NPS\Dashboard.cshtml" />
+    <Content Include="Views\Contabilidad\ReporteVentaEfectivo.cshtml" />
+    <Content Include="Views\RRHH\ReporteCuponRedimidos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1986,6 +2021,10 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>PlanillaDet.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="RptsCrystal\ReportCuponRedimidos.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>ReportCuponRedimidos.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="RptsCrystal\ReporteBestSeller.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>ReporteBestSeller.cs</LastGenOutput>
@@ -2009,6 +2048,10 @@
     <EmbeddedResource Include="RptsCrystal\ReporteOBS.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>ReporteOBS.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RptsCrystal\ReportVentaEfectivo.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>ReportVentaEfectivo.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="RptsCrystal\TablaProsperidad.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
