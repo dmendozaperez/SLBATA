@@ -41,6 +41,8 @@ namespace CapaPresentacion.Controllers
         Dat_PedNoFactu datospednofactu = new Dat_PedNoFactu();
 
         private string _session_nroped_private = "_session_nroped_private";
+        private string _session_fecini_private = "_session_fecini_private";
+        private string _session_fecfin_private = "_session_fecfin_private";
 
         //List<Ent_TrazaPedido> listTraza = new List<Ent_TrazaPedido>();
         private string _session_listTraza_private = "_session_listTraza_private";
@@ -1684,10 +1686,15 @@ namespace CapaPresentacion.Controllers
         public ActionResult PedidosNoFactu()
         {
             string nroped = (Request.HttpMethod == "POST" ? Request.Params["nroped"].ToString() : "");
+            string fecini = (Request.HttpMethod == "POST" ? Request.Params["fecini"].ToString() : DateTime.Now.ToString("dd/MM/yyyy"));
+            string fecfin = (Request.HttpMethod == "POST" ? Request.Params["fecfin"].ToString() : DateTime.Now.ToString("dd/MM/yyyy"));
 
-            List<PedidoNoFactu> listPed = SelectPedNoFactu(nroped);
+            List<PedidoNoFactu> listPed = SelectPedNoFactu(nroped, Convert.ToDateTime(fecini), Convert.ToDateTime(fecfin));
 
             Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+
+            ViewBag._fecini = fecini;
+            ViewBag._fecfin = fecfin;
 
             string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
             string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
@@ -1719,17 +1726,19 @@ namespace CapaPresentacion.Controllers
         }
 
 
-        public List<PedidoNoFactu> SelectPedNoFactu(string nroped)
+        public List<PedidoNoFactu> SelectPedNoFactu(string nroped, DateTime fecini, DateTime fecfin)
         {
             string _tienda = (Session["Tienda"] == null) ? "" : Session["Tienda"].ToString();
 
             //_tienda = "50128"; // ojo por mientras
 
             Session[_session_nroped_private] = nroped;
+            Session[_session_fecini_private] = fecini;
+            Session[_session_fecfin_private] = fecfin;
 
             List<PedidoNoFactu> listPed = new List<PedidoNoFactu>();
             List<Ent_PedidoNoFactu> listaux = new List<Ent_PedidoNoFactu>();
-            listaux = datospednofactu.get_data(nroped, _tienda);
+            listaux = datospednofactu.get_data(nroped, _tienda, fecini, fecfin);
 
             if (listaux != null)
             {
@@ -1739,6 +1748,7 @@ namespace CapaPresentacion.Controllers
                     model.id_pedido = item.id_pedido;
                     model.cod_tienda = item.cod_tienda;
                     model.nom_tienda = item.nom_tienda;
+                    model.fec_pedido = item.fec_pedido;
                     model.cod_articulo = item.cod_articulo;
                     model.nom_articulo = item.nom_articulo;
                     model.estado = item.estado;
@@ -1756,9 +1766,12 @@ namespace CapaPresentacion.Controllers
         public FileContentResult ExportToExcel2()
         {
             string nroped = (Session["_session_nroped_private"] == null) ? "" : Session["_session_nroped_private"].ToString();
-            List<PedidoNoFactu> listPed = SelectPedNoFactu(nroped);
+            string fecini = (Session["_session_fecini_private"] == null) ? DateTime.Now.ToString("dd/MM/yyyy") : Session["_session_fecini_private"].ToString();
+            string fecfin = (Session["_session_fecfin_private"] == null) ? DateTime.Now.ToString("dd/MM/yyyy") : Session["_session_fecfin_private"].ToString();
 
-            string[] columns = { "id_pedido", "cod_tienda", "nom_tienda", "cod_articulo", "nom_articulo", "estado", "estado_ob", "nro_comprob" };
+            List<PedidoNoFactu> listPed = SelectPedNoFactu(nroped, Convert.ToDateTime(fecini), Convert.ToDateTime(fecfin));
+
+            string[] columns = { "id_pedido", "cod_tienda", "nom_tienda", "fec_pedido", "cod_articulo", "nom_articulo", "estado", "estado_ob", "nro_comprob" };
             byte[] filecontent = ExcelExportHelper.ExportExcel(listPed, "PEDIDOS NO FACTURADOS", true, columns);
             return File(filecontent, ExcelExportHelper.ExcelContentType, "pednofactu.xlsx");
         }
