@@ -19,10 +19,10 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://200.121.128.110:8080/axis2/services/Online?wsdl" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://asp403r.paperless.com.pe/axis2/services/Online?wsdl" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="Online.wsdl" MetadataType="Wsdl" ID="bf264fff-5317-4a0b-9700-fd95b7d1a843" SourceId="1" SourceUrl="http://200.121.128.110:8080/axis2/services/Online?wsdl" />
+    <MetadataFile FileName="Online1.wsdl" MetadataType="Wsdl" ID="77f8444a-7a93-49f4-a7aa-0208db0ed6af" SourceId="1" SourceUrl="http://asp403r.paperless.com.pe/axis2/services/Online?wsdl" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

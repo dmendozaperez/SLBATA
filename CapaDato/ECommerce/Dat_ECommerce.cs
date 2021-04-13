@@ -442,7 +442,7 @@ namespace CapaDato.ECommerce
                                           //TRAZABILIDAD = dr["TRAZABILIDAD"].ToString(),
                                           ESTADO = dr["ESTADO"].ToString(),
                                           COLOR = dr["COLOR"].ToString(),
-                                          FLG_REASIGNA = Convert.ToInt32( dr["FLG_REASIGNA"]),
+                                          FLG_REASIGNA = Convert.ToInt32(dr["FLG_REASIGNA"]),
                                       }).ToList();
 
                         }
@@ -457,7 +457,69 @@ namespace CapaDato.ECommerce
             return listar;
         }
 
-        public Boolean update_pedido_ecommerce(string liq_id, string accion,int flagWMS,int flagcorreo,int flagreasignar)
+
+        //LISTA PEDIDOS PARA TRAZABILIDAD VTEX
+        public List<Ent_TrazaPedido> get_listaVtex(DateTime fechaini, DateTime fechafin,string estado,string tienda)
+        {
+            string sqlquery = "USP_GetTrazabilidadPedido_VTEX";
+            List<Ent_TrazaPedido> listar = null;
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexionEcommerce))
+                {
+                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@fecha_inicio", fechaini);
+                        cmd.Parameters.AddWithValue("@fecha_fin", fechafin);
+                        cmd.Parameters.AddWithValue("@estado", estado);
+                        cmd.Parameters.AddWithValue("@tienda", tienda);
+                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                        {
+                            DataTable dt = new DataTable();
+                            da.Fill(dt);
+                            listar = new List<Ent_TrazaPedido>();
+                            listar = (from DataRow dr in dt.Rows
+                                      select new Ent_TrazaPedido()
+                                      {
+                                          ID_PEDIDO = dr["PEDIDO"].ToString(),
+                                          CLIENTE = dr["CLIENTE"].ToString(),
+                                          IMPORTE_PEDIDO = dr["IMPORTE"].ToString(),
+                                          DESPACHO = dr["DESPACHO"].ToString(),
+                                          TIPO_ENTREGA = dr["TIPO_ENTREGA"].ToString(),
+                                          FECHA_PEDIDO = dr["FECHA_PEDIDO"].ToString(),
+                                          FECHA_REG_VENTA = dr["FECHA_FACTURACION"].ToString(),
+                                          FECHA_DESPACHO = dr["FECHA_DESPACHO"].ToString(),
+                                          TIPO_PEDIDO = dr["TIPO_PEDIDO"].ToString(),
+                                          NRO_DOCUMENTO = dr["NRO_DOCUMENTO"].ToString(),
+                                          CODIGO_SEGUIMIENTO = dr["CODIGO_SEGUIMIENTO"].ToString(),
+                                          ESTADO = dr["ESTADO"].ToString(),
+                                          COLOR = dr["COLOR"].ToString(),
+                                          USUARIO_WS = dr["USUARIO_WS"].ToString(),
+                                          CLAVE_WS = dr["CLAVE_WS"].ToString(),
+                                          RUC_WS = dr["RUC_WS"].ToString(),
+                                          TIPODOC_WS = Convert.ToInt32(dr["TIPODOC_WS"]),
+                                          NRODOC_WS = dr["NRODOC_WS"].ToString(),
+                                          TIPRETOR_WS = Convert.ToInt32( dr["TIPRETOR_WS"])
+                                          
+                                      }).ToList();
+
+                        }
+                    }
+                }
+            }
+            catch (Exception exc)
+            {
+
+                listar = null;
+            }
+            return listar;
+        }
+
+
+
+        public Boolean update_pedido_ecommerce(string liq_id, string accion, int flagWMS, int flagcorreo, int flagreasignar)
         {
             Boolean valida = false;
             string sqlquery = "USP_Anular_Liquidacion2";
@@ -513,6 +575,89 @@ namespace CapaDato.ECommerce
                 throw;
             }
             return dt;
+        }
+
+
+        //LISTA PEDIDOS VTEX
+
+        public List<Ent_Vtex> get_Lista_Pedidos_Vtex(DateTime Fecha_Ini, DateTime Fecha_Fin)
+        {
+            string sqlquery = "USP_GET_PEDIDOS_CARRITO_VTEX";
+            DataTable dt = null;
+            List<Ent_Vtex> listar = null;
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexionEcommerce))
+                {
+                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@FECHAINI", Fecha_Ini);
+                        cmd.Parameters.AddWithValue("@FECHAFIN", Fecha_Fin);
+                        cmd.Parameters.AddWithValue("@ESTADO", "TODO");
+                        //cmd.Parameters.AddWithValue("@estado", dwest);
+                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                        {
+                            dt = new DataTable();
+                            da.Fill(dt);
+                            listar = new List<Ent_Vtex>();
+                            listar = (from DataRow dr in dt.Rows
+                                      select new Ent_Vtex()
+                                      {
+                                          Id_Orden = dr["ID_ORDEN"].ToString(),
+                                          Fecha_Pedido = dr["FECHA_PEDIDO"] == null || dr["FECHA_PEDIDO"].ToString() == "" ? "" : Convert.ToDateTime(dr["FECHA_PEDIDO"]).ToString("dd/MM/yyyy"),
+                                          //Est_Sis_Fact = dr["ESTADO_SIST_FACT"].ToString(),
+                                          Estado_Pedido = dr["ESTADO_PEDIDO"] == null || dr["ESTADO_PEDIDO"].ToString() == "" ? "" : (dr["ESTADO_PEDIDO"]).ToString(),
+                                          //Presta_Estado_Name = dr["PRESTA_ESTADO_NAME"].ToString(),
+                                          //Presta_Est_Ped_Tienda = dr["PRESTA_EST_PED_TIENDA"].ToString(),
+
+                                          //Presta_FecIng = dr["PRESTA_FECING"] == null || dr["PRESTA_FECING"].ToString() == "" ? "" : Convert.ToDateTime(dr["PRESTA_FECING"]).ToString("dd/MM/yyyy"),
+                                          Fecha_Facturacion = dr["FECHA_FACTURACION"] == null || dr["FECHA_FACTURACION"].ToString() == "" ? "" : Convert.ToDateTime(dr["FECHA_FACTURACION"]).ToString("dd/MM/yyyy"),
+
+                                          Comprobante = dr["COMPROBANTE"].ToString(),
+                                          Tipo_courier = dr["NAME_CARRIER"].ToString(),
+                                          Almacen = dr["ALMACEN"].ToString(),
+                                          Ubigeo = dr["UBIGEO"].ToString(),
+                                          //Ubicacion = dr["ubicacion"].ToString(),
+                                          Departamento = dr["DEPARTAMENTO"].ToString(),
+                                          Provincia = dr["PROVINCIA"].ToString(),
+                                          Distrito = dr["DISTRITO"].ToString(),
+                                          Semana = dr["SEMANA"].ToString(),
+                                          ArticuloId = dr["ARTICULOID"].ToString(),
+                                          Talla = dr["TALLA"].ToString(),
+                                          Cantidad = Convert.ToInt32(dr["CANTIDAD"]),
+
+                                          Precio_conIGV = Math.Round(Convert.ToDecimal(dr["PRECIO_CIGV"]), 2),
+                                          Precio_sinIGV = Math.Round(Convert.ToDecimal(dr["PRECIO_SIGV"]), 2),
+
+                                          Cod_Linea3 = dr["COD_LINE3"].ToString(),
+                                          Des_Linea3 = dr["DES_LINE3"].ToString(),
+                                          Cod_Cate3 = dr["COD_CATE3"].ToString(),
+                                          Des_Cate3 = dr["DES_CATE3"].ToString(),
+                                          Cod_Subc3 = dr["COD_SUBC3"].ToString(),
+                                          Des_Subc3 = dr["DES_SUBC3"].ToString(),
+                                          Cod_Marc3 = dr["COD_MARC3"].ToString(),
+                                          Des_Marca = dr["DES_MARCA"].ToString(),
+
+                                          Precio_Planilla = Math.Round(Convert.ToDecimal(dr["PRECIO_PLANILLA"]), 2),
+                                          Costo = Math.Round(Convert.ToDecimal(dr["COSTO"]), 2),
+
+                                          Alm_C = Convert.ToInt32(dr["C"]),
+                                          Alm_5 = Convert.ToInt32(dr["5"]),
+                                          Alm_B = Convert.ToInt32(dr["B"]),
+                                          Alm_W = Convert.ToInt32(dr["W"]),
+                                          Alm_1 = Convert.ToInt32(dr["1"]),
+                                      }).ToList();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                listar = null;
+            }
+            return listar;
         }
 
 

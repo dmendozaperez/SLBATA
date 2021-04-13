@@ -1,5 +1,4 @@
-﻿
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.min.css" />
+﻿<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.min.css" />
 
 <style type="text/css">
     .dt-buttons {
@@ -18,11 +17,11 @@
         <tr style="background-color:#3d566e; color:#ecf0f1">
             <th>Orden</th>
             <th>Fecha_Pedido</th>
-            <th>Estado_Facturación</th>
-            <th>Codigo_Estado_Prestashop</th>
-            <th>Estado_Prestashop</th>
-            <th>Estado_Prestashop_Tienda</th>
-            <th>Fecha_Ing_Prestashop</th>
+            <th>Estado</th>
+            @*<th>Cod.Estado Prestashop</th>
+                <th>Estado Prestashop</th>
+                <th>Estado Prestashop(Tienda)</th>*@
+            @*<th>Fec.Ing.Prestashop</th>*@
             <th>Fecha_Facturación</th>
             <th>Comprobante</th>
             <th>Tipo_Courier</th>
@@ -36,8 +35,8 @@
             <th>Artículo</th>
             <th>Talla</th>
             <th>Cantidad</th>
-            <th>Precio_Vta.</th>
-            <th>Precio_Original</th>
+            <th>Precio_con_IGV</th>
+            <th>Precio_sin_IGV</th>
             <th>Cod_Linea_3</th>
             <th>Des_Linea_3</th>
             <th>Cod_Cat_3</th>
@@ -60,12 +59,12 @@
         <tr>
             <td>Id_Orden</td>
             <td>Fecha_Pedido</td>
-            <td>Estado_Sistema_Facturación</td>
-            <td>Codigo_Estado_Prestashop</td>
-            <td>Estado_Prestashop</td>
-            <td>Estado_Prestashop(Tienda)</td>
-            <td>Fec_Ing_Prestashop</td>
-            <td>Fec_Facturación</td>
+            <td>Estado</td>
+            @*<td>Cod.Estado Prestashop</td>
+                <td>Estado Prestashop</td>
+                <td>Estado Prestashop(Tienda)</td>
+                <td>Fec.Ing.Prestashop</td>*@
+            <td>Fecha_Facturación</td>
             <td>Comprobante</td>
             <td>Tipo_Courier</td>
             <td>Almacén</td>
@@ -78,8 +77,8 @@
             <td>Artículo</td>
             <td>Talla</td>
             <td>Cantidad</td>
-            <td>Precio_Vta.</td>
-            <td>Precio_Original.</td>
+            <td>Precio_con_IGV</td>
+            <td>Precio_sin_IGV</td>
             <td>Cod_Linea_3</td>
             <td>Des_Linea_3</td>
             <td>Cod_Cat_3</td>
@@ -124,7 +123,7 @@
             "bProcessing": true, // se agrego para probar
             "bServerSide": true,
             "bAutoWidth": false,
-            "sAjaxSource": '@Url.Action("ConsultaTabla_Prestashop", "Ecommerce")',
+            "sAjaxSource": '@Url.Action("ConsultaTabla_Vtex", "Ecommerce")',
             "fnServerParams": function (aoData) {
                 aoData.push({ "name": "fecini", "value": $.trim($('#fecini').val()) });
                 aoData.push({ "name": "fecfin", "value": $('#fecfin').val() });
@@ -135,26 +134,23 @@
             "bDeferRender": true,
             "aoColumns": [
                     { "sName": "Id_Orden", "mData": "Id_Orden" },
-                    { "sName": "Fec_Pedido", "mData": "Fec_Pedido" },
+                    { "sName": "Fecha_Pedido", "mData": "Fecha_Pedido" },
+                   { "sName": "Estado_Pedido", "mData": "Estado_Pedido" },
+                    //{ "sName": "Presta_Estado", "mData": "Presta_Estado" },
+                    //{ "sName": "Presta_Estado_Name", "mData": "Presta_Estado_Name" },
+                    //{ "sName": "Presta_Est_Ped_Tienda", "mData": "Presta_Est_Ped_Tienda" },
 
+                    // {
+                    //     "render": function (data, type, full) {
 
+                    //         if (full.Presta_FecIng == '01/01/1900') {
+                    //             return "";
+                    //         } else {
+                    //             return full.Presta_FecIng;
+                    //         }
 
-                    { "sName": "Est_Sis_Fact", "mData": "Est_Sis_Fact" },
-                    { "sName": "Presta_Estado", "mData": "Presta_Estado" },
-                    { "sName": "Presta_Estado_Name", "mData": "Presta_Estado_Name" },
-                    { "sName": "Presta_Est_Ped_Tienda", "mData": "Presta_Est_Ped_Tienda" },
-
-                     {
-                         "render": function (data, type, full) {
-
-                             if (full.Presta_FecIng == '01/01/1900') {
-                                 return "";
-                             } else {
-                                 return full.Presta_FecIng;
-                             }
-
-                         }
-                     },
+                    //     }
+                    // },
                     //{ "sName": "Presta_FecIng", "mData": "Presta_FecIng" },
                                          {
                                              "render": function (data, type, full) {
@@ -170,9 +166,9 @@
 
                     //{ "sName": "Fecha_Facturacion", "mData": "Fecha_Facturacion" },
                     { "sName": "Comprobante", "mData": "Comprobante" },
-                    { "sName": "Name_Carrier", "mData": "Name_Carrier" },
+                    { "sName": "Tipo_courier", "mData": "Tipo_courier" },
                     { "sName": "Almacen", "mData": "Almacen" },
-                    { "sName": "Ubigeo_Ent", "mData": "Ubigeo_Ent" },
+                    { "sName": "Ubigeo", "mData": "Ubigeo" },
                     //{ "sName": "Ubicacion", "mData": "Ubicacion" },
                     { "sName": "Departamento", "mData": "Departamento" },
                     { "sName": "Provincia", "mData": "Provincia" },
@@ -181,8 +177,8 @@
                     { "sName": "ArticuloId", "mData": "ArticuloId" },
                     { "sName": "Talla", "mData": "Talla" },
                     { "sName": "Cantidad", "mData": "Cantidad" },
-                    { "sName": "Precio_Vta", "mData": "Precio_Vta" },
-                    { "sName": "Precio_Original", "mData": "Precio_Original" },
+                    { "sName": "Precio_conIGV", "mData": "Precio_conIGV" },
+                    { "sName": "Precio_sinIGV", "mData": "Precio_sinIGV" },
                     { "sName": "Cod_Linea3", "mData": "Cod_Linea3" },
                     { "sName": "Des_Linea3", "mData": "Des_Linea3" },
                     { "sName": "Cod_Cate3", "mData": "Cod_Cate3" },

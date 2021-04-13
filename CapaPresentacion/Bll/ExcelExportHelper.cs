@@ -144,6 +144,108 @@ namespace CapaPresentacion.Bll
             return result;
         }
 
+        public static byte[] ExportExcelDT(DataTable dataTable, string heading = "", bool showSrNo = false, params string[] columnsToTake)
+        {
+
+            byte[] result = null;
+            using (ExcelPackage package = new ExcelPackage())
+            {
+                ExcelWorksheet workSheet = package.Workbook.Worksheets.Add(String.Format("{0} Data", heading));
+                int startRowFrom = String.IsNullOrEmpty(heading) ? 1 : 3;
+
+                if (showSrNo)
+                {
+                    DataColumn dataColumn = dataTable.Columns.Add("#", typeof(int));
+                    dataColumn.SetOrdinal(0);
+                    int index = 1;
+                    foreach (DataRow item in dataTable.Rows)
+                    {
+                        item[0] = index;
+                        index++;
+                    }
+                }
+
+
+                // add the content into the Excel file  
+                workSheet.Cells["A" + startRowFrom].LoadFromDataTable(dataTable, true);
+
+                // autofit width of cells with small content  
+
+                if (dataTable.Rows.Count > 0)
+                {
+
+                    int columnIndex = 1;
+                    foreach (DataColumn column in dataTable.Columns)
+                    {
+
+
+
+                        //ExcelRange columnCells = workSheet.Cells[workSheet.Dimension.Start.Row, columnIndex, workSheet.Dimension.End.Row, columnIndex];
+                        //int maxLength = columnCells.Max(cell => cell.Value.ToString().Count());
+                        //if (maxLength < 150)
+                        //{
+                        //    workSheet.Column(columnIndex).AutoFit();
+                        //}
+
+
+                        columnIndex++;
+                    }
+                }
+
+                // format header - bold, yellow on black  
+                using (ExcelRange r = workSheet.Cells[startRowFrom, 1, startRowFrom, dataTable.Columns.Count])
+                {
+                    r.Style.Font.Color.SetColor(System.Drawing.Color.White);
+                    r.Style.Font.Bold = true;
+                    r.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                    r.Style.Fill.BackgroundColor.SetColor(System.Drawing.ColorTranslator.FromHtml("#1fb5ad"));
+                }
+
+                // format cells - add borders 
+                if (dataTable.Rows.Count > 0)
+                {
+                    using (ExcelRange r = workSheet.Cells[startRowFrom + 1, 1, startRowFrom + dataTable.Rows.Count, dataTable.Columns.Count])
+                    {
+                        r.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        r.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                        r.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        r.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+
+                        r.Style.Border.Top.Color.SetColor(System.Drawing.Color.Black);
+                        r.Style.Border.Bottom.Color.SetColor(System.Drawing.Color.Black);
+                        r.Style.Border.Left.Color.SetColor(System.Drawing.Color.Black);
+                        r.Style.Border.Right.Color.SetColor(System.Drawing.Color.Black);
+                    }
+                }
+                // removed ignored columns  
+                for (int i = dataTable.Columns.Count - 1; i >= 0; i--)
+                {
+                    if (i == 0 && showSrNo)
+                    {
+                        continue;
+                    }
+                    if (!columnsToTake.Contains(dataTable.Columns[i].ColumnName))
+                    {
+                        workSheet.DeleteColumn(i + 1);
+                    }
+                }
+
+                if (!String.IsNullOrEmpty(heading))
+                {
+                    workSheet.Cells["A1"].Value = heading;
+                    workSheet.Cells["A1"].Style.Font.Size = 20;
+
+                    workSheet.InsertColumn(1, 1);
+                    workSheet.InsertRow(1, 1);
+                    workSheet.Column(1).Width = 5;
+                }
+
+                result = package.GetAsByteArray();
+            }
+
+            return result;
+        }
+
         public static byte[] ExportExcel<T>(List<T> data, string Heading = "", bool showSlno = false, params string[] ColumnsToTake)
         {
             return ExportExcel(ListToDataTable<T>(data), Heading, showSlno, ColumnsToTake);
@@ -575,14 +677,17 @@ namespace CapaPresentacion.Bll
         {
             return ExportExcelStock_PRESTA(ListToDataTable<T>(data), "PRESTA", Heading, showSlno, ColumnsToTake);
         }
+        public static byte[] ExportExcel_VTEX<T>(List<T> data, string Heading = "", bool showSlno = false, params string[] ColumnsToTake)
+        {
+            return ExportExcelStock_VTEX(ListToDataTable<T>(data), "VTEX", Heading, showSlno, ColumnsToTake);
+        }
 
-        public static byte[] ExportExcelStock_PRESTA(DataTable dataTable, string header = "", string heading = "", bool showSrNo = false, params string[] columnsToTake)
+         public static byte[] ExportExcelStock_PRESTA(DataTable dataTable, string header = "", string heading = "", bool showSrNo = false, params string[] columnsToTake)
         {
 
-
-            for (int i = 0; i< dataTable.Rows.Count; i++)
+            for (int i = 0; i < dataTable.Rows.Count; i++)
             {
-                if ( dataTable.Rows[i]["PRESTA_FECING"].ToString() == "01/01/1900")
+                if (dataTable.Rows[i]["PRESTA_FECING"].ToString() == "01/01/1900")
                 {
                     dataTable.Rows[i]["PRESTA_FECING"] = "";
                 }
@@ -663,6 +768,92 @@ namespace CapaPresentacion.Bll
             return result;
         }
 
+        public static byte[] ExportExcelStock_VTEX(DataTable dataTable, string header = "", string heading = "", bool showSrNo = false, params string[] columnsToTake)
+        {
+            for (int i = 0; i < dataTable.Rows.Count; i++)
+            {
+                if (dataTable.Rows[i]["FECHA_FACTURACION"].ToString() == "01/01/1900")
+                {
+                    dataTable.Rows[i]["FECHA_FACTURACION"] = "";
+                }
+
+                if (dataTable.Rows[i]["FECHA_FACTURACION"].ToString() == "01/01/1900")
+                {
+                    dataTable.Rows[i]["FECHA_FACTURACION"] = "";
+                }
+            }
+
+
+            byte[] result = null;
+            using (ExcelPackage package = new ExcelPackage())
+            {
+                ExcelWorksheet workSheet = package.Workbook.Worksheets.Add(String.Format("{0} Data", ""));
+                int startRowFrom = String.IsNullOrEmpty(heading) ? 1 : 4;
+                //int startRowFrom = 0;
+
+                if (showSrNo)
+                {
+                    DataColumn dataColumn = dataTable.Columns.Add("#", typeof(int));
+                    dataColumn.SetOrdinal(0);
+                    int index = 1;
+                    foreach (DataRow item in dataTable.Rows)
+                    {
+                        item[0] = index;
+                        index++;
+                    }
+                }
+                if (header == "VTEX")
+                {
+                    workSheet.Cells["A" + startRowFrom].LoadFromDataTable(dataTable, true);
+                }
+
+                // autofit width of cells with small content  
+
+                if (dataTable.Rows.Count > 0)
+                {
+
+                    int columnIndex = 1;
+                    foreach (DataColumn column in dataTable.Columns)
+                    {
+
+                        columnIndex++;
+                    }
+                }
+
+                if (dataTable.Rows.Count > 0)
+                {
+                    using (ExcelRange r = workSheet.Cells[startRowFrom + 1 - 2, 1, startRowFrom + dataTable.Rows.Count, dataTable.Columns.Count])
+                    {
+                        r.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        r.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                        r.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        r.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+
+                        r.Style.Border.Top.Color.SetColor(System.Drawing.Color.Black);
+                        r.Style.Border.Bottom.Color.SetColor(System.Drawing.Color.Black);
+                        r.Style.Border.Left.Color.SetColor(System.Drawing.Color.Black);
+                        r.Style.Border.Right.Color.SetColor(System.Drawing.Color.Black);
+                    }
+                }
+
+
+                if (!String.IsNullOrEmpty(heading))
+                {
+                    workSheet.Cells["A1"].Value = heading;
+                    workSheet.Cells["A1"].Style.Font.Size = 20;
+
+                    workSheet.InsertColumn(1, 1);
+                    workSheet.InsertRow(1, 1);
+                    workSheet.Column(1).Width = 5;
+                }
+                workSheet.DeleteRow(startRowFrom);
+                result = package.GetAsByteArray();
+            }
+
+            return result;
+        }
+
+   
 
     }
 }

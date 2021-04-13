@@ -28,6 +28,7 @@ using System.Text.RegularExpressions;
 using CapaPresentacion.Models.PedidosNoFactu;
 using System.Threading.Tasks;
 using System.Text;
+using System.Xml.Linq;
 
 namespace CapaPresentacion.Controllers
 {
@@ -165,7 +166,7 @@ namespace CapaPresentacion.Controllers
                             }
                             else if (name_carrier.Contains("Chazki"))
                             {
-                                string nrodelivery_chazki = Envia_Courier_Chazki(ven_id, cod_TdaId); 
+                                string nrodelivery_chazki = Envia_Courier_Chazki(ven_id, cod_TdaId);
                                 if (nrodelivery_chazki != "")
                                 {
                                     //action_presta.updestafac_prestashop(guia_presta);
@@ -230,7 +231,7 @@ namespace CapaPresentacion.Controllers
             return Json(oJRespuesta, JsonRequestBehavior.AllowGet);
         }
         /*metodo para savar - ecommerce*/
-        public string Envia_Courier_Savar(string ven_id,string cod_TdaId)
+        public string Envia_Courier_Savar(string ven_id, string cod_TdaId)
         {
             DataTable dtApi_savar = new DataTable();
             EnviarPedidoSavar objD_savar = new EnviarPedidoSavar();
@@ -330,7 +331,6 @@ namespace CapaPresentacion.Controllers
 
             return retorno;
         }
-
 
         /*metodo para chazki - ecommerce*/
         public string Envia_Courier_Chazki(string ven_id, string cod_TdaId)
@@ -472,7 +472,7 @@ namespace CapaPresentacion.Controllers
             return retorno;
         }
 
-        private Ecommerce_Chazki selectVenta_Chazki(string ven_id,string cod_TdaId)
+        private Ecommerce_Chazki selectVenta_Chazki(string ven_id, string cod_TdaId)
         {
             Ecommerce_Chazki ventas = new Ecommerce_Chazki();
 
@@ -757,7 +757,6 @@ namespace CapaPresentacion.Controllers
 
             try
             {
-
                 string CodTda = "";
                 var ec = new Data_Ecommerce();
                 HttpContext.Session["ReportName"] = "VentasEcommerce.rpt";
@@ -796,10 +795,8 @@ namespace CapaPresentacion.Controllers
             }
             catch (Exception)
             {
-
                 throw;
             }
-
 
         }
 
@@ -824,11 +821,11 @@ namespace CapaPresentacion.Controllers
 
                 if (_usuario.usu_tip_id == "05") //INVITADO (TIENDAS)
                 {
-                    ViewBag.Tienda = ec.get_ListaTienda(_usuario.usu_login, 0);
+                    ViewBag.Tienda = ec.get_ListaTienda(Session["PAIS"].ToString(), _usuario.usu_login);
                 }
                 else
                 {
-                    ViewBag.Tienda = ec.get_ListaTienda("", 1);
+                    ViewBag.Tienda = ec.get_ListaTienda(Session["PAIS"].ToString(), "");
                 }
 
                 ViewBag.usu_tipo = _usuario.usu_tip_id;
@@ -839,7 +836,7 @@ namespace CapaPresentacion.Controllers
 
         private List<SelectListItem> SelectTipos(string value = null)
         {
-            string[] _values = value.Split(',');
+            //string[] _values = value.Split(',');
             List<SelectListItem> list = new List<SelectListItem>();
             list.Add(new SelectListItem() { Text = "TODOS", Value = "" });
             list.Add(new SelectListItem() { Text = "RECOJO EN TIENDA", Value = "R" });
@@ -871,8 +868,6 @@ namespace CapaPresentacion.Controllers
                 Session["Lista_stock_almacen"] = null;
 
                 ViewBag.almacen = ec.get_ListaAlmacen_Apoyo();
-
-
                 return View();
             }
         }
@@ -952,9 +947,7 @@ namespace CapaPresentacion.Controllers
             return File(filecontent, ExcelExportHelper.ExcelContentType, "StockArticulosAlmacen.xlsx");
         }
 
-
-        //CONSULTA PEDIDOS PRESTASHOP
-
+        #region PRESTASHOP
         public ActionResult Prestashop()
         {
             var ec = new Data_Ecommerce();
@@ -971,8 +964,6 @@ namespace CapaPresentacion.Controllers
             {
                 //ViewBag.Tienda = dat_lista_tienda.get_tienda("PE", "1");
                 Session["Lista_Pedidos_Prestashop"] = null;
-
-
                 return View();
             }
         }
@@ -1080,11 +1071,14 @@ namespace CapaPresentacion.Controllers
             //byte[] filecontent = ExcelExportHelper.CreateCSVFile(lista, "LISTA GENERAL DE STOCK DE ARTICULOS POR ALMACEN");
             return File(filecontent, ExcelExportHelper.ExcelContentType, "InformacionPrestashop.xlsx");
         }
+        #endregion
 
+        #region TRAZABILIDAD
         //MANTENIMIENTO Y TRAZA DE PEDIDOS ECOMMERCE
         public ActionResult TrazaPedido()
         {
             Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            var ec = new Data_Ecommerce();
 
             string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
             string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
@@ -1098,6 +1092,7 @@ namespace CapaPresentacion.Controllers
             {
                 return View();
             }
+
         }
 
         public PartialViewResult ListaTraza(string fecini, string fecfinc)
@@ -1370,6 +1365,320 @@ namespace CapaPresentacion.Controllers
 
         }
         #endregion
+        #endregion
+        #region VTEX
+
+        public ActionResult Vtex()
+        {
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
+
+            if (_usuario == null)
+            {
+                return RedirectToAction("Login", "Control", new
+                {
+                    returnUrl = return_view
+                });
+            }
+            else
+            {
+                //ViewBag.Tienda = dat_lista_tienda.get_tienda("PE", "1");
+                Session["Lista_Pedidos_Vtex"] = null;
+                return View();
+            }
+        }
+
+        public PartialViewResult _TableVTEX(DateTime fecini, DateTime fecfin)
+        {
+            return PartialView(get_Lista_Vtex(fecini, fecfin));
+        }
+
+        public List<Ent_Vtex> get_Lista_Vtex(DateTime fecini, DateTime fecfin)
+        {
+            List<Ent_Vtex> lista = datos.get_Lista_Pedidos_Vtex(fecini, fecfin);
+            Session["Lista_Pedidos_Vtex"] = lista;
+            return lista;
+        }
+
+        public ActionResult ConsultaTabla_Vtex(CapaEntidad.General.Ent_jQueryDataTableParams param)
+        {
+            /*verificar si esta null*/
+            if (Session["Lista_Pedidos_Vtex"] == null)
+            {
+                List<Ent_Vtex> listdoc = new List<Ent_Vtex>();
+                Session["Lista_Pedidos_Vtex"] = listdoc;
+            }
+
+            //Traer registros
+            IQueryable<Ent_Vtex> membercol = ((List<Ent_Vtex>)(Session["Lista_Pedidos_Vtex"])).AsQueryable();
+
+            //Manejador de filtros
+            int totalCount = membercol.Count();
+
+            IEnumerable<Ent_Vtex> filteredMembers = membercol;
+
+            //Manejador de orden
+            var sortIdx = Convert.ToInt32(Request["iSortCol_0"]);
+
+            var displayMembers = filteredMembers
+                .Skip(param.iDisplayStart)
+                .Take(param.iDisplayLength);
+
+            var result = from a in displayMembers
+                         select new
+                         {
+                             a.Id_Orden,
+                             a.Fecha_Pedido,
+                             a.Estado_Pedido,
+                             a.Fecha_Facturacion,
+                             a.Comprobante,
+                             a.Tipo_courier,
+                             a.Almacen,
+                             a.Ubigeo,
+                             a.Departamento,
+                             a.Provincia,
+                             a.Distrito,
+                             a.Semana,
+                             a.ArticuloId,
+                             a.Talla,
+                             a.Cantidad,
+                             a.Precio_conIGV,
+                             a.Precio_sinIGV,
+                             a.Cod_Linea3,
+                             a.Des_Linea3,
+                             a.Cod_Cate3,
+                             a.Des_Cate3,
+                             a.Cod_Subc3,
+                             a.Des_Subc3,
+                             a.Cod_Marc3,
+                             a.Des_Marca,
+                             a.Precio_Planilla,
+                             a.Costo,
+                             a.Alm_C,
+                             a.Alm_5,
+                             a.Alm_B,
+                             a.Alm_W,
+                             a.Alm_1
+                         };
+
+            //Se devuelven los resultados por json
+            return Json(new
+            {
+                sEcho = param.sEcho,
+                iTotalRecords = totalCount,
+                iTotalDisplayRecords = filteredMembers.Count(),
+                aaData = result
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        public FileContentResult DetalleVtex()
+        {
+            if (Session["Lista_Pedidos_Vtex"] == null)
+            {
+                List<Ent_Vtex> liststoreConf = new List<Ent_Vtex>();
+                Session["Lista_Pedidos_Vtex"] = liststoreConf;
+            }
+            List<Ent_Vtex> lista = (List<Ent_Vtex>)Session["Lista_Pedidos_Vtex"];
+            string[] columns = { "ID_ORDER", "FECHA_PEDIDO", "ESTADO_PEDIDO", "FECHA_FACTURACION", "COMPROBANTE", "TIPO_COURIER", "ALMACEN", "UBIGEO", "DEPARTAMENTO", "PROVINCIA", "DISTRITO", "SEMANA", "ARTICULO_ID", "TALLA", "CANTIDAD", "PRECIO_CIGV", "PRECIO_SIGV", "COD_LINE3", "DES_LINE3", "COD_CATE3", "DES_CATE3", "COD_SUBC3", "DES_SUBC3", "COD_MARC3", "DES_MARCA", "PRECIO_PLANILLA", "COSTO", "C", "5", "B", "W", "1" };
+            //string[] headers = { "ALMACEN", "NUM_ARTICULO", "ARTICULO", "TALLA", "STOCK"};
+            byte[] filecontent = ExcelExportHelper.ExportExcel_VTEX(lista, "INFORME GENERAL DE PEDIDOS - VTEX", false, columns);
+            //byte[] filecontent = ExcelExportHelper.CreateCSVFile(lista, "LISTA GENERAL DE STOCK DE ARTICULOS POR ALMACEN");
+            return File(filecontent, ExcelExportHelper.ExcelContentType, "InformacionVTEX.xlsx");
+        }
+
+        #endregion
+
+
+        #region TRAZABILIDAD_VTEX
+
+
+        public ActionResult Trazabilidad()
+        {
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            var ec = new Data_Ecommerce();
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
+
+            if (_usuario == null)
+            {
+                return RedirectToAction("Login", "Control", new
+                {
+                    returnUrl = return_view
+                });
+            }
+            else
+            {
+                Session[_session_listTraza_private] = null;
+                ViewBag.tienda = ec.get_ListaTienda(Session["PAIS"].ToString(), "");
+                ViewBag.estado = ec.get_Traza_Estados();
+                ListaTrazaVtex(DateTime.Now.ToString(), DateTime.Now.ToString(), "", "");
+            }
+            
+            return View();
+        }
+
+        public PartialViewResult ListaTrazaVtex(string fecini, string fecfin, string estado, string tienda)
+        {
+
+            if (fecini != null && fecfin != null)
+            {
+                Session["fecini"] = fecini;
+                Session["fecfin"] = fecfin;
+            }
+
+            if (estado == "0")
+            {
+                estado = "";
+            }
+            if (tienda == "0")
+            {
+                tienda = "";
+            }
+            return PartialView(listaVtex(Convert.ToDateTime(Session["fecini"]), Convert.ToDateTime(Session["fecfin"]), estado, tienda));
+        }
+
+        public List<Ent_TrazaPedido> listaVtex(DateTime fechaini, DateTime fechafin, string estado, string tienda)
+        {
+
+            List<Ent_TrazaPedido> listTraza = datos.get_listaVtex(fechaini, fechafin, estado, tienda);
+            listTraza = datos.get_listaVtex(fechaini, fechafin, estado, tienda);
+            Session[_session_listTraza_private] = listTraza;
+
+            return listTraza;
+        }
+
+        public ActionResult getListaTrazaVtex(CapaEntidad.General.Ent_jQueryDataTableParams param)
+        {
+            /*verificar si esta null*/
+            if (Session[_session_listTraza_private] == null)
+            {
+                List<Ent_TrazaPedido> listdoc = new List<Ent_TrazaPedido>();
+                Session[_session_listTraza_private] = listdoc;
+
+            }
+
+            //Traer registros
+            IQueryable<Ent_TrazaPedido> membercol = ((List<Ent_TrazaPedido>)(Session[_session_listTraza_private])).AsQueryable();
+
+
+            //Manejador de filtros
+            int totalCount = membercol.Count();
+            IEnumerable<Ent_TrazaPedido> filteredMembers = membercol;
+
+            if (!string.IsNullOrEmpty(param.sSearch))
+            {
+                filteredMembers = membercol
+                    .Where(m => m.ID_PEDIDO.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                     m.CLIENTE.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                     m.IMPORTE_PEDIDO.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                     m.TIPO_ENTREGA.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                     m.DESPACHO.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                     m.TIPO_PEDIDO.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                     m.NRO_DOCUMENTO.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                     m.CODIGO_SEGUIMIENTO.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                     m.ESTADO.ToUpper().Contains(param.sSearch.ToUpper()));
+
+            }
+            //Manejador de orden
+            //var sortIdx = Convert.ToInt32(Request["iSortCol_0"]);
+            //Func<Ent_TrazaPedido, string> orderingFunction =
+            //(
+            //m => sortIdx == 0 ? m.cod_tienda :
+            //sortIdx == 1 ? m.des_tienda :
+            //sortIdx == 2 ? m.semana :
+            //sortIdx == 3 ? m.dni :
+            //m.estado
+            //);
+            //var sortDirection = Request["sSortDir_0"];
+            //if (sortDirection == "asc")
+            //    filteredMembers = filteredMembers.OrderBy(orderingFunction);
+            //else
+            //    filteredMembers = filteredMembers.OrderByDescending(orderingFunction);
+            var displayMembers = filteredMembers
+                .Skip(param.iDisplayStart)
+                .Take(param.iDisplayLength);
+
+            var result = from a in displayMembers
+                         select new
+                         {
+                             a.ID_PEDIDO,
+                             a.CLIENTE,
+                             a.IMPORTE_PEDIDO,
+                             a.DESPACHO,
+                             a.TIPO_ENTREGA,
+                             a.FECHA_PEDIDO,
+                             a.FECHA_REG_VENTA,
+                             a.FECHA_DESPACHO,
+                             a.TIPO_PEDIDO,
+                             a.NRO_DOCUMENTO,
+                             a.CODIGO_SEGUIMIENTO,
+                             a.ESTADO,
+                             a.COLOR,
+                             a.USUARIO_WS,
+                             a.CLAVE_WS,
+                             a.RUC_WS,
+                             a.TIPODOC_WS,
+                             a.NRODOC_WS,
+                             a.TIPRETOR_WS
+
+
+                         };
+
+            //Se devuelven los resultados por json
+            return Json(new
+            {
+                sEcho = param.sEcho,
+                iTotalRecords = totalCount,
+                iTotalDisplayRecords = filteredMembers.Count(),
+                aaData = result
+            }, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+        [HttpGet]
+        public FileContentResult ExportToExcelVtex()
+        {
+            List<Ent_TrazaPedido> listTrazaPedidoVtex = (List<Ent_TrazaPedido>)Session[_session_listTraza_private];
+            //DataTable tabla = Session["Lista_Pedidos_Vtex"] as DataTable;
+
+            //List<Technology> technologies = StaticData.Technologies;
+            string[] columns = { "ID_PEDIDO", "CLIENTE", "IMPORTE_PEDIDO", "DESPACHO", "TIPO_ENTREGA", "FECHA_PEDIDO", "FECHA_REG_VENTA", "FECHA_DESPACHO", "TIPO_PEDIDO", "NRO_DOCUMENTO", "CODIGO_SEGUIMIENTO", "ESTADO" };
+            byte[] filecontent = ExcelExportHelper.ExportExcel(listTrazaPedidoVtex, "Trazabilidad de Pedidos VTEX [" + string.Format(Session["fecini"].ToString(), "dd/MM/yyyy") + " - " + string.Format(Session["fecfin"].ToString(), "dd/MM/yyyy") + "]", true, columns);
+            //byte[] filecontent = ExcelExportHelper.ExportExcelDT(tabla, "Trazabilidad de Pedidos Vtex", true, columns);
+            return File(filecontent, ExcelExportHelper.ExcelContentType, "TrazaPedidosVtex.xlsx");
+        }
+
+        [HttpPost]
+        public JsonResult descargar_pdf(string user_ws, string pass_ws, string ruc_ws, int tipodoc_ws, string num_doc_ws, int num_retorno)
+        {
+            string url_pdf = "";
+            string consulta = "";
+
+            FEBataBack.OnlinePortTypeClient gen_fe = new FEBataBack.OnlinePortTypeClient();
+
+            consulta = gen_fe.OnlineRecovery(ruc_ws, user_ws, pass_ws, tipodoc_ws, num_doc_ws, num_retorno);
+            consulta = consulta.Replace("&", "amp;");
+            var docpdf = XDocument.Parse(consulta);
+            var resultpdf = from factura in docpdf.Descendants("Respuesta")
+                            select new
+                            {
+                                Codigo = factura.Element("Codigo").Value,
+                                Mensaje = factura.Element("Mensaje").Value.Replace("amp;", "&"),
+                            };
+            foreach (var itempdf in resultpdf)
+            {
+                url_pdf = itempdf.Mensaje;
+            }
+
+            JsonResult result = new JsonResult();
+            result.Data = url_pdf;
+            return result;
+            //return  url_pdf;
+        }
+
+
 
 
         #region<REGION DE CARLOS Q>

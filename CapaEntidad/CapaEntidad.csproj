@@ -82,6 +82,7 @@
     <Compile Include="ECommerce\Ent_Stock_Almacen.cs" />
     <Compile Include="ECommerce\Ent_TrazaPedido.cs" />
     <Compile Include="ECommerce\Ent_Urbano.cs" />
+    <Compile Include="ECommerce\Ent_Vtex.cs" />
     <Compile Include="ECommerce\Order_Dtl.cs" />
     <Compile Include="ECommerce\Pagos.cs" />
     <Compile Include="BataClub\Ent_BataClub_Registro.cs" />
