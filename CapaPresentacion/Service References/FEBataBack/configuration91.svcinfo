@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="MmCEvQS4rvJjDA9s7jTt7m8N/mk=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="DKy9Ae2SYXtg2C+PAmaB96xIwN0=">
   <bindingConfigurations>
-    <bindingConfiguration bindingType="basicHttpBinding" name="OnlineSOAP11Binding">
+    <bindingConfiguration bindingType="basicHttpBinding" name="OnlineSoap11Binding1">
       <properties>
         <property path="/name" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>OnlineSOAP11Binding</serializedValue>
+          <serializedValue>OnlineSoap11Binding1</serializedValue>
         </property>
         <property path="/closeTimeout" isComplexType="false" isExplicitlyDefined="true" clrType="System.TimeSpan, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
@@ -110,10 +110,10 @@
         </property>
       </properties>
     </bindingConfiguration>
-    <bindingConfiguration bindingType="customBinding" name="OnlineSOAP12Binding">
+    <bindingConfiguration bindingType="customBinding" name="OnlineSoap12Binding1">
       <properties>
         <property path="/name" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>OnlineSOAP12Binding</serializedValue>
+          <serializedValue>OnlineSoap12Binding1</serializedValue>
         </property>
         <property path="/closeTimeout" isComplexType="false" isExplicitlyDefined="true" clrType="System.TimeSpan, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
@@ -263,10 +263,10 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="OnlineSOAP11port_http" contract="FEBataBack.OnlinePortType" bindingType="basicHttpBinding" address="http://200.121.128.110:8080/axis2/services/Online" bindingConfiguration="OnlineSOAP11Binding">
+    <endpoint name="OnlineHttpSoap11Endpoint1" contract="FEBataBack.OnlinePortType" bindingType="basicHttpBinding" address="http://asp403r.paperless.com.pe/axis2/services/Online.OnlineHttpSoap11Endpoint/" bindingConfiguration="OnlineSoap11Binding1">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>http://200.121.128.110:8080/axis2/services/Online</serializedValue>
+          <serializedValue>http://asp403r.paperless.com.pe/axis2/services/Online.OnlineHttpSoap11Endpoint/</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
@@ -275,7 +275,7 @@
           <serializedValue>basicHttpBinding</serializedValue>
         </property>
         <property path="/bindingConfiguration" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>OnlineSOAP11Binding</serializedValue>
+          <serializedValue>OnlineSoap11Binding1</serializedValue>
         </property>
         <property path="/contract" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>FEBataBack.OnlinePortType</serializedValue>
@@ -338,7 +338,7 @@
           <serializedValue>False</serializedValue>
         </property>
         <property path="/name" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>OnlineSOAP11port_http</serializedValue>
+          <serializedValue>OnlineHttpSoap11Endpoint1</serializedValue>
         </property>
         <property path="/kind" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
@@ -348,10 +348,10 @@
         </property>
       </properties>
     </endpoint>
-    <endpoint name="OnlineSOAP12port_http" contract="FEBataBack.OnlinePortType" bindingType="customBinding" address="http://200.121.128.110:8080/axis2/services/Online" bindingConfiguration="OnlineSOAP12Binding">
+    <endpoint name="OnlineHttpSoap12Endpoint" contract="FEBataBack.OnlinePortType" bindingType="customBinding" address="http://asp403r.paperless.com.pe/axis2/services/Online.OnlineHttpSoap12Endpoint/" bindingConfiguration="OnlineSoap12Binding1">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>http://200.121.128.110:8080/axis2/services/Online</serializedValue>
+          <serializedValue>http://asp403r.paperless.com.pe/axis2/services/Online.OnlineHttpSoap12Endpoint/</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
@@ -360,7 +360,7 @@
           <serializedValue>customBinding</serializedValue>
         </property>
         <property path="/bindingConfiguration" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>OnlineSOAP12Binding</serializedValue>
+          <serializedValue>OnlineSoap12Binding1</serializedValue>
         </property>
         <property path="/contract" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>FEBataBack.OnlinePortType</serializedValue>
@@ -423,7 +423,7 @@
           <serializedValue>False</serializedValue>
         </property>
         <property path="/name" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>OnlineSOAP12port_http</serializedValue>
+          <serializedValue>OnlineHttpSoap12Endpoint</serializedValue>
         </property>
         <property path="/kind" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />

@@ -1,0 +1,112 @@
+﻿@using CapaEntidad.ECommerce
+@model IEnumerable<Ent_TrazaPedido>
+@{
+    ViewBag.Title = "Trazabilidad de pedidos";
+    AjaxOptions options = new AjaxOptions
+    {
+        HttpMethod = "GET",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "lista",
+        OnComplete = "waitingDialog.hide();",
+        OnBegin = "waitingDialog.show('Espere un momento por favor');",
+        OnFailure = "waitingDialog.hide();"
+    };
+
+}
+
+<link href="~/ContentSelect/bootstrap-select.css" rel="stylesheet" />
+<link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />
+
+<style>
+    iframe {
+        border: none;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        height: 800px;
+    }
+</style>
+<p class="text-danger">Trazabilidad de pedidos de almacen y tienda - VTEX</p>
+<div class="box box-body box-primary">
+    @using (Ajax.BeginForm("ListaTrazaVtex", options))
+    {
+        <form id="form1">
+            <div class="row">
+                <div class="col-sm-2">
+                    <label for="fecini">Fecha Ini</label>
+                    <div class="form-group">
+                        <div id="datepickerini" class="input-group date" data-date-format="dd-mm-yyyy">
+                            <input id="fecini" name="fecini" value="" class="form-control custom-input" placeholder="dd-mm-yyyy" type="text" />
+                            <span class="input-group-addon  bg-white"><img src="~/Content/images/wall-calendar-with-lines.svg" height="20" width="20"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <label for="fecfin">Fecha Fin</label>
+                    <div class="form-group">
+                        <div id="datepickerfin" class="input-group date" data-date-format="dd-mm-yyyy">
+                            <input id="fecfin" name="fecfin" value="" class="form-control" placeholder="dd-mm-yyyy" type="text" />
+                            <span class="input-group-addon  bg-white"><img src="~/Content/images/wall-calendar-with-lines.svg" height="20" width="20"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label for="tipo">Tienda</label>
+                        @Html.DropDownList("tienda", new SelectList(ViewBag.tienda, "cbo_codigo", "cbo_descripcion", null), new { @class = "form-control selectpicker", @data_live_search = "true", @id = "tienda", @name = "dwtienda", @data_actions_box = "true" })
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label for="tipo">Estado</label>
+                        @Html.DropDownList("estado", new SelectList(ViewBag.estado, "cbo_codigo", "cbo_descripcion", null), new { @class = "form-control selectpicker", @data_live_search = "true", @id = "estado", @name = "dwestado", @data_actions_box = "true" })
+                    </div>
+                </div>
+                <div class="col-sm-3" style="padding-top: 20px;">
+                    <div class="form-group">
+                        <label for="buscar" style="color:transparent">Buscar</label>
+                        <button id="buscar" name="buscar" class="btn btn-primary" onclick="" type="submit"><span class="glyphicon glyphicon-search"></span>&nbsp;Buscar</button>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a id="EXCEL" name="excel" class="btn btn-success" href="@Url.Action("ExportToExcelVtex", "Ecommerce")"><span class="glyphicon glyphicon-export"></span>&nbsp;Excel</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    }
+    <div class="box-body" id="lista" style="overflow-x: auto;">
+        @{Html.RenderPartial("ListaTrazaVtex", Model);}
+    </div>
+    <br />
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" ng-app>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div id='myModalContent'></div>
+            </div>
+        </div>
+    </div>
+</div>
+@*<div class="box-body" id="lista" style="overflow-x: auto;">
+        @{Html.RenderPartial("ListaTrazaVtex", Model);}
+    </div>*@
+
+<script src="~/Scripts/bootstrap-select.min.js"></script>
+<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+<script src="~/Scripts/BI.js"></script>
+
+<script type="text/javascript">
+    $(function () {
+        $("#datepickerini").datepicker({
+            autoclose: true,
+            todayHighlight: true
+        }).datepicker("setDate", "0");;
+    });
+    $(function () {
+        $("#datepickerfin").datepicker({
+            autoclose: true,
+            todayHighlight: true
+        }).datepicker("setDate", "0");;
+    });
+</script>
+
+

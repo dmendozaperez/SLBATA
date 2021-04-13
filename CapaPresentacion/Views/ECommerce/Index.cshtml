@@ -314,7 +314,7 @@
                                 <td>@row.nom_courier</td>
                                 @if (row.nom_courier.Contains("iend"))
                                 {
-                                    <td>@row.codSeguimiento</td>       }
+                                <td>@row.codSeguimiento</td>       }
                                 else if (row.nom_courier == "Comercio Xpress")
                                 {
                                     <td><a href="https://bata.pe/tracking-ce/?norder=@row.codSeguimiento" target="_blank">@row.codSeguimiento</a></td>

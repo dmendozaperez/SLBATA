@@ -1642,8 +1642,12 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
     <None Include="Service References\cxpress\WSOrdenServicio.wsdl" />
+    <Content Include="Service References\FEBataBack\CapaPresentacion.FEBataBack.ConsultResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
     <None Include="Service References\FEBataBack\configuration91.svcinfo" />
     <None Include="Service References\FEBataBack\configuration.svcinfo" />
+    <None Include="Service References\FEBataBack\Online1.wsdl" />
     <None Include="Service References\FEBataBack\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
@@ -1788,9 +1792,6 @@
     <Content Include="Views\Consulta\ListaDocumento.cshtml" />
     <Content Include="Views\AnalisisMov\Index.cshtml" />
     <Content Include="Views\AnalisisMov\ListaAnalisisMov.cshtml" />
-    <None Include="Service References\FEBataBack\Online.wsdl">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Service References\FEBataEpos\Online.wsdl" />
     <Content Include="Views\Interface\Index.cshtml" />
     <Content Include="Views\Usuarios\CambioClave.cshtml" />
@@ -1915,6 +1916,10 @@
     <Content Include="Views\Shared\_Layout_NPS.cshtml" />
     <Content Include="Views\ECommerce\PedidosNoFactu.cshtml" />
     <Content Include="Views\NPS\Dashboard.cshtml" />
+    <Content Include="Views\ECommerce\Vtex.cshtml" />
+    <Content Include="Views\ECommerce\_TableVTEX.cshtml" />
+    <Content Include="Views\ECommerce\Trazabilidad.cshtml" />
+    <Content Include="Views\ECommerce\ListaTrazaVtex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
