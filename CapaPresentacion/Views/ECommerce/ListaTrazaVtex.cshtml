@@ -6,192 +6,157 @@
 </style>
 
 <table id="table" class="table table-hover dataTable  table-striped table-responsive">
-    @*<table id="lista" class="table table-hover dataTable  table-striped table-responsive">*@
-    <thead>
-        <tr style="background-color:#3d566e; color:#ecf0f1">
-            <th style="width:50px">Pedido</th>
-            <th style="width:130px">Cliente</th>
-            <th style="width:auto">Importe</th>
-            <th style="width:30px">Despacho</th>
-            <th style="width:120px">Tipo Entrega</th>
-            <th style="width:auto">Fecha Pedido</th>
-            <th style="width:auto">Fecha Facturación</th>
-            <th style="width:auto">Fecha Despacho</th>
-            <th style="width:auto">Tipo Pedido</th>
-            <th style="width:auto">Nro Documento</th>
-            <th style="width:auto">Descarga PDF</th>
-            <th style="width:auto">Seguimiento</th>
-            <th style="width:auto">Semáforo</th>
-        </tr>
-    </thead>
-    <tbody></tbody>
-    <tfoot>
-        <tr>
-            <th>Pedido</th>
-            <th>Cliente</th>
-            <th>Importe</th>
-            <th>Despacho</th>
-            <th>Tipo Entrega</th>
-            <th>Fecha Pedido</th>
-            <th>Fecha Facturación</th>
-            <th>Fecha Despacho</th>
-            <th>Tipo Pedido</th>
-            <th>Nro Documento</th>
-            <th>Descarga PDF</th>
-            <th>Seguimiento</th>
-            <th>Semáforo</th>
-        </tr>
-    </tfoot>
-</table>
-<script src='https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js'></script>
-<script src='//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js'></script>
-<script src='//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js'></script>
-<script src='//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js'></script>
-<script src='//cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js'></script>
+    @*
+    <table id="lista" class="table table-hover dataTable  table-striped table-responsive">
+        *@
+        <thead>
+            <tr style="background-color:#3d566e; color:#ecf0f1">
+                <th style="width:50px">Pedido</th>
+                <th style="width:130px">Cliente</th>
+                <th style="width:auto">Importe</th>
+                <th style="width:30px">Despacho</th>
+                <th style="width:120px">Tipo Entrega</th>
+                <th style="width:auto">Fecha Pedido</th>
+                <th style="width:auto">Fecha Facturación</th>
+                <th style="width:auto">Fecha Despacho</th>
+                <th style="width:auto">Tipo Pedido</th>
+                <th style="width:auto">Nro Documento</th>
+                <th style="width:auto">Descarga PDF</th>
+                <th style="width:auto">Seguimiento</th>
+                <th style="width:auto">Semáforo</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot>
+            <tr>
+                <th>Pedido</th>
+                <th>Cliente</th>
+                <th>Importe</th>
+                <th>Despacho</th>
+                <th>Tipo Entrega</th>
+                <th>Fecha Pedido</th>
+                <th>Fecha Facturación</th>
+                <th>Fecha Despacho</th>
+                <th>Tipo Pedido</th>
+                <th>Nro Documento</th>
+                <th>Descarga PDF</th>
+                <th>Seguimiento</th>
+                <th>Semáforo</th>
+            </tr>
+        </tfoot>
+    </table>
+    <script src='https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js'></script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js'></script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js'></script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js'></script>
+    <script src='//cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js'></script>
 
 
-<script>
-    $(document).ready(function () {
-        $('#table').dataTable({
-            "language": {
-                "url": "../Scripts/DataTables/Spanish.json"
-            },
-            "bServerSide": true,
-            "bAutoWidth": false,
-            "sAjaxSource": '@Url.Action("getListaTrazaVtex", "ECommerce")',
-            "bdestroy": true,
-            "start": 0,
-            "order": [0, "asc"],
-            "bDeferRender": true,
-            "aoColumns": [
-                   { "sName": "ID_PEDIDO", "mData": "ID_PEDIDO" },
-                   { "sName": "CLIENTE", "mData": "CLIENTE" },
-                   { "sName": "IMPORTE_PEDIDO", "mData": "IMPORTE_PEDIDO" },
-                   { "sName": "DESPACHO", "mData": "DESPACHO" },
-                   { "sName": "TIPO_ENTREGA", "mData": "TIPO_ENTREGA" },
-                   { "sName": "FECHA_PEDIDO", "mData": "FECHA_PEDIDO" },
-                   { "sName": "FECHA_REG_VENTA", "mData": "FECHA_REG_VENTA" },
-                   { "sName": "FECHA_DESPACHO", "mData": "FECHA_DESPACHO" },
-                   //{ "sName": "TIPO_PEDIDO", "mData": "TIPO_PEDIDO" },
-                          {
-                              "render": function (data, type, full) {
-                                  return "<span class='label label-primary'>" + full.TIPO_PEDIDO + "</span>"
-                              }
-                          },
-                   { "sName": "NRO_DOCUMENTO", "mData": "NRO_DOCUMENTO" },
-                                        {
-                                            "render": function (data, type, full) {
-                                                if (full.FECHA_REG_VENTA != '') {
-                                                    var envio = "'" + full.USUARIO_WS + "','" + full.CLAVE_WS + "','" + full.RUC_WS + "','" + full.TIPODOC_WS + "','" + full.NRODOC_WS + "','" + full.TIPRETOR_WS + "'"
-                                                    return '<div> <a onclick="get_url(' + envio + ')" target="_blank" class="btn btn-success btn-sm"> <span class="glyphicon glyphicon-download-alt"></span></a></div>';
-                                                } else {
-                                                    return '<div style="display: none;"><a href=' + data + ' ><i class="fa fa-file fa-lg"></i></a></div>';
+    <script>
+        $(document).ready(function () {
+            $('#table').dataTable({
+                "language": {
+                    "url": "../Scripts/DataTables/Spanish.json"
+                },
+                "bServerSide": true,
+                "bAutoWidth": false,
+                "sAjaxSource": '@Url.Action("getListaTrazaVtex", "ECommerce")',
+                "bdestroy": true,
+                "start": 0,
+                "order": [0, "asc"],
+                "bDeferRender": true,
+                "aoColumns": [
+                       { "sName": "ID_PEDIDO", "mData": "ID_PEDIDO" },
+                       { "sName": "CLIENTE", "mData": "CLIENTE" },
+                       { "sName": "IMPORTE_PEDIDO", "mData": "IMPORTE_PEDIDO" },
+                       { "sName": "DESPACHO", "mData": "DESPACHO" },
+                       { "sName": "TIPO_ENTREGA", "mData": "TIPO_ENTREGA" },
+                       { "sName": "FECHA_PEDIDO", "mData": "FECHA_PEDIDO" },
+                       { "sName": "FECHA_REG_VENTA", "mData": "FECHA_REG_VENTA" },
+                       { "sName": "FECHA_DESPACHO", "mData": "FECHA_DESPACHO" },
+                       //{ "sName": "TIPO_PEDIDO", "mData": "TIPO_PEDIDO" },
+                              {
+                                  "render": function (data, type, full) {
+                                      return "<span class='label label-primary'>" + full.TIPO_PEDIDO + "</span>"
+                                  }
+                              },
+                       { "sName": "NRO_DOCUMENTO", "mData": "NRO_DOCUMENTO" },
+                                            {
+                                                "render": function (data, type, full) {
+                                                    if (full.FECHA_REG_VENTA != '') {
+                                                        var envio = "'" + full.USUARIO_WS + "','" + full.CLAVE_WS + "','" + full.RUC_WS + "','" + full.TIPODOC_WS + "','" + full.NRODOC_WS + "','" + full.TIPRETOR_WS + "'"
+                                                        return '<div> <a onclick="get_url(' + envio + ')" target="_blank" class="btn btn-success btn-sm"> <span class="glyphicon glyphicon-download-alt"></span></a></div>';
+                                                    } else {
+                                                        return '<div style="display: none;"><a href=' + data + ' ><i class="fa fa-file fa-lg"></i></a></div>';
+                                                    }
                                                 }
-                                            }
-                                        },
-                                        {
-                                            "render": function (data, type, full) {
-                                                if (full.TIPO_ENTREGA.includes("Comercio")) {
-                                                    return '<div> <a href="https://bata.pe/tracking-ce/?norder=' + full.CODIGO_SEGUIMIENTO + '" target="_blank">' + full.CODIGO_SEGUIMIENTO + '</a>'
-                                                    //return "comercio"
-                                                } else if (full.TIPO_ENTREGA.includes("Chazki")) {
+                                            },
+                                            {
+                                                "render": function (data, type, full) {
+                                                    if (full.TIPO_ENTREGA.includes("Comercio")) {
+                                                        return '<div> <a href="https://bata.pe/tracking-ce/?norder=' + full.CODIGO_SEGUIMIENTO + '" target="_blank">' + full.CODIGO_SEGUIMIENTO + '</a>'
+                                                        //return "comercio"
+                                                    } else if (full.TIPO_ENTREGA.includes("Chazki")) {
 
-                                                    return '<div> <a href="https://atari.chazki.com/#/public/seguimiento/1/' + full.CODIGO_SEGUIMIENTO + '" target="_blank">' + full.CODIGO_SEGUIMIENTO + '</a>'
-                                                    //return "chazki"
-                                                } else if (full.TIPO_ENTREGA.includes("Savar")) {
+                                                        return '<div> <a href="https://atari.chazki.com/#/public/seguimiento/1/' + full.CODIGO_SEGUIMIENTO + '" target="_blank">' + full.CODIGO_SEGUIMIENTO + '</a>'
+                                                        //return "chazki"
+                                                    } else if (full.TIPO_ENTREGA.includes("Savar")) {
 
-                                                    return '<div> <a href="https://savarexpress.com.pe/tracking/tracking.php?cod=' + full.CODIGO_SEGUIMIENTO + '"title="Descargar" target="_blank">' + full.CODIGO_SEGUIMIENTO + '</a>'
-                                                    //return "savar"
-                                                } else if (full.TIPO_ENTREGA.includes("Recojo")) {
-                                                    return ""
-                                                } else if (full.TIPO_ENTREGA.includes("Urbano")) {
-                                                    //return "urbano"
-                                                    return '<div> <a href="http://app.urbano.com.pe/plugin/etracking/etracking/?guia=' + full.CODIGO_SEGUIMIENTO + '" target="_blank">' + full.CODIGO_SEGUIMIENTO + '</a>'
+                                                        return '<div> <a href="https://savarexpress.com.pe/tracking/tracking.php?cod=' + full.CODIGO_SEGUIMIENTO + '"title="Descargar" target="_blank">' + full.CODIGO_SEGUIMIENTO + '</a>'
+                                                        //return "savar"
+                                                    } else if (full.TIPO_ENTREGA.includes("Recojo")) {
+                                                        return ""
+                                                    } else if (full.TIPO_ENTREGA.includes("Urbano")) {
+                                                        //return "urbano"
+                                                        return '<div> <a href="http://app.urbano.com.pe/plugin/etracking/etracking/?guia=' + full.CODIGO_SEGUIMIENTO + '" target="_blank">' + full.CODIGO_SEGUIMIENTO + '</a>'
+                                                    }
                                                 }
-                                            }
-                                        },
-                                       {
-                                           "render": function (data, type, full) {
-                                               return "<span class='label label-" + full.COLOR + "'>" + full.ESTADO + "</span>"
-                                           }
-                                       },
-            ],
-            dom: 'Bfrtip',
-            buttons: [
-           {
-               extend: 'excelHtml5',
-               title: 'Bataclub_xls'
-           },
-           {
-               extend: 'csvHtml5',
-               title: 'BataClub_csv'
-           },
-           {
-               extend: 'pdfHtml5',
-               title: 'BataClub_pdf'
-           },
-           'copyHtml5',
-            ]
+                                            },
+                                           {
+                                               "render": function (data, type, full) {
+                                                   return "<span class='label label-" + full.COLOR + "'>" + full.ESTADO + "</span>"
+                                               }
+                                           },
+                ],
+                dom: 'Bfrtip',
+                buttons: [
+               {
+                   extend: 'excelHtml5',
+                   title: 'Bataclub_xls'
+               },
+               {
+                   extend: 'csvHtml5',
+                   title: 'BataClub_csv'
+               },
+               {
+                   extend: 'pdfHtml5',
+                   title: 'BataClub_pdf'
+               },
+               'copyHtml5',
+                ]
+            });
+
         });
 
+        function get_url(user_ws, pass_ws, ruc_ws, tipodoc_ws, num_doc_ws, num_retorno) {
 
+            $.ajax
+                 ({
+                     url: '../Ecommerce/descargar_pdf',
+                     dataType: "json",
+                     type: "POST",
+                     data: { user_ws: user_ws, pass_ws: pass_ws, ruc_ws: ruc_ws, tipodoc_ws: tipodoc_ws, num_doc_ws: num_doc_ws, num_retorno: num_retorno },
+                     success: function (data, textStatus, XMLHttpRequest) {
 
-    });
-
-    function get_url(user_ws, pass_ws, ruc_ws, tipodoc_ws, num_doc_ws, num_retorno) {
-        //var msg_titulo = 'Mensaje Aquarella!';
-        //var id = $("#idfun").val();
-        //var nombre = $("#nombre").val();
-        //var padre = $('select[name=dwfuncion]').selectpicker('val');
-        //var orden = $("#orden").val();
-        //waitingDialog.show('Espere un momento por favor');
-
-        $.ajax
-             ({
-                 url: '../Ecommerce/descargar_pdf',
-                 dataType: "json",
-                 type: "POST",
-                 data: { user_ws: user_ws, pass_ws: pass_ws, ruc_ws: ruc_ws, tipodoc_ws: tipodoc_ws, num_doc_ws: num_doc_ws, num_retorno: num_retorno },
-                 success: function (data, textStatus, XMLHttpRequest) {
-
-                     //alert(data.toString());
-                     if (!data.toString().includes("no encontrado"))
-                         window.open(data.toString());
-                     else
-                         swal("Pdf no encontrado.");
-
-                     @*if (data.estado == '1') {
-
-                         //$('#myModal').modal('hide');
-                         //$('body').removeClass('modal-open');
-                         //$('.modal-backdrop').remove();
-
-                         $('#lista').load('@Url.Action("ListaFuncion", "Funcion")', {});
-                         waitingDialog.hide();
-                         toastr.success(data.desmsg, msg_titulo);
+                         if (!data.toString().includes("no encontrado"))
+                             window.open(data.toString());
+                         else
+                             swal("Pdf no encontrado.");
+                     },
+                     error: function (xhr) {
+                         alert(xhr);
                      }
-                 else {
-                         waitingDialog.hide();
-                     toastr.error(data.desmsg, msg_titulo);
-                 }*@
-                 },
-                 error: function (xhr) {
-                     alert(xhr);
-                     //waitingDialog.hide();
-                     //toastr.error(xhr, msg_titulo);
-                 }
-             })
-
-    }
-
-</script>
-
-@if (TempData["Success"] != null)
-{
-    <script>toastr.success("@TempData["Success"]");</script>
-}
-else if ((TempData["Error"] != null))
-{
-    <script>toastr.error("@TempData["Error"]");</script>
-}
+                 })
+        }
+    </script>
 
