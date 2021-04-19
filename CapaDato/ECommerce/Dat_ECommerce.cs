@@ -485,7 +485,10 @@ namespace CapaDato.ECommerce
                                       {
                                           ID_PEDIDO = dr["PEDIDO"].ToString(),
                                           CLIENTE = dr["CLIENTE"].ToString(),
-                                          IMPORTE_PEDIDO = dr["IMPORTE"].ToString(),
+                                          IMPORTE_CIGV = dr["IMPORTE_CIGV"].ToString(),
+                                          IMPORTE_TRANSPORTE = dr["IMPORTE_TRANSPORTE"].ToString(),
+                                          IMPORTE_PARCIAL = dr["IMPORTE_PARCIAL"].ToString(),
+                                          IMPORTE_TOTAL = dr["IMPORTE_TOTAL"].ToString(),
                                           DESPACHO = dr["DESPACHO"].ToString(),
                                           TIPO_ENTREGA = dr["TIPO_ENTREGA"].ToString(),
                                           FECHA_PEDIDO = dr["FECHA_PEDIDO"].ToString(),
@@ -495,6 +498,7 @@ namespace CapaDato.ECommerce
                                           NRO_DOCUMENTO = dr["NRO_DOCUMENTO"].ToString(),
                                           CODIGO_SEGUIMIENTO = dr["CODIGO_SEGUIMIENTO"].ToString(),
                                           ESTADO = dr["ESTADO"].ToString(),
+                                          ESTADO_OROB = dr["ESTADO_OROB"].ToString(),
                                           COLOR = dr["COLOR"].ToString(),
                                           USUARIO_WS = dr["USUARIO_WS"].ToString(),
                                           CLAVE_WS = dr["CLAVE_WS"].ToString(),
@@ -610,8 +614,7 @@ namespace CapaDato.ECommerce
                                           //Est_Sis_Fact = dr["ESTADO_SIST_FACT"].ToString(),
                                           Estado_Pedido = dr["ESTADO_PEDIDO"] == null || dr["ESTADO_PEDIDO"].ToString() == "" ? "" : (dr["ESTADO_PEDIDO"]).ToString(),
                                           //Presta_Estado_Name = dr["PRESTA_ESTADO_NAME"].ToString(),
-                                          //Presta_Est_Ped_Tienda = dr["PRESTA_EST_PED_TIENDA"].ToString(),
-
+                                          Estado_Orob = dr["ESTADO_OROB"].ToString(),
                                           //Presta_FecIng = dr["PRESTA_FECING"] == null || dr["PRESTA_FECING"].ToString() == "" ? "" : Convert.ToDateTime(dr["PRESTA_FECING"]).ToString("dd/MM/yyyy"),
                                           Fecha_Facturacion = dr["FECHA_FACTURACION"] == null || dr["FECHA_FACTURACION"].ToString() == "" ? "" : Convert.ToDateTime(dr["FECHA_FACTURACION"]).ToString("dd/MM/yyyy"),
 

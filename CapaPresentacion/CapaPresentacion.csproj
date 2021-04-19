@@ -1951,7 +1951,10 @@
     <Content Include="Views\NPS\Dashboard.cshtml" />
     <Content Include="Views\Contabilidad\ReporteVentaEfectivo.cshtml" />
     <Content Include="Views\RRHH\ReporteCuponRedimidos.cshtml" />
-    <Content Include="Views\Bata_Reporte\Reporte_Incentivo.cshtml" />
+    <Content Include="Views\ECommerce\_TableVTEX.cshtml" />
+    <Content Include="Views\ECommerce\ListaTrazaVtex.cshtml" />
+    <Content Include="Views\ECommerce\Trazabilidad.cshtml" />
+    <Content Include="Views\ECommerce\Vtex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
