@@ -69,8 +69,8 @@ namespace CapaPresentacion.Controllers
                 ViewBag.Tienda = list_tda;
 
                 ViewBag.TipoReporte = new List<Ent_Combo>() {
-                    new Ent_Combo() { cbo_codigo = "1", cbo_descripcion = "RESUMIDO" } ,
-                    new Ent_Combo() { cbo_codigo = "-1", cbo_descripcion = "DETALLADO" }
+                    new Ent_Combo() { cbo_codigo = "-1", cbo_descripcion = "RESUMIDO" } ,
+                    new Ent_Combo() { cbo_codigo = "1", cbo_descripcion = "DETALLADO" }
                 };
 
                 ViewBag.EntXstoreVendedor = new Ent_Xstore_Vendedor();

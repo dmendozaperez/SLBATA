@@ -1955,6 +1955,7 @@
     <Content Include="Views\ECommerce\ListaTrazaVtex.cshtml" />
     <Content Include="Views\ECommerce\Trazabilidad.cshtml" />
     <Content Include="Views\ECommerce\Vtex.cshtml" />
+    <Content Include="Views\Bata_Reporte\Reporte_Incentivo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
