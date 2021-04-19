@@ -2094,10 +2094,6 @@
       <Project>{d766eb68-5a6b-4719-b604-60e1a87a999c}</Project>
       <Name>CapaEntidad</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CapaOraDato\CapaOraDato.csproj">
-      <Project>{218a9618-c092-4cdf-868a-8d2f2058def9}</Project>
-      <Name>CapaOraDato</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

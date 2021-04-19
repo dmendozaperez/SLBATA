@@ -7,7 +7,7 @@ using CapaEntidad.General;
 using CapaEntidad.Maestros;
 using CapaEntidad.Soporte;
 using CapaEntidad.Util;
-using CapaOraDato.XSTORE;
+//using CapaOraDato.XSTORE;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -292,33 +292,33 @@ namespace CapaPresentacion.Controllers
 
         public ActionResult PruebaOracle()
         {
-            string tienda = "50143";
-            Dat_Ora_Conexion dcon = new Dat_Ora_Conexion();
-            Ent_Ora_Conexion ora_conexion = dcon.get_conexion_ora(tienda);
-            string _mensaje = "";
+            //string tienda = "50143";
+            //Dat_Ora_Conexion dcon = new Dat_Ora_Conexion();
+            //Ent_Ora_Conexion ora_conexion = dcon.get_conexion_ora(tienda);
+            //string _mensaje = "";
 
-            if (ora_conexion != null)
-            {
-                Ent_Acceso_BD.user = ora_conexion.user_ora;
-                Ent_Acceso_BD.password = ora_conexion.pas_ora;
-                Ent_Acceso_BD.server = ora_conexion.server_ora;
-                Ent_Acceso_BD.port = ora_conexion.port_ora;
-                Ent_Acceso_BD.sid = ora_conexion.sid_ora;//B143-00062168
-                Dat_Ora_Data dat_ora = new Dat_Ora_Data();
-                DataTable dt = dat_ora.get_documento("B143-62168", ref _mensaje);
+            //if (ora_conexion != null)
+            //{
+            //    Ent_Acceso_BD.user = ora_conexion.user_ora;
+            //    Ent_Acceso_BD.password = ora_conexion.pas_ora;
+            //    Ent_Acceso_BD.server = ora_conexion.server_ora;
+            //    Ent_Acceso_BD.port = ora_conexion.port_ora;
+            //    Ent_Acceso_BD.sid = ora_conexion.sid_ora;//B143-00062168
+            //    Dat_Ora_Data dat_ora = new Dat_Ora_Data();
+            //    DataTable dt = dat_ora.get_documento("B143-62168", ref _mensaje);
 
-                ViewBag.Mensaje = _mensaje;
-                if (dt == null)
-                {
-                    ViewBag.TranSeq = 0;
-                    ViewBag.Total = 0;
-                }
-                else
-                {
-                    ViewBag.TranSeq = dt.Rows[0]["TRANS_SEQ"].ToString();
-                    ViewBag.Total = dt.Rows[0]["TOTAL"].ToString();
-                }
-            }
+            //    ViewBag.Mensaje = _mensaje;
+            //    if (dt == null)
+            //    {
+            //        ViewBag.TranSeq = 0;
+            //        ViewBag.Total = 0;
+            //    }
+            //    else
+            //    {
+            //        ViewBag.TranSeq = dt.Rows[0]["TRANS_SEQ"].ToString();
+            //        ViewBag.Total = dt.Rows[0]["TOTAL"].ToString();
+            //    }
+            //}
             return View();
 
         }
