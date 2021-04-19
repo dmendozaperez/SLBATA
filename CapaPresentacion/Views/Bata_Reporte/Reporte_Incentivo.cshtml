@@ -1,0 +1,548 @@
+﻿@{
+    ViewBag.Title = "Reporte Incentivo escolar";
+}
+<link href="~/ContentSelect/bootstrap-select.css" rel="stylesheet" />
+<link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />
+<style>
+    .alignRight {
+        text-align: right;
+        vertical-align: middle;
+    }
+
+    .alignCenter {
+        text-align: center;
+        vertical-align: middle;
+    }
+</style>
+<p class="text-danger">Consulta de reporte de incentivo escolar, por filtro Tienda, Rango de fecha y tipo de reporte</p>
+<div class="box box-body box-primary">
+    <div class="row">
+        <div class="col-sm-2">
+            <label for="dwCate">Distrito</label>
+            <div class="form-group">
+                <div class="form-group">
+                    @Html.DropDownList("dwDis", new SelectList(ViewBag.Distrito, "cod_distri", "des_distri", "-1"), new { @class = "selectpicker", @data_live_search = "true", multiple = "multiple", @id = "dwDis", @name = "dwDis", @data_actions_box = "true", @data_selected_text_format = "count > 2" })
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <label for="dwCate">Cadena</label>
+            <div class="form-group">
+                <div id="divcad" class="form-group">
+                    @Html.DropDownList("dwcad", new SelectList(ViewBag.Cadena, "cod_cadena", "des_cadena", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwcad", @name = "dwcad" })
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <label for="dwCate">Tienda</label>
+            <div class="form-group">
+                <div id="divtda" class="form-group">
+                    @Html.DropDownList("dwtda", new SelectList(ViewBag.Tienda, "cod_entid", "des_entid", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwtda", @name = "dwtda" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="form-group">
+                <label for="lblFechaInicio" style="color: #3d566e;">Fecha Inicio</label>
+                <div id="datepickerIni" class="input-group date" data-date-format="dd/mm/yyyy">
+                    <input id="dtpFechaInicio" type="text" class="form-control input-sm ui-cell-input" disabled style="max-width: 100%" />
+                    <span class="input-group-addon btn btn-xs btn-default" style="padding: 4px 5px;">
+                        <i class="glyphicon glyphicon-calendar" height="20" width="20" style="color:#ff9f3f"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <label for="lblFechaFin" style="color: #3d566e;">Fecha Fin</label>
+            <div id="datepickerFin" class="input-group date" data-date-format="dd/mm/yyyy">
+                <input id="dtpFechaFin" type="text" class="form-control input-sm ui-cell-input" disabled style="max-width: 100%" />
+                <span class="input-group-addon btn btn-xs btn-default" style="padding: 4px 5px;">
+                    <i class="glyphicon glyphicon-calendar" height="20" width="20" style="color:#ff9f3f"></i>
+                </span>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <label for="dwCalidad">Tipo</label>
+            <div class="form-group">
+                <div id="dvTipo" class="form-group">
+                   @Html.DropDownList("dwTipo", new SelectList(ViewBag.TipoReporte, "cbo_codigo", "cbo_descripcion", "1"), new { @class = "selectpicker", @id = "dwTipo", @name = "dwTipo" })
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <label for="fecfin"></label>
+            <div class="form-group">
+                <div id="tipodoc" class="form-group">
+                    <button type="button" id="btnBuscar" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-search"></span>&nbsp;Buscar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="box box-body box-primary">
+    <div class="row">
+        <div class="col-md-6">
+
+        </div>
+        <div class="col-md-6 text-right">
+            <button id="btnExportar" title="Exportar" class="btn btn-success disabled" disabled>
+                <span class="glyphicon glyphicon-export"></span>&nbsp;&nbsp;Exportar Lista
+            </button>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table id="tbTabla" class="table table-hover dataTable  table-striped table-responsive">
+                    <thead>
+                        <tr style="background-color:#3d566e; color:#ecf0f1;padding-top: 0px;padding-bottom: 0px;">
+                            <th style="text-align: center;">Distrito</th>
+                            <th style="text-align: center;">Entidad</th>
+                            <th style="text-align: center;">Dni</th>
+                            <th style="text-align: center;">Nombre</th>
+                            <th style="text-align: center;">Fecha</th>
+                            <th style="text-align: center;">Documento</th>
+                            <th style="text-align: center;">Articulo</th>
+                            <th style="text-align: center;">Cod.<br />Categ</th>
+                            <th style="text-align: center;">Cod.<br />Sub Categoría</th>
+                            <th style="text-align: center;">Cantidad</th>
+                            <th style="text-align: center;">Total</th>
+                            <th style="text-align: center;">Tot.<br />Transacción</th>
+                            <th style="text-align: center;">Esc_Negro_2x50</th>                            
+                            <th style="text-align: center;">Incentivo</th>
+                            <th style="text-align: center;">Incentivo 1</th>
+                            <th style="text-align: center;">Incentivo 2</th>
+                            <th style="text-align: center;">Total<br />Incentivo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan='9'>No se encontraron resultados</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/bootstrap-select.min.js"></script>
+<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+<script src="~/Scripts/Linkend/linq.min.js"></script>
+<script src="~/Scripts/BI.js"></script>
+<script>
+    var objIncenEscolVende = {
+        Inicio: function () {
+            $("body").toggleClass('sidebar-collapse');
+
+            /*[Inicializamos variables]*/
+            $("#datepickerIni").datepicker({
+                autoclose: true,
+                todayHighlight: true
+            }).datepicker("setDate", "0");
+
+            $("#datepickerFin").datepicker({
+                autoclose: true,
+                todayHighlight: true
+            }).datepicker("setDate", "0");
+
+            $("#btnExportar").addClass("disabled");
+            $("#btnExportar").attr('disabled', 'disabled');
+
+            $('#dwDis option').attr("selected", "selected");
+            $('#dwDis').selectpicker('refresh');
+
+            $('#dwCad option').attr("selected", "selected");
+            $('#dwCad').selectpicker('refresh');
+
+            objIncenEscolVende.Cmbs.ListarCadena();
+            objIncenEscolVende.Cmbs.ListarTienda();
+
+            $("#dwDis").change(function () {
+                objIncenEscolVende.Cmbs.Listar_Cadena_Tienda();
+            })
+
+            var codTienda = $('#dwtda').val();
+            var CodConString = "";
+            for (var key in codTienda) {
+                CodConString += codTienda[key] + ",";
+            }
+            this.isOkUpdate = true;
+            this.FechaInicio = $("#dtpFechaInicio").val();
+            this.FechaFin = $("#dtpFechaFin").val();
+            this.Cod_Tda = CodConString.slice(0, -1);
+            this.Tip_Rep = $('#dwTipo').val();
+            this.Tabla = $('#tbTabla');
+            /*[/Inicializamos variables]*/
+
+
+            /*[btn Exportar y buscar]*/
+            $("#btnBuscar").click(function () {
+                var codTienda = $('#dwtda').val();
+                var CodConString = "";
+                for (var key in codTienda) {
+                    CodConString += codTienda[key] + ",";
+                }
+                objIncenEscolVende.isOkUpdate = true;
+                objIncenEscolVende.FechaInicio = $("#dtpFechaInicio").val();
+                objIncenEscolVende.FechaFin = $("#dtpFechaFin").val();
+                objIncenEscolVende.Cod_Tda = CodConString.slice(0, -1);
+                objIncenEscolVende.Tip_Rep = $('#dwTipo').val();
+                objIncenEscolVende.generaal.consultar();
+            });
+
+            $("#btnExportar").click(function () {
+                objIncenEscolVende.FechaInicio = $("#dtpFechaInicio").val();
+                objIncenEscolVende.FechaFin = $("#dtpFechaFin").val();
+                objIncenEscolVende.Tip_Rep = $('#dwTipo').val();
+                waitingDialog.show("Espere por favor...")
+                objIncenEscolVende.generaal.exportar();
+            })
+            /*[btn Exportar y buscar]*/
+            objIncenEscolVende.grid.get();
+        },
+        grid: {
+            get: function () {
+                // debugger
+                waitingDialog.show("Espere por favor...")
+                $('#tbTabla').DataTable({
+                    "language": {
+                        "url": "../Scripts/DataTables/Spanish.json"
+                    },
+                    "fnServerData": function (sSource, aoData, fnCallback) {
+                        $.getJSON(sSource, aoData, function (json) {
+                            debugger;
+                            if (json.isTipoRepor) {
+                                objIncenEscolVende.Tabla.DataTable().columns([4]).visible(true)
+                                objIncenEscolVende.Tabla.DataTable().columns([5]).visible(true)
+                                objIncenEscolVende.Tabla.DataTable().columns([6]).visible(true)
+                                objIncenEscolVende.Tabla.DataTable().columns([7]).visible(true)
+                                objIncenEscolVende.Tabla.DataTable().columns([8]).visible(true)
+                                objIncenEscolVende.Tabla.DataTable().columns([9]).visible(true)
+                                objIncenEscolVende.Tabla.DataTable().columns([10]).visible(true)
+                                objIncenEscolVende.Tabla.DataTable().columns([11]).visible(true)
+                                objIncenEscolVende.Tabla.DataTable().columns([12]).visible(true)
+                                objIncenEscolVende.Tabla.DataTable().columns([13]).visible(true)
+                                objIncenEscolVende.Tabla.DataTable().columns([14]).visible(false)
+                                objIncenEscolVende.Tabla.DataTable().columns([15]).visible(false)
+                                objIncenEscolVende.Tabla.DataTable().columns([16]).visible(false)
+                            } else {
+                                objIncenEscolVende.Tabla.DataTable().columns([4]).visible(false)
+                                objIncenEscolVende.Tabla.DataTable().columns([5]).visible(false)
+                                objIncenEscolVende.Tabla.DataTable().columns([6]).visible(false)
+                                objIncenEscolVende.Tabla.DataTable().columns([7]).visible(false)
+                                objIncenEscolVende.Tabla.DataTable().columns([8]).visible(false)
+                                objIncenEscolVende.Tabla.DataTable().columns([9]).visible(false)
+                                objIncenEscolVende.Tabla.DataTable().columns([10]).visible(false)
+                                objIncenEscolVende.Tabla.DataTable().columns([11]).visible(false)
+                                objIncenEscolVende.Tabla.DataTable().columns([12]).visible(false)
+                                objIncenEscolVende.Tabla.DataTable().columns([13]).visible(false)
+
+                                objIncenEscolVende.Tabla.DataTable().columns([14]).visible(true)
+                                objIncenEscolVende.Tabla.DataTable().columns([15]).visible(true)
+                                objIncenEscolVende.Tabla.DataTable().columns([16]).visible(true)
+                            }
+                            fnCallback(json);
+                        });
+                    },
+                    "bServerSide": true,
+                    "bAutoWidth": false,
+                    "sAjaxSource": '@Url.Action("getListarXstore_VendedorAjax", "Bata_Reporte")',
+                    "fnServerParams": function (aoData) {
+                        //debugger;
+                        aoData.push({ "name": "isOkUpdate", "value": objIncenEscolVende.isOkUpdate });
+                        aoData.push({ "name": "FechaInicio", "value": objIncenEscolVende.FechaInicio });
+                        aoData.push({ "name": "FechaFin", "value": objIncenEscolVende.FechaFin });
+                        aoData.push({ "name": "Cod_Tda", "value": objIncenEscolVende.Cod_Tda });
+                        aoData.push({ "name": "Tip_Rep", "value": objIncenEscolVende.Tip_Rep });
+                    },
+                    "bFilter": true,
+                    "bdestroy": true,
+                    "start": 0,
+                    "columnDefs": [{
+                        "orderable": false,
+                        "targets": [],
+                    }],
+                    "bDeferRender": true,
+                    "aoColumns": [
+                        { "sName": "Distrito", "mData": "Distrito", "sClass": "" },
+                        { "sName": "Des_Entid", "mData": "Des_Entid", "sClass": "" },
+                        { "sName": "Dni", "mData": "Dni", "sClass": "" },
+                        { "sName": "Dni_Nombre", "mData": "Dni_Nombre", "sClass": "" },                       
+                        {
+                            "mData": null,
+                            "sClass": "alignCenter",
+                            "render": function (Data, type, full, meta) {
+                                //debugger;
+                                var Fecha = (full.Fecha == undefined || full.Fecha == null || full.Fecha == 0) ? ' ' : new Date(parseInt(full.Fecha.replace("/Date(", "").replace(")/", ""), 10));
+                                return (Fecha == undefined || Fecha == null || Fecha == 0) ? ' ' : (Fecha.getDate() < 10 ? "0" + Fecha.getDate() : Fecha.getDate()) + "/" + ((Fecha.getMonth() + 1) < 10 ? "0" + (Fecha.getMonth() + 1) : (Fecha.getMonth() + 1)) + "/" + Fecha.getFullYear();//Fecha.toLocaleDateString();
+                            }
+                        },
+                        { "sName": "Documento", "mData": "Documento", "sClass": "alignCenter" },
+                        { "sName": "Articulo", "mData": "Articulo", "sClass": "alignCenter" },
+                        { "sName": "Cod_Categ", "mData": "Cod_Categ", "sClass": "alignCenter" },
+                        { "sName": "Cod_Subca", "mData": "Cod_Subca", "sClass": "alignCenter" },
+                        { "sName": "Cantidad", "mData": "Cantidad", "sClass": "alignRight" },
+                        { "sName": "Total", "mData": "Total", "sClass": "alignRight" },
+                        { "sName": "Tot_Transacc", "mData": "Tot_Transacc", "sClass": "alignRight" },
+                        { "sName": "Esc_Negro_2x50", "mData": "Esc_Negro_2x50", "sClass": "alignRight" },
+                        { "sName": "Incentivo", "mData": "Incentivo", "sClass": "alignRight" },
+                        { "sName": "Incentivo1", "mData": "Incentivo1", "sClass": "alignRight" },
+                        { "sName": "Incentivo2", "mData": "Incentivo2", "sClass": "alignRight" },
+                        { "sName": "Total_Incentivo", "mData": "Total_Incentivo", "sClass": "alignRight" }
+                    ],
+                    "fnRowCallback": function (row, data, index) {
+                    },
+                    "drawCallback": function (settings) {
+                        objIncenEscolVende.isOkUpdate = false;
+                        var table = $('#tbTabla').dataTable();
+                        var data = table.fnGetData();
+                        if (data.length == 0) {
+                            $("#btnExportar").addClass("disabled");
+                            $("#btnExportar").attr('disabled', 'disabled');
+                        } else {
+                            $("#btnExportar").removeClass("disabled");
+                            $("#btnExportar").removeAttr("disabled");
+                        }
+                        waitingDialog.hide();
+                    },
+                    "initComplete": function (settings, json) {
+                    }
+                });
+            },
+            cargaTabla: function () {
+                //debugger
+                waitingDialog.show("Espere por favor...")
+                $('#tbTabla').DataTable().ajax.reload(function () {
+                    waitingDialog.hide();
+                });
+            },
+        },
+        Cmbs: {
+            Listar_Cadena_Tienda: function () {
+                objIncenEscolVende.Cmbs.ListarCadena();
+                objIncenEscolVende.Cmbs.ListarTienda();
+            },
+            ListarCadena: function () {
+                var dataArray = function () { return @Html.Raw(Json.Encode(ViewBag.DisCadTda)); }();
+                // var dataArray = data.Data;
+                var strTipo = $('#dwDis').val();
+
+                var listar = [];
+
+                if (strTipo != null) {
+
+                    if (strTipo == "-1") {
+                        var lista_filter = (strTipo == "-1") ? dataArray.filter(obj => obj.cod_distri != strTipo) : dataArray.filter(obj => obj.cod_distri === strTipo || obj.cod_distri == '0');
+                        $.each(lista_filter, function (index, item) {
+
+                            listar.push(item);
+                        });
+                    } else {
+                        var lista_filter = dataArray.filter(obj => obj.cod_distri == '0');
+                        $.each(lista_filter, function (index, item) {
+                            listar.push(item);
+                        });
+
+                        $.each(strTipo, function (index2, item2) {
+
+                            var lista_filter = dataArray.filter(obj => obj.cod_distri === item2);
+                            $.each(lista_filter, function (index, item) {
+
+                                listar.push(item);
+                            });
+
+                        });
+                    }
+                }
+
+                var group_cadena = Enumerable.from(listar)
+                .groupBy(
+                null,
+                null,
+                "{ cod_cadena: $.cod_cadena, des_cadena: $.des_cadena}",
+                "'' + $.cod_cadena + '-' + $.des_cadena"
+                ).toArray();
+
+                objIncenEscolVende.Cmbs.llenarComboCad("divcad", "dwcad", group_cadena, '0', '', "objIncenEscolVende.Cmbs.ListarTienda", '1');
+            },
+            ListarTienda: function () {
+                var dataArray = function () { return @Html.Raw(Json.Encode(ViewBag.DisCadTda)); }();
+
+                var strTipo = $('#dwDis').val();
+                var strCad = $('#dwcad').val();
+                var listar = [];
+
+                if (strTipo != null && strCad != null) {
+
+                    if (strTipo == "-1" || strCad=="-1") {
+                        var lista_filter = (strTipo == "-1") ? dataArray.filter(obj => obj.cod_distri != strTipo) : dataArray.filter(obj => obj.cod_distri === strTipo || obj.cod_distri == '0');
+                        $.each(lista_filter, function (index, item) {
+
+                            listar.push(item);
+                        });
+                    } else {
+
+                        var lista_filter = dataArray.filter(obj => obj.cod_distri == '0');
+                        $.each(lista_filter, function (index, item) {
+
+                            listar.push(item);
+                        });
+
+                        $.each(strCad, function (index3, item3) {
+
+                            $.each(strTipo, function (index2, item2) {
+
+                                var lista_filter = dataArray.filter(obj => obj.cod_distri === item2 && obj.cod_cadena===item3);
+                                $.each(lista_filter, function (index, item) {
+
+                                    listar.push(item);
+                                });
+
+                            });
+                        });
+                    }
+                }
+                var group_tienda = Enumerable.from(listar)
+                .groupBy(
+                null,
+                null,
+                "{ cod_entid: $.cod_entid, des_entid: $.des_entid}",
+                "'' + $.cod_entid + '-' + $.des_entid"
+                ).toArray();
+
+                objIncenEscolVende.Cmbs.llenarComboTda("divtda", "dwtda", group_tienda, '0', '', "", '1');
+            },
+            llenarComboCad: function (DivId, IdControl, Data, codDefecto, desDefecto, onchangeFuncion, tipo)
+            {
+                $('#' + IdControl).find('option').remove();
+                var str = (tipo == '1') ? '<select class="selectpicker" multiple = "multiple"  data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '" data-actions-box="true"  data-selected-text-format="count > 2" >' : '<select class="selectpicker"  data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '"  data-actions-box="true"  data-selected-text-format="count > 2" > ';
+                var ItemNormal = '<option value="codItem">desItem</option>';
+                var colectItemNormal = '';
+
+                //if (codDefecto != '') { str += '<option value="' + codDefecto + '" selected="selected">------' + desDefecto + '------</option>'; }
+
+                if (onchangeFuncion != '') { onchangeFuncion = 'onchange = "' + onchangeFuncion + '()"' }
+                str = str.replace("onchangeFuncion", onchangeFuncion);
+
+                $.each(Data, function (index, item) {
+
+                    colectItemNormal = colectItemNormal + ItemNormal
+                    var strSelected = '"';
+
+                    if (item.cod_entid == codDefecto) {
+                        strSelected = '" selected="selected" '
+
+                    }
+                    strSelected = '" selected="selected" '; // seleccionar todos al cargar
+                    colectItemNormal = colectItemNormal.replace("codItem", item.cod_cadena + strSelected);
+                    colectItemNormal = colectItemNormal.replace("desItem", item.des_cadena);
+
+                });
+
+                str += colectItemNormal
+                str += '</select>'
+
+                document.getElementById(DivId).innerHTML = str
+
+                $('.selectpicker').selectpicker({
+                    liveSearch: true,
+                    showSubtext: true
+                });
+            },
+            llenarComboTda: function (DivId, IdControl, Data, codDefecto, desDefecto, onchangeFuncion, tipo) {
+                $('#' + IdControl).find('option').remove();
+
+                var str = (tipo == '1') ? '<select class="selectpicker" multiple = "multiple"  data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '" data-actions-box="true"  data-selected-text-format="count > 2" >' : '<select class="selectpicker"  data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '"  data-actions-box="true"  data-selected-text-format="count > 2" > ';
+                var ItemNormal = '<option value="codItem">desItem</option>';
+                var colectItemNormal = '';
+                //if (codDefecto != '') { str += '<option value="' + codDefecto + '" selected="selected">------' + desDefecto + '------</option>'; }
+
+                if (onchangeFuncion != '') { onchangeFuncion = 'onchange = "' + onchangeFuncion + '()"' }
+                str = str.replace("onchangeFuncion", onchangeFuncion);
+
+                $.each(Data, function (index, item) {
+
+                    colectItemNormal = colectItemNormal + ItemNormal
+                    var strSelected = '"';
+
+                    if (item.cod_entid == codDefecto) {
+                        strSelected = '" selected="selected" '
+
+                    }
+                    strSelected = '" selected="selected" '; // seleccionar todos al cargar
+                    colectItemNormal = colectItemNormal.replace("codItem", item.cod_entid + strSelected);
+                    colectItemNormal = colectItemNormal.replace("desItem", item.des_entid);
+                });
+
+                str += colectItemNormal
+                str += '</select>'
+
+                document.getElementById(DivId).innerHTML = str
+
+                $('.selectpicker').selectpicker({
+                    liveSearch: true,
+                    showSubtext: true
+                });
+
+            }
+        },
+        generaal: {
+            Validar: function () {
+                debugger;
+                if ($('#dwtda').val() == "" || $('#dwtda').val() == "-1" || $('#dwtda').val() == 0 || $('#dwtda').val() == undefined) {
+                    swal({ title: "Alerta", text: "Debe elegir una tienda.", icon: "error" });
+                    return false;
+                }
+                if (objIncenEscolVende.FechaInicio == undefined || objIncenEscolVende.FechaInicio == null || objIncenEscolVende.FechaInicio.length == 0 || objIncenEscolVende.FechaInicio == '') {
+                    swal({ title: "Alerta", text: "La fecha de Inicio no puede estar vacio", icon: "error" });
+                    return false;
+                }
+                if (objIncenEscolVende.FechaFin == undefined || objIncenEscolVende.FechaFin == null || objIncenEscolVende.FechaFin.length == 0 || objIncenEscolVende.FechaFin == '') {
+                    swal({ title: "Alerta", text: "La fecha de Fin no puede estar vacio", icon: "error" });
+                    return false;
+                }
+                return true;
+            },
+            consultar: function () {
+                debugger
+                if (objIncenEscolVende.generaal.Validar()) {
+                    objIncenEscolVende.grid.cargaTabla();
+                }
+            },
+            exportar: function () {
+                var _Ent = function () { return @Html.Raw(Json.Encode(ViewBag.EntXstoreVendedor)); }();
+                _Ent.FechaInicio = objIncenEscolVende.FechaInicio;
+                _Ent.FechaFin = objIncenEscolVende.FechaFin;
+                _Ent.Tip_Rep = objIncenEscolVende.Tip_Rep;
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("get_exporta_Xstore_Vendedor_excel", "Bata_Reporte")',
+                    data : {_Ent:_Ent},
+                    success: function (data) {
+                        data = JSON.parse(data);
+                        waitingDialog.hide();
+                        if (data.Success) {
+                            toastr.success(data.Message);
+                            window.location = '@Url.Action("ListaXstore_Vendedor_Excel")';
+                        }
+                        else {
+                            toastr.error(data.Message, "Alerta");
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        waitingDialog.hide();
+                        toastr.error("Error al exportar excel.", "Alerta");
+                    }
+                });
+            }
+        }
+    };
+    $(document).ready(function () {
+        objIncenEscolVende.Inicio();
+    });
+</script>

@@ -452,6 +452,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\BataClubController.cs" />
     <Compile Include="Controllers\BataController.cs" />
+    <Compile Include="Controllers\Bata_ReporteController.cs" />
     <Compile Include="Controllers\CanalVentaController.cs" />
     <Compile Include="Controllers\CEController.cs" />
     <Compile Include="Controllers\ComunicadoController.cs" />
@@ -1950,6 +1951,7 @@
     <Content Include="Views\NPS\Dashboard.cshtml" />
     <Content Include="Views\Contabilidad\ReporteVentaEfectivo.cshtml" />
     <Content Include="Views\RRHH\ReporteCuponRedimidos.cshtml" />
+    <Content Include="Views\Bata_Reporte\Reporte_Incentivo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
