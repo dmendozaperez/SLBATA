@@ -13,7 +13,7 @@ namespace CapaEntidad.ECommerce
         public string Fecha_Pedido { get; set; }
         //public string Est_Sis_Fact { get; set; }
         public string Estado_Pedido { get; set; }
-
+        public string Estado_Orob { get; set; }
         public string Fecha_Facturacion { get; set; }
         public string Comprobante { get; set; }
         public string Tipo_courier { get; set; }

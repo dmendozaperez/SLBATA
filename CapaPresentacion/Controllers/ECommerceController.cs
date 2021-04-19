@@ -1432,6 +1432,7 @@ namespace CapaPresentacion.Controllers
                              a.Id_Orden,
                              a.Fecha_Pedido,
                              a.Estado_Pedido,
+                             a.Estado_Orob,
                              a.Fecha_Facturacion,
                              a.Comprobante,
                              a.Tipo_courier,
@@ -1573,13 +1574,15 @@ namespace CapaPresentacion.Controllers
                 filteredMembers = membercol
                     .Where(m => m.ID_PEDIDO.ToUpper().Contains(param.sSearch.ToUpper()) ||
                      m.CLIENTE.ToUpper().Contains(param.sSearch.ToUpper()) ||
-                     m.IMPORTE_PEDIDO.ToUpper().Contains(param.sSearch.ToUpper()) ||
+                     //m.IMPORTE_PEDIDO.ToUpper().Contains(param.sSearch.ToUpper()) ||
                      m.TIPO_ENTREGA.ToUpper().Contains(param.sSearch.ToUpper()) ||
                      m.DESPACHO.ToUpper().Contains(param.sSearch.ToUpper()) ||
                      m.TIPO_PEDIDO.ToUpper().Contains(param.sSearch.ToUpper()) ||
                      m.NRO_DOCUMENTO.ToUpper().Contains(param.sSearch.ToUpper()) ||
                      m.CODIGO_SEGUIMIENTO.ToUpper().Contains(param.sSearch.ToUpper()) ||
-                     m.ESTADO.ToUpper().Contains(param.sSearch.ToUpper()));
+                     m.ESTADO.ToUpper().Contains(param.sSearch.ToUpper())||
+                     m.ESTADO_OROB.ToUpper().Contains(param.sSearch.ToUpper())
+                     );
 
             }
             //Manejador de orden
@@ -1606,7 +1609,10 @@ namespace CapaPresentacion.Controllers
                          {
                              a.ID_PEDIDO,
                              a.CLIENTE,
-                             a.IMPORTE_PEDIDO,
+                             a.IMPORTE_CIGV,
+                             a.IMPORTE_TRANSPORTE,
+                             a.IMPORTE_PARCIAL,
+                             a.IMPORTE_TOTAL,
                              a.DESPACHO,
                              a.TIPO_ENTREGA,
                              a.FECHA_PEDIDO,
@@ -1616,6 +1622,7 @@ namespace CapaPresentacion.Controllers
                              a.NRO_DOCUMENTO,
                              a.CODIGO_SEGUIMIENTO,
                              a.ESTADO,
+                             a.ESTADO_OROB,
                              a.COLOR,
                              a.USUARIO_WS,
                              a.CLAVE_WS,
@@ -1644,7 +1651,7 @@ namespace CapaPresentacion.Controllers
             //DataTable tabla = Session["Lista_Pedidos_Vtex"] as DataTable;
 
             //List<Technology> technologies = StaticData.Technologies;
-            string[] columns = { "ID_PEDIDO", "CLIENTE", "IMPORTE_PEDIDO", "DESPACHO", "TIPO_ENTREGA", "FECHA_PEDIDO", "FECHA_REG_VENTA", "FECHA_DESPACHO", "TIPO_PEDIDO", "NRO_DOCUMENTO", "CODIGO_SEGUIMIENTO", "ESTADO" };
+            string[] columns = { "ID_PEDIDO", "CLIENTE", "IMPORTE_CIGV", "IMPORTE_TRANSPORTE", "IMPORTE_PARCIAL","IMPORTE_TOTAL","DESPACHO", "TIPO_ENTREGA", "FECHA_PEDIDO", "FECHA_REG_VENTA", "FECHA_DESPACHO", "TIPO_PEDIDO", "NRO_DOCUMENTO", "CODIGO_SEGUIMIENTO","ESTADO_OROB","ESTADO" };
             byte[] filecontent = ExcelExportHelper.ExportExcel(listTrazaPedidoVtex, "Trazabilidad de Pedidos VTEX [" + string.Format(Session["fecini"].ToString(), "dd/MM/yyyy") + " - " + string.Format(Session["fecfin"].ToString(), "dd/MM/yyyy") + "]", true, columns);
             //byte[] filecontent = ExcelExportHelper.ExportExcelDT(tabla, "Trazabilidad de Pedidos Vtex", true, columns);
             return File(filecontent, ExcelExportHelper.ExcelContentType, "TrazaPedidosVtex.xlsx");
