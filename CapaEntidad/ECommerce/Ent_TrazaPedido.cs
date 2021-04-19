@@ -11,6 +11,12 @@ namespace CapaEntidad.ECommerce
         public string ID_PEDIDO { get; set; }
         public string CLIENTE { get; set; }
         public string IMPORTE_PEDIDO { get; set; }
+        public string IMPORTE_CIGV { get; set; }
+        public string IMPORTE_TIENDA { get; set; }
+        public string IMPORTE_TRANSPORTE { get; set; }
+        public string IMPORTE_PARCIAL { get; set; }
+        public string IMPORTE_TOTAL { get; set; }
+
         public string DESPACHO { get; set; }
         public string TIPO_ENTREGA { get; set; }
         public string FECHA_PEDIDO { get; set; }
@@ -21,6 +27,7 @@ namespace CapaEntidad.ECommerce
         public string TIPO_PEDIDO { get; set; }
         public string NRO_DOCUMENTO { get; set; }
         public string CODIGO_SEGUIMIENTO { get; set; }
+        public string ESTADO_OROB { get; set; }
         public string ESTADO { get; set; }
         public string TRAZABILIDAD { get; set; }
         public string COLOR { get; set; }
