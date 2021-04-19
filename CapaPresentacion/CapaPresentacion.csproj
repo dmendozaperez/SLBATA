@@ -452,6 +452,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\BataClubController.cs" />
     <Compile Include="Controllers\BataController.cs" />
+    <Compile Include="Controllers\Bata_ReporteController.cs" />
     <Compile Include="Controllers\CanalVentaController.cs" />
     <Compile Include="Controllers\CEController.cs" />
     <Compile Include="Controllers\ComunicadoController.cs" />
