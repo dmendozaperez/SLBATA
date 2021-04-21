@@ -28,6 +28,8 @@ namespace CapaEntidad.Reports
         public int? Incentivo1 { get; set; }
         public int? Incentivo2 { get; set; }
         public Decimal? Total_Incentivo { get; set; }
+        public int? Pares_Esc_Negro { get; set; }
+        //Campos adicionales
         public DateTime FechaInicio { get; set; }
         public DateTime FechaFin { get; set; }
         public string Cod_Tda { get; set; }

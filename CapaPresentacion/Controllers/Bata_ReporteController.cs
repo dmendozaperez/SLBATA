@@ -30,7 +30,7 @@ namespace CapaPresentacion.Controllers
             string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
             string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
             string return_view = actionName + "|" + controllerName;
-
+            Session[_session_ListarXstore_Vendedor] = null;
             if (_usuario == null)
             {
                 return RedirectToAction("Login", "Control", new { returnUrl = return_view });
@@ -142,7 +142,8 @@ namespace CapaPresentacion.Controllers
                             m.Total_Incentivo.ToString().Contains(param.sSearch.ToUpper()) ||
                             m.Incentivo.ToString().Contains(param.sSearch.ToUpper()) ||
                             m.Incentivo1.ToString().Contains(param.sSearch.ToUpper()) ||
-                            m.Incentivo2.ToString().Contains(param.sSearch.ToUpper())
+                            m.Incentivo2.ToString().Contains(param.sSearch.ToUpper()) ||
+                            m.Pares_Esc_Negro.ToString().Contains(param.sSearch.ToUpper())                            
                 );
             }
             var sortIdx = Convert.ToInt32(Request["iSortCol_0"]);
@@ -170,6 +171,7 @@ namespace CapaPresentacion.Controllers
                         case 14: filteredMembers = filteredMembers.OrderBy(o => o.Incentivo); break;
                         case 15: filteredMembers = filteredMembers.OrderBy(o => o.Incentivo1); break;
                         case 16: filteredMembers = filteredMembers.OrderBy(o => o.Incentivo2); break;
+                        case 17: filteredMembers = filteredMembers.OrderBy(o => o.Pares_Esc_Negro); break;
                     }
                 }
                 else
@@ -193,6 +195,7 @@ namespace CapaPresentacion.Controllers
                         case 14: filteredMembers = filteredMembers.OrderByDescending(o => o.Incentivo); break;
                         case 15: filteredMembers = filteredMembers.OrderByDescending(o => o.Incentivo1); break;
                         case 16: filteredMembers = filteredMembers.OrderByDescending(o => o.Incentivo2); break;
+                        case 17: filteredMembers = filteredMembers.OrderByDescending(o => o.Pares_Esc_Negro); break;
                     }
                 }
             }
@@ -220,13 +223,11 @@ namespace CapaPresentacion.Controllers
                 string cadena = "";
                 if (Session[_session_ListarXstore_Vendedor] != null)
                 {
-
                     List<Ent_Xstore_Vendedor> _ListarXstore_Vendedor = (List<Ent_Xstore_Vendedor>)Session[_session_ListarXstore_Vendedor];
                     if (_ListarXstore_Vendedor.Count == 0)
                     {
                         objResult.Success = false;
                         objResult.Message = "No hay filas para exportar";
-
                     }
                     else
                     {
@@ -249,7 +250,6 @@ namespace CapaPresentacion.Controllers
                     objResult.Success = false;
                     objResult.Message = "No hay filas para exportar";
                 }
-
             }
             catch (Exception ex)
             {
@@ -268,7 +268,7 @@ namespace CapaPresentacion.Controllers
             try
             {
                 var Lista = _ListarListarXstore_Vendedor.ToList();
-                int colspan = (_Ent.Tip_Rep == "1" ? 14 : 7);
+                int colspan = (_Ent.Tip_Rep == "1" ? 14 : 8);
                 sb.Append("<div>");
                 sb.Append("<table cellspacing='0' style='width: 1000px' rules='all' border='0' style='border-collapse:collapse;'>");
                 sb.Append("<tr><td Colspan='" + colspan + "'></td></tr>");
@@ -297,11 +297,11 @@ namespace CapaPresentacion.Controllers
                 }
                 else
                 {
+                    sb.Append("<th style='text-align: center; font-weight:bold;font-size:11.0pt;'><font color='#FFFFFF'>Pares_Esc_Negro</font></th>\n");
                     sb.Append("<th style='text-align: center; font-weight:bold;font-size:11.0pt;'><font color='#FFFFFF'>Incentivo 1</font></th>\n");
                     sb.Append("<th style='text-align: center; font-weight:bold;font-size:11.0pt;'><font color='#FFFFFF'>Incentivo 2</font></th>\n");
                     sb.Append("<th style='text-align: center; font-weight:bold;font-size:11.0pt;'><font color='#FFFFFF'>Total Incentivo</font></th>\n");
                 }
-
 
                 sb.Append("</tr>\n");
 
@@ -327,6 +327,7 @@ namespace CapaPresentacion.Controllers
                     }
                     else
                     {
+                        sb.Append("<td align='right'>" + item.Pares_Esc_Negro + "</td>\n");
                         sb.Append("<td align='right'>" + item.Incentivo1 + "</td>\n");
                         sb.Append("<td align='right'>" + item.Incentivo2 + "</td>\n");
                         sb.Append("<td align='right'>" + string.Format("{0:F2}", item.Total_Incentivo) + "</td>\n");

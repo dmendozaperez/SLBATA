@@ -68,6 +68,7 @@ namespace CapaDato.Reporte
                                               Des_Entid = (fila["Des_Entid"] is DBNull) ? string.Empty : (string)(fila["Des_Entid"]),
                                               Dni = (fila["Dni"] is DBNull) ? string.Empty : (string)(fila["Dni"]),
                                               Dni_Nombre = (fila["Dni_Nombre"] is DBNull) ? string.Empty : (string)(fila["Dni_Nombre"]),
+                                              Pares_Esc_Negro = (fila["Pares_Esc_Negro"] is DBNull) ? (int?)null : Convert.ToInt32(fila["Pares_Esc_Negro"]),
                                               Incentivo1 = (fila["Incentivo1"] is DBNull) ? (int?)null : Convert.ToInt32(fila["Incentivo1"]),
                                               Incentivo2 = (fila["Incentivo2"] is DBNull) ? (int?)null : Convert.ToInt32(fila["Incentivo2"]),
                                               Total_Incentivo = (fila["Total_Incentivo"] is DBNull) ? (Decimal?)null : Convert.ToDecimal(fila["Total_Incentivo"])
