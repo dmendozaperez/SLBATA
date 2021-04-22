@@ -100,7 +100,7 @@
             <div class="table-responsive">
                 <table id="tbTabla" class="table table-hover dataTable  table-striped table-responsive">
                     <thead>
-                        <tr style="background-color:#3d566e; color:#ecf0f1;padding-top: 0px;padding-bottom: 0px;">
+                        <tr style="background-color:#3d566e; color:#ecf0f1;padding-top: 0px;padding-bottom: 0px;vertical-align: middle;">
                             <th style="text-align: center;">Distrito</th>
                             <th style="text-align: center;">Entidad</th>
                             <th style="text-align: center;">Dni</th>
@@ -108,16 +108,17 @@
                             <th style="text-align: center;">Fecha</th>
                             <th style="text-align: center;">Documento</th>
                             <th style="text-align: center;">Articulo</th>
-                            <th style="text-align: center;">Cod.<br />Categ</th>
-                            <th style="text-align: center;">Cod.<br />Sub Categoría</th>
+                            <th style="text-align: center;">Categoría</th>
+                            <th style="text-align: center;">Sub<br />Categoría</th>
                             <th style="text-align: center;">Cantidad</th>
                             <th style="text-align: center;">Total</th>
                             <th style="text-align: center;">Tot.<br />Transacción</th>
                             <th style="text-align: center;">Esc_Negro_2x50</th>                            
                             <th style="text-align: center;">Incentivo</th>
+                            <th style="text-align: center;">Pares_Esc_Negro</th>
                             <th style="text-align: center;">Incentivo 1</th>
                             <th style="text-align: center;">Incentivo 2</th>
-                            <th style="text-align: center;">Total<br />Incentivo</th>
+                            <th style="text-align: center;">Tot. Incentivo</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -227,9 +228,11 @@
                                 objIncenEscolVende.Tabla.DataTable().columns([11]).visible(true)
                                 objIncenEscolVende.Tabla.DataTable().columns([12]).visible(true)
                                 objIncenEscolVende.Tabla.DataTable().columns([13]).visible(true)
+
                                 objIncenEscolVende.Tabla.DataTable().columns([14]).visible(false)
                                 objIncenEscolVende.Tabla.DataTable().columns([15]).visible(false)
                                 objIncenEscolVende.Tabla.DataTable().columns([16]).visible(false)
+                                objIncenEscolVende.Tabla.DataTable().columns([17]).visible(false)
                             } else {
                                 objIncenEscolVende.Tabla.DataTable().columns([4]).visible(false)
                                 objIncenEscolVende.Tabla.DataTable().columns([5]).visible(false)
@@ -245,6 +248,7 @@
                                 objIncenEscolVende.Tabla.DataTable().columns([14]).visible(true)
                                 objIncenEscolVende.Tabla.DataTable().columns([15]).visible(true)
                                 objIncenEscolVende.Tabla.DataTable().columns([16]).visible(true)
+                                objIncenEscolVende.Tabla.DataTable().columns([17]).visible(true)
                             }
                             fnCallback(json);
                         });
@@ -290,10 +294,25 @@
                         { "sName": "Total", "mData": "Total", "sClass": "alignRight" },
                         { "sName": "Tot_Transacc", "mData": "Tot_Transacc", "sClass": "alignRight" },
                         { "sName": "Esc_Negro_2x50", "mData": "Esc_Negro_2x50", "sClass": "alignRight" },
-                        { "sName": "Incentivo", "mData": "Incentivo", "sClass": "alignRight" },
+                        {
+                            "mData": null,
+                            "sClass": "alignRight",
+                            "render": function (Data, type, full, meta) {
+                                var Incentivo = full.Incentivo;
+                                return (Incentivo == undefined || Incentivo == null || Incentivo == 0) ? ' ' : Incentivo.toFixed(2);
+                            }
+                        },
+                        { "sName": "Pares_Esc_Negro", "mData": "Pares_Esc_Negro", "sClass": "alignRight" },
                         { "sName": "Incentivo1", "mData": "Incentivo1", "sClass": "alignRight" },
                         { "sName": "Incentivo2", "mData": "Incentivo2", "sClass": "alignRight" },
-                        { "sName": "Total_Incentivo", "mData": "Total_Incentivo", "sClass": "alignRight" }
+                        {
+                            "mData": null,
+                            "sClass": "alignRight",
+                            "render": function (Data, type, full, meta) {
+                                var Total_Incentivo = full.Total_Incentivo;
+                                return (Total_Incentivo == undefined || Total_Incentivo == null || Total_Incentivo == 0) ? ' ' : Total_Incentivo.toFixed(2);
+                            }
+                        }
                     ],
                     "fnRowCallback": function (row, data, index) {
                     },
