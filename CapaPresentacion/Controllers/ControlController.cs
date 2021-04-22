@@ -13,6 +13,7 @@ using System.Security.Claims;
 using System.Web;
 using System.Web.Mvc;
 using Newtonsoft.Json;
+using System.Configuration;
 
 namespace CapaPresentacion.Controllers
 {
@@ -105,6 +106,18 @@ namespace CapaPresentacion.Controllers
                 {
 
                     if (model.Usuario.Substring(0, 2) == "50") Session["Tienda"] = model.Usuario;
+
+                    //----INICIO---SB-VTEX_ECUADOR_2021---20210416_16:34----* 
+                    if (_usuario.usu_pais == "EC")
+                    {
+                        Ent_Conexion.conexionEcommerce = ConfigurationManager.ConnectionStrings["SQL_ECOM_EC"].ConnectionString;
+                    }
+                    else
+                    {
+                        Ent_Conexion.conexionEcommerce = ConfigurationManager.ConnectionStrings["SQL_ECOM"].ConnectionString;
+                    }
+                    //----FIN---SB-VTEX_ECUADOR_2021---20210416_16:34----*
+
 
                     return RedirectToAction("Index", "Home");
                 }

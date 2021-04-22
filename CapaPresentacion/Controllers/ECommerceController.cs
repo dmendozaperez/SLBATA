@@ -55,6 +55,20 @@ namespace CapaPresentacion.Controllers
             string noDocCli = (Request.HttpMethod == "POST" ? Request.Params["noDocCli"].ToString() : null);
             string noDoc = (Request.HttpMethod == "POST" ? Request.Params["noDoc"].ToString() : null);
 
+            //----INICIO---SB-VTEX_ECUADOR_2021---20210416_16:34---- 
+            string ls_uri = "";
+            try
+            {
+                ls_uri = Session["PAIS"].ToString();
+            }
+            catch (Exception ex)
+            {
+
+            }
+            ViewBag._pais = ls_uri;
+            //----FIN---SB-VTEX_ECUADOR_2021---20210416_16:34----
+
+
             ViewBag._fdesde = fdesde;
             ViewBag._fhasta = fhasta;
             ViewBag._noDocCli = noDocCli;
