@@ -29,6 +29,7 @@ using CapaPresentacion.Models.PedidosNoFactu;
 using System.Threading.Tasks;
 using System.Text;
 using System.Xml.Linq;
+using System.Configuration;
 
 namespace CapaPresentacion.Controllers
 {
@@ -54,6 +55,20 @@ namespace CapaPresentacion.Controllers
             string fhasta = (Request.HttpMethod == "POST" ? Request.Params["fhasta"].ToString() : DateTime.Now.ToString("dd/MM/yyyy"));
             string noDocCli = (Request.HttpMethod == "POST" ? Request.Params["noDocCli"].ToString() : null);
             string noDoc = (Request.HttpMethod == "POST" ? Request.Params["noDoc"].ToString() : null);
+
+
+            //if (Session["PAIS"].ToString() == "EC")
+            //{
+            //    Ent_Conexion.conexionEcommerce = ConfigurationManager.ConnectionStrings["SQL_ECOM_EC"].ConnectionString;
+            //}
+            //else if (Session["PAIS"].ToString() == "PE")
+            //{
+            //    Ent_Conexion.conexionEcommerce = ConfigurationManager.ConnectionStrings["SQL_ECOM"].ConnectionString;
+            //}
+
+            ViewBag.pais_str = Session["PAIS"].ToString();
+            ViewBag.con_str = Ent_Conexion.conexionEcommerce.ToString();
+
 
             //----INICIO---SB-VTEX_ECUADOR_2021---20210416_16:34---- 
             string ls_uri = "";

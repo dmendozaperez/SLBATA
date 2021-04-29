@@ -106,16 +106,17 @@ namespace CapaPresentacion.Controllers
                 {
 
                     if (model.Usuario.Substring(0, 2) == "50") Session["Tienda"] = model.Usuario;
+                    //Ent_Conexion.conexionEcommerce = null;
 
                     //----INICIO---SB-VTEX_ECUADOR_2021---20210416_16:34----* 
-                    if (_usuario.usu_pais == "EC")
-                    {
-                        Ent_Conexion.conexionEcommerce = ConfigurationManager.ConnectionStrings["SQL_ECOM_EC"].ConnectionString;
-                    }
-                    else
-                    {
-                        Ent_Conexion.conexionEcommerce = ConfigurationManager.ConnectionStrings["SQL_ECOM"].ConnectionString;
-                    }
+                    //if (_usuario.usu_pais == "EC")
+                    //{
+                    //    Ent_Conexion.conexionEcommerce = ConfigurationManager.ConnectionStrings["SQL_ECOM_EC"].ConnectionString;
+                    //}
+                    //else if (_usuario.usu_pais == "PE")
+                    //{
+                    //    Ent_Conexion.conexionEcommerce = ConfigurationManager.ConnectionStrings["SQL_ECOM"].ConnectionString;
+                    //}
                     //----FIN---SB-VTEX_ECUADOR_2021---20210416_16:34----*
 
 
