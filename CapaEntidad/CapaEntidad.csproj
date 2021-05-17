@@ -32,7 +32,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -112,6 +114,7 @@
     <Compile Include="Orce\Ent_Promotion_Orce.cs" />
     <Compile Include="ReportsValeCompra\Reporte_Resultado.cs" />
     <Compile Include="ReportsValeCompra\Reporte_Filtro.cs" />
+    <Compile Include="Reports\Ent_XstoreReporte.cs" />
     <Compile Include="RuletaBata\Ent_RuletaBata.cs" />
     <Compile Include="Soporte\Ent_Consulta_GuiaError.cs" />
     <Compile Include="Soporte\Ent_Documento_Transac.cs" />
@@ -146,7 +149,9 @@
     <Compile Include="XstoreTda\Ent_TiendaConf.cs" />
     <Compile Include="XstoreTda\Ent_Xcenter.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

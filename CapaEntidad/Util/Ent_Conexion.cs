@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace CapaEntidad.Util
 {
@@ -11,7 +13,7 @@ namespace CapaEntidad.Util
 
         public static string conexion { get; set; }
         public static string conexionPosPeru { get; set; }
-        public static string conexionEcommerce { get; set; }
+        public static string conexionEcommerce { get { return (HttpContext.Current.Session["PAIS"].ToString() == "EC") ?  ConfigurationManager.ConnectionStrings["SQL_ECOM_EC"].ConnectionString :  ConfigurationManager.ConnectionStrings["SQL_ECOM"].ConnectionString; } }
 
         //public static string conexion
         //{
@@ -107,7 +109,20 @@ namespace CapaEntidad.Util
                 return "ReportBata";
             }
         }
-
+        public Ent_Conexion()
+        {
+            //HttpContext.Current.Session
+            //if (Session["PAIS"].ToString() == "EC")
+            //{
+            //    Ent_Conexion.conexionEcommerce = ConfigurationManager.ConnectionStrings["SQL_ECOM_EC"].ConnectionString;
+            //}
+            //else if (Session["PAIS"].ToString() == "PE")
+            //{
+            //    Ent_Conexion.conexionEcommerce = ConfigurationManager.ConnectionStrings["SQL_ECOM"].ConnectionString;
+            //}
+        }
 
     }
+
+
 }

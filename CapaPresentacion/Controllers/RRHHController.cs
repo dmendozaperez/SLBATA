@@ -1,6 +1,8 @@
 ﻿using CapaDato.Maestros;
+using CapaDato.NPS;
 using CapaEntidad.Util;
 using CapaEntidad.Control;
+using CapaEntidad.NPS;
 using Models.Crystal.Reporte;
 using Data.Crystal.Reporte;
 using System;
@@ -15,6 +17,7 @@ namespace CapaPresentacion.Controllers
     public class RRHHController : Controller
     {
         #region <DECLARACION DE VARIABLES>
+        private Dat_NPS_Dashboard dat_NPS_Dashboard = new Dat_NPS_Dashboard();
         private Dat_DisCadTda discattda = new Dat_DisCadTda();
         private Dat_RRHH dat_RRHH = new Dat_RRHH();
         private string _session_CuponRedimidos = "_session_CuponRedimidos";
@@ -40,7 +43,7 @@ namespace CapaPresentacion.Controllers
                     pais = Session["PAIS"].ToString();
                 }
 
-                List<Ent_Combo_DisCadTda> combo_discadtda = discattda.list_dis_cad_tda(pais);
+                List<Ent_Combo_DisCadTda> combo_discadtda = dat_NPS_Dashboard.list_dis_cad_tda_NPS(pais);
                 if (Session["Tienda"] != null)
                 {
                     combo_discadtda = combo_discadtda.Where(t => t.cod_entid == Session["Tienda"].ToString()).ToList();
