@@ -23,6 +23,7 @@ namespace CapaEntidad.ECommerce
         public string FECHA_ING_FACTURACION { get; set; }
         public string FECHA_REG_VENTA { get; set; }
         public string FECHA_DESPACHO { get; set; }
+        public string FECHA_ENTREGA { get; set; }
         public string FECHA_REG_COURIER { get; set; }
         public string TIPO_PEDIDO { get; set; }
         public string NRO_DOCUMENTO { get; set; }

@@ -10,7 +10,7 @@
             <th style="width:50px">Pedido</th>
             <th style="width:130px">Cliente</th>
             @*<th style="width:auto">S/.Importe</th>
-            <th style="width:30px">S/.Transporte</th>*@
+                <th style="width:30px">S/.Transporte</th>*@
             <th style="width:30px">Importe Tienda</th>
             @*<th style="width:30px">S/.Importe total</th>*@
             <th style="width:30px">Despacho</th>
@@ -18,9 +18,10 @@
             <th style="width:auto">Fecha Pedido</th>
             <th style="width:auto">Fecha Facturación</th>
             <th style="width:auto">Fecha Despacho</th>
+            <th style="width:auto">Fecha Entrega</th>
             <th style="width:auto">Tipo Pedido</th>
-            <th style="width:auto">Nro Documento</th>
-            <th style="width:auto">Descarga PDF</th>
+            @*<th style="width:auto">Nro Documento</th>*@
+            <th style="width:auto">Descargar Comprobante</th>
             <th style="width:auto">Seguimiento</th>
             <th style="width:auto">Semáforo</th>
         </tr>
@@ -31,7 +32,7 @@
             <th>Pedido</th>
             <th>Cliente</th>
             @*<th>S/.Importe</th>
-            <th>S/.Transporte</th>*@
+                <th>S/.Transporte</th>*@
             <th>Importe Tienda</th>
             @*<th>S/.Importe Total</th>*@
             <th>Despacho</th>
@@ -39,9 +40,10 @@
             <th>Fecha Pedido</th>
             <th>Fecha Facturación</th>
             <th>Fecha Despacho</th>
+            <th>Fecha Entrega</th>
             <th>Tipo Pedido</th>
-            <th>Nro Documento</th>
-            <th>Descarga PDF</th>
+            @*<th>Nro Documento</th>*@
+            <th>Descargar Comprobante</th>
             <th>Seguimiento</th>
             <th>Semáforo</th>
         </tr>
@@ -71,20 +73,21 @@
                    { "sName": "CLIENTE", "mData": "CLIENTE" },
                    //{ "sName": "IMPORTE_CIGV", "mData": "IMPORTE_CIGV" },
                    //{ "sName": "IMPORTE_TRANSPORTE", "mData": "IMPORTE_TRANSPORTE" },
-                   { "sName": "IMPORTE_PARCIAL", "mData": "IMPORTE_PARCIAL" },
+                   { "sName": "IMPORTE_CIGV", "mData": "IMPORTE_CIGV" },
                    //{ "sName": "IMPORTE_TOTAL", "mData": "IMPORTE_TOTAL" },
                    { "sName": "DESPACHO", "mData": "DESPACHO" },
                    { "sName": "TIPO_ENTREGA", "mData": "TIPO_ENTREGA" },
                    { "sName": "FECHA_PEDIDO", "mData": "FECHA_PEDIDO" },
                    { "sName": "FECHA_REG_VENTA", "mData": "FECHA_REG_VENTA" },
                    { "sName": "FECHA_DESPACHO", "mData": "FECHA_DESPACHO" },
+                   { "sName": "FECHA_ENTREGA", "mData": "FECHA_ENTREGA" },
                    //{ "sName": "TIPO_PEDIDO", "mData": "TIPO_PEDIDO" },
                           {
                               "render": function (data, type, full) {
                                   return "<span class='label label-primary'>" + full.TIPO_PEDIDO + "</span>"
                               }
                           },
-                   { "sName": "NRO_DOCUMENTO", "mData": "NRO_DOCUMENTO" },
+                   //{ "sName": "NRO_DOCUMENTO", "mData": "NRO_DOCUMENTO" },
                                         {
                                             "render": function (data, type, full) {
                                                 if (full.FECHA_REG_VENTA != '') {
