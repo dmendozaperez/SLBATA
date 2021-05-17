@@ -452,6 +452,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\BataClubController.cs" />
     <Compile Include="Controllers\BataController.cs" />
+    <Compile Include="Controllers\BataTransitosController.cs" />
     <Compile Include="Controllers\Bata_ReporteController.cs" />
     <Compile Include="Controllers\CanalVentaController.cs" />
     <Compile Include="Controllers\CEController.cs" />
@@ -1956,6 +1957,7 @@
     <Content Include="Views\ECommerce\Trazabilidad.cshtml" />
     <Content Include="Views\ECommerce\Vtex.cshtml" />
     <Content Include="Views\Bata_Reporte\Reporte_Incentivo.cshtml" />
+    <Content Include="Views\BataTransitos\ConsultaTransito.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

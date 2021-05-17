@@ -61,6 +61,7 @@
     <Compile Include="Bata\Ent_Bata_Sac.cs" />
     <Compile Include="Bata\Ent_Cliente_Compartir.cs" />
     <Compile Include="Bata\Ent_Tienda_Compartir.cs" />
+    <Compile Include="Bata\Ent_Transito.cs" />
     <Compile Include="CanalVenta\Ent_Chaski.cs" />
     <Compile Include="CanalVenta\Ent_VentaCanal.cs" />
     <Compile Include="ChatShop\Ent_ChatShop.cs" />
