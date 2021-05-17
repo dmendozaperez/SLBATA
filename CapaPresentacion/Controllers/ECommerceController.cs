@@ -208,10 +208,12 @@ namespace CapaPresentacion.Controllers
                             else if (name_carrier.Contains("Savar"))
                             {
                                 string nrodelivery_savar = Envia_Courier_Savar(ven_id, cod_TdaId);
-                                data_Cexpress.update_guia(guia_presta, nrodelivery_savar, cod_TdaId);
-                                guia_courier = nrodelivery_savar;
-                                break;
-
+                                if (nrodelivery_savar != "")
+                                {
+                                    data_Cexpress.update_guia(guia_presta, nrodelivery_savar, cod_TdaId);
+                                    guia_courier = nrodelivery_savar;
+                                    break;
+                                }
                             }
                             else
                             {
@@ -1640,13 +1642,14 @@ namespace CapaPresentacion.Controllers
                              a.CLIENTE,
                              a.IMPORTE_CIGV,
                              a.IMPORTE_TRANSPORTE,
-                             a.IMPORTE_PARCIAL,
+                             //a.IMPORTE_PARCIAL,
                              a.IMPORTE_TOTAL,
                              a.DESPACHO,
                              a.TIPO_ENTREGA,
                              a.FECHA_PEDIDO,
                              a.FECHA_REG_VENTA,
                              a.FECHA_DESPACHO,
+                             a.FECHA_ENTREGA,
                              a.TIPO_PEDIDO,
                              a.NRO_DOCUMENTO,
                              a.CODIGO_SEGUIMIENTO,
@@ -1680,7 +1683,7 @@ namespace CapaPresentacion.Controllers
             //DataTable tabla = Session["Lista_Pedidos_Vtex"] as DataTable;
 
             //List<Technology> technologies = StaticData.Technologies;
-            string[] columns = { "ID_PEDIDO", "CLIENTE", "IMPORTE_CIGV", "IMPORTE_TRANSPORTE", "IMPORTE_PARCIAL","IMPORTE_TOTAL","DESPACHO", "TIPO_ENTREGA", "FECHA_PEDIDO", "FECHA_REG_VENTA", "FECHA_DESPACHO", "TIPO_PEDIDO", "NRO_DOCUMENTO", "CODIGO_SEGUIMIENTO","ESTADO_OROB","ESTADO" };
+            string[] columns = { "ID_PEDIDO", "CLIENTE", "IMPORTE_CIGV", "IMPORTE_TRANSPORTE","IMPORTE_TOTAL","DESPACHO", "TIPO_ENTREGA", "FECHA_PEDIDO", "FECHA_REG_VENTA", "FECHA_DESPACHO","FECHA_ENTREGA", "TIPO_PEDIDO", "NRO_DOCUMENTO", "CODIGO_SEGUIMIENTO","ESTADO_OROB","ESTADO" };
             byte[] filecontent = ExcelExportHelper.ExportExcel(listTrazaPedidoVtex, "Trazabilidad de Pedidos VTEX [" + string.Format(Session["fecini"].ToString(), "dd/MM/yyyy") + " - " + string.Format(Session["fecfin"].ToString(), "dd/MM/yyyy") + "]", true, columns);
             //byte[] filecontent = ExcelExportHelper.ExportExcelDT(tabla, "Trazabilidad de Pedidos Vtex", true, columns);
             return File(filecontent, ExcelExportHelper.ExcelContentType, "TrazaPedidosVtex.xlsx");

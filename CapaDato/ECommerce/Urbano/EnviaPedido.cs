@@ -60,8 +60,8 @@ namespace CapaDato.ECommerce.Urbano
                                                peso_total = Convert.ToDecimal(item["peso_total"].ToString()),
                                                cant_total = Convert.ToDecimal(item["tot_cant"].ToString()),
                                                //se agrego nuevos campos por seguro de pedidos
-                                               //asegurado = item["asegurado"].ToString(),
-                                               //monto_asegurado = Convert.ToDecimal(item["monto_asegurado"]),
+                                               asegurado = item["asegurado"].ToString(),
+                                               monto_asegurado = Convert.ToDecimal(item["monto_asegurado"]),
 
                                            }
                                        into G
@@ -84,8 +84,8 @@ namespace CapaDato.ECommerce.Urbano
                                                peso_total = G.Key.peso_total,
                                                cant_total = G.Key.cant_total,
                                                //se agrego nuevos campos por seguro de pedidos
-                                               //asegurado = G.Key.asegurado,
-                                               //monto_asegurado = G.Key.monto_asegurado,
+                                               asegurado = G.Key.asegurado,
+                                               monto_asegurado = G.Key.monto_asegurado,
                                            };
                        
 
@@ -182,8 +182,8 @@ namespace CapaDato.ECommerce.Urbano
                             guiaEncoded += "%22peso_total%22%3A%22" + guiaUrbano.peso_total + "%22%2C";
                             guiaEncoded += "%22pieza_total%22%3A%22" + guiaUrbano.pieza_total + "%22%2C";
                             /*se agrego para pedidos asegurados*/
-                            //guiaEncoded += "%22asegurado%22%3A%22" + guiaUrbano.asegurado + "%22%2C";
-                            //guiaEncoded += "%22monto_asegurado%22%3A%22" + guiaUrbano.monto_asegurado + "%22%2C";
+                            guiaEncoded += "%22asegurado%22%3A%22" + guiaUrbano.asegurado + "%22%2C";
+                            guiaEncoded += "%22monto_asegurado%22%3A%22" + guiaUrbano.monto_asegurado + "%22%2C";
 
                             //Construyendo cadena desde lista de productos
                             string productos = "";
@@ -232,9 +232,6 @@ namespace CapaDato.ECommerce.Urbano
                                 //}
 
                                 //Console.WriteLine(post.guia);
-
-
-
                                 //Console.ReadLine();
                             }
                             #endregion
