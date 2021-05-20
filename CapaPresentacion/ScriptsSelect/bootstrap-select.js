@@ -464,7 +464,7 @@
     noneSelectedText: 'Nothing selected',
     noneResultsText: 'No hay resultados coincidentes {0}',
     countSelectedText: function (numSelected, numTotal) {
-      return (numSelected == 1) ? "{0} item selected" : "{0} items selected";
+      return (numSelected == 1) ? "{0} item selected" : "{0} items seleccionados";
     },
     maxOptionsText: function (numAll, numGroup) {
       return [
@@ -472,8 +472,8 @@
         (numGroup == 1) ? 'Group limit reached ({n} item max)' : 'Group limit reached ({n} items max)'
       ];
     },
-    selectAllText: 'Select All',
-    deselectAllText: 'Deselect All',
+    selectAllText: 'Todos',
+    deselectAllText: 'Ninguno',
     doneButton: false,
     doneButtonText: 'Close',
     multipleSeparator: ', ',

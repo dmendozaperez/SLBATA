@@ -1,0 +1,312 @@
+﻿@{
+    ViewBag.Title = "Transitos";
+    ViewBag.SubTitle = "";
+}
+<link href="~/ContentSelect/bootstrap-select.css" rel="stylesheet" />
+@*<link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />*@
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading">PARAMETROS DE BUSQUEDA</div>
+            <div class="box box-body box-header">
+                <div class="col-md-9" style="padding-left: 25px;">
+                    <div id="prm" class="form-group" disabled>                       
+                        <div class="form-group">
+                            <label class="radio-inline" style="font-size:14px;font-weight:bold"><input type="radio" name="opt" onchange="objTransito.Opc.Habilita_Deshabilita();" id="opttrandoc" checked>Transito x documento</label>
+                            <label class="radio-inline" style="font-size:14px;font-weight:bold"><input type="radio" name="opt" onchange="objTransito.Opc.Habilita_Deshabilita();" id="opttrandoc_articulo">Transito x documento-Articulo</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box-body">
+                @*<div class="row">
+
+            </div>*@
+                <div class="row">
+                    <div class="col-md-3" style="padding-left: 25px;">
+                        <div id="prm" class="form-group" disabled>
+                            <label for="dtpFecha" style="color: #3d566e;">A fecha:</label>
+                            <div id="datepickerfecha" class="input-group date" data-date-format="dd/mm/yyyy">
+                                <input id="dtpFecha" type="text" class="form-control input-sm ui-cell-input" disabled style="max-width: 100%" />
+                                <span class="input-group-addon btn btn-xs btn-default" style="padding: 4px 5px;">
+                                    <i class="glyphicon glyphicon-calendar" height="20" width="20" style="color:#ff9f3f"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3" style="padding-left: 25px;">
+                        <div id="prm" class="form-group" disabled>
+                            <label for="dwempresa" style="color: #3d566e;">Empresa</label>
+                            <div class="form-group">
+                                @Html.DropDownList("dwempresa", new SelectList(ViewBag.Empresa, "cod_empresa", "des_empresa", "-1"), new { @class = "selectpicker", @data_live_search = "true", multiple = "multiple", @id = "dwempresa", @name = "dwempresa", @data_actions_box = "true", @data_selected_text_format = "count > 2" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3" style="padding-left: 25px;">
+                        <div id="prm" class="form-group" disabled>
+                            <label for="dwcad" style="color: #3d566e;">Cadena</label>
+                            <div id="divcad" class="form-group">
+                                @Html.DropDownList("dwcad", new SelectList(ViewBag.Cadena, "cod_cadena", "des_cadena", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwcad", @name = "dwcad" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3" style="padding-left: 25px;">
+                        <div id="prm" class="form-group" disabled>
+                            <label for="dwconcepto" style="color: #3d566e;">Concepto</label>
+                            <div id="divconcepto" class="form-group">
+                                @Html.DropDownList("dwconcepto", new SelectList(ViewBag.Concepto, "con_id", "con_des", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwconcepto", @name = "dwconcepto", @data_actions_box = "true", @data_selected_text_format = "count > 2" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3" style="padding-left: 25px;">
+                        <div id="prm" class="form-group" disabled>
+                            <label for="dwtda" style="color: #3d566e;">Destino</label>
+                            <div id="divtda" class="form-group">
+                                @Html.DropDownList("dwtda", new SelectList(ViewBag.Tienda, "cod_entid", "des_entid", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwtda", @name = "dwtda", @data_actions_box = "true", @data_selected_text_format = "count > 2" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3" style="padding-left: 25px;">
+                        <div id="prm" class="form-group" disabled>
+                            <label for="dwarticulo" style="color: #3d566e;">Articulo</label>
+                            <div id="divarticulo" class="form-group">
+                                @Html.DropDownList("dwarticulo", new SelectList(ViewBag.Articulo, "cod_artic", "des_artic", "0"), new { @class = "selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwarticulo", @name = "dwarticulo", @data_actions_box = "true", @data_selected_text_format = "count > 2" })
+                            </div>                           
+                        </div>                      
+                    </div>
+                    <div class="col-sm-2">
+                        <label for="fecfin"></label>
+                        <div class="form-group">
+                            <div id="tipodoc" class="form-group">
+                                <button type="button" id="btnBuscar" class="btn btn-primary">
+                                    <span class="glyphicon glyphicon-search"></span>&nbsp;Buscar
+                                </button>
+                            </div>
+                        </div>
+                    </div>                   
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/ScriptsSelect/bootstrap-select.js"></script>
+@*<script src="~/Scripts/bootstrap-select.min.js"></script>
+<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>*@
+<script src="~/Scripts/Linkend/linq.min.js"></script>
+<script src="~/Scripts/BI.js"></script>
+<script>
+    $(document).ready(function () {
+        objTransito.Inicio();
+    });
+    var objTransito = {
+        Inicio: function () {
+            $("#datepickerfecha").datepicker({
+                autoclose: true,
+                todayHighlight: true
+            }).datepicker("setDate", "0");
+
+            $('#dwempresa option').attr("selected", "selected");
+            $('#dwempresa').selectpicker('refresh');
+
+            $('#dwCad option').attr("selected", "selected");
+            $('#dwCad').selectpicker('refresh');
+
+
+            objTransito.Cmbs.ListarCadena();
+            objTransito.Cmbs.ListarTienda();
+
+            $("#dwempresa").change(function () {
+                objTransito.Cmbs.Listar_Cadena_Tienda();
+            })
+            objTransito.Opc.Habilita_Deshabilita();
+
+        },
+        Cmbs: {
+            Listar_Cadena_Tienda: function () {
+                objTransito.Cmbs.ListarCadena();
+                objTransito.Cmbs.ListarTienda();
+            },
+            ListarCadena: function () {
+                var dataArray = function () { return @Html.Raw(Json.Encode(ViewBag.EmpCadTda)); }();
+                // var dataArray = data.Data;
+                var strTipo = $('#dwempresa').val();
+
+                var listar = [];
+
+                if (strTipo != null) {
+
+                    if (strTipo == "-1") {
+                        var lista_filter = (strTipo == "-1") ? dataArray.filter(obj => obj.cod_empresa != strTipo) : dataArray.filter(obj => obj.cod_empresa === strTipo || obj.cod_empresa == '0');
+                        $.each(lista_filter, function (index, item) {
+
+                            listar.push(item);
+                        });
+                    } else {
+                        var lista_filter = dataArray.filter(obj => obj.cod_empresa == '0');
+                        $.each(lista_filter, function (index, item) {
+                            listar.push(item);
+                        });
+
+                        $.each(strTipo, function (index2, item2) {
+
+                            var lista_filter = dataArray.filter(obj => obj.cod_empresa === item2);
+                            $.each(lista_filter, function (index, item) {
+
+                                listar.push(item);
+                            });
+
+                        });
+                    }
+                }
+
+                var group_cadena = Enumerable.from(listar)
+                .groupBy(
+                null,
+                null,
+                "{ cod_cadena: $.cod_cadena, des_cadena: $.des_cadena}",
+                "'' + $.cod_cadena + '-' + $.des_cadena"
+                ).toArray();
+
+                objTransito.Cmbs.llenarComboCad("divcad", "dwcad", group_cadena, '0', '', "objTransito.Cmbs.ListarTienda", '1');
+            },
+            ListarTienda: function () {
+                var dataArray = function () { return @Html.Raw(Json.Encode(ViewBag.EmpCadTda)); }();
+
+                var strTipo = $('#dwempresa').val();
+                var strCad = $('#dwcad').val();
+                var listar = [];
+
+                if (strTipo != null && strCad != null) {
+
+                    if (strTipo == "-1" || strCad=="-1") {
+                        var lista_filter = (strTipo == "-1") ? dataArray.filter(obj => obj.cod_empresa != strTipo) : dataArray.filter(obj => obj.cod_empresa === strTipo || obj.cod_empresa == '0');
+                        $.each(lista_filter, function (index, item) {
+
+                            listar.push(item);
+                        });
+                    } else {
+
+                        var lista_filter = dataArray.filter(obj => obj.cod_empresa == '0');
+                        $.each(lista_filter, function (index, item) {
+
+                            listar.push(item);
+                        });
+
+                        $.each(strCad, function (index3, item3) {
+
+                            $.each(strTipo, function (index2, item2) {
+
+                                var lista_filter = dataArray.filter(obj => obj.cod_empresa === item2 && obj.cod_cadena === item3);
+                                $.each(lista_filter, function (index, item) {
+
+                                    listar.push(item);
+                                });
+
+                            });
+                        });
+                    }
+                }
+                var group_tienda = Enumerable.from(listar)
+                .groupBy(
+                null,
+                null,
+                "{ cod_entid: $.cod_entid, des_entid: $.des_entid}",
+                "'' + $.cod_entid + '-' + $.des_entid"
+                ).toArray();
+
+                objTransito.Cmbs.llenarComboTda("divtda", "dwtda", group_tienda, '0', '', "", '1');
+            },
+            llenarComboCad: function (DivId, IdControl, Data, codDefecto, desDefecto, onchangeFuncion, tipo)
+            {
+                $('#' + IdControl).find('option').remove();
+                var str = (tipo == '1') ? '<select class="selectpicker" multiple = "multiple"  data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '" data-actions-box="true"  data-selected-text-format="count > 2" >' : '<select class="selectpicker"  data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '"  data-actions-box="true"  data-selected-text-format="count > 2" > ';
+                var ItemNormal = '<option value="codItem">desItem</option>';
+                var colectItemNormal = '';
+
+                //if (codDefecto != '') { str += '<option value="' + codDefecto + '" selected="selected">------' + desDefecto + '------</option>'; }
+
+                if (onchangeFuncion != '') { onchangeFuncion = 'onchange = "' + onchangeFuncion + '()"' }
+                str = str.replace("onchangeFuncion", onchangeFuncion);
+
+                $.each(Data, function (index, item) {
+
+                    colectItemNormal = colectItemNormal + ItemNormal
+                    var strSelected = '"';
+
+                    if (item.cod_entid == codDefecto) {
+                        strSelected = '" selected="selected" '
+
+                    }
+                    strSelected = '" selected="selected" '; // seleccionar todos al cargar
+                    colectItemNormal = colectItemNormal.replace("codItem", item.cod_cadena + strSelected);
+                    colectItemNormal = colectItemNormal.replace("desItem", item.des_cadena);
+
+                });
+
+                str += colectItemNormal
+                str += '</select>'
+
+                document.getElementById(DivId).innerHTML = str
+
+                $('.selectpicker').selectpicker({
+                    liveSearch: true,
+                    showSubtext: true
+                });
+            },
+            llenarComboTda: function (DivId, IdControl, Data, codDefecto, desDefecto, onchangeFuncion, tipo) {
+                $('#' + IdControl).find('option').remove();
+
+                var str = (tipo == '1') ? '<select class="selectpicker" multiple = "multiple"  data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '" data-actions-box="true"  data-selected-text-format="count > 2" >' : '<select class="selectpicker"  data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '"  data-actions-box="true"  data-selected-text-format="count > 2" > ';
+                var ItemNormal = '<option value="codItem">desItem</option>';
+                var colectItemNormal = '';
+                //if (codDefecto != '') { str += '<option value="' + codDefecto + '" selected="selected">------' + desDefecto + '------</option>'; }
+
+                if (onchangeFuncion != '') { onchangeFuncion = 'onchange = "' + onchangeFuncion + '()"' }
+                str = str.replace("onchangeFuncion", onchangeFuncion);
+
+                $.each(Data, function (index, item) {
+
+                    colectItemNormal = colectItemNormal + ItemNormal
+                    var strSelected = '"';
+
+                    if (item.cod_entid == codDefecto) {
+                        strSelected = '" selected="selected" '
+
+                    }
+                    strSelected = '" selected="selected" '; // seleccionar todos al cargar
+                    colectItemNormal = colectItemNormal.replace("codItem", item.cod_entid + strSelected);
+                    colectItemNormal = colectItemNormal.replace("desItem", item.des_entid);
+                });
+
+                str += colectItemNormal
+                str += '</select>'
+
+                document.getElementById(DivId).innerHTML = str
+
+                $('.selectpicker').selectpicker({
+                    liveSearch: true,
+                    showSubtext: true
+                });
+
+            }
+        },
+        Opc: {
+            Habilita_Deshabilita: function () {            
+                $('#dwarticulo').selectpicker('deselectAll');
+                if ($('#opttrandoc').is(':checked')) {
+               
+                    $("#dwarticulo").prop("disabled", true);
+                    //$('#dwarticulo').selectpicker('refresh');
+                } else {
+                    $("#dwarticulo").prop("disabled", false);
+                    //$('#dwarticulo').selectpicker('refresh');
+               
+                }
+            }
+        }
+    };
+</script>
