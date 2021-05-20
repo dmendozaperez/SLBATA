@@ -12,10 +12,10 @@ using CapaEntidad.ECommerce;
 
 namespace CapaDato.ECommerce.Urbano
 {
-    public class EnviaPedido
+    public class EnviaPedidoEC
     {
 
-        public Ent_Urbano sendUrbano(string _ven_id, string cod_TdaId)
+        public Ent_Urbano sendUrbanoEC(string _ven_id, string cod_TdaId)
         {
             Boolean valida = false;
             DataTable dt = null;
@@ -59,9 +59,12 @@ namespace CapaDato.ECommerce.Urbano
                                                ref_direc = Convert.ToString(item["ref_direc"].ToString()),
                                                peso_total = Convert.ToDecimal(item["peso_total"].ToString()),
                                                cant_total = Convert.ToDecimal(item["tot_cant"].ToString()),
-                                               //se agrego nuevos campos por seguro de pedidos -PERU
-                                               asegurado = item["asegurado"].ToString(),
-                                               monto_asegurado = Convert.ToDecimal(item["monto_asegurado"]),
+                                               //se agrego nuevos campos para recojo en tienda - BATA ECUADOR
+                                               venta_seller = item["venta_seller"].ToString(),
+                                               sell_codigo = item["sell_codigo"].ToString(),
+                                               sell_nombre = item["sell_nombre"].ToString(),
+                                               sell_direcc = item["sell_direcc"].ToString(),
+                                               sell_ubigeo = item["sell_ubigeo"].ToString(),
 
                                            }
                                        into G
@@ -84,8 +87,11 @@ namespace CapaDato.ECommerce.Urbano
                                                peso_total = G.Key.peso_total,
                                                cant_total = G.Key.cant_total,
                                                //se agrego nuevos campos por seguro de pedidos
-                                               asegurado = G.Key.asegurado,
-                                               monto_asegurado = G.Key.monto_asegurado,
+                                               venta_seller = G.Key.venta_seller,
+                                               sell_codigo = G.Key.sell_codigo,
+                                               sell_nombre = G.Key.sell_nombre,
+                                               sell_direcc = G.Key.sell_direcc,
+                                               sell_ubigeo = G.Key.sell_ubigeo,
                                            };
 
 
@@ -120,11 +126,12 @@ namespace CapaDato.ECommerce.Urbano
                             guiaUrbano.peso_total = key.peso_total.ToString(); //Peso total, 0.3g por defecto para cada par
                             guiaUrbano.pieza_total = key.cant_total.ToString(); //Cantidad total, No se considera el Envío
                             //guiaUrbano.pieza_total = "3";//# de bultos
-                            guiaUrbano.asegurado = key.asegurado;//Indicador de pedido asegurado SI/NO
-                            guiaUrbano.monto_asegurado = key.monto_asegurado; //Monto total asegurado por pedido
+                            guiaUrbano.venta_seller = key.venta_seller;
+                            guiaUrbano.sell_codigo = key.sell_codigo;
+                            guiaUrbano.sell_nombre = key.sell_nombre;
+                            guiaUrbano.sell_direcc = key.sell_direcc;
+                            guiaUrbano.sell_ubigeo = key.sell_ubigeo;
                             #endregion
-
-
                             var ped_det = from item in dt.AsEnumerable()
                                           where item.Field<string>("cod_rastreo") == Convert.ToString(key.cod_rastreo)
                                           select new
@@ -181,9 +188,12 @@ namespace CapaDato.ECommerce.Urbano
                             guiaEncoded += "%22ref_direc%22%3A%22" + HttpUtility.UrlEncode(guiaUrbano.ref_direc) + "%22%2C";
                             guiaEncoded += "%22peso_total%22%3A%22" + guiaUrbano.peso_total + "%22%2C";
                             guiaEncoded += "%22pieza_total%22%3A%22" + guiaUrbano.pieza_total + "%22%2C";
-                            /*se agrego para pedidos asegurados*/
-                            guiaEncoded += "%22asegurado%22%3A%22" + guiaUrbano.asegurado + "%22%2C";
-                            guiaEncoded += "%22monto_asegurado%22%3A%22" + guiaUrbano.monto_asegurado + "%22%2C";
+                            /*se agrego para despacho de pedidos*/
+                            guiaEncoded += "%22venta_seller%22%3A%22" + guiaUrbano.venta_seller + "%22%2C";
+                            guiaEncoded += "%22sell_codigo%22%3A%22" + guiaUrbano.sell_codigo + "%22%2C";
+                            guiaEncoded += "%22sell_nombre%22%3A%22" + guiaUrbano.sell_nombre + "%22%2C";
+                            guiaEncoded += "%22sell_direcc%22%3A%22" + guiaUrbano.sell_direcc + "%22%2C";
+                            guiaEncoded += "%22sell_ubigeo%22%3A%22" + guiaUrbano.sell_ubigeo + "%22%2C";
 
                             //Construyendo cadena desde lista de productos
                             string productos = "";
@@ -250,7 +260,7 @@ namespace CapaDato.ECommerce.Urbano
             }
             return post_data;
         }
-        public Boolean send()
+        public Boolean send2()
         {
             Boolean valida = false;
             try
@@ -372,3 +382,4 @@ namespace CapaDato.ECommerce.Urbano
 
     }
 }
+

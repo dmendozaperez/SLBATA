@@ -27,6 +27,12 @@ namespace CapaEntidad.ECommerce
         public string cod_empresa { get; set; }  //RUC BATA
         public string nom_empresa { get; set; } //BATA - Emcomer S.A.
 
+        public string venta_seller { get; set; }
+        public string sell_codigo { get; set; }
+        public string sell_nombre { get; set; }
+        public string sell_direcc { get; set; }
+        public string sell_ubigeo { get; set; }
+
         //Grupo 4: Datos del receptor
         public string cod_cliente { get; set; } //DNI - RUC cliente
         public string nom_cliente { get; set; } //Nombre de cliente

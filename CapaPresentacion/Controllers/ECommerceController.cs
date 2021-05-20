@@ -175,6 +175,7 @@ namespace CapaPresentacion.Controllers
 
                         /*enviamos urbano la guia*/
                         EnviaPedido envia = new EnviaPedido();
+                        EnviaPedidoEC enviaEC = new EnviaPedidoEC();
                         /**/
                         if (name_carrier == "Comercio Xpress")
                         {
@@ -217,7 +218,16 @@ namespace CapaPresentacion.Controllers
                             }
                             else
                             {
-                                Ent_Urbano ent_urbano = envia.sendUrbano(ven_id, cod_TdaId);
+                                Ent_Urbano ent_urbano;
+                                if (Session["PAIS"].ToString() == "PE")
+                                {
+                                    ent_urbano = envia.sendUrbano(ven_id, cod_TdaId); // URBANO EN ECOMMERCE PERU
+                                }
+                                else
+                                {
+                                    ent_urbano = enviaEC.sendUrbanoEC(ven_id, cod_TdaId); //URBANO EN ECOMMERCE ECUADOR
+                                }
+
                                 if (ent_urbano.error == "1")
                                 {
                                     if (ent_urbano.guia.Trim().Length > 0)
@@ -229,7 +239,9 @@ namespace CapaPresentacion.Controllers
                                     }
                                 }
                             }
+                            
                         }
+
                         //guia_courier=
                         //action_presta.get_guia_presta_urba(ven_id, ref guia_presta, ref guia_courier);
 
@@ -477,13 +489,13 @@ namespace CapaPresentacion.Controllers
                     using (var http = new HttpClient())
                     {
                         http.DefaultRequestHeaders.Add("chazki-api-key", cvCzk.informacionTiendaEnvio.chaski_api_key); //PRODUCCION
-                        //http.DefaultRequestHeaders.Add("chazki-api-key", "KfXfqgEBhfMK4T8Luw8ba91RynMtjzTY"); //TEST
+                                                                                                                       //http.DefaultRequestHeaders.Add("chazki-api-key", "KfXfqgEBhfMK4T8Luw8ba91RynMtjzTY"); //TEST
 
                         HttpContent content = new StringContent(jsonChazki);
                         content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
                         var request = http.PostAsync("https://integracion.chazki.com:8443/chazkiServices/delivery/create/deliveryService", content); //PRODUCCION
-                        //var request = http.PostAsync("https://sandboxintegracion.chazki.com:8443/chazkiServices/delivery/create/deliveryService", content); //TEST
+                                                                                                                                                     //var request = http.PostAsync("https://sandboxintegracion.chazki.com:8443/chazkiServices/delivery/create/deliveryService", content); //TEST
 
                         var response = request.Result.Content.ReadAsStringAsync().Result;
                         rpta = JsonConvert.DeserializeObject<Response_Registro>(response);
@@ -1548,7 +1560,7 @@ namespace CapaPresentacion.Controllers
                 ViewBag.estado = ec.get_Traza_Estados();
                 ListaTrazaVtex(DateTime.Now.ToString(), DateTime.Now.ToString(), "", "");
             }
-            
+
             return View();
         }
 
@@ -1611,7 +1623,7 @@ namespace CapaPresentacion.Controllers
                      m.TIPO_PEDIDO.ToUpper().Contains(param.sSearch.ToUpper()) ||
                      m.NRO_DOCUMENTO.ToUpper().Contains(param.sSearch.ToUpper()) ||
                      m.CODIGO_SEGUIMIENTO.ToUpper().Contains(param.sSearch.ToUpper()) ||
-                     m.ESTADO.ToUpper().Contains(param.sSearch.ToUpper())||
+                     m.ESTADO.ToUpper().Contains(param.sSearch.ToUpper()) ||
                      m.ESTADO_OROB.ToUpper().Contains(param.sSearch.ToUpper())
                      );
 
@@ -1683,7 +1695,7 @@ namespace CapaPresentacion.Controllers
             //DataTable tabla = Session["Lista_Pedidos_Vtex"] as DataTable;
 
             //List<Technology> technologies = StaticData.Technologies;
-            string[] columns = { "ID_PEDIDO", "CLIENTE", "IMPORTE_CIGV", "IMPORTE_TRANSPORTE","IMPORTE_TOTAL","DESPACHO", "TIPO_ENTREGA", "FECHA_PEDIDO", "FECHA_REG_VENTA", "FECHA_DESPACHO","FECHA_ENTREGA", "TIPO_PEDIDO", "NRO_DOCUMENTO", "CODIGO_SEGUIMIENTO","ESTADO_OROB","ESTADO" };
+            string[] columns = { "ID_PEDIDO", "CLIENTE", "IMPORTE_CIGV", "IMPORTE_TRANSPORTE", "IMPORTE_TOTAL", "DESPACHO", "TIPO_ENTREGA", "FECHA_PEDIDO", "FECHA_REG_VENTA", "FECHA_DESPACHO", "FECHA_ENTREGA", "TIPO_PEDIDO", "NRO_DOCUMENTO", "CODIGO_SEGUIMIENTO", "ESTADO_OROB", "ESTADO" };
             byte[] filecontent = ExcelExportHelper.ExportExcel(listTrazaPedidoVtex, "Trazabilidad de Pedidos VTEX [" + string.Format(Session["fecini"].ToString(), "dd/MM/yyyy") + " - " + string.Format(Session["fecfin"].ToString(), "dd/MM/yyyy") + "]", true, columns);
             //byte[] filecontent = ExcelExportHelper.ExportExcelDT(tabla, "Trazabilidad de Pedidos Vtex", true, columns);
             return File(filecontent, ExcelExportHelper.ExcelContentType, "TrazaPedidosVtex.xlsx");

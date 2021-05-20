@@ -91,6 +91,7 @@
     <Compile Include="ECommerce\Dat_Urbano.cs" />
     <Compile Include="ECommerce\Savar\EnviarPedidoSavar.cs" />
     <Compile Include="ECommerce\Urbano\EnviaPedido.cs" />
+    <Compile Include="ECommerce\Urbano\EnviaPedidoEC.cs" />
     <Compile Include="GestionInterno\Dat_Comunicado.cs" />
     <Compile Include="Interface\Dat_Interface.cs" />
     <Compile Include="Inventario\Dat_Inventario_Consulta.cs" />
