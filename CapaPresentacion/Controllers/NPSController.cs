@@ -370,6 +370,8 @@ namespace CapaPresentacion.Controllers
 
                     var Nota = ChartTipo._ListarNota.Select(x => new { NOTA = x.NOTA }).ToList().ElementAt(0).NOTA.ToString();
 
+                    var Total_respuesta = ChartTipo._ListarNota.Select(x => new { TOTAL_RESPUESTAS = x.TOTAL_RESPUESTAS }).ToList().ElementAt(0).TOTAL_RESPUESTAS.ToString();
+
                     chartDS.datasets = new List<Ent_Nps_Tipo_Chart_DataSet>() {
                     (new Ent_Nps_Tipo_Chart_DataSet()
                     {
@@ -382,6 +384,7 @@ namespace CapaPresentacion.Controllers
                     chartDS.labels = ChartTipo._ListarChar.Select(s => s.DES_TIP_RES).ToArray();
 
                     chartDS.Notas = Nota;
+                    chartDS.Respuesta = Total_respuesta;
                     objResult.Data = chartDS;
                     objResult.Success =  true;
                 }
@@ -611,7 +614,7 @@ namespace CapaPresentacion.Controllers
                 sb.Append("<div x:publishsource='Excel'>");
 
                 sb.Append("<table border=0 cellpadding=0 cellspacing=0 width=706 style='border-collapse: collapse; table-layout:fixed; width: 529pt'>");
-                sb.Append("<tr height=100 style='mso-height-source:userset;height:50pt'><td Colspan='10' valign='middle' align='center' style='vertical-align: middle;font-size: 16.0pt;font-weight: bold;color:#285A8F'>CALIFICACION POR DISTRITO</td></tr>");                
+                sb.Append("<tr height=100 style='mso-height-source:userset;height:50pt'><td Colspan='11' valign='middle' align='center' style='vertical-align: middle;font-size: 16.0pt;font-weight: bold;color:#285A8F'>CALIFICACION POR DISTRITO</td></tr>");                
       
                 sb.Append("<tr height=100 style='mso-height-source:userset;height:50pt'>");
                 sb.Append("<th width=60 style='width:60pt'><font color='#FFFFFF'></font></th>\n");

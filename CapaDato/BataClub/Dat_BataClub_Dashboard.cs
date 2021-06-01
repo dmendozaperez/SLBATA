@@ -44,6 +44,7 @@ namespace CapaDato.BataClub
                                             transac = Convert.ToInt32(dr["TRANSAC"].ToString()),
                                             consumido = Convert.ToInt32(dr["CONSUMIDO"].ToString()),
                                             bataclub = Convert.ToInt32(dr["MIEM_BATACLUB"].ToString()),
+                                            tickets= Convert.ToInt32(dr["TICKETS"].ToString()),
                                         }
                                       ).ToList();
 
@@ -58,6 +59,7 @@ namespace CapaDato.BataClub
                                                transac = Convert.ToInt32(dr["TRANSAC"].ToString()),
                                                consumido = Convert.ToInt32(dr["CONSUMIDO"].ToString()),
                                                bataclub = Convert.ToInt32(dr["MIEM_BATACLUB"].ToString()),
+                                               tickets = Convert.ToInt32(dr["TICKETS"].ToString()),
                                            }
                                       ).ToList();                                
                             }

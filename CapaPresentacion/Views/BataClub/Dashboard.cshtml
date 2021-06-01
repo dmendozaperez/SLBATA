@@ -101,7 +101,7 @@
     }
 
     .bg-consumido {
-        background-color: #f39c12 !important;
+        background-color: #003D64 !important;
         color: #fff !important;
     }
 
@@ -488,7 +488,7 @@
                             <p class="text-center text-bold" id="tituloCanalesChar">
                             </p>
                             <div class="chart-responsive">
-                                <canvas id="barcanvas" height="300"></canvas>
+                                <canvas id="canalChart" height="300"></canvas>
                             </div>
                             <!-- ./chart-responsive -->
                         </div>
@@ -1965,25 +1965,37 @@
                 //var title = '<strong style="color: rgb(147, 97, 228)">P: ' + sum(_data.datasets[0].data).toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;&nbsp;&nbsp;' +
                 //'<strong style="color: rgb(80, 230, 161)">S/ ' + sum(_data.datasets[1].data).toLocaleString('es-PE') + '</strong>&nbsp;&nbsp;'
                 //$("#tituloBarCharVxC").html(title);
+                //var tbody = '<tr>\
+                //                <th class="col-md-6">Tiendas</th>\
+                //                <th class="col-md-2">Tran</th>\
+                //                <th class="col-md-2">Reg</th>\
+                //                <th class="col-md-2">Con</th>\
+                //                <th class="col-md-2">Miembros</th>\
+                //            </tr>';
                 var tbody = '<tr>\
                                 <th class="col-md-6">Tiendas</th>\
                                 <th class="col-md-2">Tran</th>\
                                 <th class="col-md-2">Reg</th>\
-                                <th class="col-md-2">Con</th>\
-                                <th class="col-md-2">Miembros</th>\
+                                <th class="col-md-2">Tickets</th>\
                             </tr>';
                 var ultimo_dist = ""                
                 for (var i = 0; i < _detalle.length; i++) {
                     if (valor == null || _detalle[i].distrito + ' (' + _detalle[i].supervisor.substring(0, _detalle[i].supervisor.indexOf(" ")) + ')' == valor) {
                         if (_detalle[i].distrito != ultimo_dist) {
-                            tbody += '<tr><th colspan="5">' + _detalle[i].distrito + ' (' + _detalle[i].supervisor + ')' + '</th></tr>';
+                            tbody += '<tr><th colspan="4">' + _detalle[i].distrito + ' (' + _detalle[i].supervisor + ')' + '</th></tr>';
                         }
+                        //tbody += '<tr>\
+                        //            <td class="text"><span>' + _detalle[i].tienda + '</span></td>\
+                        //            <td><span class="badge bg-transac">' + _detalle[i].transac + '</span></td>\
+                        //            <td><span class="badge bg-registros">' + _detalle[i].registros + '</span></td>\
+                        //            <td><span class="badge bg-consumido">' + _detalle[i].consumido + '</span></td>\
+                        //            <td><span class="badge bg-bataclub">' + _detalle[i].bataclub + '</span></td>\
+                        //        </tr>';
                         tbody += '<tr>\
                                     <td class="text"><span>' + _detalle[i].tienda + '</span></td>\
                                     <td><span class="badge bg-transac">' + _detalle[i].transac + '</span></td>\
                                     <td><span class="badge bg-registros">' + _detalle[i].registros + '</span></td>\
-                                    <td><span class="badge bg-consumido">' + _detalle[i].consumido + '</span></td>\
-                                    <td><span class="badge bg-bataclub">' + _detalle[i].bataclub + '</span></td>\
+                                    <td><span class="badge bg-consumido">' + _detalle[i].tickets + '</span></td>\
                                 </tr>';
                         ultimo_dist = _detalle[i].distrito;
                     }                    
