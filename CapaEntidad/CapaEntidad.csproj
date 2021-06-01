@@ -124,6 +124,7 @@
     <Compile Include="Transac\Ent_Analisis_Mov.cs" />
     <Compile Include="Transac\Ent_Consultar_Guia.cs" />
     <Compile Include="Transac\Ent_Documentos_Tda.cs" />
+    <Compile Include="Transitos\Ent_Transitos.cs" />
     <Compile Include="Util\Ent_ComboList.cs" />
     <Compile Include="Util\Ent_Combo.cs" />
     <Compile Include="Util\Ent_Combo_DisCadTda.cs" />

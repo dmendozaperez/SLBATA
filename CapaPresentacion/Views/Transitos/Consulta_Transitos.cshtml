@@ -1,0 +1,791 @@
+﻿@using CapaEntidad.Util;
+@{
+    ViewBag.Title = "CONSULTA DE TRANSITOS";
+}
+
+<link href="~/ContentSelect/bootstrap-select.css" rel="stylesheet" />
+@*<link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />*@
+<style>
+    iframe {
+        border: none;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        height: 800px;
+    }
+    .table thead {
+        background-color: #5799bf;
+        color: #fff;
+    }
+
+    .boton-xs-td {
+        padding-top: 5px !important;
+        padding-bottom: 5px !important;
+    }
+
+    .alignRight {
+        text-align: right;
+        vertical-align: middle;
+    }
+
+    .alignCenter {
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .control {
+        font-family: arial;
+        display: block;
+        position: relative;
+        padding-left: 30px;
+        margin-bottom: 10px;
+        padding-top: 3px;
+        cursor: pointer;
+        font-size: 12px;
+    }
+    .control input {
+        position: absolute;
+        z-index: -1;
+        opacity: 0;
+    }
+    .control_indicator {
+        position: absolute;
+        top: 2px;
+        left: 0;
+        height: 20px;
+        width: 20px;
+        background: #e6e6e6;
+        border: 1px solid #B1BAC1;
+        border-radius: undefinedpx;
+    }
+    .control:hover input ~ .control_indicator,
+    .control input:focus ~ .control_indicator {
+        background: #cccccc;
+    }
+
+    .control input:checked ~ .control_indicator {
+        background: #156aac;
+    }
+    .control:hover input:not([disabled]):checked ~ .control_indicator,
+    .control input:checked:focus ~ .control_indicator {
+        background: #0e6647d;
+    }
+    .control input:disabled ~ .control_indicator {
+        background: #e6e6e6;
+        opacity: 0.6;
+        pointer-events: none;
+    }
+    .control_indicator:after {
+        box-sizing: unset;
+        content: '';
+        position: absolute;
+        display: none;
+    }
+    .control input:checked ~ .control_indicator:after {
+        display: block;
+    }
+    .control-radio .control_indicator {
+        border-radius: 50%;
+    }
+
+    .control-radio .control_indicator:after {
+        left: 6px;
+        top: 6px;
+        height: 6px;
+        width: 6px;
+        border-radius: 50%;
+        background: #ffffff;
+        transition: background 250ms;
+    }
+    .control-radio input:disabled ~ .control_indicator:after {
+        background: #7b7b7b;
+    }
+</style>
+<p class="text-danger">Consulta de reporte de transitos, por filtro fecha, empresa, cadena, destino, concepto y articulos.</p>
+<div class="box box-body box-primary">
+    <div class="row">
+        <div class="col-md-12" >
+            <div class="panel panel-default p-10">
+                <div class="panel-body" style="padding-top: 7px;padding-bottom: 4px;">
+                    <label for="dtpFechaFin" style="color: #3d566e; ">Tipo de vista</label>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="control control-radio">
+                                Trasito por documento
+                                <input id="rdDoc" type="radio" name="radio" />
+                                <div class="control_indicator"></div>
+                            </label>
+                        </div>
+                        <div class="col-md-9">
+                            <label class="control control-radio">
+                                Trasito por documento-articulo
+                                <input id="rdDocArt" type="radio" name="radio" />
+                                <div class="control_indicator"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default p-10">
+                <div class="panel-body" style="padding-top: 7px;padding-bottom: 4px;">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="lblFechaInicio" style="color: #3d566e;">Fecha</label>
+                                <div id="datepickerIni" class="input-group date" data-date-format="dd/mm/yyyy">
+                                    <input id="dtpFechaInicio" type="text" class="form-control input-sm ui-cell-input" disabled style="max-width: 100%" />
+                                    <span class="input-group-addon btn btn-xs btn-default" style="padding: 4px 5px;">
+                                        <i class="glyphicon glyphicon-calendar" height="20" width="20" style="color:#ff9f3f"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <label for="dwCate">Empresa</label>
+                            <div class="form-group">
+                                @Html.DropDownList("dwDis", new SelectList(ViewBag.Distrito, "cod_distri", "des_distri", "-1"), new { @class = "form-control selectpicker", @data_live_search = "true", multiple = "multiple", @id = "dwDis", @name = "dwDis", @data_actions_box = "true", @data_selected_text_format = "count > 2", @style = "max-width: 100%" })
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <label for="dwCate">Cadena</label>
+                            <div id="divcad" class="form-group">
+                                @Html.DropDownList("dwcad", new SelectList(ViewBag.Cadena, "cod_cadena", "des_cadena", "0"), new { @class = "form-control selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwcad", @name = "dwcad", @style = "max-width: 100%" })
+                            </div>
+                        </div>                        
+                        <div class="ccol-sm-3">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <label for="dwCate">Destino</label>
+                            <div id="divtda" class="form-group">
+                                @Html.DropDownList("dwtda", new SelectList(ViewBag.Tienda, "cod_entid", "des_entid", "0"), new { @class = "form-control selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwtda", @name = "dwtda", @style = "max-width: 100%" })
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <label for="dwconcepto" style="color: #3d566e;">Concepto</label>
+                            <div id="divconcepto" class="form-group">
+                                @Html.DropDownList("dwconcepto", new SelectList(ViewBag.Concepto, "con_id", "con_des", "0"), new { @class = "form-control selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwconcepto", @name = "dwconcepto", @data_actions_box = "true", @data_selected_text_format = "count > 2", @style = "max-width: 100%" })
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <label for="dwarticulo" style="color: #3d566e;">Articulo</label>
+                            <div id="divarticulo" class="form-group">
+                                @Html.DropDownList("dwarticulo", new SelectList(ViewBag.Articulo, "cod_artic", "des_artic","-1"), new { @class = "form-control selectpicker", multiple = "multiple", @data_live_search = "true", @id = "dwarticulo", @name = "dwarticulo", @data_actions_box = "true", @data_selected_text_format = "count > 2", @style = "max-width: 100%" })
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <button id="btnBuscar" title="Consultar" class="btn btn-primary" style="margin-top: 23px;">
+                                <i class="glyphicon glyphicon-search" style="color:#FFF"></i>
+                                &nbsp;&nbsp;Buscar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="box box-body box-primary">
+    <div class="row">
+        <div class="col-md-6">
+        </div>
+        <div class="col-md-6 text-right">
+            <button id="btnExportar" title="Exportar" class="btn btn-success disabled" disabled>
+                <span class="glyphicon glyphicon-export"></span>&nbsp;&nbsp;Exportar Lista
+            </button>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box-body">
+                <table id="TbTablaDoc" class="table table-hover dataTable  table-striped table-responsive"></table>
+                <table id="TbTablaDocArt" class="table table-hover dataTable  table-striped table-responsive"></table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/ScriptsSelect/bootstrap-select.js"></script>
+@*<script src="~/Scripts/bootstrap-select.min.js"></script>
+<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>*@
+<script src="~/Scripts/Linkend/linq.min.js"></script>
+<script src="~/Scripts/BI.js"></script>
+<script>
+    var objTransitos = {
+        Inicio: function () {
+            $("body").toggleClass('sidebar-collapse');
+            debugger
+            $("#rdDoc").attr('checked', true);
+
+            this._HtmlTablaDoc = '<thead>'+
+	                                '<tr style="background-color:#3d566e; color:#ecf0f1;padding-top: 0px;padding-bottom: 0px;">'+
+		                                '<th style="text-align: center;">EMPRE</th>'+
+		                                '<th style="text-align: center;">CADEN</th>'+
+		                                '<th style="text-align: center;">CONCEPTO</th>'+
+		                                '<th style="text-align: center;">ORIGEN</th>'+
+		                                '<th style="text-align: center;">DESTINO</th>'+
+		                                '<th style="text-align: center;">GUIA</th>'+
+		                                '<th style="text-align: center;">CALZ</th>'+
+		                                '<th style="text-align: center;">NO_CALZ</th>'+
+		                                '<th style="text-align: center;">CAJAS</th>'+
+		                                '<th style="text-align: center;">ESTADO</th>'+
+		                                '<th style="text-align: center;">TRAN_INI</th>'+
+		                                '<th style="text-align: center;">TRAN_FIN</th>'+
+	                                '</tr>'+
+                                '</thead>'+
+                                '<tbody>'+
+	                                '<tr>'+
+		                                '<td colspan=12>No se encontraron resultados</td>'+
+		                                '</tr>'+
+                                    '</tbody>';
+
+            this._HtmtTablaDocArt = '<thead>' +
+	                                '<tr style="background-color:#3d566e; color:#ecf0f1;padding-top: 0px;padding-bottom: 0px;">' +
+                                        '<th style="text-align: center;">EMPRESA</th>' +
+                                        '<th style="text-align: center;">CADENA</th>' +
+                                        '<th style="text-align: center;">CONCEPTO</th>' +
+                                        '<th style="text-align: center;">ORIGEN</th>' +
+                                        '<th style="text-align: center;">DESTINO</th>' +
+                                        '<th style="text-align: center;">GUIA</th>' +
+                                        '<th style="text-align: center;">ARTICULO</th>' +
+                                        '<th style="text-align: center;">CAL</th>' +
+                                        '<th style="text-align: center;">TALLA</th>' +
+                                        '<th style="text-align: center;">CANTIDAD</th>' +
+	                                '</tr>' +
+                                '</thead>' +
+                                '<tbody>' +
+	                                '<tr>' +
+		                                '<td colspan=12>No se encontraron resultados</td>' +
+		                                '</tr>' +
+                                    '</tbody>';
+
+            /*[Inicializamos variables]*/
+            $("#datepickerIni").datepicker({
+                autoclose: true,
+                todayHighlight: true
+            }).datepicker("setDate", "0");
+
+            //$("#dwarticulo").prop("disabled", true);
+
+            $("#btnExportar").addClass("disabled");
+            $("#btnExportar").attr('disabled', 'disabled');
+
+            $('#dwconcepto option').attr("selected", "selected");
+            $('#dwconcepto').selectpicker('refresh');
+
+            //$('#dwarticulo option').attr("selected", "selected");
+            $('#dwarticulo').selectpicker('refresh');
+
+            $('#dwDis option').attr("selected", "selected");
+            $('#dwDis').selectpicker('refresh');
+
+            $('#dwCad option').attr("selected", "selected");
+            $('#dwCad').selectpicker('refresh');
+
+            objTransitos.Cmbs.ListarCadena();
+            objTransitos.Cmbs.ListarTienda();
+            /*[/Inicializamos variables]*/
+
+            /*[ddlDis]*/
+            $("#dwDis").change(function () {
+                objTransitos.Cmbs.Listar_Cadena_Tienda();
+            })
+            /*[/ddlDis]*/
+
+            
+            this.TbTablaDoc = $('#TbTablaDoc');
+            this.TbTablaDocArt = $('#TbTablaDocArt');
+            this.Fecha = $("#dtpFechaInicio").val();
+            this.isOkUpdate = false;
+            this.IsOk = true;
+            this.IsOkGrid = true;
+
+            var codConcepto = $('#dwconcepto').val();
+            this.Concepto = codConcepto.toString();
+
+            var codEmpresa = $('#dwDis').val();
+            this.Empresa = codEmpresa.toString();
+
+            var codCadena = $('#dwcad').val();
+            this.Cadena = codCadena.toString();
+
+            var codTienda = $('#dwtda').val();
+            this.Destino = codTienda.toString();
+
+            $("#dwarticulo").attr('disabled', 'disabled');
+            /*[btn Exportar y buscar]*/
+
+            $("#btnExportar").click(function () {
+                waitingDialog.show("Espere por favor...")
+                if (objTransitos.IsOk) {
+                    objTransitos.generaal.exportar.Doc();
+                } else {
+                    objTransitos.generaal.exportar.DocArt();
+                }
+            })
+
+            $("#rdDoc").click(function () {
+                objTransitos.IsOk = true;
+                $('#dwarticulo').selectpicker('val', '-1');
+                $("#dwarticulo").attr("disabled", true);
+            });
+
+            $("#rdDocArt").click(function () {
+                objTransitos.IsOk = false;
+                $('#dwarticulo').selectpicker('val', '-1');
+                $("#dwarticulo").attr("disabled", false);
+            });
+
+            $("#btnBuscar").click(function () {
+                objTransitos.isOkUpdate = true;
+                objTransitos.Fecha = $("#dtpFechaInicio").val();
+
+                let codConcepto = $('#dwconcepto').val();
+                var CodConceptoStr = "";
+                for (var key in codConcepto) {
+                    CodConceptoStr += codConcepto[key] + ",";
+                }
+                objTransitos.Concepto = CodConceptoStr.slice(0, -1);
+                /*****/
+                let codEmpresa = $('#dwDis').val();
+                var CodEmpresaStr = "";
+                for (var key in codEmpresa) {
+                    CodEmpresaStr += codEmpresa[key] + ",";
+                }
+                objTransitos.Empresa = CodEmpresaStr.slice(0, -1);
+                /*****/
+                let codCadena = $('#dwcad').val();
+                var CodCadenaStr = "";
+                for (var key in codCadena) {
+                    CodCadenaStr += codCadena[key] + ",";
+                }
+                objTransitos.Cadena = CodCadenaStr.slice(0, -1);
+                /*****/
+                let codDestino = $('#dwtda').val();
+                var CodDestinoStr = "";
+                for (var key in codDestino) {
+                    CodDestinoStr += codDestino[key] + ",";
+                }
+                objTransitos.Destino = CodDestinoStr.slice(0, -1);
+                /*****/
+                let codArticulo = $('#dwarticulo').val();
+                var CodArticuloStr = "";
+                for (var key in codArticulo) {
+                    CodArticuloStr += codArticulo[key] + ",";
+                }
+                objTransitos.Articulo = CodArticuloStr.slice(0, -1);
+
+                if (!objTransitos.generaal.Validar())
+                    return
+
+                if (!objTransitos.IsOkGrid) {
+                    debugger
+                    objTransitos.TbTablaDocArt.DataTable().destroy();
+                    objTransitos.TbTablaDocArt.empty();
+                } else {
+                    objTransitos.TbTablaDoc.DataTable().destroy();
+                    objTransitos.TbTablaDoc.empty();
+                }
+
+                objTransitos.grid.consultar();
+            })
+            /*[btn Exportar y buscar]*/
+
+            objTransitos.grid.consultar();
+
+        },
+        grid: {
+            consultar: function () {
+                debugger
+                //if (objTransitos.generaal.Validar()) {
+                    waitingDialog.show("Espere por favor...")
+                    if (objTransitos.IsOk) {
+                        $("#TbTablaDoc").html(objTransitos._HtmlTablaDoc);
+                        objTransitos.grid.get.Doc();
+                    } else {
+                        $("#TbTablaDocArt").html(objTransitos._HtmtTablaDocArt);
+                        objTransitos.grid.get.DocArt();
+                    }
+                //}
+            },
+            get:  {
+                Doc: function () {
+                    objTransitos.IsOkGrid = true;
+                    objTransitos.TbTablaDoc.DataTable({
+                        "language": {
+                            "url": "../Scripts/DataTables/Spanish.json"
+                        },
+                        //"fnServerData": function (sSource, aoData, fnCallback) {
+                        //},
+                        "bServerSide": true,
+                        "bAutoWidth": false,
+                        "sAjaxSource": '@Url.Action("getLisConsulta_TransitosAjax", "Transitos")',
+                        "fnServerParams": function (aoData) {
+                            debugger;
+                            aoData.push({ "name": "isOkUpdate", "value": objTransitos.isOkUpdate });
+                            aoData.push({ "name": "Fecha", "value": objTransitos.Fecha });
+                            aoData.push({ "name": "Empresa", "value": objTransitos.Empresa });
+                            aoData.push({ "name": "Cadena", "value": objTransitos.Cadena });
+                            aoData.push({ "name": "Concepto", "value": objTransitos.Concepto });
+                            aoData.push({ "name": "Destino", "value": objTransitos.Destino });
+                            debugger
+                        },
+                        "bFilter": true,
+                        "bdestroy": true,
+                        "start": 0,
+                        "columnDefs": [{
+                            "orderable": false,
+                            "targets": [],
+                        }],
+                        "bDeferRender": true,
+                        "aoColumns": [
+                            { "sName": "Empre", "mData": "Empre", "sClass": "" },
+                            { "sName": "Caden", "mData": "Caden", "sClass": "" },
+                            { "sName": "Concepto", "mData": "Concepto", "sClass": "" },
+                            { "sName": "Origen", "mData": "Origen", "sClass": "" },
+                            { "sName": "Destino", "mData": "Destino", "sClass": "" },
+                            { "sName": "Guia", "mData": "Guia", "sClass": "alignCenter" },
+                            { "sName": "Calz", "mData": "Calz", "sClass": "alignCenter" },
+                            { "sName": "No_Calz", "mData": "No_Calz", "sClass": "alignCenter" },
+                            { "sName": "Cajas", "mData": "Cajas", "sClass": "alignCenter" },
+                            { "sName": "Estado", "mData": "Estado", "sClass": "alignCenter" },
+                            {
+                                "sName": "Tran_Ini", "mData": "Tran_Ini",
+                                "sClass": "alignCenter",
+                                "render": function (Data, type, full, meta) {
+                                    debugger;
+                                    var Fecha = (full.Tran_Ini == undefined || full.Tran_Ini == null || full.Tran_Ini == 0) ? ' ' : new Date(parseInt(full.Tran_Ini.replace("/Date(", "").replace(")/", ""), 10));
+                                    return (Fecha == undefined || Fecha == null || Fecha == 0) ? ' ' : (Fecha.getDate() < 10 ? "0" + Fecha.getDate() : Fecha.getDate()) + "/" + ((Fecha.getMonth() + 1) < 10 ? "0" + (Fecha.getMonth() + 1) : (Fecha.getMonth() + 1)) + "/" + Fecha.getFullYear();
+                                }
+                            },
+                            {
+                                "sName": "Tran_Fin", "mData": "Tran_Fin",
+                                "sClass": "alignCenter",
+                                "render": function (Data, type, full, meta) {
+                                    debugger;
+                                    var Fecha = (full.Tran_Fin == undefined || full.Tran_Fin == null || full.Tran_Fin == 0) ? ' ' : new Date(parseInt(full.Tran_Fin.replace("/Date(", "").replace(")/", ""), 10));
+                                    return (Fecha == undefined || Fecha == null || Fecha == 0) ? ' ' : (Fecha.getDate() < 10 ? "0" + Fecha.getDate() : Fecha.getDate()) + "/" + ((Fecha.getMonth() + 1) < 10 ? "0" + (Fecha.getMonth() + 1) : (Fecha.getMonth() + 1)) + "/" + Fecha.getFullYear();
+                                }
+                            },
+
+                        ],
+                        "fnRowCallback": function (row, data, index) {
+                        },
+                        "drawCallback": function (settings) {
+                            objTransitos.isOkUpdate = false;
+                            var table = objTransitos.TbTablaDoc.dataTable();
+                            var data = table.fnGetData();
+                            if (data.length == 0) {
+                                $("#btnExportar").addClass("disabled");
+                                $("#btnExportar").attr('disabled', 'disabled');
+                            } else {
+                                $("#btnExportar").removeClass("disabled");
+                                $("#btnExportar").removeAttr("disabled");
+                            }
+                            waitingDialog.hide();
+                        },
+                        "initComplete": function (settings, json) {
+                        }
+                    });
+                },
+                DocArt: function () {
+                    objTransitos.IsOkGrid = false;
+                    objTransitos.TbTablaDocArt.DataTable({
+                        "language": {
+                            "url": "../Scripts/DataTables/Spanish.json"
+                        },
+                        //"fnServerData": function (sSource, aoData, fnCallback) {
+                        //},
+                        "bServerSide": true,
+                        "bAutoWidth": false,
+                        "sAjaxSource": '@Url.Action("getLisConsulta_TransitosArtAjax", "Transitos")',
+                        "fnServerParams": function (aoData) {
+                            debugger;
+                            aoData.push({ "name": "isOkUpdate", "value": objTransitos.isOkUpdate });
+                            aoData.push({ "name": "Fecha", "value": objTransitos.Fecha });
+                            aoData.push({ "name": "Empresa", "value": objTransitos.Empresa });
+                            aoData.push({ "name": "Cadena", "value": objTransitos.Cadena });
+                            aoData.push({ "name": "Concepto", "value": objTransitos.Concepto });
+                            aoData.push({ "name": "Destino", "value": objTransitos.Destino });
+                            aoData.push({ "name": "Articulo", "value": objTransitos.Articulo });
+                            debugger
+                        },
+                        "bFilter": true,
+                        "bdestroy": true,
+                        "start": 0,
+                        "columnDefs": [{
+                            "orderable": false,
+                            "targets": [],
+                        }],
+                        "bDeferRender": true,
+                        "aoColumns": [
+                            { "sName": "Empresa", "mData": "Empresa", "sClass": "" },
+                            { "sName": "Cadena", "mData": "Cadena", "sClass": "" },
+                            { "sName": "Concepto", "mData": "Concepto", "sClass": "" },
+                            { "sName": "Origen", "mData": "Origen", "sClass": "" },
+                            { "sName": "Destino", "mData": "Destino", "sClass": "" },
+                            { "sName": "Guia", "mData": "Guia", "sClass": "alignCenter" },
+                            { "sName": "Articulo", "mData": "Articulo", "sClass": "alignCenter" },
+                            { "sName": "Cal", "mData": "Cal", "sClass": "alignCenter" },
+                            { "sName": "Talla", "mData": "Talla", "sClass": "alignCenter" },
+                            { "sName": "Cantidad", "mData": "Cantidad", "sClass": "alignCenter" }
+                        ],
+                        "fnRowCallback": function (row, data, index) {
+                        },
+                        "drawCallback": function (settings) {
+                            objTransitos.isOkUpdate = false;
+                            var table = objTransitos.TbTablaDocArt.dataTable();
+                            var data = table.fnGetData();
+                            if (data.length == 0) {
+                                $("#btnExportar").addClass("disabled");
+                                $("#btnExportar").attr('disabled', 'disabled');
+                            } else {
+                                $("#btnExportar").removeClass("disabled");
+                                $("#btnExportar").removeAttr("disabled");
+                            }
+                            waitingDialog.hide();
+                        },
+                        "initComplete": function (settings, json) {
+                        }
+                    });
+                }
+            }
+        },
+        Cmbs: {
+            Listar_Cadena_Tienda: function () {
+                objTransitos.Cmbs.ListarCadena();
+                objTransitos.Cmbs.ListarTienda();
+            },
+            ListarCadena: function () {
+                var dataArray = function () { return @Html.Raw(Json.Encode(ViewBag.DisCadTda)); }();
+                // var dataArray = data.Data;
+                var strTipo = $('#dwDis').val();
+                var listar = [];
+                if (strTipo != null) {
+                    if (strTipo == "-1") {
+                        var lista_filter = (strTipo == "-1") ? dataArray.filter(obj => obj.cod_distri != strTipo) : dataArray.filter(obj => obj.cod_distri === strTipo || obj.cod_distri == '0');
+                        $.each(lista_filter, function (index, item) {
+                            listar.push(item);
+                        });
+                    } else {
+                        var lista_filter = dataArray.filter(obj => obj.cod_distri == '0');
+                        $.each(lista_filter, function (index, item) {
+                            listar.push(item);
+                        });
+                        $.each(strTipo, function (index2, item2) {
+
+                            var lista_filter = dataArray.filter(obj => obj.cod_distri === item2);
+                            $.each(lista_filter, function (index, item) {
+                                listar.push(item);
+                            });
+                        });
+                    }
+                }
+
+                var group_cadena = Enumerable.from(listar)
+                .groupBy(
+                null,
+                null,
+                "{ cod_cadena: $.cod_cadena, des_cadena: $.des_cadena}",
+                "'' + $.cod_cadena + '-' + $.des_cadena"
+                ).toArray();
+
+                objTransitos.Cmbs.llenarComboCad("divcad", "dwcad", group_cadena, '0', '', "objTransitos.Cmbs.ListarTienda", '1');
+            },
+            ListarTienda: function () {
+                var dataArray = function () { return @Html.Raw(Json.Encode(ViewBag.DisCadTda)); }();
+                var strTipo = $('#dwDis').val();
+                var strCad = $('#dwcad').val();
+                var listar = [];
+                if (strTipo != null && strCad != null) {
+                    if (strTipo == "-1" || strCad=="-1") {
+                        var lista_filter = (strTipo == "-1") ? dataArray.filter(obj => obj.cod_distri != strTipo) : dataArray.filter(obj => obj.cod_distri === strTipo || obj.cod_distri == '0');
+                        $.each(lista_filter, function (index, item) {
+                            listar.push(item);
+                        });
+                    } else {
+                        var lista_filter = dataArray.filter(obj => obj.cod_distri == '0');
+                        $.each(lista_filter, function (index, item) {
+                            listar.push(item);
+                        });
+
+                        $.each(strCad, function (index3, item3) {
+                            $.each(strTipo, function (index2, item2) {
+                                var lista_filter = dataArray.filter(obj => obj.cod_distri === item2 && obj.cod_cadena===item3);
+                                $.each(lista_filter, function (index, item) {
+                                    listar.push(item);
+                                });
+                            });
+                        });
+                    }
+                }
+                var group_tienda = Enumerable.from(listar)
+                .groupBy(
+                null,
+                null,
+                "{ cod_entid: $.cod_entid, des_entid: $.des_entid}",
+                "'' + $.cod_entid + '-' + $.des_entid"
+                ).toArray();
+
+                objTransitos.Cmbs.llenarComboTda("divtda", "dwtda", group_tienda, '0', '', "", '1');
+            },
+            llenarComboCad: function (DivId, IdControl, Data, codDefecto, desDefecto, onchangeFuncion, tipo)
+            {
+                $('#' + IdControl).find('option').remove();
+                var str = (tipo == '1') ? '<select class="selectpicker" multiple = "multiple"  data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '" data-actions-box="true"  data-selected-text-format="count > 2" >' : '<select class="selectpicker"  data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '"  data-actions-box="true"  data-selected-text-format="count > 2" > ';
+                var ItemNormal = '<option value="codItem">desItem</option>';
+                var colectItemNormal = '';
+
+                //if (codDefecto != '') { str += '<option value="' + codDefecto + '" selected="selected">------' + desDefecto + '------</option>'; }
+
+                if (onchangeFuncion != '') { onchangeFuncion = 'onchange = "' + onchangeFuncion + '()"' }
+                str = str.replace("onchangeFuncion", onchangeFuncion);
+
+                $.each(Data, function (index, item) {
+                    colectItemNormal = colectItemNormal + ItemNormal
+                    var strSelected = '"';
+                    if (item.cod_entid == codDefecto) {
+                        strSelected = '" selected="selected" '
+                    }
+                    strSelected = '" selected="selected" '; // seleccionar todos al cargar
+                    colectItemNormal = colectItemNormal.replace("codItem", item.cod_cadena + strSelected);
+                    colectItemNormal = colectItemNormal.replace("desItem", item.des_cadena);
+                });
+
+                str += colectItemNormal
+                str += '</select>'
+                document.getElementById(DivId).innerHTML = str
+                $('.selectpicker').selectpicker({
+                    liveSearch: true,
+                    showSubtext: true
+                });
+            },
+            llenarComboTda: function (DivId, IdControl, Data, codDefecto, desDefecto, onchangeFuncion, tipo) {
+                $('#' + IdControl).find('option').remove();
+
+                var str = (tipo == '1') ? '<select class="selectpicker" multiple = "multiple"  data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '" data-actions-box="true"  data-selected-text-format="count > 2" >' : '<select class="selectpicker"  data-live-search="true" onchangeFuncion data-width="100%" id="' + IdControl + '" name="' + IdControl + '"  data-actions-box="true"  data-selected-text-format="count > 2" > ';
+                var ItemNormal = '<option value="codItem">desItem</option>';
+                var colectItemNormal = '';
+                //if (codDefecto != '') { str += '<option value="' + codDefecto + '" selected="selected">------' + desDefecto + '------</option>'; }
+
+                if (onchangeFuncion != '') { onchangeFuncion = 'onchange = "' + onchangeFuncion + '()"' }
+                str = str.replace("onchangeFuncion", onchangeFuncion);
+
+                $.each(Data, function (index, item) {
+
+                    colectItemNormal = colectItemNormal + ItemNormal
+                    var strSelected = '"';
+
+                    if (item.cod_entid == codDefecto) {
+                        strSelected = '" selected="selected" '
+
+                    }
+                    strSelected = '" selected="selected" '; // seleccionar todos al cargar
+                    colectItemNormal = colectItemNormal.replace("codItem", item.cod_entid + strSelected);
+                    colectItemNormal = colectItemNormal.replace("desItem", item.des_entid);
+                });
+
+                str += colectItemNormal
+                str += '</select>'
+
+                document.getElementById(DivId).innerHTML = str
+
+                $('.selectpicker').selectpicker({
+                    liveSearch: true,
+                    showSubtext: true
+                });
+
+            }
+        },
+        generaal: {
+            Validar: function () {
+                if ($('#dwDis').val() == "" || $('#dwDis').val() == "-1" || $('#dwDis').val() == 0 || $('#dwDis').val() == undefined) {
+                    swal({ title: "Alerta", text: "Debe elegir una empresa.", icon: "error" });
+                    return false;
+                }
+                if ($('#dwcad').val() == "" || $('#dwcad').val() == "-1" || $('#dwcad').val() == 0 || $('#dwcad').val() == undefined) {
+                    swal({ title: "Alerta", text: "Debe elegir una cadena.", icon: "error" });
+                    return false;
+                }
+                if ($('#dwtda').val() == "" || $('#dwtda').val() == "-1" || $('#dwtda').val() == 0 || $('#dwtda').val() == undefined) {
+                    swal({ title: "Alerta", text: "Debe elegir un destino.", icon: "error" });
+                    return false;
+                }
+                if ($('#dwconcepto').val() == "" || $('#dwconcepto').val() == "-1" || $('#dwconcepto').val() == 0 || $('#dwconcepto').val() == undefined) {
+                    swal({ title: "Alerta", text: "Debe elegir un concepto.", icon: "error" });
+                    return false;
+                }
+                if (!objTransitos.IsOk) {
+                    if ($('#dwarticulo').val() == "" || $('#dwarticulo').val() == "-1" || $('#dwarticulo').val() == 0 || $('#dwarticulo').val() == undefined) {
+                        swal({ title: "Alerta", text: "Debe elegir un articulo.", icon: "error" });
+                        return false;
+                    }
+                }
+                if (objTransitos.Fecha == undefined || objTransitos.Fecha == null || objTransitos.Fecha.length == 0 || objTransitos.Fecha == '') {
+                    swal({ title: "Alerta", text: "La fecha no puede estar vacio", icon: "error" });
+                    return false;
+                }
+                return true;
+            },
+            exportar:{
+                Doc: function () {
+
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("get_exporta_LisConsulta_Transitos_excel", "Transitos")',
+                       // data : {_Ent:_Ent},
+                        success: function (data) {
+                            data = JSON.parse(data);
+                            waitingDialog.hide();
+                            if (data.Success) {
+                                toastr.success(data.Message);
+                                window.location = '@Url.Action("ListarConsulta_TransitosExcel")';
+                            }
+                            else {
+                                toastr.error(data.Message, "Alerta");
+                            }
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            waitingDialog.hide();
+                            toastr.error("Error al exportar excel.", "Alerta");
+                        }
+                    });
+                },
+                DocArt: function () {
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("get_exporta_LisConsulta_TransitosArt_excel", "Transitos")',
+                        //data : {_Ent:_Ent},
+                        success: function (data) {
+                            data = JSON.parse(data);
+                            waitingDialog.hide();
+                            if (data.Success) {
+                                toastr.success(data.Message);
+                                window.location = '@Url.Action("ListarConsulta_TransitosArtExcel")';
+                            }
+                            else {
+                                toastr.error(data.Message, "Alerta");
+                            }
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            waitingDialog.hide();
+                            toastr.error("Error al exportar excel.", "Alerta");
+                        }
+                    });
+                }
+            }
+        }
+    };
+    $(document).ready(function () {
+        objTransitos.Inicio();
+    });
+</script>

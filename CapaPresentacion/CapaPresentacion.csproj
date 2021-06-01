@@ -484,6 +484,7 @@
     <Compile Include="Controllers\RRHHController.cs" />
     <Compile Include="Controllers\RuletaBataController.cs" />
     <Compile Include="Controllers\SoporteController.cs" />
+    <Compile Include="Controllers\TransitosController.cs" />
     <Compile Include="Controllers\UsuariosController.cs" />
     <Compile Include="Controllers\ValeCompraController.cs" />
     <Compile Include="Controllers\XstoreTdaController.cs" />
@@ -1958,6 +1959,7 @@
     <Content Include="Views\ECommerce\Vtex.cshtml" />
     <Content Include="Views\Bata_Reporte\Reporte_Incentivo.cshtml" />
     <Content Include="Views\BataTransitos\ConsultaTransito.cshtml" />
+    <Content Include="Views\Transitos\Consulta_Transitos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

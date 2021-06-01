@@ -130,6 +130,7 @@
     <Compile Include="Transac\Dat_Analisis_Mov.cs" />
     <Compile Include="Transac\Dat_Consultar_Guia.cs" />
     <Compile Include="Transac\Dat_Documentos_Tda.cs" />
+    <Compile Include="Transitos\Dat_Transitos.cs" />
     <Compile Include="ValeCompra\Dat_Cliente.cs" />
     <Compile Include="ValeCompra\Dat_ValeCompra.cs" />
     <Compile Include="VTEX\Dat_VTEX.cs" />
