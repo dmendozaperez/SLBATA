@@ -68,6 +68,7 @@ namespace CapaEntidad.NPS
     public class Ent_NPS_Tipo_Nota
     {
         public decimal? NOTA { get; set; }
+        public Decimal? TOTAL_RESPUESTAS { get; set; }
     }
     public class Ent_NPS_Tipoo_Lista
     {
@@ -78,6 +79,7 @@ namespace CapaEntidad.NPS
     public class Ent_Nps_Tipo_Chart_Data
     {
         public string Notas { get; set; }
+        public string Respuesta { get; set; }
         public string[] labels { get; set; }
         public string[] labelsTooltip { get; set; }
         public List<Ent_Nps_Tipo_Chart_DataSet> datasets { get; set; }

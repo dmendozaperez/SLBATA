@@ -168,6 +168,20 @@
                                     </tbody>
                                 </table>
                             </div>
+                            <div class="col-md-2">
+                                <table id="TbTablaNota" class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th style="text-align:center" class='text-bold'>T.RESP.</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td align="center"><span style='background-color:#3d566e' class='badge text-bold' id="lblrespuestas"></span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                     <!-- [/ChartTipo] -->
@@ -228,7 +242,7 @@
                                 <p class="text-center">
                                     <strong id="tituloTipo"></strong>
                                 </p>
-                                <div class="table-responsive" style="height:450px">
+                                <div class="table-responsive" style="height:480px">
                                     <table id="TbTablaDistrito" class="table table-hover"></table>
                                 </div>
                             </div>
@@ -250,6 +264,8 @@
 <script src="~/Scripts/Linkend/linq.min.js"></script>
 <script src="~/Scripts/BI.js"></script>
 <script>
+    var date = new Date();
+    var primerDia = new Date(date.getFullYear(), date.getMonth(), 1);
     var objDashboard = {
         Inicio: function () {
             debugger
@@ -270,10 +286,14 @@
             //$("#TbTablaDistrito").html(objDashboard._HtmlTabla);
 
             /*[ESTADO]*/
+
+          
+
+
             $("#datepickerIniEst").datepicker({
                 autoclose: true,
                 todayHighlight: true
-            }).datepicker("setDate", "0");
+            }).datepicker("setDate", primerDia);
 
             $("#datepickerFinEst").datepicker({
                 autoclose: true,
@@ -301,7 +321,7 @@
             $("#datepickerIniTip").datepicker({
                 autoclose: true,
                 todayHighlight: true
-            }).datepicker("setDate", "0");
+            }).datepicker("setDate", primerDia);
 
             $("#datepickerFinTip").datepicker({
                 autoclose: true,
@@ -324,7 +344,7 @@
             $("#datepickerIniDis").datepicker({
                 autoclose: true,
                 todayHighlight: true
-            }).datepicker("setDate", "0");
+            }).datepicker("setDate", primerDia);
 
             $("#datepickerFinDis").datepicker({
                 autoclose: true,
@@ -570,8 +590,15 @@
                     result += "</thead>"
                     result += "<tbody>";
                     for (var KeyR in _data.Rows) {
-                        result += "<tr>";
-                        result += "<td>" + _data.Rows[KeyR].PREGUNTA_NPS + "</td>";
+                       
+                        if (_data.Rows[KeyR].COD_NPS != 9001) {
+                            result += "<tr>";
+                            result += "<td>" + _data.Rows[KeyR].PREGUNTA_NPS + "</td>";
+                        } else {
+                            result += "<tr style='background-color:hsla(89, 43%, 51%, 0.3)'>";
+                            result += "<td><b>" + _data.Rows[KeyR].PREGUNTA_NPS + "</b></td>";
+                        }
+                        
                         for (var KeyC in _data.Cols) {
                             let index = Data.findIndex(c => c.COD_NPS == _data.Rows[KeyR].COD_NPS &&  c.DISTRITO == _data.Cols[KeyC].DISTRITO);
                             if (index>-1) {
@@ -805,6 +832,9 @@
                         objDashboard.generaal.ChartTipoDiv(data.Data);
                         if (data.Success) {
                             $("#lblNotas").html(objDashboard.generaal.FormatDecimal(data.Data.Notas, 2, '.', ','));
+
+                            $("#lblrespuestas").html(objDashboard.generaal.FormatDecimal(data.Data.Respuesta, 0, '.', ','));
+
                             $("#Tipo-load").addClass("hidden");
                             $("#btnExportarTip").removeClass("disabled");
                             $("#btnExportarTip").removeAttr("disabled");

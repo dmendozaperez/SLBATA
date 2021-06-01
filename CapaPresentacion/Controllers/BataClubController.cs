@@ -217,19 +217,19 @@ namespace CapaPresentacion.Controllers
 
                     (new Ent_BataClub_Chart_DataSet()
                     {
-                        label = "CONSUMIDOS",
-                        backgroundColor = Enumerable.Repeat("rgba(243, 156, 18, 0.8)", resumen.Count).ToArray(),
+                        label = "TICKETS",
+                        backgroundColor = Enumerable.Repeat("rgba(0, 61, 100, 0.8)", resumen.Count).ToArray(),
                         borderWidth = "1",
-                        data = resumen.Select(s => s.consumido).ToArray()
+                        data = resumen.Select(s => s.tickets).ToArray()
                     }),
 
-                     (new Ent_BataClub_Chart_DataSet()
-                    {
-                        label = "MIEMBROS",
-                        backgroundColor = Enumerable.Repeat("rgba(230, 101, 101, 0.8)", resumen.Count).ToArray(),
-                        borderWidth = "1",
-                        data = resumen.Select(s => s.bataclub).ToArray()
-                    })
+                    // (new Ent_BataClub_Chart_DataSet()
+                    //{
+                    //    label = "MIEMBROS",
+                    //    backgroundColor = Enumerable.Repeat("rgba(230, 101, 101, 0.8)", resumen.Count).ToArray(),
+                    //    borderWidth = "1",
+                    //    data = resumen.Select(s => s.bataclub).ToArray()
+                    //})
                 };
 
             chartDS.labels = resumen.Select(s => s.distrito + " (" + s.supervisor.Substring(0,s.supervisor.IndexOf(" ")) + ")").ToArray();
@@ -951,7 +951,7 @@ namespace CapaPresentacion.Controllers
                 Session[_BC_Dashboard_Distritos] = liststoreConf;
             }
             List<Ent_BataClub_DashBoard_Tiendas_Distritos> lista = ((Ent_BataClub_DashBoard)Session[_BC_Dashboard_Distritos]).listDistritosTiendas.OrderBy(o => o.supervisor).ThenBy(t => t.distrito).ToList();
-            string[] columns = { "supervisor","distrito", "tienda", "registros", "transac", "consumido","bataclub" };
+            string[] columns = { "supervisor","distrito", "tienda", "registros", "transac", "tickets" };
             byte[] filecontent = ExcelExportHelper.ExportExcel(lista, "", false, columns);
             string nom_excel = "Lista de tiendas distrito RTCxST";
             return File(filecontent, ExcelExportHelper.ExcelContentType, nom_excel + ".xlsx");
