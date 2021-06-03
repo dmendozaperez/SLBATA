@@ -1960,6 +1960,7 @@
     <Content Include="Views\Bata_Reporte\Reporte_Incentivo.cshtml" />
     <Content Include="Views\BataTransitos\ConsultaTransito.cshtml" />
     <Content Include="Views\Transitos\Consulta_Transitos.cshtml" />
+    <Content Include="Views\Transitos\Anulacion_Transitos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

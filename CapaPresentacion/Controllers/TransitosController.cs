@@ -1,6 +1,6 @@
 ﻿using CapaEntidad.General;
 using CapaDato.Transitos;
-using CapaDato.NPS;
+using CapaDato.Reporte;
 using CapaEntidad.Util;
 using CapaEntidad.Control;
 using CapaEntidad.Transitos;
@@ -16,7 +16,7 @@ namespace CapaPresentacion.Controllers
     public class TransitosController : Controller
     {
         #region <DECLARACION DE VARIABLES>
-        private Dat_NPS_Dashboard dat_NPS_Dashboard = new Dat_NPS_Dashboard();
+        private Dat_Combo tienda = new Dat_Combo();
         private Dat_Transitos datTransitos = new Dat_Transitos();
         private string _session_ListarConsulta_Transitos = "_session_ListarConsulta_Transitos";
         private string _session_ListarConsulta_Transitos_Excel = "_session_ListarConsulta_Transitos_Excel";
@@ -555,5 +555,103 @@ namespace CapaPresentacion.Controllers
             return Json(new { estado = 0, mensaje = 1 });
         }
         #endregion
+
+        #region <ANULACION DE TRANSITOS>
+        public ActionResult Anulacion_Transitos()
+        {
+            Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+            string actionName = this.ControllerContext.RouteData.GetRequiredString("action");
+            string controllerName = this.ControllerContext.RouteData.GetRequiredString("controller");
+            string return_view = actionName + "|" + controllerName;
+
+            if (_usuario == null)
+            {
+                return RedirectToAction("Login", "Control", new { returnUrl = return_view });
+            }
+            else
+            {
+                string pais = "PE";
+                if (Session["PAIS"] != null)
+                {
+                    pais = Session["PAIS"].ToString();
+                }
+                List<Ent_concepto_Transitos> combo_concepto = new List<Ent_concepto_Transitos> {
+                    new Ent_concepto_Transitos() { Con_Id ="-1",Descripcion = "--Seleccione--" }
+                };
+                Ent_Consulta_Transitos_Doc Ent_ConTran = new Ent_Consulta_Transitos_Doc();
+                ViewBag.Ent_ConTran = Ent_ConTran;
+                ViewBag.Concepto = combo_concepto.Concat(datTransitos.List_Concepto_Transitos());    
+
+                return View();
+            }
+        }
+
+        public ActionResult getConsultaDoc(Ent_Consulta_Transitos_Doc _Ent)
+        {
+            Ent_Consulta_Transitos_Doc Result = new Ent_Consulta_Transitos_Doc();
+            JsonRespuesta objResult = new JsonRespuesta();
+            try
+            {
+                Result = datTransitos.ValConsultaDoc(_Ent);
+                if (Result.NroDocumento!=null)
+                {
+                    objResult.Data = Result;
+                    objResult.Success = true;
+                }
+                else
+                {
+                    objResult.Message = "Documento no encontrado.";
+                    objResult.Data = Result;
+                    objResult.Success = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                objResult.Success = false;
+                objResult.Message = "Error";
+            }
+
+            var JSON = JsonConvert.SerializeObject(objResult);
+            return Json(JSON, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult getAnularTransito(Ent_Consulta_Transitos_Doc _Ent)
+        {
+            Ent_Consulta_Transitos_Doc Result = new Ent_Consulta_Transitos_Doc();
+
+            JsonRespuesta objResult = new JsonRespuesta();
+            try
+            {
+                Result = datTransitos.ValConsultaDoc(_Ent);
+                if (Result.NroDocumento != null)
+                {
+                    Result = datTransitos.DelAnularTransito(_Ent);
+                    if (Result.IsOk == 1)
+                    {
+                        objResult.Success = true;
+                        objResult.Message = Result.Mensaje;
+                    }
+                    else
+                    {
+                        objResult.Success = false;
+                        objResult.Message = Result.Mensaje;
+                    }
+                }
+                else
+                {                    
+                    objResult.Success = false;
+                    objResult.Message = "Documento no encontrado.";
+                }
+            }
+            catch (Exception ex)
+            {
+                objResult.Success = false;
+                objResult.Message = "Error al registrar";
+            }
+
+            var JSON = JsonConvert.SerializeObject(objResult);
+            return Json(JSON, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+
     }
 }

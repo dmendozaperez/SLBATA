@@ -29,6 +29,7 @@ namespace CapaEntidad.Transitos
         public string Con_Id { get; set; }
         public string Con_Des { get; set; }
         public Boolean Con_Tran { get; set; }
+        public string Descripcion { get; set; }
     }
     public class Ent_Articulo_Transitos
     {
@@ -49,5 +50,20 @@ namespace CapaEntidad.Transitos
         public string Talla { get; set; }
         public int? Cantidad { get; set; }
         public DateTime Fecha { get; set; }
+    }
+    public class Ent_Consulta_Transitos_Doc
+    {
+        public string Concepto { get; set; }
+        public string NroDocumento { get; set; }
+        public string Estado { get; set; }
+        public DateTime Fecha { get; set; }
+        public string Origen { get; set; }
+        public string Destino { get; set; }
+        public DateTime FechaAnulacion { get; set; }
+        public string Autorizado { get; set; }
+        public string Referencia { get; set; }
+        public int IsOk { get; set; }
+        public string Mensaje { get; set; }
+        public Decimal Cantidad { get; set; }
     }
 }

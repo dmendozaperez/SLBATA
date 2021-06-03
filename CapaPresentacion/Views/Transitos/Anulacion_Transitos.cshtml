@@ -1,0 +1,327 @@
+﻿
+@{
+    ViewBag.Title = "";
+}
+<link href="~/ContentSelect/bootstrap-select.css" rel="stylesheet" />
+<style>
+    .table thead {
+        background-color: #5799bf;
+        color: #fff;
+    }
+
+    .modal-dialog {
+        width: 370px;
+        /*margin: 20px auto;*/
+        /*height:50px;*/
+    }
+
+    input,
+    select,
+    textarea {
+        max-width: 100%;
+    }
+</style>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Anulación Transitos</div>
+            <div class="box box-body box-header" style="margin-bottom: 0px;padding-bottom: 0px;">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="dwconcepto">Concepto</label>
+                        <div class="form-group" id="">
+                            @Html.DropDownList("ddlConcepto", new SelectList(ViewBag.Concepto, "con_id", "Descripcion", "0"), new { @class = "form-control selectpicker",  @data_live_search = "true", @id = "ddlConcepto", @name = "ddlConcepto",@style = "max-width: 100%" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for=""><i class="glyphicon glyphicon-question-sign" style="margin-right: 5px; color:#00c0ef" data-toggle="tooltip" data-placement="top" title="(Ej: Con la tecla enter, valida el documento al terminar de digitar.)"></i>Nro Documento</label>
+                        <div class="form-group" id="IdDivDocumento">
+                            <input id="txtDocumento" type="text" class="form-control input-sm ui-cell-input" style="max-width: 100%" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="">Fecha Documento</label>
+                        <div class="form-group" id="">
+                            <input id="TxtFecDocumento" type="text" class="form-control input-sm ui-cell-input" disabled style="max-width: 100%" />
+                        </div>
+                    </div> 
+                    <div class="col-md-6">
+                        <label for="">Origen</label>
+                        <div class="form-group" id="">
+                            <input id="TxtOrigen" type="text" class="form-control input-sm ui-cell-input" disabled style="max-width: 100%" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="">Destino</label>
+                            <div class="form-group" id="">
+                                <input id="TxtDestino" type="text" class="form-control input-sm ui-cell-input" disabled style="max-width: 100%" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="">Cant/Unds</label>
+                        <div class="form-group" id="">
+                            <input id="TxtCant" type="text" class="form-control input-sm ui-cell-input" disabled style="max-width: 100%" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group" disabled>
+                            <label for="">Fecha de la anulación </label>
+                            <div class="form-group">
+                                <input id="dtpFechaAnulacion" type="text" class="form-control custom-input" data-date-format="dd/mm/yyyy" disabled style="max-width: 100%" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="">Autorizado por</label>
+                        <div class="form-group" id="">
+                            <input id="TxtAutorizado" type="text" class="form-control input-sm ui-cell-input" style="max-width: 100%" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="">Referencia</label>
+                        <div class="form-group" id="">
+                            <input id="TxtReferencia" type="text" class="form-control input-sm ui-cell-input" style="max-width: 100%" />
+                        </div>
+                    </div>
+                </div>
+
+            <div class="box box-body box-footer">
+                <div class="row">
+                    <div class="col-md-12 text-right">
+                        <button name="btnGuardar" id="btnGuardar" title="Guardar" class="btn btn-success" type="submit" disabled><span class="glyphicon glyphicon-floppy-disk"></span>&nbsp;Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/ScriptsSelect/bootstrap-select.js"></script>
+@*<script src="~/Scripts/bootstrap-select.min.js"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>*@
+<script src="~/Scripts/Linkend/linq.min.js"></script>
+<script src="~/Scripts/BI.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+@section scripts{
+<script>
+        var objAnularTransito = {
+            Inicio: function () {
+                
+                var FechaA = new Date();
+                $("#dtpFechaAnulacion").val((FechaA.getDate() < 10 ? "0" + FechaA.getDate() : FechaA.getDate()) + "/" + ((FechaA.getMonth() + 1) < 10 ? "0" + (FechaA.getMonth() + 1) : (FechaA.getMonth() + 1)) + "/" + FechaA.getFullYear());
+                this.ddlConceptos = '';
+                this.txtDocumento = '';
+                this.dtpFecha = '';
+                this.FechaDocumento = '';
+                this.Autorizado = '';
+                this.Referencia = '';
+                this.FechaAnulacion = '';
+
+                $("#txtDocumento").keyup(function (e) {
+                    if (e.keyCode == 13)
+                    {
+                        debugger;
+                        objAnularTransito.txtDocumento = this.value;
+                        objAnularTransito.ddlConceptos = $("#ddlConcepto").val();
+                        if (!objAnularTransito.general.Validar.Docuemnto())
+                            return
+                        waitingDialog.show("Espere un momento por favor.")
+                        objAnularTransito.general.Consultar();
+                    }
+                });
+
+                $("#btnGuardar").click(function () {
+                    debugger
+                    objAnularTransito.txtDocumento = $("#txtDocumento").val();
+                    objAnularTransito.ddlConceptos = $("#ddlConcepto").val();
+                    objAnularTransito.Autorizado = $("#TxtAutorizado").val();
+                    objAnularTransito.Referencia = $("#TxtReferencia").val();
+                    let FechaAnulacion = $("#dtpFechaAnulacion").val();
+                    FechaAnulacion = FechaAnulacion.split("/");
+                    var iDia = FechaAnulacion[0];
+                    var iMes = FechaAnulacion[1];
+                    var iAnio = FechaAnulacion[2];
+                    var Fecha = new Date(iMes + "/" + iDia + "/" + iAnio);
+                    objAnularTransito.FechaAnulacion = Date.parse(Fecha);
+                    if (!objAnularTransito.general.Validar.Registro())
+                        return
+                    objAnularTransito.general.Registrar();
+                })
+            },
+            general: {
+                Validar: {
+                    Docuemnto:function() {
+                        if (objAnularTransito.ddlConceptos == undefined || objAnularTransito.ddlConceptos == null || objAnularTransito.ddlConceptos == 0 || objAnularTransito.ddlConceptos == '' || objAnularTransito.ddlConceptos == '-1') {
+                            swal({ title: "Alerta", text: "Debe seleccionar un concepto.", icon: "error" });                            
+                            return false;
+                        }
+                       
+                        if (objAnularTransito.txtDocumento == undefined || objAnularTransito.txtDocumento == null || objAnularTransito.txtDocumento == 0 || objAnularTransito.txtDocumento == '' || objAnularTransito.txtDocumento == '-1') {
+                            swal({ title: "Alerta", text: "Debe ingresar el nro de documento.", icon: "error" });
+                            $("#IdDivDocumento").addClass("has-error");
+                            $("#txtDocumento").focus();                            
+                            return false;
+                        }
+                        $("#IdDivDocumento").removeClass("has-error");
+                        return true;
+                    },
+                    Registro: function () {
+                        if (objAnularTransito.ddlConceptos == undefined || objAnularTransito.ddlConceptos == null || objAnularTransito.ddlConceptos == 0 || objAnularTransito.ddlConceptos == '' || objAnularTransito.ddlConceptos == '-1') {
+                            swal({ title: "Alerta", text: "Debe seleccionar un concepto.", icon: "error" });
+                            //$("#IdDivClientes").addClass("has-error");
+                            return false;
+                        }
+                        if (objAnularTransito.txtDocumento == undefined || objAnularTransito.txtDocumento == null || objAnularTransito.txtDocumento == 0 || objAnularTransito.txtDocumento == '' || objAnularTransito.txtDocumento == '-1') {
+                            swal({ title: "Alerta", text: "Debe ingresar el nro de documento.", icon: "error" });
+                            $("#IdDivDocumento").addClass("has-error");
+                            $("#txtDocumento").focus();
+                            return false;
+                        }
+                        $("#IdDivDocumento").removeClass("has-error");
+                        if (objAnularTransito.FechaAnulacion == undefined || objAnularTransito.FechaAnulacion == null || objAnularTransito.FechaAnulacion == 0 || objAnularTransito.FechaAnulacion == '') {
+                            swal({ title: "Alerta", text: "Debe ingresar fecha de la anulación.", icon: "error" });
+                            //$("#IdDivClientes").addClass("has-error");
+                            return false;
+                        }
+                        if (objAnularTransito.Autorizado == undefined || objAnularTransito.Autorizado == null || objAnularTransito.Autorizado == 0 || objAnularTransito.Autorizado == '') {
+                            swal({ title: "Alerta", text: "Debe ingresar en campo autorizado.", icon: "error" });
+                            //$("#IdDivClientes").addClass("has-error");
+                            return false;
+                        }
+                        if (objAnularTransito.Referencia == undefined || objAnularTransito.Referencia == null || objAnularTransito.Referencia == 0 || objAnularTransito.Referencia == '') {
+                            swal({ title: "Alerta", text: "Debe ingresar el campo de referencia.", icon: "error" });
+                            //$("#IdDivClientes").addClass("has-error");
+                            return false;
+                        }
+                        debugger
+                        if (objAnularTransito.FechaAnulacion < objAnularTransito.FechaDocumento ) {
+                            swal({ title: "Alerta", text: "La fecha de Anulación no puede ser menor a la fecha documento", icon: "error" });
+                            //$("#IdDivClientes").addClass("has-error");
+                            return false;
+                        }
+                        return true;
+                    },
+                },
+                Consultar: function () {
+                    var _Ent = function () { return @Html.Raw(Json.Encode(ViewBag.Ent_ConTran)); }();
+                    _Ent.Concepto = objAnularTransito.ddlConceptos;
+                    _Ent.NroDocumento = objAnularTransito.txtDocumento;
+
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("getConsultaDoc", "Transitos")',
+                        data: { _Ent: _Ent },
+                        async: false,
+                        success: function (data) {
+                            data = JSON.parse(data);
+                            debugger
+                            if (data.Success) {
+                                let Fecha = new Date(data.Data.Fecha);
+                                objAnularTransito.FechaDocumento = Date.parse(Fecha);
+                                $("#TxtFecDocumento").val((Fecha.getDate() < 10 ? "0" + Fecha.getDate() : Fecha.getDate()) + "/" + ((Fecha.getMonth() + 1) < 10 ? "0" + (Fecha.getMonth() + 1) : (Fecha.getMonth() + 1)) + "/" + Fecha.getFullYear());
+                                $("#TxtOrigen").val(data.Data.Origen);
+                                $("#TxtDestino").val(data.Data.Destino);
+                                $("#TxtCant").val(data.Data.Cantidad);
+                                $("#btnGuardar").attr("disabled", false);
+                                waitingDialog.hide();
+                            } else {
+                                swal({ title: "Alerta", text: data.Message, icon: "error" });
+                                //$('#ddlConcepto').selectpicker('val', '-1');
+                                //$("#txtDocumento").val("");
+                                $("#IdDivDocumento").addClass("has-error");
+                                $("#txtDocumento").focus();
+                                $("#TxtFecDocumento").val("");
+                                $("#TxtOrigen").val("");
+                                $("#TxtDestino").val("");
+                                $("#TxtCant").val("");
+                                $("#btnGuardar").attr("disabled", true);
+                                waitingDialog.hide();
+                            }
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            waitingDialog.hide();
+                            swal({ title: "Alerta", text: "Error al consultar.", icon: "error" }).then((value) => { });
+                        }
+                    });
+                },
+                Registrar : function(){
+                    swal({
+                        title: "Anulacion",
+                        text: "¿Está seguro de anular?",
+                        icon: "warning",
+                        buttons: ["No", "Si"],
+                        dangerMode: true,
+                    }).then((cambiar) => {
+                        debugger
+                        if (cambiar) {
+                            waitingDialog.show("Espere por favor...")
+                            var _Ent = function () { return @Html.Raw(Json.Encode(ViewBag.Ent_ConTran)); }();
+                            _Ent.Concepto = objAnularTransito.ddlConceptos;
+                            _Ent.NroDocumento = objAnularTransito.txtDocumento;
+                            _Ent.FechaAnulacion = $("#dtpFechaAnulacion").val();
+                            _Ent.Autorizado = objAnularTransito.Autorizado;
+                            _Ent.Referencia = objAnularTransito.Referencia;
+                            $.ajax({
+                                type: "POST",
+                                url: '@Url.Action("getAnularTransito", "Transitos")',
+                                data: { _Ent: _Ent },
+                                success: function (data) {
+                                    debugger
+                                    data = JSON.parse(data);
+                                    if (data.Success) {
+                                        swal({ title: "Ok", text: data.Message, icon: "success" }).then((value) => { });
+                                        $('#ddlConcepto').selectpicker('val', '-1');
+                                        $("#txtDocumento").val("");
+                                        $("#TxtFecDocumento").val("");
+                                        $("#TxtOrigen").val("");
+                                        $("#TxtDestino").val("");
+                                        $("#TxtCant").val("");
+                                        $("#TxtAutorizado").val("");
+                                        $("#TxtReferencia").val("");
+                                        $("#btnGuardar").attr("disabled", true);
+                                        waitingDialog.hide();
+                                    } else {
+                                        waitingDialog.hide();
+                                        swal({ title: "Alerta", text: data.Message, icon: "error" }).then((value) => { });
+                                        $("#btnGuardar").attr("disabled", true);
+                                    }
+                                },
+                                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                                    waitingDialog.hide();
+                                    swal({ title: "Alerta", text: "Error al grabar.", icon: "error" }).then((value) => { });
+                                }
+                            });
+                        }
+                    })
+                }
+            }
+        };
+
+        $(document).ready(function () {
+            objAnularTransito.Inicio();
+        });
+</script>
+}
+

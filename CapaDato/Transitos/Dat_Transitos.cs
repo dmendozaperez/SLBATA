@@ -74,6 +74,7 @@ namespace CapaDato.Transitos
                                           Con_Id = fila["con_id"].ToString(),
                                           Con_Des = fila["con_des"].ToString(),
                                           Con_Tran = Convert.ToBoolean(fila["con_tran"]),
+                                          Descripcion = Convert.ToString(fila["Descripcion"]),
                                       }
                                     ).ToList().Where(a => a.Con_Tran == true).ToList();
                         }
@@ -218,6 +219,99 @@ namespace CapaDato.Transitos
                 Listar = new List<Ent_Articulo_TransitosArt>();
             }
             return Listar;
+        }
+
+        public Ent_Consulta_Transitos_Doc ValConsultaDoc(Ent_Consulta_Transitos_Doc ent)
+        {
+            Ent_Consulta_Transitos_Doc _EntResul = new Ent_Consulta_Transitos_Doc();
+            string sqlquery = "[USP_transito_consulta_doc]";
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@concepto", DbType.String).Value = ent.Concepto;
+                        cmd.Parameters.AddWithValue("@documento", DbType.String).Value = ent.NroDocumento;
+                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                        {
+                            DataTable dt = new DataTable();
+                            da.Fill(dt);
+                            if (dt.Rows.Count>0)
+                            {
+                                var results = from Row in dt.AsEnumerable()
+                                              select new
+                                              {
+                                                  Concepto = Row.Field<string>("Concepto"),
+                                                  NroDocumento = Row.Field<string>("Documento"),
+                                                  Estado = Row.Field<string>("Estado"),
+                                                  Fecha = Row.Field<DateTime>("Fecha"),
+                                                  Origen = Row.Field<string>("Origen"),
+                                                  Destino = Row.Field<string>("Destino"),
+                                                  Cantidad = Row.Field<Decimal>("cantidad")
+                                              };
+
+                                foreach (var item in results)
+                                {
+                                    _EntResul.Concepto = item.Concepto;
+                                    _EntResul.NroDocumento = item.NroDocumento;
+                                    _EntResul.Estado = item.Estado;
+                                    _EntResul.Fecha = item.Fecha;
+                                    _EntResul.Origen = item.Origen;
+                                    _EntResul.Destino = item.Destino;
+                                    _EntResul.Cantidad = item.Cantidad;
+                                }
+                            }
+                            else
+                            {
+                                _EntResul = new Ent_Consulta_Transitos_Doc();
+                            } 
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return _EntResul;
+        }
+        public Ent_Consulta_Transitos_Doc DelAnularTransito(Ent_Consulta_Transitos_Doc _Ent)
+        {
+            Ent_Consulta_Transitos_Doc EntResul = new Ent_Consulta_Transitos_Doc();
+            string sqlquery = "[USP_transito_anula]";
+            int Resul = 0;
+            string Mensaje = "";
+            SqlConnection cn = null;
+            SqlCommand cmd = null;
+            try
+            {
+                cn = new SqlConnection(Ent_Conexion.conexion);
+                if (cn.State == 0) cn.Open();
+                cmd = new SqlCommand(sqlquery, cn);
+                cmd.CommandTimeout = 0;
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@concepto", DbType.String).Value = _Ent.Concepto;
+                cmd.Parameters.AddWithValue("@documento", DbType.String).Value = _Ent.NroDocumento;
+                cmd.Parameters.AddWithValue("@fechaanul", DbType.DateTime).Value = _Ent.FechaAnulacion;
+                cmd.Parameters.AddWithValue("@usuario", DbType.String).Value = _Ent.Autorizado;
+                cmd.Parameters.AddWithValue("@referencia", DbType.String).Value = _Ent.Referencia;
+                cmd.Parameters.Add("@isOK", SqlDbType.Int, 500);
+                cmd.Parameters["@isOK"].Direction = ParameterDirection.Output;
+                cmd.Parameters.Add("@Mensaje", SqlDbType.VarChar, 500);
+                cmd.Parameters["@Mensaje"].Direction = ParameterDirection.Output;
+                cmd.ExecuteNonQuery();
+                EntResul.IsOk = Convert.ToInt32(cmd.Parameters["@isOK"].Value);
+                EntResul.Mensaje = Convert.ToString(cmd.Parameters["@Mensaje"].Value);
+            }
+            catch
+            {
+                EntResul = new Ent_Consulta_Transitos_Doc();
+                EntResul.IsOk = -1;
+                EntResul.Mensaje = "Se produjo un error al tratar de anular, consulte al Administrador.";
+            }
+            return EntResul;
         }
     }
 }
