@@ -82,9 +82,10 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group" disabled>
-                            <label for="">Fecha de la anulación </label>
+                            <label for="">Estado</label>
                             <div class="form-group">
-                                <input id="dtpFechaAnulacion" type="text" class="form-control custom-input" data-date-format="dd/mm/yyyy" disabled style="max-width: 100%" />
+                                <input id="TxtEstado" type="text" class="form-control custom-input" disabled style="max-width: 100%" />
+                                <input id="dtpFechaAnulacion" type="hidden" class="form-control custom-input" data-date-format="dd/mm/yyyy" disabled style="max-width: 100%" />
                             </div>
                         </div>
                     </div>
@@ -176,8 +177,7 @@
                         if (objAnularTransito.ddlConceptos == undefined || objAnularTransito.ddlConceptos == null || objAnularTransito.ddlConceptos == 0 || objAnularTransito.ddlConceptos == '' || objAnularTransito.ddlConceptos == '-1') {
                             swal({ title: "Alerta", text: "Debe seleccionar un concepto.", icon: "error" });                            
                             return false;
-                        }
-                       
+                        }                       
                         if (objAnularTransito.txtDocumento == undefined || objAnularTransito.txtDocumento == null || objAnularTransito.txtDocumento == 0 || objAnularTransito.txtDocumento == '' || objAnularTransito.txtDocumento == '-1') {
                             swal({ title: "Alerta", text: "Debe ingresar el nro de documento.", icon: "error" });
                             $("#IdDivDocumento").addClass("has-error");
@@ -244,18 +244,20 @@
                                 $("#TxtOrigen").val(data.Data.Origen);
                                 $("#TxtDestino").val(data.Data.Destino);
                                 $("#TxtCant").val(data.Data.Cantidad);
+                                $("#TxtEstado").val(data.Data.Estado);
                                 $("#btnGuardar").attr("disabled", false);
                                 waitingDialog.hide();
                             } else {
                                 swal({ title: "Alerta", text: data.Message, icon: "error" });
-                                //$('#ddlConcepto').selectpicker('val', '-1');
-                                //$("#txtDocumento").val("");
+                                let Fecha = new Date(data.Data.Fecha);
+                                objAnularTransito.FechaDocumento = Date.parse(Fecha);
                                 $("#IdDivDocumento").addClass("has-error");
                                 $("#txtDocumento").focus();
-                                $("#TxtFecDocumento").val("");
-                                $("#TxtOrigen").val("");
-                                $("#TxtDestino").val("");
-                                $("#TxtCant").val("");
+                                $("#TxtFecDocumento").val((Fecha.getDate() < 10 ? "0" + Fecha.getDate() : Fecha.getDate()) + "/" + ((Fecha.getMonth() + 1) < 10 ? "0" + (Fecha.getMonth() + 1) : (Fecha.getMonth() + 1)) + "/" + Fecha.getFullYear());
+                                $("#TxtOrigen").val(data.Data.Origen);
+                                $("#TxtDestino").val(data.Data.Destino);
+                                $("#TxtCant").val(data.Data.Cantidad);
+                                $("#TxtEstado").val(data.Data.Estado);
                                 $("#btnGuardar").attr("disabled", true);
                                 waitingDialog.hide();
                             }

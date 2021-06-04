@@ -595,8 +595,17 @@ namespace CapaPresentacion.Controllers
                 Result = datTransitos.ValConsultaDoc(_Ent);
                 if (Result.NroDocumento!=null)
                 {
-                    objResult.Data = Result;
-                    objResult.Success = true;
+                    if (Result.Estado == "pendiente")
+                    {
+                        objResult.Data = Result;
+                        objResult.Success = true;
+                    }
+                    else
+                    {
+                        objResult.Message = "El Nro docuemnto: " + Result.NroDocumento + " ya esta " + Result.Estado;
+                        objResult.Data = Result;
+                        objResult.Success = false;
+                    }
                 }
                 else
                 {
@@ -621,6 +630,8 @@ namespace CapaPresentacion.Controllers
             JsonRespuesta objResult = new JsonRespuesta();
             try
             {
+                DateTime Hoy = DateTime.Now;
+                _Ent.FechaAnulacion = Hoy;
                 Result = datTransitos.ValConsultaDoc(_Ent);
                 if (Result.NroDocumento != null)
                 {
