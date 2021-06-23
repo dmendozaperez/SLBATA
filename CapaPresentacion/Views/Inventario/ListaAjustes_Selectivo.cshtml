@@ -1,0 +1,53 @@
+﻿@{
+    ViewBag.Title = "Lista de ajustes de Inventario";
+}
+@{
+    AjaxOptions options = new AjaxOptions
+    {
+        HttpMethod = "POST",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "lista1",
+        OnComplete = "waitingDialog.hide();",
+        OnBegin = "waitingDialog.show('Espere un momento por favor');",
+        OnFailure = "waitingDialog.hide();"
+    };
+}
+<style>
+    .boton-td {
+        padding-top: 3px !important;
+        padding-bottom: 3px !important;
+    }
+
+    .modal-body {
+        max-height: calc(100vh - 212px);
+        overflow-y: auto;
+    }
+</style>
+<link href="@Url.Content("~/Content/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />
+<div class="box box-body box-primary">
+    @using (Ajax.BeginForm("ListaAjustesInv_Selectivo", options))
+    {
+        <div class="row">
+            <div class="col-md-12">
+                <a href="@Url.Action("AjusteInventario_Selectivo", "Inventario")" class="btn btn-success"><i class="glyphicon glyphicon-list-alt"></i>&nbsp;&nbsp;Ajuste de Inventario</a>
+                <button id="buscar" name="buscar" class="btn btn-primary" onclick="" type="submit"><span class="glyphicon glyphicon-search"></span>&nbsp;&nbsp;Buscar</button>
+
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="tienda">Tienda</label>
+                    @Html.DropDownList("tienda", new SelectList(ViewBag.tienda, "cod_entid", "des_entid", null), new { @class = "form-control selectpicker", @id = "tienda", @data_live_search = "true", @data_actions_box = "true" })
+                </div>
+            </div>
+        </div>
+        { Html.RenderPartial("ListaAjustesInv_Selectivo"); }
+    }
+</div>
+<script src="~/Scripts/bootstrap-select.min.js"></script>
+<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+<script>
+
+</script>
