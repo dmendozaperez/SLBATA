@@ -406,5 +406,89 @@ namespace CapaDato.Inventario
             }
             return listar;
         }
+
+        public List<Ent_Inventario_Ajuste_Selectivo> getListaAjustesInvSelectivo(string tienda, string pais = "PE")
+        {
+            string sqlquery = "USP_XSTORE_INVENTARIO_SELECTIVO_GET";
+            DataTable dt = null;
+            List<Ent_Inventario_Ajuste_Selectivo> listar = null;
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+
+                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@COD_TDA ", tienda);
+                        cmd.Parameters.AddWithValue("@pais ", pais);
+                        //cmd.Parameters.AddWithValue("@estado", dwest);
+                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                        {
+                            dt = new DataTable();
+                            da.Fill(dt);
+                            listar = new List<Ent_Inventario_Ajuste_Selectivo>();
+                            listar = (from DataRow dr in dt.Rows
+                                      select new Ent_Inventario_Ajuste_Selectivo()
+                                      {
+                                          CODIGO = Convert.ToDecimal(dr["CODIGO"].ToString()),
+                                          TIENDA = dr["TIENDA"].ToString(),
+                                          DESCRIPCION = dr["DESCRIPCION"].ToString(),
+                                          FECHA_INV = Convert.ToDateTime(dr["FECHA_INV"]).ToString("dd/MM/yyyy"),
+                                          FISICO = Convert.ToDecimal(dr["FISICO"].ToString()),
+                                          TEORICO = Convert.ToDecimal(dr["TEORICO"].ToString()),
+                                          DIFERENCIA = Convert.ToDecimal(dr["DIFERENCIA"].ToString()),
+                                      }).ToList();
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                listar = null;
+            }
+            return listar;
+        }
+
+        public int Ins_Inventario_Selectivo(string cod_tda, string inv_des, DateTime inv_fec_inv, decimal inv_usu, List<Ent_Inv_Ajuste_Articulos> lista, ref decimal tot_teorico, ref decimal tot_fisico, ref decimal stk_actual, ref string mensaje)
+        {
+            string sqlquery = "USP_XSTORE_INSERTAR_INVENTARIO_SELECTIVO";
+            int f = 0;
+            DataTable dt = null;
+            try
+            {
+                dt = new DataTable();
+                dt = _toDTListInv(lista);
+                using (SqlConnection cn = new SqlConnection(Ent_Conexion.conexion))
+                {
+                    if (cn.State == 0) cn.Open();
+                    using (SqlCommand cmd = new SqlCommand(sqlquery, cn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@COD_TDA", cod_tda);
+                        cmd.Parameters.AddWithValue("@INV_DES", inv_des);
+                        cmd.Parameters.AddWithValue("@INV_FEC_INV", inv_fec_inv);
+                        cmd.Parameters.AddWithValue("@INV_USU", inv_usu);
+                        cmd.Parameters.AddWithValue("@TMP", dt);
+                        cmd.Parameters.Add("@TOT_TEORICO", SqlDbType.Decimal).Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add("@TOT_FISICO", SqlDbType.Decimal).Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add("@STK_ACTUAL", SqlDbType.Decimal).Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+                        tot_teorico = Convert.ToDecimal(cmd.Parameters["@TOT_TEORICO"].Value);
+                        tot_fisico = Convert.ToDecimal(cmd.Parameters["@TOT_FISICO"].Value);
+                        stk_actual = Convert.ToDecimal(cmd.Parameters["@STK_ACTUAL"].Value);
+                        f = 1;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                f = 0;
+                mensaje = ex.Message;
+            }
+            return f;
+        }
     }
 }

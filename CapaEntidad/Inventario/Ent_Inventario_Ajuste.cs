@@ -25,4 +25,15 @@ namespace CapaEntidad.Inventario
         public decimal? STOCK { get; set; }
         public decimal? DIFERENCIA { get; set; }
     }
+
+    public class Ent_Inventario_Ajuste_Selectivo
+    {
+        public decimal CODIGO { get; set; }
+        public string TIENDA { get; set; }
+        public string DESCRIPCION { get; set; }
+        public string FECHA_INV { get; set; }
+        public decimal FISICO { get; set; }
+        public decimal TEORICO { get; set; }
+        public decimal DIFERENCIA { get; set; }
+    }
 }

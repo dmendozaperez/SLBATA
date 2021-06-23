@@ -1961,6 +1961,9 @@
     <Content Include="Views\BataTransitos\ConsultaTransito.cshtml" />
     <Content Include="Views\Transitos\Consulta_Transitos.cshtml" />
     <Content Include="Views\Transitos\Anulacion_Transitos.cshtml" />
+    <Content Include="Views\Inventario\AjusteInventario_Selectivo.cshtml" />
+    <Content Include="Views\Inventario\ListaAjustes_Selectivo.cshtml" />
+    <Content Include="Views\Inventario\ListaAjustesInv_Selectivo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
