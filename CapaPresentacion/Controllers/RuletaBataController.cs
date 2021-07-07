@@ -21,10 +21,10 @@ namespace CapaPresentacion.Controllers
         public ActionResult Index()
         {
            // Session["Tienda"] = "50143";
-            if (Session["Tienda"] == null)
-            {
-                return RedirectToAction("Login", "Control");
-            }
+            //if (Session["Tienda"] == null)
+            //{
+            //    return RedirectToAction("Login", "Control");
+            //}
             Ent_RuletaBata ruleta = new Ent_RuletaBata();
             List<Premios> _prem = _datos.get_premios();            
             ruleta.listPremios = _prem;
@@ -145,8 +145,8 @@ namespace CapaPresentacion.Controllers
             var regex = "\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*";
             try
             {
-                Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
-                Int32 usu_id = Convert.ToInt32(_usuario.usu_id);//Convert.ToInt32(_usuario.usu_id);
+                //Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
+                Int32 usu_id = 1;// Convert.ToInt32(_usuario.usu_id);//Convert.ToInt32(_usuario.usu_id);
                 //usu_id = 1;
                 if (Session["Tienda"] == null || Session["PremioGanador"]== null)
                 {
@@ -333,7 +333,8 @@ namespace CapaPresentacion.Controllers
             {
                 if (Session["Tienda"] == null)
                 {
-                    return RedirectToAction("Login", "Control");
+                    Session["Tienda"] = "BATAWEB";
+                    //return RedirectToAction("Login", "Control");
                 }
                 Premios ganador = new Premios();
                 ganador = _datos.get_ganador_rulta(Session["Tienda"].ToString());
