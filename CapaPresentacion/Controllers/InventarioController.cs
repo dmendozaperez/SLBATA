@@ -506,13 +506,28 @@ namespace CapaPresentacion.Controllers
                 //valor += Convert.ToDecimal(item.STOCK);
                 oldList.Where(o => o.ARTICULO == item.ARTICULO && o.MEDIDA == item.MEDIDA && o.CALIDAD == item.CALIDAD).Select(a => { a.STOCK = item.STOCK; a.DIFERENCIA = item.STOCK - a.TEORICO; return a; }).ToList();
             }
+
+            //foreach (var item2 in oldList.GroupBy(t => new { t.ARTICULO, t.CALIDAD, t.MEDIDA }).Select(g => new { ARTICULO = g.Key.ARTICULO, MEDIDA = g.Key.MEDIDA, CALIDAD = g.Key.CALIDAD, STOCK = g.Sum(X => X.STOCK) }))
+            //{
+            //    //valor += Convert.ToDecimal(item.STOCK);
+            //    oldList.Where(o => o.ARTICULO == item2.ARTICULO && o.MEDIDA == item2.MEDIDA && o.CALIDAD == item2.CALIDAD).Select(a => { a.STOCK = item2.STOCK; a.DIFERENCIA = item2.STOCK - a.TEORICO; return a; }).ToList();
+            //}
+
+            oldList = oldList.GroupBy(t => new { t.ARTICULO, t.CALIDAD, t.MEDIDA }).Select(g => new Ent_Inv_Ajuste_Articulos { ARTICULO = g.Key.ARTICULO, MEDIDA = g.Key.MEDIDA, CALIDAD = g.Key.CALIDAD, STOCK = g.Sum(X => X.STOCK), TEORICO = g.Sum(x => x.TEORICO), DIFERENCIA = g.Sum(X => X.STOCK) - g.Sum(x => x.TEORICO) }).ToList();  
+
             //decimal valor2 = oldList.Sum(t => t.STOCK).Value;
 
+
             List<Ent_Inv_Ajuste_Articulos> newExcelList = new List<Ent_Inv_Ajuste_Articulos>();
+            //var r1 = oldList.Where(s => s.ARTICULO == "8812417").ToList();
+            //var e= listArtExcel.Where(s => s.ARTICULO == "8812417").ToList();
+
+            //List<Ent_Inv_Ajuste_Articulos> newExcelList = new List<Ent_Inv_Ajuste_Articulos>();
 
             foreach (var ritem in oldList)
             {
                 listArtExcel.Remove(listArtExcel.Where(o => o.ARTICULO == ritem.ARTICULO && o.MEDIDA == ritem.MEDIDA && o.CALIDAD == ritem.CALIDAD).FirstOrDefault());
+                //listArtExcel.Where(o => o.ARTICULO == ritem.ARTICULO && o.MEDIDA == ritem.MEDIDA && o.CALIDAD == ritem.CALIDAD).Select(a => { a.STOCK = ritem.STOCK; a.DIFERENCIA = ritem.STOCK - a.TEORICO; return a; }).ToList();
             }
 
 
