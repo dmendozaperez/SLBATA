@@ -107,10 +107,23 @@ namespace CapaPresentacion.Controllers
             DataTable dt_item = null;
             DataTable dt_price_item = null;
             DataTable dt_item_images = null;
+            DataTable dt_item_ref = null;
+
+            string strDirectorio = Ent_Conexion.strDirectorio_Interface;
+
+
+
+
+
+            string startPath = System.Web.HttpContext.Current.Server.MapPath(strDirectorio.Remove(strDirectorio.Length - 1));
+
+            if (Directory.Exists(@startPath)) Directory.Delete(@startPath,true);
+            if (!Directory.Exists(@startPath)) Directory.CreateDirectory(@startPath);
+
             foreach (string Cod_Tda in listTienda)
             {
                 string ruta1 = System.Web.HttpContext.Current.Server.MapPath(Ent_Conexion.strDirectorio_Interface);
-                oJRpta = datInterface.GenerarArchivoInterface(Cod_Pais, Cod_Tda, listInterface, ruta1, ref dt_item, ref dt_price_item, ref dt_item_images);
+                oJRpta = datInterface.GenerarArchivoInterface(Cod_Pais, Cod_Tda, listInterface, ruta1, ref dt_item, ref dt_price_item, ref dt_item_images,ref dt_item_ref);
                 //if (oJRpta.Success) {
 
                 //    string strDirectorio = oJRpta.Message;
@@ -128,8 +141,8 @@ namespace CapaPresentacion.Controllers
             }
 
 
-            string strDirectorio = Ent_Conexion.strDirectorio_Interface;
-            string startPath = System.Web.HttpContext.Current.Server.MapPath(strDirectorio.Remove(strDirectorio.Length - 1));
+           
+
             string zipPath = startPath + ".zip";
             string ruta = zipPath;
 
