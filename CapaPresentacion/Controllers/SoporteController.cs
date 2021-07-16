@@ -278,6 +278,7 @@ namespace CapaPresentacion.Controllers
         public string Envio_chk(string cadena)
         {
             string str = "";
+
             //  JsonResult jRespuesta = null;
             Ent_Usuario _usuario = (Ent_Usuario)Session[Ent_Constantes.NameSessionUser];
             str = datGuia.Envio_chk(cadena, _usuario.usu_id);
